@@ -395,7 +395,7 @@ export const integrationReport = schedules.task({
       orgMap.set(c.org_id, list);
     }
 
-    for (const [orgId, orgConnectors] of orgMap) {
+    for (const [orgId, orgConnectors] of Array.from(orgMap.entries())) {
       const connectorIds = orgConnectors.map((c) => c.id);
 
       // Fetch sync logs for the week

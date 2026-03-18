@@ -59,3 +59,11 @@ export {
   antiBiasCheck,
   escalationNotifier,
 } from "./personnel";
+
+export {
+  queueProcessor,
+  healthCheck,
+  incrementalSync,
+  integrationReport,
+  deadLetterCleanup,
+} from "./integrations";
