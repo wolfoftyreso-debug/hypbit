@@ -34,3 +34,10 @@ export {
   ecbRateUpdate,
   fxRevaluation,
 } from "./currency";
+
+export {
+  quarterlyReview,
+  annualStrategy,
+  weeklyActionCheck,
+  monthlyFollowup,
+} from "./strategic-review";

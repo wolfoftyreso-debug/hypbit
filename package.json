@@ -15,7 +15,8 @@
     "@supabase/supabase-js": "^2.45.0",
     "stripe": "^17.0.0",
     "cors": "^2.8.5",
-    "@trigger.dev/sdk": "^3.0.0"
+    "@trigger.dev/sdk": "^3.0.0",
+    "@anthropic-ai/sdk": "^0.39.0"
   },
   "devDependencies": {
     "typescript": "^5.5.0",
