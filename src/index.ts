@@ -10,6 +10,11 @@ import capabilityRouter from "./capability";
 import processRouter from "./process";
 import currencyRouter from "./currency";
 import reportsRouter from "./reports";
+import assetManagementRouter from "./asset-management";
+import customerQualityRouter from "./customer-quality";
+import deputiesRouter from "./deputies";
+import supplierManagementRouter from "./supplier-management";
+import calibrationImportRouter from "./calibration-import";
 
 // ---------------------------------------------------------------------------
 // Certified Core imports
@@ -97,6 +102,15 @@ app.use("/api", reportsRouter);
 // ---------------------------------------------------------------------------
 app.use("/api/events", eventsRouter);
 app.use(stateMachineRouter);
+
+// ---------------------------------------------------------------------------
+// Module routes — Asset Management, Customer Quality, Deputies, Suppliers, Calibration
+// ---------------------------------------------------------------------------
+app.use(assetManagementRouter);
+app.use(customerQualityRouter);
+app.use(deputiesRouter);
+app.use(supplierManagementRouter);
+app.use(calibrationImportRouter);
 
 // ---------------------------------------------------------------------------
 // 404 handler
