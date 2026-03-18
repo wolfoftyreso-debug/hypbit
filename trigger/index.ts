@@ -50,3 +50,12 @@ export {
   npsTrendCheck,
   recallNotifier,
 } from "./customer-quality";
+
+export {
+  signalGeneration,
+  milestoneReminder,
+  supportPeriodCheck,
+  gdprCleanup,
+  antiBiasCheck,
+  escalationNotifier,
+} from "./personnel";
