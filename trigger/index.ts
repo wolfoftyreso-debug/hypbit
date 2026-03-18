@@ -41,3 +41,12 @@ export {
   weeklyActionCheck,
   monthlyFollowup,
 } from "./strategic-review";
+
+export {
+  slaCheck,
+  complaintReminder,
+  satisfactionSender,
+  customerQualityReport,
+  npsTrendCheck,
+  recallNotifier,
+} from "./customer-quality";
