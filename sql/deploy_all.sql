@@ -412,3 +412,156 @@ CREATE INDEX idx_audit_org ON audit_log(org_id);
 CREATE INDEX idx_audit_entity ON audit_log(entity_type, entity_id);
 CREATE INDEX idx_audit_user ON audit_log(user_id);
 CREATE INDEX idx_audit_created ON audit_log(org_id, created_at DESC);
+
+-- =============================================================================
+-- STEP 7: CAPABILITY
+-- =============================================================================
+
+CREATE TABLE capability_domains (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  code TEXT NOT NULL,
+  description TEXT,
+  sort_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE(org_id, code)
+);
+
+CREATE INDEX idx_cap_domains_org ON capability_domains(org_id);
+
+CREATE TABLE capabilities (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  domain_id UUID NOT NULL REFERENCES capability_domains(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  description TEXT,
+  target_level assessment_level DEFAULT 'L3',
+  sort_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_capabilities_org ON capabilities(org_id);
+CREATE INDEX idx_capabilities_domain ON capabilities(domain_id);
+
+CREATE TABLE role_capabilities (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  role user_role NOT NULL,
+  capability_id UUID NOT NULL REFERENCES capabilities(id) ON DELETE CASCADE,
+  required_level assessment_level NOT NULL DEFAULT 'L3',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE(org_id, role, capability_id)
+);
+
+CREATE INDEX idx_role_cap_org ON role_capabilities(org_id);
+
+CREATE TABLE user_capabilities (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  capability_id UUID NOT NULL REFERENCES capabilities(id) ON DELETE CASCADE,
+  current_level assessment_level NOT NULL DEFAULT 'L1',
+  target_level assessment_level DEFAULT 'L3',
+  assessed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  assessed_by UUID REFERENCES users(id),
+  notes TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE(user_id, capability_id)
+);
+
+CREATE INDEX idx_user_cap_user ON user_capabilities(user_id);
+CREATE INDEX idx_user_cap_org ON user_capabilities(org_id);
+
+CREATE TABLE assessments (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  capability_id UUID NOT NULL REFERENCES capabilities(id) ON DELETE CASCADE,
+  level assessment_level NOT NULL,
+  assessor_id UUID REFERENCES users(id),
+  evidence TEXT,
+  notes TEXT,
+  assessed_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_assessments_user ON assessments(user_id);
+CREATE INDEX idx_assessments_org ON assessments(org_id);
+
+CREATE TABLE development_plans (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  period_start DATE,
+  period_end DATE,
+  status TEXT NOT NULL DEFAULT 'ACTIVE',
+  notes TEXT,
+  created_by UUID REFERENCES users(id),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_dev_plans_user ON development_plans(user_id);
+CREATE INDEX idx_dev_plans_org ON development_plans(org_id);
+
+CREATE TABLE development_actions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  plan_id UUID NOT NULL REFERENCES development_plans(id) ON DELETE CASCADE,
+  capability_id UUID NOT NULL REFERENCES capabilities(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  action_type dev_action_type NOT NULL DEFAULT 'PRACTICE',
+  status dev_action_status NOT NULL DEFAULT 'PENDING',
+  due_date DATE,
+  completed_at TIMESTAMPTZ,
+  notes TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_dev_actions_plan ON development_actions(plan_id);
+CREATE INDEX idx_dev_actions_org ON development_actions(org_id);
+CREATE INDEX idx_dev_actions_status ON development_actions(org_id, status);
+
+CREATE TABLE goals (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  description TEXT,
+  current_value NUMERIC(14,2) DEFAULT 0,
+  target_value NUMERIC(14,2) NOT NULL,
+  unit TEXT NOT NULL DEFAULT 'st',
+  status goal_status NOT NULL DEFAULT 'ACTIVE',
+  readiness INTEGER DEFAULT 0 CHECK (readiness >= 0 AND readiness <= 100),
+  start_date DATE,
+  end_date DATE,
+  owner_id UUID REFERENCES users(id),
+  parent_goal_id UUID REFERENCES goals(id) ON DELETE SET NULL,
+  created_by UUID REFERENCES users(id),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_goals_org ON goals(org_id);
+CREATE INDEX idx_goals_status ON goals(org_id, status);
+CREATE INDEX idx_goals_owner ON goals(owner_id);
+
+CREATE TABLE feedback (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  org_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  from_user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+  to_user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  capability_id UUID REFERENCES capabilities(id) ON DELETE SET NULL,
+  content TEXT NOT NULL,
+  rating INTEGER CHECK (rating >= 1 AND rating <= 5),
+  is_anonymous BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX idx_feedback_to ON feedback(to_user_id);
+CREATE INDEX idx_feedback_org ON feedback(org_id);
