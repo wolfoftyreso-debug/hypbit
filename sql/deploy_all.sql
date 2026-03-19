@@ -879,7 +879,7 @@ CREATE INDEX idx_fx_adj_date ON fx_adjustments(org_id, adjustment_date);
 -- UPDATED_AT TRIGGERS (apply to all tables with updated_at)
 -- =============================================================================
 
-DO 16721
+DO $$
 DECLARE
   tbl TEXT;
 BEGIN
@@ -895,7 +895,7 @@ BEGIN
     );
   END LOOP;
 END;
-16721;
+$$;
 
 -- =============================================================================
 -- ROW LEVEL SECURITY
