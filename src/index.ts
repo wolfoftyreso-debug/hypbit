@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
-import { supabase } from "./supabase";
+import { supabase, checkSupabaseConnectivity, isSupabaseFallback } from "./supabase";
 
 // ---------------------------------------------------------------------------
 // Router imports – each module exposes an Express Router
@@ -22,6 +22,20 @@ import capacityEngineRouter from "./capacity-engine";
 import metricsRouter from "./metrics";
 import qualityGatesRouter from "./quality-gates";
 import decisionIntelligenceRouter from "./decision-intelligence";
+
+// ---------------------------------------------------------------------------
+// Previously unregistered routers
+// ---------------------------------------------------------------------------
+import managementReviewRouter from "./management-review";
+import strategicReviewRouter from "./strategic-review-api";
+import orgAdminRouter from "./org-admin";
+import systemAdminRouter from "./system-admin";
+import permissionsAdminRouter from "./permissions-admin";
+import localizationRouter from "./localization-api";
+import legalReviewRouter from "./legal-review";
+import personnelRouter from "./personnel-api";
+import auditWorkspaceRouter from "./audit-workspace";
+import integrationRouter from "./integrations/integration-api";
 
 // ---------------------------------------------------------------------------
 // Certified Core imports
@@ -92,7 +106,11 @@ app.use(async (req: Request, _res: Response, next: NextFunction) => {
 // Health check
 // ---------------------------------------------------------------------------
 app.get("/health", (_req: Request, res: Response) => {
-  res.json({ status: "ok", timestamp: new Date().toISOString() });
+  res.json({
+    status: "ok",
+    timestamp: new Date().toISOString(),
+    supabase: isSupabaseFallback() ? "fallback" : "connected",
+  });
 });
 
 // ---------------------------------------------------------------------------
@@ -126,6 +144,20 @@ app.use(qualityGatesRouter);
 app.use(decisionIntelligenceRouter);
 
 // ---------------------------------------------------------------------------
+// Previously unregistered module routes
+// ---------------------------------------------------------------------------
+app.use(managementReviewRouter);
+app.use(strategicReviewRouter);
+app.use(orgAdminRouter);
+app.use(systemAdminRouter);
+app.use(permissionsAdminRouter);
+app.use(localizationRouter);
+app.use(legalReviewRouter);
+app.use(personnelRouter);
+app.use(auditWorkspaceRouter);
+app.use(integrationRouter);
+
+// ---------------------------------------------------------------------------
 // 404 handler
 // ---------------------------------------------------------------------------
 app.use((_req: Request, res: Response) => {
@@ -144,12 +176,10 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 // ---------------------------------------------------------------------------
-// Start server
-// ---------------------------------------------------------------------------
-// ---------------------------------------------------------------------------
-// Bootstrap: load state machine configs + register event subscribers
+// Bootstrap: check Supabase, load state machine configs, register subscribers
 // ---------------------------------------------------------------------------
 async function bootstrap() {
+  await checkSupabaseConnectivity();
   await stateMachine.loadConfigs();
   registerSubscribers();
   console.log("Certified Core initialized: StateMachine + EventBus + Subscribers");
