@@ -37,12 +37,12 @@ CREATE TYPE training_status AS ENUM ('PLANNED', 'IN_PROGRESS', 'COMPLETED', 'EXP
 -- =============================================================================
 
 CREATE OR REPLACE FUNCTION update_updated_at()
-RETURNS TRIGGER AS 13086
+RETURNS TRIGGER AS $$
 BEGIN
   NEW.updated_at = NOW();
   RETURN NEW;
 END;
-13086 LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
 
 -- =============================================================================
 -- STEP 1: CORE TABLES
