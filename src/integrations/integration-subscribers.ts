@@ -171,7 +171,7 @@ function registerInboundSubscribers() {
       .single();
 
     if (!error && nc) {
-      eventBus.emit('nc.raised', { orgId, ncId: nc.id, data: ncPayload });
+      eventBus.emit({ org_id: orgId, event_type: 'nc.raised' as any, entity_type: 'non_conformances', source_id: nc.id, payload: { ncId: nc.id, data: ncPayload } });
     }
   });
 
@@ -200,7 +200,7 @@ function registerInboundSubscribers() {
       .single();
 
     if (!error && complaint) {
-      eventBus.emit('complaint.received', { orgId, complaintId: complaint.id, data: complaintPayload });
+      eventBus.emit({ org_id: orgId, event_type: 'complaint.received' as any, entity_type: 'complaints', source_id: complaint.id, payload: { complaintId: complaint.id, data: complaintPayload } });
     }
   });
 
@@ -228,7 +228,7 @@ function registerInboundSubscribers() {
       .single();
 
     if (!error && tx) {
-      eventBus.emit('transaction.created', { orgId, transactionId: tx.id, data: txPayload });
+      eventBus.emit({ org_id: orgId, event_type: 'transaction.created' as any, entity_type: 'transactions', source_id: tx.id, payload: { transactionId: tx.id, data: txPayload } });
     }
   });
 }

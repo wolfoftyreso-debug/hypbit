@@ -6,7 +6,7 @@ import { supabase } from "./supabase";
 // ---------------------------------------------------------------------------
 
 interface AuthenticatedRequest extends Request {
-  user?: { id: string; is_system_admin?: boolean };
+  user?: { id: string; org_id: string; role: string; is_system_admin?: boolean };
   apiKey?: { id: string; scope: string };
 }
 

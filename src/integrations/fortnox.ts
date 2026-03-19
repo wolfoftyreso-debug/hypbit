@@ -155,7 +155,7 @@ export class FortnoxConnector implements ERPConnector {
           ...this.authHeaders(),
           'Content-Type': 'application/x-sie',
         },
-        body: fileBuffer,
+        body: fileBuffer as unknown as BodyInit,
       });
       return { externalId: String(financialYear), success: res.ok };
     } catch (err: any) {

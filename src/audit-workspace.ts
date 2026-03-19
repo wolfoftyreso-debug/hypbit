@@ -77,7 +77,7 @@ async function logAccess(
     entity_id: null,
     meta: { endpoint, params },
     created_at: new Date().toISOString(),
-  }).catch(() => {});
+  });
 }
 
 // ===========================================================================
@@ -1022,7 +1022,7 @@ router.post("/audit-workspace/findings", async (req: Request, res: Response) => 
         auto_nc_created: linkedNcId !== null,
       },
       created_at: now,
-    }).catch(() => {});
+    });
 
     return res.status(201).json({
       ...finding,

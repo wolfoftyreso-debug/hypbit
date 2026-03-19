@@ -17,6 +17,7 @@ interface JurisdictionRequest extends Request {
   user?: {
     id: string;
     org_id: string;
+    role: string;
     [key: string]: any;
   };
 }

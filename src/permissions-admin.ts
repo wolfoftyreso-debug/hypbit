@@ -301,11 +301,11 @@ router.post(
       );
 
       eventBus.emit({
-        orgId: user.org_id,
-        eventType: "role.created",
-        entityType: "role_definition",
-        sourceId: role.id,
-        actorId: user.id,
+        org_id: user.org_id,
+        event_type: "role.created" as any,
+        entity_type: "role_definition",
+        source_id: role.id,
+        actor_id: user.id,
         payload: { role_code },
       });
 
@@ -522,11 +522,11 @@ router.post(
       );
 
       eventBus.emit({
-        orgId: user.org_id,
-        eventType: "role.assigned",
-        entityType: "org_member",
-        sourceId: membership.id,
-        actorId: user.id,
+        org_id: user.org_id,
+        event_type: "role.assigned" as any,
+        entity_type: "org_member",
+        source_id: membership.id,
+        actor_id: user.id,
         payload: { target_user_id: targetUserId, role },
       });
 
@@ -1178,11 +1178,11 @@ router.post("/api/me/access-requests", async (req: Request, res: Response) => {
     if (error) throw error;
 
     eventBus.emit({
-      orgId: user.org_id,
-      eventType: "access_request.created",
-      entityType: "access_request",
-      sourceId: accessReq.id,
-      actorId: user.id,
+      org_id: user.org_id,
+      event_type: "access_request.created" as any,
+      entity_type: "access_request",
+      source_id: accessReq.id,
+      actor_id: user.id,
       payload: { permission_id, requested_role, reason },
     });
 
