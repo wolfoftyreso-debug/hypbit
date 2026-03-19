@@ -624,10 +624,7 @@ CREATE TABLE non_conformances (
   assigned_to UUID REFERENCES users(id),
   detected_at DATE NOT NULL DEFAULT CURRENT_DATE,
   closed_at DATE,
-  days_open INTEGER GENERATED ALWAYS AS (
-    CASE WHEN closed_at IS NOT NULL THEN closed_at - detected_at
-         ELSE CURRENT_DATE - detected_at END
-  ) STORED,
+  days_open INTEGER DEFAULT 0,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   UNIQUE(org_id, code)
@@ -637,6 +634,22 @@ CREATE INDEX idx_nc_org ON non_conformances(org_id);
 CREATE INDEX idx_nc_status ON non_conformances(org_id, status);
 CREATE INDEX idx_nc_severity ON non_conformances(org_id, severity);
 CREATE INDEX idx_nc_process ON non_conformances(process_id);
+
+-- Trigger to compute days_open (CURRENT_DATE is not immutable, cannot use GENERATED ALWAYS AS)
+CREATE OR REPLACE FUNCTION compute_days_open()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.days_open := CASE
+    WHEN NEW.closed_at IS NOT NULL THEN NEW.closed_at - NEW.detected_at
+    ELSE CURRENT_DATE - NEW.detected_at
+  END;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_nc_days_open
+  BEFORE INSERT OR UPDATE ON non_conformances
+  FOR EACH ROW EXECUTE FUNCTION compute_days_open();
 
 CREATE TABLE improvements (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
