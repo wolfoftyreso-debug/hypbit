@@ -766,7 +766,7 @@ CREATE TABLE risks (
   category risk_category NOT NULL DEFAULT 'OPERATIONAL',
   probability INTEGER NOT NULL CHECK (probability >= 1 AND probability <= 5),
   impact INTEGER NOT NULL CHECK (impact >= 1 AND impact <= 5),
-  risk_score INTEGER GENERATED ALWAYS AS (probability * impact) STORED,
+  risk_score INTEGER DEFAULT 0,
   risk_level risk_level NOT NULL DEFAULT 'MEDIUM',
   mitigation TEXT,
   owner_id UUID REFERENCES users(id),
@@ -780,6 +780,19 @@ CREATE TABLE risks (
 CREATE INDEX idx_risks_org ON risks(org_id);
 CREATE INDEX idx_risks_level ON risks(org_id, risk_level);
 CREATE INDEX idx_risks_category ON risks(org_id, category);
+
+-- Trigger to compute risk_score (avoids GENERATED ALWAYS AS compatibility issues)
+CREATE OR REPLACE FUNCTION compute_risk_score()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.risk_score := NEW.probability * NEW.impact;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_risk_score
+  BEFORE INSERT OR UPDATE ON risks
+  FOR EACH ROW EXECUTE FUNCTION compute_risk_score();
 
 CREATE TABLE training_records (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
