@@ -44,6 +44,7 @@ import integrationRouter from "./integrations/integration-api";
 import stripeRouter from "./stripe";
 import notificationsRouter from "./notifications";
 import learningRouter from "./learning";
+import seoRouter from "./seo";
 
 // ---------------------------------------------------------------------------
 // Certified Core imports
@@ -229,6 +230,12 @@ app.use(integrationRouter);
 app.use("/api/stripe", stripeRouter);
 app.use("/api/notifications", notificationsRouter);
 app.use("/api/learning", learningRouter);
+
+// ---------------------------------------------------------------------------
+// SEO — sitemap.xml + robots.txt on root, /api/seo/* for endpoints
+// ---------------------------------------------------------------------------
+app.use('/', seoRouter);       // /sitemap.xml, /robots.txt, /og-image.svg
+app.use('/api/seo', seoRouter); // /api/seo/schema/:page, /api/seo/report, /api/seo/invalidate-cache
 
 // ---------------------------------------------------------------------------
 // Auth helper for inline routes

@@ -132,3 +132,38 @@ jobs:
             -H "Content-Type: application/json" \
             -d "{\"type\":\"deploy\",\"title\":\"Frontend deployed\",\"body\":\"Version ${{ github.sha }} deployed to production by ${{ github.actor }}\",\"severity\":\"info\",\"timestamp\":\"${DEPLOY_TIMESTAMP}\"}" \
             || echo "Deploy notification failed (non-fatal)"
+
+      - name: Submit changed pages to IndexNow
+        run: |
+          CHANGED_URLS=""
+          # Build list of changed HTML files
+          for file in $(git diff --name-only HEAD~1 HEAD -- apps/landing/*.html 2>/dev/null); do
+            page=$(basename "$file")
+            CHANGED_URLS="${CHANGED_URLS}\"https://pixdrift.com/${page}\","
+          done
+          # Always include root if changed
+          if git diff --name-only HEAD~1 HEAD -- apps/landing/index.html 2>/dev/null | grep -q "index.html"; then
+            CHANGED_URLS="${CHANGED_URLS}\"https://pixdrift.com/\","
+          fi
+          if [ -n "$CHANGED_URLS" ]; then
+            echo "Submitting to IndexNow: ${CHANGED_URLS%,}"
+            curl -X POST "https://api.indexnow.org/indexnow" \
+              -H "Content-Type: application/json" \
+              -d "{\"host\":\"pixdrift.com\",\"key\":\"${{ secrets.INDEXNOW_KEY }}\",\"keyLocation\":\"https://pixdrift.com/${{ secrets.INDEXNOW_KEY }}.txt\",\"urlList\":[${CHANGED_URLS%,}]}" \
+              || echo "IndexNow submission failed (non-fatal)"
+          else
+            echo "No HTML pages changed, skipping IndexNow submission"
+          fi
+
+      - name: Ping search engines
+        run: |
+          echo "Pinging Google..."
+          curl -s "https://www.google.com/ping?sitemap=https://pixdrift.com/sitemap.xml" -o /dev/null
+          echo "Pinging Bing..."
+          curl -s "https://www.bing.com/webmaster/ping.aspx?siteMap=https://pixdrift.com/sitemap.xml" -o /dev/null
+          echo "Done."
+
+      - name: Invalidate SEO cache
+        run: |
+          curl -s -X POST https://api.bc.pixdrift.com/api/seo/invalidate-cache \
+            -H "Content-Type: application/json" || true
