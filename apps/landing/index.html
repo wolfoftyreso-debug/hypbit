@@ -245,6 +245,9 @@
       gap: 5px;
       cursor: pointer;
       padding: 4px;
+      min-height: 44px;
+      align-items: center;
+      justify-content: center;
     }
 
     .nav-hamburger span {
@@ -358,13 +361,21 @@
     .btn-primary {
       background: #6366f1;
       color: #fff;
-      padding: 14px 28px;
+      height: 52px;
+      padding: 0 28px;
       border-radius: 980px;
       font-size: 17px;
       font-weight: 500;
       text-decoration: none;
       letter-spacing: -0.01em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+      white-space: nowrap;
     }
 
     .btn-primary:hover {
@@ -377,13 +388,20 @@
       background: rgba(255,255,255,0.08);
       border: 0.5px solid rgba(255,255,255,0.18);
       color: #f5f5f7;
-      padding: 14px 28px;
+      height: 52px;
+      padding: 0 28px;
       border-radius: 980px;
       font-size: 17px;
       font-weight: 500;
       text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       backdrop-filter: blur(8px);
       transition: background 0.2s, border-color 0.2s, transform 0.2s;
+      cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
     }
 
     .btn-secondary:hover {
@@ -1154,7 +1172,7 @@
       margin-top: 4px;
     }
 
-    /* ─── RESPONSIVE ───────────────────────────────────── */
+    /* ─── RESPONSIVE (legacy — enhanced by Apple Mobile Standard below) ── */
     @media (max-width: 900px) {
       .module-inner {
         grid-template-columns: 1fr;
@@ -1267,6 +1285,213 @@
       animation: pulseLive 1.8s ease-in-out infinite;
       vertical-align: middle;
     }
+
+    /* ===== APPLE.COM MOBILE STANDARD ===== */
+
+    /* Typography scale — fluid CSS variables */
+    :root {
+      --font-display: clamp(32px, 8vw, 80px);
+      --font-h2: clamp(24px, 5vw, 52px);
+      --font-h3: clamp(20px, 3vw, 28px);
+      --font-body: 17px;
+      --font-small: 14px;
+      --font-caption: 12px;
+      --spacing-section: clamp(60px, 10vw, 120px);
+      --spacing-inner: clamp(16px, 4vw, 24px);
+      --max-content: 680px;
+      --max-wide: 1100px;
+    }
+
+    /* Button active states — Apple haptic feel */
+    .btn-primary:active, .btn-secondary:active {
+      transform: scale(0.97);
+      opacity: 0.85;
+    }
+
+    /* Stats — dominanta siffror på alla skärmar */
+    .stat-number {
+      font-size: clamp(40px, 8vw, 64px) !important;
+      font-weight: 700 !important;
+      letter-spacing: -0.03em !important;
+    }
+
+    /* Hero H1 */
+    .hero h1 {
+      font-size: clamp(36px, 8vw, 88px) !important;
+    }
+
+    /* Hero mockup wrap */
+    .hero-mockup-wrap {
+      overflow: hidden;
+      border-radius: 12px;
+      width: 100%;
+    }
+
+    /* Tool graveyard */
+    .tool-graveyard {
+      display: flex !important;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      max-width: 700px;
+      margin: 0 auto 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Nav desktop — hidden on mobile via class */
+    .nav-desktop {
+      display: flex;
+    }
+
+    /* Nav mobile toggle — hidden on desktop */
+    .nav-mobile-toggle {
+      display: none !important;
+    }
+
+    /* ── Mobile (≤767px) ── */
+    @media (max-width: 767px) {
+
+      /* Section standard padding */
+      section {
+        padding: 80px 20px !important;
+      }
+
+      /* Navigation */
+      nav {
+        height: 48px !important;
+        padding: 0 16px !important;
+      }
+
+      .nav-desktop {
+        display: none !important;
+      }
+
+      .nav-mobile-toggle, .nav-hamburger {
+        display: flex !important;
+      }
+
+      /* Hero H1 fills screen */
+      .hero h1 {
+        font-size: clamp(32px, 9vw, 80px) !important;
+        letter-spacing: -0.04em;
+      }
+
+      /* Hero grid (2-col → 1-col) */
+      .hero-grid {
+        grid-template-columns: 1fr !important;
+        gap: 40px !important;
+        text-align: center;
+      }
+      .hero-image-col {
+        order: -1;
+      }
+
+      /* Hero CTAs — full-width stacked */
+      .hero-ctas {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 12px !important;
+      }
+      .hero-ctas a, .hero-ctas button {
+        width: 100% !important;
+        max-width: 320px !important;
+        justify-content: center !important;
+        height: 52px !important;
+      }
+
+      /* Tool graveyard */
+      .tool-graveyard {
+        justify-content: center !important;
+        gap: 8px !important;
+      }
+
+      /* Stats grid — 2 kolumner */
+      .stats-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 24px !important;
+      }
+
+      /* Module sections — 1 kolumn */
+      .module-grid {
+        grid-template-columns: 1fr !important;
+        gap: 40px !important;
+      }
+      .module-grid.reverse {
+        direction: ltr !important;
+      }
+
+      /* Mockup — full-width, klipp ej av */
+      .hero-mockup-wrap {
+        padding: 0 !important;
+      }
+      .hero-mockup-wrap > div:first-child {
+        max-height: 320px;
+        overflow: hidden;
+      }
+
+      /* Pricing — 1 kolumn, centrerat */
+      .pricing-grid {
+        grid-template-columns: 1fr !important;
+        max-width: 400px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      /* Testimonials */
+      .testimonials-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* ISO/Features grid */
+      .features-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* Lean ops grid */
+      .lean-grid {
+        grid-template-columns: 1fr !important;
+        gap: 40px !important;
+      }
+
+      /* Footer */
+      .footer-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 32px !important;
+      }
+
+      /* Text centering */
+      .section-header {
+        text-align: center !important;
+      }
+
+      /* Touch targets — minimum 44×44px */
+      nav a, footer a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+      }
+    }
+
+    /* ── Extra tight (≤480px) ── */
+    @media (max-width: 480px) {
+      section {
+        padding: 60px 16px !important;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* ── Tablet (768–1023px) ── */
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .hero-grid { gap: 48px; }
+      .features-grid { grid-template-columns: 1fr 1fr !important; }
+    }
+
   </style>
   <meta name="revised" content="2026-03-21">
 </head>
@@ -1279,7 +1504,7 @@
 <nav id="main-nav">
   <a href="/" class="nav-logo">pixdrift</a>
 
-  <div class="nav-links">
+  <div class="nav-links nav-desktop">
     <a href="#product">Product</a>
     <div class="nav-dropdown">
       <span class="nav-dropdown-trigger">Solutions ▾</span>
@@ -1297,12 +1522,12 @@
     <a href="/developers/">Developers</a>
   </div>
 
-  <div class="nav-actions">
+  <div class="nav-actions nav-desktop" style="display:flex;">
     <a href="https://app.bc.pixdrift.com">Log in</a>
     <a href="/checkout.html" class="nav-cta">Get started</a>
-    <div class="nav-hamburger" id="hamburger" role="button" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </div>
+  </div>
+  <div class="nav-hamburger nav-mobile-toggle" id="hamburger" role="button" aria-label="Menu" style="display:none;">
+    <span></span><span></span><span></span>
   </div>
 </nav>
 
@@ -1420,7 +1645,7 @@
   </p>
 
   <!-- CTAs -->
-  <div class="hero-ctas reveal reveal-delay-3">
+  <div class="hero-ctas reveal reveal-delay-3" style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:72px; position:relative; z-index:1;">
     <a href="https://app.bc.pixdrift.com/demo" class="btn-primary">Book a demo</a>
     <a href="/checkout.html" class="btn-secondary">Start free — no card needed</a>
   </div>
@@ -1476,11 +1701,7 @@
   </div>
 
   <!-- Tool graveyard — vad pixdrift ersätter -->
-  <div class="reveal reveal-delay-3" style="
-    display: flex; flex-wrap: wrap; gap: 10px;
-    justify-content: center;
-    max-width: 700px; margin: 0 auto 48px;
-  ">
+  <div class="tool-graveyard reveal reveal-delay-3">
     <span style="padding: 6px 14px; background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1); border-radius: 980px; font-size: 13px; color: rgba(245,245,247,0.4); text-decoration: line-through;">Fortnox</span>
     <span style="padding: 6px 14px; background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1); border-radius: 980px; font-size: 13px; color: rgba(245,245,247,0.4); text-decoration: line-through;">Visma</span>
     <span style="padding: 6px 14px; background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.1); border-radius: 980px; font-size: 13px; color: rgba(245,245,247,0.4); text-decoration: line-through;">Asana</span>
@@ -1505,7 +1726,7 @@
   </div>
 
   <!-- Dashboard mockup — tydlig och luftig -->
-  <div class="hero-mockup-wrap reveal reveal-delay-4" style="padding: 0 24px; margin-top: 48px;">
+  <div class="hero-mockup-wrap reveal reveal-delay-4" style="padding: 0 24px; margin-top: 48px; position: relative; z-index: 1;">
     <div class="hero-mockup-glow"></div>
 
     <!-- Hero mockup — clean Apple-style -->
@@ -1627,7 +1848,7 @@
 </section>
 
 <!-- ═══════════════════════════ STATS STRIP ═══════════════════════── -->
-<section class="stats-strip">
+<section class="stats-strip" style="padding: var(--spacing-section, 72px) 24px;">
   <div class="stats-grid">
     <div class="reveal">
       <div class="stat-number color-indigo">8</div>
@@ -1653,7 +1874,7 @@
 
 <!-- MODULE: Execution -->
 <section class="module-section">
-  <div class="module-inner">
+  <div class="module-inner module-grid">
     <!-- Text -->
     <div class="reveal">
       <div class="module-tag">Execution</div>
@@ -1708,7 +1929,7 @@
 
 <!-- MODULE: Capability -->
 <section class="module-section alt" id="solutions">
-  <div class="module-inner reverse">
+  <div class="module-inner module-grid reverse">
     <!-- Text -->
     <div class="reveal">
       <div class="module-tag">Capability</div>
@@ -1769,7 +1990,7 @@
 
 <!-- MODULE: Process -->
 <section class="module-section">
-  <div class="module-inner">
+  <div class="module-inner module-grid">
     <!-- Text -->
     <div class="reveal">
       <div class="module-tag">Process</div>
@@ -1824,7 +2045,7 @@
 
 <!-- MODULE: Currency -->
 <section class="module-section alt">
-  <div class="module-inner reverse">
+  <div class="module-inner module-grid reverse">
     <!-- Text -->
     <div class="reveal">
       <div class="module-tag">Currency</div>
@@ -1886,7 +2107,7 @@
 
 <!-- MODULE: Reports -->
 <section class="module-section">
-  <div class="module-inner">
+  <div class="module-inner module-grid">
     <!-- Text -->
     <div class="reveal">
       <div class="module-tag">Reports</div>
@@ -1959,7 +2180,7 @@
     <p style="font-size: 17px; color: rgba(245,245,247,0.6); max-width: 600px; margin: 0 auto;">pixdrift maintains your ISO 9001, ISO 27001, and compliance requirements automatically — built into every workflow.</p>
   </div>
 
-  <div style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+  <div class="features-grid" style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
 
     <div style="background: #1c1c1e; border: 0.5px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 28px;">
       <div style="font-size: 24px; margin-bottom: 12px;">📁</div>
@@ -2008,7 +2229,7 @@
 
 <!-- ═══════════════════════════ LEAN OPERATIONS ════════════════════ -->
 <section style="padding:100px 24px; background:#000; border-top:0.5px solid rgba(255,255,255,0.06);">
-  <div style="max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;">
+  <div class="lean-grid" style="max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;">
     <div class="reveal">
       <div style="font-size:12px; color:#6366f1; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:16px;">Lean Operations Intelligence</div>
       <h2 style="font-size:clamp(28px,4vw,48px); font-weight:700; color:#f5f5f7; line-height:1.1; letter-spacing:-0.02em; margin-bottom:20px;">
@@ -2154,7 +2375,7 @@
     <p class="section-sub">No lock-in. Upgrade whenever you want.</p>
   </div>
 
-  <div class="pricing-grid">
+  <div class="pricing-grid" style="max-width:980px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; align-items:start;">
     <!-- Starter -->
     <div class="pricing-card hover-lift reveal">
       <div class="plan-name">Starter</div>
@@ -2239,7 +2460,7 @@
 <!-- ═══════════════════════════ FOOTER ══════════════════════════════ -->
 <footer>
   <div class="footer-inner">
-    <div class="footer-top">
+    <div class="footer-top footer-grid">
       <div>
         <a href="/" class="footer-brand">pixdrift</a>
         <p class="footer-tagline">Business Operating System for Modern Teams.</p>
