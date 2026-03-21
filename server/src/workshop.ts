@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import { supabase } from "./supabase";
+import { logZoneEvent } from "./spatial-flow";
 
 const router = Router();
 
@@ -124,6 +125,14 @@ router.patch("/api/workshop/work-orders/:id/status", auth, async (req: Request, 
     .single();
 
   if (error) return res.status(500).json({ error: error.message });
+
+  // Spatial Flow: log zone event when work order transitions to IN_PROGRESS
+  if (status === "IN_PROGRESS" && data) {
+    const techId = data.assigned_technician_id ?? user.id;
+    const bayZoneId = data.bay_zone_id ?? null;
+    logZoneEvent(user.org_id, techId, bayZoneId, "TASK_START", { work_order_id: data.id }).catch(() => {});
+  }
+
   res.json(data);
 });
 

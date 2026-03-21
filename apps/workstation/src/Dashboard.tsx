@@ -3,6 +3,8 @@ import { useApi } from "./useApi";
 import LearningModule from "./LearningModule";
 import DMSModule from "./DMSModule";
 import SpaghettiModule from "./SpaghettiModule";
+import SpatialModule from "./SpatialModule";
+import AssetModule from "./AssetModule";
 import { useTranslation, LanguageSwitcher, formatCurrency, formatDate } from "@pixdrift/i18n";
 
 // ─── Design tokens — Apple HIG precision ──────────────────────────────────────
@@ -220,6 +222,20 @@ const Icons = {
       <path d="M3 18 C5 16, 9 20, 13 18 S19 12, 21 18"/>
     </svg>
   ),
+  Map: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="18" height="18" rx="2"/>
+      <line x1="3" y1="9" x2="21" y2="9"/>
+      <line x1="3" y1="15" x2="21" y2="15"/>
+      <line x1="9" y1="3" x2="9" y2="21"/>
+      <line x1="15" y1="3" x2="15" y2="21"/>
+    </svg>
+  ),
+  Wrench: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.77 3.77z"/>
+    </svg>
+  ),
   Receipt: () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M4 2v20l3-3 2 2 3-3 2 2 3-3 2 2V2z"/>
@@ -308,6 +324,8 @@ const NAV_SECTIONS = [
     items: [
       { id: "dms",       icon: <Icons.Car />,       label: "DMS Bil"     },
       { id: "spaghetti", icon: <Icons.Spaghetti />, label: "Flödesanalys" },
+      { id: "spatial",   icon: <Icons.Map />,       label: "Verkstadskarta" },
+      { id: "assets",    icon: <Icons.Wrench />,    label: "Tillgångar"  },
     ],
   },
 ];
@@ -2124,6 +2142,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
     learning: "Utbildning",
     dms:       "DMS Bil",
     spaghetti: "Flödesanalys",
+    spatial:   "Verkstadskarta",
   };
 
   return (
@@ -2166,6 +2185,8 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
             {view === "learning"   && <LearningModule user={D.user as any} />}
             {view === "dms"        && <DMSModule />}
             {view === "spaghetti" && <SpaghettiModule />}
+            {view === "spatial"   && <SpatialModule />}
+            {view === "assets"    && <AssetModule user={D.user as any} />}
           </main>
         </div>
       </div>

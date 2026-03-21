@@ -48,6 +48,7 @@ import learningRouter from "./learning";
 import seoRouter from "./seo";
 import bankingRouter from "./banking";
 import spaghettiRouter from "./spaghetti";
+import spatialRouter from "./spatial-flow";
 
 // ---------------------------------------------------------------------------
 // Customer Interaction Engine
@@ -82,6 +83,7 @@ import cashRegisterRouter from "./cash-register";
 import vatComplianceRouter from "./vat-compliance";
 import payrollComplianceRouter from "./payroll-compliance";
 import complianceCheckerRouter from "./compliance-checker";
+import assetAccountabilityRouter from "./asset-accountability";
 
 // ---------------------------------------------------------------------------
 // Certified Core imports
@@ -372,6 +374,7 @@ app.use("/api/stripe", stripeRouter);
 app.use("/api/notifications", notificationsRouter);
 app.use("/api/learning", learningRouter);
 app.use("/api/spaghetti", spaghettiRouter); // Lean spaghetti diagram & helikopterperspektiv
+app.use("/api/spatial", spatialRouter);   // Spatial Flow Intelligence — zones, spaghetti, friction
 app.use(bankingRouter); // Banking: /api/banking/* + /api/integrations/fortnox/* + /api/integrations/visma/*
 
 // ---------------------------------------------------------------------------
@@ -414,6 +417,7 @@ app.use('/api/cash-register',    cashRegisterRouter);    // Kassaregister (SKVFS
 app.use('/api/vat',              vatComplianceRouter);   // Momshantering (ML 2023:200)
 app.use('/api/payroll',          payrollComplianceRouter); // Arbetsgivaravgifter (SAL + IL)
 app.use('/api/compliance',       complianceCheckerRouter); // Compliance-kontroll
+app.use('/api/tool-assets',      assetAccountabilityRouter); // Asset Accountability & Traceability
 
 // ---------------------------------------------------------------------------
 // Auth helper for inline routes
