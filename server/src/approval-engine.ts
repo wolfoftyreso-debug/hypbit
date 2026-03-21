@@ -1,3 +1,4 @@
+import { supabase } from './supabase';
 import { Router, Request, Response } from 'express';
 import { Pool } from 'pg';
 import { v4 as uuidv4 } from 'uuid';
@@ -10,10 +11,17 @@ import { sendApprovalSMS } from './sms-service';
 // pixdrift — Automotive Workshop Platform
 // ============================================================
 
+// Initialize DB pool (uses DATABASE_URL or Supabase connection string)
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL || `postgresql://postgres.${process.env.SUPABASE_PROJECT_REF || 'znmxtnxxjpmgtycmsqjv'}:${process.env.SUPABASE_DB_PASSWORD || 'Certified2026abc'}@aws-1-eu-west-1.pooler.supabase.com:5432/postgres`,
+  max: 5,
+  idleTimeoutMillis: 30000,
+});
+const db = { query: (text: string, params?: any[]) => pool.query(text, params) };
+
 const router = Router();
 
 // DB pool — uses existing connection from app context
-declare const db: Pool;
 
 // S3 config
 const s3 = new S3Client({ region: process.env.AWS_REGION || 'eu-north-1' });

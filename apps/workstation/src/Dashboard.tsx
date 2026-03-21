@@ -8,6 +8,7 @@ import AssetModule from "./AssetModule";
 import CultureModule from "./CultureModule";
 import ConsumablesModule from "./ConsumablesModule";
 import { useTranslation, LanguageSwitcher, formatCurrency, formatDate } from "@pixdrift/i18n";
+import PeopleOSModule from "./PeopleOSModule";
 
 // ─── Design tokens — Apple HIG precision ──────────────────────────────────────
 const C = {
@@ -297,6 +298,11 @@ const Icons = {
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
     </svg>
   ),
+  Heart: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+    </svg>
+  ),
 };
 
 // ─── Nav sections ──────────────────────────────────────────────────────────────
@@ -339,6 +345,12 @@ const NAV_SECTIONS = [
       { id: "capability", icon: <Icons.Star />, label: "Kompetenser" },
       { id: "development", icon: <Icons.Development />, label: "Utveckling" },
       { id: "learning", icon: <Icons.Book />, label: "Utbildning" },
+    ],
+  },
+  {
+    label: "PERSONAL",
+    items: [
+      { id: "people", icon: <Icons.Heart />, label: "Team & Trivsel" },
     ],
   },
   {
@@ -634,7 +646,7 @@ const StepIndicator = ({ status }: { status: string }) => {
 
 // ─── Static fallback data ─────────────────────────────────────────────────────
 const FALLBACK = {
-  user: { full_name: "Erik", role: "ADMIN" },
+  user: { id: "", full_name: "Erik", role: "ADMIN" },
   team: [
     { name: "Erik", role: "Arkitekt", tasks: 3, overdue: 0, status: "GREEN" },
     { name: "Leon", role: "CEO", tasks: 8, overdue: 1, status: "YELLOW" },
@@ -2143,7 +2155,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
     ...FALLBACK,
     ncs, risks, improvements, compliance, processes,
     user: propUser
-      ? { full_name: propUser.full_name ?? propUser.email ?? "Användare", role: propUser.role ?? "ADMIN" }
+      ? { id: propUser.id ?? "", full_name: propUser.full_name ?? propUser.email ?? "Användare", role: propUser.role ?? "ADMIN" }
       : FALLBACK.user,
   };
 
@@ -2168,6 +2180,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
     dms:       "DMS Bil",
     spaghetti: "Flödesanalys",
     spatial:   "Verkstadskarta",
+    people:    "Team & Trivsel",
   };
 
   return (
@@ -2214,6 +2227,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
             {view === "spatial"   && <SpatialModule />}
             {view === "assets"       && <AssetModule user={D.user as any} />}
             {view === "consumables"  && <ConsumablesModule />}
+            {view === "people"       && <PeopleOSModule D={D as any} />}
           </main>
         </div>
       </div>

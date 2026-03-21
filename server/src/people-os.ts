@@ -78,13 +78,7 @@ router.post("/pulse/respond", async (req: Request, res: Response) => {
     const pq = getPulseQuestion(week);
 
     // Need org_id — look it up from profiles or memberships
-    const { data: profile } = await supabase
-      .from("user_profiles")
-      .select("org_id")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    const org_id = profile?.org_id ?? "00000000-0000-0000-0000-000000000000";
+    const org_id = (user as any).org_id ?? "00000000-0000-0000-0000-000000000000";
 
     const payload = {
       org_id,
@@ -139,12 +133,7 @@ router.get("/pulse/team-summary", async (req: Request, res: Response) => {
     const user = (req as any).user;
     const { week, year } = getISOWeek(new Date());
 
-    const { data: profile } = await supabase
-      .from("user_profiles")
-      .select("org_id")
-      .eq("id", user.id)
-      .maybeSingle();
-    const org_id = profile?.org_id;
+    const org_id = (user as any).org_id;
     if (!org_id) return res.json({ total: 0, responded: 0, avg_score: null, mood_distribution: {} });
 
     const { data: responses } = await supabase
@@ -155,7 +144,7 @@ router.get("/pulse/team-summary", async (req: Request, res: Response) => {
       .eq("year", year);
 
     const { count: totalMembers } = await supabase
-      .from("user_profiles")
+      .from("users")
       .select("id", { count: "exact", head: true })
       .eq("org_id", org_id);
 
@@ -194,17 +183,12 @@ router.post("/calculate-scores", async (req: Request, res: Response) => {
     const user = (req as any).user;
     const { week, year } = getISOWeek(new Date());
 
-    const { data: profile } = await supabase
-      .from("user_profiles")
-      .select("org_id")
-      .eq("id", user.id)
-      .maybeSingle();
-    const org_id = profile?.org_id;
+    const org_id = (user as any).org_id;
     if (!org_id) return res.json({ calculated: 0 });
 
     // Get all users in org
     const { data: members } = await supabase
-      .from("user_profiles")
+      .from("users")
       .select("id")
       .eq("org_id", org_id);
 
@@ -293,8 +277,7 @@ router.get("/scores/team", async (req: Request, res: Response) => {
     const user = (req as any).user;
     const { week, year } = getISOWeek(new Date());
 
-    const { data: profile } = await supabase.from("user_profiles").select("org_id").eq("id", user.id).maybeSingle();
-    const org_id = profile?.org_id;
+    const org_id = (user as any).org_id;
 
     const { data: scores } = await supabase
       .from("erm_engagement_scores")
@@ -306,7 +289,7 @@ router.get("/scores/team", async (req: Request, res: Response) => {
     // Enrich with user names
     const userIds = (scores ?? []).map(s => s.user_id);
     const { data: profiles } = await supabase
-      .from("user_profiles")
+      .from("users")
       .select("id, full_name, email, avatar_url")
       .in("id", userIds.length ? userIds : ["00000000-0000-0000-0000-000000000000"]);
 
@@ -353,8 +336,7 @@ router.post("/feedback", async (req: Request, res: Response) => {
     const user = (req as any).user;
     const { feedback_type, category, message, is_anonymous = true, to_user_id, severity = "LOW" } = req.body;
 
-    const { data: profile } = await supabase.from("user_profiles").select("org_id").eq("id", user.id).maybeSingle();
-    const org_id = profile?.org_id ?? "00000000-0000-0000-0000-000000000000";
+    const org_id = (user as any).org_id ?? "00000000-0000-0000-0000-000000000000";
 
     // Simple sentiment detection
     const negative = ["dålig", "sämre", "jobbig", "stress", "orättvis", "problem", "fel", "missnöjd"];
@@ -401,12 +383,12 @@ router.get("/feedback/inbox", async (req: Request, res: Response) => {
   try {
     if (!isManager(req)) return res.status(403).json({ error: "Managers only" });
     const user = (req as any).user;
-    const { data: profile } = await supabase.from("user_profiles").select("org_id").eq("id", user.id).maybeSingle();
+    // org_id from auth middleware
 
     const { data, error } = await supabase
       .from("erm_feedback")
       .select("id, feedback_type, category, message, sentiment, severity, status, is_anonymous, created_at, manager_notes")
-      .eq("org_id", profile?.org_id)
+      .eq("org_id", (user as any).org_id)
       .order("created_at", { ascending: false })
       .limit(50);
 
@@ -458,11 +440,10 @@ router.post("/analyze-warnings", async (req: Request, res: Response) => {
     const user = (req as any).user;
     const { week, year } = getISOWeek(new Date());
 
-    const { data: profile } = await supabase.from("user_profiles").select("org_id").eq("id", user.id).maybeSingle();
-    const org_id = profile?.org_id;
+    const org_id = (user as any).org_id;
     if (!org_id) return res.json({ warnings_created: 0 });
 
-    const { data: members } = await supabase.from("user_profiles").select("id").eq("org_id", org_id);
+    const { data: members } = await supabase.from("users").select("id").eq("org_id", org_id);
     let warnings_created = 0;
 
     for (const member of members ?? []) {
@@ -537,12 +518,12 @@ router.get("/warnings", async (req: Request, res: Response) => {
   try {
     if (!isManager(req)) return res.status(403).json({ error: "Managers only" });
     const user = (req as any).user;
-    const { data: profile } = await supabase.from("user_profiles").select("org_id").eq("id", user.id).maybeSingle();
+    // org_id from auth middleware
 
     const { data, error } = await supabase
       .from("erm_warning_flags")
       .select("*")
-      .eq("org_id", profile?.org_id)
+      .eq("org_id", (user as any).org_id)
       .eq("status", "OPEN")
       .order("created_at", { ascending: false });
 
@@ -551,7 +532,7 @@ router.get("/warnings", async (req: Request, res: Response) => {
     // Enrich with user names
     const userIds = (data ?? []).map(w => w.user_id);
     const { data: profiles } = await supabase
-      .from("user_profiles")
+      .from("users")
       .select("id, full_name")
       .in("id", userIds.length ? userIds : ["00000000-0000-0000-0000-000000000000"]);
     const profileMap: Record<string, any> = {};
@@ -603,10 +584,10 @@ router.post("/1on1s", async (req: Request, res: Response) => {
   try {
     const user = (req as any).user;
     const { employee_id, scheduled_at, agenda = [] } = req.body;
-    const { data: profile } = await supabase.from("user_profiles").select("org_id").eq("id", user.id).maybeSingle();
+    // org_id from auth middleware
 
     const { data, error } = await supabase.from("erm_one_on_ones").insert({
-      org_id: profile?.org_id ?? "00000000-0000-0000-0000-000000000000",
+      org_id: (user as any).org_id ?? "00000000-0000-0000-0000-000000000000",
       manager_id: user.id,
       employee_id,
       scheduled_at: scheduled_at ?? null,
@@ -648,8 +629,7 @@ router.get("/dashboard", async (req: Request, res: Response) => {
     const user = (req as any).user;
     const { week, year } = getISOWeek(new Date());
 
-    const { data: profile } = await supabase.from("user_profiles").select("org_id").eq("id", user.id).maybeSingle();
-    const org_id = profile?.org_id;
+    const org_id = (user as any).org_id;
     if (!org_id) return res.json({ team_avg_score: 0, trend: "stable", response_rate: 0, warnings_count: 0, recent_feedback: [], score_distribution: { high: 0, medium: 0, low: 0 } });
 
     // Team avg score this week
@@ -674,7 +654,7 @@ router.get("/dashboard", async (req: Request, res: Response) => {
     };
 
     // Response rate this week
-    const { count: totalMembers } = await supabase.from("user_profiles").select("id", { count: "exact", head: true }).eq("org_id", org_id);
+    const { count: totalMembers } = await supabase.from("users").select("id", { count: "exact", head: true }).eq("org_id", org_id);
     const { count: respondedCount } = await supabase.from("erm_pulse_surveys").select("id", { count: "exact", head: true }).eq("org_id", org_id).eq("week_number", week).eq("year", year).not("responded_at", "is", null);
     const response_rate = totalMembers ? Math.round(((respondedCount ?? 0) / (totalMembers as number)) * 100) : 0;
 

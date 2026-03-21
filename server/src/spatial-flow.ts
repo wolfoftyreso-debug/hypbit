@@ -168,7 +168,7 @@ export async function logZoneEvent(
 // ---------------------------------------------------------------------------
 router.get("/zones", async (req: Request, res: Response) => {
   try {
-    const orgId = (req.query.org_id as string) ?? req.user?.org_id;
+    const orgId = req.user?.org_id ?? DEMO_ORG_ID; // SECURITY: never trust query param for org_id
 
     const { data, error } = await supabase
       .from("spatial_zones")
