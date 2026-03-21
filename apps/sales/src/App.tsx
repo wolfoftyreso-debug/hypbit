@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useApi } from "./useApi";
+import { LanguageSwitcher } from "@pixdrift/i18n";
 
 // ─── Design tokens ─────────────────────────────────────────────────────────────
 const C = {
@@ -1073,6 +1074,7 @@ export default function App() {
               {current?.label}
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <LanguageSwitcher />
               <div style={{
                 fontSize: 12, color: C.tertiary,
                 fontFamily: "monospace", fontVariantNumeric: "tabular-nums",

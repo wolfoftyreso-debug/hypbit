@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useApi } from "./useApi";
 import LearningModule from "./LearningModule";
+import { useTranslation, LanguageSwitcher, formatCurrency, formatDate } from "@pixdrift/i18n";
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const C = {
@@ -88,6 +89,7 @@ const statusColor = (s: string) =>
   s === "GREEN" ? C.green : s === "YELLOW" ? C.yellow : s === "RED" ? C.red : C.tertiary;
 const levelColor = (l: string) =>
   l === "L5" ? C.blue : l === "L4" ? C.green : l === "L3" ? C.yellow : l === "L2" ? C.orange : C.red;
+// formatEur is kept for backward compat; prefer formatCurrency(n, 'EUR', locale) where locale is available
 const formatEur = (n: number) =>
   `€${(n || 0).toLocaleString("sv-SE")}`;
 const ncBorderColor: Record<string, string> = {
@@ -533,6 +535,56 @@ function Sidebar({
   setCollapsed: (c: boolean) => void;
   userName: string;
 }) {
+  const { t } = useTranslation();
+  const NAV_SECTIONS_I18N = [
+    {
+      label: "OVERVIEW",
+      items: [{ id: "admin", label: t('nav.overview'), icon: "⊞" }],
+    },
+    {
+      label: "WORK",
+      items: [
+        { id: "tasks", label: t('nav.tasks'), icon: "✓" },
+        { id: "goals", label: t('nav.goals'), icon: "◎" },
+        { id: "processes", label: t('nav.processes'), icon: "⟳" },
+      ],
+    },
+    {
+      label: "SALES",
+      items: [
+        { id: "sales", label: t('nav.deals'), icon: "◈" },
+      ],
+    },
+    {
+      label: "FINANCE",
+      items: [
+        { id: "finance", label: t('nav.reports'), icon: "€" },
+      ],
+    },
+    {
+      label: "PEOPLE",
+      items: [
+        { id: "capability", label: t('nav.capabilities'), icon: "◆" },
+        { id: "development", label: t('nav.development'), icon: "↑" },
+      ],
+    },
+    {
+      label: "QUALITY",
+      items: [
+        { id: "nc", label: t('nav.nonConformances'), icon: "⚠" },
+        { id: "improvements", label: "PDCA", icon: "◐" },
+        { id: "compliance", label: t('nav.compliance'), icon: "✓✓" },
+        { id: "risks", label: t('nav.risks'), icon: "⊘" },
+      ],
+    },
+    {
+      label: "COMMS",
+      items: [
+        { id: "chat", label: "Chatt", icon: "◻" },
+        { id: "learning", label: t('nav.learning'), icon: "◑" },
+      ],
+    },
+  ];
   const w = collapsed ? 60 : 220;
   return (
     <div style={{
@@ -586,7 +638,7 @@ function Sidebar({
 
       {/* Nav */}
       <nav style={{ flex: 1, padding: "8px 8px", display: "flex", flexDirection: "column", gap: 0, overflowY: "auto" }}>
-        {NAV_SECTIONS.map(section => (
+        {NAV_SECTIONS_I18N.map(section => (
           <div key={section.label}>
             {!collapsed && (
               <div style={{
@@ -666,6 +718,10 @@ function Sidebar({
 
 // ─── Top bar ──────────────────────────────────────────────────────────────────
 function TopBar({ title, onNew }: { title: string; onNew?: () => void }) {
+  const { t, locale } = useTranslation();
+  const h = new Date().getHours();
+  const greeting = h < 12 ? t('dashboard.goodMorning') : h < 17 ? t('dashboard.goodAfternoon') : t('dashboard.goodEvening');
+  const dateStr = formatDate(new Date(), locale);
   return (
     <div style={{
       background: "rgba(255,255,255,0.85)",
@@ -686,8 +742,9 @@ function TopBar({ title, onNew }: { title: string; onNew?: () => void }) {
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <span style={{ fontSize: 13, color: C.secondary }}>
-          {getGreeting()}, Erik · {getSwedishDate()}
+          {greeting}, Erik · {dateStr}
         </span>
+        <LanguageSwitcher />
         <button style={{
           width: 34, height: 34, borderRadius: 8,
           background: C.fill, border: "none",
@@ -1626,12 +1683,22 @@ export default function App() {
 
   const D = { ...FALLBACK, ncs, risks, improvements, compliance, processes };
 
+  const { t } = useTranslation();
   const viewTitles: Record<string, string> = {
-    admin: "Översikt", sales: "Sälj & Pipeline", finance: "Ekonomi",
-    tasks: "Uppgifter", capability: "Förmåga", development: "Utveckling",
-    goals: "Mål", processes: "Processer", nc: "Avvikelser",
-    improvements: "PDCA", compliance: "Compliance", risks: "Risker",
-    chat: "Chatt", learning: "Lärande",
+    admin: t('nav.overview'),
+    sales: t('nav.deals'),
+    finance: t('nav.reports'),
+    tasks: t('nav.tasks'),
+    capability: t('nav.capabilities'),
+    development: t('nav.development'),
+    goals: t('nav.goals'),
+    processes: t('nav.processes'),
+    nc: t('nav.nonConformances'),
+    improvements: "PDCA",
+    compliance: t('nav.compliance'),
+    risks: t('nav.risks'),
+    chat: "Chatt",
+    learning: t('nav.learning'),
   };
 
   const sidebarWidth = collapsed ? 60 : 220;

@@ -45,6 +45,7 @@ import stripeRouter from "./stripe";
 import notificationsRouter from "./notifications";
 import learningRouter from "./learning";
 import seoRouter from "./seo";
+import bankingRouter from "./banking";
 
 // ---------------------------------------------------------------------------
 // Certified Core imports
@@ -67,12 +68,75 @@ app.use(helmet());
 app.use(cors({ origin: process.env.CORS_ORIGIN || "*" }));
 app.use(express.json({ limit: "10mb" }));
 
+// ---------------------------------------------------------------------------
+// i18n / Accept-Language middleware
+// ---------------------------------------------------------------------------
+const SUPPORTED_LOCALES = ['sv', 'en', 'de', 'no', 'da', 'fi'];
+
+const ERROR_MESSAGES: Record<string, Record<string, string>> = {
+  sv: {
+    notFound: 'Resursen hittades inte',
+    rateLimit: 'För många förfrågningar, försök igen senare',
+    serverError: 'Internt serverfel',
+    unauthorized: 'Du har inte behörighet',
+  },
+  en: {
+    notFound: 'Resource not found',
+    rateLimit: 'Too many requests, please try again later',
+    serverError: 'Internal server error',
+    unauthorized: 'Unauthorized',
+  },
+  de: {
+    notFound: 'Ressource nicht gefunden',
+    rateLimit: 'Zu viele Anfragen, bitte später erneut versuchen',
+    serverError: 'Interner Serverfehler',
+    unauthorized: 'Nicht autorisiert',
+  },
+  no: {
+    notFound: 'Ressursen ble ikke funnet',
+    rateLimit: 'For mange forespørsler, prøv igjen senere',
+    serverError: 'Intern serverfeil',
+    unauthorized: 'Ikke autorisert',
+  },
+  da: {
+    notFound: 'Ressourcen blev ikke fundet',
+    rateLimit: 'For mange forespørgsler, prøv igen senere',
+    serverError: 'Intern serverfejl',
+    unauthorized: 'Ikke autoriseret',
+  },
+  fi: {
+    notFound: 'Resurssia ei löydy',
+    rateLimit: 'Liian monta pyyntöä, yritä myöhemmin uudelleen',
+    serverError: 'Sisäinen palvelinvirhe',
+    unauthorized: 'Ei valtuutusta',
+  },
+};
+
+// Extend Express Request type with locale
+declare global {
+  namespace Express {
+    interface Request {
+      locale: string;
+    }
+  }
+}
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const acceptLanguage = (req.headers['accept-language'] as string) || 'sv';
+  const lang = acceptLanguage.split(',')[0].split('-')[0].toLowerCase();
+  req.locale = SUPPORTED_LOCALES.includes(lang) ? lang : 'sv';
+  res.setHeader('Content-Language', req.locale);
+  next();
+});
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { error: "För många förfrågningar, försök igen senare" },
+  message: (req: Request) => ({
+    error: ERROR_MESSAGES[req.locale]?.rateLimit ?? ERROR_MESSAGES.sv.rateLimit,
+  }),
 });
 app.use(limiter);
 
@@ -230,6 +294,7 @@ app.use(integrationRouter);
 app.use("/api/stripe", stripeRouter);
 app.use("/api/notifications", notificationsRouter);
 app.use("/api/learning", learningRouter);
+app.use(bankingRouter); // Banking: /api/banking/* + /api/integrations/fortnox/* + /api/integrations/visma/*
 
 // ---------------------------------------------------------------------------
 // SEO — sitemap.xml + robots.txt on root, /api/seo/* for endpoints

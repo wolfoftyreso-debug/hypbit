@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useApi } from "./useApi";
+import { LanguageSwitcher } from "@pixdrift/i18n";
 
 // ─── Design tokens ─────────────────────────────────────────────────────────────
 const C = {
@@ -902,8 +903,11 @@ export default function App() {
             <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: "-0.03em", color: C.text }}>
               {current?.label}
             </div>
-            <div style={{ fontSize: 12, color: C.tertiary, fontFamily: "monospace", fontVariantNumeric: "tabular-nums" }}>
-              {new Date().toLocaleDateString("sv-SE")}
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <LanguageSwitcher />
+              <div style={{ fontSize: 12, color: C.tertiary, fontFamily: "monospace", fontVariantNumeric: "tabular-nums" }}>
+                {new Date().toLocaleDateString("sv-SE")}
+              </div>
             </div>
           </div>
 

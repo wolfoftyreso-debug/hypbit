@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useApi } from "./useApi";
+import { useTranslation, LanguageSwitcher } from "@pixdrift/i18n";
+import { IntegrationsHub } from "./IntegrationsHub";
 
 // ─── Design tokens ─────────────────────────────────────────────────────────────
 const C = {
@@ -169,6 +171,12 @@ const navItems: NavItem[] = [
       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
       <polyline points="14 2 14 8 20 8"/>
       <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+    </svg>
+  )},
+  { id: "integrations", label: "Integrationer", icon: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="7" width="6" height="10" rx="1"/><rect x="16" y="7" width="6" height="10" rx="1"/>
+      <path d="M8 12h8"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/>
     </svg>
   )},
   { id: "settings", label: "Inställningar", icon: (
@@ -824,6 +832,7 @@ function SettingsView() {
 // ─── App Shell ─────────────────────────────────────────────────────────────────
 export default function App() {
   const [view, setView] = useState("overview");
+  const { t } = useTranslation();
 
   const viewComponents: Record<string, React.ReactNode> = {
     overview: <OverviewView />,
@@ -831,6 +840,7 @@ export default function App() {
     roles: <RolesView />,
     compliance: <ComplianceView />,
     audit: <AuditView />,
+    integrations: <IntegrationsHub />,
     settings: <SettingsView />,
   };
 
@@ -935,6 +945,7 @@ export default function App() {
               {current?.label}
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <LanguageSwitcher />
               <div style={{
                 fontSize: 12, fontVariantNumeric: "tabular-nums",
                 color: C.tertiary, fontFamily: "monospace",
