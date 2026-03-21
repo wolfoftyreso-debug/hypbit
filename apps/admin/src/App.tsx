@@ -596,7 +596,7 @@ function ComplianceView() {
           const pct = c.completion_pct;
           const color = pct >= 85 ? C.green : pct >= 60 ? C.yellow : C.red;
           return (
-            <Card key={i} animate>
+            <Card key={i}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
                 <div style={{ fontSize: 17, fontWeight: 700, color: C.text, letterSpacing: "-0.02em" }}>
                   {c.name}
