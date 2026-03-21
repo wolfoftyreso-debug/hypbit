@@ -13,6 +13,9 @@
 | crm.bc.pixdrift.com | E2P38O4WNORKE9 | d270h53fvn20bu.cloudfront.net | pixdrift-bc-crm-prod | CRM |
 | sales.bc.pixdrift.com | E1R5ZQK0FQYN5D | d1r8hyoqjmk0sj.cloudfront.net | pixdrift-bc-sales-prod | Sales |
 | api.bc.pixdrift.com | ALB | hypbit-api-alb-1238636464.eu-north-1.elb.amazonaws.com | ECS Fargate | API |
+| status.pixdrift.com | EGHB0CHLK9CDI | d2momzxykt4a1r.cloudfront.net | pixdrift-status-prod | Statussida |
+| developers.pixdrift.com | EC7A2RM42H14M | d2nvngupq3fkcm.cloudfront.net | pixdrift-developers-prod | Developer portal |
+| press.pixdrift.com | E1HICRMY8BLBZC | d1jehmey81q5ys.cloudfront.net | pixdrift-press-prod | Pressrum |
 
 ## S3-buckets — säkerhetsmodell
 
@@ -44,6 +47,9 @@ admin.bc.pixdrift.com CNAME d1lxaupcjwd2y0.cloudfront.net     (admin)
 crm.bc.pixdrift.com  CNAME  d270h53fvn20bu.cloudfront.net     (crm)
 sales.bc.pixdrift.com CNAME d1r8hyoqjmk0sj.cloudfront.net    (sales)
 api.bc.pixdrift.com  CNAME  hypbit-api-alb-*.eu-north-1.elb.amazonaws.com (api)
+status.pixdrift.com  CNAME  d2momzxykt4a1r.cloudfront.net     (status)
+developers.pixdrift.com CNAME d2nvngupq3fkcm.cloudfront.net   (developers)
+press.pixdrift.com   CNAME  d1jehmey81q5ys.cloudfront.net     (press)
 ```
 
 ## Terraform-state
