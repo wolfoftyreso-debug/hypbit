@@ -21,7 +21,7 @@ export function useApi<T = unknown>(endpoint: string): ApiState<T> {
     const fetchData = async () => {
       setState((s) => ({ ...s, loading: true, error: null }));
       try {
-        const token = localStorage.getItem("hypbit_token");
+        const token = localStorage.getItem("pixdrift_token");
         const headers: HeadersInit = { "Content-Type": "application/json" };
         if (token) headers["Authorization"] = `Bearer ${token}`;
 

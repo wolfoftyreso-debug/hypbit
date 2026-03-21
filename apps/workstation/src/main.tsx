@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import Hypbit from "./Dashboard";
+import App from "./Dashboard";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Hypbit />
+    <App />
   </React.StrictMode>
 );

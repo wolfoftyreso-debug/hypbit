@@ -94,7 +94,7 @@ const FALLBACK = {
   ],
   decisions: [
     { title: "Supabase som primär DB", rat: "Noll drift.", by: "Erik", date: "2026-03-18" },
-    { title: "Gruppchatt istället för Slack", rat: "5 pers. Hypbit visar status.", by: "Erik", date: "2026-03-16" },
+    { title: "Gruppchatt istället för Slack", rat: "5 pers. pixdrift visar status.", by: "Erik", date: "2026-03-16" },
     { title: "Claude Code som kodverktyg", rat: "Samma Claude.", by: "Erik", date: "2026-03-15" },
   ],
   tb: { ok: true, d: 15400, c: 15400, rows: [{ code: "1000", name: "Kassa", d: 15400, c: 0 }, { code: "3000", name: "Eget kapital", d: 0, c: 10000 }, { code: "4100", name: "Serviceintäkt", d: 0, c: 5400 }] },
@@ -128,7 +128,7 @@ const FALLBACK = {
   ],
   goals: [
     { title: "3 betalande kunder", cur: 1, tgt: 3, unit: "kunder", end: "2026-06-15", ready: 70, st: "ACTIVE" },
-    { title: "Hypbit i full drift", cur: 3, tgt: 5, unit: "pers", end: "2026-04-30", ready: 60, st: "ON_TRACK" },
+    { title: "pixdrift i full drift", cur: 3, tgt: 5, unit: "pers", end: "2026-04-30", ready: 60, st: "ON_TRACK" },
     { title: "UAB Litauen", cur: 0, tgt: 1, unit: "bolag", end: "2026-06-30", ready: 40, st: "ACTIVE" },
   ],
   ncs: [
@@ -160,7 +160,7 @@ const FALLBACK = {
 };
 
 // ─── Main component ───────────────────────────────────────────────────────────
-export default function Hypbit() {
+export default function App() {
   const [view, setView] = useState("admin");
   const [chatCh, setChatCh] = useState("SALES");
 
@@ -211,7 +211,7 @@ export default function Hypbit() {
       <div style={{ background: "rgba(255,255,255,0.72)", backdropFilter: "blur(20px)", borderBottom: `0.5px solid ${C.border}`, position: "sticky", top: 0, zIndex: 100 }}>
         <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 20px", height: 52 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <span style={{ fontSize: 18, fontWeight: 700, letterSpacing: "-0.03em" }}>Hypbit</span>
+            <span style={{ fontSize: 18, fontWeight: 700, letterSpacing: "-0.03em" }}>pixdrift</span>
             <div style={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
               {views.map(v => (
                 <button key={v.id} onClick={() => setView(v.id)} style={{ background: "none", border: "none", color: view === v.id ? C.blue : C.sec, fontSize: 11, fontWeight: view === v.id ? 600 : 400, cursor: "pointer", padding: "6px 8px", borderBottom: view === v.id ? `2px solid ${C.blue}` : "2px solid transparent" }}>{v.l}</button>
