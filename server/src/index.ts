@@ -97,6 +97,8 @@ import stateMachineRouter from "./state-machine";
 import { stateMachine } from "./state-machine";
 import { registerSubscribers } from "./subscribers";
 
+import evaBotRouter from './eva-bot';
+
 // ---------------------------------------------------------------------------
 // App setup
 // ---------------------------------------------------------------------------
