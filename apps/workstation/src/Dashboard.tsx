@@ -220,6 +220,7 @@ const Btn = ({ children, onClick, variant = "primary", size = "md", style: st }:
   };
   return (
     <button
+      type="button"
       className={`btn-${variant}`}
       onClick={onClick}
       style={{
@@ -654,8 +655,11 @@ function Sidebar({
               return (
                 <button
                   key={item.id}
+                  type="button"
                   className={`nav-btn clickable ${active ? "active" : ""}`}
                   onClick={() => setView(item.id)}
+                  aria-label={item.label}
+                  aria-current={active ? "page" : undefined}
                   title={collapsed ? item.label : undefined}
                   style={{
                     display: "flex",
@@ -717,7 +721,7 @@ function Sidebar({
 }
 
 // ─── Top bar ──────────────────────────────────────────────────────────────────
-function TopBar({ title, onNew }: { title: string; onNew?: () => void }) {
+function TopBar({ title, onNew, userName = "Erik" }: { title: string; onNew?: () => void; userName?: string }) {
   const { t, locale } = useTranslation();
   const h = new Date().getHours();
   const greeting = h < 12 ? t('dashboard.goodMorning') : h < 17 ? t('dashboard.goodAfternoon') : t('dashboard.goodEvening');
@@ -742,16 +746,19 @@ function TopBar({ title, onNew }: { title: string; onNew?: () => void }) {
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <span style={{ fontSize: 13, color: C.secondary }}>
-          {greeting}, Erik · {dateStr}
+          {greeting}, {userName} · {dateStr}
         </span>
         <LanguageSwitcher />
-        <button style={{
-          width: 34, height: 34, borderRadius: 8,
-          background: C.fill, border: "none",
-          cursor: "pointer", fontSize: 16,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          transition: "all 0.15s",
-        }}>
+        <button
+          type="button"
+          aria-label="Notifikationer"
+          style={{
+            width: 34, height: 34, borderRadius: 8,
+            background: C.fill, border: "none",
+            cursor: "pointer", fontSize: 16,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            transition: "all 0.15s",
+          }}>
           🔔
         </button>
         {onNew && (
@@ -1723,9 +1730,9 @@ export default function App() {
         />
 
         <div style={{ marginLeft: sidebarWidth, flex: 1, display: "flex", flexDirection: "column", transition: "margin-left 0.2s ease" }}>
-          <TopBar title={viewTitles[view] ?? view} />
+          <TopBar title={viewTitles[view] ?? view} userName={D.user.full_name} />
 
-          <div style={{ flex: 1, padding: "24px 28px 60px" }}>
+          <main role="main" style={{ flex: 1, padding: "24px 28px 60px" }}>
             {view === "admin" && <AdminView D={D} />}
             {view === "sales" && <SalesView D={D} />}
             {view === "finance" && <FinanceView D={D} />}
@@ -1740,7 +1747,7 @@ export default function App() {
             {view === "risks" && <RisksView D={D} />}
             {view === "chat" && <ChatView D={D} />}
             {view === "learning" && <LearningModule user={D.user as any} />}
-          </div>
+          </main>
         </div>
       </div>
     </>
