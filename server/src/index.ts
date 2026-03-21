@@ -50,6 +50,8 @@ import bankingRouter from "./banking";
 import spaghettiRouter from "./spaghetti";
 import spatialRouter from "./spatial-flow";
 import consumablesRouter from "./consumables";
+import { scheduleAutoConsume } from "./jobs/consumables-auto-consume";
+import cultureRouter from "./culture-engine";
 
 // ---------------------------------------------------------------------------
 // Customer Interaction Engine
@@ -377,6 +379,7 @@ app.use("/api/learning", learningRouter);
 app.use("/api/spaghetti", spaghettiRouter); // Lean spaghetti diagram & helikopterperspektiv
 app.use("/api/spatial", spatialRouter);   // Spatial Flow Intelligence — zones, spaghetti, friction
 app.use("/api/consumables", consumablesRouter); // Consumables Management — operational cost control
+app.use("/api/culture", cultureRouter);       // Culture & Event Automation — birthdays, breakfast, events
 app.use(bankingRouter); // Banking: /api/banking/* + /api/integrations/fortnox/* + /api/integrations/visma/*
 
 // ---------------------------------------------------------------------------
@@ -821,6 +824,8 @@ bootstrap().catch((err) => console.error("Core bootstrap failed:", err));
 
 app.listen(PORT, () => {
   console.log(`Hypbit OMS API running on http://localhost:${PORT}`);
+  // Schedule daily auto-consume job (runs at 06:00)
+  scheduleAutoConsume();
 });
 
 export default app;
