@@ -184,6 +184,61 @@
 
     .nav-cta:hover { opacity: 0.88; }
 
+    /* ─── SOLUTIONS DROPDOWN ───────────────────────────── */
+    .nav-dropdown {
+      position: relative;
+    }
+    .nav-dropdown-trigger {
+      color: rgba(245,245,247,0.75);
+      font-size: 12px;
+      cursor: pointer;
+      letter-spacing: 0.01em;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.2s;
+      user-select: none;
+    }
+    .nav-dropdown-trigger:hover { color: #f5f5f7; }
+    .nav-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(18,18,18,0.98);
+      backdrop-filter: saturate(180%) blur(24px);
+      -webkit-backdrop-filter: saturate(180%) blur(24px);
+      border: 0.5px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 8px;
+      min-width: 200px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+      z-index: 200;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu { display: block; }
+    .nav-dropdown-menu a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      color: rgba(245,245,247,0.75);
+      font-size: 12px;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-dropdown-menu a:hover {
+      background: rgba(255,255,255,0.06);
+      color: #f5f5f7;
+    }
+    .nav-dropdown-menu .dd-icon { font-size: 14px; }
+    .nav-dropdown-divider {
+      height: 0.5px;
+      background: rgba(255,255,255,0.08);
+      margin: 6px 8px;
+    }
+
     .nav-hamburger {
       display: none;
       flex-direction: column;
@@ -1226,7 +1281,18 @@
 
   <div class="nav-links">
     <a href="#product">Product</a>
-    <a href="#solutions">Solutions</a>
+    <div class="nav-dropdown">
+      <span class="nav-dropdown-trigger">Solutions ▾</span>
+      <div class="nav-dropdown-menu">
+        <a href="/verkstad/"><span class="dd-icon">🔧</span> Automotive</a>
+        <a href="/restaurang/"><span class="dd-icon">🍽️</span> Restaurants</a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="/losningar/saas.html"><span class="dd-icon">💻</span> SaaS</a>
+        <a href="/losningar/tjansteforetag.html"><span class="dd-icon">🤝</span> Professional Services</a>
+        <a href="/losningar/handel.html"><span class="dd-icon">🛒</span> E-commerce</a>
+        <a href="/losningar/industri.html"><span class="dd-icon">🏭</span> Industry</a>
+      </div>
+    </div>
     <a href="#pricing">Pricing</a>
     <a href="/developers/">Developers</a>
   </div>
