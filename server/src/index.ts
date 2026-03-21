@@ -59,6 +59,8 @@ import authRouter from "./auth";
 // ---------------------------------------------------------------------------
 import vehiclesRouter from "./vehicles";
 import workshopRouter from "./workshop";
+import workshopStateMachineRouter from "./state-machine-workshop";
+import checklistEngineRouter from "./checklist-engine";
 import partsRouter from "./parts";
 import vehicleSalesRouter from "./vehicle-sales";
 import automotiveCrmRouter from "./automotive-crm";
@@ -368,8 +370,10 @@ app.use(bankingRouter); // Banking: /api/banking/* + /api/integrations/fortnox/*
 // DMS — Dealer Management System (pixdrift automotive)
 // ---------------------------------------------------------------------------
 app.use(vehiclesRouter);       // /api/vehicles/*
-app.use(workshopRouter);       // /api/workshop/*
-app.use(partsRouter);          // /api/parts/*
+app.use(workshopRouter);              // /api/workshop/*
+app.use(workshopStateMachineRouter);  // /api/workshop/work-orders/:id/transition, available-transitions, state-audit
+app.use(checklistEngineRouter);       // /api/checklists/*
+app.use(partsRouter);                 // /api/parts/*
 app.use(vehicleSalesRouter);   // /api/vehicle-sales/*
 app.use(automotiveCrmRouter);  // /api/automotive-crm/*
 app.use(oemRouter);            // /api/oem/*
