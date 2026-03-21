@@ -1,47 +1,44 @@
-data "aws_route53_zone" "main" {
-  name         = var.domain
-  private_zone = false
+# ============================================================
+# Cloudflare DNS — pixdrift.com
+# Zone ID: 7fa7c28b0748ded5b4d48f06eae6faec
+# ============================================================
+
+data "cloudflare_zone" "main" {
+  zone_id = "7fa7c28b0748ded5b4d48f06eae6faec"
 }
 
-# ── API record → ALB ──────────────────────────────────────────────────────────
-resource "aws_route53_record" "api" {
-  zone_id = data.aws_route53_zone.main.zone_id
-  name    = "${var.api_subdomain}.${var.domain}"
-  type    = "A"
-
-  alias {
-    name                   = aws_lb.api.dns_name
-    zone_id                = aws_lb.api.zone_id
-    evaluate_target_health = true
-  }
+locals {
+  api_fqdn     = "api.${var.product_prefix}.${var.domain}"
+  product_fqdn = "${var.product_prefix}.${var.domain}"
 }
 
-# ── Frontend records → CloudFront ─────────────────────────────────────────────
-resource "aws_route53_record" "frontend" {
-  for_each = local.app_subdomains
-
-  zone_id = data.aws_route53_zone.main.zone_id
-  name    = each.value
-  type    = "A"
-
-  alias {
-    name                   = aws_cloudfront_distribution.frontend[each.key].domain_name
-    zone_id                = aws_cloudfront_distribution.frontend[each.key].hosted_zone_id
-    evaluate_target_health = false
-  }
+# API → ALB
+resource "cloudflare_record" "api" {
+  zone_id = data.cloudflare_zone.main.zone_id
+  name    = local.api_fqdn
+  type    = "CNAME"
+  content = aws_lb.api.dns_name
+  proxied = false
+  ttl     = 60
 }
 
-# ── AAAA (IPv6) records for CloudFront frontends ──────────────────────────────
-resource "aws_route53_record" "frontend_aaaa" {
-  for_each = local.app_subdomains
+# Frontend-subdomäner → CloudFront
+resource "cloudflare_record" "frontends" {
+  for_each = local.frontends
+  zone_id  = data.cloudflare_zone.main.zone_id
+  name     = each.value
+  type     = "CNAME"
+  content  = aws_cloudfront_distribution.frontends[each.key].domain_name
+  proxied  = false
+  ttl      = 60
+}
 
-  zone_id = data.aws_route53_zone.main.zone_id
-  name    = each.value
-  type    = "AAAA"
-
-  alias {
-    name                   = aws_cloudfront_distribution.frontend[each.key].domain_name
-    zone_id                = aws_cloudfront_distribution.frontend[each.key].hosted_zone_id
-    evaluate_target_health = false
-  }
+# pixdrift.com root → workstation CloudFront
+resource "cloudflare_record" "product_root" {
+  zone_id = data.cloudflare_zone.main.zone_id
+  name    = local.product_fqdn
+  type    = "CNAME"
+  content = aws_cloudfront_distribution.frontends["workstation"].domain_name
+  proxied = false
+  ttl     = 60
 }

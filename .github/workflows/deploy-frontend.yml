@@ -1,131 +1,125 @@
-name: Deploy Frontends to S3 + CloudFront
+name: Deploy Frontends
 
 on:
   push:
     branches: [main]
     paths:
-      - "apps/**"
-      - "packages/**"
-      - ".github/workflows/deploy-frontend.yml"
+      - 'apps/**'
+      - 'packages/**'
+      - 'turbo.json'
+      - 'package.json'
+      - '.github/workflows/deploy-frontend.yml'
+
+permissions:
+  id-token: write
+  contents: read
 
 env:
   AWS_REGION: eu-north-1
 
 jobs:
-  detect-changes:
-    name: Detect changed apps
-    runs-on: ubuntu-latest
-    outputs:
-      admin: ${{ steps.filter.outputs.admin }}
-      workstation: ${{ steps.filter.outputs.workstation }}
-      crm: ${{ steps.filter.outputs.crm }}
-      sales: ${{ steps.filter.outputs.sales }}
-      packages: ${{ steps.filter.outputs.packages }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            admin:
-              - 'apps/admin/**'
-            workstation:
-              - 'apps/workstation/**'
-            crm:
-              - 'apps/crm/**'
-            sales:
-              - 'apps/sales/**'
-            packages:
-              - 'packages/**'
-
   build-and-deploy:
-    name: Build & Deploy ${{ matrix.app }}
+    name: Build & Deploy Frontends
     runs-on: ubuntu-latest
-    needs: detect-changes
-    permissions:
-      id-token: write
-      contents: read
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - app: admin
-            changed: ${{ needs.detect-changes.outputs.admin == 'true' || needs.detect-changes.outputs.packages == 'true' }}
-            s3_bucket: admin.hypbit.com
-            cf_distribution_id_secret: CF_DISTRIBUTION_ADMIN
-          - app: workstation
-            changed: ${{ needs.detect-changes.outputs.workstation == 'true' || needs.detect-changes.outputs.packages == 'true' }}
-            s3_bucket: workstation.hypbit.com
-            cf_distribution_id_secret: CF_DISTRIBUTION_WORKSTATION
-          - app: crm
-            changed: ${{ needs.detect-changes.outputs.crm == 'true' || needs.detect-changes.outputs.packages == 'true' }}
-            s3_bucket: crm.hypbit.com
-            cf_distribution_id_secret: CF_DISTRIBUTION_CRM
-          - app: sales
-            changed: ${{ needs.detect-changes.outputs.sales == 'true' || needs.detect-changes.outputs.packages == 'true' }}
-            s3_bucket: sales.hypbit.com
-            cf_distribution_id_secret: CF_DISTRIBUTION_SALES
+    environment: production
 
     steps:
-      - name: Skip if no changes
-        if: matrix.changed != 'true'
-        run: echo "No changes detected for ${{ matrix.app }}, skipping."
-
       - name: Checkout
-        if: matrix.changed == 'true'
         uses: actions/checkout@v4
 
       - name: Setup Node.js
-        if: matrix.changed == 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "npm"
+          node-version: '22'
+          cache: 'npm'
 
       - name: Install dependencies
-        if: matrix.changed == 'true'
-        run: npm ci
+        run: npm install --legacy-peer-deps
 
-      - name: Build app
-        if: matrix.changed == 'true'
-        working-directory: apps/${{ matrix.app }}
-        run: npm run build
+      - name: Build all frontends
+        run: npx turbo build
         env:
-          VITE_API_URL: https://api.hypbit.com
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
       - name: Configure AWS credentials (OIDC)
-        if: matrix.changed == 'true'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Sync to S3
-        if: matrix.changed == 'true'
+      - name: Deploy workstation → S3
         run: |
-          # Sync with cache-busting: HTML no-cache, assets long-cache
-          aws s3 sync apps/${{ matrix.app }}/dist s3://${{ matrix.s3_bucket }} \
-            --delete \
-            --exclude "assets/*"
+          aws s3 sync apps/workstation/dist/ s3://pixdrift-bc-workstation-prod/ \
+            --delete --region ${{ env.AWS_REGION }} \
+            --cache-control "public,max-age=31536000,immutable" \
+            --exclude "index.html"
+          aws s3 cp apps/workstation/dist/index.html s3://pixdrift-bc-workstation-prod/index.html \
+            --region ${{ env.AWS_REGION }} \
+            --cache-control "no-cache,no-store,must-revalidate"
 
-          aws s3 sync apps/${{ matrix.app }}/dist/assets s3://${{ matrix.s3_bucket }}/assets \
-            --delete \
-            --cache-control "public, max-age=31536000, immutable"
+      - name: Deploy admin → S3
+        run: |
+          aws s3 sync apps/admin/dist/ s3://pixdrift-bc-admin-prod/ \
+            --delete --region ${{ env.AWS_REGION }} \
+            --cache-control "public,max-age=31536000,immutable" \
+            --exclude "index.html"
+          aws s3 cp apps/admin/dist/index.html s3://pixdrift-bc-admin-prod/index.html \
+            --region ${{ env.AWS_REGION }} \
+            --cache-control "no-cache,no-store,must-revalidate"
 
-          # HTML files: no cache
-          aws s3 cp apps/${{ matrix.app }}/dist/index.html \
-            s3://${{ matrix.s3_bucket }}/index.html \
-            --cache-control "no-cache, no-store, must-revalidate"
+      - name: Deploy CRM → S3
+        run: |
+          aws s3 sync apps/crm/dist/ s3://pixdrift-bc-crm-prod/ \
+            --delete --region ${{ env.AWS_REGION }} \
+            --cache-control "public,max-age=31536000,immutable" \
+            --exclude "index.html"
+          aws s3 cp apps/crm/dist/index.html s3://pixdrift-bc-crm-prod/index.html \
+            --region ${{ env.AWS_REGION }} \
+            --cache-control "no-cache,no-store,must-revalidate"
 
-      - name: Invalidate CloudFront cache
-        if: matrix.changed == 'true'
+      - name: Deploy sales → S3
+        run: |
+          aws s3 sync apps/sales/dist/ s3://pixdrift-bc-sales-prod/ \
+            --delete --region ${{ env.AWS_REGION }} \
+            --cache-control "public,max-age=31536000,immutable" \
+            --exclude "index.html"
+          aws s3 cp apps/sales/dist/index.html s3://pixdrift-bc-sales-prod/index.html \
+            --region ${{ env.AWS_REGION }} \
+            --cache-control "no-cache,no-store,must-revalidate"
+
+      - name: Invalidate CloudFront — workstation
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id ${{ secrets[matrix.cf_distribution_id_secret] }} \
-            --paths "/*"
+            --distribution-id ${{ secrets.CF_DISTRIBUTION_WORKSTATION }} \
+            --paths "/*" --region us-east-1
 
-      - name: Verify deployment
-        if: matrix.changed == 'true'
+      - name: Invalidate CloudFront — admin
         run: |
-          sleep 15
-          curl -f -o /dev/null -s -w "%{http_code}" https://${{ matrix.s3_bucket }} || echo "Verification failed"
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CF_DISTRIBUTION_ADMIN }} \
+            --paths "/*" --region us-east-1
+
+      - name: Invalidate CloudFront — CRM
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CF_DISTRIBUTION_CRM }} \
+            --paths "/*" --region us-east-1
+
+      - name: Invalidate CloudFront — sales
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CF_DISTRIBUTION_SALES }} \
+            --paths "/*" --region us-east-1
+
+      - name: Smoke test frontends
+        run: |
+          sleep 10
+          for url in \
+            "https://app.bc.pixdrift.com" \
+            "https://admin.bc.pixdrift.com" \
+            "https://crm.bc.pixdrift.com" \
+            "https://sales.bc.pixdrift.com"; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$url" || echo "000")
+            echo "$url → $STATUS"
+          done

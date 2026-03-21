@@ -1,21 +1,15 @@
-locals {
-  app_subdomains = {
-    admin       = "admin.${var.domain}"
-    workstation = "workstation.${var.domain}"
-    crm         = "crm.${var.domain}"
-    sales       = "sales.${var.domain}"
-  }
-}
+# ============================================================
+# CloudFront — 4 distributioner för frontends
+# ============================================================
 
-resource "aws_cloudfront_distribution" "frontend" {
-  for_each = local.app_subdomains
+resource "aws_cloudfront_distribution" "frontends" {
+  for_each = local.frontends
 
   enabled             = true
   is_ipv6_enabled     = true
-  comment             = "Hypbit ${each.key}"
   default_root_object = "index.html"
   aliases             = [each.value]
-  price_class         = "PriceClass_100" # US, Canada, Europe (cheapest)
+  price_class         = "PriceClass_100"
 
   origin {
     domain_name              = aws_s3_bucket.frontend[each.key].bucket_regional_domain_name
@@ -36,23 +30,20 @@ resource "aws_cloudfront_distribution" "frontend" {
     }
 
     min_ttl     = 0
-    default_ttl = 86400
-    max_ttl     = 31536000
+    default_ttl = 3600
+    max_ttl     = 86400
   }
 
-  # SPA routing: serve index.html for 403/404
+  # SPA routing — returnera index.html för 404
   custom_error_response {
-    error_code            = 403
-    response_code         = 200
-    response_page_path    = "/index.html"
-    error_caching_min_ttl = 0
+    error_code         = 404
+    response_code      = 200
+    response_page_path = "/index.html"
   }
-
   custom_error_response {
-    error_code            = 404
-    response_code         = 200
-    response_page_path    = "/index.html"
-    error_caching_min_ttl = 0
+    error_code         = 403
+    response_code      = 200
+    response_page_path = "/index.html"
   }
 
   restrictions {
@@ -60,10 +51,8 @@ resource "aws_cloudfront_distribution" "frontend" {
   }
 
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate_validation.frontends.certificate_arn
+    acm_certificate_arn      = local.cloudfront_cert_arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
-
-  tags = { Name = "hypbit-${each.key}-cf" }
 }

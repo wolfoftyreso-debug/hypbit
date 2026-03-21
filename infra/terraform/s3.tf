@@ -1,89 +1,68 @@
+# ============================================================
+# S3 — Statisk hosting för 4 frontend-appar
+# ============================================================
+
 locals {
-  frontend_apps = ["admin", "workstation", "crm", "sales"]
+  frontends = {
+    workstation = "app.${var.product_prefix}.${var.domain}"
+    admin       = "admin.${var.product_prefix}.${var.domain}"
+    crm         = "crm.${var.product_prefix}.${var.domain}"
+    sales       = "sales.${var.product_prefix}.${var.domain}"
+  }
 }
 
-# ── S3 buckets for each frontend app ─────────────────────────────────────────
 resource "aws_s3_bucket" "frontend" {
-  for_each = toset(local.frontend_apps)
-
-  bucket = "${each.key}.${var.domain}"
-
-  tags = { Name = "hypbit-${each.key}" }
-}
-
-resource "aws_s3_bucket_versioning" "frontend" {
-  for_each = aws_s3_bucket.frontend
-
-  bucket = each.value.id
-  versioning_configuration {
-    status = "Disabled"
-  }
-}
-
-resource "aws_s3_bucket_server_side_encryption_configuration" "frontend" {
-  for_each = aws_s3_bucket.frontend
-
-  bucket = each.value.id
-  rule {
-    apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
-    }
-  }
+  for_each = local.frontends
+  bucket   = "pixdrift-bc-${each.key}-${var.environment}"
 }
 
 resource "aws_s3_bucket_public_access_block" "frontend" {
-  for_each = aws_s3_bucket.frontend
+  for_each = local.frontends
+  bucket   = aws_s3_bucket.frontend[each.key].id
 
-  bucket                  = each.value.id
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
 
-resource "aws_s3_bucket_website_configuration" "frontend" {
-  for_each = aws_s3_bucket.frontend
-
-  bucket = each.value.id
-
-  index_document { suffix = "index.html" }
-  error_document { key = "index.html" } # SPA fallback
+resource "aws_s3_bucket_versioning" "frontend" {
+  for_each = local.frontends
+  bucket   = aws_s3_bucket.frontend[each.key].id
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
-# ── Origin Access Control for CloudFront → S3 ────────────────────────────────
+# CloudFront Origin Access Control
 resource "aws_cloudfront_origin_access_control" "frontend" {
-  for_each = toset(local.frontend_apps)
-
-  name                              = "hypbit-${each.key}-oac"
-  description                       = "OAC for hypbit ${each.key}"
+  for_each                          = local.frontends
+  name                              = "pixdrift-bc-${each.key}-oac"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
 }
 
-# ── Bucket policies to allow only CloudFront ──────────────────────────────────
+# Bucket policy — tillåt CloudFront att läsa
 resource "aws_s3_bucket_policy" "frontend" {
-  for_each = aws_s3_bucket.frontend
-
-  bucket = each.value.id
+  for_each = local.frontends
+  bucket   = aws_s3_bucket.frontend[each.key].id
 
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "AllowCloudFrontServicePrincipal"
-        Effect = "Allow"
-        Principal = { Service = "cloudfront.amazonaws.com" }
-        Action   = "s3:GetObject"
-        Resource = "${each.value.arn}/*"
-        Condition = {
-          StringEquals = {
-            "AWS:SourceArn" = aws_cloudfront_distribution.frontend[each.key].arn
-          }
+    Statement = [{
+      Sid    = "AllowCloudFront"
+      Effect = "Allow"
+      Principal = {
+        Service = "cloudfront.amazonaws.com"
+      }
+      Action   = "s3:GetObject"
+      Resource = "${aws_s3_bucket.frontend[each.key].arn}/*"
+      Condition = {
+        StringEquals = {
+          "AWS:SourceArn" = aws_cloudfront_distribution.frontends[each.key].arn
         }
       }
-    ]
+    }]
   })
-
-  depends_on = [aws_cloudfront_distribution.frontend]
 }

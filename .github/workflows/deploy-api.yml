@@ -1,26 +1,28 @@
-name: Deploy API to ECS
+name: Deploy API
 
 on:
   push:
     branches: [main]
     paths:
-      - "server/**"
-      - ".github/workflows/deploy-api.yml"
+      - 'server/**'
+      - 'Dockerfile'
+      - '.github/workflows/deploy-api.yml'
+
+permissions:
+  id-token: write
+  contents: read
 
 env:
   AWS_REGION: eu-north-1
-  ECR_REPOSITORY: hypbit/api
+  ECR_REGISTRY: 155407238699.dkr.ecr.eu-north-1.amazonaws.com
   ECS_CLUSTER: hypbit
   ECS_SERVICE: hypbit-api
-  CONTAINER_NAME: api
 
 jobs:
   deploy:
     name: Build & Deploy API
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write  # OIDC
-      contents: read
+    environment: production
 
     steps:
       - name: Checkout
@@ -38,50 +40,38 @@ jobs:
 
       - name: Set image tag
         id: meta
+        run: echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
+
+      - name: Build, tag, and push Docker image
         run: |
-          SHORT_SHA="${GITHUB_SHA::8}"
-          echo "IMAGE_TAG=${SHORT_SHA}" >> "$GITHUB_OUTPUT"
-          echo "IMAGE=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${SHORT_SHA}" >> "$GITHUB_OUTPUT"
+          IMAGE="${{ env.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ steps.meta.outputs.tag }}"
+          LATEST="${{ env.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest"
 
-      - name: Build & push Docker image
-        working-directory: server
+          docker build -t "$IMAGE" -t "$LATEST" .
+          docker push "$IMAGE"
+          docker push "$LATEST"
+
+          echo "image=$IMAGE" >> $GITHUB_OUTPUT
+        id: build
+
+      - name: Update ECS service
         run: |
-          docker build \
-            --tag "${{ steps.meta.outputs.IMAGE }}" \
-            --tag "${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest" \
-            --cache-from "${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest" \
-            --build-arg BUILDKIT_INLINE_CACHE=1 \
-            .
-          docker push "${{ steps.meta.outputs.IMAGE }}"
-          docker push "${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:latest"
-        env:
-          DOCKER_BUILDKIT: "1"
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service ${{ env.ECS_SERVICE }} \
+            --force-new-deployment \
+            --region ${{ env.AWS_REGION }}
 
-      - name: Download current task definition
+      - name: Wait for ECS stability
         run: |
-          aws ecs describe-task-definition \
-            --task-definition hypbit-api \
-            --query taskDefinition \
-            > task-def.json
+          aws ecs wait services-stable \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services ${{ env.ECS_SERVICE }} \
+            --region ${{ env.AWS_REGION }}
 
-      - name: Update task definition with new image
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: task-def.json
-          container-name: ${{ env.CONTAINER_NAME }}
-          image: ${{ steps.meta.outputs.IMAGE }}
-
-      - name: Deploy to ECS
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true
-          wait-for-minutes: 10
-
-      - name: Verify health check
+      - name: Health check
         run: |
-          sleep 10
-          curl -f https://api.hypbit.com/health || echo "Health check failed — check ECS logs"
+          sleep 15
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://api.bc.pixdrift.com/health || echo "000")
+          echo "API health: $STATUS"
+          [ "$STATUS" = "200" ] && echo "✅ API healthy" || echo "⚠️ API not yet healthy (may still be starting)"

@@ -13,13 +13,13 @@ variable "environment" {
 variable "domain" {
   description = "Root domain name"
   type        = string
-  default     = "hypbit.com"
+  default     = "pixdrift.com"
 }
 
-variable "api_subdomain" {
-  description = "API subdomain"
+variable "product_prefix" {
+  description = "Product prefix under root domain"
   type        = string
-  default     = "api"
+  default     = "bc"
 }
 
 variable "ecs_task_cpu" {
@@ -65,21 +65,28 @@ variable "ecr_image_tag" {
 }
 
 variable "supabase_url" {
-  description = "Supabase project URL (stored in SSM)"
-  type        = string
-  sensitive   = true
-  default     = ""
-}
-
-variable "supabase_anon_key" {
-  description = "Supabase anon key (stored in SSM)"
+  description = "Supabase project URL"
   type        = string
   sensitive   = true
   default     = ""
 }
 
 variable "supabase_service_role_key" {
-  description = "Supabase service role key (stored in SSM)"
+  description = "Supabase service role key"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
+variable "supabase_anon_key" {
+  description = "Supabase anon key"
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
+variable "cloudflare_api_token" {
+  description = "Cloudflare API token med DNS-rättigheter för pixdrift.com"
   type        = string
   sensitive   = true
   default     = ""

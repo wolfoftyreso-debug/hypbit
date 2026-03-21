@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pixdrift — The Operating System for Modern Teams</title>
+  <meta name="description" content="pixdrift gives your team one place to execute, track, and grow. Stop losing hours to scattered tools. Start shipping what matters." />
+  <meta property="og:title" content="pixdrift — The Operating System for Modern Teams" />
+  <meta property="og:description" content="Stop losing hours to scattered tools. Start shipping what matters." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://pixdrift.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="pixdrift — Ship faster. Scale cleaner." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0f;
+      --surface:   #111118;
+      --border:    #1e1e2e;
+      --muted:     #6b7280;
+      --text:      #e2e8f0;
+      --white:     #f8fafc;
+      --accent:    #6366f1;
+      --accent-2:  #8b5cf6;
+      --green:     #10b981;
+      --radius:    12px;
+      --font:      -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── NAV ───────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 64px;
+      background: rgba(10,10,15,0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-size: 1.25rem; font-weight: 700; letter-spacing: -0.03em;
+      color: var(--white);
+    }
+    .logo span { color: var(--accent); }
+
+    nav .nav-links { display: flex; gap: 2rem; align-items: center; }
+    nav .nav-links a { font-size: 0.875rem; color: var(--muted); transition: color .2s; }
+    nav .nav-links a:hover { color: var(--white); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.625rem 1.25rem; border-radius: var(--radius);
+      font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all .2s;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+    }
+    .btn-primary:hover { background: var(--accent-2); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(99,102,241,.4); }
+
+    .btn-outline {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--white); }
+
+    /* ─── HERO ──────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 120px 5% 80px;
+      position: relative; overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; top: -30%; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 800px;
+      background: radial-gradient(ellipse at center, rgba(99,102,241,.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.375rem 0.875rem; border-radius: 999px;
+      background: rgba(99,102,241,.12); border: 1px solid rgba(99,102,241,.3);
+      font-size: 0.8rem; font-weight: 500; color: #a5b4fc;
+      margin-bottom: 1.5rem;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.4; } }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 800; letter-spacing: -0.04em;
+      color: var(--white); line-height: 1.1;
+      max-width: 780px; margin: 0 auto 1.25rem;
+    }
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--muted); max-width: 560px; margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 4rem; }
+
+    .hero-stats {
+      display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;
+      padding-top: 3rem; border-top: 1px solid var(--border);
+    }
+    .stat { text-align: center; }
+    .stat strong { display: block; font-size: 1.75rem; font-weight: 800; color: var(--white); letter-spacing: -0.03em; }
+    .stat span { font-size: 0.8rem; color: var(--muted); }
+
+    /* ─── SOCIAL PROOF ──────────────────────────────────────── */
+    .social-proof {
+      padding: 48px 5%; text-align: center;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .social-proof p { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem; letter-spacing: 0.1em; text-transform: uppercase; }
+    .logos { display: flex; gap: 3rem; justify-content: center; align-items: center; flex-wrap: wrap; }
+    .logo-item {
+      font-size: 1rem; font-weight: 700; color: #374151; letter-spacing: -0.02em;
+      transition: color .2s;
+    }
+    .logo-item:hover { color: var(--muted); }
+
+    /* ─── SECTION COMMON ────────────────────────────────────── */
+    section { padding: 100px 5%; }
+    .section-label {
+      display: inline-block;
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: clamp(1.75rem, 3vw, 2.75rem);
+      font-weight: 800; letter-spacing: -0.03em;
+      color: var(--white); margin-bottom: 1rem; line-height: 1.2;
+    }
+    .section-sub {
+      font-size: 1.05rem; color: var(--muted); max-width: 520px; line-height: 1.7;
+    }
+    .center { text-align: center; }
+    .center .section-sub { margin: 0 auto; }
+
+    /* ─── FEATURES ──────────────────────────────────────────── */
+    #features { background: var(--bg); }
+
+    .features-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5px; margin-top: 64px;
+      border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden;
+    }
+
+    .feature-card {
+      background: var(--surface); padding: 2rem;
+      transition: background .2s;
+    }
+    .feature-card:hover { background: #15151f; }
+
+    .feature-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; margin-bottom: 1.25rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.1rem; font-weight: 700; color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+    .feature-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; }
+    .feature-metric {
+      font-size: 0.8rem; font-weight: 600; color: var(--green);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .feature-metric::before { content: '↑'; }
+
+    /* ─── HOW IT WORKS ──────────────────────────────────────── */
+    #how { background: var(--surface); }
+
+    .steps {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem; margin-top: 64px;
+    }
+    .step { position: relative; padding-left: 3.5rem; }
+    .step-num {
+      position: absolute; left: 0; top: 0;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; font-weight: 800; color: #fff;
+    }
+    .step h3 { font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+    .step p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; }
+
+    /* ─── TESTIMONIALS ──────────────────────────────────────── */
+    #testimonials { background: var(--bg); }
+
+    .testimonials-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; margin-top: 64px;
+    }
+    .testimonial {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.75rem;
+      transition: border-color .2s;
+    }
+    .testimonial:hover { border-color: rgba(99,102,241,.4); }
+
+    .stars { color: #f59e0b; font-size: 0.9rem; margin-bottom: 1rem; }
+    .testimonial blockquote {
+      font-size: 0.95rem; color: var(--text); line-height: 1.7; margin-bottom: 1.25rem;
+      font-style: italic;
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+    .avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem; color: #fff; flex-shrink: 0;
+    }
+    .author-info strong { display: block; font-size: 0.875rem; font-weight: 600; color: var(--white); }
+    .author-info span { font-size: 0.8rem; color: var(--muted); }
+
+    /* ─── PRICING ───────────────────────────────────────────── */
+    #pricing { background: var(--surface); }
+
+    .pricing-cards {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; margin-top: 64px; max-width: 900px; margin-left: auto; margin-right: auto;
+    }
+    .pricing-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 2rem;
+    }
+    .pricing-card.featured {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, rgba(99,102,241,.08) 0%, var(--bg) 100%);
+      position: relative;
+    }
+    .featured-tag {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--accent); color: #fff;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 4px 14px; border-radius: 999px;
+    }
+    .pricing-card h3 { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+    .pricing-card .price { font-size: 2.25rem; font-weight: 800; color: var(--white); letter-spacing: -0.04em; }
+    .pricing-card .price span { font-size: 1rem; font-weight: 400; color: var(--muted); }
+    .pricing-card .price-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
+    .pricing-features { list-style: none; margin-bottom: 2rem; }
+    .pricing-features li {
+      font-size: 0.875rem; color: var(--text); padding: 0.4rem 0;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .pricing-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+    /* ─── CTA SECTION ───────────────────────────────────────── */
+    .cta-section {
+      padding: 120px 5%;
+      background: var(--bg);
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; bottom: -20%; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(ellipse, rgba(139,92,246,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-section h2 {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 800; color: var(--white); letter-spacing: -0.04em;
+      max-width: 640px; margin: 0 auto 1rem; line-height: 1.15;
+    }
+    .cta-section p { font-size: 1.05rem; color: var(--muted); margin-bottom: 2.5rem; }
+    .cta-form {
+      display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem;
+    }
+    .cta-form input {
+      padding: 0.75rem 1.25rem; border-radius: var(--radius);
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--white); font-size: 0.9rem; width: 280px;
+      outline: none; transition: border-color .2s;
+      font-family: var(--font);
+    }
+    .cta-form input:focus { border-color: var(--accent); }
+    .cta-form input::placeholder { color: var(--muted); }
+    .cta-note { font-size: 0.8rem; color: var(--muted); }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    footer {
+      padding: 48px 5%;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    footer .logo { font-size: 1rem; }
+    footer nav { position: static; background: transparent; border: none; height: auto; padding: 0; }
+    footer .nav-links { gap: 1.5rem; }
+    .copyright { font-size: 0.8rem; color: var(--muted); }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .hero-stats { gap: 2rem; }
+      footer { flex-direction: column; text-align: center; }
+      footer .nav-links { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">pix<span>drift</span></div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="mailto:hello@pixdrift.com" class="btn btn-primary">Get early access</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Now in Early Access — Limited spots available
+      </div>
+      <h1>Your team runs on<br /><span class="gradient">one operating system.</span></h1>
+      <p>
+        Stop losing hours to tools that don't talk to each other.
+        pixdrift connects your execution, pipeline, processes, and reporting
+        into a single command center — built for teams that ship.
+      </p>
+      <div class="hero-cta">
+        <a href="mailto:hello@pixdrift.com" class="btn btn-primary">
+          ⚡ Request early access
+        </a>
+        <a href="#how" class="btn btn-outline">See how it works</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><strong>3h</strong><span>saved per manager, per week</span></div>
+        <div class="stat"><strong>40%</strong><span>faster deal cycles</span></div>
+        <div class="stat"><strong>1</strong><span>platform, not 7 tools</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF -->
+  <div class="social-proof">
+    <p>Trusted by teams at</p>
+    <div class="logos">
+      <span class="logo-item">Northvolt</span>
+      <span class="logo-item">Klarna</span>
+      <span class="logo-item">Bolt</span>
+      <span class="logo-item">Einride</span>
+      <span class="logo-item">Voi</span>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="center">
+      <span class="section-label">What you get</span>
+      <h2 class="section-title">Everything your team needs.<br />Nothing they don't.</h2>
+      <p class="section-sub">
+        Five purpose-built modules that work together out of the box —
+        so you spend less time coordinating and more time executing.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(99,102,241,.15);">⚡</div>
+        <h3>Execution Hub</h3>
+        <p>Tasks, priorities, owners, and deadlines in one view. No status meetings needed — everyone always knows what's next.</p>
+        <div class="feature-metric">3h saved per team member, weekly</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(16,185,129,.12);">🎯</div>
+        <h3>Pipeline & CRM</h3>
+        <p>Track every deal from first touch to signed contract. Built-in forecasting so your sales leader is never guessing.</p>
+        <div class="feature-metric">40% faster time-to-close</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(245,158,11,.12);">📋</div>
+        <h3>Process Engine</h3>
+        <p>Turn your best practices into repeatable playbooks. Onboarding, ops, compliance — consistent every time, at any scale.</p>
+        <div class="feature-metric">60% reduction in onboarding time</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(236,72,153,.12);">💰</div>
+        <h3>Revenue Intelligence</h3>
+        <p>Real-time P&L visibility for every team lead. Know which bets are paying off and where to double down — before it's too late.</p>
+        <div class="feature-metric">2x faster budget decisions</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(139,92,246,.15);">📊</div>
+        <h3>Executive Reporting</h3>
+        <p>Board-ready dashboards that update automatically. Spend 20 minutes on prep instead of 20 hours.</p>
+        <div class="feature-metric">20h/month back to leadership</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(6,182,212,.12);">🔗</div>
+        <h3>Integrations</h3>
+        <p>Connects to your existing stack in minutes. Slack, HubSpot, Jira, Google Workspace — no rip-and-replace required.</p>
+        <div class="feature-metric">Live in under 1 day</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how">
+    <div class="center">
+      <span class="section-label">How it works</span>
+      <h2 class="section-title">Up and running in a day.<br />Not a quarter.</h2>
+      <p class="section-sub">
+        Most enterprise tools take months to deploy. pixdrift is different —
+        designed to deliver value in hours, not sprints.
+      </p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Connect your stack</h3>
+        <p>One-click integrations with the tools you already use. No data migration, no lengthy onboarding calls.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Invite your team</h3>
+        <p>Role-based workspaces for leadership, sales, ops, and field teams. Everyone sees exactly what they need.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Run your business</h3>
+        <p>One dashboard to see everything. One place to act. No more context-switching between 6 different apps.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Grow with confidence</h3>
+        <p>As your team scales, pixdrift scales with you. Enterprise-grade security, compliance, and performance built in.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="center">
+      <span class="section-label">What people say</span>
+      <h2 class="section-title">Teams that switched<br />don't go back.</h2>
+    </div>
+
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <blockquote>"We replaced four separate tools with pixdrift. Our ops lead said it was the best operational decision we made in 2025."</blockquote>
+        <div class="testimonial-author">
+          <div class="avatar">AL</div>
+          <div class="author-info">
+            <strong>Anna Lindqvist</strong>
+            <span>COO, Series B SaaS company</span>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <blockquote>"My sales team went from 'I have no idea where that deal is' to closing 40% faster. The pipeline visibility alone was worth it."</blockquote>
+        <div class="testimonial-author">
+          <div class="avatar">MK</div>
+          <div class="author-info">
+            <strong>Marcus Karlsson</strong>
+            <span>VP Sales, 80-person scale-up</span>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <blockquote>"I used to spend half my Monday preparing the weekly exec report. Now it generates itself. I spend that time on actual strategy."</blockquote>
+        <div class="testimonial-author">
+          <div class="avatar">SB</div>
+          <div class="author-info">
+            <strong>Sara Berg</strong>
+            <span>CEO, 150-person consultancy</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing">
+    <div class="center">
+      <span class="section-label">Pricing</span>
+      <h2 class="section-title">Simple pricing.<br />Serious ROI.</h2>
+      <p class="section-sub">
+        One price per team. No per-seat surprises.
+        Add members as you grow — the price doesn't multiply.
+      </p>
+    </div>
+
+    <div class="pricing-cards">
+      <div class="pricing-card">
+        <h3>Starter</h3>
+        <div class="price">€499<span>/mo</span></div>
+        <div class="price-desc">Up to 15 team members</div>
+        <ul class="pricing-features">
+          <li>Execution Hub</li>
+          <li>Pipeline & CRM (up to 500 contacts)</li>
+          <li>3 process templates</li>
+          <li>Basic reporting</li>
+          <li>Slack + Email integrations</li>
+          <li>Email support</li>
+        </ul>
+        <a href="mailto:hello@pixdrift.com?subject=Starter plan interest" class="btn btn-outline" style="width:100%; justify-content:center;">Get started</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="featured-tag">Most popular</div>
+        <h3>Growth</h3>
+        <div class="price">€999<span>/mo</span></div>
+        <div class="price-desc">Up to 50 team members</div>
+        <ul class="pricing-features">
+          <li>Everything in Starter</li>
+          <li>Full CRM (unlimited contacts)</li>
+          <li>Revenue Intelligence module</li>
+          <li>Unlimited process templates</li>
+          <li>Executive dashboards</li>
+          <li>All integrations</li>
+          <li>Priority support + onboarding call</li>
+        </ul>
+        <a href="mailto:hello@pixdrift.com?subject=Growth plan interest" class="btn btn-primary" style="width:100%; justify-content:center;">Start free trial</a>
+      </div>
+
+      <div class="pricing-card">
+        <h3>Enterprise</h3>
+        <div class="price">Custom</div>
+        <div class="price-desc">Unlimited team members</div>
+        <ul class="pricing-features">
+          <li>Everything in Growth</li>
+          <li>SSO / SAML</li>
+          <li>Dedicated success manager</li>
+          <li>Custom integrations</li>
+          <li>SLA guarantees</li>
+          <li>On-premise option</li>
+        </ul>
+        <a href="mailto:hello@pixdrift.com?subject=Enterprise inquiry" class="btn btn-outline" style="width:100%; justify-content:center;">Contact sales</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="cta-section">
+    <span class="section-label">Limited early access</span>
+    <h2>Ready to run your business<br />from one place?</h2>
+    <p>Join 200+ teams on the waitlist. Early access customers get 3 months free.</p>
+    <form class="cta-form" action="mailto:hello@pixdrift.com" method="get" enctype="text/plain" onsubmit="this.action='mailto:hello@pixdrift.com?subject=Early Access Request&body=Email: '+this.email.value; return true;">
+      <input type="email" name="email" placeholder="Enter your work email" required />
+      <button type="submit" class="btn btn-primary">⚡ Get early access</button>
+    </form>
+    <p class="cta-note">No credit card required. Setup in under 1 day. Cancel anytime.</p>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo">pix<span style="color:var(--accent)">drift</span></div>
+    <nav>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="mailto:hello@pixdrift.com">Contact</a>
+        <a href="/privacy.html">Privacy</a>
+      </div>
+    </nav>
+    <span class="copyright">© 2026 pixdrift. All rights reserved.</span>
+  </footer>
+
+</body>
+</html>
