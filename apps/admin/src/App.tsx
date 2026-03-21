@@ -46,7 +46,7 @@ const globalStyles = `
   .card-animate { animation: slideUp 0.2s ease forwards; }
   .row-hover:hover { background: ${C.fill}; border-radius: 6px; transition: background 0.1s ease; }
   .nav-btn { transition: all 0.12s ease; }
-  .nav-btn:hover { background: ${C.fill} !important; }
+  .nav-btn:hover:not(.active-nav) { background: rgba(60,60,67,0.08) !important; }
   .btn-primary { transition: all 0.15s ease; }
   .btn-primary:hover { background: #0066D6 !important; transform: translateY(-1px); }
   .btn-primary:active { transform: scale(0.98); }
@@ -859,12 +859,12 @@ export default function App() {
       <style>{globalStyles}</style>
       <div style={{
         display: "flex", minHeight: "100vh", background: C.bg,
-        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial,, 'SF Pro Display', 'Helvetica Neue', sans-serif",
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif",
         color: C.text, WebkitFontSmoothing: "antialiased",
       }}>
         {/* Sidebar */}
         <div style={{
-          width: 256, background: C.surface,
+          width: 260, background: "#FFFFFF",
           borderRight: `0.5px solid ${C.border}`,
           display: "flex", flexDirection: "column",
           position: "fixed", top: 0, left: 0, bottom: 0, zIndex: 100,
@@ -904,10 +904,10 @@ export default function App() {
                   onClick={() => setView(item.id)}
                   style={{
                     display: "flex", alignItems: "center", gap: 8,
-                    padding: "0 8px", height: 32, borderRadius: 6, border: "none",
-                    background: active ? C.blue + "14" : "transparent",
-                    color: active ? C.blue : C.text,
-                    fontSize: 13, fontWeight: active ? 500 : 400,
+                    padding: "0 12px", height: 44, borderRadius: 10, border: "none",
+                    background: active ? "#007AFF" : "transparent",
+                    color: active ? "#FFFFFF" : "#000000",
+                    fontSize: 17, fontWeight: active ? 600 : 400, letterSpacing: "-0.41px",
                     cursor: "pointer", textAlign: "left", width: "100%",
                     fontFamily: "inherit",
                   }}
@@ -941,16 +941,15 @@ export default function App() {
         </div>
 
         {/* Main */}
-        <div style={{ marginLeft: 220, flex: 1, display: "flex", flexDirection: "column" }}>
+        <div style={{ marginLeft: 260, flex: 1, display: "flex", flexDirection: "column" }}>
           <div style={{
-            background: "rgba(255,255,255,0.85)",
-            backdropFilter: "blur(20px)",
+            background: "rgba(255,255,255,0.92)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
             borderBottom: `0.5px solid ${C.border}`,
             padding: "0 24px", height: 52,
             display: "flex", alignItems: "center", justifyContent: "space-between",
             position: "sticky", top: 0, zIndex: 50,
           }}>
-            <div style={{ fontSize: 17, fontWeight: 600, color: C.text }}>
+            <div style={{ fontSize: 17, fontWeight: 600, color: "#000000", letterSpacing: "-0.41px" }}>
               {current?.label}
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
