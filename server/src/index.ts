@@ -91,7 +91,43 @@ const PORT = Number(process.env.PORT) || 3001;
 // Middleware
 // ---------------------------------------------------------------------------
 app.use(helmet());
-app.use(cors({ origin: process.env.CORS_ORIGIN || "*", credentials: true }));
+// CORS — support both legacy pixdrift.com origins and the live *.bc.pixdrift.com subdomains.
+// CORS_ORIGIN env can be a comma-separated list of allowed origins.
+// Fix 2026-03-21: Added *.bc.pixdrift.com which hosts the actual production frontends.
+const corsOrigins: string[] = (process.env.CORS_ORIGIN || "")
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+
+// Always include the known production app origins as fallback
+const DEFAULT_ORIGINS = [
+  "https://pixdrift.com",
+  "https://app.bc.pixdrift.com",
+  "https://admin.bc.pixdrift.com",
+  "https://crm.bc.pixdrift.com",
+  "https://sales.bc.pixdrift.com",
+  "https://workstation.pixdrift.com",
+  "https://admin.pixdrift.com",
+  "https://crm.pixdrift.com",
+  "https://sales.pixdrift.com",
+];
+const allowedOrigins = corsOrigins.length > 0
+  ? [...new Set([...corsOrigins, ...DEFAULT_ORIGINS])]
+  : (process.env.NODE_ENV === "production" ? DEFAULT_ORIGINS : ["*"]);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (server-to-server, curl, Postman)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      callback(new Error(`CORS: Origin '${origin}' not allowed`));
+    },
+    credentials: true,
+  })
+);
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 
@@ -255,14 +291,13 @@ app.use(async (req: Request, _res: Response, next: NextFunction) => {
               full_name: dbUserByEmail.full_name,
             };
           } else {
-            // No matching user at all - set with null org_id
-            (req as any).user = {
-              id: user.id,
-              org_id: null,
-              role: "ADMIN",
-              email: user.email,
-              full_name: null,
-            };
+            // No matching user at all — do NOT grant any role.
+            // Returning null forces individual auth() guards to reject with 401.
+            // SECURITY: The previous code assigned role:"ADMIN" + org_id:null here,
+            // which could allow an authenticated-but-unregistered Supabase user to
+            // bypass role checks and potentially read cross-org data. Fixed 2026-03-21.
+            console.warn(`Auth warning: Supabase user ${user.id} (${user.email}) has no matching users row — treating as unauthenticated`);
+            (req as any).user = null;
           }
         }
       } else {
