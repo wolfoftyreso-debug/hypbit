@@ -233,6 +233,10 @@ router.get("/reports/sie4", async (req: Request, res: Response) => {
 // ---------------------------------------------------------------------------
 router.get("/reports/income-statement", async (req: Request, res: Response) => {
   try {
+    // SECURITY: enforce tenant isolation — user must be authenticated and scoped to their org
+    const user = (req as any).user;
+    if (!user?.org_id) return res.status(401).json({ error: "Unauthorized" });
+
     const year = Number(req.query.year) || new Date().getFullYear();
     const startDate = `${year}-01-01`;
     const endDate = `${year}-12-31`;
@@ -240,6 +244,7 @@ router.get("/reports/income-statement", async (req: Request, res: Response) => {
     const { data: entries, error } = await supabase
       .from("journal_entries")
       .select("account_number, account_name, debit, credit")
+      .eq("org_id", user.org_id)
       .gte("date", startDate)
       .lte("date", endDate);
 

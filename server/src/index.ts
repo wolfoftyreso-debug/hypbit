@@ -49,6 +49,7 @@ import seoRouter from "./seo";
 import bankingRouter from "./banking";
 import spaghettiRouter from "./spaghetti";
 import spatialRouter from "./spatial-flow";
+import consumablesRouter from "./consumables";
 
 // ---------------------------------------------------------------------------
 // Customer Interaction Engine
@@ -375,6 +376,7 @@ app.use("/api/notifications", notificationsRouter);
 app.use("/api/learning", learningRouter);
 app.use("/api/spaghetti", spaghettiRouter); // Lean spaghetti diagram & helikopterperspektiv
 app.use("/api/spatial", spatialRouter);   // Spatial Flow Intelligence — zones, spaghetti, friction
+app.use("/api/consumables", consumablesRouter); // Consumables Management — operational cost control
 app.use(bankingRouter); // Banking: /api/banking/* + /api/integrations/fortnox/* + /api/integrations/visma/*
 
 // ---------------------------------------------------------------------------

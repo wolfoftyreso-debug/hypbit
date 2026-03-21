@@ -29,13 +29,13 @@ const router = Router();
 const DEMO_ORG_ID = "00000000-0000-0000-0000-000000000001";
 
 const DEMO_ZONES = [
-  { id: "z1", org_id: DEMO_ORG_ID, name: "Lift 1",          zone_type: "LIFT",          x_position: 10, y_position: 20, width: 8,  height: 12, color: "#007AFF", capacity: 1, is_active: true },
-  { id: "z2", org_id: DEMO_ORG_ID, name: "Lift 2",          zone_type: "LIFT",          x_position: 25, y_position: 20, width: 8,  height: 12, color: "#007AFF", capacity: 1, is_active: true },
-  { id: "z3", org_id: DEMO_ORG_ID, name: "Lift 3",          zone_type: "LIFT",          x_position: 40, y_position: 20, width: 8,  height: 12, color: "#007AFF", capacity: 1, is_active: true },
-  { id: "z4", org_id: DEMO_ORG_ID, name: "Verktygsrum",     zone_type: "TOOL_ROOM",     x_position: 60, y_position: 5,  width: 12, height: 10, color: "#FF9500", capacity: 3, is_active: true },
-  { id: "z5", org_id: DEMO_ORG_ID, name: "Reservdelslager", zone_type: "PARTS_STORAGE", x_position: 60, y_position: 20, width: 12, height: 15, color: "#34C759", capacity: 2, is_active: true },
-  { id: "z6", org_id: DEMO_ORG_ID, name: "Reception",       zone_type: "RECEPTION",     x_position: 5,  y_position: 5,  width: 10, height: 10, color: "#AF52DE", capacity: 2, is_active: true },
-  { id: "z7", org_id: DEMO_ORG_ID, name: "Besiktning",      zone_type: "INSPECTION",    x_position: 10, y_position: 40, width: 15, height: 10, color: "#FF3B30", capacity: 2, is_active: true },
+  { id: "11111111-0001-0000-0000-000000000001", org_id: DEMO_ORG_ID, name: "Lift 1",          zone_type: "LIFT",          x_position: 10, y_position: 20, width: 8,  height: 12, color: "#007AFF", capacity: 1, is_active: true },
+  { id: "11111111-0002-0000-0000-000000000001", org_id: DEMO_ORG_ID, name: "Lift 2",          zone_type: "LIFT",          x_position: 25, y_position: 20, width: 8,  height: 12, color: "#007AFF", capacity: 1, is_active: true },
+  { id: "11111111-0003-0000-0000-000000000001", org_id: DEMO_ORG_ID, name: "Lift 3",          zone_type: "LIFT",          x_position: 40, y_position: 20, width: 8,  height: 12, color: "#007AFF", capacity: 1, is_active: true },
+  { id: "11111111-0004-0000-0000-000000000001", org_id: DEMO_ORG_ID, name: "Verktygsrum",     zone_type: "TOOL_ROOM",     x_position: 60, y_position: 5,  width: 12, height: 10, color: "#FF9500", capacity: 3, is_active: true },
+  { id: "11111111-0005-0000-0000-000000000001", org_id: DEMO_ORG_ID, name: "Reservdelslager", zone_type: "PARTS_STORAGE", x_position: 60, y_position: 20, width: 12, height: 15, color: "#34C759", capacity: 2, is_active: true },
+  { id: "11111111-0006-0000-0000-000000000001", org_id: DEMO_ORG_ID, name: "Reception",       zone_type: "RECEPTION",     x_position: 5,  y_position: 5,  width: 10, height: 10, color: "#AF52DE", capacity: 2, is_active: true },
+  { id: "11111111-0007-0000-0000-000000000001", org_id: DEMO_ORG_ID, name: "Besiktning",      zone_type: "INSPECTION",    x_position: 10, y_position: 40, width: 15, height: 10, color: "#FF3B30", capacity: 2, is_active: true },
 ];
 
 // Zone center coordinates for spaghetti diagram
@@ -64,23 +64,23 @@ function generateDemoEvents() {
   baseTime.setHours(8, 0, 0, 0);
 
   const andersSequence = [
-    { zone_id: "z1", zone_name: "Lift 1",          event_type: "TASK_START",    minutes: 0  },
-    { zone_id: "z4", zone_name: "Verktygsrum",      event_type: "TOOL_CHECKOUT", minutes: 15 },
-    { zone_id: "z1", zone_name: "Lift 1",           event_type: "ENTER",         minutes: 18 },
-    { zone_id: "z5", zone_name: "Reservdelslager",  event_type: "PARTS_PICKUP",  minutes: 45 },
-    { zone_id: "z1", zone_name: "Lift 1",           event_type: "ENTER",         minutes: 50 },
-    { zone_id: "z4", zone_name: "Verktygsrum",      event_type: "TOOL_CHECKOUT", minutes: 80 },
-    { zone_id: "z1", zone_name: "Lift 1",           event_type: "ENTER",         minutes: 83 },
-    { zone_id: "z4", zone_name: "Verktygsrum",      event_type: "TOOL_CHECKIN",  minutes: 110 },
-    { zone_id: "z7", zone_name: "Besiktning",       event_type: "INSPECTION",    minutes: 115 },
+    { zone_id: "11111111-0001-0000-0000-000000000001", zone_name: "Lift 1",          event_type: "TASK_START",    minutes: 0   },
+    { zone_id: "11111111-0004-0000-0000-000000000001", zone_name: "Verktygsrum",     event_type: "TOOL_CHECKOUT", minutes: 15  },
+    { zone_id: "11111111-0001-0000-0000-000000000001", zone_name: "Lift 1",          event_type: "ENTER",         minutes: 18  },
+    { zone_id: "11111111-0005-0000-0000-000000000001", zone_name: "Reservdelslager", event_type: "PARTS_PICKUP",  minutes: 45  },
+    { zone_id: "11111111-0001-0000-0000-000000000001", zone_name: "Lift 1",          event_type: "ENTER",         minutes: 50  },
+    { zone_id: "11111111-0004-0000-0000-000000000001", zone_name: "Verktygsrum",     event_type: "TOOL_CHECKOUT", minutes: 80  },
+    { zone_id: "11111111-0001-0000-0000-000000000001", zone_name: "Lift 1",          event_type: "ENTER",         minutes: 83  },
+    { zone_id: "11111111-0004-0000-0000-000000000001", zone_name: "Verktygsrum",     event_type: "TOOL_CHECKIN",  minutes: 110 },
+    { zone_id: "11111111-0007-0000-0000-000000000001", zone_name: "Besiktning",      event_type: "INSPECTION",    minutes: 115 },
   ];
 
   const mariaSequence = [
-    { zone_id: "z2", zone_name: "Lift 2",           event_type: "TASK_START",    minutes: 0  },
-    { zone_id: "z5", zone_name: "Reservdelslager",  event_type: "PARTS_PICKUP",  minutes: 30 },
-    { zone_id: "z2", zone_name: "Lift 2",           event_type: "ENTER",         minutes: 35 },
-    { zone_id: "z7", zone_name: "Besiktning",       event_type: "INSPECTION",    minutes: 90 },
-    { zone_id: "z6", zone_name: "Reception",        event_type: "HANDOVER",      minutes: 105 },
+    { zone_id: "11111111-0002-0000-0000-000000000001", zone_name: "Lift 2",          event_type: "TASK_START",    minutes: 0   },
+    { zone_id: "11111111-0005-0000-0000-000000000001", zone_name: "Reservdelslager", event_type: "PARTS_PICKUP",  minutes: 30  },
+    { zone_id: "11111111-0002-0000-0000-000000000001", zone_name: "Lift 2",          event_type: "ENTER",         minutes: 35  },
+    { zone_id: "11111111-0007-0000-0000-000000000001", zone_name: "Besiktning",      event_type: "INSPECTION",    minutes: 90  },
+    { zone_id: "11111111-0006-0000-0000-000000000001", zone_name: "Reception",       event_type: "HANDOVER",      minutes: 105 },
   ];
 
   const events: Array<{
@@ -98,9 +98,9 @@ function generateDemoEvents() {
   let evId = 1;
   for (const ev of andersSequence) {
     events.push({
-      id: `demo-e${evId++}`,
+      id: `22222222-0099-0000-0000-0000000${String(evId).padStart(5, "0")}`,
       org_id: DEMO_ORG_ID,
-      user_id: "u-anders",
+      user_id: "22222222-0001-0000-0000-000000000001",
       zone_id: ev.zone_id,
       zone_name: ev.zone_name,
       event_type: ev.event_type,
@@ -111,9 +111,9 @@ function generateDemoEvents() {
   }
   for (const ev of mariaSequence) {
     events.push({
-      id: `demo-e${evId++}`,
+      id: `22222222-0099-0000-0000-0000000${String(evId).padStart(5, "0")}`,
       org_id: DEMO_ORG_ID,
-      user_id: "u-maria",
+      user_id: "22222222-0002-0000-0000-000000000001",
       zone_id: ev.zone_id,
       zone_name: ev.zone_name,
       event_type: ev.event_type,
@@ -765,8 +765,8 @@ router.get("/friction", async (req: Request, res: Response) => {
           severity: "HIGH",
           title: "Anders besökte Verktygsrum 8 gånger",
           description: "Anders besökte Verktygsrum 8 gånger under arbetsorder WO-001.",
-          affected_user_id: "u-anders",
-          affected_zone_id: "z4",
+          affected_user_id: "22222222-0001-0000-0000-000000000001",
+          affected_zone_id: "11111111-0004-0000-0000-000000000001",
           occurrences: 8,
           estimated_minutes_lost_per_day: 18,
           suggestion: "Flytta momentnyckel till Lift 1 förvaringsenhet → sparar ~18 min/dag",
@@ -780,8 +780,8 @@ router.get("/friction", async (req: Request, res: Response) => {
           severity: "MEDIUM",
           title: "Verktygsrum 28m från primär arbetszon",
           description: "Verktygsrum är placerat 28m från Lift 1 (primär arbetszon för Anders).",
-          affected_user_id: "u-anders",
-          affected_zone_id: "z4",
+          affected_user_id: "22222222-0001-0000-0000-000000000001",
+          affected_zone_id: "11111111-0004-0000-0000-000000000001",
           occurrences: 8,
           estimated_minutes_lost_per_day: 21,
           suggestion: "Placera en verktygsstation vid Lift 1–3 med de 10 vanligaste verktygen.",
@@ -795,7 +795,7 @@ router.get("/friction", async (req: Request, res: Response) => {
           severity: "MEDIUM",
           title: "Hög total förflyttning (320m idag)",
           description: "Anders gick ~320m med 9 zonskiften under en arbetsdag.",
-          affected_user_id: "u-anders",
+          affected_user_id: "22222222-0001-0000-0000-000000000001",
           affected_zone_id: null,
           occurrences: 9,
           estimated_minutes_lost_per_day: 4,
