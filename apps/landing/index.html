@@ -21,12 +21,14 @@
   <link rel="canonical" href="https://pixdrift.com" />
 
   <!-- hreflang — geo-aware content -->
-  <link rel="alternate" hreflang="en" href="https://pixdrift.com/" />
+  <link rel="alternate" hreflang="x-default" href="https://pixdrift.com/" />
+  <link rel="alternate" hreflang="en" href="https://pixdrift.com/?lang=en" />
   <link rel="alternate" hreflang="sv" href="https://pixdrift.com/?lang=sv" />
   <link rel="alternate" hreflang="de" href="https://pixdrift.com/?lang=de" />
-  <link rel="alternate" hreflang="no" href="https://pixdrift.com/?lang=no" />
   <link rel="alternate" hreflang="fr" href="https://pixdrift.com/?lang=fr" />
-  <link rel="alternate" hreflang="x-default" href="https://pixdrift.com/" />
+  <link rel="alternate" hreflang="nl" href="https://pixdrift.com/?lang=nl" />
+  <link rel="alternate" hreflang="da" href="https://pixdrift.com/?lang=da" />
+  <link rel="alternate" hreflang="fi" href="https://pixdrift.com/?lang=fi" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
@@ -602,9 +604,11 @@
         <span class="lang-divider">/</span>
         <a href="#" class="lang-option" data-lang="de">DE</a>
         <span class="lang-divider">/</span>
-        <a href="#" class="lang-option" data-lang="no">NO</a>
-        <span class="lang-divider">/</span>
         <a href="#" class="lang-option" data-lang="fr">FR</a>
+        <span class="lang-divider">/</span>
+        <a href="#" class="lang-option" data-lang="nl">NL</a>
+        <span class="lang-divider">/</span>
+        <a href="#" class="lang-option" data-lang="da">DA</a>
       </div>
       <a href="https://app.bc.pixdrift.com" style="font-size:14px;color:var(--text-2)">Sign in</a>
       <a href="mailto:demo@pixdrift.com?subject=Deployment+Request" class="btn-nav">Start deployment</a>
@@ -1003,6 +1007,18 @@
       booking:     ['Calendly', 'SimplyBook', 'Planity'],
       payments:    ['Stripe', 'PayPal', 'Lyra', 'Mollie'],
     },
+    benelux: {
+      accounting:  ['Exact Online', 'Twinfield', 'Yuki', 'AFAS'],
+      crm:         ['HubSpot', 'Salesforce', 'Teamleader', 'Pipedrive'],
+      dms:         ['CDK', 'Autoline', 'Kerridge', 'Automaster'],
+      erp:         ['AFAS', 'Microsoft Dynamics', 'SAP', 'Unit4'],
+      project:     ['Asana', 'Monday.com', 'Jira'],
+      hr:          ['AFAS', 'Nmbrs', 'BambooHR'],
+      docs:        ['Notion', 'Google Workspace', 'Confluence'],
+      iso:         ['Cority', 'ETQ', 'Ideagen'],
+      booking:     ['Calendly', 'SimplyBook', 'Appointy'],
+      payments:    ['Mollie', 'iDEAL', 'Stripe', 'PayPal'],
+    },
     global: {
       accounting:  ['QuickBooks', 'Xero', 'Sage', 'Wave'],
       crm:         ['Salesforce', 'HubSpot', 'Pipedrive', 'Zoho'],
@@ -1023,6 +1039,7 @@
     en: 'us_uk',
     de: 'germany', at: 'germany', ch: 'germany',
     fr: 'france', be: 'france',
+    nl: 'benelux',
   };
 
   // ── Per-locale content (pricing, labels, DMS replace title) ──────────
@@ -1034,6 +1051,9 @@
       hero_proof: 'ISO 9001 · Swedac · Personalliggare · €299/month flat',
       dms_replace_title: 'Replacing Winassist or Automaster?',
       competitors_price_range: '€500–2,000/mo',
+      hero_h1: 'Din verkstad.<br><em>Helt operativ.</em>',
+      hero_sub: 'Ersätt ditt DMS, CRM, kvalitetssystem och efterlevnadsverktyg med en plattform.',
+      nav_cta: 'Starta driftsättning',
       stack_items: [
         { system: 'Winassist / Automaster', category: 'DMS',        cost: '€600/mo' },
         { system: 'Fortnox',               category: 'Accounting',  cost: '€150/mo' },
@@ -1049,6 +1069,9 @@
       hero_proof: 'ISO 9001 · Compliant · Vipps ready · €299/month flat',
       dms_replace_title: 'Replacing Automaster or CDK?',
       competitors_price_range: '€500–2,000/mo',
+      hero_h1: 'Ditt verksted.<br><em>Fullt operativt.</em>',
+      hero_sub: 'Erstatt ditt DMS, CRM, kvalitetssystem og overholdelsesverktøy med én plattform.',
+      nav_cta: 'Start utrulling',
       stack_items: [
         { system: 'Automaster / CDK',  category: 'DMS',        cost: '€600/mo' },
         { system: 'Tripletex',         category: 'Accounting', cost: '€120/mo' },
@@ -1064,6 +1087,9 @@
       hero_proof: 'ISO 9001 · DSGVO · DATEV-Integration · €299/month',
       dms_replace_title: 'Replacing Autoline or CDK?',
       competitors_price_range: '€600–2,500/mo',
+      hero_h1: 'Ihre Werkstatt.<br><em>Vollständig operativ.</em>',
+      hero_sub: 'Ersetzen Sie Ihr DMS, CRM, Qualitätssystem und Compliance-Tools durch eine Plattform.',
+      nav_cta: 'Deployment starten',
       stack_items: [
         { system: 'Autoline / CDK',    category: 'DMS',        cost: '€700/mo' },
         { system: 'DATEV',             category: 'Accounting', cost: '€200/mo' },
@@ -1079,6 +1105,9 @@
       hero_proof: 'ISO 9001 · RGPD · Stripe · €299/month',
       dms_replace_title: 'Replacing CDK?',
       competitors_price_range: '€500–2,200/mo',
+      hero_h1: 'Votre atelier.<br><em>Pleinement opérationnel.</em>',
+      hero_sub: 'Remplacez votre DMS, CRM, système qualité et outils conformité par une seule plateforme.',
+      nav_cta: 'Démarrer le déploiement',
       stack_items: [
         { system: 'CDK / Icar',    category: 'DMS',        cost: '€600/mo' },
         { system: 'Sage / Cegid',  category: 'Accounting', cost: '€200/mo' },
@@ -1094,12 +1123,69 @@
       hero_proof: 'ISO 9001 · GDPR · AWS EU · €299/month flat',
       dms_replace_title: 'Replacing Keyloop or CDK?',
       competitors_price_range: '€500–2,000/mo',
+      hero_h1: 'Your workshop.<br><em>Fully operational.</em>',
+      hero_sub: 'Replace your DMS, CRM, quality system, and compliance tools with one execution platform.',
+      nav_cta: 'Start deployment',
       stack_items: [
         { system: 'Keyloop / CDK',           category: 'DMS',        cost: '€600/mo' },
         { system: 'QuickBooks / Xero',        category: 'Accounting', cost: '€150/mo' },
         { system: 'HubSpot / Salesforce',     category: 'CRM',        cost: '€200/mo' },
         { system: 'Qualio / MasterControl',   category: 'ISO/Quality', cost: '€100/mo' },
         { system: 'Calendly / Acuity',        category: 'Booking',    cost: '€50/mo'  },
+      ],
+    },
+    nl: {
+      flag: '🇳🇱', region_label: 'Dutch workshop',
+      currency_symbol: '€',
+      typical_stack_cost: '€1,150/month',
+      hero_proof: 'ISO 9001 · AVG/GDPR · AWS EU · €299/month',
+      dms_replace_title: 'Replacing CDK or Autoline?',
+      competitors_price_range: '€500–2,000/mo',
+      hero_h1: 'Uw werkplaats.<br><em>Volledig operationeel.</em>',
+      hero_sub: 'Vervang uw DMS, CRM, kwaliteitssysteem en compliance-tools door één platform.',
+      nav_cta: 'Implementatie starten',
+      stack_items: [
+        { system: 'CDK / Autoline',   category: 'DMS',        cost: '€580/mo' },
+        { system: 'Exact Online',     category: 'Accounting', cost: '€150/mo' },
+        { system: 'HubSpot',          category: 'CRM',        cost: '€200/mo' },
+        { system: 'Quality tools',    category: 'ISO/Quality', cost: '€120/mo' },
+        { system: 'Booking system',   category: 'Booking',    cost: '€100/mo' },
+      ],
+    },
+    da: {
+      flag: '🇩🇰', region_label: 'Danish workshop',
+      currency_symbol: 'DKK',
+      typical_stack_cost: '€1,100/month',
+      hero_proof: 'ISO 9001 · GDPR · AWS EU · €299/month',
+      dms_replace_title: 'Replacing Automaster or CDK?',
+      competitors_price_range: '€500–2,000/mo',
+      hero_h1: 'Dit værksted.<br><em>Fuldt operationelt.</em>',
+      hero_sub: 'Erstat dit DMS, CRM, kvalitetssystem og compliance-værktøjer med én platform.',
+      nav_cta: 'Start implementering',
+      stack_items: [
+        { system: 'Automaster / CDK', category: 'DMS',        cost: '€580/mo' },
+        { system: 'e-conomic',        category: 'Accounting', cost: '€120/mo' },
+        { system: 'SuperOffice',      category: 'CRM',        cost: '€180/mo' },
+        { system: 'Quality tools',    category: 'ISO/Quality', cost: '€120/mo' },
+        { system: 'Booking system',   category: 'Booking',    cost: '€100/mo' },
+      ],
+    },
+    fi: {
+      flag: '🇫🇮', region_label: 'Finnish workshop',
+      currency_symbol: '€',
+      typical_stack_cost: '€1,050/month',
+      hero_proof: 'ISO 9001 · GDPR · AWS EU · €299/month',
+      dms_replace_title: 'Replacing Automaster?',
+      competitors_price_range: '€400–1,800/mo',
+      hero_h1: 'Korjaamosi.<br><em>Täysin toiminnassa.</em>',
+      hero_sub: 'Korvaa DMS, CRM, laadunhallintajärjestelmä ja vaatimustenmukaisuustyökalut yhdellä alustalla.',
+      nav_cta: 'Aloita käyttöönotto',
+      stack_items: [
+        { system: 'Automaster / Winassist',  category: 'DMS',        cost: '€540/mo' },
+        { system: 'Procountor / Netvisor',   category: 'Accounting', cost: '€130/mo' },
+        { system: 'Pipedrive',               category: 'CRM',        cost: '€160/mo' },
+        { system: 'Quality tools',           category: 'ISO/Quality', cost: '€120/mo' },
+        { system: 'Booking system',          category: 'Booking',    cost: '€100/mo' },
       ],
     },
   };
@@ -1111,9 +1197,8 @@
     const stored = localStorage.getItem('pxd_locale');
     if (stored && LOCALE_CONTENT[stored]) return stored;
     const bl = (navigator.language || navigator.languages?.[0] || 'en').toLowerCase().split('-')[0];
-    const knownLocales = ['sv', 'no', 'nb', 'nn', 'da', 'fi', 'de', 'at', 'fr'];
+    const knownLocales = ['sv', 'no', 'nb', 'nn', 'da', 'fi', 'de', 'at', 'fr', 'nl'];
     if (bl === 'nb' || bl === 'nn') return 'no';
-    if (bl === 'da' || bl === 'fi') return 'sv';
     if (knownLocales.includes(bl) && LOCALE_CONTENT[bl]) return bl;
     return 'en';
   }
@@ -1139,6 +1224,19 @@
     set('data-geo-hero-proof',        lc.hero_proof);
     set('data-geo-dms-replace-title', lc.dms_replace_title);
     set('data-geo-competitors-price', lc.competitors_price_range);
+
+    // Hero headline
+    const h1El = document.querySelector('h1');
+    if (h1El && lc.hero_h1) h1El.innerHTML = lc.hero_h1 + '<br><span style="font-size:0.55em;color:var(--text-2);font-weight:400;letter-spacing:-0.5px">Running on pixdrift.</span>';
+
+    // Hero subtext
+    const subEl = document.querySelector('.hero-sub');
+    if (subEl && lc.hero_sub) subEl.textContent = lc.hero_sub;
+
+    // Nav CTA
+    document.querySelectorAll('.btn-nav').forEach(el => {
+      if (lc.nav_cta) el.textContent = lc.nav_cta;
+    });
 
     // Stack items table
     const container = document.getElementById('geo-stack-items');

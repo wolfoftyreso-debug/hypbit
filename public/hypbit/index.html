@@ -9,6 +9,14 @@
   <link rel="icon" type="image/svg+xml" href="/hypbit/favicon.svg" />
   <meta name="theme-color" content="#08080E" />
   
+  <!-- hreflang — geo-aware content -->
+  <link rel="alternate" hreflang="x-default" href="https://hypbit.com/" />
+  <link rel="alternate" hreflang="en" href="https://hypbit.com/?lang=en" />
+  <link rel="alternate" hreflang="sv" href="https://hypbit.com/?lang=sv" />
+  <link rel="alternate" hreflang="de" href="https://hypbit.com/?lang=de" />
+  <link rel="alternate" hreflang="fr" href="https://hypbit.com/?lang=fr" />
+  <link rel="alternate" hreflang="nl" href="https://hypbit.com/?lang=nl" />
+
   <!-- SEO -->
   <meta name="description" content="hypbit unifies CRM, finance, operations and automation for SaaS companies and e-commerce businesses. One system. Zero fragmentation. Start deployment today." />
   <meta name="robots" content="index, follow" />
@@ -295,6 +303,17 @@
       <a href="https://hypbit.com/api">API</a>
     </div>
     <div class="nav-right">
+      <div style="display:flex;align-items:center;gap:4px;font-size:12px;font-weight:500;letter-spacing:0.06em;margin-right:8px;">
+        <a href="#" data-lang="en" style="color:#F9FAFB;text-decoration:none;padding:3px 5px;border-radius:4px;transition:color .15s;">EN</a>
+        <span style="color:#4B5563">/</span>
+        <a href="#" data-lang="sv" style="color:#4B5563;text-decoration:none;padding:3px 5px;border-radius:4px;transition:color .15s;">SV</a>
+        <span style="color:#4B5563">/</span>
+        <a href="#" data-lang="de" style="color:#4B5563;text-decoration:none;padding:3px 5px;border-radius:4px;transition:color .15s;">DE</a>
+        <span style="color:#4B5563">/</span>
+        <a href="#" data-lang="fr" style="color:#4B5563;text-decoration:none;padding:3px 5px;border-radius:4px;transition:color .15s;">FR</a>
+        <span style="color:#4B5563">/</span>
+        <a href="#" data-lang="nl" style="color:#4B5563;text-decoration:none;padding:3px 5px;border-radius:4px;transition:color .15s;">NL</a>
+      </div>
       <a href="https://app.hypbit.com" style="font-size:13px;color:var(--text-3);">Sign in</a>
       <a href="mailto:deploy@hypbit.com?subject=Deployment+Request" class="btn-nav">Start deployment</a>
     </div>
@@ -490,6 +509,26 @@
   </div>
 </section>
 
+<!-- ── COST REALITY ── -->
+<section>
+  <div class="container">
+    <div class="section-label">Cost reality</div>
+    <h2 class="section-title">What your business is<br>actually paying today.</h2>
+    <p class="section-sub" style="margin-bottom:0">
+      <span data-geo-region>🌍 Typical SaaS / e-commerce</span> — running on a standard tool stack.
+    </p>
+    <div style="max-width:580px;margin:40px auto 0;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
+      <div style="padding:14px 20px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;">
+        <span style="font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-3)">Current tool stack</span>
+        <span style="font-size:12px;color:var(--text-3)">monthly cost</span>
+      </div>
+      <div id="geo-stack-items">
+        <div style="padding:24px;text-align:center;color:var(--text-3);font-size:14px;">Loading...</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── PRICING ── -->
 <section id="pricing">
   <div class="container">
@@ -593,6 +632,169 @@
     });
   }, { threshold: 0 });
   obs.observe(hero);
+})();
+</script>
+
+<script>
+// ─── hypbit Geo-Aware Multilingual System ────────────────────────────────
+(function() {
+  'use strict';
+
+  const HYPBIT_LOCALES = {
+    en: {
+      flag: '🌍', region_label: 'SaaS / e-commerce',
+      hero_h1: 'Your digital business.<br><em>Fully structured.</em>',
+      hero_sub: 'CRM, finance, operations, and automation — unified in one system.',
+      nav_cta: 'Start deployment',
+      hero_proof: 'GDPR · AWS EU · API-first · €299/month flat',
+      stack_items: [
+        { system: 'Stripe / Paddle',        category: 'Billing',  cost: '€200/mo' },
+        { system: 'HubSpot / Salesforce',   category: 'CRM',      cost: '€250/mo' },
+        { system: 'QuickBooks / Xero',      category: 'Finance',  cost: '€150/mo' },
+        { system: 'Notion / Confluence',    category: 'Docs',     cost: '€100/mo' },
+        { system: 'Asana / Jira',           category: 'Tasks',    cost: '€150/mo' },
+      ],
+      typical_stack_cost: '€850/month',
+    },
+    sv: {
+      flag: '🇸🇪', region_label: 'SaaS / e-handel',
+      hero_h1: 'Ditt digitala företag.<br><em>Fullt strukturerat.</em>',
+      hero_sub: 'CRM, ekonomi, operations och automation — samlat i ett system.',
+      nav_cta: 'Starta driftsättning',
+      hero_proof: 'GDPR · AWS EU · API-first · €299/month',
+      stack_items: [
+        { system: 'Stripe / Klarna',        category: 'Betalning', cost: '€180/mo' },
+        { system: 'Upsales / Lime CRM',     category: 'CRM',       cost: '€200/mo' },
+        { system: 'Fortnox / Visma',        category: 'Ekonomi',   cost: '€150/mo' },
+        { system: 'Notion / Confluence',    category: 'Docs',      cost: '€100/mo' },
+        { system: 'Asana / Monday.com',     category: 'Tasks',     cost: '€120/mo' },
+      ],
+      typical_stack_cost: '€750/month',
+    },
+    de: {
+      flag: '🇩🇪', region_label: 'SaaS / E-Commerce',
+      hero_h1: 'Ihr digitales Unternehmen.<br><em>Vollständig strukturiert.</em>',
+      hero_sub: 'CRM, Finanzen, Operations und Automatisierung — vereint in einem System.',
+      nav_cta: 'Deployment starten',
+      hero_proof: 'DSGVO · AWS EU · API-first · €299/Monat',
+      stack_items: [
+        { system: 'Stripe / Billwerk',      category: 'Abrechnung',   cost: '€200/mo' },
+        { system: 'HubSpot / Pipedrive',    category: 'CRM',          cost: '€220/mo' },
+        { system: 'DATEV / Lexware',        category: 'Buchhaltung',  cost: '€200/mo' },
+        { system: 'Confluence / Notion',    category: 'Doku',         cost: '€100/mo' },
+        { system: 'Asana / Jira',           category: 'Aufgaben',     cost: '€150/mo' },
+      ],
+      typical_stack_cost: '€870/month',
+    },
+    fr: {
+      flag: '🇫🇷', region_label: 'SaaS / e-commerce',
+      hero_h1: 'Votre entreprise digitale.<br><em>Entièrement structurée.</em>',
+      hero_sub: 'CRM, finance, opérations et automatisation — unifiés dans un seul système.',
+      nav_cta: 'Démarrer le déploiement',
+      hero_proof: 'RGPD · AWS EU · API-first · €299/mois',
+      stack_items: [
+        { system: 'Stripe / Mollie',        category: 'Paiements',    cost: '€180/mo' },
+        { system: 'HubSpot / Salesforce',   category: 'CRM',          cost: '€250/mo' },
+        { system: 'Sage / Cegid',           category: 'Comptabilité', cost: '€200/mo' },
+        { system: 'Notion / Confluence',    category: 'Docs',         cost: '€100/mo' },
+        { system: 'Asana / Monday',         category: 'Tâches',       cost: '€120/mo' },
+      ],
+      typical_stack_cost: '€850/month',
+    },
+    nl: {
+      flag: '🇳🇱', region_label: 'SaaS / e-commerce',
+      hero_h1: 'Uw digitaal bedrijf.<br><em>Volledig gestructureerd.</em>',
+      hero_sub: 'CRM, financiën, operations en automatisering — verenigd in één systeem.',
+      nav_cta: 'Implementatie starten',
+      hero_proof: 'AVG/GDPR · AWS EU · API-first · €299/maand',
+      stack_items: [
+        { system: 'Mollie / Stripe',        category: 'Betalingen',   cost: '€150/mo' },
+        { system: 'HubSpot / Teamleader',   category: 'CRM',          cost: '€220/mo' },
+        { system: 'Exact Online / Twinfield', category: 'Boekhouding', cost: '€150/mo' },
+        { system: 'Notion / Confluence',    category: 'Docs',         cost: '€100/mo' },
+        { system: 'Monday / Asana',         category: 'Taken',        cost: '€120/mo' },
+      ],
+      typical_stack_cost: '€740/month',
+    },
+  };
+
+  function detectLocale() {
+    const urlParam = new URLSearchParams(window.location.search).get('lang');
+    if (urlParam && HYPBIT_LOCALES[urlParam]) return urlParam;
+    const stored = localStorage.getItem('hypebit_locale');
+    if (stored && HYPBIT_LOCALES[stored]) return stored;
+    const bl = (navigator.language || 'en').toLowerCase().split('-')[0];
+    const map = { sv: 'sv', de: 'de', at: 'de', ch: 'de', fr: 'fr', be: 'fr', nl: 'nl', da: 'sv', fi: 'sv' };
+    return map[bl] || 'en';
+  }
+
+  function apply(locale) {
+    const lc = HYPBIT_LOCALES[locale] || HYPBIT_LOCALES.en;
+
+    // Hero headline
+    const h1 = document.querySelector('h1');
+    if (h1) h1.innerHTML = lc.hero_h1;
+
+    // Hero subtext
+    const sub = document.querySelector('.hero-sub');
+    if (sub) sub.textContent = lc.hero_sub;
+
+    // Proof strip
+    document.querySelectorAll('[data-geo-hero-proof]').forEach(el => el.textContent = lc.hero_proof);
+
+    // Nav CTA
+    document.querySelectorAll('.btn-nav').forEach(el => { if (lc.nav_cta) el.textContent = lc.nav_cta; });
+
+    // Stack items
+    const container = document.getElementById('geo-stack-items');
+    if (container && lc.stack_items) {
+      const rows = lc.stack_items.map(item => `
+        <div style="display:grid;grid-template-columns:1fr 100px;gap:12px;padding:12px 20px;border-bottom:1px solid rgba(255,255,255,0.05);">
+          <div>
+            <div style="font-size:14px;font-weight:500;color:var(--text)">${item.system}</div>
+            <div style="font-size:11px;color:var(--text-3);margin-top:2px;text-transform:uppercase;letter-spacing:.05em">${item.category}</div>
+          </div>
+          <div style="font-size:14px;color:var(--text-2);text-align:right">${item.cost}</div>
+        </div>`).join('');
+      const total = `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:rgba(239,68,68,.04);border-top:1px solid rgba(239,68,68,.2);">
+          <span style="font-size:13px;font-weight:600;color:var(--text-2)">Total current stack</span>
+          <div style="text-align:right">
+            <div style="font-size:22px;font-weight:700;color:#EF4444;letter-spacing:-0.5px">${lc.typical_stack_cost}</div>
+            <div style="font-size:12px;color:var(--text-3)">vs hypbit <strong style="color:var(--accent-hi)">€299/month</strong></div>
+          </div>
+        </div>`;
+      container.innerHTML = rows + total;
+    }
+
+    // Region label
+    document.querySelectorAll('[data-geo-region]').forEach(el => el.textContent = lc.flag + ' Typical ' + lc.region_label);
+
+    // Lang switcher active state
+    document.querySelectorAll('[data-lang]').forEach(btn => {
+      btn.style.color = btn.dataset.lang === locale ? '#F9FAFB' : '#4B5563';
+      btn.style.fontWeight = btn.dataset.lang === locale ? '600' : '400';
+    });
+  }
+
+  function setupSwitcher() {
+    document.querySelectorAll('[data-lang]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        const lang = btn.dataset.lang;
+        localStorage.setItem('hypebit_locale', lang);
+        apply(lang);
+      });
+    });
+  }
+
+  const locale = detectLocale();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => { apply(locale); setupSwitcher(); });
+  } else {
+    apply(locale);
+    setupSwitcher();
+  }
 })();
 </script>
 
