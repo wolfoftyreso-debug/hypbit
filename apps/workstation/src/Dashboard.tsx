@@ -7,7 +7,7 @@ import SpatialModule from "./SpatialModule";
 import AssetModule from "./AssetModule";
 import CultureModule from "./CultureModule";
 import ConsumablesModule from "./ConsumablesModule";
-import { useTranslation, LanguageSwitcher, formatCurrency, formatDate } from "@pixdrift/i18n";
+import { formatCurrency, formatDate } from "@pixdrift/i18n";
 import PeopleOSModule from "./PeopleOSModule";
 import ExternalAuditModule from "./ExternalAuditModule";
 import AccountSafetyModule, { ShieldCheckIcon } from "./AccountSafetyModule";
@@ -977,7 +977,6 @@ function Sidebar({
 
 // ─── Top bar ──────────────────────────────────────────────────────────────────
 function TopBar({ title, onNew, userName = "Erik" }: { title: string; onNew?: () => void; userName?: string }) {
-  const { t, locale } = useTranslation();
   const [notificationOpen, setNotificationOpen] = useState(false);
   return (
     <div style={{
@@ -1007,7 +1006,8 @@ function TopBar({ title, onNew, userName = "Erik" }: { title: string; onNew?: ()
 
       {/* Actions — right */}
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: "auto" }}>
-        <LanguageSwitcher />
+        {/* Google Translate */}
+        <div id="google_translate_element" style={{ display: 'flex', alignItems: 'center' }} />
         <button
           type="button"
           aria-label="Notifikationer"
@@ -2243,7 +2243,6 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
       : FALLBACK.user,
   };
 
-  const { t } = useTranslation();
   const viewTitles: Record<string, string> = {
     overview:    "Översikt",
     deals:       "Affärer",
