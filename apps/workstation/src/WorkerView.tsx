@@ -5,6 +5,7 @@
 // 3-second rule: worker must understand their full day in 3 seconds
 
 import { useState, useEffect } from 'react';
+import VehicleIntakeFlow from './VehicleIntakeFlow';
 
 // Color system — same as Dashboard
 const C = {
@@ -109,6 +110,11 @@ export default function WorkerView({ user }: { user: any }) {
   const [risks,      setRisks]         = useState<Risk[]>([]);
   const [dayProgress, setDayProgress] = useState({ completed: 0, total: 0, onTime: true });
   const [loading,    setLoading]       = useState(true);
+
+  // Vehicle Intake Protocol
+  const [showIntake,       setShowIntake]       = useState(false);
+  const [intakeCompleted,  setIntakeCompleted]  = useState(false);
+  const [intakeCompletedAt, setIntakeCompletedAt] = useState<string | null>(null);
 
   const workerName = user?.user_metadata?.full_name?.split(' ')[0]
     || user?.full_name?.split(' ')[0]
@@ -299,14 +305,62 @@ export default function WorkerView({ user }: { user: any }) {
                   </div>
                 </div>
 
+                {/* Intake status */}
+                {intakeCompleted ? (
+                  <div style={{
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    background: '#34C75910', borderRadius: 10,
+                    padding: '10px 14px', marginBottom: 12,
+                  }}>
+                    <span style={{ color: C.green, fontSize: 16 }}>✓</span>
+                    <div>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: C.green }}>
+                        Intagsprotokoll klart
+                      </span>
+                      {intakeCompletedAt && (
+                        <span style={{ fontSize: 12, color: C.secondary, marginLeft: 6 }}>
+                          · {new Date(intakeCompletedAt).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{
+                    background: '#FF950015', border: `1px solid ${C.orange}40`,
+                    borderRadius: 10, padding: '10px 14px', marginBottom: 12,
+                  }}>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: C.orange, marginBottom: 6 }}>
+                      ⚠️ Intagsprotokoll krävs
+                    </div>
+                    <button
+                      onClick={() => setShowIntake(true)}
+                      style={{
+                        width: '100%', height: 40,
+                        background: C.orange, color: '#fff',
+                        border: 'none', borderRadius: 10,
+                        fontSize: 14, fontWeight: 600,
+                        cursor: 'pointer', fontFamily: 'inherit',
+                      }}
+                    >
+                      Starta intag
+                    </button>
+                  </div>
+                )}
+
                 {/* Action buttons */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                  <button style={{
-                    height: 44, background: C.blue, color: '#fff',
-                    border: 'none', borderRadius: 12,
-                    fontSize: 15, fontWeight: 600,
-                    cursor: 'pointer', fontFamily: 'inherit',
-                  }}>
+                  <button
+                    onClick={() => intakeCompleted ? undefined : setShowIntake(true)}
+                    style={{
+                      height: 44,
+                      background: intakeCompleted ? C.blue : C.fill,
+                      color: intakeCompleted ? '#fff' : C.secondary,
+                      border: 'none', borderRadius: 12,
+                      fontSize: 15, fontWeight: 600,
+                      cursor: intakeCompleted ? 'pointer' : 'not-allowed',
+                      fontFamily: 'inherit',
+                    }}
+                  >
                     Uppdatera
                   </button>
                   <button style={{
@@ -486,6 +540,20 @@ export default function WorkerView({ user }: { user: any }) {
           50%       { opacity: 0.5; transform: scale(0.85); }
         }
       `}</style>
+
+      {/* Vehicle Intake Protocol — mandatory modal, cannot be dismissed */}
+      {showIntake && currentJob && (
+        <VehicleIntakeFlow
+          workOrderId={currentJob.id}
+          vehicleReg={currentJob.reg || currentJob.title.split('—')[0].trim()}
+          onComplete={(sessionId) => {
+            setShowIntake(false);
+            setIntakeCompleted(true);
+            setIntakeCompletedAt(new Date().toISOString());
+            console.log('[Intake] Completed. Session:', sessionId);
+          }}
+        />
+      )}
     </div>
   );
 }

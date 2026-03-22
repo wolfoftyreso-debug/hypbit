@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import { createClient } from "@supabase/supabase-js";
 
 const router = Router();
@@ -77,9 +77,22 @@ function calculateRisk(account: MasterAccount): { level: string; reasons: string
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+// SECURITY FIX (Clawbot): org_id must come from authenticated user context
 function getOrgId(req: Request): string | null {
-  return (req as any).orgId ?? req.headers["x-org-id"] as string ?? null;
+  return (req as any).user?.org_id ?? null;
 }
+
+// Auth guard — require authenticated user
+function requireAuth(req: Request, res: Response, next: NextFunction): void {
+  if (!(req as any).user) {
+    res.status(401).json({ error: "Authentication required" });
+    return;
+  }
+  next();
+}
+
+// SECURITY FIX (Clawbot): All account-safety routes require authentication
+router.use(requireAuth);
 
 // ─── GET /api/account-safety/master-accounts ─────────────────────────────────
 

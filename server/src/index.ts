@@ -478,7 +478,9 @@ app.use('/api/tool-assets',      assetAccountabilityRouter); // Asset Accountabi
 app.use('/api/account-safety',   accountSafetyRouter);       // Account Safety & Offboarding — master accounts, risk analysis, offboarding wizard
 
 import companyComplianceRouter from './company-compliance';
+import vehicleIntakeRouter from './vehicle-intake-api';
 app.use('/api/company',          companyComplianceRouter);   // Company Core — legal entities, compliance calendar, authority filings (ABL/SFL/ÅRL)
+app.use('/api/intake',           vehicleIntakeRouter);       // Vehicle Intake Protocol — 8-angle photos, diagnostic, recalls (mandatory flow)
 
 // ---------------------------------------------------------------------------
 // Auth helper for inline routes

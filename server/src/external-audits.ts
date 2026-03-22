@@ -35,8 +35,9 @@ const ISO_STANDARDS = [
 // ---------------------------------------------------------------------------
 // Helper to pick org_id from authenticated context
 // ---------------------------------------------------------------------------
+// SECURITY FIX (Clawbot): org_id must ONLY come from authenticated user context
 function getOrgId(req: Request): string | null {
-  return (req as any).user?.org_id ?? req.query.org_id as string ?? null;
+  return (req as any).user?.org_id ?? null;
 }
 
 // ---------------------------------------------------------------------------
