@@ -10,6 +10,7 @@ import ConsumablesModule from "./ConsumablesModule";
 import { useTranslation, LanguageSwitcher, formatCurrency, formatDate } from "@pixdrift/i18n";
 import PeopleOSModule from "./PeopleOSModule";
 import ExternalAuditModule from "./ExternalAuditModule";
+import DevOpsHub from "./DevOpsHub";
 
 // ─── Design tokens — Apple HIG precision ──────────────────────────────────────
 const C = {
@@ -310,6 +311,13 @@ const Icons = {
       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
     </svg>
   ),
+  Key: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="7.5" cy="15.5" r="5.5"/>
+      <path d="m21 2-9.6 9.6"/>
+      <path d="m15.5 7.5 3 3L22 7l-3-3"/>
+    </svg>
+  ),
 };
 
 // ─── Nav sections — automotive items split out ─────────────────────────────────
@@ -357,9 +365,10 @@ const NAV_SECTIONS_BASE = [
     ],
   },
   {
-    label: "ÖVRIGT",
+    label: "SYSTEM",
     items: [
       { id: "culture", icon: <Icons.Cake />, label: "Kultur & Events" },
+      { id: "devops", icon: <Icons.Key />, label: "Dev Infrastructure" },
     ],
   },
 ];
@@ -2251,6 +2260,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
     consumables: "Förbrukningsvaror",
     people:      "Team & Trivsel",
     damage:      "Skadeärenden",
+    devops:      "Dev Infrastructure",
   };
 
   return (
@@ -2301,6 +2311,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
             {view === "consumables"  && <ConsumablesModule />}
             {view === "people"       && <PeopleOSModule D={D as any} />}
             {view === "external-audits" && <ExternalAuditModule orgId={D.user?.id} />}
+            {view === "devops" && <DevOpsHub />}
           </main>
         </div>
       </div>

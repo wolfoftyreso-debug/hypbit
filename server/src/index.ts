@@ -43,6 +43,7 @@ import decisionIntelligenceRouter from "./decision-intelligence";
 import managementReviewRouter from "./management-review";
 import strategicReviewRouter from "./strategic-review-api";
 import orgAdminRouter from "./org-admin";
+import accountSafetyRouter from "./account-safety";
 import systemAdminRouter from "./system-admin";
 import permissionsAdminRouter from "./permissions-admin";
 import localizationRouter from "./localization-api";
@@ -458,6 +459,9 @@ app.use('/api/seo', seoRouter); // /api/seo/schema/:page, /api/seo/report, /api/
 import approvalEngineRouter from './approval-engine';
 app.use('/api/approvals', approvalEngineRouter); // POST /capture, GET /pending, /customer/:token, etc.
 
+import devIntegrationsRouter from './dev-integrations';
+app.use('/api', devIntegrationsRouter); // Dev Infrastructure Hub: /api/dev-integrations/*, /api/dev-secrets/*, /api/dev-catalog
+
 // ---------------------------------------------------------------------------
 app.use('/api/personnel-ledger', personnelLedgerRouter); // Personalliggare (SFL 39 kap.)
 app.use('/api/cash-register',    cashRegisterRouter);    // Kassaregister (SKVFS 2014:9)
@@ -465,6 +469,7 @@ app.use('/api/vat',              vatComplianceRouter);   // Momshantering (ML 20
 app.use('/api/payroll',          payrollComplianceRouter); // Arbetsgivaravgifter (SAL + IL)
 app.use('/api/compliance',       complianceCheckerRouter); // Compliance-kontroll
 app.use('/api/tool-assets',      assetAccountabilityRouter); // Asset Accountability & Traceability
+app.use('/api/account-safety',   accountSafetyRouter);       // Account Safety & Offboarding — master accounts, risk analysis, offboarding wizard
 
 // ---------------------------------------------------------------------------
 // Auth helper for inline routes
