@@ -505,6 +505,9 @@ app.use('/api/intake',           vehicleIntakeRouter);       // Vehicle Intake P
 app.use('/api/missing-part',     missingPartRouter);         // Missing Part Protocol — airline-style delay response with auto compensation
 app.use(rentalPartnerRouter);                               // Rental Partner Integration — Europcar/Hertz/Avis/Sixt/Enterprise + own fleet, compensation rules
 app.use('/api/mobility',         mobilityIncidentRouter);    // Mobility Incident Flow Engine — towing, responsibility engine, cost allocation, OEM claims
+// Fluid Integration — Alantec, Orion, and generic fluid management systems
+import fluidIntegrationRouter from "./fluid-integration-api";
+app.use('/api/fluid', fluidIntegrationRouter);              // /api/fluid/integrations, /api/fluid/webhook/*, /api/fluid/events, /api/fluid/inventory, /api/fluid/report
 app.use(bookingEngineRouter);                               // Booking Engine — capacity+intent allocation, PIX-driven estimates, delay risk
 
 // ---------------------------------------------------------------------------

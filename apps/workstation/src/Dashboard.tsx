@@ -26,6 +26,7 @@ import WorkerView from "./WorkerView";
 import ServiceAdvisorView from "./ServiceAdvisorView";
 import AuditDashboardView from "./AuditDashboardView";
 import SwedacComplianceModule, { AwardIcon } from "./SwedacComplianceModule";
+import FluidIntegrationModule, { DropIcon } from "./FluidIntegrationModule";
 
 // ─── Design tokens — Apple HIG precision ──────────────────────────────────────
 const C = {
@@ -488,6 +489,7 @@ const NAV_SECTIONS_AUTOMOTIVE = [
       { id: "spaghetti",  icon: <Icons.Spaghetti />, label: "Rörelsemönster",    badge: null as string | null },
       { id: "assets",     icon: <Icons.Wrench />,    label: "Utrustning & Verktyg", badge: null as string | null },
       { id: "consumables",icon: <Icons.Box />,       label: "Förbrukningsvaror", badge: null as string | null },
+      { id: "fluids",     icon: <DropIcon />,        label: "Vätskeautomatik",   pixSubtitle: "Alantec · Orion", badge: null as string | null },
     ],
   },
   {
@@ -2575,6 +2577,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
     spatial:     "Verkstadskarta",
     assets:      "Utrustning & Verktyg",
     consumables: "Förbrukningsvaror",
+    fluids: "Vätskeautomatik",
     people:      "Team & Trivsel",
     damage:      "Skadeärenden",
     devops:      "Dev Infrastructure",
@@ -2661,6 +2664,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
             {view === "spatial"   && <SpatialModule />}
             {view === "assets"       && <AssetModule user={D.user as any} />}
             {view === "consumables"  && <ConsumablesModule />}
+            {view === "fluids"       && <FluidIntegrationModule />}
             {view === "people"       && <PeopleOSModule D={D as any} />}
             {view === "external-audits" && <ExternalAuditModule orgId={D.user?.id} />}
             {view === "quality" && <QualityControlModule />}
