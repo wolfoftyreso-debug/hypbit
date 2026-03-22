@@ -978,6 +978,7 @@ function Sidebar({
 // ─── Top bar ──────────────────────────────────────────────────────────────────
 function TopBar({ title, onNew, userName = "Erik" }: { title: string; onNew?: () => void; userName?: string }) {
   const { t, locale } = useTranslation();
+  const [notificationOpen, setNotificationOpen] = useState(false);
   return (
     <div style={{
       height: 52,
@@ -1010,15 +1011,19 @@ function TopBar({ title, onNew, userName = "Erik" }: { title: string; onNew?: ()
         <button
           type="button"
           aria-label="Notifikationer"
+          onClick={() => setNotificationOpen(o => !o)}
           style={{
             width: 44, height: 44, borderRadius: 22,
-            background: "transparent", border: "none",
+            background: notificationOpen ? "#007AFF14" : "transparent", border: "none",
             cursor: "pointer",
             display: "flex", alignItems: "center", justifyContent: "center",
             color: "#007AFF",
             transition: "background 0.1s",
+            position: "relative",
           }}>
           <Icons.Bell />
+          {/* Unread badge */}
+          <div style={{ position: "absolute", top: 8, right: 8, width: 8, height: 8, borderRadius: 4, background: "#FF3B30", border: "2px solid #F2F2F7" }} />
         </button>
         {onNew && (
           <Btn variant="primary" onClick={onNew} size="sm">+ Ny</Btn>
@@ -2189,6 +2194,7 @@ function ChatView({ D }: { D: typeof FALLBACK }) {
 
 // ─── Main App ─────────────────────────────────────────────────────────────────
 export default function App({ user: propUser, onLogout }: { user?: any; onLogout?: () => void }) {
+  const [notificationOpen, setNotificationOpen] = useState(false);
   const [view, setView] = useState("overview");
 
   // Detect automotive context: user industry, certifications, or localStorage flag
@@ -2320,5 +2326,6 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
         </div>
       </div>
     </>
+
   );
 }
