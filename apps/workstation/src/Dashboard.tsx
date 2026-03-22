@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useApi } from "./useApi";
 import UnifiedCalendar from "./UnifiedCalendar";
 import LearningModule from "./LearningModule";
@@ -13,6 +13,9 @@ import PeopleOSModule from "./PeopleOSModule";
 import ExternalAuditModule from "./ExternalAuditModule";
 import AccountSafetyModule, { ShieldCheckIcon } from "./AccountSafetyModule";
 import DevOpsHub from "./DevOpsHub";
+import PixFeed, { DEMO_PIX, PIX_COLORS } from "./PixFeed";
+import type { PIX } from "./PixFeed";
+import TraceView from "./TraceView";
 
 // ─── Design tokens — Apple HIG precision ──────────────────────────────────────
 const C = {
@@ -43,20 +46,17 @@ const globalStyles = `
     100% { background-position: -200% center; }
   }
   @keyframes slideUp {
-    from { opacity: 0; transform: translateY(8px); }
+    from { opacity: 0; transform: translateY(4px); }
     to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fillBar {
-    from { width: 0%; }
-    to   { width: var(--pct); }
   }
   @keyframes fadeIn {
     from { opacity: 0; }
     to   { opacity: 1; }
   }
 
-  .card-animate { animation: slideUp 0.2s ease forwards; }
-  .fade-in { animation: fadeIn 0.15s ease forwards; }
+  /* slideUp only for cards that carry new information — not decoration */
+  .card-animate { animation: slideUp 0.15s ease forwards; }
+  .fade-in { animation: fadeIn 0.1s ease forwards; }
 
   .nav-item {
     transition: background 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
@@ -333,6 +333,11 @@ const Icons = {
       <path d="m15.5 7.5 3 3L22 7l-3-3"/>
     </svg>
   ),
+  Activity: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+    </svg>
+  ),
 };
 
 // ─── Nav sections — automotive items split out ─────────────────────────────────
@@ -340,51 +345,52 @@ const NAV_SECTIONS_BASE = [
   {
     label: null,
     items: [
-      { id: "overview", icon: <Icons.Grid />, label: "Översikt" },
+      { id: "overview",  icon: <Icons.Grid />,     label: "Översikt" },
+      { id: "pix-feed",  icon: <Icons.Activity />, label: "PIX Feed",  pixSubtitle: "Activity log" },
     ],
   },
   {
     label: "ARBETE",
     items: [
       { id: "calendar", icon: <Icons.CalendarDays />, label: "Kalender" },
-      { id: "deals", icon: <Icons.Briefcase />, label: "Affärer" },
-      { id: "tasks", icon: <Icons.Check />, label: "Uppgifter" },
-      { id: "goals", icon: <Icons.Target />, label: "Mål" },
-      { id: "chat", icon: <Icons.Chat />, label: "Chatt" },
+      { id: "deals",    icon: <Icons.Briefcase />,    label: "Affärer",   pixSubtitle: "Deal PIX" },
+      { id: "tasks",    icon: <Icons.Check />,         label: "Uppgifter", pixSubtitle: "Task PIX" },
+      { id: "goals",    icon: <Icons.Target />,        label: "Mål" },
+      { id: "chat",     icon: <Icons.Chat />,          label: "Chatt" },
     ],
   },
   {
     label: "KVALITET",
     items: [
-      { id: "processes", icon: <Icons.Flow />, label: "Processer" },
-      { id: "nc", icon: <Icons.Alert />, label: "Avvikelser" },
-      { id: "improvements", icon: <Icons.PDCA />, label: "PDCA" },
-      { id: "compliance", icon: <Icons.Compliance />, label: "Compliance" },
-      { id: "risks", icon: <Icons.Shield />, label: "Risker" },
-      { id: "external-audits", icon: <Icons.CheckBadge />, label: "Revisioner & Certifikat" },
+      { id: "processes",      icon: <Icons.Flow />,       label: "Processer",              pixSubtitle: "Process PIX" },
+      { id: "nc",             icon: <Icons.Alert />,      label: "Avvikelser",             pixSubtitle: "NC Signals" },
+      { id: "improvements",   icon: <Icons.PDCA />,       label: "PDCA",                   pixSubtitle: "Improve PIX" },
+      { id: "compliance",     icon: <Icons.Compliance />, label: "Compliance" },
+      { id: "risks",          icon: <Icons.Shield />,     label: "Risker" },
+      { id: "external-audits",icon: <Icons.CheckBadge />, label: "Revisioner & Certifikat" },
     ],
   },
   {
     label: "EKONOMI",
     items: [
-      { id: "finance", icon: <Icons.Ledger />, label: "Huvudbok" },
-      { id: "reports", icon: <Icons.Chart />, label: "Rapporter" },
+      { id: "finance",  icon: <Icons.Ledger />, label: "Huvudbok",  pixSubtitle: "Finance PIX" },
+      { id: "reports",  icon: <Icons.Chart />,  label: "Rapporter", pixSubtitle: "State snapshot" },
     ],
   },
   {
     label: "TEAM",
     items: [
-      { id: "capability", icon: <Icons.Star />, label: "Kompetenser" },
+      { id: "capability",  icon: <Icons.Star />,        label: "Kompetenser" },
       { id: "development", icon: <Icons.Development />, label: "Utveckling" },
-      { id: "learning", icon: <Icons.Book />, label: "Utbildning" },
-      { id: "people", icon: <Icons.Heart />, label: "Team & Trivsel" },
+      { id: "learning",    icon: <Icons.Book />,        label: "Utbildning" },
+      { id: "people",      icon: <Icons.Heart />,       label: "Team & Trivsel", pixSubtitle: "People PIX" },
     ],
   },
   {
     label: "SYSTEM",
     items: [
-      { id: "culture", icon: <Icons.Cake />, label: "Kultur & Events" },
-      { id: "devops", icon: <Icons.Key />, label: "Dev Infrastructure" },
+      { id: "culture",        icon: <Icons.Cake />,      label: "Kultur & Events" },
+      { id: "devops",         icon: <Icons.Key />,       label: "Dev Infrastructure" },
       { id: "account-safety", icon: <ShieldCheckIcon />, label: "Kontosäkerhet" },
     ],
   },
@@ -885,8 +891,9 @@ function Sidebar({
                 {section.label}
               </div>
             )}
-            {section.items.map((item: { id: string; icon: React.ReactNode; label: string; badge?: string | null }) => {
+            {section.items.map((item: { id: string; icon: React.ReactNode; label: string; badge?: string | null; pixSubtitle?: string }) => {
               const active = view === item.id;
+              const hasSubtitle = Boolean(item.pixSubtitle);
               return (
                 <button
                   key={item.id}
@@ -900,15 +907,15 @@ function Sidebar({
                     alignItems: "center",
                     gap: 12,
                     width: "calc(100% - 16px)",
-                    height: 44,
+                    height: hasSubtitle ? 50 : 44,
                     padding: "0 12px",
                     borderRadius: 10,
                     border: "none",
                     background: active ? "#007AFF" : "transparent",
                     color: active ? "#FFFFFF" : "#000000",
-                    fontSize: 17,
+                    fontSize: 15,
                     fontWeight: active ? 600 : 400,
-                    letterSpacing: "-0.41px",
+                    letterSpacing: "-0.3px",
                     cursor: "pointer",
                     textAlign: "left",
                     marginBottom: 2,
@@ -920,7 +927,20 @@ function Sidebar({
                   <span style={{ width: 16, height: 16, flexShrink: 0, display: "flex", alignItems: "center" }}>
                     {item.icon}
                   </span>
-                  <span style={{ flex: 1 }}>{item.label}</span>
+                  <span style={{ flex: 1, display: "flex", flexDirection: "column", gap: 1 }}>
+                    <span>{item.label}</span>
+                    {item.pixSubtitle && (
+                      <span style={{
+                        fontSize: 10,
+                        fontWeight: 400,
+                        color: active ? "rgba(255,255,255,0.6)" : "#8E8E93",
+                        letterSpacing: "0.02em",
+                        fontFamily: "monospace",
+                      }}>
+                        {item.pixSubtitle}
+                      </span>
+                    )}
+                  </span>
                   {item.badge && (
                     <span style={{
                       fontSize: 10,
@@ -1050,10 +1070,35 @@ function TopBar({ title, onNew, userName = "Erik" }: { title: string; onNew?: ()
 
 // ─── Views ─────────────────────────────────────────────────────────────────────
 
-function OverviewView({ D }: { D: typeof FALLBACK }) {
+function OverviewView({ D, onSelectPix }: { D: typeof FALLBACK; onSelectPix?: (pix: PIX) => void }) {
   const stageColors: Record<string, string> = {
     NEW: C.tertiary, QUALIFIED: C.blue, DEMO: C.purple, OFFER: C.orange, WON: C.green,
   };
+
+  const openTasks = D.tasks.filter(t => t.st !== "DONE").length;
+  const activeDeals = D.pipeline.filter(p => p.st !== "WON").reduce((s, p) => s + p.deals, 0);
+  const openNcs = D.ncs.filter(n => n.status !== "CLOSED").length;
+  const activeProcesses = D.processes.length;
+  const activePixCount = openTasks + activeDeals + openNcs + activeProcesses;
+
+  // PIX/hour rate (demo: based on DEMO_PIX from last 24h)
+  const now = Date.now();
+  const last24hPix = DEMO_PIX.filter(p => now - p.timestamp.getTime() < 86400000).length;
+  const pixPerHour = Math.round((last24hPix / 24) * 10) / 10;
+
+  // Flow completion — avg across goals
+  const flowPct = D.goals.length > 0
+    ? Math.round(D.goals.reduce((s, g) => s + (g.cur / g.tgt) * 100, 0) / D.goals.length)
+    : 0;
+
+  const lastPixAgo = DEMO_PIX[0]
+    ? (() => {
+        const diff = Math.floor((now - DEMO_PIX[0].timestamp.getTime()) / 1000);
+        if (diff < 60) return `${diff}s ago`;
+        if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+        return `${Math.floor(diff / 3600)}h ago`;
+      })()
+    : "—";
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -1072,14 +1117,7 @@ function OverviewView({ D }: { D: typeof FALLBACK }) {
         color: "#8E8E93",
         padding: "2px 4px 20px",
       }}>
-        {(() => {
-          const openTasks = D.tasks.filter(t => t.st !== "DONE").length;
-          const activeDeals = D.pipeline.filter(p => p.st !== "WON").reduce((s, p) => s + p.deals, 0);
-          const openNcs = D.ncs.filter(n => n.status !== "CLOSED").length;
-          const activeProcesses = D.processes.length;
-          const activePixCount = openTasks + activeDeals + openNcs + activeProcesses;
-          return `${activePixCount} PIX active across your operation right now.`;
-        })()}
+        {`${activePixCount} PIX active across your operation right now.`}
       </div>
 
       {/* KPI — Inset Grouped List (Aktier-stil) */}
@@ -1203,7 +1241,7 @@ function OverviewView({ D }: { D: typeof FALLBACK }) {
             overflow: "hidden",
           }}>
             {D.ncs.filter(n => n.status !== "CLOSED").slice(0, 3).length === 0 ? (
-              <EmptyState icon="✓" title="Inga aktiva avvikelser" />
+              <EmptyState icon="✓" title="No NC Signals active" subtitle="NC PIX will appear here when raised." />
             ) : (
               D.ncs.filter(n => n.status !== "CLOSED").slice(0, 3).map((n, i, arr) => {
                 const severityColor = ncBorderColor[n.severity] ?? C.tertiary;
@@ -1246,6 +1284,83 @@ function OverviewView({ D }: { D: typeof FALLBACK }) {
 
         {/* Side column */}
         <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+          {/* OPERATION STATE widget */}
+          <div style={{ fontSize: 13, fontWeight: 400, color: "#8E8E93", padding: "0 4px 8px", letterSpacing: "-0.08px" }}>
+            Operation State
+          </div>
+          <div style={{
+            margin: "0 0 32px 0",
+            background: "#1C1C1E",
+            borderRadius: 10,
+            overflow: "hidden",
+            border: "0.5px solid #3A3A3C",
+          }}>
+            {/* Stat rows */}
+            {[
+              { label: "Active PIX",      value: String(activePixCount),    color: "#0A84FF" },
+              { label: "PIX/hour",         value: `${pixPerHour}/h`,         color: "#30D158" },
+              { label: "Flow completion",  value: `${flowPct}%`,             color: "#FF9F0A" },
+              { label: "Last Signal",      value: lastPixAgo,                color: "#636366" },
+            ].map((stat, i, arr) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "10px 16px",
+                  borderBottom: i < arr.length - 1 ? "0.5px solid #2C2C2E" : "none",
+                }}
+              >
+                <span style={{
+                  fontSize: 12, color: "#636366",
+                  fontFamily: "monospace", flex: 1,
+                }}>
+                  {stat.label}
+                </span>
+                <span style={{
+                  fontSize: 16, fontWeight: 700,
+                  color: stat.color, fontFamily: "monospace",
+                  fontVariantNumeric: "tabular-nums",
+                }}>
+                  {stat.value}
+                </span>
+              </div>
+            ))}
+            {/* Last 5 PIX mini list */}
+            <div style={{ borderTop: "0.5px solid #2C2C2E", padding: "8px 0" }}>
+              {DEMO_PIX.slice(0, 5).map((pix, i) => {
+                const color = PIX_COLORS[pix.module];
+                const diff = Math.floor((Date.now() - pix.timestamp.getTime()) / 1000);
+                const ago = diff < 60 ? `${diff}s` : diff < 3600 ? `${Math.floor(diff/60)}m` : `${Math.floor(diff/3600)}h`;
+                return (
+                  <div
+                    key={i}
+                    onClick={() => onSelectPix?.(pix)}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      padding: "5px 16px",
+                      cursor: "pointer",
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.background = "#2C2C2E")}
+                    onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
+                  >
+                    <div style={{ width: 5, height: 5, borderRadius: "50%", background: color, flexShrink: 0 }} />
+                    <span style={{
+                      fontSize: 11, color: "#E5E5EA",
+                      flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                      fontFamily: "monospace",
+                    }}>
+                      {pix.title}
+                    </span>
+                    <span style={{ fontSize: 10, color: "#636366", fontFamily: "monospace", flexShrink: 0 }}>{ago}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Teamstatus */}
           <div style={{ fontSize: 13, fontWeight: 400, color: "#8E8E93", padding: "0 4px 8px", letterSpacing: "-0.08px" }}>
             Teamstatus
@@ -1501,7 +1616,7 @@ function ReportsView({ D }: { D: typeof FALLBACK }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       <Card title="Rapporter">
-        <EmptyState icon="📊" title="Rapporter kommer snart" subtitle="Pipeline-rapporter, intäktsrapporter och mer." />
+        <EmptyState icon="📊" title="No state snapshots yet" subtitle="Pipeline, revenue, and process state snapshots will appear here." />
       </Card>
     </div>
   );
@@ -1559,8 +1674,8 @@ function TasksView({ D }: { D: typeof FALLBACK }) {
         {sorted.length === 0 ? (
           <EmptyState
             icon="✓"
-            title="Inga uppgifter"
-            subtitle="Uppgifter du och teamet skapar visas här."
+            title="No Task PIX yet"
+            subtitle="Tasks you and the team create will appear here as PIX."
             cta="+ Ny uppgift"
           />
         ) : (
@@ -1654,7 +1769,7 @@ function CapabilityView({ D }: { D: typeof FALLBACK }) {
 
       <Card title="Kompetensgap">
         {D.gaps.length === 0 ? (
-          <EmptyState icon="◆" title="Inga gap identifierade" subtitle="Teamet möter alla kompetensmål." />
+          <EmptyState icon="◆" title="No capability gaps" subtitle="No Capability PIX of this type yet." />
         ) : (
           D.gaps.map((g, i) => (
             <Row key={i} border={i < D.gaps.length - 1} clickable>
@@ -1683,8 +1798,8 @@ function DevelopmentView({ D }: { D: typeof FALLBACK }) {
       {D.devPlans.length === 0 ? (
         <EmptyState
           icon="↑"
-          title="Inga utvecklingsplaner"
-          subtitle="Skapa planer för att stödja teamets tillväxt."
+          title="No development PIX yet"
+          subtitle="Create a development plan to start tracking growth PIX."
           cta="+ Skapa plan"
         />
       ) : (
@@ -1728,7 +1843,7 @@ function GoalsView({ D }: { D: typeof FALLBACK }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       {D.goals.length === 0 ? (
-        <EmptyState icon="◎" title="Inga mål satta" subtitle="Sätt mål för att hålla teamet fokuserat." cta="+ Nytt mål" />
+        <EmptyState icon="◎" title="No Goal PIX yet" subtitle="Set goals to start tracking progress as PIX." cta="+ Nytt mål" />
       ) : (
         D.goals.map((g, i) => {
           const pct = (g.cur / g.tgt) * 100;
@@ -1821,7 +1936,7 @@ function ProcessesView({ D }: { D: typeof FALLBACK }) {
           ))}
         </div>
         {D.processes.length === 0 ? (
-          <EmptyState icon="⟳" title="Inga processer" subtitle="Processer du dokumenterar visas här." />
+          <EmptyState icon="⟳" title="No Process PIX yet" subtitle="Processes you document will appear here." />
         ) : (
           D.processes.map((p, i) => (
             <div
@@ -1894,8 +2009,8 @@ function NCView({ D }: { D: typeof FALLBACK }) {
         {D.ncs.length === 0 ? (
           <EmptyState
             icon="✓"
-            title="Inga avvikelser registrerade"
-            subtitle="Avvikelser du registrerar visas här med status och åtgärdsplan."
+            title="No NC Signals yet"
+            subtitle="Non-conformance PIX you register will appear here with status and action plan."
             cta="+ Registrera avvikelse"
           />
         ) : (
@@ -1958,8 +2073,8 @@ function ImprovementsView({ D }: { D: typeof FALLBACK }) {
       {D.improvements.length === 0 ? (
         <EmptyState
           icon="◐"
-          title="Inga förbättringsidéer"
-          subtitle="Registrera förbättringsidéer för att driva kontinuerlig förbättring."
+          title="No Improve PIX yet"
+          subtitle="Register improvement ideas to drive continuous improvement PIX."
           cta="+ Ny idé"
         />
       ) : (
@@ -2217,6 +2332,8 @@ function ChatView({ D }: { D: typeof FALLBACK }) {
 export default function App({ user: propUser, onLogout }: { user?: any; onLogout?: () => void }) {
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [view, setView] = useState("overview");
+  const [selectedPix, setSelectedPix] = useState<PIX | null>(null);
+  const [showTrace, setShowTrace] = useState(false);
 
   // Detect automotive context: user industry, certifications, or localStorage flag
   const isAutomotive = Boolean(
@@ -2264,8 +2381,26 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
       : FALLBACK.user,
   };
 
+  // PIX counter — active PIX = open tasks + active deals + open NCs + active processes
+  const activePixCount =
+    D.tasks.filter(t => t.st !== "DONE").length +
+    D.pipeline.filter(p => p.st !== "WON").reduce((s, p) => s + p.deals, 0) +
+    D.ncs.filter(n => n.status !== "CLOSED").length +
+    D.processes.length;
+
+  // Update browser tab title every 30s
+  useEffect(() => {
+    const update = () => {
+      document.title = `${activePixCount} PIX · pixdrift`;
+    };
+    update();
+    const id = setInterval(update, 30000);
+    return () => clearInterval(id);
+  }, [activePixCount]);
+
   const viewTitles: Record<string, string> = {
     overview:    "Översikt",
+    "pix-feed":  "PIX Feed",
     calendar:    "Kalender",
     deals:       "Affärer",
     tasks:       "Uppgifter",
@@ -2318,7 +2453,22 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
           <TopBar title={viewTitles[view] ?? view} userName={D.user.full_name} />
 
           <main role="main" style={{ flex: 1, padding: "24px 24px 64px", maxWidth: 1280, width: "100%" }}>
-            {view === "overview" && <OverviewView D={D} />}
+            {view === "overview" && <OverviewView D={D} onSelectPix={(pix) => { setSelectedPix(pix); setShowTrace(true); }} />}
+            {view === "pix-feed" && (
+              <div style={{ display: "grid", gridTemplateColumns: showTrace ? "1fr 420px" : "1fr", gap: 20, alignItems: "start" }}>
+                <PixFeed
+                  onSelectPix={(pix) => { setSelectedPix(pix); setShowTrace(true); }}
+                />
+                {showTrace && (
+                  <div style={{ position: "sticky", top: 76 }}>
+                    <TraceView
+                      pix={selectedPix}
+                      onClose={() => setShowTrace(false)}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
             {view === "calendar" && <UnifiedCalendar user={D.user} />}
             {view === "deals" && <SalesView D={D} />}
             {view === "finance" && <FinanceView D={D} />}
