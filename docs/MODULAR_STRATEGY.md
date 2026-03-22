@@ -197,3 +197,71 @@ PIX events on check-in:
 - key_dropped
 - vehicle_location_updated
 
+
+---
+
+## The Operations Lead — A New Role in the Workshop
+
+**Not:** Service Advisor, Receptionist, Assistant, Administrator
+
+**Yes:** Operations Lead — the operational control point of the team
+
+### What the Operations Lead does:
+
+1. **Ensures flow** (primary task)
+   - Jobs move forward
+   - Nothing stalls
+   - Right prioritization
+
+2. **Absorbs all friction** (the key function)
+   - Missing parts → they handle it
+   - Additional work approvals → they handle it
+   - Customer contact → they handle it
+   - Warranty questions → they handle it
+   - The mechanic NEVER leaves the job
+
+3. **System owner in practice**
+   - Receives system alerts
+   - Responds to exceptions
+   - Feeds real operational feedback
+   - Trains the PIX intelligence over time
+
+4. **Resource allocation**
+   - Moves jobs between technicians
+   - Re-prioritizes when needed
+   - Balances team load
+
+### The three-layer model:
+
+```
+Mechanics    → execution
+System       → structure  
+Ops Lead     → control
+```
+
+### How to sell this role:
+
+> "In traditional systems, service advisors manage administration.
+> In Pixdrift, they manage operations."
+
+> "Mechanics should never stop working to look for parts, handle system issues, or chase information. That is handled by the system — and by the Operations Lead."
+
+### The Operations Lead dashboard:
+
+Not 100 cases. Not complicated menus.
+
+Just: **"These require your attention NOW"**
+
+```
+⚠️ 4 things to resolve
+
+1. Missing part — Audi A6
+2. Additional work approval — BMW 320
+3. Delay risk — Volvo XC60
+4. Technician overloaded — Robin
+```
+
+Done.
+
+### Demo user:
+opslead@lindqvistsverkstad.se / Demo2026! → role: OPERATIONS_LEAD
