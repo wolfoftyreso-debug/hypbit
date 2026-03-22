@@ -517,6 +517,9 @@ app.use('/api/fluid', fluidIntegrationRouter);              // /api/fluid/integr
 app.use(bookingEngineRouter);                               // Booking Engine — capacity+intent allocation, PIX-driven estimates, delay risk
 app.use('/api/sla', slaEngineRouter);                       // SLA Escalation Engine — T-60/T-30/T-0 alerts, customer SMS at breach
 
+import auditDashboardRouter from './audit-dashboard-api';
+app.use('/api/audit', auditDashboardRouter);               // Audit Dashboard — performance score, certifications, audit log, readiness
+
 // ---------------------------------------------------------------------------
 // Auth helper for inline routes
 // ---------------------------------------------------------------------------
