@@ -798,7 +798,11 @@ function Sidebar({
       zIndex: 200,
       overflowY: "auto",
     }}>
-      {/* Logo area */}
+      {/* Logo area — white-label brand */}
+      {(() => {
+        const brandLogo = typeof localStorage !== "undefined" ? localStorage.getItem("pixdrift_brand_logo") : null;
+        const brandName = (typeof localStorage !== "undefined" ? localStorage.getItem("pixdrift_brand_name") : null) || "pixdrift";
+        return (
       <div style={{
         height: 52,
         padding: "0 16px",
@@ -808,13 +812,17 @@ function Sidebar({
         flexShrink: 0,
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          {brandLogo ? (
+            <img src={brandLogo} alt={brandName} style={{ height: 28, maxWidth: 120, objectFit: "contain" }} />
+          ) : (
+            <>
           <div style={{
             width: 28, height: 28, borderRadius: 7,
             background: "linear-gradient(135deg, #007AFF, #5856D6)",
             display: "flex", alignItems: "center", justifyContent: "center",
             flexShrink: 0,
           }}>
-            <span style={{ color: "#fff", fontSize: 14, fontWeight: 700 }}>p</span>
+            <span style={{ color: "#fff", fontSize: 14, fontWeight: 700 }}>{brandName[0]?.toLowerCase() || "p"}</span>
           </div>
           <span style={{
             fontSize: 17,
@@ -822,10 +830,14 @@ function Sidebar({
             letterSpacing: "-0.41px",
             color: "#000000",
           }}>
-            pixdrift
+            {brandName}
           </span>
+            </>
+          )}
         </div>
       </div>
+        );
+      })()}
 
       {/* Nav content */}
       <nav style={{

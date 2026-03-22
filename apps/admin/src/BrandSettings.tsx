@@ -609,7 +609,7 @@ export const BrandSettings = () => {
                     onClick={() => set("font_body", font)}
                     style={{
                       padding: "6px 12px", borderRadius: 8, cursor: "pointer",
-                      border: active ? `2px solid ${C.purple}` : `1px solid ${C.border}`,
+                      border: active ? `2px solid #AF52DE` : `1px solid ${C.border}`,
                       background: active ? "#AF52DE10" : C.fill,
                       color: active ? "#AF52DE" : C.secondary,
                       fontSize: 13, fontFamily: `'${font}', system-ui`,

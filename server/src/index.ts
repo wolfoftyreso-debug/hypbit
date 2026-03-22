@@ -69,6 +69,7 @@ import brandRouter from "./brand-layer";
 import paymentOrchestrationRouter from "./payment-orchestration";
 import customerStateRouter from "./customer-state";
 import customerPortalRouter from "./customer-portal";
+import revolutRouter from "./revolut";
 
 // ---------------------------------------------------------------------------
 // Auth router
@@ -428,6 +429,7 @@ app.use('/api/brand', brandRouter);           // GET/PUT /api/brand/:org_id, GET
 app.use('/api/payments', paymentOrchestrationRouter); // GET /api/payments/config, POST /api/payments/create-intent|create-invoice|partial
 app.use('/api/customer-state', customerStateRouter);  // GET/POST /api/customer-state/:contact_id, GET /api/customer-state/by-token/:token
 app.use('/api/customer-portal', customerPortalRouter); // GET /api/customer-portal/:token
+app.use('/api/revolut', revolutRouter);               // GET /api/revolut/accounts|cards, POST /api/revolut/cards, GET /api/revolut/cost-report
 
 // ---------------------------------------------------------------------------
 // DMS — Dealer Management System (pixdrift automotive)
