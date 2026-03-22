@@ -79,6 +79,7 @@ import authRouter from "./auth";
 // DMS — Dealer Management System (pixdrift automotive)
 // ---------------------------------------------------------------------------
 import vehiclesRouter from "./vehicles";
+import externalAuditsRouter from "./external-audits";
 import workshopRouter from "./workshop";
 import workshopStateMachineRouter from "./state-machine-workshop";
 import checklistEngineRouter from "./checklist-engine";
@@ -432,6 +433,7 @@ app.use('/api/customer-portal', customerPortalRouter); // GET /api/customer-port
 // DMS — Dealer Management System (pixdrift automotive)
 // ---------------------------------------------------------------------------
 app.use(vehiclesRouter);       // /api/vehicles/*
+app.use(externalAuditsRouter); // /api/external-audits/*, /api/certifications/*
 app.use(workshopRouter);              // /api/workshop/*
 app.use(workshopStateMachineRouter);  // /api/workshop/work-orders/:id/transition, available-transitions, state-audit
 app.use(checklistEngineRouter);       // /api/checklists/*

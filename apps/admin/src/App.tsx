@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useApi } from "./useApi";
 import { useTranslation, LanguageSwitcher } from "@pixdrift/i18n";
 import { IntegrationsHub } from "./IntegrationsHub";
+import BrandSettings from "./BrandSettings";
 
 // ─── Design tokens ─────────────────────────────────────────────────────────────
 const C = {
@@ -185,6 +186,15 @@ const navItems: NavItem[] = [
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="2" y="7" width="6" height="10" rx="1"/><rect x="16" y="7" width="6" height="10" rx="1"/>
       <path d="M8 12h8"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+    </svg>
+  )},
+  { id: "brand", label: "Varumärke", icon: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M12 2a10 10 0 0 1 10 10"/>
+      <path d="M8 12s1.5 2 4 2 4-2 4-2"/>
+      <line x1="9" y1="9" x2="9.01" y2="9"/>
+      <line x1="15" y1="9" x2="15.01" y2="9"/>
     </svg>
   )},
   { id: "settings", label: "Inställningar", icon: (
@@ -849,6 +859,7 @@ export default function App() {
     compliance: <ComplianceView />,
     audit: <AuditView />,
     integrations: <IntegrationsHub />,
+    brand: <BrandSettings />,
     settings: <SettingsView />,
   };
 

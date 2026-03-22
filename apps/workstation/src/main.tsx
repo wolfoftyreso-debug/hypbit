@@ -8,6 +8,85 @@ import { LanguageProvider } from "@pixdrift/i18n";
 
 const API = "https://api.bc.pixdrift.com";
 
+// ─── White-label Brand Engine ────────────────────────────────────────────────
+async function applyBrand(orgId: string, token: string | null) {
+  try {
+    // Try API first
+    if (token) {
+      const res = await fetch(`${API}/api/brand/${orgId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const brand = await res.json();
+        injectBrand(brand);
+        // Cache locally for offline/fast startup
+        localStorage.setItem("pixdrift_brand_settings", JSON.stringify(brand));
+        return;
+      }
+    }
+  } catch (_) {
+    // Fall through to localStorage
+  }
+
+  // Fallback: use cached brand from localStorage (set by admin panel)
+  try {
+    const cached = localStorage.getItem("pixdrift_brand_settings");
+    if (cached) {
+      injectBrand(JSON.parse(cached));
+    }
+  } catch (_) {}
+}
+
+function injectBrand(brand: Record<string, string | boolean>) {
+  const root = document.documentElement;
+
+  if (brand.primary_color) {
+    root.style.setProperty("--brand-primary",   brand.primary_color as string);
+    root.style.setProperty("--brand-secondary", brand.secondary_color as string);
+    root.style.setProperty("--brand-accent",    brand.accent_color as string);
+  }
+
+  if (brand.logo_url) {
+    localStorage.setItem("pixdrift_brand_logo", brand.logo_url as string);
+    localStorage.setItem("pixdrift_brand_name", (brand.company_name as string) || "pixdrift");
+  }
+
+  if (brand.tagline) {
+    localStorage.setItem("pixdrift_brand_tagline", brand.tagline as string);
+  }
+
+  if (brand.font_heading) {
+    // Load Google Font dynamically
+    const fontName = brand.font_heading as string;
+    const id = `gf-heading-${fontName.replace(/\s+/g, "-")}`;
+    if (!document.getElementById(id)) {
+      const link = document.createElement("link");
+      link.id = id;
+      link.rel = "stylesheet";
+      link.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/\s+/g, "+")}:wght@400;500;600;700&display=swap`;
+      document.head.appendChild(link);
+    }
+    root.style.setProperty("--font-heading", `'${fontName}', system-ui, sans-serif`);
+  }
+
+  if (brand.font_body) {
+    const fontName = brand.font_body as string;
+    const id = `gf-body-${fontName.replace(/\s+/g, "-")}`;
+    if (!document.getElementById(id)) {
+      const link = document.createElement("link");
+      link.id = id;
+      link.rel = "stylesheet";
+      link.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/\s+/g, "+")}:wght@400;500;600;700&display=swap`;
+      document.head.appendChild(link);
+    }
+    root.style.setProperty("--font-body", `'${fontName}', system-ui, sans-serif`);
+  }
+
+  if (brand.dark_mode) {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }
+}
+
 function Root() {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
@@ -20,6 +99,12 @@ function Root() {
     const savedToken = localStorage.getItem("pixdrift_token");
     const savedUser = localStorage.getItem("pixdrift_user");
 
+    // Apply cached brand immediately on startup (before API validation)
+    try {
+      const cached = localStorage.getItem("pixdrift_brand_settings");
+      if (cached) injectBrand(JSON.parse(cached));
+    } catch (_) {}
+
     if (savedToken && savedUser) {
       // Validera token direkt mot Supabase (ingen backend-proxy)
       const SUPABASE_URL = "https://znmxtnxxjpmgtycmsqjv.supabase.co";
@@ -29,8 +114,12 @@ function Root() {
       })
         .then(res => {
           if (res.ok) {
+            const parsedUser = JSON.parse(savedUser);
             setToken(savedToken);
-            setUser(JSON.parse(savedUser));
+            setUser(parsedUser);
+            // Fetch & apply brand from API
+            const orgId = parsedUser?.org_id || parsedUser?.user_metadata?.org_id || "default";
+            applyBrand(orgId, savedToken);
           } else {
             localStorage.removeItem("pixdrift_token");
             localStorage.removeItem("pixdrift_user");
@@ -51,6 +140,9 @@ function Root() {
   function handleLogin(newToken: string, newUser: any) {
     setToken(newToken);
     setUser(newUser);
+    // Apply brand after fresh login
+    const orgId = newUser?.org_id || newUser?.user_metadata?.org_id || "default";
+    applyBrand(orgId, newToken);
   }
 
   function handleLogout() {

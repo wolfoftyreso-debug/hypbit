@@ -9,6 +9,7 @@ import CultureModule from "./CultureModule";
 import ConsumablesModule from "./ConsumablesModule";
 import { useTranslation, LanguageSwitcher, formatCurrency, formatDate } from "@pixdrift/i18n";
 import PeopleOSModule from "./PeopleOSModule";
+import ExternalAuditModule from "./ExternalAuditModule";
 
 // ─── Design tokens — Apple HIG precision ──────────────────────────────────────
 const C = {
@@ -298,6 +299,12 @@ const Icons = {
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
     </svg>
   ),
+  CheckBadge: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/>
+      <path d="m9 12 2 2 4-4"/>
+    </svg>
+  ),
   Heart: () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
@@ -330,6 +337,7 @@ const NAV_SECTIONS_BASE = [
       { id: "improvements", icon: <Icons.PDCA />, label: "PDCA" },
       { id: "compliance", icon: <Icons.Compliance />, label: "Compliance" },
       { id: "risks", icon: <Icons.Shield />, label: "Risker" },
+      { id: "external-audits", icon: <Icons.CheckBadge />, label: "Revisioner & Certifikat" },
     ],
   },
   {
@@ -2280,6 +2288,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
             {view === "assets"       && <AssetModule user={D.user as any} />}
             {view === "consumables"  && <ConsumablesModule />}
             {view === "people"       && <PeopleOSModule D={D as any} />}
+            {view === "external-audits" && <ExternalAuditModule orgId={D.user?.id} />}
           </main>
         </div>
       </div>

@@ -9,6 +9,8 @@
  */
 
 import { useState, useEffect, CSSProperties } from "react";
+import { OEMLogoGrid } from "./components/OEMLogoCard";
+import { certNameToBrandId } from "./data/oem-logos";
 
 // ─── Design tokens (matchar Dashboard.tsx) ────────────────────────────────────
 const C = {
@@ -456,27 +458,16 @@ function Step3({
         <label style={{ fontSize: 13, color: C.secondary, fontWeight: 600, display: "block", marginBottom: 8 }}>
           CERTIFIERINGAR
         </label>
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          {certOptions.map(cert => (
-            <button
-              key={cert}
-              onClick={() => toggleCert(cert)}
-              style={{
-                padding: "8px 16px",
-                borderRadius: 20,
-                border: `1.5px solid ${data.certifications.includes(cert) ? C.blue : C.border}`,
-                background: data.certifications.includes(cert) ? "#EAF3FF" : C.surface,
-                color: data.certifications.includes(cert) ? C.blue : C.text,
-                fontWeight: data.certifications.includes(cert) ? 600 : 400,
-                fontSize: 14,
-                cursor: "pointer",
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif",
-              }}
-            >
-              {data.certifications.includes(cert) ? "✓ " : ""}{cert}
-            </button>
-          ))}
-        </div>
+        <OEMLogoGrid
+          selected={data.certifications}
+          onToggle={(id) => {
+            const certs = data.certifications.includes(id)
+              ? data.certifications.filter((c: string) => c !== id)
+              : [...data.certifications, id];
+            setData({ certifications: certs });
+          }}
+          size="sm"
+        />
       </div>
 
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
