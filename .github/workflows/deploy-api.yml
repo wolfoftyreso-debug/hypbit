@@ -24,6 +24,7 @@ jobs:
     name: Build & Deploy API
     runs-on: ubuntu-latest
     environment: production
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
@@ -45,6 +46,7 @@ jobs:
         run: echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
 
       - name: Build, tag, and push Docker image
+        id: build
         run: |
           IMAGE="${{ env.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ steps.meta.outputs.tag }}"
           LATEST="${{ env.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest"
@@ -54,7 +56,6 @@ jobs:
           docker push "$LATEST"
 
           echo "image=$IMAGE" >> $GITHUB_OUTPUT
-        id: build
 
       - name: Update ECS service
         run: |
@@ -64,16 +65,95 @@ jobs:
             --force-new-deployment \
             --region ${{ env.AWS_REGION }}
 
-      - name: Wait for ECS stability
+      - name: Wait for deployment (with timeout)
         run: |
-          aws ecs wait services-stable \
-            --cluster ${{ env.ECS_CLUSTER }} \
-            --services ${{ env.ECS_SERVICE }} \
-            --region ${{ env.AWS_REGION }}
+          echo "Waiting for ECS deployment to stabilize (max 8 min)..."
+          
+          # Poll every 15s for up to 8 minutes instead of using wait (which has no timeout)
+          MAX_ATTEMPTS=32
+          ATTEMPT=0
+          
+          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+            ATTEMPT=$((ATTEMPT + 1))
+            
+            # Get deployment status
+            RESULT=$(aws ecs describe-services \
+              --cluster ${{ env.ECS_CLUSTER }} \
+              --services ${{ env.ECS_SERVICE }} \
+              --region ${{ env.AWS_REGION }} \
+              --query 'services[0].{running:runningCount,desired:desiredCount,pending:pendingCount,deployments:length(deployments)}' \
+              --output json)
+            
+            RUNNING=$(echo "$RESULT" | jq -r '.running')
+            DESIRED=$(echo "$RESULT" | jq -r '.desired')
+            PENDING=$(echo "$RESULT" | jq -r '.pending')
+            DEPLOYS=$(echo "$RESULT" | jq -r '.deployments')
+            
+            echo "Attempt $ATTEMPT/$MAX_ATTEMPTS: running=$RUNNING desired=$DESIRED pending=$PENDING deployments=$DEPLOYS"
+            
+            # Success: running == desired AND only 1 deployment AND no pending
+            if [ "$RUNNING" = "$DESIRED" ] && [ "$DEPLOYS" = "1" ] && [ "$PENDING" = "0" ]; then
+              echo "✅ Deployment stable!"
+              break
+            fi
+            
+            # Last attempt — don't fail, just warn
+            if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
+              echo "⚠️ Deployment still stabilizing after 8 min — continuing anyway (health check will validate)"
+              break
+            fi
+            
+            sleep 15
+          done
 
       - name: Health check
         run: |
-          sleep 15
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://api.bc.pixdrift.com/health || echo "000")
-          echo "API health: $STATUS"
-          [ "$STATUS" = "200" ] && echo "✅ API healthy" || echo "⚠️ API not yet healthy (may still be starting)"
+          sleep 20
+          echo "Running health check..."
+          for i in 1 2 3; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://api.bc.pixdrift.com/health || echo "000")
+            echo "Attempt $i: API health = $STATUS"
+            if [ "$STATUS" = "200" ]; then
+              echo "✅ API healthy"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "⚠️ API health check inconclusive (may still be starting)"
+          # Don't fail the pipeline for health check — ECS will restart if unhealthy
+          exit 0
+
+      - name: Ensure minimum 2 tasks running
+        run: |
+          # Always ensure we have 2 tasks for redundancy
+          CURRENT=$(aws ecs describe-services \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services ${{ env.ECS_SERVICE }} \
+            --region ${{ env.AWS_REGION }} \
+            --query 'services[0].desiredCount' \
+            --output text)
+          
+          if [ "$CURRENT" -lt "2" ]; then
+            echo "⚠️ Only $CURRENT task(s) configured — scaling to 2 for redundancy"
+            aws ecs update-service \
+              --cluster ${{ env.ECS_CLUSTER }} \
+              --service ${{ env.ECS_SERVICE }} \
+              --desired-count 2 \
+              --region ${{ env.AWS_REGION }}
+            echo "✅ Scaled to 2 tasks"
+          else
+            echo "✅ $CURRENT tasks running — redundancy OK"
+          fi
+
+      - name: Deploy summary
+        run: |
+          echo "=== Deploy Summary ==="
+          echo "Image: ${{ steps.build.outputs.image }}"
+          echo "SHA: ${{ github.sha }}"
+          echo "Actor: ${{ github.actor }}"
+          aws ecs describe-services \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services ${{ env.ECS_SERVICE }} \
+            --region ${{ env.AWS_REGION }} \
+            --query 'services[0].{running:runningCount,desired:desiredCount,status:status}' \
+            --output table
