@@ -1,4 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createClient } from "@supabase/supabase-js";
+
+const SUPABASE_URL = 'https://znmxtnxxjpmgtycmsqjv.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpubXh0bnh4anBtZ3R5Y21zcWp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4ODA2NjUsImV4cCI6MjA4OTQ1NjY2NX0.3LzBF2cE95X0vtW-5LwfJu8iGebnE9AUXglHchMPH60';
 
 const C = {
   bg: "#F2F2F7", surface: "#FFFFFF", border: "#D1D1D6",
@@ -38,6 +42,19 @@ const TYPE_COLORS: Record<string, string> = {
   nc: C.red, culture: '#AF52DE', system: C.secondary,
 };
 
+function mapTypeToView(type: string): string | undefined {
+  const map: Record<string, string> = {
+    deal: 'deals',
+    task: 'tasks',
+    nc: 'quality',
+    checkin: 'work-orders',
+    approval: 'approval',
+    culture: 'culture',
+    system: 'devops',
+  };
+  return map[type];
+}
+
 interface NotificationsViewProps {
   onNavigate?: (view: string, entityId?: string) => void;
 }
@@ -45,6 +62,56 @@ interface NotificationsViewProps {
 export default function NotificationsView({ onNavigate }: NotificationsViewProps) {
   const [notifications, setNotifications] = useState(DEMO_NOTIFICATIONS);
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
+  const [isLive, setIsLive] = useState(false);
+  const [newIds, setNewIds] = useState<Set<string>>(new Set());
+
+  // Supabase Realtime subscription
+  useEffect(() => {
+    const token = localStorage.getItem('pixdrift_token');
+    if (!token) return;
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON, {
+      global: { headers: { Authorization: `Bearer ${token}` } },
+    });
+
+    const channel = supabase
+      .channel('notifications-live')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'notifications' },
+        (payload) => {
+          const n = payload.new as Record<string, unknown>;
+          const newNotif: Notification = {
+            id: String(n.id),
+            type: (n.type as Notification['type']) || 'system',
+            title: String(n.title ?? ''),
+            body: String(n.body ?? n.message ?? ''),
+            time: 'Just nu',
+            read: false,
+            navigateTo: mapTypeToView(String(n.type ?? '')),
+            entityId: n.entity_id ? String(n.entity_id) : undefined,
+          };
+          setNotifications(prev => [newNotif, ...prev]);
+          setNewIds(prev => new Set(prev).add(newNotif.id));
+          // Remove highlight after 3s
+          setTimeout(() => {
+            setNewIds(prev => {
+              const next = new Set(prev);
+              next.delete(newNotif.id);
+              return next;
+            });
+          }, 3000);
+        }
+      )
+      .subscribe();
+
+    setIsLive(true);
+
+    return () => {
+      supabase.removeChannel(channel);
+      setIsLive(false);
+    };
+  }, []);
 
   const unreadCount = notifications.filter(n => !n.read).length;
   const filtered = filter === 'unread' ? notifications.filter(n => !n.read) : notifications;
@@ -59,7 +126,19 @@ export default function NotificationsView({ onNavigate }: NotificationsViewProps
 
   return (
     <div style={{ padding: '0 0 40px 0', maxWidth: 640, margin: '0 auto' }}>
-      
+
+      {/* Pulse keyframe */}
+      <style>{`
+        @keyframes notif-pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(1.3); }
+        }
+        @keyframes notif-slide-in {
+          from { opacity: 0; transform: translateY(-8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+
       {/* Header */}
       <div style={{
         padding: '20px 24px 16px',
@@ -68,8 +147,19 @@ export default function NotificationsView({ onNavigate }: NotificationsViewProps
         background: C.surface,
       }}>
         <div>
-          <div style={{ fontSize: 22, fontWeight: 700, color: C.text, letterSpacing: '-0.03em' }}>
-            Notiser
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ fontSize: 22, fontWeight: 700, color: C.text, letterSpacing: '-0.03em' }}>
+              Notiser
+            </div>
+            {isLive && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: C.green }}>
+                <div style={{
+                  width: 6, height: 6, borderRadius: '50%', background: C.green,
+                  animation: 'notif-pulse 2s infinite',
+                }} />
+                Live
+              </div>
+            )}
           </div>
           {unreadCount > 0 && (
             <div style={{ fontSize: 13, color: C.secondary, marginTop: 2 }}>
@@ -127,13 +217,15 @@ export default function NotificationsView({ onNavigate }: NotificationsViewProps
               }}
               style={{
                 display: 'flex', gap: 14, padding: '14px 20px',
-                borderBottom: i < filtered.length-1 ? `0.5px solid ${C.fill}` : 'none',
-                background: notif.read ? C.surface : '#F0F6FF',
+                borderBottom: i < filtered.length - 1 ? `0.5px solid ${C.fill}` : 'none',
+                background: newIds.has(notif.id) ? '#E8F8EE' : notif.read ? C.surface : '#F0F6FF',
                 cursor: notif.navigateTo ? 'pointer' : 'default',
-                transition: 'background 0.1s',
+                transition: 'background 0.3s',
+                animation: newIds.has(notif.id) ? 'notif-slide-in 0.3s ease' : undefined,
               }}
               onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.background = C.fill}
-              onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.background = notif.read ? C.surface : '#F0F6FF'}
+              onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.background =
+                newIds.has(notif.id) ? '#E8F8EE' : notif.read ? C.surface : '#F0F6FF'}
             >
               {/* Icon */}
               <div style={{
