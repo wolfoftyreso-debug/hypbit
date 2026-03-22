@@ -53,6 +53,7 @@ import auditWorkspaceRouter from "./audit-workspace";
 import integrationRouter from "./integrations/integration-api";
 import stripeRouter from "./stripe";
 import notificationsRouter from "./notifications";
+import checkinRouter from "./checkin-api";
 import learningRouter from "./learning";
 import seoRouter from "./seo";
 import bankingRouter from "./banking";
@@ -417,6 +418,7 @@ app.use(auditWorkspaceRouter);
 app.use(integrationRouter);
 app.use("/api/stripe", stripeRouter);
 app.use("/api/notifications", notificationsRouter);
+app.use(checkinRouter); // Self Check-in API — /api/checkin/*
 app.use("/api/learning", learningRouter);
 app.use("/api/spaghetti", spaghettiRouter); // Lean spaghetti diagram & helikopterperspektiv
 app.use("/api/spatial", spatialRouter);   // Spatial Flow Intelligence — zones, spaghetti, friction
