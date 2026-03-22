@@ -1999,12 +1999,12 @@ interface ServiceAdvisorViewProps {
     full_name?: string;
     email?: string;
     role?: string;
-    user_metadata?: { role?: string };
+    user_metadata?: { role?: string; org_id?: string };
   } | null;
   activeView?: string;
 }
 
-type TabId = 'flow' | 'exceptions' | 'idag';
+type TabId = 'flow' | 'exceptions' | 'idag' | 'bokningar';
 
 export default function ServiceAdvisorView({ user, activeView = 'overview' }: ServiceAdvisorViewProps) {
   const [activeTab, setActiveTab] = useState<TabId>('flow');
@@ -2119,6 +2119,7 @@ export default function ServiceAdvisorView({ user, activeView = 'overview' }: Se
     { id: 'flow', label: 'Flödeskontroll' },
     { id: 'exceptions', label: 'Undantag', badge: unresolved.length > 0 ? unresolved.length : undefined },
     { id: 'idag', label: 'Idag' },
+    { id: 'bokningar', label: '📅 Bokningar' },
   ];
 
   return (
@@ -2342,6 +2343,11 @@ export default function ServiceAdvisorView({ user, activeView = 'overview' }: Se
         </div>
       )}
 
+      {/* ── Bokningar tab ────────────────────────────────────────────── */}
+      {activeTab === 'bokningar' && (
+        <BookingsPanel orgId={user?.user_metadata?.org_id || '00020002-0000-0000-0000-000000000001'} />
+      )}
+
       {/* Debug info in dev */}
       {import.meta.env.DEV && (
         <div style={{
@@ -2351,6 +2357,189 @@ export default function ServiceAdvisorView({ user, activeView = 'overview' }: Se
           🔧 DEV: role={user?.user_metadata?.role ?? user?.role ?? 'unknown'} | tab={activeTab} | exceptions={exceptions.length} | unresolved={unresolved.length} | suggestions={suggestions.length}
         </div>
       )}
+    </div>
+  );
+}
+
+// ─── BookingsPanel ─────────────────────────────────────────────────────────────
+// Shows today's bookings + upcoming, grouped by day
+// Ops Lead view — capacity awareness + booking status at a glance
+
+interface BookingRow {
+  id: string;
+  allocated_date?: string;
+  allocated_start: string;
+  allocated_technician_name: string;
+  vehicle_make?: string;
+  vehicle_model?: string;
+  vehicle_reg?: string;
+  service_type: string;
+  customer_name?: string;
+  status: string;
+  delay_risk_pct?: number;
+  required_parts?: string[];
+  parts_pre_ordered?: boolean;
+  estimated_minutes?: number;
+}
+
+const BOOKING_STATUS_ICON: Record<string, string> = {
+  CONFIRMED:    '✅',
+  PENDING:      '⚡',
+  RESCHEDULED:  '🔄',
+  IN_PROGRESS:  '🔧',
+  COMPLETED:    '✔️',
+  CANCELLED:    '❌',
+  NO_SHOW:      '👻',
+};
+
+const BOOKING_STATUS_LABEL: Record<string, string> = {
+  CONFIRMED:   'Bekräftad',
+  PENDING:     'Obokad kö',
+  RESCHEDULED: 'Ombokt',
+  IN_PROGRESS: 'Pågår',
+  COMPLETED:   'Klar',
+  CANCELLED:   'Avbokad',
+  NO_SHOW:     'Uteblev',
+};
+
+const SERVICE_LABEL_MAP: Record<string, string> = {
+  SERVICE:     'Service',
+  BRAKES:      'Bromsar',
+  DIAGNOSTICS: 'Felsökning',
+  TYRES:       'Däck',
+  INSPECTION:  'Besiktning',
+  REPAIR:      'Reparation',
+  OTHER:       'Annat',
+};
+
+function BookingsPanel({ orgId }: { orgId: string }) {
+  const [bookings, setBookings] = useState<BookingRow[]>([]);
+  const [loading, setLoading]   = useState(true);
+
+  const todayStr = new Date().toISOString().split('T')[0];
+  const tomorrowDate = new Date(); tomorrowDate.setDate(new Date().getDate() + 1);
+  const tomorrowStr = tomorrowDate.toISOString().split('T')[0];
+
+  const DEMO_BOOKINGS: BookingRow[] = [
+    { id: 'b1', allocated_date: todayStr,    allocated_start: '10:30', allocated_technician_name: 'Eric Karlsson',  vehicle_make: 'VW',    vehicle_model: 'Golf', vehicle_reg: 'GHI 789', service_type: 'SERVICE',     customer_name: 'Johan Lindqvist', status: 'CONFIRMED',  delay_risk_pct: 5,  estimated_minutes: 90 },
+    { id: 'b2', allocated_date: todayStr,    allocated_start: '13:00', allocated_technician_name: 'Robin Björk',   vehicle_make: 'BMW',   vehicle_model: '320',  vehicle_reg: 'JKL 012', service_type: 'SERVICE',     customer_name: 'Peter Svensson',  status: 'PENDING',    delay_risk_pct: 12, estimated_minutes: 90 },
+    { id: 'b3', allocated_date: todayStr,    allocated_start: '14:30', allocated_technician_name: 'Jonas Lindström', vehicle_make: 'VW', vehicle_model: 'Golf', vehicle_reg: 'MNO 345', service_type: 'BRAKES',      customer_name: 'Maria Berg',      status: 'CONFIRMED',  delay_risk_pct: 20, estimated_minutes: 75, required_parts: ['Bromsklossar fram'], parts_pre_ordered: false },
+    { id: 'b4', allocated_date: tomorrowStr, allocated_start: '09:00', allocated_technician_name: 'Robin Björk',   vehicle_make: 'Volvo', vehicle_model: 'V70', vehicle_reg: 'PQR 678', service_type: 'INSPECTION',  customer_name: 'Anna Nilsson',    status: 'CONFIRMED',  delay_risk_pct: 8,  estimated_minutes: 60 },
+    { id: 'b5', allocated_date: tomorrowStr, allocated_start: '11:00', allocated_technician_name: 'Eric Karlsson', vehicle_make: 'Audi',  vehicle_model: 'A4',  vehicle_reg: 'STU 901', service_type: 'DIAGNOSTICS', customer_name: 'Lars Pettersson', status: 'CONFIRMED',  delay_risk_pct: 15, estimated_minutes: 75 },
+  ];
+
+  useEffect(() => {
+    const apiBase = (import.meta as any).env?.VITE_API_URL || '';
+    fetch(`${apiBase}/api/booking/bookings`)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        setBookings(data?.bookings?.length > 0 ? data.bookings : DEMO_BOOKINGS);
+        setLoading(false);
+      })
+      .catch(() => {
+        setBookings(DEMO_BOOKINGS);
+        setLoading(false);
+      });
+  }, [orgId]);
+
+  if (loading) {
+    return <div style={{ padding: 40, textAlign: 'center', color: '#8E8E93' }}>⏳ Laddar bokningar...</div>;
+  }
+
+  function dayLabel(d: string): string {
+    if (d === todayStr) return 'Idag';
+    if (d === tomorrowStr) return 'Imorgon';
+    const dt = new Date(d);
+    const days = ['Sön','Mån','Tis','Ons','Tor','Fre','Lör'];
+    const months = ['jan','feb','mar','apr','maj','jun','jul','aug','sep','okt','nov','dec'];
+    return `${days[dt.getDay()]} ${dt.getDate()} ${months[dt.getMonth()]}`;
+  }
+
+  const active = bookings.filter(b => !['CANCELLED','NO_SHOW','COMPLETED'].includes(b.status));
+  const groups: Record<string, BookingRow[]> = {};
+  for (const b of active) {
+    const d = b.allocated_date || todayStr;
+    if (!groups[d]) groups[d] = [];
+    groups[d].push(b);
+  }
+  for (const d of Object.keys(groups)) groups[d].sort((a, b2) => (a.allocated_start||'').localeCompare(b2.allocated_start||''));
+
+  const sortedDates = Object.keys(groups).sort();
+  const todayBks = groups[todayStr] || [];
+  const confirmed = todayBks.filter(b => b.status === 'CONFIRMED').length;
+  const unconfirmed = todayBks.filter(b => b.status === 'PENDING').length;
+  const totalMin = todayBks.reduce((s, b) => s + (b.estimated_minutes || 0), 0);
+  const loadPct = Math.round((totalMin / (3 * 540)) * 100);
+
+  return (
+    <div>
+      {/* Quick stats */}
+      <div style={{ background: '#FFFFFF', borderRadius: 14, padding: '14px 16px', marginBottom: 16, border: '1px solid #D1D1D6', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+        <div style={{ fontSize: 13, fontWeight: 700, color: '#8E8E93', marginBottom: 10, textTransform: 'uppercase', letterSpacing: 0.5 }}>Idag</div>
+        <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+          {([
+            { label: 'Bokade',      value: String(todayBks.length), color: '#000' },
+            { label: 'Bekräftade',  value: String(confirmed),       color: '#34C759' },
+            { label: 'Obekräftade', value: String(unconfirmed),     color: '#FF9500' },
+            { label: 'Beläggning',  value: `${loadPct}%`,           color: loadPct > 85 ? '#FF3B30' : loadPct > 65 ? '#FF9500' : '#34C759' },
+          ] as {label:string;value:string;color:string}[]).map(stat => (
+            <div key={stat.label} style={{ textAlign: 'center', minWidth: 60 }}>
+              <div style={{ fontSize: 20, fontWeight: 700, color: stat.color }}>{stat.value}</div>
+              <div style={{ fontSize: 11, color: '#8E8E93', marginTop: 2 }}>{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {sortedDates.length === 0 && (
+        <div style={{ padding: 32, textAlign: 'center', color: '#8E8E93', background: '#FFFFFF', borderRadius: 14 }}>
+          Inga aktiva bokningar
+        </div>
+      )}
+
+      {sortedDates.map(date => (
+        <div key={date} style={{ marginBottom: 16 }}>
+          <div style={{ fontSize: 12, fontWeight: 700, color: '#8E8E93', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8, paddingLeft: 4 }}>
+            {dayLabel(date)} · {groups[date].length} bokning{groups[date].length !== 1 ? 'ar' : ''}
+          </div>
+          <div style={{ background: '#FFFFFF', borderRadius: 14, border: '1px solid #D1D1D6', boxShadow: '0 1px 3px rgba(0,0,0,0.06)', overflow: 'hidden' }}>
+            {groups[date].map((b, i) => {
+              const isLast = i === groups[date].length - 1;
+              const hasMissingPart = (b.required_parts?.length || 0) > 0 && !b.parts_pre_ordered;
+              const statusIcon  = BOOKING_STATUS_ICON[b.status]  || '❓';
+              const statusLabel = BOOKING_STATUS_LABEL[b.status] || b.status;
+              const svcLabel    = SERVICE_LABEL_MAP[b.service_type] || b.service_type;
+              return (
+                <div key={b.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderBottom: isLast ? 'none' : '0.5px solid rgba(60,60,67,0.15)', background: hasMissingPart ? '#FFFBF0' : 'transparent' }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: '#8E8E93', width: 40, flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>
+                    {b.allocated_start?.slice(0, 5) || '--:--'}
+                  </span>
+                  <div style={{ width: 28, height: 28, borderRadius: 8, background: '#F2F2F7', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#8E8E93', flexShrink: 0 }}>
+                    {(b.allocated_technician_name || '?').split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: 14, fontWeight: 600, color: '#000' }}>{[b.vehicle_make, b.vehicle_model].filter(Boolean).join(' ') || 'Okänt fordon'}</span>
+                      {b.vehicle_reg && <span style={{ fontSize: 11, color: '#C7C7CC', fontFamily: 'monospace' }}>{b.vehicle_reg}</span>}
+                      <span style={{ fontSize: 12, color: '#8E8E93' }}>·</span>
+                      <span style={{ fontSize: 13, color: '#8E8E93' }}>{svcLabel}</span>
+                    </div>
+                    <div style={{ fontSize: 12, color: '#8E8E93', marginTop: 2 }}>
+                      {b.customer_name || 'Okänd kund'}{b.allocated_technician_name && ` · ${b.allocated_technician_name.split(' ')[0]}`}{b.estimated_minutes && ` · ~${b.estimated_minutes} min`}
+                    </div>
+                    {hasMissingPart && <div style={{ fontSize: 11, color: '#FF9500', marginTop: 3, fontWeight: 500 }}>⚠️ Del saknas: {b.required_parts?.join(', ')}</div>}
+                  </div>
+                  <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                    <div style={{ fontSize: 13 }}>{statusIcon}</div>
+                    <div style={{ fontSize: 11, color: '#8E8E93', marginTop: 2 }}>{statusLabel}</div>
+                    {(b.delay_risk_pct || 0) > 15 && <div style={{ fontSize: 11, color: '#FF9500', fontWeight: 600, marginTop: 1 }}>{b.delay_risk_pct}% risk</div>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

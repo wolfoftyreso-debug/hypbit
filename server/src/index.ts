@@ -92,6 +92,7 @@ import vehicleSalesRouter from "./vehicle-sales";
 import automotiveCrmRouter from "./automotive-crm";
 import rentalRouter from "./rental-engine";
 import oemRouter from "./integrations/oem";
+import bookingEngineRouter from "./booking-engine-api";
 
 // ---------------------------------------------------------------------------
 // PIX Intelligence + Workflow Engine (Palantir-depth for €499/month)
@@ -499,6 +500,7 @@ app.use('/api/intake',           vehicleIntakeRouter);       // Vehicle Intake P
 app.use('/api/missing-part',     missingPartRouter);         // Missing Part Protocol — airline-style delay response with auto compensation
 app.use(rentalPartnerRouter);                               // Rental Partner Integration — Europcar/Hertz/Avis/Sixt/Enterprise + own fleet, compensation rules
 app.use('/api/mobility',         mobilityIncidentRouter);    // Mobility Incident Flow Engine — towing, responsibility engine, cost allocation, OEM claims
+app.use(bookingEngineRouter);                               // Booking Engine — capacity+intent allocation, PIX-driven estimates, delay risk
 
 // ---------------------------------------------------------------------------
 // Auth helper for inline routes
