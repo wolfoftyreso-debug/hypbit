@@ -49,7 +49,7 @@ jobs:
           IMAGE="${{ env.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:${{ steps.meta.outputs.tag }}"
           LATEST="${{ env.ECR_REGISTRY }}/${{ secrets.ECR_REPOSITORY }}:latest"
 
-          docker build -t "$IMAGE" -t "$LATEST" .
+          docker build -f server/Dockerfile -t "$IMAGE" -t "$LATEST" ./server
           docker push "$IMAGE"
           docker push "$LATEST"
 

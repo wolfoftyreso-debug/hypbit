@@ -11,10 +11,10 @@ RUN addgroup -g 1001 -S nodejs && adduser -S hypbit -u 1001
 WORKDIR /app
 
 # Kopiera package-filer först (layer cache)
-COPY package.json package-lock.json ./
+COPY package.json ./
 
 # Installera produktionsberoenden + tsx (behövs i runtime)
-RUN npm ci --include=dev && npm cache clean --force
+RUN npm install --include=dev && npm cache clean --force
 
 # Kopiera källkod
 COPY tsconfig.json ./
