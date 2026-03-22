@@ -20,6 +20,7 @@ import type { PIX } from "./PixFeed";
 import TraceView from "./TraceView";
 import ControlLayerModule from "./ControlLayerModule";
 import WorkerView from "./WorkerView";
+import ServiceAdvisorView from "./ServiceAdvisorView";
 
 // ─── Design tokens — Apple HIG precision ──────────────────────────────────────
 const C = {
@@ -186,6 +187,23 @@ const Icons = {
       <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
       <line x1="12" y1="9" x2="12" y2="13"/>
       <line x1="12" y1="17" x2="12.01" y2="17"/>
+    </svg>
+  ),
+  AlertCircle: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="12" y1="8" x2="12" y2="12"/>
+      <line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+  ),
+  List: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="8" y1="6" x2="21" y2="6"/>
+      <line x1="8" y1="12" x2="21" y2="12"/>
+      <line x1="8" y1="18" x2="21" y2="18"/>
+      <line x1="3" y1="6" x2="3.01" y2="6"/>
+      <line x1="3" y1="12" x2="3.01" y2="12"/>
+      <line x1="3" y1="18" x2="3.01" y2="18"/>
     </svg>
   ),
   Shield: () => (
@@ -852,8 +870,27 @@ const NAV_SECTIONS_TECHNICIAN = [
   },
 ];
 
+// Simplified nav for service advisors — exceptions first, bookings never
+const NAV_SECTIONS_OPERATIONS_LEAD = [
+  {
+    label: null,
+    items: [
+      { id: "overview",     icon: <Icons.AlertCircle />, label: "Undantag & Kontroll" },
+    ],
+  },
+  {
+    label: "JOBB & KUNDER",
+    items: [
+      { id: "work-orders", icon: <Icons.List />,     label: "Alla jobb idag"   },
+      { id: "approval",    icon: <Icons.Check />,    label: "Tilläggsarbete"   },
+      { id: "dms",         icon: <Icons.Car />,      label: "Fordon & Kunder"  },
+      { id: "calendar",    icon: <Icons.Calendar />, label: "Schema"           },
+    ],
+  },
+];
+
 function Sidebar({
-  view, setView, userName, onLogout, isAutomotive = false, hasZones = false, isTechnician = false
+  view, setView, userName, onLogout, isAutomotive = false, hasZones = false, isTechnician = false, isServiceAdvisor = false
 }: {
   view: string;
   setView: (v: string) => void;
@@ -862,6 +899,7 @@ function Sidebar({
   isAutomotive?: boolean;
   hasZones?: boolean;
   isTechnician?: boolean;
+  isServiceAdvisor?: boolean;
 }) {
   // Build nav sections — technicians get a stripped-down set
   const automotiveSections = isAutomotive
@@ -878,6 +916,8 @@ function Sidebar({
 
   const allSections = isTechnician
     ? NAV_SECTIONS_TECHNICIAN
+    : isServiceAdvisor
+    ? NAV_SECTIONS_OPERATIONS_LEAD
     : [...NAV_SECTIONS_BASE, ...automotiveSections];
 
   return (
@@ -2417,6 +2457,12 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
     propUser?.role === "TECHNICIAN" ||
     (typeof localStorage !== "undefined" && localStorage.getItem("pixdrift_role") === "TECHNICIAN");
 
+  // Service Advisor role — exception management + reality control interface
+  const isServiceAdvisor =
+    propUser?.user_metadata?.role === "OPERATIONS_LEAD" ||
+    propUser?.role === "OPERATIONS_LEAD" ||
+    (typeof localStorage !== "undefined" && localStorage.getItem("pixdrift_role") === "OPERATIONS_LEAD");
+
   const { data: apiNCs } = useApi<{ id: string; title: string; severity: string; status: string; code?: string; who?: string; days?: number }[]>("/api/nc");
   const { data: apiRisks } = useApi<{ id: string; title: string; category: string; probability: number; impact: number; score: number; level: string; mitigation_plan: string; code?: string }[]>("/api/risks");
   const { data: apiPerf } = useApi<{ process_id: string; process_name: string; execution_count: number; avg_duration_ms: number; nc_count: number }[]>("/api/processes/performance");
@@ -2497,6 +2543,8 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
     devops:      "Dev Infrastructure",
     "account-safety": "Kontosäkerhet",
     control:          "Kontrollager",
+    "work-orders":    "Alla jobb idag",
+    approval:         "Tilläggsarbete",
   };
 
   return (
@@ -2519,15 +2567,20 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
           isAutomotive={isAutomotive}
           hasZones={hasZones}
           isTechnician={isTechnician}
+          isServiceAdvisor={isServiceAdvisor}
         />
 
         <div style={{ marginLeft: 260, flex: 1, display: "flex", flexDirection: "column", minHeight: "100vh" }}>
           <TopBar title={viewTitles[view] ?? view} userName={D.user.full_name} />
 
           <main role="main" style={{ flex: 1, padding: "24px 24px 64px", maxWidth: 1280, width: "100%" }}>
-            {view === "overview" && isTechnician
+            {view === "overview" && isServiceAdvisor
+              ? <ServiceAdvisorView user={propUser} />
+              : view === "overview" && isTechnician
               ? <WorkerView user={propUser} />
-              : view === "overview" && <OverviewView D={D} onSelectPix={(pix) => { setSelectedPix(pix); setShowTrace(true); }} />}
+              : view === "overview"
+              ? <OverviewView D={D} onSelectPix={(pix) => { setSelectedPix(pix); setShowTrace(true); }} />
+              : null}
             {view === "pix-feed" && (
               <div style={{ display: "grid", gridTemplateColumns: showTrace ? "1fr 420px" : "1fr", gap: 20, alignItems: "start" }}>
                 <PixFeed
