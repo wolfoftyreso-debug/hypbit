@@ -18,6 +18,7 @@ import DevOpsHub from "./DevOpsHub";
 import PixFeed, { DEMO_PIX, PIX_COLORS } from "./PixFeed";
 import type { PIX } from "./PixFeed";
 import TraceView from "./TraceView";
+import ControlLayerModule from "./ControlLayerModule";
 
 // ─── Design tokens — Apple HIG precision ──────────────────────────────────────
 const C = {
@@ -113,6 +114,19 @@ function getSwedishDate(): string {
 }
 
 // ─── Inline SVG Icons — Heroicons outline, 16×16, strokeWidth 1.5 ─────────────
+// Radar/target icon for Control Layer
+const RadarIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <circle cx="12" cy="12" r="6"/>
+    <circle cx="12" cy="12" r="2"/>
+    <line x1="12" y1="2" x2="12" y2="6"/>
+    <line x1="12" y1="18" x2="12" y2="22"/>
+    <line x1="2" y1="12" x2="6" y2="12"/>
+    <line x1="18" y1="12" x2="22" y2="12"/>
+  </svg>
+);
+
 const Icons = {
   Grid: () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -382,6 +396,7 @@ const NAV_SECTIONS_BASE = [
   {
     label: "KVALITET",
     items: [
+      { id: "control",        icon: <RadarIcon />,        label: "Kontrollager",           pixSubtitle: "Flow PIX" },
       { id: "processes",      icon: <Icons.Flow />,       label: "Processer",              pixSubtitle: "Process PIX" },
       { id: "nc",             icon: <Icons.Alert />,      label: "Avvikelser",             pixSubtitle: "NC Signals" },
       { id: "improvements",   icon: <Icons.PDCA />,       label: "PDCA",                   pixSubtitle: "Improve PIX" },
@@ -2453,6 +2468,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
     damage:      "Skadeärenden",
     devops:      "Dev Infrastructure",
     "account-safety": "Kontosäkerhet",
+    control:          "Kontrollager",
   };
 
   return (
@@ -2523,6 +2539,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
             {view === "devops" && <DevOpsHub />}
             {view === "account-safety" && <AccountSafetyModule orgId={D.user?.id} />}
             {view === "company" && <CompanyComplianceModule />}
+            {view === "control" && <ControlLayerModule />}
           </main>
         </div>
       </div>

@@ -82,6 +82,7 @@ import authRouter from "./auth";
 // ---------------------------------------------------------------------------
 import vehiclesRouter from "./vehicles";
 import externalAuditsRouter from "./external-audits";
+import controlLayerRouter from "./control-layer";
 import workshopRouter from "./workshop";
 import workshopStateMachineRouter from "./state-machine-workshop";
 import checklistEngineRouter from "./checklist-engine";
@@ -438,6 +439,7 @@ app.use('/api/revolut', revolutRouter);               // GET /api/revolut/accoun
 // ---------------------------------------------------------------------------
 app.use(vehiclesRouter);       // /api/vehicles/*
 app.use(externalAuditsRouter); // /api/external-audits/*, /api/certifications/*
+app.use('/api/control', controlLayerRouter); // Control Layer — live-map, flow-analysis, bottlenecks, RCA, improvements
 app.use(workshopRouter);              // /api/workshop/*
 app.use(workshopStateMachineRouter);  // /api/workshop/work-orders/:id/transition, available-transitions, state-audit
 app.use(checklistEngineRouter);       // /api/checklists/*
