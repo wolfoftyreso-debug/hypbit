@@ -1059,21 +1059,27 @@ function OverviewView({ D }: { D: typeof FALLBACK }) {
     <div style={{ display: "flex", flexDirection: "column" }}>
       {/* Large title */}
       <div style={{
-        fontSize: 34,
+        fontSize: 22,
         fontWeight: 700,
-        letterSpacing: "-0.41px",
+        letterSpacing: "-0.02em",
         color: "#000000",
         padding: "8px 4px 2px",
       }}>
-        {getGreeting()}, {D.user.full_name}
+        {getGreeting()}, {D.user.full_name}.
       </div>
       <div style={{
-        fontSize: 15,
+        fontSize: 14,
         color: "#8E8E93",
-        padding: "0 4px 20px",
-        letterSpacing: "-0.24px",
+        padding: "2px 4px 20px",
       }}>
-        {getSwedishDate()} · {D.tasks.filter(t => t.st !== "DONE").length} öppna uppgifter · {D.ncs.filter(n => n.status !== "CLOSED").length} aktiva avvikelser
+        {(() => {
+          const openTasks = D.tasks.filter(t => t.st !== "DONE").length;
+          const activeDeals = D.pipeline.filter(p => p.st !== "WON").reduce((s, p) => s + p.deals, 0);
+          const openNcs = D.ncs.filter(n => n.status !== "CLOSED").length;
+          const activeProcesses = D.processes.length;
+          const activePixCount = openTasks + activeDeals + openNcs + activeProcesses;
+          return `${activePixCount} PIX active across your operation right now.`;
+        })()}
       </div>
 
       {/* KPI — Inset Grouped List (Aktier-stil) */}
