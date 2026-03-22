@@ -35,6 +35,7 @@ import subcontractorsRouter from "./subcontractors";
 import capacityEngineRouter from "./capacity-engine";
 import metricsRouter from "./metrics";
 import qualityGatesRouter from "./quality-gates";
+import qualityControlRouter from "./quality-control-api";
 import decisionIntelligenceRouter from "./decision-intelligence";
 
 // ---------------------------------------------------------------------------
@@ -408,6 +409,7 @@ app.use(subcontractorsRouter);
 app.use(capacityEngineRouter);
 app.use(metricsRouter);
 app.use(qualityGatesRouter);
+app.use(qualityControlRouter);
 app.use(decisionIntelligenceRouter);
 
 // ---------------------------------------------------------------------------
@@ -489,6 +491,9 @@ app.use('/api/payroll',          payrollComplianceRouter); // Arbetsgivaravgifte
 app.use('/api/compliance',       complianceCheckerRouter); // Compliance-kontroll
 app.use('/api/tool-assets',      assetAccountabilityRouter); // Asset Accountability & Traceability
 app.use('/api/account-safety',   accountSafetyRouter);       // Account Safety & Offboarding — master accounts, risk analysis, offboarding wizard
+
+import swedacComplianceRouter from './swedac-compliance-api';
+app.use('/api/swedac',           swedacComplianceRouter);    // Swedac Accreditation — ISO 17020/17025/9001, calibration, competence, impartiality
 
 import companyComplianceRouter from './company-compliance';
 import vehicleIntakeRouter from './vehicle-intake-api';

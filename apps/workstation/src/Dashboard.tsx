@@ -13,6 +13,7 @@ import ConsumablesModule from "./ConsumablesModule";
 import { formatCurrency, formatDate } from "@pixdrift/i18n";
 import PeopleOSModule from "./PeopleOSModule";
 import ExternalAuditModule from "./ExternalAuditModule";
+import QualityControlModule from "./QualityControlModule";
 import AccountSafetyModule, { ShieldCheckIcon } from "./AccountSafetyModule";
 import CompanyComplianceModule from "./CompanyComplianceModule";
 import NotificationsView from './NotificationsView';
@@ -468,6 +469,13 @@ const NAV_SECTIONS_BASE = [
   },
 ];
 
+const QualityShieldIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7z"/>
+    <polyline points="9 12 11 14 15 10"/>
+  </svg>
+);
+
 const NAV_SECTIONS_AUTOMOTIVE = [
   {
     label: "VERKSTAD",
@@ -478,6 +486,13 @@ const NAV_SECTIONS_AUTOMOTIVE = [
       { id: "spaghetti",  icon: <Icons.Spaghetti />, label: "Rörelsemönster",    badge: null as string | null },
       { id: "assets",     icon: <Icons.Wrench />,    label: "Utrustning & Verktyg", badge: null as string | null },
       { id: "consumables",icon: <Icons.Box />,       label: "Förbrukningsvaror", badge: null as string | null },
+    ],
+  },
+  {
+    label: "KVALITET",
+    items: [
+      { id: "quality",    icon: <QualityShieldIcon />, label: "Kvalitetskontroll", pixSubtitle: "Q-Check", badge: null as string | null },
+      { id: "external-audits", icon: <Icons.CheckBadge />, label: "Revisioner & Certifikat", badge: null as string | null },
     ],
   },
 ];
@@ -2553,6 +2568,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
     learning:    "Utbildning",
     culture:     "Kultur & Events",
     dms:         "Fordon & Verkstad",
+    quality:     "Kvalitetskontroll",
     spaghetti:   "Rörelsemönster",
     spatial:     "Verkstadskarta",
     assets:      "Utrustning & Verktyg",
@@ -2645,6 +2661,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
             {view === "consumables"  && <ConsumablesModule />}
             {view === "people"       && <PeopleOSModule D={D as any} />}
             {view === "external-audits" && <ExternalAuditModule orgId={D.user?.id} />}
+            {view === "quality" && <QualityControlModule />}
             {view === "notifications" && <NotificationsView onNavigate={(v, _entityId) => setView(v)} />}
             {view === "devops" && <DevOpsHub />}
             {view === "account-safety" && <AccountSafetyModule orgId={D.user?.id} />}
