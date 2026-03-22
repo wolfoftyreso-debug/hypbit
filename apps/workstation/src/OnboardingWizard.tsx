@@ -369,7 +369,33 @@ function Step3({
   onNext: () => void;
   onBack: () => void;
 }) {
-  const certOptions = ["Volvo", "BMW", "VW", "Stellantis", "Oberoende"];
+  // OEM-auktoriseringar per märke
+  const oemCertOptions = [
+    // Svenska/nordiska märken
+    "Volvo Cars", "Volvo Trucks", "ŠKODA",
+    // Tyska
+    "BMW", "MINI", "Mercedes-Benz", "Volkswagen", "Audi", "SEAT", "Cupra", "Porsche",
+    // Franska/Stellantis
+    "Peugeot", "Citroën", "Opel", "Fiat", "Alfa Romeo", "Jeep", "DS Automobiles",
+    // Japanska
+    "Toyota", "Lexus", "Honda", "Nissan", "Mazda", "Subaru", "Mitsubishi", "Suzuki",
+    // Koreanska
+    "Hyundai", "Kia",
+    // Amerikanska
+    "Ford", "Tesla",
+    // Övrigt
+    "Renault", "Dacia", "MG", "BYD",
+    // Oberoende
+    "Oberoende (märkesfri)",
+  ];
+
+  // Swedac-ackrediteringar
+  const swedacCertOptions = [
+    "AC-service (F-gas)", "Besiktningsefterkontroll", "Bromsprovning", "Lasermätning (karosseri)",
+    "OBD-diagnostik", "Kalibrering ADAS", "Däckhotell (certifierat)",
+  ];
+
+  const certOptions = oemCertOptions; // Default OEM-lista för bakåtkompatibilitet
   const sizeOptions = ["1-5", "6-20", "20+"] as const;
 
   function toggleCert(cert: string) {
@@ -383,7 +409,7 @@ function Step3({
     <div>
       <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>Din verkstad</h2>
       <p style={{ fontSize: 15, color: C.secondary, marginBottom: 24 }}>
-        Vi anpassar pixdrift efter er verkstads storlek och certifieringar.
+        Välj OEM-auktoriseringar och eventuella Swedac-ackrediteringar. Kan uppdateras senare.
       </p>
 
       <div style={{ marginBottom: 20 }}>
