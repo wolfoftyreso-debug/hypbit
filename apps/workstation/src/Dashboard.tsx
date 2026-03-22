@@ -305,8 +305,8 @@ const Icons = {
   ),
 };
 
-// ─── Nav sections ──────────────────────────────────────────────────────────────
-const NAV_SECTIONS = [
+// ─── Nav sections — automotive items split out ─────────────────────────────────
+const NAV_SECTIONS_BASE = [
   {
     label: null,
     items: [
@@ -340,28 +340,31 @@ const NAV_SECTIONS = [
     ],
   },
   {
-    label: "KOMPETENS",
+    label: "TEAM",
     items: [
       { id: "capability", icon: <Icons.Star />, label: "Kompetenser" },
       { id: "development", icon: <Icons.Development />, label: "Utveckling" },
       { id: "learning", icon: <Icons.Book />, label: "Utbildning" },
-    ],
-  },
-  {
-    label: "PERSONAL",
-    items: [
       { id: "people", icon: <Icons.Heart />, label: "Team & Trivsel" },
     ],
   },
   {
-    label: "SYSTEM",
+    label: "ÖVRIGT",
     items: [
-      { id: "culture",      icon: <Icons.Cake />,      label: "Kultur & Events" },
-      { id: "dms",       icon: <Icons.Car />,       label: "DMS Bil"     },
-      { id: "spaghetti", icon: <Icons.Spaghetti />, label: "Flödesanalys" },
-      { id: "spatial",   icon: <Icons.Map />,       label: "Verkstadskarta" },
-      { id: "assets",       icon: <Icons.Wrench />, label: "Tillgångar"  },
-      { id: "consumables",  icon: <Icons.Box />,    label: "Förbrukning" },
+      { id: "culture", icon: <Icons.Cake />, label: "Kultur & Events" },
+    ],
+  },
+];
+
+const NAV_SECTIONS_AUTOMOTIVE = [
+  {
+    label: "VERKSTAD",
+    items: [
+      { id: "dms",        icon: <Icons.Car />,       label: "Fordon & Verkstad", badge: null as string | null },
+      { id: "spatial",    icon: <Icons.Map />,       label: "Verkstadskarta",    badge: null as string | null },
+      { id: "spaghetti",  icon: <Icons.Spaghetti />, label: "Rörelsemönster",    badge: null as string | null },
+      { id: "assets",     icon: <Icons.Wrench />,    label: "Utrustning & Verktyg", badge: null as string | null },
+      { id: "consumables",icon: <Icons.Box />,       label: "Förbrukningsvaror", badge: null as string | null },
     ],
   },
 ];
@@ -749,13 +752,30 @@ const FALLBACK = {
 
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
 function Sidebar({
-  view, setView, userName, onLogout
+  view, setView, userName, onLogout, isAutomotive = false, hasZones = false
 }: {
   view: string;
   setView: (v: string) => void;
   userName: string;
   onLogout?: () => void;
+  isAutomotive?: boolean;
+  hasZones?: boolean;
 }) {
+  // Build automotive sections with setup badges when not yet configured
+  const automotiveSections = isAutomotive
+    ? NAV_SECTIONS_AUTOMOTIVE.map(section => ({
+        ...section,
+        items: section.items.map(item => ({
+          ...item,
+          badge: (!hasZones && (item.id === "spatial" || item.id === "spaghetti"))
+            ? "Setup"
+            : null,
+        })),
+      }))
+    : [];
+
+  const allSections = [...NAV_SECTIONS_BASE, ...automotiveSections];
+
   return (
     <div style={{
       width: 260,
@@ -805,20 +825,21 @@ function Sidebar({
         overflowY: "auto",
         padding: "8px 0",
       }}>
-        {NAV_SECTIONS.map((section, si) => (
+        {allSections.map((section, si) => (
           <div key={si} style={{ marginTop: section.label ? 8 : 4, marginBottom: 4 }}>
             {section.label && (
               <div style={{
-                fontSize: 13,
-                fontWeight: 400,
+                fontSize: 11,
+                fontWeight: 600,
                 color: "#8E8E93",
                 padding: "20px 16px 6px 16px",
-                letterSpacing: 0,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
               }}>
                 {section.label}
               </div>
             )}
-            {section.items.map(item => {
+            {section.items.map((item: { id: string; icon: React.ReactNode; label: string; badge?: string | null }) => {
               const active = view === item.id;
               return (
                 <button
@@ -853,7 +874,21 @@ function Sidebar({
                   <span style={{ width: 16, height: 16, flexShrink: 0, display: "flex", alignItems: "center" }}>
                     {item.icon}
                   </span>
-                  <span>{item.label}</span>
+                  <span style={{ flex: 1 }}>{item.label}</span>
+                  {item.badge && (
+                    <span style={{
+                      fontSize: 10,
+                      fontWeight: 700,
+                      padding: "2px 6px",
+                      borderRadius: 6,
+                      background: active ? "rgba(255,255,255,0.25)" : "#FF950018",
+                      color: active ? "#fff" : "#FF9500",
+                      letterSpacing: "0.02em",
+                      flexShrink: 0,
+                    }}>
+                      {item.badge}
+                    </span>
+                  )}
                 </button>
               );
             })}
@@ -2125,6 +2160,18 @@ function ChatView({ D }: { D: typeof FALLBACK }) {
 export default function App({ user: propUser, onLogout }: { user?: any; onLogout?: () => void }) {
   const [view, setView] = useState("overview");
 
+  // Detect automotive context: user industry, certifications, or localStorage flag
+  const isAutomotive = Boolean(
+    (propUser?.user_metadata?.industry === "automotive") ||
+    (propUser?.certifications && propUser.certifications.length > 0) ||
+    (typeof localStorage !== "undefined" && localStorage.getItem("pixdrift_is_automotive") === "true")
+  );
+
+  // Detect if zones are configured (proxy: check localStorage or always false for now)
+  const hasZones = typeof localStorage !== "undefined"
+    ? localStorage.getItem("pixdrift_has_zones") === "true"
+    : false;
+
   const { data: apiNCs } = useApi<{ id: string; title: string; severity: string; status: string; code?: string; who?: string; days?: number }[]>("/api/nc");
   const { data: apiRisks } = useApi<{ id: string; title: string; category: string; probability: number; impact: number; score: number; level: string; mitigation_plan: string; code?: string }[]>("/api/risks");
   const { data: apiPerf } = useApi<{ process_id: string; process_name: string; execution_count: number; avg_duration_ms: number; nc_count: number }[]>("/api/processes/performance");
@@ -2161,26 +2208,29 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
 
   const { t } = useTranslation();
   const viewTitles: Record<string, string> = {
-    overview: "Översikt",
-    deals: "Affärer",
-    tasks: "Uppgifter",
-    goals: "Mål",
-    chat: "Chatt",
-    processes: "Processer",
-    nc: "Avvikelser",
-    improvements: "PDCA",
-    compliance: "Compliance",
-    risks: "Risker",
-    finance: "Huvudbok",
-    reports: "Rapporter",
-    capability: "Kompetenser",
+    overview:    "Översikt",
+    deals:       "Affärer",
+    tasks:       "Uppgifter",
+    goals:       "Mål",
+    chat:        "Chatt",
+    processes:   "Processer",
+    nc:          "Avvikelser",
+    improvements:"PDCA",
+    compliance:  "Compliance",
+    risks:       "Risker",
+    finance:     "Huvudbok",
+    reports:     "Rapporter",
+    capability:  "Kompetenser",
     development: "Utveckling",
-    learning: "Utbildning",
-    culture:   "Kultur & Events",
-    dms:       "DMS Bil",
-    spaghetti: "Flödesanalys",
-    spatial:   "Verkstadskarta",
-    people:    "Team & Trivsel",
+    learning:    "Utbildning",
+    culture:     "Kultur & Events",
+    dms:         "Fordon & Verkstad",
+    spaghetti:   "Rörelsemönster",
+    spatial:     "Verkstadskarta",
+    assets:      "Utrustning & Verktyg",
+    consumables: "Förbrukningsvaror",
+    people:      "Team & Trivsel",
+    damage:      "Skadeärenden",
   };
 
   return (
@@ -2200,6 +2250,8 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
           setView={setView}
           userName={D.user.full_name}
           onLogout={onLogout}
+          isAutomotive={isAutomotive}
+          hasZones={hasZones}
         />
 
         <div style={{ marginLeft: 260, flex: 1, display: "flex", flexDirection: "column", minHeight: "100vh" }}>

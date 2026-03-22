@@ -416,6 +416,63 @@ function MovementTable({ users }: { users: UserMovement[] }) {
 }
 
 // ---------------------------------------------------------------------------
+// Empty state — workshop map not yet configured
+// ---------------------------------------------------------------------------
+const C_LIGHT = {
+  text:      "#000000",
+  secondary: "#8E8E93",
+  tertiary:  "#C7C7CC",
+  blue:      "#007AFF",
+};
+
+function EmptyWorkshopMap({ onAddZone }: { onAddZone?: () => void }) {
+  return (
+    <div style={{
+      display: "flex", flexDirection: "column", alignItems: "center",
+      justifyContent: "center", minHeight: 400, gap: 20, textAlign: "center",
+      padding: 48,
+      background: "rgba(255,255,255,0.03)",
+      borderRadius: 12,
+      border: "1px solid rgba(255,255,255,0.08)",
+    }}>
+      {/* Illustration — enkel SVG verkstadsplan */}
+      <svg width="120" height="80" viewBox="0 0 120 80" fill="none">
+        <rect x="10" y="10" width="40" height="25" rx="3" stroke="#6366f1" strokeWidth="1.5" fill="rgba(99,102,241,0.12)"/>
+        <text x="30" y="26" textAnchor="middle" fontSize="8" fill="#6366f1">Lift 1</text>
+        <rect x="60" y="10" width="40" height="25" rx="3" stroke="#6366f1" strokeWidth="1.5" fill="rgba(99,102,241,0.06)" strokeDasharray="4 2"/>
+        <text x="80" y="26" textAnchor="middle" fontSize="8" fill="rgba(99,102,241,0.5)">Lift 2?</text>
+        <rect x="10" y="45" width="25" height="20" rx="3" stroke="#ff9500" strokeWidth="1.5" fill="rgba(255,149,0,0.1)"/>
+        <text x="22" y="58" textAnchor="middle" fontSize="7" fill="#ff9500">Verktyg</text>
+      </svg>
+
+      <div>
+        <div style={{ fontSize: 20, fontWeight: 700, color: "#fff", marginBottom: 8 }}>
+          Konfigurera er verkstadskarta
+        </div>
+        <div style={{ fontSize: 15, color: "rgba(255,255,255,0.5)", maxWidth: 340, lineHeight: 1.6 }}>
+          Lägg till zoner för era arbetsplatser — liftar, verktygsrum, reservdelslager — och pixdrift börjar spåra rörelsemönster automatiskt.
+        </div>
+      </div>
+
+      <button
+        onClick={onAddZone}
+        style={{
+          background: "#007AFF", color: "#fff", border: "none",
+          padding: "12px 24px", borderRadius: 10, fontSize: 15, fontWeight: 600,
+          cursor: "pointer", fontFamily: "inherit",
+        }}
+      >
+        + Lägg till första zonen
+      </button>
+
+      <div style={{ fontSize: 13, color: "rgba(255,255,255,0.3)" }}>
+        Verkstadskartan aktiveras automatiskt med DMS-modulen
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Main SpatialModule component
 // ---------------------------------------------------------------------------
 type SpatialView = "map" | "spaghetti" | "friction" | "movement";
@@ -501,15 +558,16 @@ export default function SpatialModule() {
           onClick={handleAnalyze}
           disabled={analyzing}
           style={{
-            background: analyzing ? "rgba(255,255,255,0.1)" : "#007AFF",
-            color: "#fff",
-            border: "none",
+            background: analyzing ? "rgba(255,255,255,0.06)" : (mapData?.zones && mapData.zones.length > 0 ? "#007AFF" : "rgba(255,255,255,0.06)"),
+            color: analyzing ? "rgba(255,255,255,0.4)" : (mapData?.zones && mapData.zones.length > 0 ? "#fff" : "rgba(255,255,255,0.4)"),
+            border: mapData?.zones && mapData.zones.length > 0 ? "none" : "1px solid rgba(255,255,255,0.12)",
             borderRadius: 8,
             padding: "8px 16px",
             fontSize: 13,
             fontWeight: 600,
-            cursor: analyzing ? "default" : "pointer",
+            cursor: analyzing || !(mapData?.zones && mapData.zones.length > 0) ? "default" : "pointer",
           }}
+          title={!(mapData?.zones && mapData.zones.length > 0) ? "Lägg till zoner på kartan först" : undefined}
         >
           {analyzing ? "Analyserar…" : "⚡ Kör friktionsanalys"}
         </button>
@@ -571,10 +629,10 @@ export default function SpatialModule() {
               Live
             </span>
           </div>
-          {mapData?.zones ? (
+          {mapData?.zones && mapData.zones.length > 0 ? (
             <WorkshopMap zones={mapData.zones} />
           ) : (
-            <div style={{ textAlign: "center", padding: 40, color: "rgba(255,255,255,0.3)" }}>Ingen kartdata</div>
+            <EmptyWorkshopMap />
           )}
           {/* Legend */}
           <div style={{ display: "flex", gap: 16, marginTop: 12, flexWrap: "wrap" }}>
