@@ -3,6 +3,7 @@ import { useApi } from "./useApi";
 import UnifiedCalendar from "./UnifiedCalendar";
 import LearningModule from "./LearningModule";
 import DMSModule from "./DMSModule";
+import RentalModule from "./RentalModule";
 import SpaghettiModule from "./SpaghettiModule";
 import SpatialModule from "./SpatialModule";
 import AssetModule from "./AssetModule";
@@ -235,6 +236,16 @@ const Icons = {
       <circle cx="16.5" cy="17" r="2.5"/>
     </svg>
   ),
+  CarKey: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="7" cy="17" r="3"/>
+      <path d="M7 14V8"/>
+      <path d="M7 8h5a3 3 0 0 0 0-6H7"/>
+      <path d="M5 5h4"/>
+      <path d="M14 17l5-5"/>
+      <circle cx="20" cy="11" r="1"/>
+    </svg>
+  ),
   Spaghetti: () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
       <path d="M3 6 C6 6, 8 14, 12 10 S18 4, 21 8"/>
@@ -401,6 +412,7 @@ const NAV_SECTIONS_AUTOMOTIVE = [
     label: "VERKSTAD",
     items: [
       { id: "dms",        icon: <Icons.Car />,       label: "Fordon & Verkstad", badge: null as string | null },
+      { id: "rental",     icon: <Icons.CarKey />,    label: "Hyrbil",            badge: null as string | null },
       { id: "spatial",    icon: <Icons.Map />,       label: "Verkstadskarta",    badge: null as string | null },
       { id: "spaghetti",  icon: <Icons.Spaghetti />, label: "Rörelsemönster",    badge: null as string | null },
       { id: "assets",     icon: <Icons.Wrench />,    label: "Utrustning & Verktyg", badge: null as string | null },
@@ -2486,6 +2498,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
             {view === "culture"    && <CultureModule />}
             {view === "learning"   && <LearningModule user={D.user as any} />}
             {view === "dms"        && <DMSModule />}
+            {view === "rental"     && <RentalModule />}
             {view === "spaghetti" && <SpaghettiModule />}
             {view === "spatial"   && <SpatialModule />}
             {view === "assets"       && <AssetModule user={D.user as any} />}

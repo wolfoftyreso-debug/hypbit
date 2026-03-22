@@ -88,6 +88,7 @@ import checklistEngineRouter from "./checklist-engine";
 import partsRouter from "./parts";
 import vehicleSalesRouter from "./vehicle-sales";
 import automotiveCrmRouter from "./automotive-crm";
+import rentalRouter from "./rental-engine";
 import oemRouter from "./integrations/oem";
 
 // ---------------------------------------------------------------------------
@@ -443,6 +444,7 @@ app.use(checklistEngineRouter);       // /api/checklists/*
 app.use(partsRouter);                 // /api/parts/*
 app.use(vehicleSalesRouter);   // /api/vehicle-sales/*
 app.use(automotiveCrmRouter);  // /api/automotive-crm/*
+app.use('/api/rental', rentalRouter); // /api/rental/* — PIX-event-sourced rental engine
 app.use(oemRouter);            // /api/oem/*
 
 // ---------------------------------------------------------------------------
@@ -470,6 +472,9 @@ app.use('/api/payroll',          payrollComplianceRouter); // Arbetsgivaravgifte
 app.use('/api/compliance',       complianceCheckerRouter); // Compliance-kontroll
 app.use('/api/tool-assets',      assetAccountabilityRouter); // Asset Accountability & Traceability
 app.use('/api/account-safety',   accountSafetyRouter);       // Account Safety & Offboarding — master accounts, risk analysis, offboarding wizard
+
+import companyComplianceRouter from './company-compliance';
+app.use('/api/company',          companyComplianceRouter);   // Company Core — legal entities, compliance calendar, authority filings (ABL/SFL/ÅRL)
 
 // ---------------------------------------------------------------------------
 // Auth helper for inline routes
