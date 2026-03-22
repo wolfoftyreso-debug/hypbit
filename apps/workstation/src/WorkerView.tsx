@@ -5,6 +5,7 @@
 // 3-second rule: worker must understand their full day in 3 seconds
 
 import { useState, useEffect } from 'react';
+import ExitCaptureFlow, { WorkOrderContext, CaptureResult } from './ExitCaptureFlow';
 import VehicleIntakeFlow from './VehicleIntakeFlow';
 
 // Color system — same as Dashboard
@@ -110,6 +111,11 @@ export default function WorkerView({ user }: { user: any }) {
   const [risks,      setRisks]         = useState<Risk[]>([]);
   const [dayProgress, setDayProgress] = useState({ completed: 0, total: 0, onTime: true });
   const [loading,    setLoading]       = useState(true);
+
+  // Exit Capture state
+  const [showExitCapture,  setShowExitCapture]  = useState(false);
+  const [exitCaptureJobId, setExitCaptureJobId] = useState<string | null>(null);
+  const [exitCaptureCtx,   setExitCaptureCtx]   = useState<WorkOrderContext | null>(null);
 
   // Vehicle Intake Protocol
   const [showIntake,       setShowIntake]       = useState(false);
@@ -349,20 +355,49 @@ export default function WorkerView({ user }: { user: any }) {
 
                 {/* Action buttons */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                  <button
-                    onClick={() => intakeCompleted ? undefined : setShowIntake(true)}
-                    style={{
-                      height: 44,
-                      background: intakeCompleted ? C.blue : C.fill,
-                      color: intakeCompleted ? '#fff' : C.secondary,
-                      border: 'none', borderRadius: 12,
-                      fontSize: 15, fontWeight: 600,
-                      cursor: intakeCompleted ? 'pointer' : 'not-allowed',
-                      fontFamily: 'inherit',
-                    }}
-                  >
-                    Uppdatera
-                  </button>
+                  {/* "Lämna ut" replaces "Uppdatera" when job is near completion (progress >= 95) */}
+                  {(currentJob?.progress ?? 0) >= 95 ? (
+                    <button
+                      onClick={() => {
+                        if (!currentJob) return;
+                        // Build WorkOrderContext from what the system knows
+                        const ctx: WorkOrderContext = {
+                          delay_minutes: 0,              // TODO: derive from work order actual vs planned
+                          had_additional_work: false,    // TODO: derive from work order additions
+                          customer_waited: currentJob.customer_waiting ?? false,
+                          had_parts_issue: currentJob.missing_parts ?? false,
+                          all_nominal: !currentJob.missing_parts && !currentJob.customer_waiting && !currentJob.overdue,
+                        };
+                        setExitCaptureJobId(currentJob.id);
+                        setExitCaptureCtx(ctx);
+                        setShowExitCapture(true);
+                      }}
+                      style={{
+                        height: 44,
+                        background: C.green, color: '#fff',
+                        border: 'none', borderRadius: 12,
+                        fontSize: 15, fontWeight: 700,
+                        cursor: 'pointer', fontFamily: 'inherit',
+                      }}
+                    >
+                      Lämna ut ✓
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => intakeCompleted ? undefined : setShowIntake(true)}
+                      style={{
+                        height: 44,
+                        background: intakeCompleted ? C.blue : C.fill,
+                        color: intakeCompleted ? '#fff' : C.secondary,
+                        border: 'none', borderRadius: 12,
+                        fontSize: 15, fontWeight: 600,
+                        cursor: intakeCompleted ? 'pointer' : 'not-allowed',
+                        fontFamily: 'inherit',
+                      }}
+                    >
+                      Uppdatera
+                    </button>
+                  )}
                   <button style={{
                     height: 44, background: C.fill, color: C.text,
                     border: 'none', borderRadius: 12,
@@ -551,6 +586,25 @@ export default function WorkerView({ user }: { user: any }) {
             setIntakeCompleted(true);
             setIntakeCompletedAt(new Date().toISOString());
             console.log('[Intake] Completed. Session:', sessionId);
+          }}
+        />
+      )}
+
+      {/* Exit Capture Engine — mandatory at job handover, cannot be dismissed */}
+      {showExitCapture && exitCaptureJobId && exitCaptureCtx && currentJob && (
+        <ExitCaptureFlow
+          workOrderId={exitCaptureJobId}
+          vehicleReg={currentJob.reg || ''}
+          vehicleMake={currentJob.title.split('—')[0].trim()}
+          customerName={undefined}
+          context={exitCaptureCtx}
+          onComplete={(captureId, result) => {
+            setShowExitCapture(false);
+            setExitCaptureJobId(null);
+            setExitCaptureCtx(null);
+            // Mark job as completed in local state
+            setCurrentJob(prev => prev ? { ...prev, status: 'COMPLETED', progress: 100 } : null);
+            console.log('[ExitCapture] Done. ID:', captureId, '| PIX:', result.pix_type, '| Severity:', result.soft_severity);
           }}
         />
       )}

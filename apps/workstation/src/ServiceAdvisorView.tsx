@@ -38,6 +38,8 @@ const EXCEPTION_TYPES = {
   WARRANTY_ISSUE:   { icon: '📋', color: '#AF52DE', label: 'Garantiärende' },
   ADDITIONAL_WORK:  { icon: '🔧', color: '#FF6B35', label: 'Tilläggsarbete' },
   LONG_WAIT:        { icon: '⏱',  color: '#FF9500', label: 'Lång väntan' },
+  // Exit Capture deviations — soft PIX from customer experience
+  EXIT_DEVIATION:   { icon: '📋', color: '#FF3B30', label: 'Kundreaktioner' },
 } as const;
 
 type ExceptionType = keyof typeof EXCEPTION_TYPES;
@@ -133,6 +135,16 @@ const DEMO_EXCEPTIONS: Exception[] = [
     description: 'Kunden väntar i väntrummet — ingen uppdatering på 40 min',
     since: '40 min',
     severity: 'MEDIUM',
+  },
+  // Exit Capture deviation — soft PIX from customer experience
+  {
+    id: 'exc-exit-1',
+    type: 'EXIT_DEVIATION',
+    vehicle: 'Audi A6',
+    reg: 'ABC 123',
+    description: '1 kund reagerade på försening — "Ja, det var ett problem" · Robin Björk',
+    since: '30 min',
+    severity: 'HIGH',
   },
 ];
 
@@ -236,6 +248,8 @@ function getActions(type: ExceptionType): { primary: string; secondary?: string 
       return { primary: 'Skicka till OEM', secondary: 'Eskalera' };
     case 'LONG_WAIT':
       return { primary: 'Kontakta kund', secondary: 'Erbjud kompensation' };
+    case 'EXIT_DEVIATION':
+      return { primary: 'Ring kund', secondary: 'RCA' };
     default:
       return { primary: 'Hantera' };
   }

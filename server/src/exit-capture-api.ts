@@ -15,61 +15,99 @@ const pool = new Pool({
 });
 
 // ─── PIX derivation logic ─────────────────────────────────────────────────────
-function derivePix(answers: {
-  issue_resolved: boolean;
-  took_longer: boolean;
-  something_unclear: boolean;
-  wants_followup: boolean;
-}): {
+// Hard PIX = system facts (delay_minutes, had_additional_work, etc.) — already known from work order
+// Soft PIX = customer experience answers — captured here
+// Together they form the full operational truth.
+
+interface WorkOrderContext {
+  delay_minutes?: number;
+  had_additional_work?: boolean;
+  customer_waited?: boolean;
+  had_parts_issue?: boolean;
+  all_nominal?: boolean;
+}
+
+function derivePix(
+  softAnswers: {
+    issue_resolved: boolean;
+    took_longer: boolean;
+    something_unclear: boolean;
+    wants_followup: boolean;
+    // Context-aware soft answers from frontend
+    pix_type?: string;
+    deviation_severity?: string;
+    requires_followup?: boolean;
+    soft_answers?: Array<{ questionId: string; value: boolean }>;
+  },
+  ctx?: WorkOrderContext
+): {
   pix_type: 'deviation_pix' | 'improvement_pix' | 'quality_signal';
   deviation_severity: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' | null;
   requires_followup: boolean;
   pix_events: object[];
 } {
-  const { issue_resolved, took_longer, something_unclear, wants_followup } = answers;
   const events: object[] = [];
+  const ts = new Date();
+
+  // If the frontend already derived soft PIX (context-aware mode), trust it
+  // but still record hard PIX facts from context
+  if (softAnswers.pix_type && softAnswers.deviation_severity !== undefined) {
+    const hardFacts: Record<string, unknown> = {};
+    if (ctx) {
+      if ((ctx.delay_minutes ?? 0) > 0) hardFacts.delay_minutes = ctx.delay_minutes;
+      if (ctx.had_additional_work)       hardFacts.had_additional_work = true;
+      if (ctx.had_parts_issue)           hardFacts.had_parts_issue = true;
+      if (ctx.customer_waited)           hardFacts.customer_waited = true;
+    }
+    events.push({ source: 'hard_pix', facts: hardFacts, ts });
+    events.push({ source: 'soft_pix', type: softAnswers.pix_type, severity: softAnswers.deviation_severity, ts });
+
+    return {
+      pix_type: softAnswers.pix_type as 'deviation_pix' | 'improvement_pix' | 'quality_signal',
+      deviation_severity: (softAnswers.deviation_severity || null) as 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' | null,
+      requires_followup: softAnswers.requires_followup ?? softAnswers.wants_followup,
+      pix_events: events,
+    };
+  }
+
+  // Fallback: legacy derivation from boolean answers
+  const { issue_resolved, took_longer, something_unclear, wants_followup } = softAnswers;
+
+  // Hard PIX: record system-known facts
+  if (ctx) {
+    events.push({
+      source: 'hard_pix',
+      facts: {
+        delay_minutes: ctx.delay_minutes ?? 0,
+        had_additional_work: ctx.had_additional_work ?? false,
+        had_parts_issue: ctx.had_parts_issue ?? false,
+        customer_waited: ctx.customer_waited ?? false,
+      },
+      ts,
+    });
+  }
 
   // CRITICAL: issue unresolved AND took longer — double failure
   if (!issue_resolved && took_longer) {
-    events.push({ type: 'deviation_pix', severity: 'CRITICAL', reason: 'issue_unresolved+delay', ts: new Date() });
-    return {
-      pix_type: 'deviation_pix',
-      deviation_severity: 'CRITICAL',
-      requires_followup: true,
-      pix_events: events,
-    };
+    events.push({ source: 'soft_pix', type: 'deviation_pix', severity: 'CRITICAL', reason: 'issue_unresolved+delay', ts });
+    return { pix_type: 'deviation_pix', deviation_severity: 'CRITICAL', requires_followup: true, pix_events: events };
   }
 
   // HIGH: issue unresolved
   if (!issue_resolved) {
-    events.push({ type: 'deviation_pix', severity: 'HIGH', reason: 'issue_unresolved', ts: new Date() });
-    return {
-      pix_type: 'deviation_pix',
-      deviation_severity: 'HIGH',
-      requires_followup: true,
-      pix_events: events,
-    };
+    events.push({ source: 'soft_pix', type: 'deviation_pix', severity: 'HIGH', reason: 'issue_unresolved', ts });
+    return { pix_type: 'deviation_pix', deviation_severity: 'HIGH', requires_followup: true, pix_events: events };
   }
 
   // MEDIUM: took longer or something unclear — improvement signal
   if (took_longer || something_unclear) {
-    events.push({ type: 'improvement_pix', severity: 'MEDIUM', reason: took_longer ? 'delay' : 'unclear', ts: new Date() });
-    return {
-      pix_type: 'improvement_pix',
-      deviation_severity: 'MEDIUM',
-      requires_followup: wants_followup,
-      pix_events: events,
-    };
+    events.push({ source: 'soft_pix', type: 'improvement_pix', severity: 'MEDIUM', reason: took_longer ? 'delay' : 'unclear', ts });
+    return { pix_type: 'improvement_pix', deviation_severity: 'MEDIUM', requires_followup: wants_followup, pix_events: events };
   }
 
   // All positive — quality signal
-  events.push({ type: 'quality_signal', severity: null, reason: 'all_positive', ts: new Date() });
-  return {
-    pix_type: 'quality_signal',
-    deviation_severity: null,
-    requires_followup: wants_followup,
-    pix_events: events,
-  };
+  events.push({ source: 'soft_pix', type: 'quality_signal', severity: null, reason: 'all_positive', ts });
+  return { pix_type: 'quality_signal', deviation_severity: null, requires_followup: wants_followup, pix_events: events };
 }
 
 // ─── Check returning customer (silent signal) ─────────────────────────────────
@@ -98,8 +136,17 @@ async function checkReturningCustomer(
 
 // ─── POST /api/exit-capture/start ─────────────────────────────────────────────
 // Creates a capture session. Returns capture_id + dynamic question set.
+// Accepts WorkOrderContext fields so hard PIX is recorded immediately.
 router.post('/start', async (req: Request, res: Response) => {
-  const { work_order_id, trigger_type, customer_phone, vehicle_reg, customer_name } = req.body;
+  const {
+    work_order_id, trigger_type, customer_phone, vehicle_reg, customer_name,
+    // Hard PIX context (system-known facts from the work order)
+    context_delay_minutes,
+    context_had_additional_work,
+    context_customer_waited,
+    context_had_parts_issue,
+    context_all_nominal,
+  } = req.body;
   const org_id = (req as any).orgId || req.body.org_id;
 
   if (!work_order_id || !trigger_type) {
@@ -114,11 +161,24 @@ router.post('/start', async (req: Request, res: Response) => {
       vehicle_reg || null
     );
 
+    // Store hard PIX context in pix_events immediately (system facts — known before customer is asked)
+    const hardPixEvents = context_delay_minutes != null ? [{
+      source: 'hard_pix',
+      facts: {
+        delay_minutes: context_delay_minutes ?? 0,
+        had_additional_work: context_had_additional_work ?? false,
+        customer_waited: context_customer_waited ?? false,
+        had_parts_issue: context_had_parts_issue ?? false,
+        all_nominal: context_all_nominal ?? true,
+      },
+      ts: new Date(),
+    }] : [];
+
     const result = await pool.query(
       `INSERT INTO exit_captures
         (org_id, work_order_id, trigger_type, vehicle_reg, customer_name, customer_phone,
-         is_returning_customer, days_since_last_visit, capture_started_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
+         is_returning_customer, days_since_last_visit, capture_started_at, pix_events)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), $9::jsonb)
        RETURNING id`,
       [
         org_id || '00000000-0000-0000-0000-000000000000',
@@ -129,6 +189,7 @@ router.post('/start', async (req: Request, res: Response) => {
         customer_phone || null,
         is_returning,
         days_since_last_visit,
+        JSON.stringify(hardPixEvents),
       ]
     );
 
@@ -150,7 +211,8 @@ router.post('/start', async (req: Request, res: Response) => {
 });
 
 // ─── POST /api/exit-capture/:captureId/respond ────────────────────────────────
-// Saves responses, derives PIX type and severity, emits events.
+// Saves soft PIX responses. Merges with hard PIX already stored at /start.
+// Derives final PIX type and severity. Notifies Ops Lead if required.
 router.post('/:captureId/respond', async (req: Request, res: Response) => {
   const { captureId } = req.params;
   const {
@@ -161,15 +223,39 @@ router.post('/:captureId/respond', async (req: Request, res: Response) => {
     unresolved_reason,
     delay_reason,
     unclear_what,
+    // Context-aware fields from frontend (pre-derived)
+    pix_type: frontendPixType,
+    deviation_severity: frontendSeverity,
+    requires_followup: frontendRequiresFollowup,
+    soft_answers,
   } = req.body;
 
   try {
-    const { pix_type, deviation_severity, requires_followup, pix_events } = derivePix({
-      issue_resolved: issue_resolved ?? true,
-      took_longer: took_longer ?? false,
-      something_unclear: something_unclear ?? false,
-      wants_followup: wants_followup ?? false,
-    });
+    // Fetch existing hard PIX context from the capture record
+    const existing = await pool.query(
+      'SELECT pix_events FROM exit_captures WHERE id = $1',
+      [captureId]
+    );
+    const existingEvents: object[] = existing.rows[0]?.pix_events ?? [];
+    const hardFact = (existingEvents as any[]).find(e => e.source === 'hard_pix');
+    const ctx: WorkOrderContext = hardFact?.facts ?? {};
+
+    const { pix_type, deviation_severity, requires_followup, pix_events } = derivePix(
+      {
+        issue_resolved: issue_resolved ?? true,
+        took_longer: took_longer ?? false,
+        something_unclear: something_unclear ?? false,
+        wants_followup: wants_followup ?? false,
+        pix_type: frontendPixType,
+        deviation_severity: frontendSeverity,
+        requires_followup: frontendRequiresFollowup,
+        soft_answers,
+      },
+      ctx
+    );
+
+    // Merge existing hard PIX events with new soft PIX events
+    const mergedEvents = [...existingEvents.filter((e: any) => e.source === 'hard_pix'), ...pix_events];
 
     await pool.query(
       `UPDATE exit_captures SET
@@ -197,7 +283,7 @@ router.post('/:captureId/respond', async (req: Request, res: Response) => {
         pix_type,
         deviation_severity,
         requires_followup,
-        JSON.stringify(pix_events),
+        JSON.stringify(mergedEvents),
         captureId,
       ]
     );
