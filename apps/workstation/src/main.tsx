@@ -94,6 +94,13 @@ function Root() {
   const [showOnboarding, setShowOnboarding] = useState(
     !localStorage.getItem("pixdrift_onboarding_complete")
   );
+  // Existing users with an org_id skip the wizard automatically
+  const skipOnboardingForExistingUser = (u: any) => {
+    if (u?.org_id || u?.user_metadata?.org_id) {
+      localStorage.setItem("pixdrift_onboarding_complete", "true");
+      setShowOnboarding(false);
+    }
+  };
 
   // Google Translate Widget
   useEffect(() => {
@@ -143,6 +150,7 @@ function Root() {
             const parsedUser = JSON.parse(savedUser);
             setToken(savedToken);
             setUser(parsedUser);
+            skipOnboardingForExistingUser(parsedUser);
             // Fetch & apply brand from API
             const orgId = parsedUser?.org_id || parsedUser?.user_metadata?.org_id || "default";
             applyBrand(orgId, savedToken);
@@ -166,6 +174,7 @@ function Root() {
   function handleLogin(newToken: string, newUser: any) {
     setToken(newToken);
     setUser(newUser);
+    skipOnboardingForExistingUser(newUser);
     // Apply brand after fresh login
     const orgId = newUser?.org_id || newUser?.user_metadata?.org_id || "default";
     applyBrand(orgId, newToken);
