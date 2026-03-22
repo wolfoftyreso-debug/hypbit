@@ -132,6 +132,11 @@ const PORT = Number(process.env.PORT) || 3001;
 // Middleware
 // ---------------------------------------------------------------------------
 app.use(helmet());
+app.use((_req, res, next) => {
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  next();
+});
 // CORS — support both legacy pixdrift.com origins and the live *.bc.pixdrift.com subdomains.
 // CORS_ORIGIN env can be a comma-separated list of allowed origins.
 // Fix 2026-03-21: Added *.bc.pixdrift.com which hosts the actual production frontends.
@@ -235,7 +240,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 500,
   standardHeaders: true,
   legacyHeaders: false,
   message: (req: Request) => ({
