@@ -18,24 +18,24 @@ function Root() {
     const savedUser = localStorage.getItem("pixdrift_user");
 
     if (savedToken && savedUser) {
-      // Validera token mot API
-      fetch(`${API}/api/auth/me`, {
-        headers: { Authorization: `Bearer ${savedToken}` },
-        credentials: "include",
+      // Validera token direkt mot Supabase (ingen backend-proxy)
+      const SUPABASE_URL = "https://znmxtnxxjpmgtycmsqjv.supabase.co";
+      const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpubXh0bnh4anBtZ3R5Y21zcWp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4ODA2NjUsImV4cCI6MjA4OTQ1NjY2NX0.3LzBF2cE95X0vtW-5LwfJu8iGebnE9AUXglHchMPH60";
+      fetch(`${SUPABASE_URL}/auth/v1/user`, {
+        headers: { "apikey": ANON_KEY, "Authorization": `Bearer ${savedToken}` },
       })
         .then(res => {
           if (res.ok) {
             setToken(savedToken);
             setUser(JSON.parse(savedUser));
           } else {
-            // Token utgången — rensa
             localStorage.removeItem("pixdrift_token");
             localStorage.removeItem("pixdrift_user");
           }
           setLoading(false);
         })
         .catch(() => {
-          // Offline eller API nere — visa appen ändå med sparad user
+          // Offline — visa appen med sparad user
           setToken(savedToken);
           setUser(JSON.parse(savedUser));
           setLoading(false);
