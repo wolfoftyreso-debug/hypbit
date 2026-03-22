@@ -25,6 +25,7 @@ import ControlLayerModule from "./ControlLayerModule";
 import WorkerView from "./WorkerView";
 import ServiceAdvisorView from "./ServiceAdvisorView";
 import AuditDashboardView from "./AuditDashboardView";
+import SwedacComplianceModule, { AwardIcon } from "./SwedacComplianceModule";
 
 // ─── Design tokens — Apple HIG precision ──────────────────────────────────────
 const C = {
@@ -434,6 +435,7 @@ const NAV_SECTIONS_BASE = [
       { id: "compliance",     icon: <Icons.Compliance />, label: "Compliance" },
       { id: "risks",          icon: <Icons.Shield />,     label: "Risker" },
       { id: "external-audits",icon: <Icons.CheckBadge />, label: "Revisioner & Certifikat" },
+      { id: "swedac",         icon: <AwardIcon />,        label: "Swedac & Ackreditering", pixSubtitle: "ISO 17020" },
       { id: "audit-dashboard",icon: <Icons.Shield />,     label: "Revision & Compliance", pixSubtitle: "Audit" },
     ],
   },
@@ -2668,6 +2670,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
             {view === "company" && <CompanyComplianceModule />}
             {view === "control" && <ControlLayerModule />}
             {view === "audit-dashboard" && <AuditDashboardView />}
+            {view === "swedac" && <SwedacComplianceModule />}
           </main>
         </div>
       </div>
