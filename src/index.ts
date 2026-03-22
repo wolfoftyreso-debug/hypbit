@@ -60,7 +60,23 @@ const PORT = Number(process.env.PORT) || 3001;
 // Middleware
 // ---------------------------------------------------------------------------
 app.use(helmet());
-app.use(cors({ origin: process.env.CORS_ORIGIN || "*" }));
+// CORS — stöd komma-separerad lista av origins (browsers accepterar bara EN origin per svar)
+const _corsOrigins = (process.env.CORS_ORIGIN || "*")
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (_corsOrigins.includes("*") || _corsOrigins.includes(origin)) {
+        return callback(null, origin);
+      }
+      callback(new Error(`CORS: Origin '${origin}' not allowed`));
+    },
+    credentials: true,
+  })
+);
 app.use(express.json({ limit: "10mb" }));
 
 const limiter = rateLimit({

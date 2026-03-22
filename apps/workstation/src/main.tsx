@@ -12,6 +12,9 @@ function Root() {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(
+    !localStorage.getItem("pixdrift_onboarding_complete")
+  );
 
   useEffect(() => {
     const savedToken = localStorage.getItem("pixdrift_token");
@@ -79,10 +82,6 @@ function Root() {
   if (!token) {
     return <LoginScreen onLogin={handleLogin} />;
   }
-
-  const [showOnboarding, setShowOnboarding] = useState(
-    !localStorage.getItem("pixdrift_onboarding_complete")
-  );
 
   if (showOnboarding) {
     return (
