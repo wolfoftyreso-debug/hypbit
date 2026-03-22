@@ -949,6 +949,7 @@ function Sidebar({
       top: 0, left: 0, bottom: 0,
       zIndex: 200,
       overflowY: "auto",
+      overflowX: "hidden",
     }}>
       {/* Logo area — white-label brand */}
       {(() => {
@@ -1100,9 +1101,9 @@ function Sidebar({
         }}>
           {userName[0]}
         </div>
-        <div>
-          <div style={{ fontSize: 17, fontWeight: 400, letterSpacing: "-0.41px", color: "#000000" }}>{userName}</div>
-          <div style={{ fontSize: 13, color: "#8E8E93" }}>Admin</div>
+        <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
+          <div style={{ fontSize: 13, fontWeight: 500, color: "#000000", overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{userName}</div>
+          <div style={{ fontSize: 11, color: "#8E8E93", overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Admin</div>
         </div>
         {onLogout && (
           <button
