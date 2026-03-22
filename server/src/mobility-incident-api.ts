@@ -253,9 +253,9 @@ router.post('/incident', async (req: Request, res: Response) => {
       ],
     );
 
-    const incident = result.rows[0];
+    const incident = result.rows[0] as any;
 
-    await emitPixEvent(incident.id, 'incident_pix', {
+    await emitPixEvent((incident as any).id, 'incident_pix', {
       vehicle_reg,
       issue_type,
       urgency,
@@ -287,9 +287,9 @@ router.post('/:id/order-tow', async (req: Request, res: Response) => {
 
     if (provider_id) {
       const prov = await pool.query('SELECT * FROM tow_providers WHERE id = $1', [provider_id]);
-      if (prov.rows[0]) {
-        providerName = prov.rows[0].name;
-        providerPhone = prov.rows[0].phone;
+      if ((prov.rows as any[])[0]) {
+        providerName = (prov.rows as any[])[0].name;
+        providerPhone = (prov.rows as any[])[0].phone;
       }
     }
 
@@ -474,8 +474,8 @@ router.post('/:id/allocate-costs', async (req: Request, res: Response) => {
     );
     if (!incidentResult.rows[0]) return res.status(404).json({ error: 'Incident not found' });
 
-    const incident = incidentResult.rows[0];
-    const party = incident.responsibility_party || 'CUSTOMER';
+    const incident = incidentResult.rows[0] as any;
+    const party = (incident as any).responsibility_party || 'CUSTOMER';
 
     const split = calculateCostSplit(party, towing_cost, labor_estimate, parts_estimate);
 
@@ -641,7 +641,7 @@ router.get('/active', async (req: Request, res: Response) => {
          created_at DESC`,
       [orgId],
     );
-    res.json({ incidents: result.rows, count: result.rowCount });
+    res.json({ incidents: result.rows, count: result.rowCount ?? 0 });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
@@ -658,7 +658,7 @@ router.get('/vehicle/:reg', async (req: Request, res: Response) => {
        LIMIT 20`,
       [reg],
     );
-    res.json({ incidents: result.rows, count: result.rowCount });
+    res.json({ incidents: result.rows, count: result.rowCount ?? 0 });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

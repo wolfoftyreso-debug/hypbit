@@ -143,7 +143,7 @@ async function emitRentalPartnerPIX(
       event_type: eventType,
       metadata,
       performed_by: userId || null,
-    }).then(() => {}).catch(() => {});
+    }).then(() => { return; });
   }
 }
 

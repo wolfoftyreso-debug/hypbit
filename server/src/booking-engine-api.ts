@@ -677,16 +677,8 @@ router.post("/api/booking/bookings", async (req: Request, res: Response) => {
       p_date: chosenSlot.date,
       p_minutes: chosenSlot.estimated_minutes,
       p_org_id: org_id,
-    }).then(() => {}).catch(() => {
-      // RPC may not exist yet — fallback: upsert capacity row
-      return supabase.from("booking_capacity").upsert({
-        org_id,
-        technician_id: chosenSlot!.technician_id,
-        date: chosenSlot!.date,
-        booked_minutes: chosenSlot!.estimated_minutes,
-        available_skills: requiredSkills,
-      }, { onConflict: "technician_id,date", ignoreDuplicates: false });
-    });
+    }).then(() => { return; });
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
 
     // Send confirmation SMS
     let smsSent = false;
