@@ -14,10 +14,7 @@ WORKDIR /app
 # Kopiera server/package.json (har express, cors, etc.)
 COPY server/package.json ./package.json
 
-# Skapa package-lock från server om den finns, annars låt npm skapa
-COPY package-lock.json ./
-
-# Installera produktionsberoenden + tsx (behövs i runtime)
+# Installera alla beroenden (npm install istf npm ci — inget package-lock mismatch)
 RUN npm install --include=dev && npm cache clean --force
 
 # Kopiera källkod från server/
