@@ -4,9 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Favicon — all sizes -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+  <link rel="icon" type="image/png" sizes="128x128" href="/favicon-128.png" />
+  <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="shortcut icon" href="/favicon.svg" />
+  <meta name="msapplication-TileColor" content="#0A0A0F" />
+  <meta name="theme-color" content="#0A0A0F" />
+
   <!-- Primary Meta -->
-  <title>pixdrift — Business Operating System for Modern Teams</title>
-  <meta name="description" content="pixdrift is a modular Business Operating System. Core + Modules + Industry Packs + Intelligence Layer. Start from €299/mo — team flat, unlimited users." />
+  <title>pixdrift — Operational Execution Platform for Automotive Workshops</title>
+  <meta name="description" content="pixdrift — The Operational Execution Platform. Built for automotive workshops. Replaces your DMS. Automates operations. Runs your entire workshop from €299/month." />
   <meta name="keywords" content="OMS system, operations management software, business operating system, team operations platform, process management, SaaS operations, business software" />
   <meta name="robots" content="index, follow" />
   <meta name="author" content="pixdrift AB" />
@@ -20,9 +34,9 @@
   <!-- Open Graph -->
   <meta property="og:type"             content="website" />
   <meta property="og:url"              content="https://pixdrift.com/" />
-  <meta property="og:title"            content="pixdrift — Business Operating System for Modern Teams" />
-  <meta property="og:description"      content="One system. Full operational control. Execution, Capability, Process, Currency, Reports. The platform your business runs on." />
-  <meta property="og:image"            content="https://pixdrift.com/pixdrift-og.png" />
+  <meta property="og:title" content="pixdrift — Your Business, Running." />
+  <meta property="og:description" content="The Operational Execution Platform for automotive workshops. Replace your DMS. Automate your operations. Run on pixdrift." />
+  <meta property="og:image" content="https://pixdrift.com/og-image.png" />
   <meta property="og:image:width"      content="1200" />
   <meta property="og:image:height"     content="630" />
   <meta property="og:image:alt"        content="pixdrift dashboard overview" />
@@ -34,14 +48,10 @@
   <meta name="twitter:card"        content="summary_large_image" />
   <meta name="twitter:site"        content="@pixdrift" />
   <meta name="twitter:creator"     content="@pixdrift" />
-  <meta name="twitter:title"       content="pixdrift — Business Operating System" />
-  <meta name="twitter:description" content="One system. Full operational control. From €499/mo." />
-  <meta name="twitter:image"       content="https://pixdrift.com/pixdrift-og.png" />
-
-  <!-- Favicons -->
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="twitter:title" content="pixdrift — Your Business, Running." />
+  <meta name="twitter:description" content="The Operational Execution Platform. Built for automotive workshops. From €299/month." />
+  <meta name="twitter:image" content="https://pixdrift.com/og-image.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <meta name="theme-color" content="#000000" />
 
   <!-- Schema.org structured data -->
   <script type="application/ld+json">
@@ -1745,50 +1755,59 @@
 </div>
 
 <!-- ═══════════════════════════ HERO ═══════════════════════════════── -->
-<section class="hero" style="text-align: left; align-items: flex-start; padding-top: 80px; padding-bottom: 80px;">
-  <div class="hero-bg-gradient"></div>
-  <div class="hero-bg-noise"></div>
+<section class="hero" style="text-align: left; align-items: flex-start; padding-top: 80px; padding-bottom: 80px; position: relative; overflow: hidden;">
+  <!-- Ambient pixel canvas background -->
+  <canvas id="pixelCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;"></canvas>
+  <div class="hero-bg-gradient" style="position: relative; z-index: 1;"></div>
+  <div class="hero-bg-noise" style="position: relative; z-index: 1;"></div>
 
-  <div class="hero-grid">
+  <div class="hero-grid" style="position: relative; z-index: 2;">
     <!-- ── LEFT: Text ─────────────────────────────────── -->
     <div class="hero-text-col">
 
-      <!-- Eyebrow pill -->
-      <div class="hero-eyebrow reveal">
-        <div class="hero-eyebrow-dot"></div>
-        <span>Operational Execution Platform</span>
+      <!-- Trust badge -->
+      <div class="hero-eyebrow reveal" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); border-radius: 100px; padding: 6px 14px; font-size: 13px; color: #818cf8; margin-bottom: 28px;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #34C759; box-shadow: 0 0 8px #34C759; flex-shrink: 0;"></span>
+        Replacing legacy DMS in automotive workshops
       </div>
 
-      <!-- H1 — PIX philosophy -->
-      <h1 class="reveal reveal-delay-1">
-        Every business runs<br>on thousands of PIX.
+      <!-- H1 — Clear, direct -->
+      <h1 class="reveal reveal-delay-1" style="font-size: clamp(40px, 5vw, 64px); line-height: 1.05; font-weight: 700; letter-spacing: -0.03em; color: #F5F5F7; margin-bottom: 24px;">
+        Your workshop.<br>Running on <span style="background: linear-gradient(135deg, #6366F1, #818CF8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">pixdrift</span>.
       </h1>
 
-      <!-- Hero sub -->
-      <p class="reveal reveal-delay-2" style="font-size:17px;color:rgba(245,245,247,0.65);line-height:1.65;margin-bottom:16px;max-width:480px;">
-        A PIX is an operational pixel — the smallest visible unit of how a business actually runs. Just as pixels form an image, PIX form your operational reality. pixdrift renders it at full resolution, so nothing is ever hidden behind an abstraction.
+      <!-- Subhead -->
+      <p class="reveal reveal-delay-2" style="font-size: 17px; color: rgba(245,245,247,0.65); line-height: 1.65; margin-bottom: 16px; max-width: 480px;">
+        The operational execution platform that replaces your DMS,
+        automates customer communication, controls quality,
+        and gives your mechanics exactly what they need to do their job.
       </p>
 
-      <!-- Secondary line -->
-      <p class="reveal reveal-delay-2" style="font-size:15px;color:rgba(245,245,247,0.4);line-height:1.5;margin-bottom:36px;font-style:italic;">
-        Not a dashboard. Not a report. An execution engine.
-      </p>
+      <!-- Social proof strip -->
+      <div class="reveal reveal-delay-2" style="display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin-bottom: 36px; font-size: 13px; color: rgba(245,245,247,0.4);">
+        <span>✓ ISO 9001 ready</span>
+        <span style="opacity: 0.3;">·</span>
+        <span>✓ Swedac compliant</span>
+        <span style="opacity: 0.3;">·</span>
+        <span>✓ Replaces Keyloop</span>
+        <span style="opacity: 0.3;">·</span>
+        <span>✓ €299/month flat</span>
+      </div>
 
       <!-- CTAs -->
       <div class="hero-ctas reveal reveal-delay-3" style="margin-bottom: 24px;">
-        <a href="https://app.bc.pixdrift.com" class="btn-primary">Open pixdrift →</a>
-        <a href="/features/" class="btn-secondary">Explore the platform</a>
+        <a href="https://app.bc.pixdrift.com/demo" class="btn-primary" style="display: inline-flex; align-items: center; gap: 8px;">Book a demo →</a>
+        <a href="/replace-dms.html" class="btn-secondary">See how it replaces your DMS</a>
       </div>
 
-      <!-- Social proof -->
-      <div class="hero-social-proof reveal reveal-delay-3">
-        <div class="hero-social-proof-dot"></div>
-        <span>Trusted by 50+ teams across Europe</span>
+      <!-- Trust signal -->
+      <div class="reveal reveal-delay-3" style="font-size: 12px; color: rgba(245,245,247,0.3);">
+        No commitment. Setup in minutes. Your data stays in EU (Stockholm).
       </div>
 
     </div>
 
-    <!-- ── RIGHT: Static mockup ───────────────────────── -->
+    <!-- ── RIGHT: App mockup — Flow Control / Workshop view ───────────────────────── -->
     <div class="hero-mockup-col reveal reveal-delay-4">
       <div class="hero-mockup-glow"></div>
 
@@ -1804,7 +1823,7 @@
           <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f57;"></div>
           <div style="width: 12px; height: 12px; border-radius: 50%; background: #febc2e;"></div>
           <div style="width: 12px; height: 12px; border-radius: 50%; background: #28c840;"></div>
-          <div style="flex: 1; text-align: center; font-size: 12px; color: rgba(255,255,255,0.35); font-family: -apple-system, sans-serif;">pixdrift</div>
+          <div style="flex: 1; text-align: center; font-size: 12px; color: rgba(255,255,255,0.35); font-family: -apple-system, sans-serif;">pixdrift — Flow Control</div>
         </div>
 
         <!-- Body: sidebar + main -->
@@ -1812,89 +1831,92 @@
 
           <!-- Sidebar -->
           <div style="width: 160px; background: #0d0d14; border-right: 0.5px solid rgba(255,255,255,0.07); padding: 16px 10px; flex-shrink: 0; display: flex; flex-direction: column; gap: 2px;">
-            <div style="font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 0.08em; text-transform: uppercase; padding: 0 8px; margin-bottom: 4px;">OVERVIEW</div>
+            <div style="font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 0.08em; text-transform: uppercase; padding: 0 8px; margin-bottom: 4px;">VERKSTAD</div>
             <div style="padding: 8px 10px; border-radius: 7px; background: rgba(99,102,241,0.18); color: #818cf8; font-size: 13px; margin-bottom: 2px; display: flex; align-items: center; gap: 8px;">
-              <span>📊</span> Dashboard
-            </div>
-            <div style="font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 0.08em; text-transform: uppercase; padding: 0 8px; margin: 12px 0 4px;">WORK</div>
-            <div style="padding: 8px 10px; border-radius: 7px; color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 2px; display: flex; align-items: center; gap: 8px;">
-              <span>🤝</span> Deals
+              <span>⚡</span> Flow Control
             </div>
             <div style="padding: 8px 10px; border-radius: 7px; color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 2px; display: flex; align-items: center; gap: 8px;">
-              <span>✓</span> Tasks
+              <span>🔧</span> Arbetsorder
+            </div>
+            <div style="padding: 8px 10px; border-radius: 7px; color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 2px; display: flex; align-items: center; gap: 8px;">
+              <span>🚗</span> Fordon
             </div>
             <div style="padding: 8px 10px; border-radius: 7px; color: rgba(255,255,255,0.5); font-size: 13px; display: flex; align-items: center; gap: 8px;">
-              <span>👥</span> Contacts
+              <span>👥</span> Kunder
             </div>
-            <div style="font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 0.08em; text-transform: uppercase; padding: 0 8px; margin: 12px 0 4px;">FINANCE</div>
+            <div style="font-size: 10px; color: rgba(255,255,255,0.25); letter-spacing: 0.08em; text-transform: uppercase; padding: 0 8px; margin: 12px 0 4px;">KVALITET</div>
             <div style="padding: 8px 10px; border-radius: 7px; color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 2px; display: flex; align-items: center; gap: 8px;">
-              <span>📈</span> Reports
+              <span>✓</span> Besiktning
             </div>
             <div style="padding: 8px 10px; border-radius: 7px; color: rgba(255,255,255,0.5); font-size: 13px; display: flex; align-items: center; gap: 8px;">
-              <span>🏦</span> Banking
+              <span>📊</span> Rapporter
             </div>
           </div>
 
-          <!-- Main: 4 KPIs + deal list -->
+          <!-- Main: mechanic lanes -->
           <div style="flex: 1; padding: 18px; background: #0a0a0f; overflow: hidden;">
 
-            <!-- 4 KPI cards -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;">
-
-              <div style="background: #16161f; border: 0.5px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px 16px;">
-                <div style="font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 8px;">Pipeline</div>
-                <div style="font-size: 26px; font-weight: 700; color: #818cf8; font-variant-numeric: tabular-nums; letter-spacing: -0.03em;">€64k</div>
-                <div style="font-size: 11px; color: #34c759; margin-top: 5px;">↑ 12%</div>
-              </div>
-
-              <div style="background: #16161f; border: 0.5px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px 16px;">
-                <div style="font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 8px;">Active Deals</div>
-                <div style="font-size: 26px; font-weight: 700; color: #f5f5f7; font-variant-numeric: tabular-nums; letter-spacing: -0.03em;">7</div>
-                <div style="font-size: 11px; color: #34c759; margin-top: 5px;">↑ 3 new</div>
-              </div>
-
-              <div style="background: #16161f; border: 0.5px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px 16px;">
-                <div style="font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 8px;">Tasks Due</div>
-                <div style="font-size: 26px; font-weight: 700; color: #ff9500; font-variant-numeric: tabular-nums; letter-spacing: -0.03em;">12</div>
-                <div style="font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 5px;">3 today</div>
-              </div>
-
-              <div style="background: #16161f; border: 0.5px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px 16px;">
-                <div style="font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 8px;">Win Rate</div>
-                <div style="font-size: 26px; font-weight: 700; color: #34c759; font-variant-numeric: tabular-nums; letter-spacing: -0.03em;">68%</div>
-                <div style="font-size: 11px; color: #34c759; margin-top: 5px;">↑ 5%</div>
+            <!-- Header row -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <div style="font-size: 14px; font-weight: 600; color: #f5f5f7;">Idag — 4 mekaniker</div>
+              <div style="font-size: 12px; color: #34c759; display: flex; align-items: center; gap: 6px;">
+                <span style="width: 6px; height: 6px; border-radius: 50%; background: #34c759;"></span>
+                Live
               </div>
             </div>
 
-            <!-- Deal list -->
-            <div style="background: #16161f; border: 0.5px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 14px 16px;">
-              <div style="font-size: 11px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">Active Deals</div>
+            <!-- Mechanic lanes -->
+            <div style="display: flex; flex-direction: column; gap: 8px;">
 
-              <div style="display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 0.5px solid rgba(255,255,255,0.05);">
-                <div>
-                  <div style="font-size: 13px; font-weight: 600; color: #f5f5f7;">Novacode AB</div>
-                  <div style="font-size: 11px; color: rgba(99,102,241,0.9); margin-top: 2px; font-weight: 600;">PROPOSAL</div>
+              <!-- Lane 1 -->
+              <div style="background: #16161f; border: 0.5px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #f5f5f7;">Johan S.</div>
+                  <div style="font-size: 11px; background: rgba(52,199,89,0.15); color: #34c759; border-radius: 4px; padding: 2px 8px;">AKTIV</div>
                 </div>
-                <div style="font-size: 14px; font-weight: 700; color: #818cf8; font-variant-numeric: tabular-nums;">€12,000</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.5);">Volvo XC60 · ABC 123 · Bromsbyte + service</div>
+                <div style="margin-top: 8px; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden;">
+                  <div style="height: 100%; width: 65%; background: linear-gradient(90deg, #6366F1, #818CF8); border-radius: 2px;"></div>
+                </div>
               </div>
 
-              <div style="display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 0.5px solid rgba(255,255,255,0.05);">
-                <div>
-                  <div style="font-size: 13px; font-weight: 600; color: #f5f5f7;">Nordic Shop</div>
-                  <div style="font-size: 11px; color: #34c759; margin-top: 2px; font-weight: 600;">WON ✓</div>
+              <!-- Lane 2 -->
+              <div style="background: #16161f; border: 0.5px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #f5f5f7;">Maria K.</div>
+                  <div style="font-size: 11px; background: rgba(99,102,241,0.15); color: #818CF8; border-radius: 4px; padding: 2px 8px;">VÄNTAR</div>
                 </div>
-                <div style="font-size: 14px; font-weight: 700; color: #34c759; font-variant-numeric: tabular-nums;">€8,500</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.5);">BMW 320d · DEF 456 · Diagnos</div>
+                <div style="margin-top: 8px; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden;">
+                  <div style="height: 100%; width: 20%; background: #818CF8; border-radius: 2px;"></div>
+                </div>
               </div>
 
-              <div style="display: flex; justify-content: space-between; align-items: center; padding: 9px 0;">
-                <div>
-                  <div style="font-size: 13px; font-weight: 600; color: #f5f5f7;">VVS Proffsen</div>
-                  <div style="font-size: 11px; color: #ff9500; margin-top: 2px; font-weight: 600;">QUALIFIED</div>
+              <!-- Lane 3 -->
+              <div style="background: #16161f; border: 0.5px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #f5f5f7;">Erik P.</div>
+                  <div style="font-size: 11px; background: rgba(255,149,0,0.15); color: #ff9500; border-radius: 4px; padding: 2px 8px;">GODKÄNNANDE</div>
                 </div>
-                <div style="font-size: 14px; font-weight: 700; color: #f5f5f7; font-variant-numeric: tabular-nums;">€5,200</div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.5);">Audi A4 · GHI 789 · Däckbyte</div>
+                <div style="margin-top: 8px; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden;">
+                  <div style="height: 100%; width: 90%; background: #ff9500; border-radius: 2px;"></div>
+                </div>
               </div>
+
+              <!-- Lane 4 -->
+              <div style="background: #16161f; border: 0.5px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #f5f5f7;">Lisa T.</div>
+                  <div style="font-size: 11px; background: rgba(52,199,89,0.25); color: #34c759; border-radius: 4px; padding: 2px 8px;">✓ KLAR</div>
+                </div>
+                <div style="font-size: 12px; color: rgba(255,255,255,0.5);">Toyota RAV4 · JKL 012 · Oljebyte</div>
+                <div style="margin-top: 8px; height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden;">
+                  <div style="height: 100%; width: 100%; background: #34c759; border-radius: 2px;"></div>
+                </div>
+              </div>
+
             </div>
-
           </div>
         </div>
       </div>
@@ -2963,15 +2985,52 @@
 </section>
 
 <!-- ═══════════════════════════ TRUST BADGES ════════════════════════ -->
-<section class="trust-section">
-  <div class="trust-label reveal">Uptime &amp; security</div>
-  <div class="trust-badges reveal reveal-delay-1">
-    <div class="trust-badge"><div class="trust-badge-dot"></div>99.9% Uptime SLA</div>
-    <div class="trust-badge"><div class="trust-badge-dot"></div>GDPR-compliant</div>
-    <div class="trust-badge"><div class="trust-badge-dot"></div>ISO 27001 ready</div>
-    <div class="trust-badge"><div class="trust-badge-dot"></div>SOC 2 Type II</div>
-    <div class="trust-badge"><div class="trust-badge-dot"></div>EU data residency</div>
-    <div class="trust-badge"><div class="trust-badge-dot"></div>End-to-end encryption</div>
+<!-- ═══════════════════════════ TRUST SIGNALS ════════════════════════ -->
+<section style="padding: 80px 24px; background: #050508; border-top: 0.5px solid rgba(255,255,255,0.06); border-bottom: 0.5px solid rgba(255,255,255,0.06);">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 48px;">
+      <div style="font-size: 12px; color: rgba(245,245,247,0.35); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 12px;">Built for enterprise compliance</div>
+      <div style="font-size: 14px; color: rgba(245,245,247,0.5);">Everything you need to pass audits, satisfy regulators, and impress enterprise buyers.</div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px;" class="reveal">
+
+      <div style="background: #111118; border: 0.5px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px 16px; text-align: center;">
+        <div style="font-size: 24px; margin-bottom: 10px;">🔒</div>
+        <div style="font-size: 13px; font-weight: 600; color: #f5f5f7; margin-bottom: 4px;">ISO 9001 Ready</div>
+        <div style="font-size: 12px; color: rgba(245,245,247,0.4);">Built-in quality management</div>
+      </div>
+
+      <div style="background: #111118; border: 0.5px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px 16px; text-align: center;">
+        <div style="font-size: 24px; margin-bottom: 10px;">⚖️</div>
+        <div style="font-size: 13px; font-weight: 600; color: #f5f5f7; margin-bottom: 4px;">Swedac Compliant</div>
+        <div style="font-size: 12px; color: rgba(245,245,247,0.4);">ISO 17020 / 17025 supported</div>
+      </div>
+
+      <div style="background: #111118; border: 0.5px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px 16px; text-align: center;">
+        <div style="font-size: 24px; margin-bottom: 10px;">🇪🇺</div>
+        <div style="font-size: 13px; font-weight: 600; color: #f5f5f7; margin-bottom: 4px;">GDPR & EU Ready</div>
+        <div style="font-size: 12px; color: rgba(245,245,247,0.4);">Data stays in EU (Stockholm)</div>
+      </div>
+
+      <div style="background: #111118; border: 0.5px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px 16px; text-align: center;">
+        <div style="font-size: 24px; margin-bottom: 10px;">🔄</div>
+        <div style="font-size: 13px; font-weight: 600; color: #f5f5f7; margin-bottom: 4px;">Mirror Mode</div>
+        <div style="font-size: 12px; color: rgba(245,245,247,0.4);">No rip-and-replace required</div>
+      </div>
+
+      <div style="background: #111118; border: 0.5px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px 16px; text-align: center;">
+        <div style="font-size: 24px; margin-bottom: 10px;">📡</div>
+        <div style="font-size: 13px; font-weight: 600; color: #f5f5f7; margin-bottom: 4px;">API-first</div>
+        <div style="font-size: 12px; color: rgba(245,245,247,0.4);">Connect any system</div>
+      </div>
+
+      <div style="background: #111118; border: 0.5px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px 16px; text-align: center;">
+        <div style="font-size: 24px; margin-bottom: 10px;">💶</div>
+        <div style="font-size: 13px; font-weight: 600; color: #f5f5f7; margin-bottom: 4px;">Team-flat pricing</div>
+        <div style="font-size: 12px; color: rgba(245,245,247,0.4);">€299/month, unlimited users</div>
+      </div>
+
+    </div>
   </div>
 </section>
 
@@ -3173,5 +3232,101 @@ document.querySelectorAll('.nav-dropdown').forEach(dropdown => {
 });
 </script>
 
+
+  <!-- Pixel canvas ambient animation -->
+  <script>
+  (function() {
+    function initPixelCanvas() {
+      var canvas = document.getElementById('pixelCanvas');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+
+      function resize() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      var particles = [];
+      var density = 1 / 8000; // 1 per 8000px²
+
+      function createParticles() {
+        particles = [];
+        var count = Math.floor(canvas.width * canvas.height * density);
+        for (var i = 0; i < count; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 3 + 1,
+            vx: (Math.random() - 0.5) * 0.6,
+            vy: (Math.random() - 0.5) * 0.6,
+            opacity: Math.random() * 0.05 + 0.03
+          });
+        }
+      }
+      createParticles();
+      window.addEventListener('resize', createParticles);
+
+      // Click ripple
+      var ripples = [];
+      canvas.parentElement.addEventListener('click', function(e) {
+        var rect = canvas.getBoundingClientRect();
+        var x = e.clientX - rect.left;
+        var y = e.clientY - rect.top;
+        for (var i = 0; i < 8; i++) {
+          var angle = (i / 8) * Math.PI * 2;
+          ripples.push({
+            x: x, y: y,
+            vx: Math.cos(angle) * 2,
+            vy: Math.sin(angle) * 2,
+            size: 3,
+            life: 1.0
+          });
+        }
+      });
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var now = Date.now();
+
+        // Particles
+        for (var i = 0; i < particles.length; i++) {
+          var p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0) p.x = canvas.width;
+          if (p.x > canvas.width) p.x = 0;
+          if (p.y < 0) p.y = canvas.height;
+          if (p.y > canvas.height) p.y = 0;
+          ctx.fillStyle = 'rgba(99,102,241,' + p.opacity + ')';
+          ctx.fillRect(Math.round(p.x), Math.round(p.y), p.size, p.size);
+        }
+
+        // Ripples
+        ripples = ripples.filter(function(r) {
+          r.x += r.vx;
+          r.y += r.vy;
+          r.life -= 0.04;
+          r.vx *= 0.95;
+          r.vy *= 0.95;
+          if (r.life <= 0) return false;
+          ctx.fillStyle = 'rgba(99,102,241,' + (r.life * 0.15) + ')';
+          ctx.fillRect(Math.round(r.x), Math.round(r.y), r.size, r.size);
+          return true;
+        });
+
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initPixelCanvas);
+    } else {
+      initPixelCanvas();
+    }
+  })();
+  </script>
 </body>
 </html>
