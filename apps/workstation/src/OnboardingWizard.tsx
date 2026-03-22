@@ -29,7 +29,7 @@ const C = {
 
 export interface OnboardingData {
   // Steg 2
-  sourceSystem: "automaster" | "winbas" | "keyloop" | "scratch" | null;
+  sourceSystem: "automaster" | "winbas" | "winassist" | "cobra" | "keyloop" | "kerridge" | "fortnox" | "visma" | "autofutura" | "cabas" | "scratch" | null;
   // Steg 3
   shopName: string;
   technicianCount: "1-5" | "6-20" | "20+" | null;
