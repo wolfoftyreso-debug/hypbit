@@ -35,3 +35,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 
 # Startkommando
 CMD ["npx", "tsx", "src/index.ts"]
+# CORS fix trigger Sun Mar 22 02:46:47 CET 2026
