@@ -23,6 +23,7 @@ import TraceView from "./TraceView";
 import ControlLayerModule from "./ControlLayerModule";
 import WorkerView from "./WorkerView";
 import ServiceAdvisorView from "./ServiceAdvisorView";
+import AuditDashboardView from "./AuditDashboardView";
 
 // ─── Design tokens — Apple HIG precision ──────────────────────────────────────
 const C = {
@@ -432,6 +433,7 @@ const NAV_SECTIONS_BASE = [
       { id: "compliance",     icon: <Icons.Compliance />, label: "Compliance" },
       { id: "risks",          icon: <Icons.Shield />,     label: "Risker" },
       { id: "external-audits",icon: <Icons.CheckBadge />, label: "Revisioner & Certifikat" },
+      { id: "audit-dashboard",icon: <Icons.Shield />,     label: "Revision & Compliance", pixSubtitle: "Audit" },
     ],
   },
   {
@@ -2648,6 +2650,7 @@ export default function App({ user: propUser, onLogout }: { user?: any; onLogout
             {view === "account-safety" && <AccountSafetyModule orgId={D.user?.id} />}
             {view === "company" && <CompanyComplianceModule />}
             {view === "control" && <ControlLayerModule />}
+            {view === "audit-dashboard" && <AuditDashboardView />}
           </main>
         </div>
       </div>
