@@ -1,5 +1,8 @@
 import { useState } from 'react'
 import { ThailandCountdown } from '../thailand/ThailandCountdown'
+import { TeamStatusWidget } from '../team/TeamStatusWidget'
+import { ProjectProgressWidget } from '../projects/ProjectProgressWidget'
+import { QuickLinksWidget } from '../quicklinks/QuickLinksWidget'
 
 // ─── Mock Data ─────────────────────────────────────────────────────────────────
 
@@ -145,6 +148,13 @@ export function CommandDashboard() {
       {/* Thailand Workcamp Countdown */}
       <div className="max-w-sm">
         <ThailandCountdown />
+      </div>
+
+      {/* Widgets — Team, Projects, Quick Links */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <TeamStatusWidget />
+        <ProjectProgressWidget />
+        <QuickLinksWidget />
       </div>
 
       {/* Top KPIs */}
