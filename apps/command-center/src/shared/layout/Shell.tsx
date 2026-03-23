@@ -8,10 +8,11 @@ interface ShellProps {
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: '⬛' },
+  { to: '/projects', label: 'Projekt & KPI', icon: '🚀' },
+  { to: '/tasks', label: 'Task Board', icon: '📋' },
+  { to: '/people', label: 'Team', icon: '👤' },
   { to: '/transactions', label: 'Transactions', icon: '↕' },
   { to: '/entities', label: 'Entities', icon: '🏢' },
-  { to: '/compliance', label: 'Compliance', icon: '⚖' },
-  { to: '/people', label: 'People', icon: '👤' },
 ]
 
 export function Shell({ children }: ShellProps) {
