@@ -58,10 +58,47 @@ jobs:
 
       - name: Update ECS service
         run: |
+          # Get current task definition and update image
+          TASK_DEF=$(aws ecs describe-services \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services ${{ env.ECS_SERVICE }} \
+            --region ${{ env.AWS_REGION }} \
+            --query 'services[0].taskDefinition' \
+            --output text)
+
+          # Get the task def JSON and swap the image to the new SHA-tagged one
+          NEW_IMAGE="${{ env.ECR_REGISTRY }}/hypbit/api:${{ steps.meta.outputs.tag }}"
+
+          NEW_TASK_DEF=$(aws ecs describe-task-definition \
+            --task-definition "$TASK_DEF" \
+            --region ${{ env.AWS_REGION }} \
+            --query 'taskDefinition' \
+            --output json | \
+            python3 -c "
+import sys, json
+td = json.load(sys.stdin)
+for c in td.get('containerDefinitions', []):
+    c['image'] = '$NEW_IMAGE'
+# Remove fields that can't be included in register
+for k in ['taskDefinitionArn','revision','status','requiresAttributes','compatibilities','registeredAt','registeredBy']:
+    td.pop(k, None)
+print(json.dumps(td))
+")
+
+          # Register new task definition revision
+          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition \
+            --region ${{ env.AWS_REGION }} \
+            --cli-input-json "$NEW_TASK_DEF" \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+
+          echo "New task definition: $NEW_TASK_DEF_ARN"
+
+          # Update service to use new task definition
           aws ecs update-service \
             --cluster ${{ env.ECS_CLUSTER }} \
             --service ${{ env.ECS_SERVICE }} \
-            --force-new-deployment \
+            --task-definition "$NEW_TASK_DEF_ARN" \
             --region ${{ env.AWS_REGION }}
 
       - name: Wait for deployment (with timeout)
