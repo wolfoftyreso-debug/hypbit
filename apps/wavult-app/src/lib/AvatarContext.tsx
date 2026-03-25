@@ -15,8 +15,10 @@ import { useAuth } from './AuthContext'
 import { supabase } from './supabase'
 
 // ─── RPM Configuration ──────────────────────────────────────────────────────
+// Uses 'demo' subdomain by default (works without registration).
+// Set VITE_RPM_SUBDOMAIN to your own subdomain after registering at studio.readyplayer.me
 
-const RPM_SUBDOMAIN = 'wavult'  // Custom subdomain — register at readyplayer.me/hub
+const RPM_SUBDOMAIN = import.meta.env.VITE_RPM_SUBDOMAIN || 'demo'
 const RPM_IFRAME_URL = `https://${RPM_SUBDOMAIN}.readyplayer.me/avatar?frameApi`
 
 // Render API base — works with any avatarId
