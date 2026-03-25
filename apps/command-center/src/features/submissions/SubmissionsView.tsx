@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 
 const SUPABASE_URL = 'https://lpeipzdmnnlbcoxlfhoe.supabase.co'
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwZWlwemRtbm5sYmNveGxmaG9lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI0MDMzMDksImV4cCI6MjA1Nzk3OTMwOX0.rOoqqnZWnqhWDVWHHp2sDHBkpE7Xs5oC8UaYzNsXFaQ'
@@ -42,6 +43,11 @@ async function supabaseFetch(path: string, opts?: RequestInit) {
 }
 
 export function SubmissionsView() {
+  const { activeEntity } = useEntityScope()
+  const isRoot = activeEntity.layer === 0
+  const isQuixzoom = activeEntity.id === 'quixzoom-uab' || activeEntity.id === 'quixzoom-inc'
+  const canViewSubmissions = isRoot || isQuixzoom
+
   const [submissions, setSubmissions] = useState<Submission[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -127,6 +133,33 @@ export function SubmissionsView() {
     pending: submissions.filter(s => s.status === 'pending').length,
     approved: submissions.filter(s => s.status === 'approved').length,
     rejected: submissions.filter(s => s.status === 'rejected').length,
+  }
+
+  // Out-of-scope state (quiXzoom data only)
+  if (!canViewSubmissions) {
+    return (
+      <div className="space-y-6 max-w-6xl">
+        <div>
+          <h1 className="text-2xl font-bold text-white">Submissions</h1>
+          <p className="text-gray-400 text-sm mt-0.5">quiXzoom uppdragsinlämningar — godkänn och betala ut</p>
+        </div>
+        <div className="text-center py-20 text-gray-600">
+          <p className="text-5xl mb-4">📭</p>
+          <p className="text-base font-medium text-gray-400 mb-2">No submissions for {activeEntity.name}</p>
+          <p className="text-sm text-gray-600">Submissions are quiXzoom data only.<br />Switch to quiXzoom or root to view.</p>
+          <div
+            className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium"
+            style={{
+              background: activeEntity.color + '15',
+              border: `1px solid ${activeEntity.color}30`,
+              color: activeEntity.color,
+            }}
+          >
+            Currently scoped: {activeEntity.name}
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (

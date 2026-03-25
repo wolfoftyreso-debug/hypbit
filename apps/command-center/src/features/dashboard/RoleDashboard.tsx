@@ -1,5 +1,6 @@
 import { useRole } from '../../shared/auth/RoleContext'
 import { CommandDashboard } from './CommandDashboard'
+import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 
 // ─── CEO Dashboard ─────────────────────────────────────────────────────────────
 function CeoDashboard() {
@@ -346,20 +347,60 @@ function Section({ title, children }: { title: string; children: { text: string;
   )
 }
 
+// ─── Scope Banner ──────────────────────────────────────────────────────────────
+function ScopeBanner() {
+  const { activeEntity } = useEntityScope()
+  const isRoot = activeEntity.layer === 0
+
+  return (
+    <div
+      className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium mb-1"
+      style={{
+        background: activeEntity.color + '12',
+        border: `1px solid ${activeEntity.color}25`,
+      }}
+    >
+      <span
+        className="h-2 w-2 rounded-full flex-shrink-0"
+        style={{ background: activeEntity.color, boxShadow: `0 0 6px ${activeEntity.color}60` }}
+      />
+      <span style={{ color: activeEntity.color }}>
+        {isRoot ? 'Viewing: Wavult Group (All entities)' : `Viewing: ${activeEntity.name}`}
+      </span>
+      {!isRoot && (
+        <span className="text-gray-600 ml-1">— scoped view</span>
+      )}
+    </div>
+  )
+}
+
 // ─── Router ────────────────────────────────────────────────────────────────────
 export function RoleDashboard() {
   const { effectiveRole, isAdmin, viewAs } = useRole()
 
   // Admin utan viewAs → visa full Command Center
-  if (!effectiveRole || (isAdmin && !viewAs)) return <CommandDashboard />
+  if (!effectiveRole || (isAdmin && !viewAs)) return (
+    <>
+      <ScopeBanner />
+      <CommandDashboard />
+    </>
+  )
 
-  switch (effectiveRole.id) {
-    case 'group-ceo': return <CeoDashboard />
-    case 'ceo-ops':   return <Opsdashboard />
-    case 'cfo':       return <CfoDashboard />
-    case 'cto':       return <CtoDashboard />
-    case 'clo':       return <CloDashboard />
-    case 'cpo':       return <CpoDashboard />
-    default:          return <CommandDashboard />
+  const dashboardMap: Record<string, JSX.Element> = {
+    'group-ceo': <CeoDashboard />,
+    'ceo-ops':   <Opsdashboard />,
+    'cfo':       <CfoDashboard />,
+    'cto':       <CtoDashboard />,
+    'clo':       <CloDashboard />,
+    'cpo':       <CpoDashboard />,
   }
+
+  const dashboard = dashboardMap[effectiveRole.id] ?? <CommandDashboard />
+
+  return (
+    <>
+      <ScopeBanner />
+      {dashboard}
+    </>
+  )
 }

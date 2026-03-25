@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 
 // ─── Countdown ────────────────────────────────────────────────────────────────
 
@@ -48,6 +49,7 @@ const PROJECTS = [
     icon: '📸',
     status: 'in-dev',
     statusLabel: 'Under Utveckling',
+    entity_id: 'quixzoom-uab',
     kpis: [
       { label: 'Aktiva fotografer', value: '0', note: 'Pre-launch' },
       { label: 'Uppdrag idag', value: '0', note: 'Pre-launch' },
@@ -74,6 +76,7 @@ const PROJECTS = [
     icon: '🔭',
     status: 'planning',
     statusLabel: 'Planering',
+    entity_id: 'wavult-group',
     kpis: [
       { label: 'B2B-kunder', value: '0', note: 'Pre-launch' },
       { label: 'Aktiva alerter', value: '0', note: 'Pre-launch' },
@@ -99,6 +102,7 @@ const PROJECTS = [
     icon: '📍',
     status: 'concept',
     statusLabel: 'Koncept',
+    entity_id: 'quixom-ads',
     kpis: [
       { label: 'Annonsörer', value: '0', note: 'Pre-launch' },
       { label: 'Ad-impressions', value: '0', note: 'Pre-launch' },
@@ -230,13 +234,38 @@ function ProjectCard({ project }: { project: typeof PROJECTS[0] }) {
 
 export function ProjectsView() {
   const cd = useCountdown(THAILAND_DATE)
+  const { activeEntity, isInScope } = useEntityScope()
+  const isRoot = activeEntity.layer === 0
+
+  // Filter projects by scope
+  const visibleProjects = isRoot
+    ? PROJECTS
+    : PROJECTS.filter(p => isInScope(p.entity_id))
 
   return (
     <div className="space-y-8 max-w-6xl">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-white">Projekt & KPI:er</h1>
-        <p className="text-gray-400 mt-1">Wavult Group — alla aktiva initiativ</p>
+        <p className="text-gray-400 mt-1">
+          {isRoot
+            ? 'Wavult Group — alla aktiva initiativ'
+            : `Showing projects in ${activeEntity.name}`}
+        </p>
+        {/* Scope banner */}
+        {!isRoot && (
+          <div
+            className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium"
+            style={{
+              background: activeEntity.color + '15',
+              border: `1px solid ${activeEntity.color}30`,
+              color: activeEntity.color,
+            }}
+          >
+            <span className="h-1.5 w-1.5 rounded-full" style={{ background: activeEntity.color }} />
+            Scoped to: {activeEntity.name}
+          </div>
+        )}
       </div>
 
       {/* Thailand Countdown */}
@@ -271,11 +300,18 @@ export function ProjectsView() {
       {/* Project Cards */}
       <div>
         <SectionHeading>Aktiva Projekt</SectionHeading>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          {PROJECTS.map(p => (
-            <ProjectCard key={p.id} project={p} />
-          ))}
-        </div>
+        {visibleProjects.length === 0 ? (
+          <div className="text-center py-12 text-gray-600">
+            <p className="text-3xl mb-3">📂</p>
+            <p className="text-sm">No projects in {activeEntity.name}</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            {visibleProjects.map(p => (
+              <ProjectCard key={p.id} project={p} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

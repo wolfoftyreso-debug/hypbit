@@ -10,6 +10,17 @@ import {
   KPI_STATUS_COLOR, SEVERITY_COLOR,
 } from './incidentEngine'
 import { COMMAND_CHAIN } from '../org-graph/commandChain'
+import { useEntityScope } from '../../shared/scope/EntityScopeContext'
+
+// ─── Role → Entity mapping ────────────────────────────────────────────────────
+const ROLE_ENTITY_MAP: Record<string, string> = {
+  'group-ceo': 'wavult-group',
+  'ceo-ops':   'wavult-operations',
+  'cfo':       'wavult-group',
+  'cto':       'wavult-operations',
+  'clo':       'wavult-group',
+  'cpo':       'wavult-group',
+}
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -354,15 +365,33 @@ function RoleKPIBlock({ roleId }: { roleId: string }) {
 
 export function IncidentCenter() {
   const [tab, setTab] = useState<'incidents' | 'kpis'>('incidents')
+  const { activeEntity, isInScope } = useEntityScope()
+  const isRoot = activeEntity.layer === 0
 
   // Mutable incident state (simulate accept/reject)
   const [incidents, setIncidents] = useState(() => generateIncidents())
   const propagation = useMemo(() => computePropagation(incidents), [incidents])
 
-  const criticalCount = incidents.filter(i => i.severity === 'critical').length
-  const escalatedCount = incidents.filter(i => i.escalated).length
-  const lockedCount = incidents.filter(i => i.locked).length
-  const openCount = incidents.filter(i => i.state !== 'resolved').length
+  // Filter incidents by entity scope
+  const scopedIncidents = isRoot
+    ? incidents
+    : incidents.filter(inc => {
+        const entityId = ROLE_ENTITY_MAP[inc.role_id] ?? 'wavult-group'
+        return isInScope(entityId)
+      })
+
+  // Filter COMMAND_CHAIN roles for KPI view
+  const scopedRoles = isRoot
+    ? COMMAND_CHAIN
+    : COMMAND_CHAIN.filter(r => {
+        const entityId = ROLE_ENTITY_MAP[r.id] ?? 'wavult-group'
+        return isInScope(entityId)
+      })
+
+  const criticalCount = scopedIncidents.filter(i => i.severity === 'critical').length
+  const escalatedCount = scopedIncidents.filter(i => i.escalated).length
+  const lockedCount = scopedIncidents.filter(i => i.locked).length
+  const openCount = scopedIncidents.filter(i => i.state !== 'resolved').length
 
   function handleAccept(incId: string, actId: string) {
     setIncidents(prev => prev.map(inc => {
@@ -401,8 +430,8 @@ export function IncidentCenter() {
     }))
   }
 
-  // Sort: critical first, then by severity
-  const sorted = [...incidents].sort((a, b) => {
+  // Sort scoped incidents: critical first, then by severity
+  const sorted = [...scopedIncidents].sort((a, b) => {
     const sev = { critical: 0, high: 1, medium: 2, low: 3 }
     return sev[a.severity] - sev[b.severity]
   })
@@ -417,6 +446,18 @@ export function IncidentCenter() {
               <div className="flex items-center gap-3 flex-wrap">
                 <h1 className="text-sm font-bold text-white">Incident Center</h1>
                 <span className="text-xs text-gray-600 font-mono">closed-loop control system</span>
+                {!isRoot && (
+                  <span
+                    className="text-xs px-2 py-0.5 rounded-lg font-medium"
+                    style={{
+                      background: activeEntity.color + '15',
+                      border: `1px solid ${activeEntity.color}30`,
+                      color: activeEntity.color,
+                    }}
+                  >
+                    {activeEntity.name}
+                  </span>
+                )}
               </div>
               <p className="text-xs text-gray-600 mt-0.5">
                 Every KPI deviation triggers: RCA → Action → Accept/Reject → Escalation
@@ -505,7 +546,7 @@ export function IncidentCenter() {
 
         {tab === 'kpis' && (
           <div className="space-y-4">
-            {COMMAND_CHAIN.map(role => (
+            {scopedRoles.map(role => (
               <RoleKPIBlock key={role.id} roleId={role.id} />
             ))}
           </div>

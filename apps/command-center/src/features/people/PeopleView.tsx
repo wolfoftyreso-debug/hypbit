@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 
 // ─── Inline icons (no lucide-react) ──────────────────────────────────────────
 function ChevronDown({ size = 13 }: { size?: number }) {
@@ -20,6 +21,7 @@ const TEAM: {
   location: string
   focus: string[]
   entity: string
+  entity_id: string
   status: 'active' | 'idle' | 'away'
   purpose: string        // Why this role exists
   mandates: string[]     // Core mandates (4–5 bullets)
@@ -37,6 +39,7 @@ const TEAM: {
     location: '🇸🇪 Stockholm',
     focus: ['Thailand workcamp', 'Bolagsstruktur (Dubai/EU/US)', 'GTM-strategi'],
     entity: 'WGH',
+    entity_id: 'wavult-group',
     status: 'active',
     purpose: 'Existerar för att definiera och upprätthålla visionen, allokera kapital och säkerställa att hela strukturen rör sig som ett sammanhängande system — inte separata bolag.',
     mandates: [
@@ -60,6 +63,7 @@ const TEAM: {
     location: '🇸🇪 Sverige',
     focus: ['Drift av hela organisationen', 'Leverans & execution', 'Resursprioritering'],
     entity: 'WOP',
+    entity_id: 'wavult-operations',
     status: 'active',
     purpose: 'Omvandlar strategi till faktisk leverans. Är navet mellan alla funktioner och driver ett effektivt, skalbart operativt system.',
     mandates: [
@@ -83,6 +87,7 @@ const TEAM: {
     location: '🇸🇪 Sverige',
     focus: ['Budget & prognoser', 'Betalningar & kassaflöde', 'Finansiell struktur mellan bolag'],
     entity: 'WOP',
+    entity_id: 'wavult-operations',
     status: 'active',
     purpose: 'Säkerställer full kontroll över alla finansiella flöden, optimerar kapitalanvändning och strukturerar ekonomin så att vinster rör sig rätt i systemet.',
     mandates: [
@@ -106,6 +111,7 @@ const TEAM: {
     location: '🇸🇪 Sverige',
     focus: ['Bolagsstruktur (Dubai/EU/US)', 'Avtal & compliance', 'Logistik (tillfälligt)'],
     entity: 'WGH',
+    entity_id: 'wavult-group',
     status: 'active',
     purpose: 'Skyddar hela ekosystemets struktur juridiskt och säkerställer att bolagsupplägg, avtal och flöden är hållbara över tid i alla jurisdiktioner.',
     mandates: [
@@ -129,6 +135,7 @@ const TEAM: {
     location: '🇸🇪 Sverige',
     focus: ['Hypbit + produkter', 'Infrastruktur & säkerhet', 'Teknisk roadmap'],
     entity: 'WOP',
+    entity_id: 'wavult-operations',
     status: 'active',
     purpose: 'Designar, bygger och skyddar den tekniska ryggraden i hela ekosystemet. Möjliggör snabb utveckling utan teknisk skuld.',
     mandates: [
@@ -326,20 +333,46 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
 }
 
 export function PeopleView() {
+  const { activeEntity, isInScope } = useEntityScope()
+  const isRoot = activeEntity.layer === 0
+
+  // Filter team by scope (root sees all)
+  const visibleTeam = isRoot
+    ? TEAM
+    : TEAM.filter(p => isInScope(p.entity_id))
+
   return (
     <div className="space-y-8 max-w-6xl">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-white">Teamroster</h1>
-        <p className="text-gray-400 mt-1">Wavult Group — {TEAM.length} core members</p>
+        <p className="text-gray-400 mt-1">
+          {isRoot
+            ? `Wavult Group — ${visibleTeam.length} core members`
+            : `Showing people in ${activeEntity.name} — ${visibleTeam.length} members`}
+        </p>
+        {/* Scope banner */}
+        {!isRoot && (
+          <div
+            className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium"
+            style={{
+              background: activeEntity.color + '15',
+              border: `1px solid ${activeEntity.color}30`,
+              color: activeEntity.color,
+            }}
+          >
+            <span className="h-1.5 w-1.5 rounded-full" style={{ background: activeEntity.color }} />
+            Scoped to: {activeEntity.name}
+          </div>
+        )}
       </div>
 
       {/* Summary bar */}
       <div className="grid grid-cols-3 gap-4">
         {[
-          { label: 'Totalt team', value: String(TEAM.length), color: '#3B82F6' },
-          { label: 'Aktiva nu', value: String(TEAM.filter(t => t.status === 'active').length), color: '#10B981' },
-          { label: 'Enheter', value: String(new Set(TEAM.map(t => t.entity)).size), color: '#8B5CF6' },
+          { label: 'Totalt team', value: String(visibleTeam.length), color: '#3B82F6' },
+          { label: 'Aktiva nu', value: String(visibleTeam.filter(t => t.status === 'active').length), color: '#10B981' },
+          { label: 'Enheter', value: String(new Set(visibleTeam.map(t => t.entity)).size), color: '#8B5CF6' },
         ].map(s => (
           <div key={s.label} className="bg-surface-raised border border-surface-border rounded-xl px-5 py-4">
             <div className="text-xs text-gray-500 mb-1">{s.label}</div>
@@ -354,7 +387,7 @@ export function PeopleView() {
         <div className="flex gap-1 mb-4">
           {(['forming','storming','norming','performing','adjourning'] as TuckmanPhase[]).map((phase) => {
             const t = TUCKMAN[phase]
-            const count = TEAM.filter(p => p.tuckmanPhase === phase).length
+            const count = visibleTeam.filter(p => p.tuckmanPhase === phase).length
             const isActive = count > 0
             return (
               <div key={phase} className="flex-1 flex flex-col items-center gap-1">
@@ -375,7 +408,7 @@ export function PeopleView() {
           })}
         </div>
         <div className="flex flex-wrap gap-2">
-          {TEAM.map(p => {
+          {visibleTeam.map(p => {
             const t = TUCKMAN[p.tuckmanPhase]
             return (
               <div key={p.name} className="flex items-center gap-1.5 text-xs rounded-lg px-2 py-1"
@@ -391,11 +424,18 @@ export function PeopleView() {
       {/* Team Grid */}
       <div>
         <SectionHeading>Core Team</SectionHeading>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {TEAM.map(p => (
-            <PersonCard key={p.name} person={p} />
-          ))}
-        </div>
+        {visibleTeam.length === 0 ? (
+          <div className="text-center py-12 text-gray-600">
+            <p className="text-3xl mb-3">👤</p>
+            <p className="text-sm">No team members in {activeEntity.name}</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {visibleTeam.map(p => (
+              <PersonCard key={p.name} person={p} />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Entity legend */}
@@ -403,7 +443,7 @@ export function PeopleView() {
         <SectionHeading>Enheter</SectionHeading>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {Object.entries(ENTITY_LABELS).map(([code, info]) => {
-            const members = TEAM.filter(t => t.entity === code)
+            const members = visibleTeam.filter(t => t.entity === code)
             return (
               <div key={code} className="bg-surface-raised border border-surface-border rounded-xl px-5 py-4">
                 <div className="flex items-center gap-2 mb-2">

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -15,6 +16,18 @@ interface Task {
   priority: Priority
   column: Column
   tags: string[]
+  entity_id: string
+}
+
+// ─── Entity mapping helper ────────────────────────────────────────────────────
+
+function projectToEntityId(project: string): string {
+  if (project === 'Bolagsstruktur') return 'wavult-group'
+  if (project === 'quiXzoom') return 'quixzoom-uab'
+  if (project === 'LandveX' || project === 'Sommarliden') return 'landvex-ab'
+  if (project === 'Tech/API') return 'wavult-operations'
+  if (project === 'Hypbit' || project === 'Hypbit OS') return 'wavult-operations'
+  return 'wavult-group'
 }
 
 // ─── Initial tasks ────────────────────────────────────────────────────────────
@@ -30,6 +43,7 @@ const INITIAL_TASKS: Task[] = [
     priority: 'high',
     column: 'in-progress',
     tags: ['juridik', 'WGH'],
+    entity_id: projectToEntityId('Bolagsstruktur'),
   },
   {
     id: '2',
@@ -41,6 +55,7 @@ const INITIAL_TASKS: Task[] = [
     priority: 'high',
     column: 'in-progress',
     tags: ['infra', 'devops'],
+    entity_id: projectToEntityId('quiXzoom'),
   },
   {
     id: '3',
@@ -52,6 +67,7 @@ const INITIAL_TASKS: Task[] = [
     priority: 'high',
     column: 'backlog',
     tags: ['frontend', 'mobile'],
+    entity_id: projectToEntityId('quiXzoom'),
   },
   {
     id: '4',
@@ -63,6 +79,7 @@ const INITIAL_TASKS: Task[] = [
     priority: 'medium',
     column: 'in-progress',
     tags: ['intern', 'thailand'],
+    entity_id: 'wavult-group',
   },
   {
     id: '5',
@@ -74,6 +91,7 @@ const INITIAL_TASKS: Task[] = [
     priority: 'medium',
     column: 'in-progress',
     tags: ['frontend', 'crm'],
+    entity_id: projectToEntityId('Hypbit OS'),
   },
   {
     id: '6',
@@ -85,6 +103,7 @@ const INITIAL_TASKS: Task[] = [
     priority: 'medium',
     column: 'backlog',
     tags: ['sales', 'b2b'],
+    entity_id: 'wavult-group',
   },
   {
     id: '7',
@@ -96,6 +115,7 @@ const INITIAL_TASKS: Task[] = [
     priority: 'low',
     column: 'backlog',
     tags: ['juridik', 'WGH'],
+    entity_id: projectToEntityId('Bolagsstruktur'),
   },
   {
     id: '8',
@@ -107,6 +127,7 @@ const INITIAL_TASKS: Task[] = [
     priority: 'low',
     column: 'review',
     tags: ['brand', 'design'],
+    entity_id: 'wavult-group',
   },
   {
     id: '9',
@@ -118,6 +139,7 @@ const INITIAL_TASKS: Task[] = [
     priority: 'medium',
     column: 'done',
     tags: ['frontend', 'intern'],
+    entity_id: projectToEntityId('Hypbit OS'),
   },
   {
     id: '10',
@@ -129,6 +151,7 @@ const INITIAL_TASKS: Task[] = [
     priority: 'high',
     column: 'done',
     tags: ['produkt'],
+    entity_id: projectToEntityId('quiXzoom'),
   },
 ]
 
@@ -236,10 +259,17 @@ function TaskCard({
 export function TasksView() {
   const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS)
   const [filter, setFilter] = useState<string>('all')
+  const { activeEntity, isInScope } = useEntityScope()
+  const isRoot = activeEntity.layer === 0
 
-  const projects = ['all', ...Array.from(new Set(INITIAL_TASKS.map(t => t.project)))]
+  // First: apply entity scope filter
+  const scopedTasks = isRoot
+    ? tasks
+    : tasks.filter(t => isInScope(t.entity_id))
 
-  const filtered = filter === 'all' ? tasks : tasks.filter(t => t.project === filter)
+  // Then: apply project filter on top of scoped tasks
+  const projects = ['all', ...Array.from(new Set(scopedTasks.map(t => t.project)))]
+  const filtered = filter === 'all' ? scopedTasks : scopedTasks.filter(t => t.project === filter)
 
   const move = (id: string, col: Column) => {
     setTasks(prev => prev.map(t => t.id === id ? { ...t, column: col } : t))
@@ -251,7 +281,25 @@ export function TasksView() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-2xl font-bold text-white">Task Board</h1>
-          <p className="text-gray-400 mt-1">Wavult Group — {tasks.length} uppgifter</p>
+          <p className="text-gray-400 mt-1">
+            {isRoot
+              ? `Wavult Group — ${scopedTasks.length} uppgifter`
+              : `${activeEntity.name} — ${scopedTasks.length} uppgifter`}
+          </p>
+          {/* Scope banner */}
+          {!isRoot && (
+            <div
+              className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium"
+              style={{
+                background: activeEntity.color + '15',
+                border: `1px solid ${activeEntity.color}30`,
+                color: activeEntity.color,
+              }}
+            >
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: activeEntity.color }} />
+              Scoped to: {activeEntity.name}
+            </div>
+          )}
         </div>
         {/* Filter */}
         <div className="flex gap-2 flex-wrap">
