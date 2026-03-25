@@ -104,7 +104,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 }
 
 function MetricCard({
-  label, value, sub, trend, trendUp, color = C.blue, mono = true,
+  label, value, sub, trend, trendUp, color: _color = C.blue, mono = true,
 }: {
   label: string; value: string; sub?: string; trend?: string; trendUp?: boolean; color?: string; mono?: boolean;
 }) {
