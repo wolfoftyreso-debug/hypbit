@@ -154,7 +154,7 @@ router.post("/api/telephony/numbers", async (req: Request, res: Response) => {
       sms_url: params.sms_url,
       is_active: true,
       allocated_by: user.id,
-      monthly_cost_eur: 3.00,
+      monthly_cost_eur: (category === "fixed") ? 15.00 : 3.00,
     });
 
     await audit(user.id, user.org_id, "ALLOCATE_NUMBER", "telephony_numbers", data.id, {
