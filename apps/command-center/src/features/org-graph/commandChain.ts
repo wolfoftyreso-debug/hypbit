@@ -35,7 +35,7 @@ export const COMMAND_CHAIN: CommandRole[] = [
   {
     id: 'group-ceo',
     person: 'Erik Svensson',
-    avatar: '/avatars/erik.png',
+    avatar: '/avatars/erik-avatar.svg',
     initials: 'ES',
     color: '#8B5CF6',
     title: 'Chairman & Group CEO',
@@ -60,6 +60,7 @@ export const COMMAND_CHAIN: CommandRole[] = [
   // ─── DIRECT REPORTS ───────────────────────────────────────────────────────
   {
     id: 'ceo-ops',
+    avatar: '/avatars/leon-avatar.svg',
     person: 'Leon Russo De Cerame',
     initials: 'LR',
     color: '#10B981',
@@ -85,7 +86,7 @@ export const COMMAND_CHAIN: CommandRole[] = [
   {
     id: 'cfo',
     person: 'Winston Bjarnemark',
-    avatar: '/avatars/winston.png',
+    avatar: '/avatars/winston-avatar.svg',
     initials: 'WB',
     color: '#3B82F6',
     title: 'CFO',
@@ -110,7 +111,7 @@ export const COMMAND_CHAIN: CommandRole[] = [
   {
     id: 'cto',
     person: 'Johan Berglund',
-    avatar: '/avatars/johan.png',
+    avatar: '/avatars/johan-avatar.svg',
     initials: 'JB',
     color: '#06B6D4',
     title: 'Group CTO',
@@ -135,7 +136,7 @@ export const COMMAND_CHAIN: CommandRole[] = [
   {
     id: 'clo',
     person: 'Dennis Bjarnemark',
-    avatar: '/avatars/dennis.png',
+    avatar: '/avatars/dennis-avatar.svg',
     initials: 'DB',
     color: '#F59E0B',
     title: 'Board / Chief Legal',
