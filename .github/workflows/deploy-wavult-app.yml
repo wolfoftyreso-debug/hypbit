@@ -2,7 +2,7 @@ name: Deploy Wavult App to GitHub Pages
 
 on:
   push:
-    branches: [claude/wavult-os-v2-design-e8LUK]
+    branches: [main]
     paths:
       - 'apps/wavult-app/**'
       - '.github/workflows/deploy-wavult-app.yml'
@@ -28,7 +28,7 @@ jobs:
           node-version: 20
           cache: npm
 
-      - run: npm install
+      - run: npm install --legacy-peer-deps
 
       - name: Build wavult-app
         run: npx vite build --base /hypbit/
