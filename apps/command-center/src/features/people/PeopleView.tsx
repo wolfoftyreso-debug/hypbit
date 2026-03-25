@@ -4,6 +4,7 @@ const TEAM: {
   name: string
   initials: string
   role: string
+  title: string
   domain: string
   color: string
   location: string
@@ -14,64 +15,68 @@ const TEAM: {
   {
     name: 'Erik Svensson',
     initials: 'ES',
-    role: 'CEO',
-    domain: 'Strategy & Vision',
+    role: 'Chairman & Group CEO',
+    title: 'Chairman of the Board & Group CEO',
+    domain: 'Strategy, Capital & Governance',
     color: '#8B5CF6',
     location: '🇸🇪 Stockholm',
-    focus: ['Thailand workcamp', 'Bolagsstruktur', 'GTM-strategi'],
+    focus: ['Thailand workcamp', 'Bolagsstruktur (Dubai/EU/US)', 'GTM-strategi'],
     entity: 'WGH',
     status: 'active',
   },
   {
-    name: 'Dennis Lindqvist',
-    initials: 'DL',
-    role: 'Bolagsdrift',
-    domain: 'Juridik & Administration',
-    color: '#F59E0B',
-    location: '🇸🇪 Sverige',
-    focus: ['Texas LLC incorporation', 'Dubai Holding', 'Compliance'],
-    entity: 'WGH',
-    status: 'active',
-  },
-  {
-    name: 'Leon Ritzén',
+    name: 'Leon Maurizio Russo De Cerame',
     initials: 'LR',
-    role: 'Head of Sales',
-    domain: 'B2B, Leads & Kunder',
+    role: 'CEO – Operations',
+    title: 'CEO – Wavult Operations',
+    domain: 'Daglig drift, execution & koordinering',
     color: '#10B981',
     location: '🇸🇪 Sverige',
-    focus: ['B2B-demos', 'Leadsgenerering', 'Partner-pipeline'],
-    entity: 'WTL',
+    focus: ['Drift av hela organisationen', 'Leverans & execution', 'Resursprioritering'],
+    entity: 'WOP',
     status: 'active',
   },
   {
-    name: 'Winston Adeyemi',
-    initials: 'WA',
-    role: 'Backend Engineer',
-    domain: 'Infrastruktur & API',
+    name: 'Winston Gustav Bjarnemark',
+    initials: 'WB',
+    role: 'CFO',
+    title: 'Chief Financial Officer',
+    domain: 'Global ekonomi, budget & kassaflöde',
     color: '#3B82F6',
-    location: '🌍 Remote',
-    focus: ['ECS deployment pipeline', 'API-arkitektur', 'DevOps'],
-    entity: 'WTL',
+    location: '🇸🇪 Sverige',
+    focus: ['Budget & prognoser', 'Betalningar & kassaflöde', 'Finansiell struktur mellan bolag'],
+    entity: 'WOP',
     status: 'active',
   },
   {
-    name: 'Johan Lundqvist',
-    initials: 'JL',
-    role: 'Frontend Engineer',
-    domain: 'UI & Produktutveckling',
+    name: 'Dennis Bjarnemark',
+    initials: 'DB',
+    role: 'Board / Chief Legal',
+    title: 'Board Member & Chief Legal & Operations (Interim)',
+    domain: 'Juridik, bolagsstruktur & compliance',
+    color: '#F59E0B',
+    location: '🇸🇪 Sverige',
+    focus: ['Bolagsstruktur (Dubai/EU/US)', 'Avtal & compliance', 'Logistik (tillfälligt)'],
+    entity: 'WGH',
+    status: 'active',
+  },
+  {
+    name: 'Johan Putte Berglund',
+    initials: 'JB',
+    role: 'Group CTO',
+    title: 'Group Chief Technology Officer',
+    domain: 'Teknik, infrastruktur & systemarkitektur',
     color: '#06B6D4',
     location: '🇸🇪 Sverige',
-    focus: ['quiXzoom app', 'Admin-panel', 'CRM-vyer'],
-    entity: 'WTL',
+    focus: ['Hypbit + produkter', 'Infrastruktur & säkerhet', 'Teknisk roadmap'],
+    entity: 'WOP',
     status: 'active',
   },
 ]
 
 const ENTITY_LABELS: Record<string, { label: string; color: string }> = {
-  WGH: { label: 'Wavult Group Holding', color: '#8B5CF6' },
-  WTL: { label: 'Wavult Technologies LLC', color: '#3B82F6' },
-  WIU: { label: 'Wavult Intelligence UAB', color: '#06B6D4' },
+  WGH: { label: 'Wavult Group (Holding / Governance)', color: '#8B5CF6' },
+  WOP: { label: 'Wavult Operations (Dubai)', color: '#3B82F6' },
 }
 
 const STATUS_COLOR: Record<string, string> = {
@@ -118,7 +123,7 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
               }}
             />
           </div>
-          <div className="text-xs text-gray-400 mt-0.5">{person.role}</div>
+          <div className="text-xs font-semibold mt-0.5" style={{ color: person.color }}>{person.role}</div>
           <div className="text-xs text-gray-500">{person.domain}</div>
         </div>
       </div>

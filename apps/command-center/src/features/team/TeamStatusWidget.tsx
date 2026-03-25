@@ -2,11 +2,11 @@
 // Data hårdkodad för nu (inga live-signaler ännu)
 
 const TEAM = [
-  { name: 'Erik', role: 'CEO', emoji: '👑', status: 'active', lastSeen: 'Nu' },
-  { name: 'Dennis', role: 'Bolagsdrift', emoji: '⚖️', status: 'active', lastSeen: '2h sedan' },
-  { name: 'Leon', role: 'Sälj', emoji: '🎯', status: 'away', lastSeen: '4h sedan' },
-  { name: 'Winston', role: 'Tech', emoji: '⚙️', status: 'active', lastSeen: '1h sedan' },
-  { name: 'Johan', role: 'Tech', emoji: '💻', status: 'active', lastSeen: '30m sedan' },
+  { name: 'Erik Svensson',             role: 'Chairman & Group CEO',          emoji: '👑', status: 'active', lastSeen: 'Nu' },
+  { name: 'Leon Russo De Cerame',      role: 'CEO – Wavult Operations',        emoji: '⚙️', status: 'active', lastSeen: '30m sedan' },
+  { name: 'Winston Bjarnemark',        role: 'CFO',                            emoji: '💰', status: 'active', lastSeen: '1h sedan' },
+  { name: 'Dennis Bjarnemark',         role: 'Board Member / Chief Legal',     emoji: '⚖️', status: 'active', lastSeen: '2h sedan' },
+  { name: 'Johan Berglund',            role: 'Group CTO',                      emoji: '🧠', status: 'active', lastSeen: '45m sedan' },
 ]
 
 export function TeamStatusWidget() {
