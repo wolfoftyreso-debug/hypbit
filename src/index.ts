@@ -44,6 +44,7 @@ import integrationRouter from "./integrations/integration-api";
 import communicationHubRouter from "./communication-hub";
 import samplingImpartialityRouter from "./sampling-impartiality";
 import telephonyEngineRouter from "./telephony-engine";
+import voiceAiEngineRouter from "./voice-ai-engine";
 
 // ---------------------------------------------------------------------------
 // Certified Core imports
@@ -241,6 +242,11 @@ app.use(samplingImpartialityRouter);
 // Telephony — 46elks: nummer, röst, IVR, SMS, voicemail
 // ---------------------------------------------------------------------------
 app.use(telephonyEngineRouter);
+
+// ---------------------------------------------------------------------------
+// Voice AI — Autonomous customer interaction (ASR + LLM + TTS)
+// ---------------------------------------------------------------------------
+app.use(voiceAiEngineRouter);
 
 // ---------------------------------------------------------------------------
 // Auth helper for inline routes

@@ -27,6 +27,7 @@ const SQL_FILES = [
   '31_communication_hub.sql', // Communication hub tables
   '32_sampling_impartiality.sql', // Sampling plans, impartiality, COI
   '33_telephony.sql',            // Phone numbers, calls, IVR, voicemails
+  '34_voice_ai.sql',             // Voice AI agents, sessions, knowledge
 ];
 
 async function main() {
