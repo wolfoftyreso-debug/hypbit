@@ -16,11 +16,10 @@ const AVATAR_BUCKET = 'avatars'
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5 MB
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 
-const DUIX_API_BASE = 'https://app.duix.ai/duix-openapi-v2/sdk/v2'
-const DUIX_TOKEN = import.meta.env.VITE_DUIX_TOKEN || ''
-const DUIX_CONVERSATION_ID = import.meta.env.VITE_DUIX_CONVERSATION_ID || ''
+const API_URL = import.meta.env.VITE_API_URL || ''
 
-// ─── Duix face clone helper ─────────────────────────────────────────────────
+// ─── Duix face clone via server proxy ────────────────────────────────────────
+// Client NEVER holds Duix credentials. All calls go through /api/duix/*
 
 interface DuixCloneResult {
   success: boolean
@@ -32,38 +31,22 @@ async function createDuixFaceClone(
   imageUrl: string,
   operatorName: string,
 ): Promise<DuixCloneResult> {
-  if (!DUIX_TOKEN || !DUIX_CONVERSATION_ID) {
-    return { success: false, error: 'Duix not configured' }
-  }
+  if (!API_URL) return { success: false, error: 'API_URL not configured' }
 
   try {
-    const res = await fetch(`${DUIX_API_BASE}/createAvatar`, {
+    const res = await fetch(`${API_URL}/api/duix/create-avatar`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'token': DUIX_TOKEN,
-      },
-      body: JSON.stringify({
-        conversationId: DUIX_CONVERSATION_ID,
-        name: operatorName,
-        ttsName: 'Marin',
-        greetings: `Welcome back, ${operatorName.split(' ')[0]}. Ready when you are.`,
-        profile: 'You are the Wavult OS operator interface. Present tasks and coaching concisely, like a mission controller.',
-        // Face clone from uploaded photo
-        faceUrl: imageUrl,
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageUrl, name: operatorName }),
     })
 
     if (!res.ok) {
-      const text = await res.text()
-      return { success: false, error: `Duix API ${res.status}: ${text}` }
+      const data = await res.json().catch(() => ({}))
+      return { success: false, error: data.error || `Server ${res.status}` }
     }
 
     const data = await res.json()
-    return {
-      success: true,
-      avatarId: data?.data?.avatarId || data?.data?.id || DUIX_CONVERSATION_ID,
-    }
+    return { success: data.success, avatarId: data.avatarId }
   } catch (err) {
     return {
       success: false,
@@ -154,7 +137,7 @@ export function AvatarProvider({ children }: { children: React.ReactNode }) {
       setIsUploaderOpen(false)
 
       // ── Step 2: Create Duix face clone (async, non-blocking) ────────────
-      if (DUIX_TOKEN && DUIX_CONVERSATION_ID) {
+      if (API_URL) {
         setDuixCloneStatus('cloning')
         const operatorName = user.user_metadata?.full_name || user.email || 'Operator'
 

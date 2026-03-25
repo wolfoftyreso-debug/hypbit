@@ -14,10 +14,22 @@ import { createContext, useContext, useState, useRef, useCallback, useEffect } f
 import type { DuixInstance, DuixState, DuixStatus, DuixSpeakEvent } from './types'
 
 // ─── Configuration ───────────────────────────────────────────────────────────
+// Client never holds Duix secrets. Token fetched from server proxy.
 
-const DUIX_APP_ID = import.meta.env.VITE_DUIX_APP_ID || ''
-const DUIX_APP_KEY = import.meta.env.VITE_DUIX_APP_KEY || ''
+const API_URL = import.meta.env.VITE_API_URL || ''
 const DUIX_CONVERSATION_ID = import.meta.env.VITE_DUIX_CONVERSATION_ID || ''
+
+async function fetchDuixToken(): Promise<{ token: string; appId: string } | null> {
+  if (!API_URL) return null
+  try {
+    const res = await fetch(`${API_URL}/api/duix/token`)
+    if (!res.ok) return null
+    const data = await res.json()
+    return data.token ? { token: data.token, appId: '' } : null
+  } catch {
+    return null
+  }
+}
 
 // ─── Context ─────────────────────────────────────────────────────────────────
 
@@ -52,7 +64,7 @@ export function DuixProvider({ children }: { children: React.ReactNode }) {
     error: null,
   })
 
-  const isConfigured = Boolean(DUIX_APP_ID && DUIX_APP_KEY && DUIX_CONVERSATION_ID)
+  const isConfigured = Boolean(API_URL && DUIX_CONVERSATION_ID)
 
   const setStatus = (status: DuixStatus) => {
     setState(prev => ({ ...prev, status, error: status === 'error' ? prev.error : null }))
@@ -138,11 +150,17 @@ export function DuixProvider({ children }: { children: React.ReactNode }) {
         setStatus('idle')
       })
 
-      // Initialize
+      // Fetch token from server proxy
+      const tokenData = await fetchDuixToken()
+      if (!tokenData) {
+        setState(prev => ({ ...prev, status: 'error', error: 'Failed to fetch Duix token from server' }))
+        return
+      }
+
+      // Initialize with server-provided token
       await duix.init({
         containerLable: containerId,
-        appId: DUIX_APP_ID,
-        appKey: DUIX_APP_KEY,
+        sign: tokenData.token,
         conversationId: DUIX_CONVERSATION_ID,
         platform: 'duix.com',
         useOversea: true,

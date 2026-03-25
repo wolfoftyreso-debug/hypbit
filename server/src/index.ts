@@ -123,6 +123,7 @@ import { registerSubscribers } from "./subscribers";
 
 import evaBotRouter from './eva-bot';
 import slaEngineRouter, { startSLAChecker } from './sla-engine';
+import duixProxyRouter from './duix-proxy';
 
 // ---------------------------------------------------------------------------
 // App setup
@@ -270,6 +271,11 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
 // Auth routes — public, MUST be before global auth middleware
 // ---------------------------------------------------------------------------
 app.use("/api/auth", authRouter);
+
+// ---------------------------------------------------------------------------
+// Duix proxy — public (token is server-side only)
+// ---------------------------------------------------------------------------
+app.use("/api/duix", duixProxyRouter);
 
 // ---------------------------------------------------------------------------
 // Health check — MUST be before auth middleware so it's always public
