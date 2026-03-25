@@ -15,11 +15,11 @@ const SYSTEM_STATUS = [
 ]
 
 const TEAM_ACTIVITY = [
-  { name: 'Erik Svensson',             role: 'Chairman & Group CEO',      task: 'Thailand workcamp planning + bolagsstruktur', status: 'active',  since: '11:00', color: '#8B5CF6' },
-  { name: 'Leon Russo De Cerame',      role: 'CEO Operations',            task: 'Koordinering Q1 execution',                   status: 'active',  since: '09:00', color: '#10B981' },
-  { name: 'Winston Bjarnemark',        role: 'CFO',                       task: 'Kassaflödesanalys & budgetuppföljning',        status: 'active',  since: '09:15', color: '#3B82F6' },
-  { name: 'Dennis Bjarnemark',         role: 'Board / Chief Legal',       task: 'Texas LLC incorporation docs',                status: 'idle',    since: '08:45', color: '#F59E0B' },
-  { name: 'Johan Berglund',            role: 'Group CTO',                 task: 'Hypbit infrastruktur & ECS pipeline',         status: 'active',  since: '10:30', color: '#06B6D4' },
+  { name: 'Erik Svensson',             role: 'Chairman & Group CEO',      task: 'Systembygge, strategi & marknadsföring', status: 'active',  since: '11:00', color: '#8B5CF6' },
+  { name: 'Leon Russo De Cerame',      role: 'CEO – Sälj & Execution',    task: 'Hela säljavdelningen · Q1 execution',                   status: 'active',  since: '09:00', color: '#10B981' },
+  { name: 'Winston Bjarnemark',        role: 'CFO',                       task: 'Ekonomisk infrastruktur · betafärdiga system',        status: 'active',  since: '09:15', color: '#3B82F6' },
+  { name: 'Dennis Bjarnemark',         role: 'Board / Chief Legal',       task: 'Bolagsjuridik · avtal · dokument',                status: 'idle',    since: '08:45', color: '#F59E0B' },
+  { name: 'Johan Berglund',            role: 'Group CTO',                 task: 'Drift · konton/APIer · support · rapporter',         status: 'active',  since: '10:30', color: '#06B6D4' },
 ]
 
 const QUICK_LINKS = [

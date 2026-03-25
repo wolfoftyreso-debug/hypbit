@@ -23,6 +23,11 @@ export type AccessScope =
   | 'product'
   | 'execution'
   | 'strategy'
+  | 'sales'
+  | 'systems'
+  | 'infra'
+  | 'support'
+  | 'contracts'
 
 // ─── Role registry ─────────────────────────────────────────────────────────────
 
@@ -50,42 +55,42 @@ export const ROLES: RoleProfile[] = [
   {
     id: 'ceo-ops',
     name: 'Leon Russo De Cerame',
-    title: 'CEO – Wavult Operations',
+    title: 'CEO – Sälj & Execution',
     person: 'Leon',
     color: '#10B981',
     initials: 'LR',
     emoji: '⚙️',
-    access: ['execution', 'strategy'],
+    access: ['execution', 'sales', 'strategy'],
   },
   {
     id: 'cfo',
     name: 'Winston Bjarnemark',
-    title: 'Chief Financial Officer',
+    title: 'CFO – Ekonomisk infrastruktur',
     person: 'Winston',
     color: '#3B82F6',
     initials: 'WB',
     emoji: '💰',
-    access: ['finance'],
+    access: ['finance', 'systems'],
   },
   {
     id: 'cto',
     name: 'Johan Berglund',
-    title: 'Group CTO',
+    title: 'CTO – Drift, APIer & Support',
     person: 'Johan',
     color: '#06B6D4',
     initials: 'JB',
     emoji: '🧠',
-    access: ['tech'],
+    access: ['tech', 'infra', 'support'],
   },
   {
     id: 'clo',
     name: 'Dennis Bjarnemark',
-    title: 'Board Member / Chief Legal',
+    title: 'Board / Chief Legal – Juridik & Avtal',
     person: 'Dennis',
     color: '#F59E0B',
     initials: 'DB',
     emoji: '⚖️',
-    access: ['legal'],
+    access: ['legal', 'contracts'],
   },
   {
     id: 'cpo',
