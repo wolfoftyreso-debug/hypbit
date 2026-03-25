@@ -21,16 +21,16 @@ const LAYER_LABEL: Record<number, string> = {
   2: 'PRODUCT ENTITIES',
   3: 'SYSTEMS',
 }
-const CARD_W = 190
-const CARD_H = 100
+const CARD_W = 220
+const CARD_H = 120
 const SVG_W = 1120
 
 // ─── Command chain layout (right-side column) ─────────────────────────────────
 // Apex sits at layer 0 y-level, direct reports at layer 1 y-level.
 // Always rendered in a fixed right column — never overlaps entities.
 const CMD_X_START = SVG_W + 40       // starts just past the main graph
-const CMD_NODE_W  = 200
-const CMD_NODE_H  = 90
+const CMD_NODE_W  = 210
+const CMD_NODE_H  = 105
 const CMD_GAP     = 28               // vertical gap between apex and reports
 const CMD_APEX_Y  = LAYER_Y[0]       // same y as holding layer
 const TOTAL_W     = CMD_X_START + CMD_NODE_W + 32  // full svg width with command column
@@ -319,17 +319,17 @@ function NodeCard({
       )}
 
       {/* Flag + shortname */}
-      <text x={13} y={28} fontSize={13} fill={entity.color} fontWeight="700" fontFamily="monospace">
+      <text x={14} y={30} fontSize={14} fill={entity.color} fontWeight="700" fontFamily="monospace">
         {typeof entity.flag === 'string' && entity.flag.length <= 2 ? entity.flag : ''} {entity.shortName}
       </text>
 
       {/* Full name — truncate if long */}
-      <text x={13} y={44} fontSize={10} fill="#9CA3AF" fontFamily="sans-serif">
-        {entity.name.length > 22 ? entity.name.slice(0, 21) + '…' : entity.name}
+      <text x={14} y={48} fontSize={11} fill="#D1D5DB" fontFamily="sans-serif" fontWeight="500">
+        {entity.name.length > 24 ? entity.name.slice(0, 23) + '…' : entity.name}
       </text>
 
       {/* Jurisdiction + type */}
-      <text x={13} y={59} fontSize={10} fill="#6B7280">
+      <text x={14} y={64} fontSize={10} fill="#9CA3AF">
         {entity.jurisdiction} · {entity.type.toUpperCase()}
       </text>
 
@@ -367,21 +367,25 @@ function NodeCard({
         </g>
       )}
 
-      {/* Role avatars — real team photos */}
+      {/* Role avatars — square photos, professional grid */}
       {roles.slice(0, 5).map((rm, i) => {
         const cmdRole = COMMAND_CHAIN.find(c => c.person === rm.person)
         const photoUrl = cmdRole?.avatar
           ?? `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(rm.person)}&backgroundColor=transparent`
-        const clipId = `clip-node-${rm.person.replace(/[\s.]/g, '-')}-${i}`
+        const clipId = `clip-sq-${rm.person.replace(/[\s.]/g, '-')}-${i}`
+        const SIZE = 22
+        const GAP = 26
+        const x0 = 14
         return (
-          <g key={rm.person} transform={`translate(${13 + i * 22}, 66)`}>
-            <circle r={10} fill={rm.color + '22'} stroke={rm.color + '70'} strokeWidth={1.5} />
+          <g key={rm.person} transform={`translate(${x0 + i * GAP}, 76)`}>
+            {/* Square background with entity color tint */}
+            <rect width={SIZE} height={SIZE} rx={3} fill={rm.color + '22'} stroke={rm.color + '60'} strokeWidth={1} />
             <clipPath id={clipId}>
-              <circle r={9} />
+              <rect width={SIZE} height={SIZE} rx={3} />
             </clipPath>
             <image
               href={photoUrl}
-              x={-9} y={-9} width={18} height={18}
+              x={0} y={0} width={SIZE} height={SIZE}
               clipPath={`url(#${clipId})`}
               preserveAspectRatio="xMidYMid slice"
             />
@@ -850,32 +854,30 @@ function CommandChainNode({
         <text x={CMD_NODE_W - 8} y={14} textAnchor="end" fontSize={10}>⚠️</text>
       )}
 
-      {/* Avatar */}
-      <rect x={10} y={14} width={32} height={32} rx={8} fill={role.color} fillOpacity={0.18} />
-      {/* Real team photo in command chain node */}
+      {/* Avatar — square photo */}
+      <rect x={10} y={12} width={38} height={38} rx={5} fill={role.color} fillOpacity={0.15} stroke={role.color} strokeOpacity={0.3} strokeWidth={1} />
       <clipPath id={`clip-cmd-${role.id}`}>
-        <circle cx={26} cy={26} r={18} />
+        <rect x={10} y={12} width={38} height={38} rx={5} />
       </clipPath>
       <image
-        href={role.avatar ?? `/avatars/${role.person.split(' ')[0].toLowerCase()}.png`}
-        x={8} y={8} width={36} height={36}
+        href={role.avatar ?? `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(role.person)}&backgroundColor=transparent`}
+        x={10} y={12} width={38} height={38}
         clipPath={`url(#clip-cmd-${role.id})`}
         preserveAspectRatio="xMidYMid slice"
       />
 
       {/* Name + title */}
-      <text x={52} y={27} fontSize={12} fontWeight="700" fill="#FFFFFF">{role.person}</text>
-      <text x={52} y={40} fontSize={10} fill={isPrimary ? '#EF9494' : '#9CA3AF'}>{role.title}</text>
+      <text x={56} y={28} fontSize={13} fontWeight="700" fill="#FFFFFF">{role.person}</text>
+      <text x={56} y={42} fontSize={11} fill={isPrimary ? '#FCA5A5' : '#D1D5DB'} fontWeight="500">{role.title}</text>
 
       {/* reports_to */}
       {reports && (
-        <text x={52} y={53} fontSize={8} fill="#4B5563">
-          <tspan fill="#374151" fontFamily="monospace">reports_to</tspan>
-          {` → ${reports.person}`}
+        <text x={56} y={55} fontSize={10} fill="#6B7280">
+          {'↑ '}{reports.person}
         </text>
       )}
       {!reports && (
-        <text x={52} y={53} fontSize={8} fill="#4B5563" fontFamily="monospace">◆ Apex</text>
+        <text x={56} y={55} fontSize={10} fill="#6B7280">◆ Apex</text>
       )}
 
       {/* KPI status bar — live from incidentEngine */}
@@ -883,13 +885,13 @@ function CommandChainNode({
         const kStatus = getKPIStatus(kpi)
         const kColor  = KPI_STATUS_COLOR[kStatus]
         const barW    = (kpi.current_value / kpi.target_value) * (CMD_NODE_W - 22)
-        const y_pos   = 68 + i * 14
+        const y_pos   = 70 + i * 16
         return (
           <g key={kpi.id}>
-            <text x={10} y={y_pos} fontSize={7} fill="#374151">{kpi.name}</text>
-            <rect x={10} y={y_pos + 2} width={CMD_NODE_W - 22} height={3} rx={2} fill="#ffffff08" />
-            <rect x={10} y={y_pos + 2} width={Math.min(barW, CMD_NODE_W - 22)} height={3} rx={2} fill={kColor} />
-            <text x={CMD_NODE_W - 10} y={y_pos} textAnchor="end" fontSize={7} fontWeight="700" fill={kColor}>
+            <text x={10} y={y_pos} fontSize={9} fill="#9CA3AF">{kpi.name}</text>
+            <rect x={10} y={y_pos + 3} width={CMD_NODE_W - 22} height={4} rx={2} fill="#ffffff08" />
+            <rect x={10} y={y_pos + 3} width={Math.min(barW, CMD_NODE_W - 22)} height={4} rx={2} fill={kColor} />
+            <text x={CMD_NODE_W - 10} y={y_pos} textAnchor="end" fontSize={9} fontWeight="700" fill={kColor}>
               {kpi.current}
             </text>
           </g>
