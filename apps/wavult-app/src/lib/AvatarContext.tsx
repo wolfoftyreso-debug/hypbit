@@ -1,7 +1,10 @@
 // ─── Wavult App — Avatar Context ────────────────────────────────────────────
-// Photo upload avatar system. Stores images in Supabase Storage (bucket: avatars).
-// Saves the public URL in user_metadata.avatar_url.
-// No third-party dependency — your photo, your infrastructure.
+// Unified avatar system. One photo upload triggers:
+//   1. Supabase Storage → profile picture
+//   2. Duix API → digital human clone of your face
+//
+// The operator never thinks about "creating a digital human" — they just
+// set their profile photo, and the system does the rest.
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 import { useAuth } from './AuthContext'
@@ -13,10 +16,69 @@ const AVATAR_BUCKET = 'avatars'
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5 MB
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 
+const DUIX_API_BASE = 'https://app.duix.ai/duix-openapi-v2/sdk/v2'
+const DUIX_TOKEN = import.meta.env.VITE_DUIX_TOKEN || ''
+const DUIX_CONVERSATION_ID = import.meta.env.VITE_DUIX_CONVERSATION_ID || ''
+
+// ─── Duix face clone helper ─────────────────────────────────────────────────
+
+interface DuixCloneResult {
+  success: boolean
+  avatarId?: string
+  error?: string
+}
+
+async function createDuixFaceClone(
+  imageUrl: string,
+  operatorName: string,
+): Promise<DuixCloneResult> {
+  if (!DUIX_TOKEN || !DUIX_CONVERSATION_ID) {
+    return { success: false, error: 'Duix not configured' }
+  }
+
+  try {
+    const res = await fetch(`${DUIX_API_BASE}/createAvatar`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'token': DUIX_TOKEN,
+      },
+      body: JSON.stringify({
+        conversationId: DUIX_CONVERSATION_ID,
+        name: operatorName,
+        ttsName: 'Marin',
+        greetings: `Welcome back, ${operatorName.split(' ')[0]}. Ready when you are.`,
+        profile: 'You are the Wavult OS operator interface. Present tasks and coaching concisely, like a mission controller.',
+        // Face clone from uploaded photo
+        faceUrl: imageUrl,
+      }),
+    })
+
+    if (!res.ok) {
+      const text = await res.text()
+      return { success: false, error: `Duix API ${res.status}: ${text}` }
+    }
+
+    const data = await res.json()
+    return {
+      success: true,
+      avatarId: data?.data?.avatarId || data?.data?.id || DUIX_CONVERSATION_ID,
+    }
+  } catch (err) {
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : String(err),
+    }
+  }
+}
+
 // ─── Context ─────────────────────────────────────────────────────────────────
 
 interface AvatarContextValue {
   avatarUrl: string | null
+  /** Duix avatar clone status */
+  duixCloneStatus: 'idle' | 'cloning' | 'ready' | 'failed'
+  duixAvatarId: string | null
   isUploaderOpen: boolean
   openUploader: () => void
   closeUploader: () => void
@@ -32,11 +94,20 @@ export function AvatarProvider({ children }: { children: React.ReactNode }) {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [isUploaderOpen, setIsUploaderOpen] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [duixCloneStatus, setDuixCloneStatus] = useState<'idle' | 'cloning' | 'ready' | 'failed'>('idle')
+  const [duixAvatarId, setDuixAvatarId] = useState<string | null>(null)
 
-  // Load avatar from user metadata
+  // Load avatar + Duix status from user metadata
   useEffect(() => {
-    const url = user?.user_metadata?.avatar_url
+    if (!user) return
+    const url = user.user_metadata?.avatar_url
     setAvatarUrl(typeof url === 'string' ? url : null)
+
+    const dId = user.user_metadata?.duix_avatar_id
+    if (typeof dId === 'string') {
+      setDuixAvatarId(dId)
+      setDuixCloneStatus('ready')
+    }
   }, [user])
 
   const openUploader = useCallback(() => setIsUploaderOpen(true), [])
@@ -55,7 +126,7 @@ export function AvatarProvider({ children }: { children: React.ReactNode }) {
 
     setSaving(true)
     try {
-      // Upload to Supabase Storage: avatars/{userId}.{ext}
+      // ── Step 1: Upload to Supabase Storage ──────────────────────────────
       const ext = file.name.split('.').pop() || 'jpg'
       const path = `${user.id}.${ext}`
 
@@ -70,10 +141,9 @@ export function AvatarProvider({ children }: { children: React.ReactNode }) {
         .from(AVATAR_BUCKET)
         .getPublicUrl(path)
 
-      // Append cache-busting timestamp
       const publicUrl = `${urlData.publicUrl}?t=${Date.now()}`
 
-      // Save to user metadata
+      // Save profile photo URL to user metadata
       const { error: updateError } = await supabase.auth.updateUser({
         data: { avatar_url: publicUrl },
       })
@@ -82,6 +152,28 @@ export function AvatarProvider({ children }: { children: React.ReactNode }) {
 
       setAvatarUrl(publicUrl)
       setIsUploaderOpen(false)
+
+      // ── Step 2: Create Duix face clone (async, non-blocking) ────────────
+      if (DUIX_TOKEN && DUIX_CONVERSATION_ID) {
+        setDuixCloneStatus('cloning')
+        const operatorName = user.user_metadata?.full_name || user.email || 'Operator'
+
+        // Fire and don't block the UI
+        createDuixFaceClone(publicUrl, operatorName).then(async (result) => {
+          if (result.success && result.avatarId) {
+            setDuixAvatarId(result.avatarId)
+            setDuixCloneStatus('ready')
+            // Persist Duix avatar ID to user metadata
+            await supabase.auth.updateUser({
+              data: { duix_avatar_id: result.avatarId },
+            })
+          } else {
+            setDuixCloneStatus('failed')
+            console.warn('[Duix] Face clone failed:', result.error)
+          }
+        })
+      }
+
       return { error: null }
     } finally {
       setSaving(false)
@@ -92,14 +184,15 @@ export function AvatarProvider({ children }: { children: React.ReactNode }) {
     if (!user) return
     setSaving(true)
     try {
-      // Remove from storage (try common extensions)
       for (const ext of ['jpg', 'jpeg', 'png', 'webp']) {
         await supabase.storage.from(AVATAR_BUCKET).remove([`${user.id}.${ext}`])
       }
-
-      // Clear from user metadata
-      await supabase.auth.updateUser({ data: { avatar_url: null } })
+      await supabase.auth.updateUser({
+        data: { avatar_url: null, duix_avatar_id: null },
+      })
       setAvatarUrl(null)
+      setDuixAvatarId(null)
+      setDuixCloneStatus('idle')
     } finally {
       setSaving(false)
     }
@@ -107,7 +200,7 @@ export function AvatarProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AvatarContext.Provider value={{
-      avatarUrl, isUploaderOpen,
+      avatarUrl, duixCloneStatus, duixAvatarId, isUploaderOpen,
       openUploader, closeUploader, uploadAvatar, removeAvatar, saving,
     }}>
       {children}

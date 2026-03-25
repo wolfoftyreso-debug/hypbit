@@ -2,11 +2,21 @@
 // Full-screen modal for photo upload. Supports camera capture on mobile,
 // file picker on desktop, drag-and-drop. Preview before confirming.
 
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { useAvatar } from '../lib/AvatarContext'
 
 export function AvatarCreator() {
-  const { isUploaderOpen, closeUploader, uploadAvatar, saving } = useAvatar()
+  const { isUploaderOpen, closeUploader, uploadAvatar, saving, duixCloneStatus } = useAvatar()
+  const [showCloneStatus, setShowCloneStatus] = useState(false)
+
+  // Show clone status briefly after upload completes
+  useEffect(() => {
+    if (duixCloneStatus === 'cloning') setShowCloneStatus(true)
+    if (duixCloneStatus === 'ready' || duixCloneStatus === 'failed') {
+      const t = setTimeout(() => setShowCloneStatus(false), 3000)
+      return () => clearTimeout(t)
+    }
+  }, [duixCloneStatus])
   const [preview, setPreview] = useState<string | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -91,6 +101,20 @@ export function AvatarCreator() {
                 className="absolute inset-0 rounded-2xl pointer-events-none"
                 style={{ boxShadow: '0 0 0 3px rgba(196, 150, 26, 0.3)' }}
               />
+              {/* Duix clone status overlay */}
+              {showCloneStatus && duixCloneStatus === 'cloning' && (
+                <div className="absolute inset-0 rounded-2xl bg-w-bg/70 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="h-5 w-5 border-2 border-signal-amber/30 border-t-signal-amber rounded-full animate-spin mx-auto mb-1" />
+                    <p className="text-[9px] font-mono text-signal-amber">CREATING CLONE</p>
+                  </div>
+                </div>
+              )}
+              {showCloneStatus && duixCloneStatus === 'ready' && (
+                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-signal-green/20 border border-signal-green/30">
+                  <p className="text-[8px] font-mono text-signal-green whitespace-nowrap">DIGITAL TWIN READY</p>
+                </div>
+              )}
             </div>
 
             {error && (
