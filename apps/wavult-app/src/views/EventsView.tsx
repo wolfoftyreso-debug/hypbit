@@ -2,7 +2,9 @@
 // Telegram-style: fast, scrollable, tap-to-act. Each event is a micro-card
 // with clear action. Sorted by priority, filtered by role.
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
+import { useIdentity } from '../core/identity/IdentityContext'
+import type { TaskCategory } from '../core/identity/types'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -131,9 +133,20 @@ function EventCard({ event, onResolve }: { event: AppEvent; onResolve: (id: stri
 
 // ─── Main ────────────────────────────────────────────────────────────────────
 
+// Map event categories to identity task categories
+const CATEGORY_TO_TASK: Record<EventCategory, TaskCategory> = {
+  approval: 'decision',
+  task: 'execute',
+  alert: 'review',
+  info: 'review',
+  gate: 'analyze',
+}
+
 export function EventsView() {
   const [events, setEvents] = useState(EVENTS)
   const [filter, setFilter] = useState<'all' | 'critical' | 'tasks'>('all')
+  const { recordFeedback } = useIdentity()
+  const resolveTimestamps = useRef<Map<string, number>>(new Map())
 
   const filtered = events.filter(e => {
     if (filter === 'critical') return e.priority === 'critical' || e.priority === 'high'
@@ -142,7 +155,23 @@ export function EventsView() {
   })
 
   const handleResolve = (id: string) => {
+    const event = events.find(e => e.id === id)
+    if (event) {
+      const startTime = resolveTimestamps.current.get(id) || Date.now()
+      const duration = Date.now() - startTime
+      recordFeedback(
+        id,
+        CATEGORY_TO_TASK[event.category],
+        duration < 5000 ? 'completed_fast' : 'completed_well',
+        duration,
+      )
+    }
     setEvents(prev => prev.filter(e => e.id !== id))
+  }
+
+  // Track when events first become visible (for duration calculation)
+  if (resolveTimestamps.current.size === 0) {
+    events.forEach(e => resolveTimestamps.current.set(e.id, Date.now()))
   }
 
   const filters = [

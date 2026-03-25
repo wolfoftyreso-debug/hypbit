@@ -5,6 +5,7 @@
 import { useAuth } from '../lib/AuthContext'
 import { OperatorAvatar } from '../components/OperatorAvatar'
 import { useAvatar } from '../lib/AvatarContext'
+import { useIdentity } from '../core/identity/IdentityContext'
 
 // ─── Mock data (will connect to Supabase) ────────────────────────────────────
 
@@ -160,6 +161,80 @@ function SystemPulse() {
   )
 }
 
+// ─── Identity Surface ────────────────────────────────────────────────────────
+
+const CATEGORY_LABEL: Record<string, string> = {
+  decision: 'Decisions', review: 'Review', create: 'Create',
+  coordinate: 'Coordinate', analyze: 'Analyze', communicate: 'Communicate',
+  execute: 'Execute', learn: 'Learn',
+}
+
+function IdentitySurface() {
+  const { health, recommendations, confidence, identity } = useIdentity()
+
+  const energyColor = health.energyStatus === 'high' ? '#4A7A5B'
+    : health.energyStatus === 'moderate' ? '#C4961A' : '#D94040'
+
+  return (
+    <div className="px-5 mt-6">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-label text-tx-tertiary font-mono uppercase">Your Model</h2>
+        <div className="flex items-center gap-1.5">
+          <div className="w-12 h-1 bg-w-border rounded-full overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all duration-500"
+              style={{
+                width: `${confidence * 100}%`,
+                background: confidence > 0.5 ? '#4A7A5B' : '#C4961A',
+              }}
+            />
+          </div>
+          <span className="text-[9px] text-tx-muted font-mono">{Math.round(confidence * 100)}%</span>
+        </div>
+      </div>
+
+      {/* Energy + recommended next */}
+      <div className="app-card mb-2">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full" style={{ background: energyColor }} />
+            <span className="text-xs text-tx-secondary">Energy: {health.energyStatus}</span>
+          </div>
+          <span className="text-[9px] text-tx-muted font-mono">{identity.totalObservations} data points</span>
+        </div>
+        <p className="text-xs text-tx-tertiary">{health.nextRecommendation}</p>
+      </div>
+
+      {/* Recommended task types */}
+      <div className="space-y-1.5">
+        {recommendations.map((rec, i) => (
+          <div key={rec.taskCategory} className="app-card flex items-center gap-3">
+            <span className="text-lg font-bold text-tx-muted w-5 text-center">{i + 1}</span>
+            <div className="flex-1 min-w-0">
+              <span className="text-sm font-medium text-tx-primary">
+                {CATEGORY_LABEL[rec.taskCategory] || rec.taskCategory}
+              </span>
+              <p className="text-[10px] text-tx-tertiary mt-0.5">{rec.reason}</p>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-8 h-1 bg-w-border rounded-full overflow-hidden">
+                <div
+                  className="h-full rounded-full"
+                  style={{
+                    width: `${rec.score * 100}%`,
+                    background: rec.score > 0.6 ? '#4A7A5B' : '#C4961A',
+                  }}
+                />
+              </div>
+              <span className="text-[9px] text-tx-muted font-mono">{Math.round(rec.score * 100)}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // ─── Main ────────────────────────────────────────────────────────────────────
 
 export function DashboardView() {
@@ -168,6 +243,7 @@ export function DashboardView() {
       <GreetingHeader />
       <StatsRow />
       <TaskList />
+      <IdentitySurface />
       <SystemPulse />
     </div>
   )
