@@ -1,7 +1,9 @@
 // ─── Wavult App — Profile & Settings ────────────────────────────────────────────
-// Operator profile, stats, role info, sign out.
+// Operator profile with Ready Player Me avatar, stats, role info, sign out.
 
 import { useAuth } from '../lib/AuthContext'
+import { useAvatar } from '../lib/AvatarContext'
+import { OperatorAvatar } from '../components/OperatorAvatar'
 
 // Mock operator data
 const OPERATOR = {
@@ -18,23 +20,55 @@ const OPERATOR = {
 
 export function ProfileView() {
   const { user, signOut } = useAuth()
+  const { avatarUrl, openCreator, removeAvatar, saving } = useAvatar()
   const name = user?.user_metadata?.full_name || user?.email || 'Operator'
   const email = user?.email || ''
   const initials = name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()
 
   return (
     <div className="pb-24 animate-fade-in">
-      {/* Header */}
+      {/* Header with avatar */}
       <div className="px-5 pt-8 pb-6 text-center">
-        <div
-          className="h-16 w-16 rounded-2xl flex items-center justify-center text-xl font-bold mx-auto mb-3"
-          style={{ background: OPERATOR.accentColor + '20', color: OPERATOR.accentColor }}
-        >
-          {initials}
+        {/* Avatar — tap to create/change */}
+        <div className="relative inline-block mb-3">
+          <OperatorAvatar
+            initials={initials}
+            color={OPERATOR.accentColor}
+            size="xl"
+            ring
+            onClick={openCreator}
+          />
+          {/* Edit badge */}
+          <div className="absolute -bottom-1 -right-1 h-7 w-7 rounded-full bg-w-surface border-2 border-w-bg flex items-center justify-center">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="#C4961A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M11.5 1.5a2.121 2.121 0 013 3L5 14l-4 1 1-4z" />
+            </svg>
+          </div>
         </div>
+
         <h1 className="text-lg font-bold text-tx-primary">{name}</h1>
         <p className="text-xs text-tx-tertiary mt-0.5">{OPERATOR.role}</p>
         <p className="text-label text-tx-muted font-mono mt-1">{email}</p>
+
+        {/* Avatar actions */}
+        <div className="flex items-center justify-center gap-3 mt-3">
+          <button
+            onClick={openCreator}
+            disabled={saving}
+            className="text-xs px-3 py-1.5 rounded-pill font-medium transition-all bg-signal-amber/15 text-signal-amber border border-signal-amber/30 active:scale-95 disabled:opacity-50"
+          >
+            {avatarUrl ? 'Change Avatar' : 'Create Avatar'}
+          </button>
+          {avatarUrl && (
+            <button
+              onClick={removeAvatar}
+              disabled={saving}
+              className="text-xs px-3 py-1.5 rounded-pill text-tx-muted border border-w-border active:scale-95 disabled:opacity-50"
+            >
+              Remove
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Stats */}

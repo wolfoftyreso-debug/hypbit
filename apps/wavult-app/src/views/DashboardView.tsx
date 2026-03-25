@@ -1,8 +1,10 @@
 // ─── Wavult App — Personal Dashboard ────────────────────────────────────────────
 // The first thing you see. Not a dashboard you browse — a personal status surface.
-// Shows: your status, your tasks, your momentum, system pulse.
+// Shows: your avatar + greeting, your stats, your tasks, system pulse.
 
 import { useAuth } from '../lib/AuthContext'
+import { OperatorAvatar } from '../components/OperatorAvatar'
+import { useAvatar } from '../lib/AvatarContext'
 
 // ─── Mock data (will connect to Supabase) ────────────────────────────────────
 
@@ -45,14 +47,31 @@ const PULSE_COLOR = {
 
 function GreetingHeader() {
   const { user } = useAuth()
-  const name = user?.user_metadata?.full_name?.split(' ')[0] || 'Operator'
+  const { openCreator } = useAvatar()
+  const name = user?.user_metadata?.full_name || 'Operator'
+  const firstName = name.split(' ')[0]
+  const initials = name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()
   const hour = new Date().getHours()
   const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening'
 
   return (
-    <div className="px-5 pt-6 pb-4">
-      <p className="text-label text-tx-tertiary font-mono uppercase">{greeting}</p>
-      <h1 className="text-action text-tx-primary mt-1">{name}</h1>
+    <div className="px-5 pt-6 pb-4 flex items-center gap-4">
+      <OperatorAvatar
+        initials={initials}
+        color="#8B5CF6"
+        size="lg"
+        ring
+        onClick={openCreator}
+      />
+      <div className="flex-1 min-w-0">
+        <p className="text-label text-tx-tertiary font-mono uppercase">{greeting}</p>
+        <h1 className="text-action text-tx-primary">{firstName}</h1>
+      </div>
+      {/* Ambient status dot */}
+      <div className="flex flex-col items-center gap-1">
+        <span className="h-2.5 w-2.5 rounded-full bg-signal-amber animate-pulse-slow" />
+        <span className="text-[8px] text-tx-muted font-mono">ACTIVE</span>
+      </div>
     </div>
   )
 }
@@ -87,7 +106,6 @@ function TaskList() {
             key={task.id}
             className={`app-card flex items-center gap-3 ${task.done ? 'opacity-40' : ''}`}
           >
-            {/* Check circle */}
             <div
               className="h-5 w-5 rounded-full border-2 flex items-center justify-center flex-shrink-0"
               style={{
@@ -101,16 +119,12 @@ function TaskList() {
                 </svg>
               )}
             </div>
-
-            {/* Content */}
             <div className="flex-1 min-w-0">
               <p className={`text-sm ${task.done ? 'line-through text-tx-muted' : 'text-tx-primary'}`}>
                 {task.title}
               </p>
               <p className="text-label text-tx-muted font-mono mt-0.5">{task.dueLabel}</p>
             </div>
-
-            {/* Priority dot */}
             {!task.done && (
               <span
                 className="h-2 w-2 rounded-full flex-shrink-0"

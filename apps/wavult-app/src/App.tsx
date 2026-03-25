@@ -3,27 +3,32 @@
 
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './lib/AuthContext'
+import { AvatarProvider } from './lib/AvatarContext'
 import { LoginView } from './views/LoginView'
 import { DashboardView } from './views/DashboardView'
 import { EventsView } from './views/EventsView'
 import { NotificationsView } from './views/NotificationsView'
 import { ProfileView } from './views/ProfileView'
 import { TabBar } from './components/TabBar'
+import { AvatarCreator } from './components/AvatarCreator'
 
 function AuthenticatedApp() {
   return (
-    <div className="min-h-screen bg-w-bg">
-      <div className="max-w-lg mx-auto">
-        <Routes>
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/dashboard" element={<DashboardView />} />
-          <Route path="/events" element={<EventsView />} />
-          <Route path="/notifications" element={<NotificationsView />} />
-          <Route path="/profile" element={<ProfileView />} />
-        </Routes>
+    <AvatarProvider>
+      <div className="min-h-screen bg-w-bg">
+        <div className="max-w-lg mx-auto">
+          <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard" element={<DashboardView />} />
+            <Route path="/events" element={<EventsView />} />
+            <Route path="/notifications" element={<NotificationsView />} />
+            <Route path="/profile" element={<ProfileView />} />
+          </Routes>
+        </div>
+        <TabBar eventCount={6} />
+        <AvatarCreator />
       </div>
-      <TabBar eventCount={6} />
-    </div>
+    </AvatarProvider>
   )
 }
 
