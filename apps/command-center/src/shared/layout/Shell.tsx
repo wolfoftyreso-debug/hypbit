@@ -5,7 +5,7 @@ import { useRole, ROLES } from '../auth/RoleContext'
 
 function ContentArea({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation()
-  const fullBleed = pathname.startsWith('/org') || pathname.startsWith('/org/context')
+  const fullBleed = pathname.startsWith('/org') || pathname.startsWith('/entities')
   return (
     <div className={`h-full ${fullBleed ? '' : 'overflow-auto p-6'}`}>
       {children}
@@ -19,6 +19,7 @@ interface ShellProps {
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: '⬛' },
+  { to: '/entities', label: 'Entities', icon: '🏢' },
   { to: '/org/context', label: 'My Position', icon: '🎯' },
   { to: '/org', label: 'Corporate Graph', icon: '🏗' },
   { to: '/projects', label: 'Projekt & KPI', icon: '🚀' },

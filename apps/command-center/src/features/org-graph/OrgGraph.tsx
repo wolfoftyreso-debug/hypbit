@@ -1,4 +1,5 @@
 import { useState, useCallback, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   ENTITIES, RELATIONSHIPS,
   getChildren, getRelationships, getRoleMappings,
@@ -193,6 +194,7 @@ function DrillPanel({
   perms: GraphPermissions
   onClose: () => void
 }) {
+  const navigate = useNavigate()
   const [tab, setTab] = useState<'overview' | 'relations' | 'roles' | 'children'>('overview')
 
   const rels = getRelationships(entity.id)
@@ -243,7 +245,17 @@ function DrillPanel({
             <div className="text-sm text-gray-200 font-medium mt-1 truncate">{entity.name}</div>
             <div className="text-xs text-gray-500 mt-0.5 font-mono">{entity.jurisdiction}</div>
           </div>
-          <button onClick={onClose} className="text-gray-600 hover:text-gray-300 transition-colors ml-3 flex-shrink-0 text-lg leading-none">✕</button>
+          <div className="flex items-center gap-2 ml-3 flex-shrink-0">
+              <button
+                onClick={() => navigate(`/entities/${entity.id}`)}
+                className="text-xs px-2.5 py-1.5 rounded-lg font-semibold transition-colors"
+                style={{ background: entity.color + '20', color: entity.color, border: `1px solid ${entity.color}35` }}
+                title="Open Entity Control Center"
+              >
+                Enter →
+              </button>
+              <button onClick={onClose} className="text-gray-600 hover:text-gray-300 transition-colors text-lg leading-none">✕</button>
+          </div>
         </div>
 
         {/* Tabs */}
