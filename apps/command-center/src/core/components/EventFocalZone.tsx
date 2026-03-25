@@ -3,7 +3,7 @@
 // Clear statement of what happened or what's needed. Context expandable.
 // The Buzz feeling: one clear thing, immediate feedback, no ambiguity.
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useEvents } from '../events/EventContext'
 import { useOperator } from '../operator/OperatorContext'
@@ -57,6 +57,11 @@ function EventView({ event }: { event: OperationalEvent }) {
   const { showExpandedContext, transitionSpeed } = useOperator()
   const [expanded, setExpanded] = useState(showExpandedContext)
   const [resolving, setResolving] = useState<string | null>(null)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    return () => { if (timerRef.current) clearTimeout(timerRef.current) }
+  }, [])
 
   const role = COMMAND_CHAIN.find(r => r.id === event.sourceRoleId)
   const isGate = event.category === 'gate'
@@ -65,7 +70,7 @@ function EventView({ event }: { event: OperationalEvent }) {
     const action = event.actions.find(a => a.id === actionId)
     setResolving(actionId)
 
-    setTimeout(() => {
+    timerRef.current = setTimeout(() => {
       resolveEvent(event.id, actionId)
       if (action?.navigateTo) {
         navigate(action.navigateTo)
