@@ -15,6 +15,7 @@ import { EntityView } from './features/entity/EntityView'
 import { IncidentCenter } from './features/incidents/IncidentCenter'
 import { MarketMap } from './features/market-sites'
 import { CampaignOS } from './features/campaign-os'
+import { LegalHub } from './features/legal/LegalHub'
 
 function AuthenticatedApp() {
   const { role } = useRole()
@@ -38,6 +39,7 @@ function AuthenticatedApp() {
         <Route path="/entities/:entityId" element={<EntityView />} />
         <Route path="/markets" element={<MarketMap />} />
         <Route path="/campaigns" element={<CampaignOS />} />
+        <Route path="/legal" element={<LegalHub />} />
       </Routes>
     </Shell>
   )

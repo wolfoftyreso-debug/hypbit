@@ -4,6 +4,7 @@ import { EntitySwitcher } from '../../features/entity-switcher/EntitySwitcher'
 import { useRole, ROLES } from '../auth/RoleContext'
 import { generateIncidents } from '../../features/incidents/incidentEngine'
 import { useEntityScope } from '../scope/EntityScopeContext'
+import { LEGAL_DOCUMENTS } from '../../features/legal/data'
 
 function ContentArea({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation()
@@ -32,6 +33,7 @@ const navItems = [
   { to: '/tasks', label: 'Task Board', icon: '📋' },
   { to: '/people', label: 'Team', icon: '👤' },
   { to: '/transactions', label: 'Transactions', icon: '↕' },
+  { to: '/legal', label: 'Legal Hub', icon: null },
 ]
 
 export function Shell({ children }: ShellProps) {
@@ -44,6 +46,11 @@ export function Shell({ children }: ShellProps) {
       return incs.filter(i => i.severity === 'critical' || i.escalated).length
     } catch { return 0 }
   }, [])
+
+  const pendingLegalCount = useMemo(
+    () => LEGAL_DOCUMENTS.filter(d => d.status === 'proposed').length,
+    []
+  )
 
   return (
     <div className="flex h-screen bg-surface-base overflow-hidden">
@@ -68,6 +75,9 @@ export function Shell({ children }: ShellProps) {
               {scopeEntity.layer === 0 ? 'Group view' : `${scopeEntity.shortName} view`}
             </span>
             <span className="text-[9px] text-gray-700 ml-auto font-mono">{scopedEntities.length}e</span>
+            {pendingLegalCount > 0 && (
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-400 flex-shrink-0" title={`${pendingLegalCount} juridiska dokument kräver åtgärd`} />
+            )}
           </div>
         </div>
 
@@ -85,11 +95,23 @@ export function Shell({ children }: ShellProps) {
                 }`
               }
             >
-              <span className="text-base leading-none">{item.icon}</span>
+              {item.to === '/legal'
+                ? (
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
+                    <path d="M12 3v18M3 9h18M5 9l3-6 3 6M13 9l3-6 3 6M5 9c0 2.21 1.34 4 3 4s3-1.79 3-4M13 9c0 2.21 1.34 4 3 4s3-1.79 3-4M5 21h14" />
+                  </svg>
+                )
+                : <span className="text-base leading-none">{item.icon}</span>
+              }
               <span className="flex-1">{item.label}</span>
               {item.to === '/incidents' && criticalIncidentCount > 0 && (
                 <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-red-500 text-white flex-shrink-0">
                   {criticalIncidentCount}
+                </span>
+              )}
+              {item.to === '/legal' && pendingLegalCount > 0 && (
+                <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500 text-black flex-shrink-0">
+                  {pendingLegalCount}
                 </span>
               )}
             </NavLink>
