@@ -43,6 +43,7 @@ import auditWorkspaceRouter from "./audit-workspace";
 import integrationRouter from "./integrations/integration-api";
 import communicationHubRouter from "./communication-hub";
 import samplingImpartialityRouter from "./sampling-impartiality";
+import telephonyEngineRouter from "./telephony-engine";
 
 // ---------------------------------------------------------------------------
 // Certified Core imports
@@ -235,6 +236,11 @@ app.use(communicationHubRouter);
 // Sampling & Impartiality — Stickprover, opartiskhet, ISO 17020/17025
 // ---------------------------------------------------------------------------
 app.use(samplingImpartialityRouter);
+
+// ---------------------------------------------------------------------------
+// Telephony — 46elks: nummer, röst, IVR, SMS, voicemail
+// ---------------------------------------------------------------------------
+app.use(telephonyEngineRouter);
 
 // ---------------------------------------------------------------------------
 // Auth helper for inline routes

@@ -26,6 +26,7 @@ const SQL_FILES = [
   '13_iso_compliance.sql',    // ISO 9001 + ISO 27001 compliance seed
   '31_communication_hub.sql', // Communication hub tables
   '32_sampling_impartiality.sql', // Sampling plans, impartiality, COI
+  '33_telephony.sql',            // Phone numbers, calls, IVR, voicemails
 ];
 
 async function main() {
