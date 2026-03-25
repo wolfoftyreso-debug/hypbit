@@ -1,7 +1,17 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { EntitySwitcher } from '../../features/entity-switcher/EntitySwitcher'
 import { useRole, ROLES } from '../auth/RoleContext'
+
+function ContentArea({ children }: { children: React.ReactNode }) {
+  const { pathname } = useLocation()
+  const fullBleed = pathname.startsWith('/org')
+  return (
+    <div className={`h-full ${fullBleed ? '' : 'overflow-auto p-6'}`}>
+      {children}
+    </div>
+  )
+}
 
 interface ShellProps {
   children: React.ReactNode
@@ -9,11 +19,11 @@ interface ShellProps {
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: '⬛' },
+  { to: '/org', label: 'Corporate Graph', icon: '🏗' },
   { to: '/projects', label: 'Projekt & KPI', icon: '🚀' },
   { to: '/tasks', label: 'Task Board', icon: '📋' },
   { to: '/people', label: 'Team', icon: '👤' },
   { to: '/transactions', label: 'Transactions', icon: '↕' },
-  { to: '/entities', label: 'Entities', icon: '🏢' },
 ]
 
 export function Shell({ children }: ShellProps) {
@@ -119,9 +129,9 @@ export function Shell({ children }: ShellProps) {
           </div>
         </header>
 
-        {/* Content */}
-        <div className="flex-1 overflow-auto p-6">
-          {children}
+        {/* Content — org-graph gets full bleed, other routes get padding */}
+        <div className="flex-1 overflow-hidden">
+          <ContentArea>{children}</ContentArea>
         </div>
       </main>
     </div>

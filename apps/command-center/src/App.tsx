@@ -7,6 +7,7 @@ import { TransactionFeed } from './features/transactions/TransactionFeed'
 import { ProjectsView } from './features/projects/ProjectsView'
 import { PeopleView } from './features/people/PeopleView'
 import { TasksView } from './features/tasks/TasksView'
+import { OrgGraph } from './features/org-graph/OrgGraph'
 
 function AuthenticatedApp() {
   const { role } = useRole()
@@ -22,6 +23,7 @@ function AuthenticatedApp() {
         <Route path="/tasks" element={<TasksView />} />
         <Route path="/people" element={<PeopleView />} />
         <Route path="/transactions" element={<TransactionFeed />} />
+        <Route path="/org" element={<OrgGraph />} />
       </Routes>
     </Shell>
   )
