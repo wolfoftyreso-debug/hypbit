@@ -1024,7 +1024,7 @@ export function OrgGraph() {
   const [selectedEntity, setSelectedEntity] = useState<Entity | null>(null)
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set())
   const [showCommandChain, setShowCommandChain] = useState(true)
-  const [showFlow, setShowFlow]               = useState(true)
+  const showFlow = true // always on
   const showStress = true // always on — stress propagation visible via incident data
   const [selectedCmdId, setSelectedCmdId]     = useState<string | null>(null)
   const [showAllEdges, setShowAllEdges]       = useState(false)
@@ -1160,18 +1160,6 @@ export function OrgGraph() {
               }
             >
               Chain
-            </button>
-
-            {/* 3. Overlay toggle: Flow (always-on but can mute) */}
-            <button
-              onClick={() => setShowFlow(p => !p)}
-              className="text-[10px] px-3 py-1.5 rounded-lg border font-medium transition-all"
-              style={showFlow
-                ? { background: '#10B98115', color: '#34D399', borderColor: '#10B98130' }
-                : { background: 'transparent', color: '#4B5563', borderColor: '#ffffff0a' }
-              }
-            >
-              Flow
             </button>
 
             {/* 5. Show all relationships toggle */}
