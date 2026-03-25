@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from 'react'
 
 // ─── Role definitions (from wavult-internal-handbook-v1, section 9.3) ─────────
 
-export type RoleId = 'group-ceo' | 'ceo-ops' | 'cfo' | 'cto' | 'clo' | 'cpo'
+export type RoleId = 'admin' | 'group-ceo' | 'ceo-ops' | 'cfo' | 'cto' | 'clo' | 'cpo'
 
 export interface RoleProfile {
   id: RoleId
@@ -27,6 +27,16 @@ export type AccessScope =
 // ─── Role registry ─────────────────────────────────────────────────────────────
 
 export const ROLES: RoleProfile[] = [
+  {
+    id: 'admin' as RoleId,
+    name: 'Erik Svensson',
+    title: 'System Administrator',
+    person: 'Admin',
+    color: '#FF6B35',
+    initials: 'SA',
+    emoji: '🔐',
+    access: ['full', 'strategy', 'finance', 'tech', 'legal', 'product', 'execution'],
+  },
   {
     id: 'group-ceo',
     name: 'Erik Svensson',
@@ -95,24 +105,36 @@ interface RoleContextValue {
   role: RoleProfile | null
   setRole: (role: RoleProfile | null) => void
   hasAccess: (scope: AccessScope) => boolean
+  isAdmin: boolean
+  viewAs: RoleProfile | null
+  setViewAs: (role: RoleProfile | null) => void
+  effectiveRole: RoleProfile | null
 }
 
 const RoleContext = createContext<RoleContextValue>({
   role: null,
   setRole: () => {},
   hasAccess: () => false,
+  isAdmin: false,
+  viewAs: null,
+  setViewAs: () => {},
+  effectiveRole: null,
 })
 
 export function RoleProvider({ children }: { children: React.ReactNode }) {
   const [role, setRole] = useState<RoleProfile | null>(null)
+  const [viewAs, setViewAs] = useState<RoleProfile | null>(null)
+
+  const isAdmin = role?.id === 'admin'
+  const effectiveRole = isAdmin && viewAs ? viewAs : role
 
   const hasAccess = (scope: AccessScope) => {
-    if (!role) return false
-    return role.access.includes('full') || role.access.includes(scope)
+    if (!effectiveRole) return false
+    return effectiveRole.access.includes('full') || effectiveRole.access.includes(scope)
   }
 
   return (
-    <RoleContext.Provider value={{ role, setRole, hasAccess }}>
+    <RoleContext.Provider value={{ role, setRole, hasAccess, isAdmin, viewAs, setViewAs, effectiveRole }}>
       {children}
     </RoleContext.Provider>
   )

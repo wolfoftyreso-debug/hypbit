@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { EntitySwitcher } from '../../features/entity-switcher/EntitySwitcher'
-import { useRole } from '../auth/RoleContext'
+import { useRole, ROLES } from '../auth/RoleContext'
 
 interface ShellProps {
   children: React.ReactNode
@@ -17,7 +17,8 @@ const navItems = [
 ]
 
 export function Shell({ children }: ShellProps) {
-  const { role, setRole } = useRole()
+  const { role, setRole, isAdmin, viewAs, setViewAs, effectiveRole } = useRole()
+  const nonAdminRoles = ROLES.filter(r => r.id !== 'admin')
 
   return (
     <div className="flex h-screen bg-surface-base overflow-hidden">
@@ -71,15 +72,47 @@ export function Shell({ children }: ShellProps) {
           <div className="flex items-center gap-3 text-sm text-gray-400">
             {role && (
               <>
-                <span className="text-xs px-2 py-0.5 rounded-full font-medium" style={{ background: role.color + '18', color: role.color, border: `1px solid ${role.color}30` }}>
-                  {role.emoji} {role.title}
-                </span>
-                <span className="text-gray-500">{role.name}</span>
+                {/* Admin: visa vilken roll man tittar som */}
+                {isAdmin && viewAs && (
+                  <span className="text-xs px-2 py-0.5 rounded-full font-medium bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                    👁 Visar: {viewAs.title}
+                  </span>
+                )}
+
+                {/* Admin: rolldropdown */}
+                {isAdmin && (
+                  <select
+                    value={viewAs?.id ?? ''}
+                    onChange={e => {
+                      const found = nonAdminRoles.find(r => r.id === e.target.value) ?? null
+                      setViewAs(found)
+                    }}
+                    className="text-xs bg-surface-overlay border border-surface-border text-gray-300 rounded-lg px-2 py-1 cursor-pointer focus:outline-none focus:border-orange-500/50"
+                  >
+                    <option value="">🔐 Admin — Alla roller</option>
+                    {nonAdminRoles.map(r => (
+                      <option key={r.id} value={r.id}>
+                        {r.emoji} {r.title}
+                      </option>
+                    ))}
+                  </select>
+                )}
+
+                {/* Aktuell roll-badge */}
+                {effectiveRole && (
+                  <span
+                    className="text-xs px-2 py-0.5 rounded-full font-medium"
+                    style={{ background: effectiveRole.color + '18', color: effectiveRole.color, border: `1px solid ${effectiveRole.color}30` }}
+                  >
+                    {effectiveRole.emoji} {isAdmin && !viewAs ? 'System Administrator' : effectiveRole.title}
+                  </span>
+                )}
+
                 <button
-                  onClick={() => setRole(null)}
+                  onClick={() => { setRole(null); setViewAs(null) }}
                   className="text-xs text-gray-600 hover:text-gray-300 transition-colors px-2 py-1 rounded border border-surface-border hover:border-gray-500"
                 >
-                  Byt roll
+                  Logga ut
                 </button>
               </>
             )}
