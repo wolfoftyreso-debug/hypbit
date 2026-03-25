@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { RoleProvider, useRole } from './shared/auth/RoleContext'
+import { EntityScopeProvider } from './shared/scope/EntityScopeContext'
 import { RoleLogin } from './shared/auth/RoleLogin'
 import { Shell } from './shared/layout/Shell'
 import { RoleDashboard } from './features/dashboard/RoleDashboard'
@@ -45,7 +46,9 @@ function AuthenticatedApp() {
 export default function App() {
   return (
     <RoleProvider>
-      <AuthenticatedApp />
+      <EntityScopeProvider>
+        <AuthenticatedApp />
+      </EntityScopeProvider>
     </RoleProvider>
   )
 }
