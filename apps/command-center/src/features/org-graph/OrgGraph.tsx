@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   ENTITIES, RELATIONSHIPS,
@@ -1032,6 +1032,15 @@ export function OrgGraph() {
   // Live incident propagation — drives visual "bleeding" in the graph
   const incidents = useMemo(() => generateIncidents(), [])
   const propagation = useMemo(() => computePropagation(incidents), [incidents])
+
+  // Sync entity-switcher (sidebar) → graph selection
+  useEffect(() => {
+    if (scopeEntity && scopeEntity.id !== 'wavult-group') {
+      setSelectedEntity(scopeEntity)
+    } else {
+      setSelectedEntity(null)
+    }
+  }, [scopeEntity])
 
   const handleNodeClick = useCallback((entity: Entity) => {
     setSelectedEntity(prev => prev?.id === entity.id ? null : entity)
