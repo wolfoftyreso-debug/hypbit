@@ -25,6 +25,7 @@ const TEAM: {
   mandates: string[]     // Core mandates (4–5 bullets)
   kpis: string[]         // What success looks like
   notThisRole: string[]  // What this role does NOT do
+  tuckmanPhase: TuckmanPhase
 }[] = [
   {
     name: 'Erik Svensson',
@@ -47,6 +48,7 @@ const TEAM: {
     ],
     kpis: ['Kapitalflöde optimerat', 'Alla bolag i rörelse mot plan', 'Systemet byggt som planerat'],
     notThisRole: ['Operativ daglig drift', 'Manuell uppgiftshantering', 'Teknisk debug'],
+    tuckmanPhase: 'performing',
   },
   {
     name: 'Leon Maurizio Russo De Cerame',
@@ -69,6 +71,7 @@ const TEAM: {
     ],
     kpis: ['Leveranskapacitet i team', 'Sälj-pipeline aktiv', 'Drift utan flaskhalsar'],
     notThisRole: ['Bolagsstruktur och juridik', 'Systemarkitektur', 'Finansiell planering'],
+    tuckmanPhase: 'norming',
   },
   {
     name: 'Winston Gustav Bjarnemark',
@@ -91,6 +94,7 @@ const TEAM: {
     ],
     kpis: ['Bankkonton öppnade per bolag', 'Intercompany-avtal signerade', 'Kassaflöde positivt'],
     notThisRole: ['Operativ drift', 'Produktbeslut', 'Teknikarkitektur'],
+    tuckmanPhase: 'forming',
   },
   {
     name: 'Dennis Bjarnemark',
@@ -113,6 +117,7 @@ const TEAM: {
     ],
     kpis: ['Bolag registrerade enligt plan', 'Avtal signerade', 'Compliance-status grön'],
     notThisRole: ['Teknik', 'Sälj', 'Finansiell förvaltning'],
+    tuckmanPhase: 'norming',
   },
   {
     name: 'Johan Putte Berglund',
@@ -135,8 +140,20 @@ const TEAM: {
     ],
     kpis: ['Infrastruktur stabil', 'Inga kritiska buggar öppna', 'Deploy-pipeline grön'],
     notThisRole: ['Juridik', 'Sälj', 'Finansiell rapportering'],
+    tuckmanPhase: 'storming',
   },
 ]
+
+// ─── Tuckman Team Phases ──────────────────────────────────────────────────────
+type TuckmanPhase = 'forming' | 'storming' | 'norming' | 'performing' | 'adjourning'
+
+const TUCKMAN: Record<TuckmanPhase, { label: string; color: string; emoji: string; desc: string }> = {
+  forming:    { label: 'Forming',    color: '#6B7280', emoji: '🌱', desc: 'Teamet hittar sin form. Roller och mål klarnar.' },
+  storming:   { label: 'Storming',   color: '#F59E0B', emoji: '⚡', desc: 'Spänningar och konflikter — nödvändigt för att växa.' },
+  norming:    { label: 'Norming',    color: '#3B82F6', emoji: '🔵', desc: 'Strukturer sätter sig. Samarbetet flödar.' },
+  performing: { label: 'Performing', color: '#10B981', emoji: '🚀', desc: 'Fullt leveransläge. Teamet fungerar självständigt.' },
+  adjourning: { label: 'Adjourning', color: '#8B5CF6', emoji: '🏁', desc: 'Projektet/fasen avslutas.' },
+}
 
 const ENTITY_LABELS: Record<string, { label: string; color: string }> = {
   WGH: { label: 'Wavult Group (Holding / Governance)', color: '#8B5CF6' },
@@ -211,6 +228,18 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
           >
             {STATUS_LABEL[person.status]}
           </span>
+          {(() => {
+            const t = TUCKMAN[person.tuckmanPhase]
+            return (
+              <span
+                title={t.desc}
+                className="text-xs px-2 py-0.5 rounded-full font-medium cursor-help"
+                style={{ background: t.color + '18', color: t.color, border: `1px solid ${t.color}30` }}
+              >
+                {t.emoji} {t.label}
+              </span>
+            )
+          })()}
         </div>
 
         {/* Focus */}
@@ -317,6 +346,46 @@ export function PeopleView() {
             <div className="text-3xl font-bold tabular-nums" style={{ color: s.color }}>{s.value}</div>
           </div>
         ))}
+      </div>
+
+      {/* Tuckman Team Phase Overview */}
+      <div className="bg-surface-raised border border-surface-border rounded-xl px-5 py-4">
+        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Team Development Phases (Tuckman)</p>
+        <div className="flex gap-1 mb-4">
+          {(['forming','storming','norming','performing','adjourning'] as TuckmanPhase[]).map((phase) => {
+            const t = TUCKMAN[phase]
+            const count = TEAM.filter(p => p.tuckmanPhase === phase).length
+            const isActive = count > 0
+            return (
+              <div key={phase} className="flex-1 flex flex-col items-center gap-1">
+                <div
+                  className="w-full h-2 rounded-full transition-all"
+                  style={{ background: isActive ? t.color : t.color + '20' }}
+                />
+                <span className="text-[9px] font-mono" style={{ color: isActive ? t.color : '#374151' }}>
+                  {t.emoji} {t.label}
+                </span>
+                {isActive && (
+                  <span className="text-[9px] rounded-full px-1.5" style={{ background: t.color + '20', color: t.color }}>
+                    {count}
+                  </span>
+                )}
+              </div>
+            )
+          })}
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {TEAM.map(p => {
+            const t = TUCKMAN[p.tuckmanPhase]
+            return (
+              <div key={p.name} className="flex items-center gap-1.5 text-xs rounded-lg px-2 py-1"
+                style={{ background: t.color + '12', border: `1px solid ${t.color}25` }}>
+                <span className="font-bold" style={{ color: p.color }}>{p.initials}</span>
+                <span style={{ color: t.color }}>{t.emoji} {t.label}</span>
+              </div>
+            )
+          })}
+        </div>
       </div>
 
       {/* Team Grid */}
