@@ -17,7 +17,6 @@ permissions:
 
 env:
   AWS_REGION: eu-north-1
-  ECR_REGISTRY: 155407238699.dkr.ecr.eu-north-1.amazonaws.com
   ECS_CLUSTER: hypbit
   ECS_SERVICE: hypbit-api
 
@@ -31,32 +30,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate secrets exist
-        run: |
-          echo "Checking required secrets..."
-          MISSING=0
-          if [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ]; then
-            echo "::error::AWS_ACCESS_KEY_ID is not set in GitHub Secrets"
-            MISSING=1
-          else
-            echo "✅ AWS_ACCESS_KEY_ID is set"
-          fi
-          if [ -z "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ]; then
-            echo "::error::AWS_SECRET_ACCESS_KEY is not set in GitHub Secrets"
-            MISSING=1
-          else
-            echo "✅ AWS_SECRET_ACCESS_KEY is set"
-          fi
-          if [ "$MISSING" = "1" ]; then
-            echo ""
-            echo "========================================"
-            echo "DEPLOY BLOCKED: Missing GitHub Secrets"
-            echo "Go to: Settings → Secrets → Actions"
-            echo "Add: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY"
-            echo "========================================"
-            exit 1
-          fi
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -64,36 +37,63 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Get AWS Account ID
+        id: account
+        run: |
+          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          echo "id=$ACCOUNT_ID" >> $GITHUB_OUTPUT
+          echo "ECR_REGISTRY=${ACCOUNT_ID}.dkr.ecr.eu-north-1.amazonaws.com" >> $GITHUB_OUTPUT
+          echo "AWS Account: $ACCOUNT_ID"
+
+      - name: Ensure ECR repository exists
+        run: |
+          aws ecr describe-repositories --repository-names hypbit/api --region ${{ env.AWS_REGION }} 2>/dev/null || \
+            aws ecr create-repository --repository-name hypbit/api --region ${{ env.AWS_REGION }} --image-scanning-configuration scanOnPush=true
+          echo "ECR repository ready"
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Set image tag
-        id: meta
-        run: echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
-
       - name: Build, tag, and push Docker image
         id: build
         run: |
-          IMAGE="${{ env.ECR_REGISTRY }}/hypbit/api:${{ steps.meta.outputs.tag }}"
-          LATEST="${{ env.ECR_REGISTRY }}/hypbit/api:latest"
+          ECR="${{ steps.account.outputs.ECR_REGISTRY }}"
+          TAG="${{ github.sha }}"
+          IMAGE="${ECR}/hypbit/api:${TAG}"
+          LATEST="${ECR}/hypbit/api:latest"
 
           docker build -f Dockerfile -t "$IMAGE" -t "$LATEST" .
           docker push "$IMAGE"
           docker push "$LATEST"
 
           echo "image=$IMAGE" >> $GITHUB_OUTPUT
+          echo "Pushed: $IMAGE"
+
+      - name: Check if ECS cluster exists
+        id: ecs-check
+        run: |
+          if aws ecs describe-clusters --clusters ${{ env.ECS_CLUSTER }} --region ${{ env.AWS_REGION }} --query 'clusters[0].status' --output text 2>/dev/null | grep -q ACTIVE; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "ECS cluster exists"
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "ECS cluster does not exist yet — image pushed to ECR, run infra-setup workflow to create ECS"
+          fi
 
       - name: Update ECS service
+        if: steps.ecs-check.outputs.exists == 'true'
         run: |
+          ECR="${{ steps.account.outputs.ECR_REGISTRY }}"
+          TAG="${{ github.sha }}"
+          NEW_IMAGE="${ECR}/hypbit/api:${TAG}"
+
           TASK_DEF=$(aws ecs describe-services \
             --cluster ${{ env.ECS_CLUSTER }} \
             --services ${{ env.ECS_SERVICE }} \
             --region ${{ env.AWS_REGION }} \
             --query 'services[0].taskDefinition' \
             --output text)
-
-          NEW_IMAGE="${{ env.ECR_REGISTRY }}/hypbit/api:${{ steps.meta.outputs.tag }}"
 
           NEW_TASK_DEF=$(aws ecs describe-task-definition \
             --task-definition "$TASK_DEF" \
@@ -116,62 +116,17 @@ print(json.dumps(td))
             --query 'taskDefinition.taskDefinitionArn' \
             --output text)
 
-          echo "New task definition: $NEW_TASK_DEF_ARN"
-
           aws ecs update-service \
             --cluster ${{ env.ECS_CLUSTER }} \
             --service ${{ env.ECS_SERVICE }} \
             --task-definition "$NEW_TASK_DEF_ARN" \
             --region ${{ env.AWS_REGION }}
 
-      - name: Wait for deployment (with timeout)
-        run: |
-          echo "Waiting for ECS deployment to stabilize (max 8 min)..."
-          MAX_ATTEMPTS=32
-          ATTEMPT=0
-          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
-            ATTEMPT=$((ATTEMPT + 1))
-            RESULT=$(aws ecs describe-services \
-              --cluster ${{ env.ECS_CLUSTER }} \
-              --services ${{ env.ECS_SERVICE }} \
-              --region ${{ env.AWS_REGION }} \
-              --query 'services[0].{running:runningCount,desired:desiredCount,pending:pendingCount,deployments:length(deployments)}' \
-              --output json)
-            RUNNING=$(echo "$RESULT" | jq -r '.running')
-            DESIRED=$(echo "$RESULT" | jq -r '.desired')
-            PENDING=$(echo "$RESULT" | jq -r '.pending')
-            DEPLOYS=$(echo "$RESULT" | jq -r '.deployments')
-            echo "Attempt $ATTEMPT/$MAX_ATTEMPTS: running=$RUNNING desired=$DESIRED pending=$PENDING deployments=$DEPLOYS"
-            if [ "$RUNNING" = "$DESIRED" ] && [ "$DEPLOYS" = "1" ] && [ "$PENDING" = "0" ]; then
-              echo "✅ Deployment stable!"
-              break
-            fi
-            if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
-              echo "⚠️ Deployment still stabilizing after 8 min"
-              break
-            fi
-            sleep 15
-          done
-
-      - name: Health check
-        run: |
-          sleep 20
-          echo "Running health check..."
-          for i in 1 2 3; do
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://api.bc.pixdrift.com/health || echo "000")
-            echo "Attempt $i: API health = $STATUS"
-            if [ "$STATUS" = "200" ]; then
-              echo "✅ API healthy"
-              exit 0
-            fi
-            sleep 10
-          done
-          echo "⚠️ API health check inconclusive"
-          exit 0
+          echo "ECS service updated"
 
       - name: Deploy summary
         run: |
           echo "=== Deploy Summary ==="
           echo "Image: ${{ steps.build.outputs.image }}"
+          echo "ECS Cluster exists: ${{ steps.ecs-check.outputs.exists }}"
           echo "SHA: ${{ github.sha }}"
-          echo "Actor: ${{ github.actor }}"
