@@ -13,6 +13,7 @@ import { CommandHierarchyView } from './features/org-graph/CommandHierarchyView'
 import { EntityView } from './features/entity/EntityView'
 import { IncidentCenter } from './features/incidents/IncidentCenter'
 import { MarketMap } from './features/market-sites'
+import { CampaignOS } from './features/campaign-os'
 
 function AuthenticatedApp() {
   const { role } = useRole()
@@ -35,6 +36,7 @@ function AuthenticatedApp() {
         <Route path="/entities" element={<EntityView />} />
         <Route path="/entities/:entityId" element={<EntityView />} />
         <Route path="/markets" element={<MarketMap />} />
+        <Route path="/campaigns" element={<CampaignOS />} />
       </Routes>
     </Shell>
   )

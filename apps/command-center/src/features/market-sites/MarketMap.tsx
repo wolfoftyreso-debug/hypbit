@@ -274,6 +274,13 @@ function SitePanel({ site, onClose }: { site: MarketSite; onClose: () => void })
               })}
             </div>
           )}
+          <div
+            className="flex items-center gap-2 mt-2 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => navigate('/campaigns')}
+          >
+            <span className="text-[10px] font-mono text-gray-600">⚡</span>
+            <span className="text-[10px] text-gray-500">View in Campaign OS →</span>
+          </div>
         </PanelSection>
 
         {/* 6. OPERATIONS */}

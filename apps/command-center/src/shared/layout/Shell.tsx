@@ -6,7 +6,7 @@ import { generateIncidents } from '../../features/incidents/incidentEngine'
 
 function ContentArea({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation()
-  const fullBleed = pathname.startsWith('/org') || pathname.startsWith('/entities') || pathname.startsWith('/org/command') || pathname.startsWith('/incidents') || pathname.startsWith('/markets')
+  const fullBleed = pathname.startsWith('/org') || pathname.startsWith('/entities') || pathname.startsWith('/org/command') || pathname.startsWith('/incidents') || pathname.startsWith('/markets') || pathname.startsWith('/campaigns')
   return (
     <div className={`h-full ${fullBleed ? '' : 'overflow-auto p-6'}`}>
       {children}
@@ -26,6 +26,7 @@ const navItems = [
   { to: '/org/context', label: 'My Position', icon: '🎯' },
   { to: '/org', label: 'Corporate Graph', icon: '🏗' },
   { to: '/markets', label: 'Market Deployment', icon: '🌍' },
+  { to: '/campaigns', label: 'Campaign OS', icon: '⚡' },
   { to: '/projects', label: 'Projekt & KPI', icon: '🚀' },
   { to: '/tasks', label: 'Task Board', icon: '📋' },
   { to: '/people', label: 'Team', icon: '👤' },
