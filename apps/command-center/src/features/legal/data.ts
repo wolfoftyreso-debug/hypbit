@@ -88,7 +88,7 @@ export const LEGAL_DOCUMENTS: LegalDocument[] = [
   {
     id: 'ip-001',
     type: 'ip_license',
-    title: 'IP-licensavtal — Sommarliden Holding → Wavult Operations',
+    title: 'IP-licensavtal — Wavult Group Dubai (IP Holding) → Wavult Operations',
     party_a: 'wavult-group',
     party_b: 'wavult-operations',
     signing_level: 'L3',
@@ -103,7 +103,7 @@ export const LEGAL_DOCUMENTS: LegalDocument[] = [
   {
     id: 'ip-002',
     type: 'ip_license',
-    title: 'IP-licensavtal — Sommarliden Holding → QuiXzoom UAB',
+    title: 'IP-licensavtal — Wavult Group Dubai (IP Holding) → QuiXzoom UAB',
     party_a: 'wavult-group',
     party_b: 'quixzoom-uab',
     signing_level: 'L3',
@@ -118,7 +118,7 @@ export const LEGAL_DOCUMENTS: LegalDocument[] = [
   {
     id: 'ip-003',
     type: 'ip_license',
-    title: 'IP-licensavtal — Sommarliden Holding → LandveX Inc',
+    title: 'IP-licensavtal — Wavult Group Dubai (IP Holding) → LandveX Inc',
     party_a: 'wavult-group',
     party_b: 'landvex-inc',
     signing_level: 'L3',
@@ -129,6 +129,21 @@ export const LEGAL_DOCUMENTS: LegalDocument[] = [
     required: true,
     auto_proposed: true,
     royalty_rate: 8,
+  },
+  {
+    id: 'ip-004',
+    type: 'ip_license',
+    title: 'IP-licensavtal — Wavult Group Dubai (IP Holding) → Sommarliden Holding AB',
+    party_a: 'wavult-group',
+    party_b: 'landvex-ab',
+    signing_level: 'L3',
+    sign_method: 'bankid',
+    status: 'proposed',
+    created_at: '2026-03-25',
+    description: 'IP-licens för LandveX-plattformen i Sverige/EU. Sommarliden AB (blivande LandveX AB) äger INTE IP — licensierar från Dubai-holdingen. Royalty 7% av nettointäkter.',
+    required: true,
+    auto_proposed: true,
+    royalty_rate: 7,
   },
   {
     id: 'ma-001',
