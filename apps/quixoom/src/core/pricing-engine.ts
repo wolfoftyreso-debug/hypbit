@@ -1,4 +1,5 @@
 import type { DbClient } from './db.js';
+import * as feeEngine from './fee-engine.js';
 
 // ============================================================================
 // Pricing Engine
@@ -21,7 +22,10 @@ export interface PayoutCalculation {
   level_multiplier: number;       // from level system
   time_bonus: number;             // for fast completion
   quality_bonus: number;          // for high AI scores
-  final_payout: number;
+  final_payout: number;           // gross before fee
+  platform_fee_pct: number;       // e.g. 0.05
+  platform_fee: number;           // absolute fee amount
+  creator_net: number;            // what creator actually receives
   breakdown: string[];
 }
 
@@ -104,7 +108,14 @@ export function calculatePayout(params: {
     (basePayout * valueMultiplier * streakMultiplier * levelMultiplier + timeBonus + qualityBonus) * 100
   ) / 100;
 
-  breakdown.push(`Final payout: ${finalPayout} SEK`);
+  // Platform fee (5% universal, tiered for higher levels)
+  const platformFeePct = 0.05; // default — actual fee comes from fee-engine at runtime
+  const platformFee = Math.round(finalPayout * platformFeePct * 100) / 100;
+  const creatorNet = Math.round((finalPayout - platformFee) * 100) / 100;
+
+  breakdown.push(`Gross payout: ${finalPayout} SEK`);
+  breakdown.push(`Platform fee (${(platformFeePct * 100).toFixed(1)}%): -${platformFee} SEK`);
+  breakdown.push(`You receive: ${creatorNet} SEK`);
 
   return {
     base_payout: basePayout,
@@ -114,6 +125,9 @@ export function calculatePayout(params: {
     time_bonus: Math.round(timeBonus * 100) / 100,
     quality_bonus: Math.round(qualityBonus * 100) / 100,
     final_payout: finalPayout,
+    platform_fee_pct: platformFeePct,
+    platform_fee: platformFee,
+    creator_net: creatorNet,
     breakdown,
   };
 }

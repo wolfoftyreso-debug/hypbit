@@ -153,7 +153,7 @@ jobs:
           PGDATABASE: quixzoom_test
         run: |
           echo "Running QuixZoom migrations..."
-          for f in sql/40_quixoom_core.sql sql/41_quixzoom_users.sql sql/42_quixzoom_tasks.sql sql/43_quixzoom_ir.sql sql/44_quixzoom_cis.sql sql/45_quixzoom_workflows.sql; do
+          for f in sql/40_quixoom_core.sql sql/41_quixzoom_users.sql sql/42_quixzoom_tasks.sql sql/43_quixzoom_ir.sql sql/44_quixzoom_cis.sql sql/45_quixzoom_workflows.sql sql/46_quixzoom_fees.sql; do
             echo "→ $f"
             psql -f "$f" || exit 1
           done
@@ -196,7 +196,7 @@ jobs:
           PGDATABASE: quixzoom_test
         run: |
           echo "Running migrations again (idempotency test)..."
-          for f in sql/40_quixoom_core.sql sql/41_quixzoom_users.sql sql/42_quixzoom_tasks.sql sql/43_quixzoom_ir.sql sql/44_quixzoom_cis.sql sql/45_quixzoom_workflows.sql; do
+          for f in sql/40_quixoom_core.sql sql/41_quixzoom_users.sql sql/42_quixzoom_tasks.sql sql/43_quixzoom_ir.sql sql/44_quixzoom_cis.sql sql/45_quixzoom_workflows.sql sql/46_quixzoom_fees.sql; do
             psql -f "$f" || exit 1
           done
           echo "Idempotency test passed."

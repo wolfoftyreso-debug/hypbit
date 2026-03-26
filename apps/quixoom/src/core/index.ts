@@ -27,3 +27,6 @@ export * as marketplace from './marketplace.js';
 // Workflow Engine
 export * as workflowEngine from './workflow-engine.js';
 export * as workflows from './workflows.js';
+
+// Fee Engine
+export * as feeEngine from './fee-engine.js';

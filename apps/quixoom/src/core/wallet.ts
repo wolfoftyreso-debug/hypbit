@@ -3,6 +3,7 @@ import type { DbClient } from './db.js';
 import { emit } from './event-bus.js';
 import { log as auditLog } from './audit.js';
 import * as ledger from './ledger.js';
+import * as feeEngine from './fee-engine.js';
 
 // ============================================================================
 // Types
@@ -270,6 +271,125 @@ export async function withdraw(
   });
 
   return { withdrawal_id: withdrawalId };
+}
+
+// ============================================================================
+// Fee-Aware Operations
+// ============================================================================
+
+/**
+ * Credit wallet WITH platform fee deduction.
+ * This is the primary path for ALL creator earnings.
+ *
+ * Flow:
+ *   gross_amount → feeEngine.split() → net to creator wallet + fee to platform
+ *
+ * Returns both the fee split and the wallet result.
+ */
+export async function creditWithFee(
+  db: DbClient,
+  params: {
+    user_id: string;
+    gross_amount: number;
+    transaction_type: string;  // task_payout, ir_sale, subscription, etc.
+    reference_type: string;
+    reference_id: string;
+    description?: string;
+    actor: string;
+  },
+): Promise<{
+  gross_amount: number;
+  fee_amount: number;
+  net_amount: number;
+  fee_pct: number;
+  wallet_id: string;
+  new_balance: string;
+}> {
+  // 1. Calculate and record fee split
+  const feeSplit = await feeEngine.split(db, {
+    transaction_type: params.transaction_type,
+    gross_amount: params.gross_amount,
+    creator_id: params.user_id,
+    reference_type: params.reference_type,
+    reference_id: params.reference_id,
+  });
+
+  // 2. Credit NET amount to creator wallet
+  const walletResult = await creditAvailable(db, {
+    user_id: params.user_id,
+    amount: feeSplit.net_amount,
+    type: params.transaction_type as WalletTxType,
+    reference_type: params.reference_type,
+    reference_id: params.reference_id,
+    description: params.description
+      ? `${params.description} (${(feeSplit.fee_pct * 100).toFixed(1)}% fee: ${feeSplit.fee_amount} SEK)`
+      : undefined,
+    actor: params.actor,
+  });
+
+  // 3. Record fee as separate wallet transaction
+  const { rows: walletRows } = await db.query(
+    `SELECT id FROM qz_wallets WHERE user_id = $1`,
+    [params.user_id],
+  );
+  if (walletRows[0]) {
+    await recordTx(db, {
+      wallet_id: walletRows[0].id,
+      type: 'fee',
+      amount: -feeSplit.fee_amount,
+      reference_type: params.reference_type,
+      reference_id: params.reference_id,
+      description: `Platform fee (${(feeSplit.fee_pct * 100).toFixed(1)}%)`,
+    }, walletResult.new_balance);
+  }
+
+  return {
+    gross_amount: feeSplit.gross_amount,
+    fee_amount: feeSplit.fee_amount,
+    net_amount: feeSplit.net_amount,
+    fee_pct: feeSplit.fee_pct,
+    wallet_id: walletResult.wallet_id,
+    new_balance: walletResult.new_balance,
+  };
+}
+
+/**
+ * Process withdrawal WITH fee.
+ */
+export async function withdrawWithFee(
+  db: DbClient,
+  params: {
+    user_id: string;
+    amount: number;
+    currency: string;
+    method: 'instant' | 'batch' | 'bank_transfer';
+    destination: Record<string, unknown>;
+    actor: string;
+  },
+): Promise<{ withdrawal_id: string; fee_amount: number; net_amount: number }> {
+  // Calculate withdrawal fee
+  const feeSplit = await feeEngine.split(db, {
+    transaction_type: 'withdrawal',
+    gross_amount: params.amount,
+    creator_id: params.user_id,
+    reference_type: 'withdrawal',
+    reference_id: randomUUID(), // temp — replaced below
+  });
+
+  // Total deduction = requested amount (user expects to withdraw this)
+  // Fee comes out of the withdrawal
+  const netToUser = feeSplit.net_amount;
+
+  const result = await withdraw(db, {
+    ...params,
+    amount: params.amount, // deduct full amount from wallet
+  });
+
+  return {
+    withdrawal_id: result.withdrawal_id,
+    fee_amount: feeSplit.fee_amount,
+    net_amount: netToUser,
+  };
 }
 
 // ============================================================================

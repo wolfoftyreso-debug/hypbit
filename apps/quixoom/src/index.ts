@@ -7,6 +7,7 @@ import { router } from './api/routes.js';
 import { qzRouter } from './api/quixzoom-routes.js';
 import { cisRouter } from './api/cis-routes.js';
 import { workflowRouter } from './api/workflow-routes.js';
+import { feeRouter } from './api/fee-routes.js';
 
 dotenv.config();
 
@@ -38,6 +39,9 @@ app.use('/api/cis', cisRouter);
 // Routes — Workflow Engine
 app.use('/api/workflow', workflowRouter);
 
+// Routes — Fee Engine & Revenue
+app.use('/api/fees', feeRouter);
+
 // Start
 app.listen(port, () => {
   console.log(`[quixzoom] running on port ${port}`);
@@ -45,6 +49,7 @@ app.listen(port, () => {
   console.log(`  Platform API:    /api/qz`);
   console.log(`  Intelligence API: /api/cis`);
   console.log(`  Workflow API:    /api/workflow`);
+  console.log(`  Fee Engine:      /api/fees`);
 });
 
 export default app;

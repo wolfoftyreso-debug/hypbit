@@ -236,11 +236,18 @@ export async function processPurchase(
     amount = parseFloat(listing.price);
   }
 
-  // Get creator's revenue share from level
-  const level = await levels.getUserLevel(db, listing.seller_id);
-  const split = pricingEngine.calculatePlatformSplit(amount, parseFloat(level.revenue_share_pct));
-
   const purchaseId = randomUUID();
+
+  // Credit creator wallet WITH fee split (replaces manual revenue share calc)
+  const feeResult = await wallet.creditWithFee(db, {
+    user_id: listing.seller_id,
+    gross_amount: amount,
+    transaction_type: input.payment_type === 'lead' ? 'lead_sale' : 'ir_sale',
+    reference_type: 'buyer_purchase',
+    reference_id: purchaseId,
+    description: `Marketplace sale: ${listing.title}`,
+    actor: 'system:marketplace',
+  });
 
   await db.query(
     `INSERT INTO qz_buyer_purchases (
@@ -249,20 +256,9 @@ export async function processPurchase(
      ) VALUES ($1,$2,$3,$4,$5,'SEK',$6,$7,$8,$9)`,
     [
       purchaseId, input.buyer_id, input.listing_id, listing.ir_id,
-      amount, input.payment_type, split.creator_payout, split.platform_fee,
+      amount, input.payment_type, feeResult.net_amount, feeResult.fee_amount,
       input.payment_type === 'lead' ? (input.leads_requested ?? 10) : null,
     ],
-  );
-
-  // Credit creator wallet
-  await wallet.creditAvailable(db, {
-    user_id: listing.seller_id,
-    amount: split.creator_payout,
-    type: 'ir_sale',
-    reference_type: 'buyer_purchase',
-    reference_id: purchaseId,
-    description: `Marketplace sale: ${listing.title}`,
-    actor: 'system:marketplace',
   });
 
   // Update listing stats

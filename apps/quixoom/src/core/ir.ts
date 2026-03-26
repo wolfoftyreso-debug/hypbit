@@ -170,14 +170,18 @@ export async function purchaseRepo(
 
   const repo = repoRows[0];
   const price = parseFloat(repo.price);
-
-  // Get creator's revenue share
-  const level = await levels.getUserLevel(db, repo.creator_id);
-  const shareRate = parseFloat(level.revenue_share_pct) / 100;
-  const creatorShare = Math.round(price * shareRate * 100) / 100;
-  const platformFee = Math.round((price - creatorShare) * 100) / 100;
-
   const purchaseId = randomUUID();
+
+  // Credit creator wallet WITH fee split (5% universal take rate)
+  const feeResult = await wallet.creditWithFee(db, {
+    user_id: repo.creator_id,
+    gross_amount: price,
+    transaction_type: 'ir_sale',
+    reference_type: 'ir_purchase',
+    reference_id: purchaseId,
+    description: `IR sale: ${repo.title}`,
+    actor: 'system:ir-engine',
+  });
 
   await db.query(
     `INSERT INTO qz_ir_purchases (
@@ -187,7 +191,7 @@ export async function purchaseRepo(
     [
       purchaseId, params.repo_id, params.buyer_id ?? null,
       params.buyer_email ?? null, params.buyer_company ?? null,
-      price, repo.currency || 'SEK', creatorShare, platformFee, 'one_time',
+      price, repo.currency || 'SEK', feeResult.net_amount, feeResult.fee_amount, 'one_time',
     ],
   );
 
@@ -200,17 +204,6 @@ export async function purchaseRepo(
      WHERE id = $2`,
     [price, params.repo_id],
   );
-
-  // Credit creator wallet
-  await wallet.creditAvailable(db, {
-    user_id: repo.creator_id,
-    amount: creatorShare,
-    type: 'ir_sale',
-    reference_type: 'ir_purchase',
-    reference_id: purchaseId,
-    description: `IR sale: ${repo.title}`,
-    actor: 'system:ir-engine',
-  });
 
   await emit(db, {
     aggregate_type: 'ir',

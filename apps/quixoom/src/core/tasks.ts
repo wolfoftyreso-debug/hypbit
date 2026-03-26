@@ -244,18 +244,18 @@ export async function approveAssignment(
     [assignment.task_id],
   );
 
-  // 4. INSTANT PAYOUT — credit wallet immediately
-  await wallet.creditAvailable(db, {
+  // 4. INSTANT PAYOUT — credit wallet with 5% fee split
+  await wallet.creditWithFee(db, {
     user_id: userId,
-    amount: totalPayout,
-    type: 'task_payout',
+    gross_amount: finalPayout,
+    transaction_type: 'task_payout',
     reference_type: 'task_assignment',
     reference_id: assignmentId,
     description: `Task payout (${streakResult.multiplier}x streak)`,
     actor: 'system:payout-engine',
   });
 
-  // 5. Bonus payout if streak milestone
+  // 5. Bonus payout if streak milestone (no fee on bonuses)
   if (streakResult.bonus > 0) {
     await wallet.creditAvailable(db, {
       user_id: userId,
