@@ -1,0 +1,16 @@
+{
+  "name": "@hypbit/quixoom-sdk",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Quixoom SDK — typed client for the financial control API",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc --outDir dist"
+  },
+  "dependencies": {
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}

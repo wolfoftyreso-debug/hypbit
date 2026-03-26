@@ -1,0 +1,85 @@
+# Quixoom Compliance Rules — Default Policy
+# Version: 1.0.0
+# These rules are evaluated by the compliance engine on every transaction.
+
+rules:
+  - name: high_value_payment
+    description: Flag payments above threshold for manual review
+    condition:
+      field: amount
+      operator: ">"
+      value: 100000
+    severity: high
+    actions:
+      - type: require_approval
+        count: 2
+      - type: aml_check
+      - type: log
+
+  - name: very_high_value_payment
+    description: Critical flag for payments above 500k
+    condition:
+      field: amount
+      operator: ">"
+      value: 500000
+    severity: critical
+    actions:
+      - type: require_approval
+        count: 3
+      - type: aml_check
+      - type: hold
+      - type: log
+
+  - name: geo_mismatch
+    description: Counterparty in different jurisdiction than entity
+    condition:
+      type: geo_mismatch
+    severity: medium
+    actions:
+      - type: aml_check
+      - type: log
+
+  - name: velocity_breach
+    description: Too many transactions within time window
+    condition:
+      field: velocity_count
+      operator: ">"
+      value: 50
+      window: 3600  # seconds
+    severity: high
+    actions:
+      - type: hold
+      - type: log
+
+  - name: sanctioned_jurisdiction
+    description: Transaction involving OFAC/EU sanctioned jurisdiction
+    condition:
+      type: sanctioned_jurisdiction
+      jurisdictions:
+        - KP
+        - IR
+        - SY
+        - CU
+    severity: critical
+    actions:
+      - type: hold
+      - type: require_approval
+        count: 3
+      - type: log
+
+# Segregation of Duties policy
+sod:
+  payment:
+    create: [operator, admin]
+    approve: [compliance_officer, admin]
+    execute: [treasury, admin]
+    # Rule: no single actor can perform more than one step
+
+# Velocity limits per entity
+velocity:
+  default:
+    max_transactions_per_hour: 50
+    max_amount_per_day: 1000000
+  high_risk:
+    max_transactions_per_hour: 10
+    max_amount_per_day: 100000
