@@ -1,29 +1,23 @@
 import { useState } from 'react'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
-import { FinanceOverview } from './FinanceOverview'
-import { ChartOfAccounts } from './ChartOfAccounts'
-import { LedgerView } from './LedgerView'
-import { InvoiceHub } from './InvoiceHub'
-import { CashFlowView } from './CashFlowView'
-import { TaxView } from './TaxView'
-import { IntercompanyView } from './IntercompanyView'
-import { PaymentProcessor } from './PaymentProcessor'
+import { InboxView } from './InboxView'
+import { SMSView } from './SMSView'
+import { NotificationCenter } from './NotificationCenter'
+import { WebhookLog } from './WebhookLog'
+import { APIStatusView } from './APIStatusView'
 
-type Tab = 'overview' | 'accounts' | 'ledger' | 'invoices' | 'cashflow' | 'tax' | 'intercompany' | 'payments'
+type Tab = 'inbox' | 'sms' | 'notifications' | 'webhooks' | 'api-status'
 
 const TABS: Array<{ id: Tab; label: string; icon: string }> = [
-  { id: 'overview',      label: 'Översikt',      icon: '📊' },
-  { id: 'accounts',      label: 'Kontoplan',     icon: '📋' },
-  { id: 'ledger',        label: 'Transaktioner', icon: '↕' },
-  { id: 'invoices',      label: 'Fakturor',      icon: '🧾' },
-  { id: 'cashflow',      label: 'Kassaflöde',    icon: '💧' },
-  { id: 'tax',           label: 'Moms/Skatt',    icon: '🏛️' },
-  { id: 'intercompany',  label: 'Intercompany',  icon: '↔️' },
-  { id: 'payments',      label: 'Betalningar',   icon: '💳' },
+  { id: 'inbox',         label: 'Inkorgen',    icon: '📬' },
+  { id: 'sms',           label: 'SMS/Notiser', icon: '📱' },
+  { id: 'notifications', label: 'Systemlarm',  icon: '🔔' },
+  { id: 'webhooks',      label: 'Webhooks',    icon: '🔗' },
+  { id: 'api-status',    label: 'API-status',  icon: '🟢' },
 ]
 
-export function FinanceHub() {
-  const [activeTab, setActiveTab] = useState<Tab>('overview')
+export function CommHub() {
+  const [activeTab, setActiveTab] = useState<Tab>('inbox')
   const { activeEntity } = useEntityScope()
 
   return (
@@ -31,11 +25,11 @@ export function FinanceHub() {
       {/* Header */}
       <div className="px-6 py-4 border-b border-white/[0.06] flex-shrink-0">
         <div className="flex items-center gap-3">
-          <span className="text-xl">💰</span>
+          <span className="text-xl">📡</span>
           <div>
-            <h1 className="text-[16px] font-bold text-white">Finance Hub</h1>
+            <h1 className="text-[16px] font-bold text-white">Kommunikation</h1>
             <p className="text-[10px] text-gray-600 font-mono">
-              {activeEntity.layer === 0 ? 'Wavult Group — konsoliderad' : activeEntity.name}
+              {activeEntity.layer === 0 ? 'Wavult Group — alla kanaler' : activeEntity.name}
             </p>
           </div>
           <div
@@ -72,14 +66,11 @@ export function FinanceHub() {
 
       {/* Content */}
       <div className="flex-1 overflow-auto p-6">
-        {activeTab === 'overview'     && <FinanceOverview />}
-        {activeTab === 'accounts'     && <ChartOfAccounts />}
-        {activeTab === 'ledger'       && <LedgerView />}
-        {activeTab === 'invoices'     && <InvoiceHub />}
-        {activeTab === 'cashflow'     && <CashFlowView />}
-        {activeTab === 'tax'          && <TaxView />}
-        {activeTab === 'intercompany' && <IntercompanyView />}
-        {activeTab === 'payments'     && <PaymentProcessor />}
+        {activeTab === 'inbox'         && <InboxView />}
+        {activeTab === 'sms'           && <SMSView />}
+        {activeTab === 'notifications' && <NotificationCenter />}
+        {activeTab === 'webhooks'      && <WebhookLog />}
+        {activeTab === 'api-status'    && <APIStatusView />}
       </div>
     </div>
   )
