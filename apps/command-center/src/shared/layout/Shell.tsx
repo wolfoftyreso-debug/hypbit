@@ -42,6 +42,7 @@ const navItems = [
   { to: '/procurement', label: 'Inköp', icon: '🛒' },
   { to: '/milestones', label: 'Milestones', icon: '🚀' },
   { to: '/settings', label: 'Inställningar', icon: '⚙️' },
+  { to: '/corporate', label: 'Bolagsadmin', icon: '⚖️' },
 ]
 
 export function Shell({ children }: ShellProps) {

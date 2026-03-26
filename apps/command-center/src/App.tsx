@@ -21,9 +21,11 @@ import { CompanyLaunchView } from './features/company-launch/CompanyLaunchView'
 import { PayrollHub } from './features/payroll'
 import { CRMHub } from './features/crm'
 import { FinanceHub } from './features/finance'
+import { CorporateHub } from './features/corporate'
 import { MilestonesHub } from './features/milestones'
 import { SettingsHub } from './features/settings/SettingsHub'
 import { ProcurementHub } from './features/procurement/ProcurementHub'
+import { CommHub } from './features/communications/CommHub'
 
 function AuthenticatedApp() {
   const { role } = useRole()
@@ -56,6 +58,8 @@ function AuthenticatedApp() {
         <Route path="/procurement" element={<ProcurementHub />} />
         <Route path="/milestones" element={<MilestonesHub />} />
         <Route path="/settings" element={<SettingsHub />} />
+        <Route path="/corporate" element={<CorporateHub />} />
+        <Route path="/communications" element={<CommHub />} />
       </Routes>
     </Shell>
   )
