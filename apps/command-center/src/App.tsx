@@ -24,6 +24,7 @@ import { LegalHub } from './features/legal/LegalHub'
 import { SubmissionsView } from './features/submissions/SubmissionsView'
 import { CompanyLaunchView } from './features/company-launch/CompanyLaunchView'
 import { CorporateStructureView } from './features/corporate-structure'
+import { PaymentOsView } from './features/payment-os'
 
 function AuthenticatedApp() {
   const { role } = useRole()
@@ -53,6 +54,7 @@ function AuthenticatedApp() {
             <Route path="/legal" element={<LegalHub />} />
             <Route path="/company-launch" element={<CompanyLaunchView />} />
             <Route path="/corporate" element={<CorporateStructureView />} />
+            <Route path="/payment-os" element={<PaymentOsView />} />
           </Routes>
         </Shell>
       </EventProvider>

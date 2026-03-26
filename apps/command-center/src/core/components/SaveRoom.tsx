@@ -146,6 +146,7 @@ function NavigationGrid() {
     { label: 'Campaign OS', route: '/campaigns', desc: 'Growth operations' },
     { label: 'Legal Hub', route: '/legal', desc: 'Contracts & compliance' },
     { label: 'Corporate Structure', route: '/corporate', desc: 'Holding & treasury' },
+    { label: 'Payment OS', route: '/payment-os', desc: 'Payment infrastructure' },
   ]
 
   return (
