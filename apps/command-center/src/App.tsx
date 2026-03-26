@@ -23,6 +23,7 @@ import { CampaignOS } from './features/campaign-os'
 import { LegalHub } from './features/legal/LegalHub'
 import { SubmissionsView } from './features/submissions/SubmissionsView'
 import { CompanyLaunchView } from './features/company-launch/CompanyLaunchView'
+import { CorporateStructureView } from './features/corporate-structure'
 
 function AuthenticatedApp() {
   const { role } = useRole()
@@ -51,6 +52,7 @@ function AuthenticatedApp() {
             <Route path="/submissions" element={<SubmissionsView />} />
             <Route path="/legal" element={<LegalHub />} />
             <Route path="/company-launch" element={<CompanyLaunchView />} />
+            <Route path="/corporate" element={<CorporateStructureView />} />
           </Routes>
         </Shell>
       </EventProvider>

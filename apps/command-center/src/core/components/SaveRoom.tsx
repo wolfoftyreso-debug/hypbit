@@ -145,6 +145,7 @@ function NavigationGrid() {
     { label: 'Market Map', route: '/markets', desc: 'Geographic deployment' },
     { label: 'Campaign OS', route: '/campaigns', desc: 'Growth operations' },
     { label: 'Legal Hub', route: '/legal', desc: 'Contracts & compliance' },
+    { label: 'Corporate Structure', route: '/corporate', desc: 'Holding & treasury' },
   ]
 
   return (

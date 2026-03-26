@@ -64,6 +64,7 @@ import spaghettiRouter from "./spaghetti";
 import spatialRouter from "./spatial-flow";
 import consumablesRouter from "./consumables";
 import { scheduleAutoConsume } from "./jobs/consumables-auto-consume";
+import treasuryRouter from "./treasury-api";
 import cultureRouter from "./culture-engine";
 import peopleOSRouter from "./people-os";
 
@@ -505,6 +506,7 @@ app.use('/api/payments', paymentOrchestrationRouter); // GET /api/payments/confi
 app.use('/api/customer-state', customerStateRouter);  // GET/POST /api/customer-state/:contact_id, GET /api/customer-state/by-token/:token
 app.use('/api/customer-portal', customerPortalRouter); // GET /api/customer-portal/:token
 app.use('/api/revolut', revolutRouter);               // GET /api/revolut/accounts|cards, POST /api/revolut/cards, GET /api/revolut/cost-report
+app.use('/api/treasury', treasuryRouter);             // Treasury API — accounts, flows, routing, payouts, compliance gates
 
 // ---------------------------------------------------------------------------
 // DMS — Dealer Management System (pixdrift automotive)
