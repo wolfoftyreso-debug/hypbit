@@ -1006,7 +1006,7 @@ function BerntFloating() {
     { role: 'bernt', text: 'Hej Erik! Bernt här. Vad behöver du?' }
   ])
   const [loading, setLoading] = React.useState(false)
-  const TUNNEL = 'https://complimentary-newton-richard-jenny.trycloudflare.com'
+  const TUNNEL = 'https://bernt.wavult.com'
 
   const send = async (text: string) => {
     if (!text.trim()) return
