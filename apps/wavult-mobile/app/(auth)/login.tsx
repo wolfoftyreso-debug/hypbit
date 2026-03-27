@@ -14,6 +14,7 @@ import { useRouter } from 'expo-router'
 import { login } from '../../lib/auth'
 import { useStore } from '../../lib/store'
 import { theme } from '../../constants/theme'
+import { MOCK_USER } from '../../lib/mockData'
 
 export default function LoginScreen() {
   const router = useRouter()
@@ -35,7 +36,27 @@ export default function LoginScreen() {
       setUser(user)
       router.replace('/(tabs)')
     } catch (err: any) {
-      setError(err.message || 'Inloggning misslyckades. Försök igen.')
+      const msg = err?.message || ''
+      if (
+        msg.includes('Invalid login credentials') ||
+        msg.includes('Fel e-post') ||
+        msg.includes('Invalid credentials')
+      ) {
+        setError('Fel e-post eller lösenord. Försök igen.')
+      } else if (
+        msg.includes('Network request failed') ||
+        msg.includes('Failed to fetch') ||
+        msg.includes('ECONNREFUSED') ||
+        msg.includes('TimeoutError')
+      ) {
+        setError('Nätverksfel — startar i demo-läge...')
+        setTimeout(() => {
+          setUser(MOCK_USER)
+          router.replace('/(tabs)')
+        }, 1200)
+      } else {
+        setError(msg || 'Inloggning misslyckades. Försök igen.')
+      }
     } finally {
       setLoading(false)
     }
@@ -45,8 +66,7 @@ export default function LoginScreen() {
     setLoading(true)
     setError('')
     try {
-      const user = await login('demo@wavult.com', 'demo')
-      setUser(user)
+      setUser(MOCK_USER)
       router.replace('/(tabs)')
     } catch (err: any) {
       setError(err.message || 'Demo-inloggning misslyckades.')

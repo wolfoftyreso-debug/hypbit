@@ -13,6 +13,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router'
 import { ChatContainer } from '../../components/chat/ChatContainer'
 import { InputBar } from '../../components/chat/InputBar'
 import { useStore } from '../../lib/store'
+import { api } from '../../lib/api'
 import { MOCK_CONTAINERS, MOCK_AI_RESPONSES } from '../../lib/mockData'
 import { theme } from '../../constants/theme'
 import type { ChatMessage } from '../../lib/store'
@@ -81,9 +82,27 @@ export default function AICommandCenter() {
     setContainers,
   } = useStore()
   const [input, setInput] = useState('')
+  const [isLive, setIsLive] = useState<boolean | null>(null) // null = checking
   const greetingOpacity = useRef(new Animated.Value(0)).current
   const hasInit = useRef(false)
   const berntQueryHandled = useRef(false)
+
+  // Check if API is live
+  useEffect(() => {
+    async function checkLiveStatus() {
+      try {
+        const tasks = await api.get('/api/tasks/active')
+        setIsLive(true)
+        // If we got real tasks, use them
+        if ((tasks as any)?.data?.length > 0) {
+          // Live data available
+        }
+      } catch {
+        setIsLive(false)
+      }
+    }
+    checkLiveStatus()
+  }, [])
 
   // Init: ladda containers + visa välkomstmeddelande med fade-in
   useEffect(() => {
@@ -176,8 +195,23 @@ export default function AICommandCenter() {
     sendMessage(query)
   }
 
+  // Live/demo status indicator
+  const liveStatusColor = isLive === null ? '#888' : isLive ? theme.colors.success : '#ef4444'
+  const liveStatusText =
+    isLive === null
+      ? 'Ansluter...'
+      : isLive
+      ? 'Live — Wavult OS ansluten'
+      : 'Demo-läge — API ej tillgänglig'
+
   return (
     <SafeAreaView style={styles.container}>
+      {/* Live/Demo status banner */}
+      <View style={styles.statusBanner}>
+        <View style={[styles.statusDot, { backgroundColor: liveStatusColor }]} />
+        <Text style={[styles.statusText, { color: liveStatusColor }]}>{liveStatusText}</Text>
+      </View>
+
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerLeft}>
@@ -235,6 +269,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.bg,
+  },
+  statusBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 4,
+    paddingHorizontal: theme.spacing.md,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    gap: 6,
+  },
+  statusDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+  },
+  statusText: {
+    fontSize: 11,
+    fontWeight: '500',
+    letterSpacing: 0.5,
+    fontFamily: Platform.OS === 'ios' ? 'Courier New' : 'monospace',
   },
   header: {
     flexDirection: 'row',

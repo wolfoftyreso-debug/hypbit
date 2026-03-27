@@ -1,4 +1,4 @@
-import { getToken, refreshToken } from './auth'
+import { getToken, logout } from './auth'
 import { MOCK_CONTAINERS, MOCK_SEMANTIC_PROFILE } from './mockData'
 
 const BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001'
@@ -27,18 +27,21 @@ async function request<T>(
       signal: AbortSignal.timeout(8000),
     })
 
-    // Auto-refresh on 401
+    // Token expired — clear session and redirect to login
     if (res.status === 401 && !opts.retried) {
-      const newToken = await refreshToken()
+      // Try refresh via Supabase auto-refresh (already handled by supabase client)
+      // Re-get token after potential refresh
+      const newToken = await getToken()
       if (newToken) {
         return request<T>(method, path, body, { retried: true })
       }
-      throw new Error('Unauthorized')
+      await logout()
+      throw new Error('UNAUTHORIZED')
     }
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}))
-      throw new Error(err.message || `HTTP ${res.status}`)
+      throw new Error((err as any).message || `HTTP ${res.status}`)
     }
 
     return res.json()
@@ -57,12 +60,23 @@ async function request<T>(
 }
 
 function getMockFallback<T>(path: string): T {
-  if (path.startsWith('/api/containers')) return { data: MOCK_CONTAINERS, total: MOCK_CONTAINERS.length } as T
+  if (path.startsWith('/api/containers'))
+    return { data: MOCK_CONTAINERS, total: MOCK_CONTAINERS.length } as T
   if (path.startsWith('/api/semantic')) return MOCK_SEMANTIC_PROFILE as T
-  if (path.startsWith('/api/auth/me')) return { id: 'u1', name: 'Erik Svensson', email: 'erik@hypbit.com', role: 'Chairman & Group CEO', organization: 'Wavult Group', initials: 'ES' } as T
+  if (path.startsWith('/api/auth/me'))
+    return {
+      id: 'u1',
+      name: 'Erik Svensson',
+      email: 'erik@hypbit.com',
+      role: 'Chairman & Group CEO',
+      organization: 'Wavult Group',
+      initials: 'ES',
+    } as T
+  if (path.startsWith('/api/tasks')) return { data: [], total: 0 } as T
   return {} as T
 }
 
+// Named exports for existing usage
 export function apiGet<T = unknown>(path: string): Promise<T> {
   return request<T>('GET', path)
 }
@@ -74,3 +88,13 @@ export function apiPost<T = unknown>(path: string, body: unknown): Promise<T> {
 export function apiPatch<T = unknown>(path: string, body: unknown): Promise<T> {
   return request<T>('PATCH', path, body)
 }
+
+// Object-style api export for convenience
+export const api = {
+  get: <T = unknown>(path: string) => request<T>('GET', path),
+  post: <T = unknown>(path: string, body: unknown) => request<T>('POST', path, body),
+  patch: <T = unknown>(path: string, body: unknown) => request<T>('PATCH', path, body),
+  delete: <T = unknown>(path: string) => request<T>('DELETE', path),
+}
+
+export default api

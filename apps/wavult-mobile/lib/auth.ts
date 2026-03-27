@@ -1,9 +1,18 @@
+import { createClient } from '@supabase/supabase-js'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { MOCK_USER } from './mockData'
 
-const TOKEN_KEY = 'wavult_auth_token'
-const REFRESH_KEY = 'wavult_refresh_token'
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001'
+const SUPABASE_URL =
+  process.env.EXPO_PUBLIC_SUPABASE_URL || 'https://znmxtnxxjpmgtycmsqjv.supabase.co'
+const SUPABASE_ANON_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || ''
+
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    storage: AsyncStorage,
+    autoRefreshToken: true,
+    persistSession: true,
+  },
+})
 
 export type AuthUser = {
   id: string
@@ -14,42 +23,48 @@ export type AuthUser = {
   initials: string
 }
 
-export type AuthResponse = {
-  user: AuthUser
-  token: string
-  refreshToken: string
+function mapSupabaseUser(supaUser: { id: string; email?: string | null }): AuthUser {
+  const email = supaUser.email || ''
+  const name = email.split('@')[0] || 'User'
+  const initials = name
+    .split('.')
+    .map((p: string) => p[0]?.toUpperCase() || '')
+    .join('')
+    .slice(0, 2) || 'U'
+  return {
+    id: supaUser.id,
+    name,
+    email,
+    role: 'Team Member',
+    organization: 'Wavult Group',
+    initials,
+  }
 }
 
 export async function login(email: string, password: string): Promise<AuthUser> {
+  // Demo mode bypass
+  if (email === 'demo@wavult.com') {
+    return MOCK_USER
+  }
+
   try {
-    const res = await fetch(`${BASE_URL}/api/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-      signal: AbortSignal.timeout(5000),
-    })
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}))
-      throw new Error(err.message || 'Inloggning misslyckades')
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) {
+      if (error.message.includes('Invalid login credentials')) {
+        throw new Error('Fel e-post eller lösenord.')
+      }
+      throw new Error(error.message)
     }
-
-    const data: AuthResponse = await res.json()
-    await AsyncStorage.setItem(TOKEN_KEY, data.token)
-    await AsyncStorage.setItem(REFRESH_KEY, data.refreshToken)
-    return data.user
+    if (!data.user) throw new Error('Inloggning misslyckades')
+    return mapSupabaseUser(data.user)
   } catch (err: any) {
-    // Network/timeout errors → demo mode
+    // Network error → demo mode fallback
     if (
-      err.name === 'TimeoutError' ||
       err.message?.includes('Network request failed') ||
       err.message?.includes('Failed to fetch') ||
-      err.code === 'ECONNREFUSED'
+      err.message?.includes('ECONNREFUSED') ||
+      err.name === 'TimeoutError'
     ) {
-      // Demo mode — return mock user
-      const demoToken = 'demo_token_' + Date.now()
-      await AsyncStorage.setItem(TOKEN_KEY, demoToken)
-      await AsyncStorage.setItem(REFRESH_KEY, 'demo_refresh')
       return MOCK_USER
     }
     throw err
@@ -57,49 +72,28 @@ export async function login(email: string, password: string): Promise<AuthUser> 
 }
 
 export async function logout(): Promise<void> {
-  await AsyncStorage.removeItem(TOKEN_KEY)
-  await AsyncStorage.removeItem(REFRESH_KEY)
+  await supabase.auth.signOut()
 }
 
 export async function getToken(): Promise<string | null> {
-  return AsyncStorage.getItem(TOKEN_KEY)
+  const { data } = await supabase.auth.getSession()
+  return data.session?.access_token || null
 }
 
 export async function refreshToken(): Promise<string | null> {
-  try {
-    const refresh = await AsyncStorage.getItem(REFRESH_KEY)
-    if (!refresh) return null
+  const { data } = await supabase.auth.refreshSession()
+  return data.session?.access_token || null
+}
 
-    // Demo token — just return it
-    if (refresh === 'demo_refresh') {
-      return AsyncStorage.getItem(TOKEN_KEY)
-    }
-
-    const res = await fetch(`${BASE_URL}/api/auth/refresh`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refreshToken: refresh }),
-      signal: AbortSignal.timeout(5000),
-    })
-
-    if (!res.ok) {
-      await logout()
-      return null
-    }
-
-    const data = await res.json()
-    await AsyncStorage.setItem(TOKEN_KEY, data.token)
-    return data.token
-  } catch {
-    return null
-  }
+export async function getCurrentUser() {
+  const { data } = await supabase.auth.getUser()
+  return data.user
 }
 
 export async function getStoredUser(): Promise<AuthUser | null> {
-  const token = await getToken()
-  if (!token) return null
-  // Demo token
-  if (token.startsWith('demo_token_')) return MOCK_USER
-  // In production we'd decode the JWT or hit /api/auth/me
-  return MOCK_USER
+  const { data } = await supabase.auth.getSession()
+  if (data.session?.user) {
+    return mapSupabaseUser(data.session.user)
+  }
+  return null
 }
