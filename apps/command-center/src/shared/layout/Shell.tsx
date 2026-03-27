@@ -5,10 +5,12 @@ import { useRole, ROLES } from '../auth/RoleContext'
 import { generateIncidents } from '../../features/incidents/incidentEngine'
 import { useEntityScope } from '../scope/EntityScopeContext'
 import { LEGAL_DOCUMENTS } from '../../features/legal/data'
+import { MODULE_REGISTRY } from '../maturity/maturityModel'
+import { MaturityBadge } from '../maturity/MaturityBadge'
 
 function ContentArea({ children }: { children: React.ReactNode }) {
   const { pathname } = useLocation()
-  const fullBleed = pathname.startsWith('/org') || pathname.startsWith('/entities') || pathname.startsWith('/org/command') || pathname.startsWith('/incidents') || pathname.startsWith('/markets') || pathname.startsWith('/campaigns') || pathname.startsWith('/company-launch') || pathname.startsWith('/finance') || pathname.startsWith('/procurement') || pathname.startsWith('/communications') || pathname.startsWith('/reports')
+  const fullBleed = pathname.startsWith('/org') || pathname.startsWith('/entities') || pathname.startsWith('/org/command') || pathname.startsWith('/incidents') || pathname.startsWith('/markets') || pathname.startsWith('/campaigns') || pathname.startsWith('/company-launch') || pathname.startsWith('/finance') || pathname.startsWith('/procurement') || pathname.startsWith('/communications') || pathname.startsWith('/reports') || pathname.startsWith('/media')
   return (
     <div className={`h-full ${fullBleed ? '' : 'overflow-auto p-6'}`}>
       {children}
@@ -49,6 +51,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/crm', label: 'CRM', icon: '🎯' },
       { to: '/milestones', label: 'Milestones', icon: '🚀' },
       { to: '/campaigns', label: 'Kampanjer', icon: '⚡' },
+      { to: '/media', label: 'Media & Ads', icon: '📡' },
       { to: '/submissions', label: 'Submissions', icon: '📥' },
     ],
   },
@@ -82,6 +85,7 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { to: '/communications', label: 'Kommunikation', icon: '📡' },
       { to: '/settings', label: 'Inställningar', icon: '⚙️' },
+      { to: '/system-status', label: 'System Status', icon: '🔬' },
     ],
   },
 ]
@@ -112,7 +116,9 @@ const ROUTE_LABELS: Record<string, string> = {
   '/settings': 'Inställningar',
   '/corporate': 'Bolagsadmin',
   '/communications': 'Kommunikation',
+  '/media': 'Media & Ads',
   '/reports': 'Rapporter',
+  '/system-status': 'System Status',
 }
 
 function getBreadcrumb(pathname: string): string {
@@ -238,9 +244,16 @@ export function Shell({ children }: ShellProps) {
                       )
                       : <span className="text-base leading-none flex-shrink-0">{item.icon}</span>
                     }
-                    <span className="flex-1">{item.label}</span>
+                    <span className="flex-1 truncate">{item.label}</span>
 
-                    {/* Badges */}
+                    {/* Maturity badge */}
+                    {(() => {
+                      const pathId = item.to.replace(/^\//, '')
+                      const mod = MODULE_REGISTRY.find(m => m.id === pathId || m.path === item.to)
+                      return mod ? <MaturityBadge level={mod.level} size="xs" /> : null
+                    })()}
+
+                    {/* Alert Badges */}
                     {item.to === '/incidents' && criticalIncidentCount > 0 && (
                       <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-red-500 text-white flex-shrink-0">
                         {criticalIncidentCount}

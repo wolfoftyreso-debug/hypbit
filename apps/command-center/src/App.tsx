@@ -27,6 +27,8 @@ import { SettingsHub } from './features/settings/SettingsHub'
 import { ProcurementHub } from './features/procurement/ProcurementHub'
 import { CommHub } from './features/communications/CommHub'
 import { ReportsHub } from './features/reports/ReportsHub'
+import { MediaHub } from './features/media/MediaHub'
+import { SystemStatusView } from './features/system-status/SystemStatusView'
 
 function AuthenticatedApp() {
   const { role } = useRole()
@@ -62,6 +64,8 @@ function AuthenticatedApp() {
         <Route path="/corporate" element={<CorporateHub />} />
         <Route path="/reports" element={<ReportsHub />} />
         <Route path="/communications" element={<CommHub />} />
+        <Route path="/media" element={<MediaHub />} />
+        <Route path="/system-status" element={<SystemStatusView />} />
       </Routes>
     </Shell>
   )
