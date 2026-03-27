@@ -48,7 +48,7 @@ const QUESTIONS: Question[] = [
     id: 5,
     text: 'Vilken B2B-arm säljer analyserad intelligens till infrastrukturägare baserat på QuiXzoom-data?',
     options: ['Landvex', 'Optical Insight', 'Wavult Analytics', 'PixData'],
-    correct: 1,
+    correct: 0,
   },
 ]
 
