@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
-import { ACCOUNTS, FINANCE_ENTITIES, type Account, type EntityId } from './mockData'
+import { useFinanceAccounts, useFinanceEntities } from './hooks/useFinance'
+import type { FinanceAccount } from '../../lib/supabase'
 
 const GROUPS = ['1xxx Tillgångar', '2xxx Skulder & Eget kapital', '3xxx Intäkter', '4-7xxx Kostnader']
 
-const TYPE_COLOR: Record<Account['type'], string> = {
+const TYPE_COLOR: Record<FinanceAccount['type'], string> = {
   asset: '#3B82F6',
   liability: '#F59E0B',
   equity: '#8B5CF6',
@@ -12,7 +13,7 @@ const TYPE_COLOR: Record<Account['type'], string> = {
   expense: '#EF4444',
 }
 
-const TYPE_LABEL: Record<Account['type'], string> = {
+const TYPE_LABEL: Record<FinanceAccount['type'], string> = {
   asset: 'Tillgång',
   liability: 'Skuld',
   equity: 'Eget kapital',
@@ -32,14 +33,18 @@ export function ChartOfAccounts() {
   const { activeEntity, scopedEntities } = useEntityScope()
   const isRoot = activeEntity.layer === 0
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set(GROUPS))
-  const [entityFilter, setEntityFilter] = useState<EntityId | 'all'>('all')
+  const [entityFilter, setEntityFilter] = useState<string>('all')
 
   const scopedIds = new Set(scopedEntities.map(e => e.id))
 
-  const filteredAccounts = ACCOUNTS.filter(a => {
-    const inScope = isRoot || scopedIds.has(a.entityId)
-    const inEntity = entityFilter === 'all' || a.entityId === entityFilter
-    return inScope && inEntity
+  const { data: entities = [], isLoading: entitiesLoading } = useFinanceEntities()
+  const { data: accounts = [], isLoading: accountsLoading } = useFinanceAccounts(
+    entityFilter !== 'all' ? entityFilter : undefined
+  )
+
+  const filteredAccounts = accounts.filter(a => {
+    const inScope = isRoot || scopedIds.has(a.entity_id)
+    return inScope
   })
 
   const toggleGroup = (g: string) => {
@@ -50,9 +55,11 @@ export function ChartOfAccounts() {
     })
   }
 
-  const availableEntities = FINANCE_ENTITIES.filter(
+  const availableEntities = entities.filter(
     fe => isRoot || scopedIds.has(fe.id)
   )
+
+  const isLoading = entitiesLoading || accountsLoading
 
   return (
     <div className="space-y-4">
@@ -64,19 +71,25 @@ export function ChartOfAccounts() {
         {/* Entity filter */}
         <select
           value={entityFilter}
-          onChange={e => setEntityFilter(e.target.value as EntityId | 'all')}
+          onChange={e => setEntityFilter(e.target.value)}
           className="text-[11px] bg-[#0D0F1A] border border-white/[0.08] rounded-lg px-3 py-1.5 text-white font-mono focus:outline-none"
         >
           <option value="all">Alla bolag</option>
           {availableEntities.map(fe => (
-            <option key={fe.id} value={fe.id}>{fe.shortName}</option>
+            <option key={fe.id} value={fe.id}>{fe.short_name}</option>
           ))}
         </select>
       </div>
 
+      {isLoading && (
+        <div className="flex items-center justify-center py-12 text-gray-600 text-[12px]">
+          Laddar kontoplan...
+        </div>
+      )}
+
       {/* Account groups */}
-      {GROUPS.map(group => {
-        const groupAccounts = filteredAccounts.filter(a => a.group === group)
+      {!isLoading && GROUPS.map(group => {
+        const groupAccounts = filteredAccounts.filter(a => a.group_name === group)
         if (groupAccounts.length === 0) return null
         const isExpanded = expandedGroups.has(group)
         const total = groupAccounts.reduce((s, a) => s + a.balance, 0)
@@ -111,14 +124,14 @@ export function ChartOfAccounts() {
                 </div>
 
                 {groupAccounts.map(account => {
-                  const fe = FINANCE_ENTITIES.find(e => e.id === account.entityId)
+                  const fe = entities.find(e => e.id === account.entity_id)
                   const typeColor = TYPE_COLOR[account.type]
                   return (
                     <div
                       key={account.id}
                       className="grid grid-cols-12 px-4 py-2.5 items-center border-b border-white/[0.03] last:border-0 hover:bg-white/[0.02] transition-colors"
                     >
-                      <span className="col-span-1 text-[11px] font-mono text-gray-400">{account.number}</span>
+                      <span className="col-span-1 text-[11px] font-mono text-gray-400">{account.account_nr}</span>
                       <span className="col-span-4 text-[12px] text-white">{account.name}</span>
                       <span className="col-span-2">
                         <span className="text-[9px] font-mono px-1.5 py-0.5 rounded"
@@ -128,7 +141,7 @@ export function ChartOfAccounts() {
                       </span>
                       <div className="col-span-2 flex items-center gap-1.5">
                         <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: fe?.color }} />
-                        <span className="text-[10px] text-gray-500 font-mono truncate">{fe?.shortName}</span>
+                        <span className="text-[10px] text-gray-500 font-mono truncate">{fe?.short_name}</span>
                       </div>
                       <span className="col-span-2 text-[10px] font-mono text-gray-500">{account.currency}</span>
                       <span className="col-span-1 text-right text-[12px] font-mono font-semibold"

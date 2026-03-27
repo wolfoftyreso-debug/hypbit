@@ -1,5 +1,6 @@
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
-import { KPI_DATA, RECENT_TRANSACTIONS, FINANCE_ENTITIES, type EntityId } from './mockData'
+import { useFinanceKpis, useFinanceEntities, useFinanceLedger } from './hooks/useFinance'
+import type { FinanceKpi } from '../../lib/supabase'
 
 function fmt(n: number, currency: string) {
   const abs = Math.abs(n)
@@ -42,14 +43,36 @@ function KpiCard({ label, value, currency, sub, color, icon }: {
 export function FinanceOverview() {
   const { activeEntity, scopedEntities } = useEntityScope()
   const isRoot = activeEntity.layer === 0
+  const scopedIds = new Set(scopedEntities.map(e => e.id))
+
+  const { data: entities = [], isLoading: entitiesLoading } = useFinanceEntities()
+  const { data: kpis = [], isLoading: kpisLoading } = useFinanceKpis('2026-Q1')
+  const { data: recentEntries = [], isLoading: ledgerLoading } = useFinanceLedger()
 
   const entitiesToShow = isRoot
-    ? FINANCE_ENTITIES
-    : FINANCE_ENTITIES.filter(fe => scopedEntities.some(se => se.id === fe.id))
+    ? entities
+    : entities.filter(e => scopedIds.has(e.id))
 
-  const recentTxns = isRoot
-    ? RECENT_TRANSACTIONS
-    : RECENT_TRANSACTIONS.filter(t => scopedEntities.some(e => e.id === t.entityId))
+  const kpiMap = kpis.reduce<Record<string, FinanceKpi>>((acc, k) => {
+    acc[k.entity_id] = k
+    return acc
+  }, {})
+
+  // Recent transactions from ledger (last 5 entries)
+  const recentTxns = (isRoot
+    ? recentEntries
+    : recentEntries.filter(e => scopedIds.has(e.entity_id))
+  ).slice(0, 5)
+
+  const isLoading = entitiesLoading || kpisLoading || ledgerLoading
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-40 text-gray-600 text-[12px]">
+        Laddar finansiell data...
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -62,7 +85,7 @@ export function FinanceOverview() {
 
       {/* Per-entity KPI cards */}
       {entitiesToShow.map(fe => {
-        const kpi = KPI_DATA[fe.id as EntityId]
+        const kpi = kpiMap[fe.id]
         if (!kpi) return null
         return (
           <div key={fe.id} className="rounded-xl border border-white/[0.06] bg-[#0D0F1A] overflow-hidden">
@@ -80,9 +103,9 @@ export function FinanceOverview() {
             {/* KPI grid */}
             <div className="p-4 grid grid-cols-2 lg:grid-cols-4 gap-3">
               <KpiCard label="Intäkter" value={kpi.revenue} currency={kpi.currency} color="#10B981" icon="📈"
-                sub={`Budget: ${fmt(kpi.budgetRevenue, kpi.currency)}`} />
+                sub={`Budget: ${fmt(kpi.budget_revenue, kpi.currency)}`} />
               <KpiCard label="Kostnader" value={kpi.expenses} currency={kpi.currency} color="#EF4444" icon="📉"
-                sub={`Budget: ${fmt(kpi.budgetExpenses, kpi.currency)}`} />
+                sub={`Budget: ${fmt(kpi.budget_expenses, kpi.currency)}`} />
               <KpiCard label="Resultat" value={kpi.result} currency={kpi.currency}
                 color={kpi.result >= 0 ? '#10B981' : '#EF4444'} icon="💹" />
               <KpiCard label="Kassa" value={kpi.cash} currency={kpi.currency} color="#3B82F6" icon="🏦" />
@@ -94,54 +117,59 @@ export function FinanceOverview() {
                 <div className="flex items-center justify-between">
                   <span className="text-[9px] text-gray-500 font-mono">Intäktsmål</span>
                   <span className="text-[9px] font-mono" style={{ color: '#10B981' }}>
-                    {Math.round((kpi.revenue / kpi.budgetRevenue) * 100)}%
+                    {Math.round((kpi.revenue / kpi.budget_revenue) * 100)}%
                   </span>
                 </div>
-                <ProgressBar value={kpi.revenue} max={kpi.budgetRevenue} color="#10B981" />
+                <ProgressBar value={kpi.revenue} max={kpi.budget_revenue} color="#10B981" />
               </div>
               <div>
                 <div className="flex items-center justify-between">
                   <span className="text-[9px] text-gray-500 font-mono">Kostnadsbudget</span>
                   <span className="text-[9px] font-mono" style={{ color: '#F59E0B' }}>
-                    {Math.round((kpi.expenses / kpi.budgetExpenses) * 100)}%
+                    {Math.round((kpi.expenses / kpi.budget_expenses) * 100)}%
                   </span>
                 </div>
-                <ProgressBar value={kpi.expenses} max={kpi.budgetExpenses} color="#F59E0B" />
+                <ProgressBar value={kpi.expenses} max={kpi.budget_expenses} color="#F59E0B" />
               </div>
             </div>
           </div>
         )
       })}
 
-      {/* Recent transactions */}
+      {/* Recent ledger entries */}
       <div className="rounded-xl border border-white/[0.06] bg-[#0D0F1A] overflow-hidden">
         <div className="px-4 py-3 border-b border-white/[0.06]">
           <span className="text-[12px] font-semibold text-white">Senaste transaktioner</span>
         </div>
         <div className="divide-y divide-white/[0.04]">
-          {recentTxns.slice(0, 5).map(tx => {
-            const fe = FINANCE_ENTITIES.find(e => e.id === tx.entityId)
-            return (
-              <div key={tx.id} className="flex items-center gap-3 px-4 py-3">
-                <div
-                  className="h-7 w-7 rounded-lg flex items-center justify-center flex-shrink-0 text-xs"
-                  style={{ background: (fe?.color ?? '#6B7280') + '15', color: fe?.color ?? '#6B7280' }}
-                >
-                  {tx.type === 'income' ? '↑' : '↓'}
+          {recentTxns.length === 0 ? (
+            <div className="px-4 py-8 text-center text-gray-700 text-[12px]">Inga transaktioner</div>
+          ) : (
+            recentTxns.map(tx => {
+              const fe = entities.find(e => e.id === tx.entity_id)
+              const isCredit = tx.credit > 0
+              return (
+                <div key={tx.id} className="flex items-center gap-3 px-4 py-3">
+                  <div
+                    className="h-7 w-7 rounded-lg flex items-center justify-center flex-shrink-0 text-xs"
+                    style={{ background: (fe?.color ?? '#6B7280') + '15', color: fe?.color ?? '#6B7280' }}
+                  >
+                    {isCredit ? '↑' : '↓'}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[12px] text-white truncate">{tx.description}</p>
+                    <p className="text-[9px] text-gray-600 font-mono mt-0.5">{tx.date} · {fe?.short_name}</p>
+                  </div>
+                  <span
+                    className="text-[12px] font-semibold font-mono flex-shrink-0"
+                    style={{ color: isCredit ? '#10B981' : '#EF4444' }}
+                  >
+                    {isCredit ? '+' : '-'}{fmt(Math.max(tx.credit, tx.debit), tx.currency)}
+                  </span>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[12px] text-white truncate">{tx.description}</p>
-                  <p className="text-[9px] text-gray-600 font-mono mt-0.5">{tx.date} · {fe?.shortName}</p>
-                </div>
-                <span
-                  className="text-[12px] font-semibold font-mono flex-shrink-0"
-                  style={{ color: tx.amount > 0 ? '#10B981' : '#EF4444' }}
-                >
-                  {tx.amount > 0 ? '+' : ''}{fmt(tx.amount, tx.currency)}
-                </span>
-              </div>
-            )
-          })}
+              )
+            })
+          )}
         </div>
       </div>
     </div>
