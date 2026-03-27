@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { MilestonesOverview } from './MilestonesOverview'
 import { ThailandPrepView } from './ThailandPrepView'
+import { ThailandCalendarView } from './ThailandCalendarView'
 import { QuixzoomLaunchView } from './QuixzoomLaunchView'
 import { BolagsstrukturView } from './BolagsstrukturView'
 import { RoadmapView } from './RoadmapView'
 import { getDaysUntil, THAILAND_DATE } from './data'
 
-type Tab = 'overview' | 'thailand' | 'quixzoom' | 'bolag' | 'roadmap'
+type Tab = 'overview' | 'thailand' | 'thailand-calendar' | 'quixzoom' | 'bolag' | 'roadmap'
 
 const TABS: Array<{ id: Tab; label: string; icon: string; badge?: () => string | null }> = [
   { id: 'overview', label: 'Översikt', icon: '📊' },
@@ -19,6 +20,7 @@ const TABS: Array<{ id: Tab; label: string; icon: string; badge?: () => string |
       return d >= 0 && d <= 30 ? `${d}d` : null
     },
   },
+  { id: 'thailand-calendar', label: 'Program & Kalender', icon: '📅' },
   { id: 'quixzoom', label: 'quiXzoom Launch', icon: '📷' },
   { id: 'bolag', label: 'Bolagsstruktur', icon: '🏛️' },
   { id: 'roadmap', label: 'Roadmap', icon: '🗺️' },
@@ -71,7 +73,8 @@ export function MilestonesHub() {
       {/* Content */}
       <div className="flex-1 overflow-auto p-6">
         {activeTab === 'overview'  && <MilestonesOverview />}
-        {activeTab === 'thailand'  && <ThailandPrepView />}
+        {activeTab === 'thailand'          && <ThailandPrepView />}
+        {activeTab === 'thailand-calendar' && <ThailandCalendarView />}
         {activeTab === 'quixzoom'  && <QuixzoomLaunchView />}
         {activeTab === 'bolag'     && <BolagsstrukturView />}
         {activeTab === 'roadmap'   && <RoadmapView />}
