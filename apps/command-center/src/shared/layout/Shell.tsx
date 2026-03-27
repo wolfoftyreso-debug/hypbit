@@ -49,6 +49,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/crm', label: 'CRM', icon: '🎯' },
       { to: '/milestones', label: 'Milestones', icon: '🚀' },
       { to: '/campaigns', label: 'Kampanjer', icon: '⚡' },
+      { to: '/submissions', label: 'Submissions', icon: '📥' },
     ],
   },
   {
@@ -65,6 +66,7 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { to: '/entities', label: 'Entities', icon: '🏢' },
       { to: '/corporate', label: 'Bolagsadmin', icon: '⚖️' },
+      { to: '/company-launch', label: 'Company Launch', icon: '🚀' },
       { to: '/legal', label: 'Legal Hub', icon: null },
       { to: '/people', label: 'Team', icon: '👤' },
     ],
