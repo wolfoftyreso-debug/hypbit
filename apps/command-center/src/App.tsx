@@ -35,6 +35,8 @@ import { ReportsHub } from './features/reports/ReportsHub'
 import { MediaHub } from './features/media/MediaHub'
 import { SystemStatusView } from './features/system-status/SystemStatusView'
 import { KnowledgeHub } from './features/knowledge'
+import { PeopleIntelligenceHub } from './features/people-intelligence/PeopleIntelligenceHub'
+import { SystemIntelligenceHub } from './features/system-intelligence/SystemIntelligenceHub'
 
 function AuthenticatedApp() {
   const { role } = useRole()
@@ -75,6 +77,8 @@ function AuthenticatedApp() {
             <Route path="/media" element={<MediaHub />} />
             <Route path="/system-status" element={<SystemStatusView />} />
             <Route path="/knowledge" element={<KnowledgeHub />} />
+            <Route path="/people-intelligence" element={<PeopleIntelligenceHub />} />
+            <Route path="/system-intelligence" element={<SystemIntelligenceHub />} />
           </Routes>
         </Shell>
       </EventProvider>
