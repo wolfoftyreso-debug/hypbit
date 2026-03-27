@@ -3,14 +3,16 @@ import { KnowledgeBase } from './KnowledgeBase'
 import { KnowledgeGraph } from './KnowledgeGraph'
 import { AcademyView } from './AcademyView'
 import { ZoomerCert } from './ZoomerCert'
+import { PortfolioView } from './PortfolioView'
 
-type Tab = 'kunskapsbas' | 'kunskapsgraf' | 'utbildning' | 'zoomer-cert'
+type Tab = 'kunskapsbas' | 'kunskapsgraf' | 'utbildning' | 'zoomer-cert' | 'portfolio'
 
 const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: 'kunskapsbas', label: 'Kunskapsbas', icon: '📄' },
   { id: 'kunskapsgraf', label: 'Kunskapsgraf', icon: '🕸️' },
   { id: 'utbildning', label: 'Utbildning', icon: '🎓' },
   { id: 'zoomer-cert', label: 'Zoomer-cert', icon: '📸' },
+  { id: 'portfolio', label: 'Idéportfolio', icon: '💡' },
 ]
 
 export function KnowledgeHub() {
@@ -54,6 +56,7 @@ export function KnowledgeHub() {
         {activeTab === 'kunskapsgraf' && <KnowledgeGraph />}
         {activeTab === 'utbildning' && <AcademyView />}
         {activeTab === 'zoomer-cert' && <ZoomerCert />}
+        {activeTab === 'portfolio' && <PortfolioView />}
       </div>
     </div>
   )
