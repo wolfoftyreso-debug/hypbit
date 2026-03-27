@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   MODULE_REGISTRY,
   MATURITY_COLORS,

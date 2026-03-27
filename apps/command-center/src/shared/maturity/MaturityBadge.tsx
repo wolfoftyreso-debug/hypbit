@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   MaturityLevel,
   MATURITY_COLORS,
