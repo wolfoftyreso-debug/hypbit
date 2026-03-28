@@ -1,0 +1,203 @@
+// ─── Person View — BOS Per-Person Dashboard ──────────────────────────────────
+// Shows what a person must do, what they are blocking, and what they have done.
+
+import { useState, useMemo } from 'react'
+import { AlertTriangle, Clock, CheckCircle, Lock, ArrowRight } from 'lucide-react'
+import { TASKS, PERSONS } from '../../core/state/taskRegistry'
+import {
+  getNextActionsForPerson,
+  getBlockingTasksForPerson,
+  resolveTaskState,
+  type Task,
+} from '../../core/state/stateEngine'
+
+// ─── Mini Task Row ────────────────────────────────────────────────────────────
+
+function TaskRow({ task, variant }: { task: Task; variant: 'action' | 'blocking' | 'done' }) {
+  const effectiveState = resolveTaskState(task, TASKS)
+  const isOverdue = task.deadline ? new Date(task.deadline) < new Date() : false
+
+  const borderColor =
+    variant === 'action' && task.priority === 'critical' ? 'border-red-500' :
+    variant === 'action' && task.priority === 'high' ? 'border-amber-500' :
+    variant === 'blocking' ? 'border-orange-400' :
+    variant === 'done' ? 'border-emerald-500' :
+    'border-gray-300'
+
+  const opacityClass = variant === 'done' ? 'opacity-60' : ''
+
+  return (
+    <div className={`bg-white border border-gray-200 border-l-4 ${borderColor} rounded-xl shadow-sm p-3 ${opacityClass}`}>
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-0.5">
+            {variant === 'done' && <CheckCircle className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />}
+            {variant === 'blocking' && <Lock className="w-3.5 h-3.5 text-orange-400 flex-shrink-0" />}
+            {variant === 'action' && effectiveState === 'IN_PROGRESS' && (
+              <span className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
+            )}
+            <span className={`text-sm font-semibold ${variant === 'done' ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
+              {task.title}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3 text-xs font-mono text-gray-400">
+            <span>{task.id}</span>
+            {task.deadline && (
+              <span className={`flex items-center gap-1 ${isOverdue && variant !== 'done' ? 'text-red-600' : ''}`}>
+                <Clock className="w-3 h-3" />
+                {task.deadline}
+                {isOverdue && variant !== 'done' && ' — FÖRSENAD'}
+              </span>
+            )}
+          </div>
+
+          {variant === 'blocking' && (
+            <p className="text-xs text-orange-600 mt-1">
+              Andra väntar på att du slutför detta
+            </p>
+          )}
+        </div>
+
+        {variant === 'action' && (
+          <button className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white ${
+            task.priority === 'critical' ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-900 hover:bg-gray-800'
+          } transition-colors`}>
+            {effectiveState === 'IN_PROGRESS' ? 'Fortsätt' : 'Påbörja'}
+            <ArrowRight className="w-3 h-3" />
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ─── Main Component ───────────────────────────────────────────────────────────
+
+export function PersonView() {
+  const personIds = Object.keys(PERSONS)
+  const [selectedId, setSelectedId] = useState<string>(personIds[0])
+
+  const nextActions = useMemo(
+    () => getNextActionsForPerson(selectedId, TASKS),
+    [selectedId]
+  )
+
+  const blockingTasks = useMemo(
+    () => getBlockingTasksForPerson(selectedId, TASKS),
+    [selectedId]
+  )
+
+  const doneTasks = useMemo(
+    () => TASKS.filter(t => t.owner === selectedId && t.state === 'DONE'),
+    [selectedId]
+  )
+
+  const person = PERSONS[selectedId]
+
+  return (
+    <div className="min-h-full bg-gray-50 space-y-6">
+
+      {/* ── Person Selector ────────────────────────────────────────────── */}
+      <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-5">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="flex-1">
+            <label className="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wide">
+              Visa vy för
+            </label>
+            <select
+              value={selectedId}
+              onChange={e => setSelectedId(e.target.value)}
+              className="w-full sm:w-auto text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-purple-300 text-gray-900"
+            >
+              {personIds.map(id => (
+                <option key={id} value={id}>
+                  {PERSONS[id].name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {person && (
+            <div className="text-right">
+              <div className="text-lg font-bold text-gray-900">{person.name}</div>
+              <div className="text-sm text-gray-500 font-mono">{person.role}</div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── Next Actions ───────────────────────────────────────────────── */}
+      <section>
+        <div className="flex items-center gap-2 mb-3">
+          <AlertTriangle className="w-4 h-4 text-red-500" />
+          <h2 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
+            Dina uppgifter nu
+          </h2>
+          <span className="text-xs font-mono bg-red-100 text-red-700 px-2 py-0.5 rounded">
+            {nextActions.length}
+          </span>
+        </div>
+
+        <div className="space-y-2">
+          {nextActions.length === 0 ? (
+            <div className="bg-white border border-gray-200 rounded-xl p-4 text-sm text-gray-500">
+              Inga aktiva uppgifter — antingen klart eller blockerat.
+            </div>
+          ) : (
+            nextActions.map(task => (
+              <TaskRow key={task.id} task={task} variant="action" />
+            ))
+          )}
+        </div>
+      </section>
+
+      {/* ── You Are Blocking ───────────────────────────────────────────── */}
+      {blockingTasks.length > 0 && (
+        <section>
+          <div className="flex items-center gap-2 mb-3">
+            <Lock className="w-4 h-4 text-orange-400" />
+            <h2 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
+              Du blockerar
+            </h2>
+            <span className="text-xs font-mono bg-orange-100 text-orange-700 px-2 py-0.5 rounded">
+              {blockingTasks.length}
+            </span>
+          </div>
+
+          <div className="space-y-2">
+            {blockingTasks.map(task => (
+              <TaskRow key={task.id} task={task} variant="blocking" />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* ── Completed ──────────────────────────────────────────────────── */}
+      <section>
+        <div className="flex items-center gap-2 mb-3">
+          <CheckCircle className="w-4 h-4 text-emerald-500" />
+          <h2 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
+            Klart
+          </h2>
+          <span className="text-xs font-mono bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded">
+            {doneTasks.length}
+          </span>
+        </div>
+
+        <div className="space-y-2">
+          {doneTasks.length === 0 ? (
+            <div className="bg-white border border-gray-200 rounded-xl p-4 text-sm text-gray-500">
+              Inga avklarade uppgifter ännu.
+            </div>
+          ) : (
+            doneTasks.map(task => (
+              <TaskRow key={task.id} task={task} variant="done" />
+            ))
+          )}
+        </div>
+      </section>
+
+    </div>
+  )
+}

@@ -57,6 +57,8 @@ const GovernanceDashboard    = lazy(() => import('./features/governance/Governan
 const InfrastructureDashboard = lazy(() => import('./features/infrastructure/InfrastructureDashboard').then(m => ({ default: m.InfrastructureDashboard })))
 const CausalOS               = lazy(() => import('./features/causal-os/CausalOS').then(m => ({ default: m.CausalOS })))
 const CommandView            = lazy(() => import('./features/command-view/CommandView').then(m => ({ default: m.CommandView })))
+const MissionControl         = lazy(() => import('./features/mission-control/MissionControl').then(m => ({ default: m.MissionControl })))
+const PersonView             = lazy(() => import('./features/mission-control/PersonView').then(m => ({ default: m.PersonView })))
 
 // ─── Page loader fallback ───────────────────────────────────────────────────────
 function PageLoader() {
@@ -108,7 +110,9 @@ function AuthenticatedApp() {
         <Shell>
           <Suspense fallback={<PageLoader />}>
             <Routes>
-              <Route path="/" element={<CommandView />} />
+              <Route path="/" element={<MissionControl />} />
+              <Route path="/person" element={<PersonView />} />
+              <Route path="/command" element={<CommandView />} />
               <Route path="/dashboard" element={<RoleDashboard />} />
               <Route path="/projects" element={<ProjectsView />} />
               <Route path="/tasks" element={<TasksView />} />
