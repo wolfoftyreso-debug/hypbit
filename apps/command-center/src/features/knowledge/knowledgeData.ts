@@ -3651,6 +3651,123 @@ Se doc-int-008 för fullständig dag 1–30 checklista. Kortversion:
 Wavult Group rekryterar utan diskriminering. Den bästa personen för rollen anställs, oavsett kön, ålder, etnisk bakgrund, religion, funktionsnedsättning eller annan personlig egenskap.
 
 Senast reviderat: 2026-03-28.`
+  },,
+  {
+    id: 'doc-arch-001',
+    title: 'Identity Core — Sovereign Identity Layer',
+    category: 'Internt',
+    summary: 'Vad vi bygger: ett AWS-native identity runtime som ersätter Supabase Auth. Arkitektur, strategisk motivering och marknadsvärde.',
+    tags: ['identity', 'auth', 'aws', 'supabase-migration', 'arkitektur', 'strategic'],
+    updatedAt: '2026-03-29',
+    content: `## Identity Core — Sovereign Identity Layer
+
+### Vad vi bygger (klartext)
+
+Vi bygger ett AWS-native, eventdrivet identity + auth-system som ersätter Supabase Auth. Det är inte "ett login-system" — det är ett kontrollager för hela Wavult Groups identity-infrastruktur.
+
+Komponenter:
+- **Compute:** AWS ECS Fargate (identity-core service)
+- **Databas:** RDS PostgreSQL (users, audit log, magic tokens)
+- **Session store:** AWS DynamoDB (sessions, refresh tokens)
+- **Signering:** AWS KMS (JWT signing, key rotation)
+- **Routing:** ALB intern routing, aldrig publik direkt
+
+---
+
+### Varför vi bygger detta
+
+De flesta bolag köper Auth0 eller Okta. Vi bygger eget.
+
+Skillnaden:
+
+| Funktion | Oss | Auth0 / Okta |
+|---|---|---|
+| Session control | Full, revocable | Begränsad |
+| Token versioning | Ja | Sällan |
+| Custom logic | Obegränsad | Begränsad |
+| Vendor lock-in | Ingen | Hög |
+| Kostnad 1M users | ~30 000 SEK/år (infra) | 1,5–2,5 MSEK/år |
+
+Viktigare än kostnaden: vi eliminerar en kritisk extern dependency i core identity.
+
+---
+
+### Säkerhetsarkitektur
+
+**Password hashing:** Argon2id, 64MB memory cost, 3 iterationer. Inte bcrypt. Inte sha256.
+
+**JWT-tokens:** Signerade via AWS KMS i produktion. 10 minuters TTL. Claims: sub, email, org, roles, session_id, token_version (tv), session_epoch (se).
+
+**Token revocation:** Stateless JWT kombinerat med server-side token_version och session_epoch. Byta lösenord eller logout → increment version → alla befintliga tokens dör omedelbart oavsett expiry.
+
+**Session lifecycle:** active → rotated → revoked → expired. Inga implicita states. Unknown state = critical throw.
+
+**Refresh token rotation:** Ny refresh token vid varje refresh. Gammal token markeras "rotated". Replay attack (gammal token används igen) → hela session-chain dör.
+
+**Race conditions:** Alla kritiska writes via DynamoDB conditional expressions (optimistic locking). Dual parallel refresh → en vinner, en förlorar med hard fail.
+
+**Fail closed:** DynamoDB timeout → reject. KMS fail → reject. DB unreachable → reject. Aldrig "släpp igenom ändå".
+
+---
+
+### Migration från Supabase
+
+Vi bryter inte prod. Migrationsordning:
+
+**Fas 1 — Parallellt system**
+Identity Core live men inaktivt. Migration-script hämtar alla Supabase-users → importerar till RDS. Lösenord kan ej migreras (Supabase bcrypt är ej läsbart) → users gör password reset vid första IC-login.
+
+**Fas 2 — Dual Auth**
+AUTH_MODE=hybrid. Nya logins → Identity Core. Gamla Supabase-sessions lever tills expiry (max 24h efter cutover). Middleware hanterar båda token-formats via iss-claim.
+
+**Fas 3 — Hard cutover**
+AUTH_MODE=identity-core-only. Supabase Auth disabled. Alla requests via Identity Core.
+
+**Fas 4 — Decommission**
+Supabase stängs. En leverantör mindre.
+
+**Rollback:** AUTH_MODE-env var kan ändras på sekunder utan redeploy. Ingen big bang.
+
+---
+
+### Go-Live Gate (alla måste vara gröna)
+
+Innan Erik ger migrationsorder:
+- Global logout propagation < 1 sekund
+- Replay attack → hela session-tree dör
+- 100k concurrent sessions utan degradation
+- KMS latency spike → system nekar korrekt, aldrig tillåter
+- DynamoDB throttle → korrekt 503, aldrig falsk auth
+- Shadow traffic test → 0 diff mot prod-auth
+
+---
+
+### Marknadsvärde (vad detta kostar att köpa)
+
+Auth0 Enterprise:
+- 5k MAU: ~165 000 SEK/år
+- 80k MAU: ~2 500 000 SEK/år
+
+Okta:
+- 100 anställda: 60 000–250 000 SEK/år
+- Enterprise suite: betydligt mer
+
+**Det vi bygger motsvarar 3–10 MSEK/år i SaaS-licenskostnad** beroende på scale.
+
+Mer värdefullt: vi äger infrastrukturen. Ingen vendor kan höja priset, ändra villkor eller stänga ner oss.
+
+---
+
+### Tekniska invariants (aldrig bryts)
+
+1. En revokad session kan aldrig bli valid igen
+2. En gammal refresh token kan aldrig skapa ny session
+3. token_version mismatch → alltid deny
+4. session_epoch mismatch → alltid deny
+5. Session saknas → alltid deny
+6. Unknown session state → kritiskt throw, aldrig fallback
+7. Inget API litar på x-user-id eller x-role headers från client
+8. Alla auth-beslut gör own validation — aldrig lita på föregående beslut`
   },
 ]
 
