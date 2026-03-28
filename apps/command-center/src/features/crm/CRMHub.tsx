@@ -10,13 +10,13 @@ import { PROSPECTS, DEALS, ACTIVITIES } from './data'
 
 type Tab = 'pipeline' | 'prospects' | 'contacts' | 'deals' | 'activities' | 'targets'
 
-const TABS: { id: Tab; label: string; icon: string }[] = [
-  { id: 'pipeline', label: 'Pipeline', icon: '🔀' },
-  { id: 'prospects', label: 'Prospects', icon: '📊' },
-  { id: 'contacts', label: 'Kontakter', icon: '👤' },
-  { id: 'deals', label: 'Avtal', icon: '📝' },
-  { id: 'activities', label: 'Aktiviteter', icon: '📋' },
-  { id: 'targets', label: 'Targets', icon: '🎯' },
+const TABS: { id: Tab; label: string }[] = [
+  { id: 'pipeline',    label: 'Pipeline' },
+  { id: 'prospects',   label: 'Prospects' },
+  { id: 'contacts',    label: 'Kontakter' },
+  { id: 'deals',       label: 'Avtal' },
+  { id: 'activities',  label: 'Aktiviteter' },
+  { id: 'targets',     label: 'Targets' },
 ]
 
 function QuickStats() {
@@ -84,19 +84,18 @@ export function CRMHub() {
         </div>
 
         {/* Tab bar */}
-        <div className="flex gap-1 border-b border-surface-border -mb-px overflow-x-auto">
+        <div className="flex gap-1 overflow-x-auto pb-0">
           {TABS.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium whitespace-nowrap transition-colors border-b-2 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors flex-shrink-0 ${
                 activeTab === tab.id
-                  ? 'border-brand-accent text-brand-accent'
-                  : 'border-transparent text-gray-500 hover:text-white'
+                  ? 'bg-[#8B5CF6]/15 text-[#8B5CF6] border border-[#8B5CF6]/30'
+                  : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
               }`}
             >
-              <span>{tab.icon}</span>
-              <span>{tab.label}</span>
+              {tab.label}
             </button>
           ))}
         </div>

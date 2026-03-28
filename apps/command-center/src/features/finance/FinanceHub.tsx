@@ -143,7 +143,6 @@ export function FinanceHub() {
       {/* Header */}
       <div className="px-4 md:px-6 py-4 border-b border-white/[0.06] flex-shrink-0">
         <div className="flex items-center gap-3">
-          <span className="text-xl">💰</span>
           <div className="min-w-0 flex-1">
             <h1 className="text-[16px] font-bold text-white">Finance Hub</h1>
             <p className="text-xs text-gray-600 font-mono truncate">
@@ -172,11 +171,10 @@ export function FinanceHub() {
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
               activeTab === tab.id
-                ? 'bg-brand-accent/15 text-brand-accent border border-brand-accent/30'
+                ? 'bg-[#8B5CF6]/15 text-[#8B5CF6] border border-[#8B5CF6]/30'
                 : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
             }`}
           >
-            <span className="text-sm leading-none">{tab.icon}</span>
             {tab.label}
             <Tooltip content={tab.tooltip} asIcon position="bottom" />
           </button>
@@ -188,7 +186,6 @@ export function FinanceHub() {
         const tab = TABS.find(t => t.id === activeTab)
         return tab ? (
           <div className="px-6 py-2 border-b border-white/[0.04] flex-shrink-0 flex items-center gap-2 bg-white/[0.01]">
-            <span className="text-sm leading-none">{tab.icon}</span>
             <p className="text-xs text-gray-500 leading-snug">{tab.ingress}</p>
             <button
               onClick={() => setShowIngress(false)}

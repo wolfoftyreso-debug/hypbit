@@ -1,5 +1,16 @@
 import React, { useMemo, useState, useEffect } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
+import {
+  LayoutDashboard, AlertTriangle, GitBranch, Network, Building2,
+  Users, Target, Calendar, Megaphone, Image,
+  DollarSign, Receipt, FileText, ShoppingCart, UserCheck,
+  Scale, Globe, Shield, Briefcase,
+  Cpu, Database, Server, Activity, Settings,
+  BookOpen, GraduationCap, Lightbulb, Map,
+  BarChart3, TrendingUp, PieChart,
+  MessageSquare, Bell,
+  Zap, Layers,
+} from 'lucide-react'
 import { EntitySwitcher } from '../../features/entity-switcher/EntitySwitcher'
 import { useRole, ROLES } from '../auth/RoleContext'
 import { generateIncidents } from '../../features/incidents/incidentEngine'
@@ -32,7 +43,7 @@ interface ShellProps {
 interface NavItem {
   to: string
   label: string
-  icon: string | null
+  icon: React.ComponentType<{ className?: string }>
 }
 
 interface NavGroup {
@@ -44,89 +55,95 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: null,
     items: [
-      { to: '/incidents', label: 'Alerts', icon: null },
-      { to: '/org/command', label: 'Org Hierarchy', icon: null },
-      { to: '/org', label: 'Group Structure', icon: null },
+      { to: '/incidents',   label: 'Alerts',         icon: AlertTriangle },
+      { to: '/org/command', label: 'Org Hierarchy',  icon: Network },
+      { to: '/org',         label: 'Group Structure', icon: Building2 },
     ],
   },
   {
     label: 'OPERATIONS',
     items: [
-      { to: '/dashboard', label: 'Dashboard', icon: null },
-      { to: '/crm', label: 'CRM', icon: null },
-      { to: '/milestones', label: 'Milestones', icon: null },
-      { to: '/meeting-cadence', label: 'Möteshierarki', icon: null },
-      { to: '/campaigns', label: 'Kampanjer', icon: null },
-      { to: '/media', label: 'Media & Ads', icon: null },
-      { to: '/submissions', label: 'Submissions', icon: null },
+      { to: '/dashboard',       label: 'Dashboard',     icon: LayoutDashboard },
+      { to: '/crm',             label: 'CRM',           icon: Users },
+      { to: '/milestones',      label: 'Milestones',    icon: Target },
+      { to: '/meeting-cadence', label: 'Möteshierarki', icon: Calendar },
+      { to: '/campaigns',       label: 'Kampanjer',     icon: Megaphone },
+      { to: '/media',           label: 'Media & Ads',   icon: Image },
+      { to: '/submissions',     label: 'Submissions',   icon: FileText },
     ],
   },
   {
     label: 'FINANCE',
     items: [
-      { to: '/finance', label: 'Finance', icon: null },
-      { to: '/transactions', label: 'Transaktioner', icon: null },
-      { to: '/payroll', label: 'Lön & Personal', icon: null },
-      { to: '/procurement', label: 'Inköp', icon: null },
+      { to: '/finance',      label: 'Finance',       icon: DollarSign },
+      { to: '/transactions', label: 'Transaktioner', icon: Receipt },
+      { to: '/payroll',      label: 'Lön & Personal', icon: UserCheck },
+      { to: '/procurement',  label: 'Inköp',         icon: ShoppingCart },
     ],
   },
   {
     label: 'ORGANISATION',
     items: [
-      { to: '/entities', label: 'Entities', icon: null },
-      { to: '/corporate', label: 'Bolagsadmin', icon: null },
-      { to: '/company-launch', label: 'Company Launch', icon: null },
-      { to: '/legal', label: 'Legal Hub', icon: null },
-      { to: '/insurance', label: 'Insurance', icon: null },
-      { to: '/people', label: 'Team', icon: null },
-      { to: '/team-map', label: 'Team Map', icon: null },
-      { to: '/decisions', label: 'Beslutssystem', icon: null },
-      { to: '/governance', label: 'Governance Register', icon: null },
+      { to: '/entities',       label: 'Entities',            icon: Layers },
+      { to: '/corporate',      label: 'Bolagsadmin',         icon: Briefcase },
+      { to: '/company-launch', label: 'Company Launch',      icon: Zap },
+      { to: '/legal',          label: 'Legal Hub',           icon: Scale },
+      { to: '/insurance',      label: 'Insurance',           icon: Shield },
+      { to: '/people',         label: 'Team',                icon: Users },
+      { to: '/team-map',       label: 'Team Map',            icon: Map },
+      { to: '/decisions',      label: 'Beslutssystem',       icon: GitBranch },
+      { to: '/governance',     label: 'Governance Register', icon: Globe },
     ],
   },
   {
     label: 'INSIGHTS',
     items: [
-      { to: '/people-intelligence', label: 'People Insights', icon: null },
-      { to: '/system-intelligence', label: 'System Health', icon: null },
-      { to: '/talent-radar', label: 'Recruitment', icon: null },
-      { to: '/strategic-brief', label: 'Strategy', icon: null },
+      { to: '/people-intelligence', label: 'People Insights', icon: TrendingUp },
+      { to: '/system-intelligence', label: 'System Health',   icon: Activity },
+      { to: '/talent-radar',        label: 'Recruitment',     icon: GraduationCap },
+      { to: '/strategic-brief',     label: 'Strategy',        icon: PieChart },
     ],
   },
   {
     label: 'ANALYTICS',
     items: [
-      { to: '/reports', label: 'Rapporter', icon: null },
+      { to: '/reports', label: 'Rapporter', icon: BarChart3 },
     ],
   },
   {
     label: 'KUNSKAP',
     items: [
-      { to: '/knowledge', label: 'Kunskapshub', icon: null },
+      { to: '/knowledge', label: 'Kunskapshub', icon: BookOpen },
     ],
   },
   {
     label: 'SYSTEM',
     items: [
-      { to: '/causal-os', label: 'Causal OS', icon: null },
-      { to: '/infrastructure', label: 'Infrastruktur & Drift', icon: null },
-      { to: '/whoop', label: 'WHOOP', icon: null },
-      { to: '/api-hub', label: 'API Hub', icon: null },
-      { to: '/llm-hub', label: 'LLM Hub', icon: null },
-      { to: '/communications', label: 'Kommunikation', icon: null },
-      { to: '/settings', label: 'Inställningar', icon: null },
-      { to: '/system-status', label: 'System Status', icon: null },
+      { to: '/causal-os',       label: 'Causal OS',          icon: Cpu },
+      { to: '/infrastructure',  label: 'Infrastruktur & Drift', icon: Server },
+      { to: '/whoop',           label: 'WHOOP',              icon: Activity },
+      { to: '/api-hub',         label: 'API Hub',            icon: Database },
+      { to: '/llm-hub',         label: 'LLM Hub',            icon: Lightbulb },
+      { to: '/communications',  label: 'Kommunikation',      icon: MessageSquare },
+      { to: '/settings',        label: 'Inställningar',      icon: Settings },
+      { to: '/system-status',   label: 'System Status',      icon: Bell },
     ],
   },
 ]
 
 // Bottom nav pinned items for mobile (most used)
-const BOTTOM_NAV: NavItem[] = [
-  { to: '/dashboard', label: 'Dashboard', icon: '⬛' },
-  { to: '/incidents', label: 'Incidents', icon: '🚨' },
-  { to: '/milestones', label: 'Milestones', icon: '🚀' },
-  { to: '/finance', label: 'Finance', icon: '💰' },
-  { to: '/settings', label: 'Menu', icon: '☰' },
+interface BottomNavItem {
+  to: string
+  label: string
+  icon: React.ComponentType<{ className?: string }>
+}
+
+const BOTTOM_NAV: BottomNavItem[] = [
+  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/incidents', label: 'Incidents',  icon: AlertTriangle },
+  { to: '/milestones', label: 'Milestones', icon: Target },
+  { to: '/finance',   label: 'Finance',   icon: DollarSign },
+  { to: '/settings',  label: 'Menu',      icon: Settings },
 ]
 
 // ─── Breadcrumb map ───────────────────────────────────────────────────────────
@@ -227,48 +244,51 @@ function SidebarNav({
     <nav className="flex-1 px-2 py-2 overflow-y-auto">
       {NAV_GROUPS.map((group, gi) => (
         <div key={gi}>
-          {gi > 0 && (
-            <div className="mx-3 my-1 border-t border-white/[0.04]" />
-          )}
           {group.label && (
-            <div className="text-xs text-gray-500 uppercase tracking-widest px-3 pt-3 pb-1 font-sans font-semibold">
+            <div className="px-3 py-1 text-xs font-mono text-gray-700 uppercase tracking-widest mt-4">
               {group.label}
             </div>
           )}
           <div className="space-y-0.5">
-            {group.items.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                onClick={onNavigate}
-                className={({ isActive }) =>
-                  `flex items-center justify-between gap-2 px-3 py-2.5 md:py-2 rounded-lg text-sm transition-colors min-w-0 ${
-                    isActive
-                      ? 'bg-white/[0.08] text-white font-medium'
-                      : 'text-gray-400 hover:text-white hover:bg-white/[0.04]'
-                  }`
-                }
-              >
-                <span className="flex-1 min-w-0 truncate">{item.label}</span>
+            {group.items.map((item) => {
+              const pathId = item.to.replace(/^\//, '')
+              const mod = MODULE_REGISTRY.find(m => m.id === pathId || m.path === item.to)
 
-                {(() => {
-                  const pathId = item.to.replace(/^\//, '')
-                  const mod = MODULE_REGISTRY.find(m => m.id === pathId || m.path === item.to)
-                  return mod ? <span className="flex-shrink-0"><MaturityBadge level={mod.level} size="xs" /></span> : null
-                })()}
+              return (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  onClick={onNavigate}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors min-w-0 ${
+                      isActive
+                        ? 'bg-[#8B5CF6]/10 text-[#8B5CF6] border-l-2 border-[#8B5CF6]'
+                        : 'text-gray-400 hover:text-white hover:bg-white/[0.04] border-l-2 border-transparent'
+                    }`
+                  }
+                >
+                  <item.icon className="w-4 h-4 flex-shrink-0" />
+                  <span className="flex-1 min-w-0 truncate">{item.label}</span>
 
-                {item.to === '/incidents' && criticalIncidentCount > 0 && (
-                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-red-500 text-white flex-shrink-0">
-                    {criticalIncidentCount}
-                  </span>
-                )}
-                {item.to === '/legal' && pendingLegalCount > 0 && (
-                  <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500 text-black flex-shrink-0">
-                    {pendingLegalCount}
-                  </span>
-                )}
-              </NavLink>
-            ))}
+                  {mod && (
+                    <span className="flex-shrink-0">
+                      <MaturityBadge level={mod.level} size="xs" />
+                    </span>
+                  )}
+
+                  {item.to === '/incidents' && criticalIncidentCount > 0 && (
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-red-500 text-white flex-shrink-0">
+                      {criticalIncidentCount}
+                    </span>
+                  )}
+                  {item.to === '/legal' && pendingLegalCount > 0 && (
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-500 text-black flex-shrink-0">
+                      {pendingLegalCount}
+                    </span>
+                  )}
+                </NavLink>
+              )
+            })}
           </div>
         </div>
       ))}
@@ -307,7 +327,7 @@ export function Shell({ children }: ShellProps) {
   const notificationCount = 3
 
   return (
-    <div className="flex h-screen bg-surface-base overflow-hidden">
+    <div className="flex h-screen bg-[#07080F] overflow-hidden">
 
       {/* ── Mobile overlay backdrop ───────────────────────────────────────── */}
       {sidebarOpen && (
@@ -320,16 +340,18 @@ export function Shell({ children }: ShellProps) {
       {/* ── Sidebar ───────────────────────────────────────────────────────── */}
       <aside className={`
         fixed md:static inset-y-0 left-0 z-40
-        w-72 md:w-60 flex-shrink-0
-        bg-surface-raised border-r border-surface-border
+        w-56 flex-shrink-0
+        bg-[#07080F] border-r border-white/[0.06]
         flex flex-col
         transition-transform duration-250 ease-in-out
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
         {/* Logo */}
-        <div className="h-14 flex items-center px-5 border-b border-surface-border">
-          <span className="text-sm font-bold text-white tracking-wider">WAVULT OS</span>
-          <span className="ml-2 text-xs text-brand-highlight font-mono">v2</span>
+        <div className="h-14 flex items-center px-4 border-b border-white/[0.06]">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="text-sm font-semibold text-white">Wavult OS</span>
+            <span className="text-xs text-gray-600 font-mono">v2</span>
+          </div>
           {/* Close btn (mobile) */}
           <button
             className="ml-auto md:hidden p-1 text-gray-500 hover:text-gray-300"
@@ -340,12 +362,12 @@ export function Shell({ children }: ShellProps) {
         </div>
 
         {/* Entity Switcher */}
-        <div className="px-3 py-3 border-b border-surface-border">
+        <div className="px-3 py-3 border-b border-white/[0.06]">
           <EntitySwitcher />
         </div>
 
         {/* Scope indicator */}
-        <div className="px-3 py-1.5 border-b border-surface-border">
+        <div className="px-3 py-1.5 border-b border-white/[0.06]">
           <div className="flex items-center gap-1.5">
             <span className="h-1.5 w-1.5 rounded-full" style={{ background: scopeEntity.color }} />
             <span className="text-[9px] text-gray-600 font-mono">
@@ -366,8 +388,8 @@ export function Shell({ children }: ShellProps) {
         />
 
         {/* Footer */}
-        <div className="px-4 py-3 border-t border-surface-border">
-          <p className="text-xs text-gray-600">Wavult Group © 2026</p>
+        <div className="px-4 py-3 border-t border-white/[0.06]">
+          <p className="text-xs text-gray-700 font-mono">Wavult Group © 2026</p>
         </div>
       </aside>
 
@@ -375,7 +397,7 @@ export function Shell({ children }: ShellProps) {
       <main className="flex-1 flex flex-col overflow-hidden min-w-0">
 
         {/* Top bar */}
-        <header className="h-12 flex-shrink-0 border-b border-surface-border flex items-center justify-between px-3 md:px-6 bg-[#07080F]">
+        <header className="h-14 flex-shrink-0 border-b border-white/[0.06] flex items-center justify-between px-4 bg-[#07080F]/80 backdrop-blur-sm">
 
           {/* Left: hamburger (mobile) + status + breadcrumb */}
           <div className="flex items-center gap-2 md:gap-3 min-w-0">
@@ -390,17 +412,25 @@ export function Shell({ children }: ShellProps) {
 
             {/* Status dot — hidden on very small screens */}
             <div className="hidden sm:flex items-center gap-1.5">
-              <div className="h-1.5 w-1.5 rounded-full bg-brand-success" />
+              <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
               <span className="text-xs text-gray-700 font-mono">OPERATIONAL</span>
             </div>
-            <span className="hidden sm:block text-gray-800 text-xs">/</span>
+            <span className="hidden sm:block text-gray-700 text-xs">/</span>
 
             <span className="text-sm text-gray-400 font-medium truncate">{breadcrumb}</span>
           </div>
 
-          {/* Right: clock + bell + role + exit */}
+          {/* Right: clock + entity + role + bell + exit */}
           <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
             <HeaderClock />
+
+            {/* Entity indicator */}
+            <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-lg border border-white/[0.06]">
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: scopeEntity.color }} />
+              <span className="text-xs font-mono text-gray-500 truncate max-w-[80px]">
+                {scopeEntity.shortName ?? scopeEntity.name}
+              </span>
+            </div>
 
             {/* Notification bell */}
             <div className="relative">
@@ -408,10 +438,7 @@ export function Shell({ children }: ShellProps) {
                 onClick={() => setNotifOpen(v => !v)}
                 className="relative p-1.5 text-gray-600 hover:text-gray-300 transition-colors rounded-lg hover:bg-white/[0.06]"
               >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                  <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                </svg>
+                <Bell className="w-4 h-4" />
                 {notificationCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-red-500 text-white text-[8px] font-bold flex items-center justify-center leading-none">
                     {notificationCount}
@@ -450,15 +477,15 @@ export function Shell({ children }: ShellProps) {
                     className="hidden sm:block text-xs bg-[#0D0F1A] border border-white/[0.08] rounded-lg px-2.5 py-1 font-mono cursor-pointer focus:outline-none appearance-none"
                     style={{ color: viewAs ? viewAs.color : '#6B7280' }}
                   >
-                    <option value="">🔐 Admin</option>
+                    <option value="">Admin</option>
                     {nonAdminRoles.map(r => (
-                      <option key={r.id} value={r.id}>{r.emoji} {r.title}</option>
+                      <option key={r.id} value={r.id}>{r.title}</option>
                     ))}
                   </select>
                 ) : (
                   <span className="hidden sm:block text-xs font-mono px-2 py-1 rounded"
                     style={{ background: effectiveRole.color + '15', color: effectiveRole.color }}>
-                    {effectiveRole.emoji} {effectiveRole.title}
+                    {effectiveRole.title}
                   </span>
                 )}
                 <button
@@ -481,7 +508,7 @@ export function Shell({ children }: ShellProps) {
       </main>
 
       {/* ── Mobile Bottom Nav ──────────────────────────────────────────────── */}
-      <nav className="md:hidden fixed bottom-0 inset-x-0 z-20 bg-surface-raised border-t border-surface-border flex items-stretch" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      <nav className="md:hidden fixed bottom-0 inset-x-0 z-20 bg-[#07080F] border-t border-white/[0.06] flex items-stretch" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
         {BOTTOM_NAV.map((item) => (
           item.to === '/settings'
             ? (
@@ -491,7 +518,7 @@ export function Shell({ children }: ShellProps) {
                 onClick={() => setSidebarOpen(v => !v)}
                 className="flex-1 flex flex-col items-center justify-center gap-1 py-2 text-gray-500 hover:text-gray-300 transition-colors"
               >
-                <span className="text-lg leading-none">{item.icon}</span>
+                <item.icon className="w-5 h-5" />
                 <span className="text-[9px] font-mono">{item.label}</span>
               </button>
             )
@@ -501,11 +528,11 @@ export function Shell({ children }: ShellProps) {
                 to={item.to}
                 className={({ isActive }) =>
                   `flex-1 flex flex-col items-center justify-center gap-1 py-2 transition-colors ${
-                    isActive ? 'text-brand-accent' : 'text-gray-500 hover:text-gray-300'
+                    isActive ? 'text-[#8B5CF6]' : 'text-gray-500 hover:text-gray-300'
                   }`
                 }
               >
-                <span className="text-lg leading-none">{item.icon}</span>
+                <item.icon className="w-5 h-5" />
                 <span className="text-[9px] font-mono">{item.label}</span>
                 {item.to === '/incidents' && criticalIncidentCount > 0 && (
                   <span className="absolute top-1 h-2 w-2 rounded-full bg-red-500" />

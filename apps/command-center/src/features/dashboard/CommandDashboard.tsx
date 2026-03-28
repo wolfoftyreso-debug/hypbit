@@ -124,7 +124,7 @@ function UptimeGraph({ points }: { points: { hour: number; value: number }[] }) 
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+    <h2 className="text-xs font-mono text-gray-600 uppercase tracking-widest mb-3">
       {children}
     </h2>
   )
@@ -413,17 +413,17 @@ export function CommandDashboard() {
             live: true,
           },
         ].map((s, i) => (
-          <div key={i} className="bg-surface-raised border border-surface-border rounded-xl p-5">
+          <div key={i} className="bg-[#0D0F1A] border border-white/[0.06] rounded-xl p-5">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{s.label}</span>
+              <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">{s.label}</span>
               {s.live && (
-                <span className="flex items-center gap-1 text-xs" style={{ color: s.color }}>
+                <span className="flex items-center gap-1 text-xs font-mono" style={{ color: s.color }}>
                   <span className="h-1.5 w-1.5 rounded-full animate-pulse" style={{ background: s.color }} />
                   LIVE
                 </span>
               )}
             </div>
-            <div className="text-3xl font-bold tabular-nums" style={{ color: s.color }}>{s.value}</div>
+            <div className="text-3xl font-mono font-bold tabular-nums" style={{ color: s.color }}>{s.value}</div>
             {s.delta && <div className="mt-2 text-xs text-gray-500">{s.delta}</div>}
           </div>
         ))}
