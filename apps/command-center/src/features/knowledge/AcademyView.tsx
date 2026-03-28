@@ -1303,6 +1303,995 @@ Fråga Bernt: "Vad är Texas LLC-stegen?" eller "Förklara Landvex prismodell" �
       },
     ],
   },
+
+  // ── Finance & Ekonomi ──────────────────────────────────────────────────────
+  {
+    id: 'finance',
+    title: 'Finance & Ekonomi',
+    description: 'Wavult Groups ekonomimodell: intercompany-flöden, Revolut, Stripe, budget och transfer pricing.',
+    icon: '💰',
+    color: '#22C55E',
+    lessons: [
+      {
+        title: 'Koncernens pengaflöde — översikt',
+        duration: 5,
+        content: `Wavult Groups ekonomimodell är byggd för skatteeffektivitet och full kontroll.
+
+**Tre nivåer av kassaflöde:**
+
+Nivå 1 — Lokal intäkt (driftsbolagen)
+Kunder betalar till närmaste bolag: svenska kommuner betalar Landvex AB, amerikanska betalar Landvex Inc, zoomers-relaterat via QuiXzoom UAB.
+
+Nivå 2 — Upward transfer (till Dubai)
+Driftsbolagen betalar IP-licens (5–15%) och management fees (8–15%) till Dubai-holdingen. Legala avdrag som minskar lokal skattebas.
+
+Nivå 3 — Kapitalackumulering (Dubai)
+Nettovinster samlas i Wavult Group FZCO (Dubai, 0% skatt). Härifrån reinvesteras i verksamheten eller delas ut till Erik.
+
+**Konkret exempel (QuiXzoom EU, 1 MSEK/mån intäkt):**
+Zoomer-utbetalningar: 750 000 SEK
+Bruttomarginal: 250 000 SEK
+IP-licens (10%): 100 000 SEK → Dubai
+Management fee (10%): 100 000 SEK → Dubai
+Kvar i UAB (Litauen): 50 000 SEK × 15% = 7 500 SEK skatt
+Till Dubai: 200 000 SEK × 0% = 0 SEK skatt
+Effektiv skattesats: 3%
+
+**Nyckelregel:** Inga pengar ska röra sig utan faktura och dokumentation. Winston (CFO) ansvarar för alla intercompany-transaktioner.`,
+      },
+      {
+        title: 'Revolut Business — vår moderna bank',
+        duration: 4,
+        content: `Revolut Business är Wavult Groups primära bankplattform. Det ersätter traditionella banker för 80% av vår verksamhet.
+
+**Varför Revolut Business?**
+• Multi-currency accounts (SEK, EUR, USD, GBP, AED) i ett gränssnitt
+• Instant transfers (inga 2–3 dagars väntetider)
+• Virtuella kort per projekt/avdelning (budgetkontroll)
+• Automatisk kategorisering av utgifter
+• API-integration för programmatiska utbetalningar
+• Inget krav på fysisk närvaro för att öppna konto
+
+**Hur vi använder det:**
+Stripe-intäkter → Revolut Business-konton
+Zoomer-utbetalningar → Revolut Pay / SEPA
+AWS, GitHub, Cloudflare → Revolut virtuellt kort (IT-budget)
+Löner → SEPA-överföring direkt från Revolut
+Intercompany → Revolut-till-Revolut (instant, gratis)
+
+**Virtual cards per kostnadscenter:**
+• IT-infra: AWS, GitHub, Cloudflare, Supabase
+• Marketing: Meta Ads, TikTok Ads, influencer-betalningar
+• Legal: Bolagsregistreringsavgifter, DocuSign
+• Travel: Hotell, flyg (Thailand!)
+
+**Limit-sättning:** Winston sätter månadslimits per kort. Inget kort har obegränsad limit.
+
+**OBS:** Mercury Bank planeras för QuiXzoom Inc (USA) — Revolut är inte tillgängligt som fullservice US business bank.`,
+      },
+      {
+        title: 'Stripe — betalningsinfrastruktur',
+        duration: 5,
+        content: `Stripe hanterar alla inkommande betalningar och zoomer-utbetalningar för QuiXzoom.
+
+**Stripe-produkter vi använder:**
+
+Stripe Payments — Kundbetalningar
+• Landvex-kunder: Månadsabonnemang via Stripe Billing
+• QuiXzoom B2B-kunder: Faktura via Stripe Invoicing
+• Betalningsmetoder: Kort, SEPA-debit, Swish (via partner)
+• PCI DSS Level 1 compliance — vi lagrar aldrig kortdata
+
+Stripe Billing — Prenumerationer
+• Automatisk fakturering varje månad
+• Failed payment retry-logik (3 försök i 28 dagar)
+• Proration vid uppgradering/nedgradering
+• Dunning-e-post för förfallna betalningar
+
+Stripe Connect — Zoomer-utbetalningar
+• Zoomers registrerar sitt konto (Stripe Express)
+• Wavult samlar in betalningar → håller kvar 25% → betalar ut 75%
+• Automatisk skatteformulär (1099 för USA, om tillämpligt)
+• Stöd för SEPA, Swish, banköverföring
+
+**Webhook-integration:**
+payment_intent.succeeded → Supabase markerar konton aktiva
+payout.paid → Supabase uppdaterar zoomer-plånbok
+invoice.payment_failed → notification-service skickar e-post
+
+**Testmiljö:** Stripe testläge körs i staging-branch. Aldrig testa med riktiga kort i dev.`,
+      },
+      {
+        title: 'Budget & Kostnadskontroll',
+        duration: 5,
+        content: `Wavult Group har en lean kostnadsstruktur. Varje SEK räknas i early stage.
+
+**Månatliga fasta kostnader (uppskattning, 2026-Q2):**
+
+**Infrastruktur:**
+• AWS ECS (4 services): ~$150/mån
+• Supabase Pro: $25/mån × 2 projekt = $50/mån
+• Cloudflare Pro: $20/mån
+• GitHub: $19/mån (Team)
+• Totalt: ~$240/mån (~2 500 SEK)
+
+**Verktyg:**
+• OpenClaw (Bernt): ~$100/mån
+• n8n Cloud: $24/mån
+• DocuSign: $25/mån
+• Totalt: ~$150/mån (~1 500 SEK)
+
+**Rörliga kostnader:**
+• AWS S3 + CloudFront: $0.05/GB (variabel)
+• Stripe fees: 1,4% + 0,25 EUR per transaktion (EU)
+• Zoomer-utbetalningar: Stripe Connect-avgift (~0,25%)
+
+**Bootstrapping-budget (fas 1):**
+• Zoomer-rekrytering (Sverige): 75 000 SEK
+• Marketing (Instagram/TikTok): 15 000 SEK
+• Juridik (bolagsregistreringar): 50 000 SEK
+• Totalt fas 1: ~140 000 SEK
+
+**Runway:**
+Med nuvarande kostnadsbas (~30 000 SEK/mån drift) och 500 000 SEK i kassa → ~16 månaders runway utan intäkter.
+
+**Break-even beräkning:**
+Med 10 Landvex-kunder à 9 000 SEK/mån = 90 000 SEK/mån → lönsamt från dag 1 med den basen.`,
+      },
+      {
+        title: 'Transfer Pricing — Compliance i Praktiken',
+        duration: 6,
+        content: `Transfer pricing är reglerna som styr hur Wavult Groups intercompany-transaktioner prissätts. Det är kritiskt att göra rätt — fel kan kosta mångmiljonbelopp i skattetillägg.
+
+**OECD Arm's Length Principen:**
+Alla transaktioner mellan Wavult-bolag måste prissättas som om de vore mellan oberoende parter (arm's length). Du kan inte sätta ett löjligt lågt pris på IP-licensen bara för att optimera skatt.
+
+**De tre accepterade metoderna vi använder:**
+
+1. Comparable Uncontrolled Transaction (CUT)
+Jämför vår royalty-rate med liknande licensavtal på marknaden.
+Ex: "SaaS-plattformar licensieras vanligen på 8–15% av omsättning" → vi sätter 10%.
+
+2. Cost Plus
+Management fees beräknas som Wavult DevOps faktiska kostnader + 10–15% marknadsmässig markup.
+Ex: Tech-kostnad 200 000 SEK/mån + 15% = 230 000 SEK faktura till Landvex AB.
+
+3. Profit Split
+Om det är svårt att hitta jämförbara transaktioner → dela vinsten proportionellt baserat på värdeskapande.
+
+**Dokumentationskrav (KRITISKT):**
+
+Winston ansvarar för:
+☐ Master File: Koncernöversikt, IP-beskrivning, finansiell sammandrag
+☐ Local File per entitet: Specifika intercompany-transaktioner, benchmarking
+☐ Intercompany-avtal: Skriftliga avtal för varje transaktion-typ
+☐ Uppdatering: Minst en gång per år, eller vid väsentlig förändring
+
+**Vad som händer vid brister:**
+Sverige: Skattetillägg 10–40%, retroaktiv omprövning 5 år
+USA: IRS §482 — 20–40% penalty på underprisade transaktioner
+EU (Litauen): Nationell skattemyndighet granskar, EU Anti-BEPS direktiv
+
+**Vår skyddsåtgärd:** Winston håller löpande dokumentation. Dennis granskar avtalen. Extern revisor certifierar en gång per år.`,
+      },
+    ],
+  },
+
+  // ── Sälj & GTM ────────────────────────────────────────────────────────────
+  {
+    id: 'salj-gtm',
+    title: 'Sälj & Go-to-Market',
+    description: 'Hela säljprocessen: pitchar, CRM, B2G-upphandling, invändningshantering och demos.',
+    icon: '🎯',
+    color: '#F97316',
+    lessons: [
+      {
+        title: 'Wavults försäljningsstrategi — en översikt',
+        duration: 4,
+        content: `Wavult Group har tre parallella säljrörelser, var och en med olika köpare, säljcykler och taktiker.
+
+**Rörelse 1: QuiXzoom — Zoomer-rekrytering (B2C)**
+Köpare: Privatpersoner (zoomers)
+Säljcykel: 1–7 dagar (ladda ner appen → onboarding → första uppdraget)
+Kanal: Social media (Instagram, TikTok), word-of-mouth
+Konverteringsmål: < 300 SEK per aktiv zoomer
+Ansvar: Leon Russo
+
+**Rörelse 2: QuiXzoom — B2B-kunder (B2B)**
+Köpare: Fastighetsbolag, försäkringsbolag, franchise
+Säljcykel: 2–8 veckor
+Kanal: Direktförsäljning, partnerships
+Konverteringsmål: < 5 000 SEK CAC
+Ansvar: Leon Russo
+
+**Rörelse 3: Landvex — Kommuner & Myndigheter (B2G)**
+Köpare: Teknisk chef, ekonomichef, nämnd
+Säljcykel: 6–18 månader
+Kanal: Cold outreach, demos, LOU-upphandling
+Konverteringsmål: < 30 000 SEK CAC (motiverat av 3-åriga avtal = 150 000+ SEK LTV)
+Ansvar: Leon + Dennis
+
+**Regel:** Blanda ALDRIG ihop varumärkena i säljkommunikation.
+• Mot zoomers: QuiXzoom
+• Mot B2B-kunder: QuiXzoom / Quixom Ads
+• Mot kommuner: Landvex (nämn INTE QuiXzoom)`,
+      },
+      {
+        title: 'Landvex B2G Säljprocess — Steg för Steg',
+        duration: 6,
+        content: `Att sälja till kommuner är annorlunda från allt annat. Det kräver tålamod, trovärdighet och en noggrann process.
+
+**Steg 1 — Research & Identifiering**
+Hitta kommuner med hög infrastrukturkostnad och inspektionsansvar:
+• Källa 1: Kommuners årsredovisningar (skl.se → ekonomidata)
+• Källa 2: SKR:s infrastruktur-rapporter
+• Källa 3: Mediebevakning ("brygga rasade", "väg skadad")
+• Källa 4: LinkedIn (tekniska chefer på kommuner)
+
+Prioritera: Skärgårdskommuner (hög bryggtäthet), städer med upprustningsplaner.
+
+**Steg 2 — Kontakt (Cold)**
+E-post till teknisk chef + kopia till stadsmiljöchef.
+Ämne: "Halvera inspektionskostnaderna — 10 min av er tid?"
+Body: 3 meningar (problem → lösning → CTA). Ingen bilaga.
+
+Telefonuppföljning: Ring 3 dagar efter e-post om inget svar.
+Voicemail är OK — kort, konkret, lägg till namn och direktnummer.
+
+**Steg 3 — Kvalificering (Discovery Call)**
+15–20 min Zoom/telefon. Frågor att ställa:
+• "Hur inspekterar ni er infrastruktur idag?"
+• "Hur många objekt har ni ansvar för?"
+• "Vad kostar er inspektion ungefär per år?"
+• "Har ni haft problem med försenat underhåll pga missade skador?"
+
+Lyssna — anpassa demos och ROI-kalkyl baserat på svaren.
+
+**Steg 4 — Demo (30–45 min)**
+Se separat lektion: "Demo-flödet i detalj"
+
+**Steg 5 — Pilot-erbjudandet**
+"90 dagar gratis, 20 objekt, inga bindningstider."
+Krav (intern): Case study + 30 min intervju efter pilot.
+
+**Steg 6 — Avtal**
+Under 700 000 SEK/år → direktupphandling möjlig (snabb!)
+Över 700 000 SEK/år → LOU-upphandling (längre)
+Strukturera initial deal under gränsen vid behov.`,
+      },
+      {
+        title: 'Demo-flödet i detalj (30 min)',
+        duration: 5,
+        content: `Varje Landvex-demo följer ett strukturerat flöde. Avvik inte — det fungerar.
+
+**Förberedelse (15 min innan):**
+• Research kommunens infrastruktur online — vad finns? Bryggor, vägar, parker?
+• Hitta ett relevant foto (Google Maps / kommunens hemsida) på deras infrastruktur
+• Öppna ROI-kalkylen redo med deras kommuns befolkningstal som startpunkt
+
+**Intro (5 min)**
+"Tack för er tid. Jag vet att kommuner har massor av säljmöten — jag lovar att inte slösa er tid. Låt mig ställa en fråga direkt: Hur inspekterar ni era bryggor och parker idag?"
+
+*Lyssna. Notera. Det här formar resten av demon.*
+
+**Problemet (5 min)**
+Återspegla deras svar. "Ni sa att det kostar ungefär X kronor per inspektion och ni gör det 2 gånger per år — det är X SEK om ni har Y objekt. Och ni sa att ni missade [deras specifika problem] förra sommaren."
+
+*Gör det personligt. Använd deras egna siffror.*
+
+**Produktvisning (10 min)**
+1. Visa kartan med ett aktivt uppdragsområde nära dem
+2. Klicka på ett uppdrag → visa vad zoomer ser (instruktioner, ersättning)
+3. Hoppa till en "completed inspection" → visa bild + GPS + analys
+4. Visa ett larm: "Det här är vad ni hade fått om Landvex var igång"
+5. Visa rapporten: "Det här skickas automatiskt till er varannan vecka"
+
+**ROI-kalkyl live (5 min)**
+Fyll i deras siffror:
+"Ni sa Y objekt och X kr/inspektion, Z gånger per år."
+Visa besparingskalkylen → "Det ger er en ROI på [X gånger] under ett avtal."
+
+**Stäng (5 min)**
+"Vad tycker ni om att testa detta med era 20 viktigaste objekt under 90 dagar, helt utan kostnad?"
+
+*Om tveksamhet: Fråga "Vad behöver ni se/veta för att vara komfortabla med en pilot?"*`,
+      },
+      {
+        title: 'Invändningshantering — B2G',
+        duration: 4,
+        content: `Kommunala säljmöten har predictabla invändningar. Lär dig dessa svar utantill.
+
+**"Vi måste upphandla allt."**
+→ "Under 700 000 SEK/år kan ni direktupphandla — ingen anbudsprocess. Basabonnemanget med 50 objekt är 58 800 SEK/år. Väldig under gränsen."
+
+**"Vi har budget-frys just nu."**
+→ "Piloten kostar ingenting — 90 dagar gratis. Om ni ser ROI kan ni söka budget inför nästa budgetcykel. Många av våra pilotkommuner har tagit beslutet om pilot i nämnd på ett möte."
+
+**"Vi har redan ett inspektionssystem."**
+→ "Det kompletterar vi, ersätter inte. Landvex tar bilderna och levererar larm — ert system hanterar arbetsorder och åtgärder. Vi har API-integration mot ServiceNow och Maximo."
+
+**"Varifrån kommer bilderna? Är det säkert?"**
+→ "Zoomers är verifierade fältpersonal — ID-verifierade, KYC-clearade, certifierade via vår Academy. Varje bild valideras automatiskt för GPS och bildkvalitet. Ni ser aldrig en bild som inte är verifierad."
+
+**"GDPR — fotografering av kommunal infrastruktur?"**
+→ "Zoomers fotograferar infrastruktur (bryggor, skyltar, vägar) — inte personer. Inga ansikten, inga privata miljöer. Data lagras i EU (Stockholm/Irland). QuiXzoom UAB är vår GDPR-personuppgiftsbiträde med DPA inkluderat i standardavtalet."
+
+**"Vad händer om ni lägger ner?"**
+→ "Avtalsmässigt: Ni äger all data från era objekt under avtalstiden — full export i standardformat (JSON/CSV) på begäran. Vi erbjuder även 12-månaders escrow-arrangemang för enterprise-kunder."`,
+      },
+      {
+        title: 'CRM & Pipeline-hantering',
+        duration: 4,
+        content: `Utan ett CRM tappar vi bort leads och missar uppföljningar. Wavult OS CRM-modul är vår sanningskälla.
+
+**Pipeline-steg:**
+1. Prospekt — identifierad, ej kontaktad
+2. Kontaktad — cold e-post eller call gjort
+3. Intresserad — svarat positivt, bokat möte
+4. Demo gjord — möte genomfört, awaiting feedback
+5. Pilot — gratis 90-dagars pilot aktiv
+6. Förhandling — kommersiellt avtal under förhandling
+7. Kund — betalande abonnemang aktivt
+8. Churnad — avslutade abonnemanget
+
+**Viktiga fält att fylla i per kontakt:**
+• Kontaktperson + roll (Teknisk chef / Ekonomichef / Nämndpolitiker)
+• Kommunens storlek (invånare)
+• Uppskattad infrastrukturbudget
+• Antal objekt de ansvarar för
+• Nästa åtgärd + datum
+• Senaste interaktion
+
+**Uppföljningsregler:**
+• Inget svar på e-post → Ring efter 3 dagar
+• Ingen respons efter ring → E-post dag 7 med ny infopunkt (en ny ROI-siffra eller referenskund)
+• Inget svar på 14 dagar → Lägg i "Vilande" — återkontakta om 3 månader
+• Aldrig ge upp på ett prospekt under 6 månader (kommunala beslutsprocesser tar tid)
+
+**Målet vid Thailand Workcamp:**
+Kontaktlista med 20 kommuner identifierade.
+3 demos bokade (gärna fler).
+2 piloter klara att starta juni 2026.`,
+      },
+    ],
+  },
+
+  // ── HR & Team ─────────────────────────────────────────────────────────────
+  {
+    id: 'hr-team',
+    title: 'HR & Teamkultur',
+    description: 'Rekrytering, onboarding, roller, beslutsmandat och hur teamet jobbar.',
+    icon: '👥',
+    color: '#EC4899',
+    lessons: [
+      {
+        title: 'Wavults arbetskultur — vad vi tror på',
+        duration: 4,
+        content: `Wavult Group är ett litet team med höga ambitioner. Kulturen är inte något vi skriver på en vägg — den syns i hur vi fattar beslut.
+
+**Vad vi tror på:**
+
+Ägandeskap, inte uppgifter
+Varje person äger sitt område. Johan äger tech-infrastrukturen, inte bara "sin lista med tickets". Dennis äger juridiken, inte bara "de avtal han fått sig tilldelade". Ägandeskap innebär att du förutser problem, proaktivt löser dem och kommunicerar status utan att bli tillfrågad.
+
+Tydlighet framför artighet
+Om du inte förstår en instruktion → fråga. Om du tycker en plan är fel → säg det, och varför. Vi värdesätter intellektuell ärlighet mer än att alla ska vara nöjda hela tiden.
+
+Snabbhet med kvalitet
+Vi är ett startup. Vi rör oss snabbt. Men snabbhet utan kvalitet skapar teknisk skuld, juridiska problem och missnöjda kunder. Hitta balansen.
+
+Skriftlig kommunikation
+Det viktigaste dokumenteras. Muntliga beslut som inte skrivs ner finns inte. Bernt och Wavult OS är verktygen — använd dem.
+
+**Kommunikationskanaler:**
+• Telegram (teamgrupp): Dag-till-dag kommunikation, snabba frågor
+• Wavult OS: Dokumentation, beslut, CRM, finance
+• GitHub: Kod, tekniska issues, pull requests
+• E-post: Extern kommunikation (kunder, partner, myndigheter)
+
+**Möteskultur:**
+Vi har inga möten för mötes skull. Varje möte har en agenda, ett beslut att fatta eller ett problem att lösa. Default är asynkron kommunikation.`,
+      },
+      {
+        title: 'Beslutsnivåer: L1–L3',
+        duration: 4,
+        content: `Wavult Group har ett tydligt beslutssystem. Fel beslut på fel nivå skapar problem — för bolaget och den personen.
+
+**L1 — Autonomt (valfri teammedlem)**
+Beslut under 1 000 SEK och utan juridiska konsekvenser.
+Exempel: Köpa ett verktyg, boka en resa under budget, fixa en bugg, skicka ett e-post till en kund.
+Dokumentation: Slacka/Telegram-notering räcker.
+
+**L2 — Godkänns av CEO (Erik eller Leon)**
+Avtal under 50 000 SEK, anställning av konsulter, partnerskap, prisförändringar.
+Process: Beskriv i kort memo → skicka till Erik/Leon → svar inom 24h.
+Dokumentation: E-post-godkännande + notering i Wavult OS.
+
+**L3 — Board-beslut (Erik + Dennis)**
+Bolagsavtal, IP-avtal, investeringar, anställning av fast personal, beslut > 50 000 SEK.
+Process: Formellt memo → styrelsemöte (kan vara Zoom) → protokoll signerat.
+Dokumentation: Styrelseprotokoll arkiverat i Legal-modulen.
+
+**Signaturrätt per bolag:**
+Landvex AB: Erik Svensson + Dennis Bjarnemark (gemensam)
+QuiXzoom UAB: Kräver lokal representant (via agent) + Erik
+Landvex Inc (TX LLC): Erik Svensson (ensam för LLC)
+
+**Vad som INTE kräver godkännande:**
+• Interna diskussioner och förslag
+• Research och analys
+• Läsa och dela information
+• Kommunicera med teamet
+• Köra tester i staging-miljö
+
+Princip: Fråga hellre en gång för mycket än en gång för lite på L2/L3-nivå.`,
+      },
+      {
+        title: 'Rekrytering — Wavults process',
+        duration: 5,
+        content: `Wavult Group rekryterar selektivt. Varje person vi lägger till är en investering vi tar på allvar.
+
+**Rekryteringsprinciper:**
+
+Kompetens och driv, inte meriter
+Vi anställer inte per CV. Vi rekryterar per kapacitet och potential. En driven 23-åring utan examen slår en lat 30-åring med MBA.
+
+Kulturpassning är lika viktigt som kompetens
+En tekniskt brilliant person som inte kommunicerar, inte äger sina uppgifter eller inte är transparent skapar mer problem än hen löser.
+
+Startläge: Konsult → Fastanställd
+Första 3 månader: konsultrelation (per timme eller project). Därefter: utvärdering → fast anställning om match.
+
+**Rekryteringsprocessen:**
+
+Steg 1: Behovet identifieras
+Leon och Erik diskuterar → beslut om att rekrytera → L2-godkännande (Erik)
+
+Steg 2: Jobbbeskrivning
+Konkret, ärlig, inte corporate-speak. "Vi söker en person som kan X för att lösa Y" — inte "Vi söker en driven medarbetare med passion för..."
+
+Steg 3: Screening
+CV-granskning → 15 min screeningsamtal → tekniskt test (om tech-roll)
+
+Steg 4: Intervju
+1 timme med Leon (operations-fit) + 30 min med Erik (vision + kultur-fit)
+
+Steg 5: Decision
+Erik + Leon fattar beslut gemensamt → L2-godkännande
+
+Steg 6: Onboarding
+Dag-1-dokument + Wavult OS Access + Academy + parad med befintlig teammedlem
+
+**Ersättning:**
+Baserat på marknadssalär för rollen och geografin.
+Dubai-entiteter: AED-löner konkurrenskraftiga med UAE-marknad.
+Sverige: Kollektivavtal-liknande ersättning + optionsprogram (framtida).`,
+      },
+      {
+        title: 'Optionsprogram & Equity',
+        duration: 4,
+        content: `Wavult Group planerar ett optionsprogram för teamet. Här är principtänkandet.
+
+**Varför Options/Equity?**
+Early-stage startups kan inte alltid betala marknadslöner. Equity kompenserar för lägre lön + risk + lojalitet. Det skapar ägarskap — i ordets rätta mening.
+
+**Strukturen (planerad):**
+Option pool: 10–15% av Wavult Group FZCO
+Vesting: 4 år total, 1 år cliff (inget om du slutar innan 1 år)
+Strike price: Satt vid tilldelningstillfället (tidigt = lågt = bra för dig)
+
+**Per roll (riktlinje):**
+C-suite (CTO, CFO, CLO): 1–3%
+Senior individual contributor: 0,25–0,5%
+Konsult → fast anställd: 0,1–0,25%
+
+**Skatteaspekter:**
+Sverige: Personaloptioner → förmånsbeskattning vid inlösen (QESO-reglerna ger viss lättnad för startups)
+Dubai-entitet: UAE har ingen inkomstskatt → 0% skatt på option-gains
+Dennis + Winston hanterar strukturen
+
+**Tidlinje:**
+Optionsprogrammet upprättas när Wavult Group FZCO är bildat.
+Befintliga teammedlemmar retroaktivt inkluderade från start-datum.
+
+**VIKTIGT:** Diskutera aldrig equity-erbjudanden publikt eller med externa. Det kräver L3-beslut innan något lovas.`,
+      },
+      {
+        title: 'Thailand Workcamp — vad förväntas av dig',
+        duration: 3,
+        content: `Thailand Workcamp 11 april 2026 är Wavult Groups officiella projektstart. Alla i teamet förväntas leverera.
+
+**Förberedelse inför avresa:**
+• Klara minst 2 Academy-kurser (helst din roll-specifika)
+• Ta Zoomer-certifieringen i ZoomerCert-fliken
+• Läs igenom doc-wg-003 (Thailand Workcamp) — fullständig agenda
+• Ha ett specifikt bidrag klart för sprint-planeringen
+
+**Dag 1–2 (ankomst och kickoff):**
+Öppet sinne. Vi är 5 personer som ska jobba intensivt i minst 1 månad.
+
+**Vecka 1 (utbildning):**
+Du förväntas vara aktivt deltagande. Inte sitta med telefonen. Inte svara på e-post under sessions.
+
+**Vecka 2+ (byggfas):**
+Tydliga deliverables per person — sätts i sprint-planeringen lördag/söndag vecka 1.
+
+**Kommunikation under workcamp:**
+Leon hanterar logistik (hotell, mat, utflykter).
+Erik hanterar investerarmöten / externa möten.
+Johan hanterar tekniska deployments.
+Dennis hanterar juridik (fortsätter löpande).
+Winston hanterar löpande ekonomi.
+
+**Förväntad output:**
+Varje person lämnar workcamp med ett tydligt ägandeskap av sin del av produkten — redo att köra självständigt.`,
+      },
+    ],
+  },
+
+  // ── Compliance & GDPR ─────────────────────────────────────────────────────
+  {
+    id: 'compliance',
+    title: 'Compliance & GDPR',
+    description: 'GDPR, LOU-upphandling, dataskydd, KYC för zoomers och internationell compliance.',
+    icon: '⚖️',
+    color: '#EF4444',
+    lessons: [
+      {
+        title: 'GDPR — grunden för alla som hanterar data',
+        duration: 6,
+        content: `GDPR (General Data Protection Regulation) är EU-lagen som reglerar hur personuppgifter hanteras. Den gäller Wavult Group i tre sammanhang: som zoomer-plattform, som B2B SaaS-leverantör och som arbetsgivare.
+
+**De sex grundprinciperna (förenklade):**
+
+1. Laglighet, korrekthet, öppenhet
+Vi samlar bara data med rättslig grund: samtycke, avtal, eller berättigat intresse.
+Zoomers samtycker explicit vid registrering.
+
+2. Ändamålsbegränsning
+Data samlas för ett specifikt syfte och används bara för det. Zoomer-GPS-data används för att validera uppdrag — inte för reklam utan samtycke.
+
+3. Dataminimering
+Samla bara vad som behövs. Vi behöver zoomer-ID för KYC. Vi behöver inte zoomer-ålder.
+
+4. Korrekthet
+Data ska vara korrekt. Zoomers kan uppdatera sina uppgifter i appen.
+
+5. Lagringsbegränsning
+Data sparas inte längre än nödvändigt. Inaktiva zoomer-konton: data raderas efter 3 år.
+
+6. Integritet och konfidentialitet
+Data skyddas mot obehörig access. Vi krypterar, använder RLS i Supabase, och begränsar access.
+
+**Wavults roller:**
+• QuiXzoom → Personuppgiftsansvarig (Controller) för zoomer-data
+• Landvex → Personuppgiftsbiträde (Processor) för kommuners objektdata
+• Som arbetsgivare → Controller för personaldata
+
+**Viktigt:** Dennis och Johan ansvarar gemensamt för GDPR-compliance. Alla nya features som hanterar persondata måste Privacy Impact Assessment (PIA) genomföras för.`,
+      },
+      {
+        title: 'Vad som kräver samtycke vs inte',
+        duration: 4,
+        content: `GDPR tillåter behandling av personuppgifter med sex rättsliga grunder. Samtycke är bara en av dem — och ofta inte den bästa.
+
+**Grund 1: Samtycke (Art. 6(1)(a))**
+Kräver: Frivilligt, specifikt, informerat, otvetydigt.
+Används för: Marknadsföring, tracking-cookies, analys.
+OBS: Samtycke kan återkallas — ha alltid en opt-out.
+
+**Grund 2: Avtal (Art. 6(1)(b))**
+Kräver: Behandlingen är nödvändig för att fullgöra ett avtal.
+Används för: Zoomer-registration, utbetalningar, kunddata i Landvex.
+Fördel: Inget separat samtycke krävs — registreringen är avtalet.
+
+**Grund 3: Rättslig förpliktelse (Art. 6(1)(c))**
+Används för: Bokföring (behåll fakturor 7 år), skatteuppgifter, AML-rapportering.
+
+**Grund 4: Berättigat intresse (Art. 6(1)(f))**
+Kräver: Intresset väger tyngre än personens intressen.
+Används för: Loggar för säkerhet, fraud detection.
+OBS: Kräver en intresseavvägning dokumenterad.
+
+**Praktisk guide för vår verksamhet:**
+• Zoomer-kontodata: Avtal ✅
+• Zoomer-GPS under uppdrag: Avtal ✅
+• Marknadsförings-e-post: Samtycke ✅
+• Cookies: Samtycke ✅
+• AWS-loggar: Berättigat intresse ✅
+• Bokföringsdata: Rättslig förpliktelse ✅
+
+**När är du osäker?** Fråga Dennis. Gör inget med persondata du är osäker på rättslig grund för.`,
+      },
+      {
+        title: 'KYC — Know Your Customer (Zoomers)',
+        duration: 4,
+        content: `Know Your Customer (KYC) är processen för att verifiera zoomers identitet. Det krävs för betalningsreglering (AML-lagen) och skyddar plattformen mot missbruk.
+
+**Varför KYC för zoomers?**
+Zoomers tar emot betalningar → vi är en payment platform → AML-lagen (Anti Money Laundering) kräver att vi vet vem vi betalar.
+
+Utan KYC: Vi kan bli ansvariga för finansiell brottslighet om en zoomer använder plattformen för pengatvätt.
+
+**KYC-processen (Standard Zoomer):**
+
+Steg 1: ID-verifiering
+Zoomer laddar upp nationellt ID, pass eller körkort.
+System: Sumsub (planerat) — automatisk OCR + face match.
+Tid: 2–5 minuter.
+
+Steg 2: Face Match
+Selfie jämförs med ID-kortet.
+Sumsub-AI gör jämförelsen automatiskt.
+
+Steg 3: Sanctions Screening
+Zoomer matchas mot sanktionslistor (EU, US OFAC, UN).
+Automatiskt i bakgrunden.
+
+Steg 4: Godkännande
+Godkänd → KYC-flagga satt i Supabase → zoomer kan ta uppdrag och ta emot betalningar.
+Underkänd → Zoomer meddelas med orsak → kan överklag till support.
+
+**KYC-data:**
+Lagras krypterat. Dennis ansvarar för policy. Sumsub ansvarar för verifieringsprocessen (DPA med Sumsub krävs).
+
+Radering: KYC-data behålls 5 år efter kontoavslutning (AML-krav, kortare kan strida mot lag).`,
+      },
+      {
+        title: 'LOU — Lagen om Offentlig Upphandling',
+        duration: 5,
+        content: `LOU är det regelverk som styr hur kommuner och myndigheter köper in varor och tjänster. För Landvex att förstå LOU är affärskritiskt.
+
+**Grundprincipen:**
+Offentliga medel ska användas effektivt och rättvist. Alla leverantörer ska ha lika chans att vinna offentliga kontrakt.
+
+**Upphandlingstyper:**
+
+Direktupphandling (< 700 000 SEK / år)
+Kommunen kan köpa direkt utan anbudsprocess.
+Krav: Dokumentera varför just du valdes (priset, erfarenhet, etc.)
+Vår strategi: Strukturera initialt avtal under tröskeln.
+
+Förenklad upphandling (700 000 – 6 MSEK)
+Kommunen annonserar på e-avrop.se.
+Leverantörer lämnar anbud inom 10 dagar.
+Utvärdering: Lägst pris eller bästa förhållande pris/kvalitet.
+Vi behöver en formell anbudsmall redo.
+
+Öppen upphandling (> 6 MSEK)
+EU-direktiv, annons i TED (Tender Electronic Daily).
+Längre process (40+ dagar anbudstid).
+Relevant för Trafikverket och stora kommuner.
+
+**Vanliga utvärderingskriterier:**
+• Pris (30–50% av totalpoäng)
+• Funktionalitet och teknik (30–40%)
+• Leverantörens stabilitet (finansiell styrka, referenskunder)
+• Supportkvalitet och SLA
+• GDPR-compliance
+
+**Ramavtal (ambition 2027):**
+SKR Kommentus upphandlar ramavtal för digitala tjänster.
+Om Landvex finns på ett ramavtal → 290 kommuner kan köpa utan individuell upphandling.
+Dennis ansvarar för att undersöka processen.
+
+**Vår skyddsåtgärd:** Prissätt Bas-abonnemanget (4 900 SEK/mån = 58 800 SEK/år) under direktupphandlingsgränsen. Enkelt, snabbt, inga advokater krävs.`,
+      },
+      {
+        title: 'Data Security & Access Control',
+        duration: 5,
+        content: `Dataskydd är inte en GDPR-fråga — det är en affärs-survival-fråga. Ett dataintrång kan förstöra Wavults trovärdighet mot kommuner i ett slag.
+
+**Säkerhetslager:**
+
+Layer 1 — Nätverkssäkerhet
+Cloudflare WAF framför alla publika endpoints.
+DDoS-skydd: Cloudflare absorber och filtrerar attacker.
+SSL/TLS: All trafik krypteras (HTTPS, TLS 1.3 minimum).
+
+Layer 2 — API-säkerhet
+Autentisering: JWT Bearer tokens på alla endpoints.
+Rate limiting: Max 100 requests/minut per IP (Cloudflare Workers).
+Input validation: Zod-schema på alla API-inpus (rejects malformed data).
+CORS: Explicit whitelist av tillåtna origins.
+
+Layer 3 — Databasäkerhet
+Supabase Row Level Security: Varje rad har en organization_id.
+RLS-policy: "Du ser bara din data" — implementerat på databasnivå.
+Service key vs Anon key: Service key (admin) aldrig exponerat i frontend.
+
+Layer 4 — Applikationssäkerhet
+Miljövariabler: Aldrig i kod, aldrig i GitHub.
+Secrets: GitHub Secrets för CI/CD, AWS Parameter Store för produktion.
+Dependency scanning: Dependabot i GitHub skapar PRs för sårbarhetsfixar.
+
+**Access control (Principle of Least Privilege):**
+Varje person har minimal access de behöver för sin roll.
+Johan: Full AWS access (CTO)
+Winston: Revolut Business + Stripe Dashboard (CFO)
+Dennis: DocuSign + bolagsregistrerings-portaler (CLO)
+Leon: CRM + Communications i Wavult OS (CEO Ops)
+
+**Incidentrespons:**
+P0-incident (dataintrång): Erik + Johan informeras omedelbart.
+GDPR-anmälan till Datainspektionen: Inom 72 timmar om persondata läckt.
+Kundkommunikation: Dennis + Erik koordinerar.`,
+      },
+    ],
+  },
+
+  // ── Techstack Deep Dive ───────────────────────────────────────────────────
+  {
+    id: 'techstack',
+    title: 'Techstack Deep Dive',
+    description: 'Detaljerad genomgång av Wavults hela teknikstack: n8n, Supabase, GitHub, Docker och mer.',
+    icon: '🔧',
+    color: '#6366F1',
+    lessons: [
+      {
+        title: 'n8n — Automation Hub',
+        duration: 5,
+        content: `n8n är Wavults automation-plattform. Det är "Make/Zapier för självhostat" — ett visuellt workflow-verktyg som kopplar ihop alla system.
+
+**Var körs n8n?**
+ECS Fargate, cluster hypbit (eu-north-1), task: n8n-task:latest.
+Access: Via ALB-path /n8n (intern URL, ej publik).
+Port: 5678.
+
+**Befintliga workflows:**
+
+Morning Brief (kl 08:00 varje dag)
+Trigger: Cron
+1. Hämtar nyheter (RSS, web scraping)
+2. Frågar Claude (via OpenClaw API) om sammanfattning
+3. Formaterar nyhetsbrev (HTML-template)
+4. Skickar via AWS SES till teamet (5 mottagare + BCC till erik@hypbit.com)
+Output: 08:00 varje dag i inkorgen.
+
+Supabase → Notifikation (webhook-trigger)
+Trigger: Supabase webhook vid ny row i "missions" tabell
+1. Formaterar push-notification
+2. Skickar via Expo Push API
+3. Loggar i Supabase.
+
+**Planerade workflows:**
+• Zoomer-payout automation (Stripe Connect → Supabase → utbetalning)
+• Landvex inspection cycle trigger (kör dagliga/veckovisa inspektioner)
+• Slack/Telegram-alert när ECS-service unhealthy
+• Monthly invoice generation (Landvex-kunder)
+
+**n8n Credentials-hantering:**
+Alla API-keys sparas som n8n Credentials (krypterade i n8n-databasen).
+Aldrig hårdkodade i workflow-noder.
+
+**Backup:**
+n8n-exporterar workflow-JSON automatiskt till S3 dagligen.`,
+      },
+      {
+        title: 'Supabase — Djupdykning',
+        duration: 6,
+        content: `Supabase är Wavults databaslager. Det är mer än en databas — det är en komplett backend-as-a-service.
+
+**Supabase-projekt:**
+
+quixzoom-v2 (eu-west-1): QuiXzoom-plattformens databas.
+• 13 migrationer live
+• Tabeller: missions, assignments, submissions, users, organizations, payouts...
+• RLS aktiverat på alla publika tabeller
+
+wavult-os (eu-west-1): Interna Wavult OS-datan.
+• Tabeller: decisions, milestones, contacts, finance_entries...
+• Används av command-center-appen
+
+**Tre sätt att prata med Supabase:**
+
+1. Supabase JS Client (frontend)
+const { data } = await supabase.from('missions').select('*').eq('status', 'published')
+Kräver: anon key (publik) + RLS-policies
+Säkerhet: RLS säkerställer att du bara ser din data
+
+2. REST API (bakifrån)
+Supabase exponerar automatiskt ett REST API från databasen.
+Auth: Service key (SECRET — aldrig i frontend!)
+Används av ECS-services för admin-operationer.
+
+3. Realtime Subscriptions
+supabase.channel('missions').on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'missions' }, callback).subscribe()
+Zoomer-appen prenumererar på nya uppdrag i närheten → kartan uppdateras automatiskt.
+
+**Row Level Security (RLS) — exempel:**
+CREATE POLICY "Users can see own assignments" ON assignments FOR SELECT USING (auth.uid() = user_id);
+Denna policy körs på VARJE select mot assignments-tabellen. Ingen kod behövs i applikationslagret.
+
+**Supabase Edge Functions (planerat):**
+Serverless TypeScript-funktioner som körs på Supabase-infrastrukturen.
+Användning: Webhook handlers, schemalagda jobs, tung bildanalys.`,
+      },
+      {
+        title: 'GitHub Actions — CI/CD i Detalj',
+        duration: 5,
+        content: `GitHub Actions är Wavults automatiserade deploy-pipeline. Varje push till main kan resultera i ett nytt deployment på minuter.
+
+**Repo-struktur:**
+wolfoftyreso-debug/hypbit (monorepo)
+apps/
+  api/ — Wavult OS API
+  quixzoom-api/ — QuiXzoom backend
+  command-center/ — Wavult OS frontend
+  wavult-mobile/ — Expo React Native-app
+.github/
+  workflows/
+    deploy-api.yml
+    deploy-quixzoom.yml
+    deploy-pages.yml
+
+**deploy-api.yml — Komplett flöde:**
+name: Deploy Wavult OS API
+on:
+  push:
+    branches: [main]
+    paths: ['apps/api/**']
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1
+      - run: aws ecr get-login-password | docker login --username AWS --password-stdin \$ECR_REGISTRY
+      - run: docker build -t wavult-os-api ./apps/api
+      - run: docker push \$ECR_REGISTRY/wavult-os-api:\$GITHUB_SHA
+      - run: aws ecs update-service --cluster hypbit --service wavult-os-api --force-new-deployment
+
+**Path-filter (VIKTIGT):**
+paths: ['apps/api/**'] — Deploy triggas BARA om filer i api/-mappen ändrats.
+Utan path-filter → varje push deployer ALLA services = onödig tid + risk.
+
+**GitHub Secrets (konfigurerade):**
+AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY — IAM-user med ECS+ECR access
+CLOUDFLARE_API_TOKEN — CF Pages deploy
+CLOUDFLARE_ACCOUNT_ID — CF account
+SUPABASE_SERVICE_KEY — Supabase admin key (lades till 2026-03-27)
+
+**Vanliga fel och lösningar:**
+"unauthorized" på ECR → AWS credentials saknas eller utgångna
+"task definition invalid" → Ny env var adderad men ej i task definition
+"health check failed" → App-crashar vid startup, kolla CloudWatch logs`,
+      },
+      {
+        title: 'Docker — Hur våra containers byggs',
+        duration: 5,
+        content: `Docker är fundamentet för vår deploy-process. Varje service har en Dockerfile som definierar exakt hur applikationen paketeras.
+
+**Wavult OS API Dockerfile (apps/api/Dockerfile):**
+FROM node:22-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM node:22-alpine AS production
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY package*.json ./
+EXPOSE 3001
+HEALTHCHECK --interval=30s --timeout=10s CMD wget -qO- http://localhost:3001/health || exit 1
+CMD ["node", "dist/index.js"]
+
+**Multi-stage build — varför:**
+Byggstadiet (builder) innehåller devDependencies och TypeScript-kompilatorn.
+Produktionsstadiet (production) innehåller bara det som behövs för att köra.
+Resultat: Image-storlek minskar med 60–70% — snabbare deploy, lägre kostnad.
+
+**HEALTHCHECK:**
+ECS använder HEALTHCHECK för att veta om containern är frisk.
+Om /health svarar med != 200 tre gånger → ECS startar om containern automatiskt.
+Vår /health endpoint returnerar: { status: "ok", version: "1.2.3", uptime: 3600 }
+
+**ECR (Elastic Container Registry):**
+Privat Docker registry på AWS. Varje image pushas hit innan ECS startar den.
+Format: 155407238699.dkr.ecr.eu-north-1.amazonaws.com/[image-name]:[tag]
+Tag: Vi använder GITHUB_SHA (commit-hash) för att kunna rollbacka exakt.
+
+**Lokal debug:**
+docker build -t wavult-api ./apps/api
+docker run -p 3001:3001 --env-file .env wavult-api
+Testar exakt samma container som körs i produktion.`,
+      },
+      {
+        title: 'Wavult Mobile — React Native + Expo',
+        duration: 5,
+        content: `Wavult Mobile är teamets interna app för mobil access till Wavult OS och för Bernt-röstinteraktion.
+
+**Teknologier:**
+React Native: Cross-platform (iOS + Android) med en kodbas.
+Expo: Build-infrastruktur, OTA-updates, native modules.
+Expo Router: File-baserad navigation (som Next.js App Router, fast för mobile).
+NativeWind: Tailwind CSS för React Native.
+
+**Projektstruktur:**
+apps/wavult-mobile/
+  app/ — Expo Router screens
+    _layout.tsx — Root layout, deep link handler
+    (tabs)/ — Tab-navigering
+      index.tsx — Dashboard
+      chat.tsx — Bernt-chat
+  components/
+    chat/
+      VoiceButton.tsx — Röstknapp (håll inne → spela in)
+      ChatInterface.tsx
+  lib/
+    bernt.ts — OpenClaw webhook-integration
+    whisper.ts — OpenAI Whisper transcription
+
+**Röstflödet (Siri → Bernt):**
+1. "Hey Siri, Bernt" → iOS Shortcut-app
+2. Shortcut öppnar deep link: wavult://chat
+3. Wavult Mobile öppnas automatiskt
+4. VoiceButton aktiveras (håll inne för att tala)
+5. Expo Audio spelar in → Whisper transkriberar
+6. Text skickas till OpenClaw (Bernt)
+7. Svar visas i chat + TTS-läses upp (valfritt)
+
+**Build-process:**
+eas build --platform ios → Expo Application Services bygger
+eas submit → Laddar upp till App Store Connect
+TestFlight: Interna testers (teamet) testar innan release
+
+**Status 2026-03-27:**
+Röstintegration-kod klar (VoiceButton + bernt.ts + _layout.tsx).
+Nästa steg: eas build + TestFlight-distribution till teamet.
+Kräver: Apple Developer Account aktiv (Erik eller Johan ansvarar).`,
+      },
+      {
+        title: 'Monitoring & Observability',
+        duration: 4,
+        content: `Wavult Group behöver veta när saker går fel — innan kunderna vet det.
+
+**Nuvarande monitoring:**
+
+ECS Health Checks
+Varje container kör HEALTHCHECK mot /health endpoint.
+Om tre på varann checks misslyckas → ECS stoppar och startar om containern.
+Logg finns i AWS CloudWatch Logs.
+
+Bernt Morning/Evening Check
+Bernt kör dagliga statusrapporter kl 08:00 och 20:00.
+Kontrollerar: URL-status (api.quixzoom.com, api.hypbit.com), ECS tasks räkning, GitHub Actions senaste status.
+Mail skickas om något är rött.
+
+Cloudflare Analytics
+Inbyggd i Cloudflare — trafikvolym, error rates, blocked attacks.
+Gratis, ingen konfiguration.
+
+**Planerad monitoring (nästa sprint):**
+
+Sentry — Error Tracking
+Frontend och backend skickar uncaught exceptions till Sentry.
+Varje error: stack trace, user context, repro-steg.
+Kostar: $0 för Sentry Community-plan.
+
+Datadog / AWS CloudWatch Dashboards
+CPU, minne, request latency per ECS service.
+Alert: Slack-notis om CPU > 80% i mer än 5 min.
+
+Uptime Robot / check-host.net
+External monitoring — pinga våra publika endpoints var 5:e minut.
+Alert om endpoint ej nås inom 10s.
+
+**Incident Response:**
+P0: Johan + Erik på Telegram omedelbart.
+P1: Johan åtgärdar inom 1 timme, rapporterar till Erik.
+P2: Löses i nästa arbetspass, dokumenteras i Wavult OS Incidents.
+Post-mortem: Alla P0-incidents får ett skrivet post-mortem (vad hände, varför, åtgärd).`,
+      },
+    ],
+  },
 ]
 
 type ProgressMap = Record<string, number> // courseId → lessons completed
@@ -1489,6 +2478,10 @@ const ONBOARDING_ORDER: { courseId: string; reason: string }[] = [
   { courseId: 'quixzoom', reason: 'Kärnprodukten — 7 lektioner' },
   { courseId: 'landvex', reason: 'B2G-armen och intäktsmodellen' },
   { courseId: 'dubai', reason: 'Juridisk struktur och skatteoptimering' },
+  { courseId: 'finance', reason: 'Ekonomimodell och cashflow' },
+  { courseId: 'salj-gtm', reason: 'Sälj, pitch och demo-flödet' },
+  { courseId: 'compliance', reason: 'GDPR, LOU och dataskydd' },
+  { courseId: 'techstack', reason: 'n8n, Docker, GitHub och mer' },
 ]
 
 export function AcademyView() {

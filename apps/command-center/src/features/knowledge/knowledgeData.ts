@@ -2103,6 +2103,811 @@ Genom att bli zoomer godkände du att:
 **Legal-ansvarig:** Dennis Bjarnemark — dennis@hypbit.com  
 **Dataskyddsombud (planerat):** dpo@quixzoom.com`
   },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // NYA DOKUMENT — Adderade 2026-03-28 (utbyggnad Knowledge Hub)
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    id: 'doc-int-005',
+    title: 'n8n — Automation Hub & Workflow Guide',
+    category: 'Internt',
+    summary: 'Wavults automation-plattform. Morning Brief, Supabase-triggers, zoomer-payout och kommande workflows.',
+    tags: ['n8n', 'automation', 'workflow', 'cron', 'webhook', 'morning-brief', 'supabase'],
+    updatedAt: '2026-03-28',
+    content: `## n8n — Automation Hub & Workflow Guide
+
+### Vad är n8n?
+
+n8n (uttalas "n-eight-n") är Wavult Groups automation-plattform. Det är ett visuellt workflow-verktyg — likt Make/Zapier men självhostat. Varje workflow är en kedja av noder: triggers, actions och transformationer.
+
+**Varför n8n istället för Zapier/Make?**
+- Självhostat = full kontroll, ingen data lämnar Wavults infrastruktur
+- Obegränsat antal workflows och exekveringar (inga "tasks")
+- Open source = kan utökas med custom code
+- Kör direkt på vår ECS-infrastruktur
+
+**Var körs n8n?**
+- ECS Fargate, cluster "hypbit", eu-north-1
+- Task: n8n-task:latest
+- Port: 5678
+- Access: Via ALB-path /n8n (intern URL — ej publik)
+
+---
+
+### Aktiva Workflows
+
+**1. Morning Brief (dagligen kl 08:00)**
+Trigger: Cron (0 8 * * *)
+Flöde:
+1. Hämta nyheter via RSS-feeds (TechCrunch, Breakit, Di Digital)
+2. Web-scraping av utvalda källor (biljonärnyheter, finansnyheter)
+3. HTTP-request till Claude (via OpenClaw API) för sammanfattning
+4. HTML-template rendering (inline styles för e-postklienter)
+5. AWS SES → skicka till 5 teammedlemmar + BCC till erik@hypbit.com
+
+Output: Nyhetsbrevet landar i inkorgen senast kl 08:05 varje dag.
+
+**2. Zoomer Mission Notification**
+Trigger: Supabase webhook (INSERT i missions-tabellen)
+Flöde:
+1. Extrahera uppdragets GPS-koordinater
+2. Hämta zoomers inom 5 km via Supabase Edge Function
+3. Skicka push-notis via Expo Push API
+4. Logga leveransresultat i Supabase
+
+**3. ECS Health Monitor**
+Trigger: Cron (var 15:e minut)
+Flöde:
+1. Anropa /health-endpoints för alla services
+2. Om status != 200: Telegram-meddelande till Johan + Erik
+3. Logga status i Supabase monitoring-tabell
+
+---
+
+### Planerade Workflows
+
+**Zoomer Payout Automation**
+Trigger: Cron (söndagar kl 10:00) + Manuell trigger
+Flöde: Hämta godkända submissions → Beräkna belopp → Stripe Connect payout → Uppdatera Supabase → Skicka kvitto-mail
+
+**Landvex Inspection Cycle**
+Trigger: Cron (baserat på inspektionsfrekvens per objekt)
+Flöde: Hämta objekt som ska inspekteras idag → Skapa uppdrag i QuiXzoom → Vänta på completion → Kör AI-analys → Generera larmrapport → Skicka till kund
+
+**Monthly Invoice Generation**
+Trigger: Cron (1:a varje månad kl 09:00)
+Flöde: Hämta Landvex-abonnenter → Generera Stripe Invoice → Skicka bekräftelse → Uppdatera CRM
+
+---
+
+### n8n Credentials-hantering
+
+Alla API-nycklar sparas som n8n Credentials (krypterade i n8n:s SQLite-databas).
+Tillgängliga credentials:
+- OpenClaw API Key (Bernt/Claude)
+- AWS SES (e-post)
+- Stripe Secret Key
+- Supabase Service Key (quixzoom-v2)
+- Telegram Bot Token (intern alert-bot)
+- Expo Push API
+
+**Säkerhetsregel:** Aldrig hårdkoda API-nycklar i workflow-noder. Alltid via Credentials.
+
+---
+
+### Backup & Drift
+
+n8n exporterar alla workflows som JSON via n8n API.
+Backup: Dagligen till S3 (wavult-images-eu-primary/n8n-backups/).
+Vid systemkrasch: Återställ från backup → workflows importeras i nytt n8n-instance.
+
+**Uppdatering av n8n:**
+Ny version → uppdatera Docker-tag i ECS task definition → force-new-deployment.
+Testa i staging-branch innan prod.`
+  },
+  {
+    id: 'doc-int-006',
+    title: 'Wavult Mobile — Arkitektur & Röstintegration',
+    category: 'Internt',
+    summary: 'React Native Expo-app. Röstflöde Siri → Bernt, Wavult OS mobilvy, build med EAS.',
+    tags: ['wavult-mobile', 'react-native', 'expo', 'ios', 'android', 'bernt', 'röst', 'whisper'],
+    updatedAt: '2026-03-28',
+    content: `## Wavult Mobile — Arkitektur & Röstintegration
+
+### Vad är Wavult Mobile?
+
+Wavult Mobile är Wavult Groups interna mobilapp — en React Native/Expo-applikation som ger teamet mobil access till Wavult OS och möjliggör röstinteraktion med Bernt.
+
+**Primära use cases:**
+1. Bernt-chat i fickan (meddelanden, uppgifter, frågor)
+2. Röstinteraktion ("Hey Siri, Bernt" → tala direkt med Bernt)
+3. Dashboard-vy (infrastrukturstatus, Landvex-larm, CRM)
+4. Zoomer-admin (se submissions, godkänn, skicka feedback)
+
+---
+
+### Teknisk Stack
+
+| Komponent | Teknologi |
+|---|---|
+| Framework | React Native + Expo SDK 51 |
+| Navigation | Expo Router (file-based) |
+| Styling | NativeWind (Tailwind för RN) |
+| Kamera/Ljud | Expo AV (röstinspelning) |
+| Kartor | Mapbox RN SDK |
+| Auth | Supabase Auth (magic link + biometrics) |
+| Push | Expo Notifications |
+| Build | EAS (Expo Application Services) |
+| Distribution | TestFlight (iOS) + APK (Android intern) |
+
+---
+
+### Projektstruktur
+
+~~~
+apps/wavult-mobile/
+├── app/
+│   ├── _layout.tsx          ← Root layout, deep link handler
+│   ├── (tabs)/
+│   │   ├── index.tsx         ← Dashboard
+│   │   ├── chat.tsx          ← Bernt-chat
+│   │   ├── missions.tsx      ← Zoomer-uppdrag (admin-vy)
+│   │   └── settings.tsx      ← Inställningar
+├── components/
+│   ├── chat/
+│   │   ├── VoiceButton.tsx   ← Röstknapp (håll inne)
+│   │   └── ChatInterface.tsx ← Chat-UI
+│   └── dashboard/
+│       └── StatusCard.tsx    ← Infrastruktur-status-kort
+├── lib/
+│   ├── bernt.ts              ← OpenClaw webhook-klient
+│   ├── whisper.ts            ← OpenAI Whisper transcription
+│   └── supabase.ts           ← Supabase-klient (mobil)
+└── app.config.ts             ← Expo config (scheme: "wavult")
+~~~
+
+---
+
+### Röstflödet — Teknisk Detalj
+
+**Triggern: "Hey Siri, Bernt"**
+1. Användaren säger "Hey Siri, Bernt"
+2. iOS Shortcuts-app fångad av ett Shortcut: Öppna URL → "wavult://chat"
+3. Expo Router i Wavult Mobile matchar deep link "/chat"
+4. "_layout.tsx" fångar "Linking.getInitialURL()" och navigerar
+
+**Inspelning och transkription:**
+5. VoiceButton aktiveras automatiskt (eller manuellt — håll inne)
+6. "expo-av" spelar in mikrofonljud i AAC-format
+7. Inspelning stoppas vid knapp-release
+8. "whisper.ts" laddar upp ljud till OpenAI Whisper API
+9. Transkriberad text returneras
+
+**Bernt-interaktion:**
+10. "bernt.ts" skickar texten till OpenClaw webhook
+11. OpenClaw → Claude → Tools → svar
+12. Svaret visas i ChatInterface
+13. Valfritt: "expo-av" spelar upp TTS-svar (planerat)
+
+---
+
+### Build & Distribution
+
+**Lokal dev:**
+cd apps/wavult-mobile
+npx expo start
+
+**TestFlight-build (iOS):**
+eas build --platform ios --profile preview
+eas submit --platform ios
+
+**Krav för Apple Build:**
+- Apple Developer Account ($99/år) — Erik eller Johan ansvarar
+- EAS-projekt kopplat till Apple Developer Team
+- Provisioning Profile + Signing Certificate
+
+**Status 2026-03-28:**
+Röstintegration-kod klar (VoiceButton + bernt.ts + _layout.tsx).
+Nästa steg: eas build + TestFlight → testa på iPhone-teamets enheter.`
+  },
+  {
+    id: 'doc-qx-005',
+    title: 'Quixom Ads — B2B Data & Annonsplattform',
+    category: 'QuiXzoom',
+    summary: 'Fas 2 av Go-to-Market. Hur QuiXzoom-datan paketeras och säljs som B2B affärsintelligens.',
+    tags: ['quixom-ads', 'b2b', 'annonsering', 'data', 'leads', 'monetisering', 'fas-2'],
+    updatedAt: '2026-03-28',
+    content: `## Quixom Ads — B2B Data & Annonsplattform
+
+### Vad är Quixom Ads?
+
+Quixom Ads är Wavult Groups fas 2 — monetisering av QuiXzoom-datan för B2B-kunder. Det aktiveras när databasen är substantiell (minst 10 000 uppdrag, 5+ städer).
+
+**Tre produktlinjer:**
+
+**1. Leadpaket**
+Paketerade kontaktlistor och objektdata för specifika affärsändamål.
+Exempel: "Alla bryggor på Värmdö med GPS + foton" → säljs till marinförsäkringsbolag
+Exempel: "Alla parkeringsplatser i Stockholms innerstad" → säljs till ParkingApps
+Prissättning: 10 000–100 000 SEK per dataset beroende på täckning och unikhet.
+
+**2. Marknadsdata-abonnemang**
+Löpande access till uppdaterad geo-data inom ett geografiskt område.
+Kunder: Fastighetsbolag, franchise-kedjor, reklambranschen.
+Prissättning: 5 000–50 000 SEK/mån per geografisk zon.
+
+**3. Hyperlokal annonsering (in-app)**
+Annonsering i QuiXzoom-appen riktat mot zoomers i ett specifikt område.
+Format: Banner-annonser på kartan, "Sponsored missions" (betalt uppdrag med reklaminslag).
+Prissättning: CPM (kostnad per 1 000 visningar) 50–200 SEK.
+
+---
+
+### Varför Quixom Ads (och inte bara Landvex)?
+
+Landvex säljer till offentlig sektor (kommuner, Trafikverket) — lång säljcykel, högt värde per kund.
+Quixom Ads säljer till privat sektor (fastighetsbolag, försäkring, franchise) — kortare säljcykel, mer kunder.
+
+Quixom Ads bygger ett bredare intäktsfundament och hjälper finansiera QuiXzoom-tillväxten medan Landvex-pipelinen mognar.
+
+---
+
+### Kundexempel
+
+**Fastighetsbolag (Heimstaden, Klövern):**
+Data om fastigheters skick, grannskap-förändringar, infrastruktur-status.
+Värde: Bättre due diligence vid fastighetsköp, löpande fastighetsvård.
+
+**Marinförsäkring (IF, Trygg-Hansa):**
+Data om bryggors skick, marina-infrastruktur, skärgårdsrisker.
+Värde: Bättre riskbedömning, färre skador, lägre utbetalningar.
+
+**Franchise-kedjor (McDonald's, Subway):**
+Trafik och folkliv i potentiella etableringslägen.
+Värde: Bättre platsbeslut, validerade med verklig data.
+
+**Kommunikationsbyråer:**
+Hyperlokal annonsering för kampanjer kopplade till specifika platser/events.
+Värde: Rätt budskap, rätt plats, rätt tid.
+
+---
+
+### GDPR och Quixom Ads
+
+QuiXzoom-data innehåller geo-information och foton — inte personuppgifter om enskilda.
+Leadpaket baseras på objekt (bryggor, byggnader) — inte på identifierbara individer.
+
+Undantag: Om zoomer identifierbar person syns på bild → bilden används EJ i Quixom Ads.
+Alla Quixom Ads-datasets är anonymiserade och aggregerade.
+
+Dennis ansvarar för DPA med varje Quixom Ads-kund (de är personuppgiftsbiträden för objektdata).
+
+---
+
+### Aktiveringsplan (Fas 2)
+
+**Trigger:** 10 000 uppdrag genomförda + 5 städer täckta
+**Estimerad tidpunkt:** Q3–Q4 2026 (om Sverige-lansering går enligt plan)
+
+**Steg 1:** Bygg anonymiserat data-API (export i JSON/GeoJSON)
+**Steg 2:** Skapa Quixom Ads-sajt och produktbeskrivningar
+**Steg 3:** Pilot med 3–5 betalande kunder
+**Steg 4:** Skala annonsplattformen (in-app ads)
+
+**OBS — Varumärkesregel:**
+Quixom Ads är SEPARAT från QuiXzoom i all kommunikation.
+Zoomers vet inte att deras data säljs via Quixom Ads — det är avtalsmässigt täckt i plattformsavtalet men kommuniceras ej aktivt.`
+  },
+  {
+    id: 'doc-int-007',
+    title: 'Kommunikationsguide — Wavults röst & ton',
+    category: 'Internt',
+    summary: 'Hur vi kommunicerar externt. Ton, varumärkesregler, förbjudna ord och mallar för e-post och pitch.',
+    tags: ['kommunikation', 'ton', 'varumärke', 'regler', 'pitch', 'e-post', 'mallar'],
+    updatedAt: '2026-03-28',
+    content: `## Kommunikationsguide — Wavults röst & ton
+
+### Wavult Groups kommunikationsprinciper
+
+All extern kommunikation — e-post, hemsidor, pitchar, sociala medier — ska följa dessa principer.
+
+**Principerna:**
+
+Direkt, inte akademisk
+Vi skriver för beslutsfattare med ont om tid. Kom till poängen på rad 1.
+❌ "Med anledning av ert intresse för infrastrukturoptimering vill vi presentera..."
+✅ "Halvera era inspektionskostnader. Så här gör Landvex det."
+
+Konkret, inte abstrakt
+Siffror, inte floskler.
+❌ "Vi levererar värde till infrastrukturägare"
+✅ "Kommuner sparar i snitt 540 000 SEK/år på inspektionskostnader"
+
+Lokalt, inte generellt
+Anpassa till mottagaren. En e-post till Nacka kommun nämner Nacka.
+
+---
+
+### Varumärkesregler per produkt
+
+**QuiXzoom:**
+Ton: Ung, fri, lite rebellisk — som Uber Eats möter ett socialt uppdrag.
+Mot zoomers: Aldrig "fotografer", "fältpersonal" → alltid "Zoomers"
+Tagline-alternativ: "See the world. Get paid." / "Zoom in. Cash out."
+Undvik: Korporativt språk, formell ton
+
+**Landvex:**
+Ton: Kompetent, metodisk, lösningsorienterad. B2G-seriös.
+Mot kommuner: Aldrig "AI-övervakning" → "optisk analys", "händelsebaserade larm"
+Aldrig: "kameraövervakning", "surveillance", "säkerhetsövervakning"
+Kärnbudskapet: "Right control. Right cost. Right interval."
+
+**Wavult Group (investerar/press):**
+Ton: Visionär men jordnära. Ambitiös utan att vara skrytsam.
+Undvik: Övertag av buzzwords (disruption, game-changer, revolutionary)
+Fokus: Konkreta produkter, tydlig väg till lönsamhet
+
+---
+
+### Förbjudna formuleringar (HELA BOLAGET)
+
+| Förbjudet | Använd istället |
+|---|---|
+| "AI-driven" / "AI-powered" | optisk analys, automatiserad, vision engine |
+| "fotografer" / "field agents" | Zoomers |
+| "AI-övervakning" | händelsebaserade larm, optisk analys |
+| "disruptivt" / "game-changer" | (beskriv vad ni faktiskt gör) |
+| "World-class" / "best-in-class" | (visa med siffror istället) |
+| "Vi är glada att kunna meddela" | Direkt meddelande |
+| "För att inte tala om" | (eliminera) |
+
+---
+
+### E-postmallar
+
+**Cold e-post (Landvex → Teknisk chef):**
+Ämne: [Kommun]-namn: Halvera inspektionskostnaderna — 10 minuter?
+
+Hej [Namn],
+
+Ni ansvarar för [antal] infrastrukturobjekt i [Kommun]. En manuell inspektion kostar 500–2 000 kr per tillfälle — det är [beräknad kostnad] om ni inspekterar en gång per år.
+
+Landvex gör det automatiskt, kontinuerligt, till en tiondel av kostnaden.
+
+Har ni 10 minuter för en demo nästa vecka?
+
+Vänligen,
+[Namn]
+Landvex
+
+(Skriv ALDRIG mer än 4 meningar i cold e-post. Respektera mottagarens tid.)
+
+**Pilot-uppföljning:**
+Ämne: 90 dagars gratis pilot — inga bindningstider
+
+(Anpassa baserat på discovery call — referera till deras specifika siffror och utmaningar.)
+
+---
+
+### Sociala medier (QuiXzoom)
+
+Platform-ton:
+• Instagram: Visuellt, zoomer-stories, uppdrag-behind-the-scenes
+• TikTok: Kort video "En dag som zoomer i skärgården"
+• LinkedIn: Milstolpar, team-nyheter, investerarrelevant (Wavult Group-ton)
+
+Hashtags: #quixzoom #zoomers #lastmileintelligence #skärgården #gig`
+  },
+  {
+    id: 'doc-int-008',
+    title: 'Onboarding Checklista — Dag 1 till Dag 30',
+    category: 'Internt',
+    summary: 'Komplett onboarding-plan: dag 1 access, vecka 1 utbildning, vecka 2–4 egna leveranser.',
+    tags: ['onboarding', 'checklista', 'dag-1', 'vecka-1', 'utbildning', 'access', 'team'],
+    updatedAt: '2026-03-28',
+    content: `## Onboarding Checklista — Dag 1 till Dag 30
+
+### Dag 1 — Grund-access (ansvarig: Leon)
+
+**Access att konfigurera:**
+- [ ] Telegram-inbjudan till teamgruppen
+- [ ] Wavult OS admin-inbjudan (skicka invite-link)
+- [ ] E-postkonto: namn@hypbit.com (Loopia, Leon sköter)
+- [ ] GitHub-access (wolfoftyreso-debug org) — om tech-roll
+- [ ] Supabase-access (wavult-os, quixzoom-v2) — om tech-roll
+- [ ] Revolut Business-access — om finance-roll
+
+**Att läsa dag 1:**
+- [ ] doc-int-004: "Ny teammedlem dag 1 — Start här"
+- [ ] USER.md i Wavult OS (om Bernt-access)
+- [ ] Den här filen (dag 1–30)
+
+**Att sätta upp:**
+- [ ] Profil i Wavult OS (namn, roll, foto)
+- [ ] Telegram-notiser för teamgruppen
+- [ ] 2FA på alla konton (GitHub, Supabase, Revolut)
+
+---
+
+### Vecka 1 — Orientering & Utbildning (Leon ansvarig)
+
+**Måndag–Tisdag:**
+- [ ] Academy: "Ny teammedlem — Dag 1" (komplett)
+- [ ] Academy: "Wavult OS — Grundkurs" (komplett)
+- [ ] Läs: "Bolagsstruktur — Komplett Koncernkarta"
+- [ ] Läs: "Go-to-Market Strategi — Tre-fas Sekvens"
+
+**Onsdag–Torsdag:**
+- [ ] Academy relevant för din roll (se nedan)
+- [ ] Sätt upp lokala dev-verktyg om tech-roll (Node 22, Docker, VS Code)
+- [ ] Git clone: wolfoftyreso-debug/hypbit
+
+**Fredag:**
+- [ ] Första 1:1-möte med Erik eller Leon
+- [ ] Zoomer-certifiering (ZoomerCert-fliken) — alla i teamet
+- [ ] Identifiera din första deliverable
+
+**Rollspecifik academy (välj din):**
+- Tech (Johan): "QuiXzoom — Plattformsguide" + "Systemarkitektur"
+- Sälj (Leon): "Sälj & Go-to-Market" + "Landvex — Produktkurs"
+- Legal (Dennis): "Dubai-strukturen" + läs alla Juridik-dokument
+- Finance (Winston): "Finance & Ekonomi" + "Dubai-strukturen"
+
+---
+
+### Vecka 2–4 — Ägarskap & Leverans
+
+**Du är nu redo att ta ägandeskap av ditt område.**
+
+**Generella principer:**
+- Alla uppgifter dokumenteras i Wavult OS (Milestones eller CRM)
+- Blockers kommuniceras direkt till Leon/Erik — aldrig sitta tyst
+- Fråga Bernt om du är osäker på något om Wavult Group
+
+**Mål vid 30 dagar:**
+- [ ] 3 Academy-kurser avklarade (minst)
+- [ ] Zoomer-certifiering tagen
+- [ ] Klar bild av ditt ansvarsområde för Thailand Workcamp
+- [ ] Minst ett konkret bidrag levererat (code, sale, legal doc, financial report)
+
+**Thailand Workcamp (11 april):**
+Alla teammedlemmar förväntas vara "redo att bygga" vid Workcamp.
+Det innebär: Tydliga deliverables definierade, academy-kurser klara, access säkrad.
+
+---
+
+### Överlämningskontroll (Leon checklistar vid 30 dagar)
+
+- [ ] Alla academy-kurser för rollen avklarade?
+- [ ] ZoomerCert tagen?
+- [ ] Fungerar all access (GitHub, Supabase, Revolut)?
+- [ ] 1:1 genomförd med Erik?
+- [ ] Deliverable levererad?
+- [ ] Bernt-interaktion testad och fungerande?
+
+**Grattis — du är en del av Wavult Group. Nu bygger vi.**`
+  },
+  {
+    id: 'doc-wg-006',
+    title: 'Wavult Group — Besluts- och Signaturmatris',
+    category: 'Wavult Group',
+    summary: 'Vem får skriva på vad. L1–L3 beslutsmandat, signaturrätt per bolag, eskaleringsvägar.',
+    tags: ['beslut', 'signatur', 'mandat', 'L1', 'L2', 'L3', 'eskalering', 'styrelse'],
+    updatedAt: '2026-03-28',
+    content: `## Wavult Group — Besluts- och Signaturmatris
+
+### Varför en beslutsmatris?
+
+Utan tydliga mandat fattas beslut antingen för långsamt (allt eskakeras till Erik) eller för snabbt (folk binder bolaget utan befogenhet). Matrisen ger tydlighet.
+
+---
+
+### L1 — Autonomt (valfri teammedlem)
+
+Beslut som varje teammedlem kan fatta utan godkännande.
+
+**Beloppsgräns:** Under 1 000 SEK
+**Tidsram:** Omedelbart
+
+**Exempel:**
+- Köpa ett verktyg/plugin under 1 000 SEK
+- Boka resa under team-policy (Economy, rimligt hotell)
+- Fixa en bugg och deploya via godkänd CI/CD-pipeline
+- Skicka e-post till kund med standardsvar
+- Schemalägga ett möte
+
+**Dokumentation:** Telegram-notering räcker. Inget formellt godkännande.
+
+---
+
+### L2 — CEO-godkännande (Erik eller Leon)
+
+**Beloppsgräns:** 1 000–50 000 SEK
+**Tidsram:** Beslut inom 24 timmar
+
+**Exempel:**
+- Teckna konsult-/leverantörsavtal < 50 000 SEK
+- Anställa konsulter och frilansare
+- Prisförändringar på befintliga produkter
+- Lansera ny marketing-kampanj
+- Partner-samarbeten (utan IP-implikationer)
+- Rekrytering (screeningprocessen starta)
+
+**Process:** Kort Telegram-meddelande eller e-post till Erik/Leon → OK → dokumentera i Wavult OS.
+
+**Vem:** Erik Svensson eller Leon Russo (delegerat för operations)
+
+---
+
+### L3 — Board-beslut (Erik + Dennis)
+
+**Beloppsgräns:** Över 50 000 SEK, eller avtal med juridiska/IP-implikationer oavsett belopp
+**Tidsram:** Styrelseprotokoll krävs — planeringstid 3–7 dagar
+
+**Exempel:**
+- Alla bolagsavtal (IP-licens, MSA, SHA, SPA)
+- Investering/finansiering
+- Anställning av fast personal
+- Avtal > 50 000 SEK
+- Ny juridisk entitet
+- Avyttring av IP eller bolagsandel
+- Ändringar i ägarstruktur
+
+**Process:** Formellt memo → Zoom-styrelsmöte → Protokoll signerat (DocuSign) → Arkiverat i Legal-modulen
+
+**Vem:** Erik Svensson + Dennis Bjarnemark (gemensamt)
+
+---
+
+### Signaturrätt Per Bolag
+
+| Bolag | Signaturrätt | Begränsning |
+|---|---|---|
+| Wavult Group FZCO (planerat) | Erik Svensson | Ensam |
+| Wavult DevOps FZCO (planerat) | Erik Svensson | Ensam |
+| QuiXzoom Inc (Delaware) | Erik Svensson | Ensam (Delaware LLC) |
+| QuiXzoom UAB (Litauen) | Via lokal agent | Agent + Erik |
+| Landvex AB (Sverige) | Erik + Dennis | Gemensam |
+| Landvex Inc (Texas LLC) | Erik Svensson | Ensam |
+
+**Generell regel:** Aldrig signera ett avtal du inte fullt ut förstår. Skicka till Dennis om du är osäker.
+
+---
+
+### Eskaleringsvägar
+
+**Tekniska incidenter (P0/P1):**
+Johan → Erik direkt på Telegram (ej e-post)
+
+**Juridiska frågor (avtal, GDPR, myndigheter):**
+Valfri person → Dennis → Dennis eskalerar till Erik vid behov
+
+**Finansiella frågor (fakturor, utbetalningar, avvikelser):**
+Valfri person → Winston → Winston eskalerar till Erik vid behov
+
+**Kundklagomål / eskalerade kundfrågor:**
+Leon → Erik (om Leon inte löser det)
+
+**Externa media / investerare:**
+Alltid Erik. Aldrig någon annan utan Eriks uttryckliga OK.`
+  },
+  {
+    id: 'doc-int-009',
+    title: 'GitHub & Kodhantering — Workflow Guide',
+    category: 'Internt',
+    summary: 'Hur vi jobbar med Git: branches, commits, pull requests, code review och deployment-process.',
+    tags: ['github', 'git', 'branch', 'pull-request', 'code-review', 'deployment', 'workflow'],
+    updatedAt: '2026-03-28',
+    content: `## GitHub & Kodhantering — Workflow Guide
+
+### Repository-struktur
+
+**Org:** wolfoftyreso-debug (ska byta till wavult-group)
+**Monorepo:** wolfoftyreso-debug/hypbit
+
+Allt finns i ett repo. Fördelar: Delad konfiguration, en CI/CD-pipeline, konsekvent tooling.
+
+---
+
+### Branch-strategi
+
+**main** — Alltid deploybart. Varje merge till main deployas automatiskt via GitHub Actions.
+**develop** — Integration-branch. Testar sammansatt kod innan merge till main.
+**feature/[namn]** — Ny funktionalitet: feature/landvex-alerts, feature/zoomer-payout
+**fix/[namn]** — Buggfixar: fix/ecs-health-check, fix/stripe-webhook
+**hotfix/[namn]** — Kritiska produktionsfix: hotfix/auth-crash (merge direkt till main)
+
+**Regel:** Aldrig commita direkt till main. Alltid via pull request.
+
+---
+
+### Commit-konventioner
+
+Vi följer Conventional Commits-specifikationen:
+
+Format: type(scope): beskrivning
+
+Types:
+- feat: Ny funktionalitet
+- fix: Buggfix
+- docs: Dokumentationsändring
+- chore: Byggprocess, verktyg, dependencies
+- refactor: Omstrukturering utan ny funktionalitet
+- test: Tester
+
+Exempel:
+feat(quixzoom): add mission status webhook
+fix(ecs): correct health check endpoint path
+docs(knowledge): add Quixom Ads document
+chore(deps): upgrade Supabase client to 2.42.0
+
+**Varför konventioner?**
+Automatisk CHANGELOG-generering. Tydlighet i PR-reviews. Enklare att söka historik.
+
+---
+
+### Pull Request-processen
+
+**Skapa PR:**
+- Tydlig titel (använd commit-konventionen)
+- Beskrivning: Vad, varför, hur. Screenshots om UI-ändring.
+- Länka till relevant issue om det finns
+- Välj rätt reviewer
+
+**Review-regler:**
+- Minst 1 approve innan merge
+- Johan reviewar alla backend/infra-PRs
+- Alla reviewar sina egna features (självtest)
+- Comments ska besvaras, inte bara lösts (förklara varför)
+
+**Merge-regler:**
+- Squash merge för feature-branches (renare historik)
+- Merge commit för hotfixes (bevarar kontext)
+- Aldrig force-push till main
+
+---
+
+### GitHub Secrets (konfigurerade)
+
+Dessa Secrets finns och ska ALDRIG exponeras i kod:
+
+| Secret | Vad | Används av |
+|---|---|---|
+| AWS_ACCESS_KEY_ID | AWS IAM (begränsad) | deploy-*.yml |
+| AWS_SECRET_ACCESS_KEY | AWS IAM | deploy-*.yml |
+| CLOUDFLARE_API_TOKEN | CF Pages deploy | deploy-pages.yml |
+| CLOUDFLARE_ACCOUNT_ID | CF Account | deploy-pages.yml |
+| SUPABASE_SERVICE_KEY | quixzoom-v2 admin | deploy-quixzoom.yml |
+
+**IAM-policy för deploy-user:**
+- ecr:GetAuthorizationToken, ecr:BatchGetImage, ecr:PutImage
+- ecs:UpdateService, ecs:RegisterTaskDefinition
+- logs:GetLogEvents
+
+Ingenting mer. Principle of least privilege.
+
+---
+
+### Vanliga kommandon
+
+git clone git@github.com:wolfoftyreso-debug/hypbit.git
+cd hypbit
+git checkout -b feature/mitt-feature
+
+# Jobba, committa
+git add .
+git commit -m "feat(landvex): add alert severity filter"
+git push origin feature/mitt-feature
+
+# Öppna PR på GitHub → få review → merge
+# GitHub Actions deployer automatiskt om path-filter matchar`
+  },
+  {
+    id: 'doc-wg-007',
+    title: 'Wavult OS — Modul-status & Roadmap',
+    category: 'Wavult Group',
+    summary: 'Status för alla Wavult OS-moduler (SKELETON→ENTERPRISE), vad som är live och vad som byggs.',
+    tags: ['wavult-os', 'moduler', 'roadmap', 'status', 'maturity', 'alpha', 'beta', 'production'],
+    updatedAt: '2026-03-28',
+    content: `## Wavult OS — Modul-status & Roadmap
+
+### Maturitynivåer
+
+| Nivå | Betydelse |
+|---|---|
+| SKELETON | Arkitektur definierad, inget live |
+| ALPHA | Mockdata, grundläggande UI byggt |
+| BETA | Används av teamet, viss live-data |
+| PRODUCTION | Fullständigt live, stabilt |
+| ENTERPRISE | Battle-tested, SLA, audit-trail |
+
+---
+
+### Nuläge Per Modul (2026-03-28)
+
+**Core Operations**
+
+| Modul | Status | Anteckning |
+|---|---|---|
+| Dashboard | ALPHA | Mockdata, infrastrukturstatus live |
+| CRM | ALPHA | Mockdata, inga Supabase-queries live |
+| Milestones | ALPHA | UI klar, data-integration saknas |
+| Campaign OS | ALPHA | Grundvy byggd |
+| Submissions | BETA | Live Supabase-data från quixzoom-v2 |
+
+**Finance**
+
+| Modul | Status | Anteckning |
+|---|---|---|
+| Finance (overview) | ALPHA | Mockdata |
+| Transactions | ALPHA | Mockdata |
+| Payroll | ALPHA | Struktur klar, ej live |
+| Procurement | SKELETON | Ej påbörjat |
+
+**Organisation**
+
+| Modul | Status | Anteckning |
+|---|---|---|
+| Entities | ALPHA | Bolagsdata mockad |
+| Corporate (Bolagsadmin) | ALPHA | UI klar |
+| Legal Hub | ALPHA | Dokument-struktur klar |
+| Team | ALPHA | Teamdata hårdkodad |
+| People | SKELETON | Ej påbörjat |
+
+**Knowledge**
+
+| Modul | Status | Anteckning |
+|---|---|---|
+| Knowledge Hub (Kunskapsbas) | BETA | 27 dokument, live |
+| Knowledge Graph | BETA | Visualisering fungerar |
+| Academy | BETA | 11 kurser, progress i localStorage |
+| Zoomer-cert | ALPHA | Certifieringsflöde klar |
+| Idéportfolio | BETA | 13 projekt listade |
+
+**System**
+
+| Modul | Status | Anteckning |
+|---|---|---|
+| Communications | ALPHA | Morning Brief config |
+| Reports | SKELETON | Ej påbörjat |
+| Settings | ALPHA | Grundkonfiguration |
+| System Status | BETA | ECS/Supabase/CF live-status |
+| WHOOP | ALPHA | Hälsodata-integration (personlig) |
+| API Hub | ALPHA | API-dokumentation |
+| LLM Hub | ALPHA | Bernt-konfiguration |
+
+---
+
+### Roadmap — Thailand Workcamp (April 2026)
+
+**Mål: Knowledge Hub → PRODUCTION**
+- [ ] Alla 27 dokument korrekturlästa och uppdaterade
+- [ ] Academy-kurser för alla roller klara
+- [ ] ZoomerCert klar för Sverige-lansering
+
+**Mål: Finance → BETA**
+- [ ] Revolut Business API-integration (läs transaktioner)
+- [ ] Stripe Dashboard-integration (MRR, Churn-tracker)
+- [ ] Budget-vy med verkliga siffror
+
+**Mål: CRM → BETA**
+- [ ] Landvex kommunpipeline live i Supabase
+- [ ] 20 kommuner inlagda med status
+- [ ] Nästa åtgärder och datum
+
+**Mål: Submissions → PRODUCTION**
+- [ ] Full QuiXzoom submission-vy
+- [ ] AI-validering synlig i Wavult OS
+- [ ] Export till CSV/PDF
+
+---
+
+### Langsigtigt Mål (Q4 2026)
+
+Alla ALPHA → BETA.
+Finance + CRM + Legal Hub → PRODUCTION.
+Reports-modulen byggd och live (automatiska månadsrapporter per entitet).`
+  },
 ]
 
 // ─── Knowledge Graph Nodes ────────────────────────────────────────────────────
