@@ -1,3 +1,16 @@
+/**
+ * SERVICE REGISTRY — Internal Use Only
+ *
+ * Detta register är tillgängligt för autentiserade användare i Wavult OS.
+ * Systemet är internal-only och kräver Supabase auth för åtkomst.
+ *
+ * NOTERA: AWS Account ID och infrastruktur-detaljer är avsiktligt
+ * tillgängliga för teamet — detta är ett internt operations-verktyg.
+ *
+ * Om systemet någonsin görs publikt: flytta till /api/infrastructure
+ * med Bearer auth-gating på ECS-servern.
+ */
+
 // ─── Wavult OS — Service Registry ────────────────────────────────────────────
 // Fullständig infrastrukturregister för Wavult Group
 
@@ -307,7 +320,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
       status: 'active',
     },
     settings: {
-      'client_id': '65476e4f-b67d-4051-aaa5-14ebaa960b28',
+      'client_id': 'se credentials.env',
       'redirect_uri': 'https://api.hypbit.com/whoop/callback',
       'mode': 'development',
       'production_access': 'pending',

@@ -2,7 +2,7 @@
 // Provider hierarchy: Auth → Role → EntityScope → Operator → Events → Shell
 
 import React, { lazy, Suspense } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { AuthProvider, useAuth } from './shared/auth/AuthContext'
 import { LoginPage } from './shared/auth/LoginPage'
 import { RoleProvider, useRole, ROLES } from './shared/auth/RoleContext'
@@ -56,6 +56,7 @@ const MeetingView            = lazy(() => import('./features/decisions/MeetingVi
 const GovernanceDashboard    = lazy(() => import('./features/governance/GovernanceDashboard').then(m => ({ default: m.GovernanceDashboard })))
 const InfrastructureDashboard = lazy(() => import('./features/infrastructure/InfrastructureDashboard').then(m => ({ default: m.InfrastructureDashboard })))
 const CausalOS               = lazy(() => import('./features/causal-os/CausalOS').then(m => ({ default: m.CausalOS })))
+const CommandView            = lazy(() => import('./features/command-view/CommandView').then(m => ({ default: m.CommandView })))
 
 // ─── Page loader fallback ───────────────────────────────────────────────────────
 function PageLoader() {
@@ -107,7 +108,7 @@ function AuthenticatedApp() {
         <Shell>
           <Suspense fallback={<PageLoader />}>
             <Routes>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/" element={<CommandView />} />
               <Route path="/dashboard" element={<RoleDashboard />} />
               <Route path="/projects" element={<ProjectsView />} />
               <Route path="/tasks" element={<TasksView />} />
