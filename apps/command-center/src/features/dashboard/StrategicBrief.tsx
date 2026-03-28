@@ -81,10 +81,10 @@ const COMPETITORS: Competitor[] = [
     color: '#000000',
   },
   {
-    name: 'Keyloop/CDK',
-    category: 'Automotive DMS',
-    weakness: 'Per-seat pricing som straffar tillväxt. €1,200-1,800/mo utan ekonomi eller compliance. Gammal UX.',
-    ourResponse: '"Vi slår Keyloop på pris, funktionalitet och UX — och vi tar inga tillägg."',
+    name: 'Trimble / HERE',
+    category: 'Geospatial Data',
+    weakness: 'Statiska kartor och sensornätverk. Ingen crowdsourcad capture, ingen realtid på mark-nivå. Dyrt och svårt att skala.',
+    ourResponse: '"quiXzoom är ett levande capture-nätverk — de säljer gamla kartor."',
     color: '#E84142',
   },
   {
@@ -97,10 +97,10 @@ const COMPETITORS: Competitor[] = [
 ]
 
 const MARKET_FACTS = [
-  { stat: '4 500', label: 'oberoende bilverkstäder i Sverige (beachhead)', color: '#8B5CF6' },
-  { stat: '+18%', label: 'kommunal infrastrukturbudget YoY (Landvex)', color: '#EC4899' },
-  { stat: '2026', label: 'EU liberaliserar drone-regler — öppnar ny vertikal', color: '#F59E0B' },
-  { stat: '€1M', label: 'ARR möjlig med 23% penetration av verkstadsmarknaden', color: '#10B981' },
+  { stat: 'Juni 2026', label: 'quiXzoom-lansering Sverige — startskottet är skärgården', color: '#8B5CF6' },
+  { stat: '+18%', label: 'kommunal infrastrukturbudget YoY — Landvex-marknad växer', color: '#EC4899' },
+  { stat: 'Q1 2027', label: 'quiXzoom expansion — Nederländerna (marknad 2)', color: '#F59E0B' },
+  { stat: '€0→∞', label: 'Supply-first: zoomers samlar data → Quixom Ads monetiserar → Landvex enterprise', color: '#10B981' },
 ]
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
