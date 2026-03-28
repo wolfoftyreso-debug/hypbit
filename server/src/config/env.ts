@@ -41,6 +41,7 @@ const envSchema = z.object({
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
 
   // ── AI / Integrations (optional) ────────────────────────────────────────
+  OPENAI_API_KEY: z.string().optional(),
   ANTHROPIC_API_KEY: z.string().optional(),
   ELKS_API_USERNAME: z.string().optional(),
   ELKS_API_PASSWORD: z.string().optional(),
@@ -53,6 +54,11 @@ const envSchema = z.object({
   DUIX_APP_ID: z.string().optional(),
   DUIX_APP_SECRET: z.string().optional(),
   DUIX_CONVERSATION_ID: z.string().optional(),
+
+  // ── WHOOP Biometrics (optional) ─────────────────────────────────────────
+  WHOOP_CLIENT_ID: z.string().optional(),
+  WHOOP_CLIENT_SECRET: z.string().optional(),
+  WHOOP_REDIRECT_URI: z.string().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
@@ -82,8 +88,11 @@ export function validateEnv(): Env {
   if (!env.STRIPE_SECRET_KEY) {
     console.warn('⚠️  STRIPE_SECRET_KEY not set — payment features disabled');
   }
+  if (!env.OPENAI_API_KEY) {
+    console.warn('⚠️  OPENAI_API_KEY not set — OpenAI LLM disabled (fallback: Anthropic)');
+  }
   if (!env.ANTHROPIC_API_KEY) {
-    console.warn('⚠️  ANTHROPIC_API_KEY not set — AI features disabled');
+    console.warn('⚠️  ANTHROPIC_API_KEY not set — Anthropic LLM disabled (fallback: OpenAI)');
   }
   if (!env.EVA_BOT_TOKEN) {
     console.warn('⚠️  EVA_BOT_TOKEN not set — Eva bot disabled');

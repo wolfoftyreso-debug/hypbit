@@ -1,6 +1,10 @@
 // ============================================================
-// SMS Service — pixdrift Approval Engine
-// Supports: 46elks (Swedish primary), Twilio (fallback)
+// SMS Service — Wavult OS
+// Supports: 46elks (Swedish primary), Twilio (fallback/unconfigured)
+// ENV VARS: FORTYSIX_ELKS_USERNAME / FORTYSIX_ELKS_PASSWORD (credentials.env)
+//           ELKS_SENDER (optional, default: "Wavult")
+// Account: 14 200 SEK kredit, sender "Wavult" (alphanumeric, no inbound)
+// Audit: 2026-03-27 — API verified working, env var names corrected
 // ============================================================
 
 type SMSResult = {
@@ -20,9 +24,9 @@ export async function sendApprovalSMS46elks(
   token: string,
   workshopName?: string
 ): Promise<boolean> {
-  const apiUsername = process.env.ELKS_API_USERNAME;
-  const apiPassword = process.env.ELKS_API_PASSWORD;
-  const senderName = process.env.ELKS_SENDER || workshopName?.slice(0, 11) || 'Pixdrift';
+  const apiUsername = process.env.FORTYSIX_ELKS_USERNAME ?? process.env.ELKS_API_USERNAME;
+  const apiPassword = process.env.FORTYSIX_ELKS_PASSWORD ?? process.env.ELKS_API_PASSWORD;
+  const senderName = process.env.ELKS_SENDER || workshopName?.slice(0, 11) || 'Wavult';
 
   if (!apiUsername || !apiPassword) {
     return false; // Not configured
@@ -141,7 +145,7 @@ export async function sendApprovalSMS(
   console.log(`[SMS STUB] From:    ${workshopName}`);
   console.log(`[SMS STUB] Message: ${message}`);
   console.log(`[SMS STUB] ─────────────────────────────`);
-  console.log(`[SMS STUB] Configure ELKS_API_USERNAME/PASSWORD or TWILIO_* to send real SMS`);
+  console.log(`[SMS STUB] Configure FORTYSIX_ELKS_USERNAME/PASSWORD (or legacy ELKS_API_USERNAME/PASSWORD) to send real SMS`);
 
   return true; // Return true in dev so flow continues
 }
@@ -160,8 +164,8 @@ export async function sendReminderSMS(
   const message = `${workshopName}: Vi väntar fortfarande på ditt svar angående din bil. Godkänn eller avböj här: ${link}`;
 
   // Try 46elks
-  const apiUsername = process.env.ELKS_API_USERNAME;
-  const apiPassword = process.env.ELKS_API_PASSWORD;
+  const apiUsername = process.env.FORTYSIX_ELKS_USERNAME ?? process.env.ELKS_API_USERNAME;
+  const apiPassword = process.env.FORTYSIX_ELKS_PASSWORD ?? process.env.ELKS_API_PASSWORD;
 
   if (apiUsername && apiPassword) {
     const credentials = Buffer.from(`${apiUsername}:${apiPassword}`).toString('base64');
@@ -215,9 +219,9 @@ export async function sendGenericSMS(
   message: string,
   workshopName?: string
 ): Promise<boolean> {
-  const apiUsername = process.env.ELKS_API_USERNAME;
-  const apiPassword = process.env.ELKS_API_PASSWORD;
-  const senderName = process.env.ELKS_SENDER || workshopName?.slice(0, 11) || 'Pixdrift';
+  const apiUsername = process.env.FORTYSIX_ELKS_USERNAME ?? process.env.ELKS_API_USERNAME;
+  const apiPassword = process.env.FORTYSIX_ELKS_PASSWORD ?? process.env.ELKS_API_PASSWORD;
+  const senderName = process.env.ELKS_SENDER || workshopName?.slice(0, 11) || 'Wavult';
 
   if (apiUsername && apiPassword) {
     const credentials = Buffer.from(`${apiUsername}:${apiPassword}`).toString('base64');
