@@ -52,6 +52,7 @@ import legalReviewRouter from "./legal-review";
 import personnelRouter from "./personnel-api";
 import auditWorkspaceRouter from "./audit-workspace";
 import integrationRouter from "./integrations/integration-api";
+import llmRouter from "./llm/llm-api";
 import stripeRouter from "./stripe";
 import notificationsRouter from "./notifications";
 import { billingWebhookRouter } from './billing-webhook';
@@ -75,6 +76,7 @@ import paymentOrchestrationRouter from "./payment-orchestration";
 import customerStateRouter from "./customer-state";
 import customerPortalRouter from "./customer-portal";
 import revolutRouter from "./revolut";
+import whoopRouter from "./whoop/whoop-api";
 
 // ---------------------------------------------------------------------------
 // Auth router
@@ -163,6 +165,9 @@ const DEFAULT_ORIGINS = [
   "https://admin.pixdrift.com",
   "https://crm.pixdrift.com",
   "https://sales.pixdrift.com",
+  // Wavult OS frontend — Cloudflare Pages
+  "https://wavult-os.pages.dev",
+  "https://wavult.com",
 ];
 const allowedOrigins = corsOrigins.length > 0
   ? [...new Set([...corsOrigins, ...DEFAULT_ORIGINS])]
@@ -493,6 +498,7 @@ app.use(legalReviewRouter);
 app.use(personnelRouter);
 app.use(auditWorkspaceRouter);
 app.use(integrationRouter);
+app.use('/api', llmRouter);  // LLM Hub — /api/llm/complete, /api/llm/chat, /api/llm/status
 app.use("/api/stripe", stripeRouter);
 app.use("/api/notifications", notificationsRouter);
 app.use('/api/webhooks', billingWebhookRouter);
@@ -514,6 +520,7 @@ app.use('/api/payments', paymentOrchestrationRouter); // GET /api/payments/confi
 app.use('/api/customer-state', customerStateRouter);  // GET/POST /api/customer-state/:contact_id, GET /api/customer-state/by-token/:token
 app.use('/api/customer-portal', customerPortalRouter); // GET /api/customer-portal/:token
 app.use('/api/revolut', revolutRouter);               // GET /api/revolut/accounts|cards, POST /api/revolut/cards, GET /api/revolut/cost-report
+app.use('/whoop', whoopRouter);                       // WHOOP Biometrics — /whoop/auth, /whoop/callback, /whoop/status, /whoop/me, /whoop/team, /whoop/disconnect
 
 // ---------------------------------------------------------------------------
 // DMS — Dealer Management System (pixdrift automotive)
