@@ -14,6 +14,8 @@ export interface MeetingCadence {
   time?: string
   tools?: string[]
   automate?: boolean // Kan Bernt hantera detta automatiskt?
+  /** Referenskod till governance-register (WG-GOV-2026-001) */
+  refCode?: string
 }
 
 export const MEETING_CADENCE: MeetingCadence[] = [
@@ -48,6 +50,7 @@ export const MEETING_CADENCE: MeetingCadence[] = [
     time: 'Januari',
     tools: ['Wavult OS', 'Notion', 'Google Slides'],
     automate: false,
+    refCode: 'WG-GOV-2026-001',
   },
 
   // ── Nivå 2: Kvartalsmöten (Q-reviews) ──────────────────────────────────────
@@ -81,6 +84,7 @@ export const MEETING_CADENCE: MeetingCadence[] = [
     time: 'Sista veckan i mars, juni, september, december',
     tools: ['Wavult OS', 'Google Sheets', 'Notion'],
     automate: false,
+    refCode: 'WG-GOV-2026-001',
   },
 
   // ── Nivå 3: Månadsmöten ─────────────────────────────────────────────────────
@@ -113,6 +117,7 @@ export const MEETING_CADENCE: MeetingCadence[] = [
     time: 'Sista fredagen varje månad',
     tools: ['Wavult OS', 'WHOOP', 'Google Meet'],
     automate: true,
+    refCode: 'WG-GOV-2026-001',
   },
 
   // ── Nivå 4: Veckocykel ──────────────────────────────────────────────────────
@@ -143,6 +148,7 @@ export const MEETING_CADENCE: MeetingCadence[] = [
     time: 'Måndag 09:00',
     tools: ['Wavult OS', 'Google Meet'],
     automate: false,
+    refCode: 'WG-GOV-2026-001',
   },
   {
     id: 'weekly-tech',
@@ -169,6 +175,7 @@ export const MEETING_CADENCE: MeetingCadence[] = [
     time: 'Onsdag 10:00',
     tools: ['Wavult OS', 'GitHub', 'AWS Console'],
     automate: false,
+    refCode: 'WG-GOV-2026-001',
   },
   {
     id: 'weekly-sales-ops',
@@ -194,6 +201,7 @@ export const MEETING_CADENCE: MeetingCadence[] = [
     time: 'Torsdag 09:00',
     tools: ['Wavult OS CRM', 'Google Meet'],
     automate: false,
+    refCode: 'WG-GOV-2026-001',
   },
 
   // ── Nivå 5: Daglig produktionsvardag ───────────────────────────────────────
@@ -223,6 +231,7 @@ export const MEETING_CADENCE: MeetingCadence[] = [
     time: '08:30 (Bernt skickar Morning Brief 08:00)',
     tools: ['Wavult OS', 'Wavult OS Morning Brief (Bernt)', 'Telegram'],
     automate: true,
+    refCode: 'WG-GOV-2026-001',
   },
   {
     id: 'whoop-morning-check',
@@ -248,6 +257,7 @@ export const MEETING_CADENCE: MeetingCadence[] = [
     time: '08:00 (automatisk, körs av Bernt)',
     tools: ['WHOOP API', 'Wavult OS', 'Telegram (Bernt-alerts)'],
     automate: true,
+    refCode: 'WG-GOV-2026-001',
   },
 
   // ── Nivå 6: Incident & Eskalering ──────────────────────────────────────────
@@ -276,6 +286,7 @@ export const MEETING_CADENCE: MeetingCadence[] = [
     time: 'Omedelbart vid P1-incident',
     tools: ['Wavult OS Incident Center', 'PagerDuty / Telegram', 'AWS Console', 'GitHub'],
     automate: false,
+    refCode: 'WG-GOV-2026-001',
   },
   {
     id: 'legal-escalation',
@@ -302,6 +313,7 @@ export const MEETING_CADENCE: MeetingCadence[] = [
     time: 'Dennis eskalerar inom 2 timmar från identifiering',
     tools: ['Wavult OS Legal Hub', 'Telegram', 'Loopia Mail'],
     automate: false,
+    refCode: 'WG-GOV-2026-001',
   },
   {
     id: 'financial-alert',
@@ -328,6 +340,7 @@ export const MEETING_CADENCE: MeetingCadence[] = [
     time: 'Winston flaggar vid avvikelse >10% (automatisk monitoring)',
     tools: ['Wavult OS Finance Hub', 'Google Sheets', 'Telegram (Bernt-alert)'],
     automate: true,
+    refCode: 'WG-GOV-2026-001',
   },
 ]
 

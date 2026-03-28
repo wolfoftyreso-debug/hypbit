@@ -169,6 +169,7 @@ const ROUTE_LABELS: Record<string, string> = {
   '/meeting-cadence': 'Möteshierarki',
   '/decisions': 'Beslutssystem',
   '/decisions/new': 'Nytt möte',
+  '/governance': 'Governance Register',
 }
 
 function getBreadcrumb(pathname: string): string {

@@ -3,7 +3,7 @@
 // INGENTING saknar ägare, referenskod eller status.
 
 import React, { useState, useMemo } from 'react'
-import { Shield, ChevronDown, ChevronRight, AlertTriangle, Clock, CheckCircle2, Circle, Loader2, User } from 'lucide-react'
+import { Shield, ChevronDown, ChevronRight, AlertTriangle, CheckCircle2, Circle, Loader2, User } from 'lucide-react'
 import {
   GOVERNANCE_REGISTRY,
   getCompletionStats,

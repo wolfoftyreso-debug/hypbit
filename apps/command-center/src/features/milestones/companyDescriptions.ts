@@ -33,6 +33,8 @@ export interface CompanyDescription {
   marknader?: string[]
   /** Planerat startdatum / registreringsdatum */
   startDatum?: string
+  /** Governance-referenskod (WG-LEGAL-2026-XXX) */
+  refCode?: string
 }
 
 export const COMPANY_DESCRIPTIONS: CompanyDescription[] = [
@@ -54,6 +56,7 @@ export const COMPANY_DESCRIPTIONS: CompanyDescription[] = [
     produktgren: 'Holding',
     relation: 'Moderbolag till samtliga dotterbolag',
     startDatum: '2026-04-10',
+    refCode: 'WG-LEGAL-2026-004',
   },
   {
     id: 'wavult-devops-fzco',
@@ -72,6 +75,7 @@ export const COMPANY_DESCRIPTIONS: CompanyDescription[] = [
     produktgren: 'DevOps',
     relation: 'Dotterbolag till Wavult Group FZCO',
     startDatum: '2026-04-10',
+    refCode: 'WG-LEGAL-2026-004',
   },
 
   // ─── quiXzoom ────────────────────────────────────────────────────────────
@@ -93,6 +97,7 @@ export const COMPANY_DESCRIPTIONS: CompanyDescription[] = [
     relation: 'Dotterbolag till Wavult Group FZCO',
     marknader: ['USA', 'Sverige', 'Nederländerna'],
     startDatum: '2026-04-05',
+    refCode: 'WG-LEGAL-2026-003',
   },
   {
     id: 'quixzoom-uab',
@@ -112,6 +117,7 @@ export const COMPANY_DESCRIPTIONS: CompanyDescription[] = [
     relation: 'Dotterbolag till Wavult Group FZCO',
     marknader: ['Sverige', 'Nederländerna', 'EU'],
     startDatum: '2026-05-01',
+    refCode: 'WG-LEGAL-2026-001',
   },
 
   // ─── Landvex ─────────────────────────────────────────────────────────────
@@ -133,6 +139,7 @@ export const COMPANY_DESCRIPTIONS: CompanyDescription[] = [
     relation: 'Dotterbolag till Wavult Group FZCO',
     marknader: ['Sverige'],
     startDatum: '2025-01-01',
+    refCode: 'WG-LEGAL-2026-002',
   },
   {
     id: 'landvex-inc',
@@ -152,6 +159,7 @@ export const COMPANY_DESCRIPTIONS: CompanyDescription[] = [
     relation: 'Dotterbolag till Wavult Group FZCO',
     marknader: ['USA'],
     startDatum: '2026-04-08',
+    refCode: 'WG-LEGAL-2026-005',
   },
 ]
 
