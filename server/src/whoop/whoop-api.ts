@@ -42,57 +42,45 @@ function getFrontendUrl(): string {
   return process.env.WHOOP_FRONTEND_URL ?? 'https://wavult-os.pages.dev';
 }
 
-// ─── State store — binder OAuth state till userId (löser multi-instance via kort TTL) ───
-// State är HMAC-signerat + userId-bundet. TTL 10 min. Supabase-migration i fas 2.
+// ─── State store — Supabase-baserat (fungerar i multi-instance ECS) ──────────
+// State sparas i whoop_oauth_states-tabellen med TTL 10 min och engångsanvändning.
 
-import { createHmac, timingSafeEqual } from 'crypto';
+import { supabase } from '../supabase';
 
-interface StateEntry {
-  userId: string;
-  createdAt: number;
+async function createState(userId: string): Promise<string> {
+  const stateId = randomUUID();
+  await supabase.from('whoop_oauth_states').insert({
+    state_id: stateId,
+    user_id: userId,
+  });
+  // Rensa gamla states (> 10 min)
+  await supabase.from('whoop_oauth_states')
+    .delete()
+    .lt('created_at', new Date(Date.now() - 10 * 60 * 1000).toISOString());
+  return stateId;
 }
 
-const stateStore = new Map<string, StateEntry>();
-
-function cleanStates() {
-  const tenMinutesAgo = Date.now() - 10 * 60 * 1000;
-  for (const [k, v] of stateStore.entries()) {
-    if (v.createdAt < tenMinutesAgo) stateStore.delete(k);
-  }
-}
-
-function createSignedState(uuid: string, userId: string): string {
-  const secret = process.env.OAUTH_STATE_SECRET ?? 'wavult-whoop-state-secret-change-me';
-  const payload = `${uuid}:${userId}`;
-  const hmac = createHmac('sha256', secret).update(payload).digest('hex');
-  // Spara i store så callback kan slå upp userId
-  cleanStates();
-  stateStore.set(uuid, { userId, createdAt: Date.now() });
-  return `${uuid}.${hmac}`;
-}
-
-function verifyAndConsumeState(state: string): { valid: boolean; userId: string | null } {
+async function verifyAndConsumeState(state: string): Promise<{ valid: boolean; userId: string | null }> {
   try {
-    const dotIdx = state.indexOf('.');
-    if (dotIdx === -1) return { valid: false, userId: null };
-    const uuid = state.slice(0, dotIdx);
-    const hmac = state.slice(dotIdx + 1);
-    const entry = stateStore.get(uuid);
-    if (!entry) return { valid: false, userId: null }; // Okänt state
+    const { data, error } = await supabase
+      .from('whoop_oauth_states')
+      .select('user_id, used, created_at')
+      .eq('state_id', state)
+      .single();
 
-    const secret = process.env.OAUTH_STATE_SECRET ?? 'wavult-whoop-state-secret-change-me';
-    const expected = createHmac('sha256', secret).update(`${uuid}:${entry.userId}`).digest('hex');
+    if (error || !data) return { valid: false, userId: null };
+    if (data.used) return { valid: false, userId: null };
 
-    let hmacBuf: Buffer, expectedBuf: Buffer;
-    try {
-      hmacBuf = Buffer.from(hmac, 'hex');
-      expectedBuf = Buffer.from(expected, 'hex');
-    } catch { return { valid: false, userId: null }; }
+    // Kolla TTL (10 min)
+    const age = Date.now() - new Date(data.created_at).getTime();
+    if (age > 10 * 60 * 1000) return { valid: false, userId: null };
 
-    if (hmacBuf.length !== expectedBuf.length) return { valid: false, userId: null };
-    const valid = timingSafeEqual(hmacBuf, expectedBuf);
-    if (valid) stateStore.delete(uuid); // Engångsanvändning
-    return { valid, userId: valid ? entry.userId : null };
+    // Markera som använt (engångsanvändning)
+    await supabase.from('whoop_oauth_states')
+      .update({ used: true })
+      .eq('state_id', state);
+
+    return { valid: true, userId: data.user_id };
   } catch {
     return { valid: false, userId: null };
   }
@@ -165,7 +153,7 @@ async function getValidAccessToken(userId: string): Promise<string | null> {
 // GET /whoop/auth — starta OAuth-flödet (kräver inloggning via Bearer header)
 // ─────────────────────────────────────────────────────────────────────────────
 
-router.get('/auth', requireAuth, (req: Request, res: Response) => {
+router.get('/auth', requireAuth, async (req: Request, res: Response) => {
   const cfg = getConfig();
   const userId = (req as any).user.id;
 
@@ -175,7 +163,7 @@ router.get('/auth', requireAuth, (req: Request, res: Response) => {
     });
   }
 
-  const state = createSignedState(randomUUID(), userId);
+  const state = await createState(userId);
   const params = new URLSearchParams({
     response_type: 'code',
     client_id: cfg.WHOOP_CLIENT_ID,
@@ -192,7 +180,7 @@ router.get('/auth', requireAuth, (req: Request, res: Response) => {
 // Frontend POSTar med JWT, får tillbaka en URL att navigera till
 // ─────────────────────────────────────────────────────────────────────────────
 
-router.post('/auth-url', requireAuth, (req: Request, res: Response) => {
+router.post('/auth-url', requireAuth, async (req: Request, res: Response) => {
   const cfg = getConfig();
   const userId = (req as any).user.id;
 
@@ -202,7 +190,7 @@ router.post('/auth-url', requireAuth, (req: Request, res: Response) => {
     });
   }
 
-  const state = createSignedState(randomUUID(), userId);
+  const state = await createState(userId);
   const params = new URLSearchParams({
     response_type: 'code',
     client_id: cfg.WHOOP_CLIENT_ID,
@@ -229,7 +217,7 @@ router.get('/callback', async (req: Request, res: Response) => {
   }
 
   // Validera state och hämta userId (state är bundet till userId vid skapandet)
-  const { valid, userId: stateUserId } = state ? verifyAndConsumeState(state) : { valid: false, userId: null };
+  const { valid, userId: stateUserId } = state ? await verifyAndConsumeState(state) : { valid: false, userId: null };
   if (!valid || !stateUserId) {
     console.warn('[WHOOP] Ogiltigt state — CSRF eller session timeout');
     return res.redirect(`${frontendUrl}/whoop?error=invalid_state`);
