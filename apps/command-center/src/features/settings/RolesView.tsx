@@ -116,7 +116,7 @@ export function RolesView() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setSelectedRole(null)}
-            className="text-xs text-gray-500 hover:text-gray-300 transition-colors flex items-center gap-1"
+            className="text-xs text-gray-500 hover:text-gray-600 transition-colors flex items-center gap-1"
           >
             ← Tillbaka
           </button>
@@ -127,27 +127,27 @@ export function RolesView() {
             {role.emoji}
           </div>
           <div>
-            <h2 className="text-sm font-bold text-white">{role.person} — {role.title}</h2>
-            <p className="text-xs text-gray-600">{role.description}</p>
+            <h2 className="text-sm font-bold text-gray-900">{role.person} — {role.title}</h2>
+            <p className="text-xs text-gray-500">{role.description}</p>
           </div>
         </div>
 
         {/* Module toggles */}
-        <div className="rounded-xl border border-white/[0.06] bg-[#0A0C14] divide-y divide-white/[0.04] overflow-hidden">
+        <div className="rounded-xl border border-gray-200 bg-[#0A0C14] divide-y divide-gray-100 overflow-hidden">
           {ALL_MODULES.map(mod => {
             const enabled = modules.includes(mod.id)
             const isAdminLocked = selectedRole === 'admin'
             return (
               <div key={mod.id} className="flex items-center gap-4 px-5 py-3">
                 <span className="text-base leading-none w-6 text-center flex-shrink-0">{mod.icon}</span>
-                <span className="flex-1 text-sm text-gray-300">{mod.label}</span>
+                <span className="flex-1 text-sm text-gray-600">{mod.label}</span>
                 <button
                   onClick={() => !isAdminLocked && toggleModule(selectedRole, mod.id)}
                   disabled={isAdminLocked}
                   className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors flex-shrink-0 ${
                     isAdminLocked ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
                   }`}
-                  style={{ background: enabled ? role.color : '#374151' }}
+                  style={{ background: enabled ? role.color : '#F3F4F6' }}
                 >
                   <span
                     className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
@@ -193,7 +193,7 @@ export function RolesView() {
 
   return (
     <div className="space-y-3">
-      <p className="text-xs text-gray-600">Klicka på en roll för att redigera modultillgång.</p>
+      <p className="text-xs text-gray-500">Klicka på en roll för att redigera modultillgång.</p>
 
       {ROLES.map(r => {
         const modules = getModules(r.id)
@@ -203,7 +203,7 @@ export function RolesView() {
           <button
             key={r.id}
             onClick={() => setSelectedRole(r.id)}
-            className="w-full text-left rounded-xl border border-white/[0.06] bg-[#0A0C14] px-5 py-4 hover:border-white/[0.12] transition-all group"
+            className="w-full text-left rounded-xl border border-gray-200 bg-[#0A0C14] px-5 py-4 hover:border-white/[0.12] transition-all group"
           >
             <div className="flex items-center gap-3">
               {/* Avatar */}
@@ -217,7 +217,7 @@ export function RolesView() {
               {/* Info */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-white">{r.person}</span>
+                  <span className="text-sm font-semibold text-gray-900">{r.person}</span>
                   <span
                     className="text-xs px-1.5 py-0.5 rounded font-mono"
                     style={{ background: r.color + '15', color: r.color }}
@@ -225,16 +225,16 @@ export function RolesView() {
                     {r.title}
                   </span>
                 </div>
-                <p className="text-xs text-gray-600 mt-0.5 truncate">{r.description}</p>
+                <p className="text-xs text-gray-500 mt-0.5 truncate">{r.description}</p>
               </div>
 
               {/* Module count */}
               <div className="text-right flex-shrink-0">
                 <div className="text-sm font-bold" style={{ color: r.color }}>{activeModules.length}</div>
-                <div className="text-[9px] text-gray-700 font-mono">moduler</div>
+                <div className="text-[9px] text-gray-600 font-mono">moduler</div>
               </div>
 
-              <span className="text-gray-700 group-hover:text-gray-400 transition-colors text-sm flex-shrink-0">›</span>
+              <span className="text-gray-600 group-hover:text-gray-500 transition-colors text-sm flex-shrink-0">›</span>
             </div>
 
             {/* Module pills */}
@@ -249,7 +249,7 @@ export function RolesView() {
                 </span>
               ))}
               {activeModules.length > 8 && (
-                <span className="text-[9px] text-gray-700 font-mono px-1.5 py-0.5">
+                <span className="text-[9px] text-gray-600 font-mono px-1.5 py-0.5">
                   +{activeModules.length - 8} till
                 </span>
               )}

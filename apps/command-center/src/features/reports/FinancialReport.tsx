@@ -42,48 +42,48 @@ function PLTable({ entity, months }: { entity: EntityFinancials; months: Month[]
 
   return (
     <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl overflow-hidden">
-      <div className="px-4 py-3 border-b border-white/[0.06] flex items-center gap-2">
+      <div className="px-4 py-3 border-b border-gray-200 flex items-center gap-2">
         <span className="h-2 w-2 rounded-full" style={{ background: entity.color }} />
-        <span className="text-xs font-bold text-white">{entity.shortName}</span>
-        <span className="text-[9px] text-gray-600 font-mono ml-1">{entity.country}</span>
+        <span className="text-xs font-bold text-gray-900">{entity.shortName}</span>
+        <span className="text-[9px] text-gray-500 font-mono ml-1">{entity.country}</span>
       </div>
       <div className="p-4 space-y-2">
         {/* P&L */}
         <div className="space-y-1">
           <div className="flex justify-between text-xs">
-            <span className="text-gray-400">Intäkter</span>
+            <span className="text-gray-500">Intäkter</span>
             <span className="text-green-400 font-mono">{fmt(revenue)}</span>
           </div>
           <div className="flex justify-between text-xs">
-            <span className="text-gray-400">Kostnader</span>
+            <span className="text-gray-500">Kostnader</span>
             <span className="text-red-400 font-mono">-{fmt(expenses)}</span>
           </div>
           <div className="h-px bg-white/[0.08] my-2" />
           <div className="flex justify-between text-xs font-bold">
-            <span className="text-white">Resultat</span>
+            <span className="text-gray-900">Resultat</span>
             <span className={result >= 0 ? 'text-green-400' : 'text-red-400'} style={{ fontFamily: 'monospace' }}>
               {result >= 0 ? '+' : ''}{fmt(result)}
             </span>
           </div>
           <div className="flex justify-between text-xs">
-            <span className="text-gray-600">Marginal</span>
+            <span className="text-gray-500">Marginal</span>
             <span className={`font-mono ${parseFloat(margin) >= 0 ? 'text-green-600' : 'text-red-600'}`}>{margin}%</span>
           </div>
         </div>
 
         {/* Balance */}
-        <div className="mt-3 pt-3 border-t border-white/[0.06] space-y-1">
-          <p className="text-[9px] text-gray-600 uppercase font-mono tracking-wider mb-1.5">Balansräkning</p>
+        <div className="mt-3 pt-3 border-t border-gray-200 space-y-1">
+          <p className="text-[9px] text-gray-500 uppercase font-mono tracking-wider mb-1.5">Balansräkning</p>
           <div className="flex justify-between text-xs">
             <span className="text-gray-500">Tillgångar</span>
-            <span className="text-gray-300 font-mono">{fmt(entity.assets)}</span>
+            <span className="text-gray-600 font-mono">{fmt(entity.assets)}</span>
           </div>
           <div className="flex justify-between text-xs">
             <span className="text-gray-500">Skulder</span>
-            <span className="text-gray-300 font-mono">{fmt(entity.liabilities)}</span>
+            <span className="text-gray-600 font-mono">{fmt(entity.liabilities)}</span>
           </div>
           <div className="flex justify-between text-xs font-semibold">
-            <span className="text-gray-400">Eget kapital</span>
+            <span className="text-gray-500">Eget kapital</span>
             <span className="font-mono" style={{ color: entity.color }}>{fmt(entity.equity)}</span>
           </div>
         </div>
@@ -136,12 +136,12 @@ export function FinancialReport() {
       {/* Controls */}
       <div className="flex flex-wrap items-center gap-3">
         {/* Period toggle */}
-        <div className="flex rounded-lg border border-white/[0.08] overflow-hidden text-xs">
+        <div className="flex rounded-lg border border-gray-200 overflow-hidden text-xs">
           {(['month','quarter','year'] as Period[]).map(p => (
             <button
               key={p}
               onClick={() => setPeriod(p)}
-              className={`px-3 py-1.5 transition-colors ${period === p ? 'bg-brand-accent/20 text-brand-accent' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`px-3 py-1.5 transition-colors ${period === p ? 'bg-brand-accent/20 text-brand-accent' : 'text-gray-500 hover:text-gray-600'}`}
             >
               {p === 'month' ? 'Månad' : p === 'quarter' ? 'Kvartal' : 'År'}
             </button>
@@ -153,7 +153,7 @@ export function FinancialReport() {
           <select
             value={monthIdx}
             onChange={e => setMonthIdx(Number(e.target.value))}
-            className="text-xs bg-[#0D0F1A] border border-white/[0.08] rounded-lg px-2.5 py-1.5 text-gray-300 focus:outline-none"
+            className="text-xs bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 text-gray-600 focus:outline-none"
           >
             {MONTHS.map((m, i) => <option key={m} value={i}>{MONTH_LABELS[m]} 2026</option>)}
           </select>
@@ -164,7 +164,7 @@ export function FinancialReport() {
           <select
             value={quarterIdx}
             onChange={e => setQuarterIdx(Number(e.target.value))}
-            className="text-xs bg-[#0D0F1A] border border-white/[0.08] rounded-lg px-2.5 py-1.5 text-gray-300 focus:outline-none"
+            className="text-xs bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 text-gray-600 focus:outline-none"
           >
             {QUARTERS.map((q, i) => <option key={q.label} value={i}>{q.label} 2026</option>)}
           </select>
@@ -174,7 +174,7 @@ export function FinancialReport() {
         <select
           value={entityId}
           onChange={e => setEntityId(e.target.value)}
-          className="text-xs bg-[#0D0F1A] border border-white/[0.08] rounded-lg px-2.5 py-1.5 text-gray-300 focus:outline-none ml-auto"
+          className="text-xs bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 text-gray-600 focus:outline-none ml-auto"
         >
           <option value="wavult-group">Wavult Group (konsoliderat)</option>
           <option value="all">Alla entiteter</option>
@@ -212,12 +212,12 @@ export function FinancialReport() {
       {period === 'year' && entityId !== 'all' && (() => {
         const entity = ENTITY_FINANCIALS.find(e => e.id === entityId) ?? ENTITY_FINANCIALS[0]
         return (
-          <div className="bg-white/[0.02] border border-white/[0.06] rounded-xl p-4">
+          <div className="bg-white/[0.02] border border-gray-200 rounded-xl p-4">
             <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-2">Intäkt (grön) vs Kostnad (röd) per månad</p>
             <MiniBarChart entity={entity} months={MONTHS} />
             <div className="flex mt-1">
               {MONTHS.map(m => (
-                <div key={m} className="flex-1 text-center text-[8px] text-gray-700 font-mono">{MONTH_LABELS[m]}</div>
+                <div key={m} className="flex-1 text-center text-[8px] text-gray-600 font-mono">{MONTH_LABELS[m]}</div>
               ))}
             </div>
           </div>

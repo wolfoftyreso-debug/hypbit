@@ -72,12 +72,12 @@ function ProviderBadge({ provider, fallbackUsed }: { provider: LLMResult['provid
 
 function StatusPanel({ status, loading }: { status: LLMStatus | null; loading: boolean }) {
   return (
-    <div className="flex flex-wrap items-center gap-3 px-4 py-2 bg-white/[0.03] border border-white/[0.08] rounded-xl text-xs font-mono">
-      <span className="text-white/40">PROVIDERS</span>
-      {loading && <span className="text-white/30 animate-pulse">Laddar...</span>}
+    <div className="flex flex-wrap items-center gap-3 px-4 py-2 bg-white/[0.03] border border-gray-200 rounded-xl text-xs font-mono">
+      <span className="text-gray-900/40">PROVIDERS</span>
+      {loading && <span className="text-gray-900/30 animate-pulse">Laddar...</span>}
       {!loading && !status && <span className="text-red-400/70">Kunde inte hämta status</span>}
       {!loading && status && status.providers.map(p => (
-        <span key={p.name} className={`flex items-center gap-1.5 ${p.available ? 'text-emerald-400' : 'text-white/30'}`}>
+        <span key={p.name} className={`flex items-center gap-1.5 ${p.available ? 'text-emerald-400' : 'text-gray-900/30'}`}>
           {p.available ? '✅' : '❌'}
           <span className="capitalize">{p.name === 'openai' ? 'OpenAI' : 'Anthropic'}</span>
         </span>
@@ -154,7 +154,7 @@ function ChatTab() {
       {/* Messages */}
       <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-1">
         {messages.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-48 text-white/20 text-sm">
+          <div className="flex flex-col items-center justify-center h-48 text-gray-900/20 text-sm">
             <span className="text-4xl mb-3">🧠</span>
             <span>Starta konversationen...</span>
           </div>
@@ -168,10 +168,10 @@ function ChatTab() {
               <div
                 className={`px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap ${
                   msg.role === 'user'
-                    ? 'bg-blue-600 text-white rounded-br-sm'
+                    ? 'bg-blue-600 text-gray-900 rounded-br-sm'
                     : msg.provider === 'error'
                     ? 'bg-red-500/10 border border-red-500/20 text-red-300 rounded-bl-sm'
-                    : 'bg-white/[0.07] text-white/90 rounded-bl-sm'
+                    : 'bg-white/[0.07] text-gray-900/90 rounded-bl-sm'
                 }`}
               >
                 {msg.content}
@@ -209,13 +209,13 @@ function ChatTab() {
           }}
           placeholder="Skriv ett meddelande... (Enter för att skicka, Shift+Enter för ny rad)"
           rows={2}
-          className="flex-1 bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-blue-500 focus:bg-white/[0.08] resize-none"
+          className="flex-1 bg-white/[0.05] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-900/20 focus:outline-none focus:border-blue-500 focus:bg-white/[0.08] resize-none"
           disabled={loading}
         />
         <button
           onClick={sendMessage}
           disabled={loading || !input.trim()}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl transition-colors font-medium text-sm flex-shrink-0"
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-gray-900 rounded-xl transition-colors font-medium text-sm flex-shrink-0"
         >
           {loading ? '...' : '↑'}
         </button>
@@ -224,7 +224,7 @@ function ChatTab() {
       {messages.length > 0 && (
         <button
           onClick={() => setMessages([])}
-          className="mt-2 text-xs text-white/20 hover:text-white/40 transition-colors self-center"
+          className="mt-2 text-xs text-gray-900/20 hover:text-gray-900/40 transition-colors self-center"
         >
           Rensa konversation
         </button>
@@ -279,31 +279,31 @@ function PlaygroundTab() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <label className="block text-xs text-white/40 font-mono mb-1.5">SYSTEM PROMPT (valfri)</label>
+        <label className="block text-xs text-gray-900/40 font-mono mb-1.5">SYSTEM PROMPT (valfri)</label>
         <textarea
           value={systemPrompt}
           onChange={e => setSystemPrompt(e.target.value)}
           placeholder="Du är en hjälpsam assistent..."
           rows={3}
-          className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-blue-500 focus:bg-white/[0.08] resize-none font-mono"
+          className="w-full bg-white/[0.05] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-900/20 focus:outline-none focus:border-blue-500 focus:bg-white/[0.08] resize-none font-mono"
         />
       </div>
 
       <div>
-        <label className="block text-xs text-white/40 font-mono mb-1.5">USER PROMPT *</label>
+        <label className="block text-xs text-gray-900/40 font-mono mb-1.5">USER PROMPT *</label>
         <textarea
           value={userPrompt}
           onChange={e => setUserPrompt(e.target.value)}
           placeholder="Skriv din prompt här..."
           rows={4}
-          className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:border-blue-500 focus:bg-white/[0.08] resize-none"
+          className="w-full bg-white/[0.05] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-900/20 focus:outline-none focus:border-blue-500 focus:bg-white/[0.08] resize-none"
         />
       </div>
 
       <button
         onClick={run}
         disabled={loading || !userPrompt.trim()}
-        className="self-start px-6 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl transition-colors font-medium text-sm"
+        className="self-start px-6 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed text-gray-900 rounded-xl transition-colors font-medium text-sm"
       >
         {loading ? '⏳ Kör...' : '▶ Kör'}
       </button>
@@ -314,7 +314,7 @@ function PlaygroundTab() {
           <div className="flex flex-wrap items-center gap-3 text-xs">
             <ProviderBadge provider={result.provider} fallbackUsed={result.fallbackUsed} />
             {latencyMs !== null && (
-              <span className="text-white/30 font-mono">{latencyMs} ms</span>
+              <span className="text-gray-900/30 font-mono">{latencyMs} ms</span>
             )}
             {result.fallbackUsed && result.provider !== 'error' && (
               <span className="text-amber-400/70">Fallback användes</span>
@@ -325,7 +325,7 @@ function PlaygroundTab() {
           <div className={`p-4 rounded-xl border text-sm whitespace-pre-wrap leading-relaxed ${
             result.provider === 'error'
               ? 'bg-red-500/10 border-red-500/20 text-red-300'
-              : 'bg-white/[0.04] border-white/[0.08] text-white/90'
+              : 'bg-white/[0.04] border-gray-200 text-gray-900/90'
           }`}>
             {result.provider === 'error'
               ? (result.userMessage ?? 'Systemet är tillfälligt otillgängligt.')
@@ -369,16 +369,16 @@ export function LLMHub() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#080C10] text-white">
+    <div className="min-h-screen bg-[#080C10] text-gray-900">
       {/* Header */}
-      <div className="border-b border-white/10 bg-[#0D1117]/80 backdrop-blur-sm sticky top-0 z-10">
+      <div className="border-b border-gray-200 bg-[#0D1117]/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-start justify-between flex-wrap gap-3">
             <div>
-              <h1 className="text-xl font-bold text-white flex items-center gap-2">
+              <h1 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                 🧠 LLM Hub
               </h1>
-              <p className="text-sm text-white/40 mt-0.5">
+              <p className="text-sm text-gray-900/40 mt-0.5">
                 GPT-4.6 → Claude Sonnet → Graceful Error
               </p>
             </div>
@@ -392,8 +392,8 @@ export function LLMHub() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeTab === tab.id
-                    ? 'bg-blue-600 text-white'
-                    : 'text-white/60 hover:text-white hover:bg-white/10'
+                    ? 'bg-blue-600 text-gray-900'
+                    : 'text-gray-900/60 hover:text-gray-900 hover:bg-white/10'
                 }`}
               >
                 <span>{tab.icon}</span>

@@ -49,7 +49,7 @@ export function TaxView() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-lg font-bold text-white">Moms &amp; Skatt</h2>
+        <h2 className="text-lg font-bold text-gray-900">Moms &amp; Skatt</h2>
         <p className="text-xs text-gray-500 mt-0.5">Momsperioder per jurisdiktion — Wavult Group</p>
       </div>
 
@@ -66,11 +66,11 @@ export function TaxView() {
       </div>
 
       {/* Swedish VAT rates explanation */}
-      <div className="rounded-xl border border-white/[0.06] bg-[#0D0F1A] overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/[0.06]">
-          <span className="text-xs font-semibold text-white">🇸🇪 Svenska momssatser</span>
+      <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+        <div className="px-4 py-3 border-b border-gray-200">
+          <span className="text-xs font-semibold text-gray-900">🇸🇪 Svenska momssatser</span>
         </div>
-        <div className="divide-y divide-white/[0.04]">
+        <div className="divide-y divide-gray-100">
           {[
             { rate: '25%', desc: 'Standardmoms', examples: 'De flesta varor och tjänster', color: '#EF4444' },
             { rate: '12%', desc: 'Reducerad sats', examples: 'Mat, restaurang, hotell, böcker', color: '#F59E0B' },
@@ -80,7 +80,7 @@ export function TaxView() {
             <div key={row.rate} className="flex items-center gap-3 px-4 py-2.5">
               <span className="text-[15px] font-bold font-mono w-12 flex-shrink-0" style={{ color: row.color }}>{row.rate}</span>
               <div className="flex-1">
-                <span className="text-xs text-white font-semibold">{row.desc}</span>
+                <span className="text-xs text-gray-900 font-semibold">{row.desc}</span>
                 <span className="text-xs text-gray-500 ml-2">{row.examples}</span>
               </div>
             </div>
@@ -116,11 +116,11 @@ export function TaxView() {
       </div>
 
       {/* Jurisdiction overview */}
-      <div className="rounded-xl border border-white/[0.06] bg-[#0D0F1A] overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/[0.06]">
-          <span className="text-xs font-semibold text-white">Momssatser per jurisdiktion</span>
+      <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+        <div className="px-4 py-3 border-b border-gray-200">
+          <span className="text-xs font-semibold text-gray-900">Momssatser per jurisdiktion</span>
         </div>
-        <div className="divide-y divide-white/[0.04]">
+        <div className="divide-y divide-gray-100">
           {availableJurisdictions.map(fe => {
             const info = VAT_INFO[fe.jurisdiction] ?? { rate: '—', notes: 'Okänd', flag: '🌍' }
             return (
@@ -128,9 +128,9 @@ export function TaxView() {
                 <span className="text-lg flex-shrink-0">{info.flag}</span>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-semibold text-white">{fe.jurisdiction}</span>
+                    <span className="text-xs font-semibold text-gray-900">{fe.jurisdiction}</span>
                     <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: fe.color }} />
-                    <span className="text-[9px] font-mono text-gray-600">{fe.shortName}</span>
+                    <span className="text-[9px] font-mono text-gray-500">{fe.shortName}</span>
                   </div>
                   <p className="text-xs text-gray-500 mt-0.5">{info.notes}</p>
                 </div>
@@ -142,9 +142,9 @@ export function TaxView() {
       </div>
 
       {/* Tax periods */}
-      <div className="rounded-xl border border-white/[0.06] bg-[#0D0F1A] overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/[0.06]">
-          <span className="text-xs font-semibold text-white">Momsperioder</span>
+      <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+        <div className="px-4 py-3 border-b border-gray-200">
+          <span className="text-xs font-semibold text-gray-900">Momsperioder</span>
         </div>
 
         {/* Urgent unreported first */}
@@ -159,9 +159,9 @@ export function TaxView() {
           </div>
         )}
 
-        <div className="divide-y divide-white/[0.04] pb-2">
+        <div className="divide-y divide-gray-100 pb-2">
           {/* Header */}
-          <div className="grid grid-cols-12 px-4 py-2 text-[9px] font-mono text-gray-600 uppercase tracking-wider">
+          <div className="grid grid-cols-12 px-4 py-2 text-[9px] font-mono text-gray-500 uppercase tracking-wider">
             <span className="col-span-2">Bolag</span>
             <span className="col-span-2">Jurisdiktion</span>
             <span className="col-span-2">Period</span>
@@ -182,12 +182,12 @@ export function TaxView() {
               >
                 <div className="col-span-2 flex items-center gap-1.5">
                   <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: fe?.color }} />
-                  <span className="text-xs text-gray-400 font-mono truncate">{fe?.shortName}</span>
+                  <span className="text-xs text-gray-500 font-mono truncate">{fe?.shortName}</span>
                 </div>
                 <span className="col-span-2 text-xs text-gray-500">{tp.jurisdiction}</span>
-                <span className="col-span-2 text-xs font-mono text-gray-300">{tp.period}</span>
-                <span className="col-span-1 text-right text-xs font-mono font-semibold text-white">{tp.vatRate}%</span>
-                <span className="col-span-2 text-right text-xs font-mono text-gray-400">
+                <span className="col-span-2 text-xs font-mono text-gray-600">{tp.period}</span>
+                <span className="col-span-1 text-right text-xs font-mono font-semibold text-gray-900">{tp.vatRate}%</span>
+                <span className="col-span-2 text-right text-xs font-mono text-gray-500">
                   {fmt(tp.taxableRevenue, tp.currency)}
                 </span>
                 <span className="col-span-2 text-right text-xs font-mono font-bold"
@@ -203,7 +203,7 @@ export function TaxView() {
                     <p className="text-[8px] text-red-400 mt-0.5 font-mono">FÖRSENAD</p>
                   )}
                   {!isOverdue && (
-                    <p className="text-[8px] text-gray-700 mt-0.5 font-mono">→ {tp.dueDate.slice(5)}</p>
+                    <p className="text-[8px] text-gray-600 mt-0.5 font-mono">→ {tp.dueDate.slice(5)}</p>
                   )}
                 </div>
               </div>

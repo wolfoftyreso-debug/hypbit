@@ -207,7 +207,7 @@ function TaskCard({
       </div>
 
       {/* Title */}
-      <p className={`text-sm text-white leading-snug ${task.column === 'done' ? 'line-through text-gray-500' : ''}`}>
+      <p className={`text-sm text-gray-900 leading-snug ${task.column === 'done' ? 'line-through text-gray-500' : ''}`}>
         {task.title}
       </p>
 
@@ -233,7 +233,7 @@ function TaskCard({
           {idx > 0 && (
             <button
               onClick={() => onMove(task.id, cols[idx - 1] as Column)}
-              className="text-xs px-1.5 py-0.5 rounded bg-surface-base text-gray-400 hover:text-white transition-colors"
+              className="text-xs px-1.5 py-0.5 rounded bg-surface-base text-gray-500 hover:text-gray-900 transition-colors"
               title="Flytta bakåt"
             >
               ←
@@ -242,7 +242,7 @@ function TaskCard({
           {idx < cols.length - 1 && (
             <button
               onClick={() => onMove(task.id, cols[idx + 1] as Column)}
-              className="text-xs px-1.5 py-0.5 rounded bg-surface-base text-gray-400 hover:text-white transition-colors"
+              className="text-xs px-1.5 py-0.5 rounded bg-surface-base text-gray-500 hover:text-gray-900 transition-colors"
               title="Flytta framåt"
             >
               →
@@ -280,8 +280,8 @@ export function TasksView() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white">Task Board</h1>
-          <p className="text-gray-400 mt-1">
+          <h1 className="text-2xl font-bold text-gray-900">Task Board</h1>
+          <p className="text-gray-500 mt-1">
             {isRoot
               ? `Wavult Group — ${scopedTasks.length} uppgifter`
               : `${activeEntity.name} — ${scopedTasks.length} uppgifter`}
@@ -309,8 +309,8 @@ export function TasksView() {
               onClick={() => setFilter(p)}
               className={`text-xs px-3 py-1.5 rounded-lg transition-colors ${
                 filter === p
-                  ? 'bg-brand-accent text-white'
-                  : 'bg-surface-raised border border-surface-border text-gray-400 hover:text-white'
+                  ? 'bg-brand-accent text-gray-900'
+                  : 'bg-surface-raised border border-surface-border text-gray-500 hover:text-gray-900'
               }`}
             >
               {p === 'all' ? 'Alla' : p}
@@ -329,7 +329,7 @@ export function TasksView() {
               <div className="flex items-center justify-between px-1">
                 <div className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full" style={{ background: col.color }} />
-                  <span className="text-xs font-semibold text-gray-300 uppercase tracking-wider">{col.label}</span>
+                  <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider">{col.label}</span>
                 </div>
                 <span
                   className="text-xs font-bold tabular-nums px-2 py-0.5 rounded-full"
@@ -342,13 +342,13 @@ export function TasksView() {
               {/* Drop zone */}
               <div
                 className="flex flex-col gap-2 min-h-24 p-2 rounded-xl"
-                style={{ background: 'rgba(17,24,39,0.5)', border: '1px dashed rgba(55,65,81,0.6)' }}
+                style={{ background: 'rgba(249,250,251,0.5)', border: '1px dashed rgba(55,65,81,0.6)' }}
               >
                 {colTasks.map(t => (
                   <TaskCard key={t.id} task={t} onMove={move} />
                 ))}
                 {colTasks.length === 0 && (
-                  <div className="flex items-center justify-center h-16 text-xs text-gray-600">
+                  <div className="flex items-center justify-center h-16 text-xs text-gray-500">
                     Tom
                   </div>
                 )}

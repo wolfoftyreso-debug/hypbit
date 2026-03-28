@@ -32,11 +32,11 @@ function EmployeePanel({ emp, onClose, calcSalary, fmt }: { emp: Employee; onClo
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-end" onClick={onClose}>
       <div
-        className="h-full w-full md:w-[420px] bg-[#0D0F1A] border-l border-surface-border overflow-y-auto"
+        className="h-full w-full md:w-[420px] bg-white border-l border-surface-border overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="sticky top-0 bg-[#0D0F1A] border-b border-surface-border px-4 md:px-6 py-4 flex items-center justify-between z-10">
+        <div className="sticky top-0 bg-white border-b border-surface-border px-4 md:px-6 py-4 flex items-center justify-between z-10">
           <div className="flex items-center gap-3">
             <div
               className="h-10 w-10 rounded-xl flex items-center justify-center text-sm font-bold"
@@ -45,11 +45,11 @@ function EmployeePanel({ emp, onClose, calcSalary, fmt }: { emp: Employee; onClo
               {emp.initials}
             </div>
             <div>
-              <div className="text-sm font-bold text-white">{emp.name}</div>
+              <div className="text-sm font-bold text-gray-900">{emp.name}</div>
               <div className="text-xs" style={{ color: emp.color }}>{emp.role}</div>
             </div>
           </div>
-          <button onClick={onClose} className="text-gray-500 hover:text-white transition-colors text-lg">×</button>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-900 transition-colors text-lg">×</button>
         </div>
 
         <div className="px-4 md:px-6 py-5 space-y-6">
@@ -68,7 +68,7 @@ function EmployeePanel({ emp, onClose, calcSalary, fmt }: { emp: Employee; onClo
               ].map(([label, value]) => (
                 <div key={label} className="flex justify-between items-center text-xs">
                   <span className="text-gray-500">{label}</span>
-                  <span className="text-gray-200">{value}</span>
+                  <span className="text-gray-800">{value}</span>
                 </div>
               ))}
             </div>
@@ -79,14 +79,14 @@ function EmployeePanel({ emp, onClose, calcSalary, fmt }: { emp: Employee; onClo
             <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Aktuell lön</h3>
             <div className="bg-surface-raised rounded-xl p-4 space-y-2">
               {[
-                ['Bruttolön', fmt(calc.gross), 'text-white'],
+                ['Bruttolön', fmt(calc.gross), 'text-gray-900'],
                 ['Skatteavdrag (tabell 33)', `−${fmt(calc.taxDeduction)}`, 'text-red-400'],
                 ['Nettolön', fmt(calc.net), 'text-green-400 font-semibold'],
                 ['Arbetsgivaravgift (31.42%)', fmt(calc.employerTax), 'text-amber-400'],
                 ['Total kostnad för arbetsgivare', fmt(calc.totalCost), 'text-purple-400 font-semibold'],
               ].map(([label, value, cls]) => (
                 <div key={label} className={`flex justify-between text-xs ${label === 'Nettolön' || label === 'Total kostnad för arbetsgivare' ? 'border-t border-surface-border pt-2' : ''}`}>
-                  <span className="text-gray-400">{label}</span>
+                  <span className="text-gray-500">{label}</span>
                   <span className={cls}>{value}</span>
                 </div>
               ))}
@@ -99,7 +99,7 @@ function EmployeePanel({ emp, onClose, calcSalary, fmt }: { emp: Employee; onClo
             <div className="space-y-1">
               {history.map(h => (
                 <div key={h.period} className="flex justify-between items-center text-xs py-1.5 border-b border-surface-border/50">
-                  <span className="text-gray-400">{h.label}</span>
+                  <span className="text-gray-500">{h.label}</span>
                   <div className="flex gap-4">
                     <span className="text-gray-500">{fmt(h.gross)} brutto</span>
                     <span className="text-green-400">{fmt(h.net)} netto</span>
@@ -131,7 +131,7 @@ function EmployeePanel({ emp, onClose, calcSalary, fmt }: { emp: Employee; onClo
                     <p className="text-xs text-gray-500 mb-2">Planerad ledighet:</p>
                     {leave.plannedLeave.map((pl, i) => (
                       <div key={i} className="flex justify-between items-center text-xs py-1.5">
-                        <span className="text-gray-300">{pl.start} → {pl.end}</span>
+                        <span className="text-gray-600">{pl.start} → {pl.end}</span>
                         <div className="flex items-center gap-2">
                           <span className="text-gray-500">{pl.days} dagar</span>
                           <span className={`px-1.5 py-0.5 rounded text-xs ${pl.approved ? 'bg-green-500/15 text-green-400' : 'bg-amber-500/15 text-amber-400'}`}>
@@ -169,7 +169,7 @@ export function EmployeeList() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-sm font-semibold text-white">Anställda</h2>
+          <h2 className="text-sm font-semibold text-gray-900">Anställda</h2>
           <p className="text-xs text-gray-500 mt-0.5">{employees.length} personer</p>
         </div>
       </div>
@@ -203,17 +203,17 @@ export function EmployeeList() {
                         {emp.initials}
                       </div>
                       <div>
-                        <div className="text-xs font-medium text-white">{emp.name}</div>
+                        <div className="text-xs font-medium text-gray-900">{emp.name}</div>
                         <div className="text-xs text-gray-500">{emp.email}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-5 py-3 text-xs text-gray-400">{emp.role}</td>
-                  <td className="px-5 py-3 text-xs text-gray-400">{emp.start_date}</td>
-                  <td className="px-5 py-3 text-right text-xs text-white tabular-nums font-medium">
+                  <td className="px-5 py-3 text-xs text-gray-500">{emp.role}</td>
+                  <td className="px-5 py-3 text-xs text-gray-500">{emp.start_date}</td>
+                  <td className="px-5 py-3 text-right text-xs text-gray-900 tabular-nums font-medium">
                     {emp.gross_salary.toLocaleString('sv-SE')}
                   </td>
-                  <td className="px-5 py-3 text-right text-xs text-gray-300">
+                  <td className="px-5 py-3 text-right text-xs text-gray-600">
                     {(emp.employment_rate * 100).toFixed(0)}%
                   </td>
                   <td className="px-5 py-3">

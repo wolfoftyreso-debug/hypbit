@@ -14,10 +14,10 @@ export function HealthOverviewWidget() {
   const watching = scores.filter(s => s.level === 'watch').length
 
   return (
-    <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl overflow-hidden">
-      <div className="px-4 py-3 border-b border-white/[0.06] flex items-center justify-between">
+    <div className="bg-white/[0.04] border border-gray-200 rounded-2xl overflow-hidden">
+      <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <p className="text-sm font-medium text-white/70">Entity Health</p>
+          <p className="text-sm font-medium text-gray-900/70">Entity Health</p>
           {critical > 0 && (
             <span className="text-xs px-1.5 py-0.5 rounded font-mono bg-red-500/15 text-red-400 border border-red-500/20">
               {critical} critical
@@ -31,13 +31,13 @@ export function HealthOverviewWidget() {
         </div>
         <button
           onClick={() => navigate('/entities')}
-          className="text-xs text-gray-600 hover:text-gray-400 transition-colors"
+          className="text-xs text-gray-500 hover:text-gray-500 transition-colors"
         >
           Details →
         </button>
       </div>
 
-      <div className="divide-y divide-white/[0.04]">
+      <div className="divide-y divide-gray-100">
         {scores.map(hs => {
           const entity = ENTITIES.find(e => e.id === hs.entity_id)
           if (!entity) return null
@@ -61,13 +61,13 @@ export function HealthOverviewWidget() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5">
                   <span className="text-sm">{entity.flag}</span>
-                  <span className="text-xs font-semibold text-white">{entity.shortName}</span>
+                  <span className="text-xs font-semibold text-gray-900">{entity.shortName}</span>
                   <span className="text-xs px-1 py-0.5 rounded font-mono"
                     style={{ color, background: color + '18' }}>
                     {LEVEL_LABEL[hs.level]}
                   </span>
                 </div>
-                <div className="text-xs text-gray-600 truncate mt-0.5">{hs.summary.slice(2, 60)}…</div>
+                <div className="text-xs text-gray-500 truncate mt-0.5">{hs.summary.slice(2, 60)}…</div>
               </div>
 
               {/* Dimension mini-bars */}

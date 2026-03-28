@@ -82,15 +82,15 @@ function ActionCard({
                 {stateStyle.label}
               </span>
               {action.state === 'requires_dual_approval' && (
-                <span className="text-xs text-gray-600">
+                <span className="text-xs text-gray-500">
                   Requires {roleName(action.owner_role_id)} + {roleName(action.approver_role_id)}
                 </span>
               )}
             </div>
-            <p className="text-sm font-medium text-white leading-relaxed">{action.text}</p>
+            <p className="text-sm font-medium text-gray-900 leading-relaxed">{action.text}</p>
           </div>
           <button onClick={() => setExpanded(p => !p)}
-            className="text-gray-600 hover:text-gray-400 text-xs flex-shrink-0 mt-1">
+            className="text-gray-500 hover:text-gray-500 text-xs flex-shrink-0 mt-1">
             {expanded ? '▲ less' : '▾ SMART'}
           </button>
         </div>
@@ -98,26 +98,26 @@ function ActionCard({
         {/* Roles */}
         <div className="flex items-center gap-4 mt-3 text-xs">
           <div className="flex items-center gap-1.5">
-            <span className="text-gray-600">Owner:</span>
+            <span className="text-gray-500">Owner:</span>
             <span style={{ color: ownerColor }} className="font-semibold">{roleName(action.owner_role_id)}</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="text-gray-600">Approver:</span>
+            <span className="text-gray-500">Approver:</span>
             <span style={{ color: approverColor }} className="font-semibold">{roleName(action.approver_role_id)}</span>
           </div>
           <div className="flex items-center gap-1.5 ml-auto">
-            <span className="text-gray-600">Deadline:</span>
+            <span className="text-gray-500">Deadline:</span>
             <span className="text-yellow-400 font-mono">{action.deadline_days}d</span>
           </div>
         </div>
 
         {/* SMART criteria */}
         {expanded && (
-          <div className="mt-3 space-y-1.5 border-t border-white/[0.04] pt-3">
+          <div className="mt-3 space-y-1.5 border-t border-gray-100 pt-3">
             {Object.entries(action.smart_criteria).map(([k, v]) => (
               <div key={k} className="flex items-start gap-2 text-xs">
-                <span className="text-gray-600 font-mono w-20 flex-shrink-0 uppercase text-[9px] pt-0.5">{k}</span>
-                <span className="text-gray-300 leading-relaxed">{v}</span>
+                <span className="text-gray-500 font-mono w-20 flex-shrink-0 uppercase text-[9px] pt-0.5">{k}</span>
+                <span className="text-gray-600 leading-relaxed">{v}</span>
               </div>
             ))}
           </div>
@@ -125,7 +125,7 @@ function ActionCard({
 
         {/* Action buttons — only if proposed and this is active */}
         {action.state === 'proposed' && isActive && (
-          <div className="flex gap-3 mt-4 pt-3 border-t border-white/[0.04]">
+          <div className="flex gap-3 mt-4 pt-3 border-t border-gray-100">
             <button
               onClick={onAccept}
               className="flex-1 py-2 rounded-lg text-sm font-bold transition-colors"
@@ -198,7 +198,7 @@ function IncidentCard({
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-sm font-bold text-white">{role?.person}</span>
+            <span className="text-sm font-bold text-gray-900">{role?.person}</span>
             <span className="text-xs text-gray-500">·</span>
             <span className="text-xs text-gray-500">{role?.title}</span>
             <SeverityBadge severity={incident.severity} />
@@ -208,7 +208,7 @@ function IncidentCard({
               </span>
             )}
             {incident.locked && (
-              <span className="text-xs px-2 py-0.5 rounded bg-gray-500/15 text-gray-400 border border-gray-500/25 font-mono">
+              <span className="text-xs px-2 py-0.5 rounded bg-gray-500/15 text-gray-500 border border-gray-500/25 font-mono">
                 🔒 LOCKED
               </span>
             )}
@@ -216,36 +216,36 @@ function IncidentCard({
           <p className="text-xs text-gray-500 mt-0.5 truncate">{incident.rca.problem}</p>
         </div>
 
-        <span className="text-gray-600 flex-shrink-0 mt-1">{open ? '▲' : '▾'}</span>
+        <span className="text-gray-500 flex-shrink-0 mt-1">{open ? '▲' : '▾'}</span>
       </button>
 
       {/* Expanded content */}
       {open && (
-        <div className="px-5 pb-5 space-y-5 border-t border-white/[0.04]">
+        <div className="px-5 pb-5 space-y-5 border-t border-gray-100">
 
           {/* RCA */}
           <div className="space-y-3 pt-4">
-            <h3 className="text-xs font-bold text-white uppercase tracking-wider">Root Cause Analysis</h3>
+            <h3 className="text-xs font-bold text-gray-900 uppercase tracking-wider">Root Cause Analysis</h3>
             <div className="grid grid-cols-2 gap-3">
               {([
                 { label: 'Problem',         value: incident.rca.problem },
                 { label: 'Root Cause',      value: incident.rca.root_cause },
                 { label: 'Impact',          value: incident.rca.impact },
               ] as const).map(({ label, value }) => (
-                <div key={label} className={`rounded-xl border border-white/[0.06] px-4 py-3 ${label === 'Root Cause' ? 'col-span-2' : ''}`}>
-                  <div className="text-xs text-gray-600 font-mono uppercase mb-1">{label}</div>
-                  <p className="text-xs text-gray-300 leading-relaxed">{value}</p>
+                <div key={label} className={`rounded-xl border border-gray-200 px-4 py-3 ${label === 'Root Cause' ? 'col-span-2' : ''}`}>
+                  <div className="text-xs text-gray-500 font-mono uppercase mb-1">{label}</div>
+                  <p className="text-xs text-gray-600 leading-relaxed">{value}</p>
                 </div>
               ))}
             </div>
 
             {/* Dependency chain */}
-            <div className="rounded-xl border border-white/[0.06] px-4 py-3">
-              <div className="text-xs text-gray-600 font-mono uppercase mb-2">Dependency Chain</div>
+            <div className="rounded-xl border border-gray-200 px-4 py-3">
+              <div className="text-xs text-gray-500 font-mono uppercase mb-2">Dependency Chain</div>
               <div className="flex items-center gap-0 flex-wrap">
                 {incident.rca.dependency_chain.map((dep, i) => (
                   <div key={i} className="flex items-center gap-0">
-                    <span className="text-xs px-2 py-1 rounded text-gray-400" style={{ background: '#ffffff05' }}>{dep}</span>
+                    <span className="text-xs px-2 py-1 rounded text-gray-500" style={{ background: '#ffffff05' }}>{dep}</span>
                     {i < incident.rca.dependency_chain.length - 1 && (
                       <span className="text-red-500 text-sm mx-1">→</span>
                     )}
@@ -256,7 +256,7 @@ function IncidentCard({
 
             {/* Affected roles */}
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs text-gray-600 font-mono uppercase">Affected:</span>
+              <span className="text-xs text-gray-500 font-mono uppercase">Affected:</span>
               {incident.rca.affected_roles.map(rid => {
                 const r = COMMAND_CHAIN.find(x => x.id === rid)
                 if (!r) return null
@@ -279,10 +279,10 @@ function IncidentCard({
                 <span className="text-xs font-bold text-red-400">Leadership Incident — Meeting Required</span>
               </div>
               <p className="text-xs text-gray-500">{incident.escalation_trigger}</p>
-              <div className="mt-2 text-xs text-gray-600">
+              <div className="mt-2 text-xs text-gray-500">
                 Required attendees: {incident.rca.affected_roles.map(roleName).join(', ')}
               </div>
-              <div className="mt-2 text-xs text-gray-700">
+              <div className="mt-2 text-xs text-gray-600">
                 Meeting must produce: Decision · Action plan · Timeline · Owner
               </div>
             </div>
@@ -290,7 +290,7 @@ function IncidentCard({
 
           {/* Actions */}
           <div className="space-y-3">
-            <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+            <h3 className="text-xs font-bold text-gray-900 uppercase tracking-wider">
               Proposed Actions ({incident.proposed_actions.length})
             </h3>
             {incident.proposed_actions.map((action, idx) => (
@@ -321,12 +321,12 @@ function KPIRow({ kpi }: { kpi: KPIDefinition }) {
     <div className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-white/[0.01] transition-colors">
       <span className="h-2 w-2 rounded-full flex-shrink-0 transition-all"
         style={{ background: color, boxShadow: status === 'red' ? `0 0 8px ${color}` : 'none' }} />
-      <span className="flex-1 text-xs text-gray-300 truncate">{kpi.name}</span>
-      <span className="text-xs text-gray-600 flex-shrink-0">{kpi.target}</span>
+      <span className="flex-1 text-xs text-gray-600 truncate">{kpi.name}</span>
+      <span className="text-xs text-gray-500 flex-shrink-0">{kpi.target}</span>
       <span className="text-xs font-mono font-bold flex-shrink-0 w-20 text-right" style={{ color }}>
         {kpi.current} <span style={{ color: trendColor }}>{trendIcon}</span>
       </span>
-      <span className="text-[9px] text-gray-700 flex-shrink-0 font-mono">{kpi.deadline}</span>
+      <span className="text-[9px] text-gray-600 flex-shrink-0 font-mono">{kpi.deadline}</span>
       <span className="text-xs px-1.5 py-0.5 rounded font-mono flex-shrink-0"
         style={{ background: color + '18', color }}>
         {status.toUpperCase()}
@@ -342,15 +342,15 @@ function RoleKPIBlock({ roleId }: { roleId: string }) {
   const kpis = getRoleKPIs(roleId)
 
   return (
-    <div className="rounded-2xl border border-white/[0.06] overflow-hidden">
-      <div className="flex items-center gap-3 px-4 py-3 border-b border-white/[0.04]"
+    <div className="rounded-2xl border border-gray-200 overflow-hidden">
+      <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100"
         style={{ background: role.color + '08' }}>
         <div className="h-8 w-8 rounded-lg flex items-center justify-center font-bold text-xs"
           style={{ background: role.color + '20', color: role.color }}>
           {role.initials}
         </div>
         <div>
-          <div className="text-sm font-semibold text-white">{role.person}</div>
+          <div className="text-sm font-semibold text-gray-900">{role.person}</div>
           <div className="text-xs" style={{ color: role.color }}>{role.title}</div>
         </div>
       </div>
@@ -439,13 +439,13 @@ export function IncidentCenter() {
   return (
     <div className="flex flex-col h-full overflow-hidden bg-[#07090F]">
       {/* Header */}
-      <div className="flex-shrink-0 border-b border-white/[0.06] bg-[#08090F]">
+      <div className="flex-shrink-0 border-b border-gray-200 bg-[#08090F]">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
               <div className="flex items-center gap-3 flex-wrap">
-                <h1 className="text-sm font-bold text-white">Alerts</h1>
-                <span className="text-xs text-gray-600 font-mono">closed-loop control system</span>
+                <h1 className="text-sm font-bold text-gray-900">Alerts</h1>
+                <span className="text-xs text-gray-500 font-mono">closed-loop control system</span>
                 {!isRoot && (
                   <span
                     className="text-xs px-2 py-0.5 rounded-lg font-medium"
@@ -459,7 +459,7 @@ export function IncidentCenter() {
                   </span>
                 )}
               </div>
-              <p className="text-xs text-gray-600 mt-0.5">
+              <p className="text-xs text-gray-500 mt-0.5">
                 Every KPI deviation triggers: RCA → Action → Accept/Reject → Escalation
               </p>
             </div>
@@ -496,7 +496,7 @@ export function IncidentCenter() {
                 🔥 Cascade impact — failures propagating through org
               </div>
               <div className="flex items-center gap-2 flex-wrap text-xs">
-                <span className="text-gray-600">Failing:</span>
+                <span className="text-gray-500">Failing:</span>
                 {propagation.primary_failures.map(rid => {
                   const r = COMMAND_CHAIN.find(x => x.id === rid)
                   return r ? <span key={rid} className="text-red-400 font-semibold">{r.initials}</span> : null

@@ -220,8 +220,8 @@ export function ThailandCalendarView() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-xl font-bold text-white">🇹🇭 Thailand Workcamp — April 2026</h1>
-          <p className="text-gray-400 text-sm mt-1">Fullständigt program: Bangkok → Phuket → Retreat → Launch</p>
+          <h1 className="text-xl font-bold text-gray-900">🇹🇭 Thailand Workcamp — April 2026</h1>
+          <p className="text-gray-500 text-sm mt-1">Fullständigt program: Bangkok → Phuket → Retreat → Launch</p>
         </div>
         <div className="text-right">
           <div className="text-2xl font-bold text-signal-amber tabular-nums">{daysToStart}</div>
@@ -263,14 +263,14 @@ export function ThailandCalendarView() {
                 <span className="text-lg">{day.icon}</span>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-bold text-white">Dag {day.dayNum}</span>
+                    <span className="text-xs font-bold text-gray-900">Dag {day.dayNum}</span>
                     <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full"
                       style={{ background: THEME_COLORS[day.theme] + '20', color: THEME_COLORS[day.theme] }}>
                       {day.theme}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-400 truncate">{day.label}</p>
-                  <p className="text-[9px] text-gray-600 font-mono mt-0.5">
+                  <p className="text-xs text-gray-500 truncate">{day.label}</p>
+                  <p className="text-[9px] text-gray-500 font-mono mt-0.5">
                     {new Date(day.date).toLocaleDateString('sv-SE', { weekday: 'short', day: 'numeric', month: 'short' })}
                   </p>
                 </div>
@@ -289,7 +289,7 @@ export function ThailandCalendarView() {
                 <span className="text-2xl">{selectedDay.icon}</span>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h2 className="text-base font-bold text-white">Dag {selectedDay.dayNum} — {selectedDay.label}</h2>
+                    <h2 className="text-base font-bold text-gray-900">Dag {selectedDay.dayNum} — {selectedDay.label}</h2>
                     <span className="text-[9px] font-mono px-2 py-0.5 rounded-full"
                       style={{ background: THEME_COLORS[selectedDay.theme] + '20', color: THEME_COLORS[selectedDay.theme] }}>
                       {selectedDay.theme}
@@ -301,7 +301,7 @@ export function ThailandCalendarView() {
                 </div>
               </div>
               {selectedDay.notes && (
-                <div className="mt-3 text-xs text-gray-400 px-3 py-2 rounded-lg"
+                <div className="mt-3 text-xs text-gray-500 px-3 py-2 rounded-lg"
                   style={{ background: selectedDay.color + '08', border: `1px solid ${selectedDay.color}20` }}>
                   {selectedDay.notes}
                 </div>
@@ -309,18 +309,18 @@ export function ThailandCalendarView() {
             </div>
 
             {/* Events */}
-            <div className="divide-y divide-white/[0.04]">
+            <div className="divide-y divide-gray-100">
               {selectedDay.events.map((evt, i) => (
                 <div key={i} className="flex items-start gap-3 px-5 py-3">
                   <div className="flex-shrink-0 w-14 text-right">
-                    <span className="text-xs font-mono text-gray-600">{evt.time}</span>
+                    <span className="text-xs font-mono text-gray-500">{evt.time}</span>
                   </div>
                   <div
                     className="h-4 w-0.5 rounded-full flex-shrink-0 mt-0.5"
                     style={{ background: TYPE_COLORS[evt.type] }}
                   />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-white">{evt.activity}</p>
+                    <p className="text-sm text-gray-900">{evt.activity}</p>
                   </div>
                   <div className="flex items-center gap-1 flex-shrink-0">
                     <span>{TYPE_ICONS[evt.type]}</span>

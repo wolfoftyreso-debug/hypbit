@@ -170,17 +170,17 @@ export function SMSView() {
 
       {/* Compose form */}
       {showForm && (
-        <div className="bg-[#0D0F1A] rounded-xl border border-brand-accent/20 p-4 space-y-3">
+        <div className="bg-white rounded-xl border border-brand-accent/20 p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-semibold text-white">Nytt SMS</h3>
-            <button onClick={() => setShowForm(false)} className="text-gray-500 hover:text-gray-300">×</button>
+            <h3 className="text-xs font-semibold text-gray-900">Nytt SMS</h3>
+            <button onClick={() => setShowForm(false)} className="text-gray-500 hover:text-gray-600">×</button>
           </div>
           <div>
             <label className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1 block">Mottagare</label>
             <select
               value={recipient}
               onChange={e => setRecipient(e.target.value)}
-              className="w-full bg-[#07080F] border border-white/[0.08] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-accent/50"
+              className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-brand-accent/50"
             >
               <option value="">Välj kontakt…</option>
               {TEAM_CONTACTS.map(c => (
@@ -196,7 +196,7 @@ export function SMSView() {
                 value={customNumber}
                 onChange={e => setCustomNumber(e.target.value)}
                 placeholder="+46…"
-                className="w-full bg-[#07080F] border border-white/[0.08] rounded-lg px-3 py-2 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-brand-accent/50"
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-600 focus:outline-none focus:border-brand-accent/50"
               />
             </div>
           )}
@@ -209,16 +209,16 @@ export function SMSView() {
               onChange={e => setMessage(e.target.value.slice(0, 160))}
               placeholder="Skriv SMS…"
               rows={3}
-              className="w-full bg-[#07080F] border border-white/[0.08] rounded-lg px-3 py-2 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-brand-accent/50 resize-none"
+              className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-600 focus:outline-none focus:border-brand-accent/50 resize-none"
             />
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-xs text-gray-600">
+            <span className="text-xs text-gray-500">
               Provider: {ELKS_CONFIGURED ? '46elks (primär)' : 'Twilio (fallback)'}
             </span>
             <button
               onClick={sendSMS}
-              className="px-4 py-1.5 rounded-lg text-xs font-medium bg-brand-accent text-white hover:bg-brand-accent/90 transition-colors"
+              className="px-4 py-1.5 rounded-lg text-xs font-medium bg-brand-accent text-gray-900 hover:bg-brand-accent/90 transition-colors"
             >
               Skicka →
             </button>
@@ -227,17 +227,17 @@ export function SMSView() {
       )}
 
       {/* SMS log */}
-      <div className="bg-[#0D0F1A] rounded-xl border border-white/[0.06] overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/[0.06]">
-          <h3 className="text-xs font-semibold text-white">SMS-logg</h3>
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="px-4 py-3 border-b border-gray-200">
+          <h3 className="text-xs font-semibold text-gray-900">SMS-logg</h3>
         </div>
-        <div className="divide-y divide-white/[0.04]">
+        <div className="divide-y divide-gray-100">
           {log.map(sms => (
             <div key={sms.id} className="px-4 py-3 flex items-start gap-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-medium text-gray-200">{sms.toName}</span>
-                  <span className="text-xs text-gray-600 font-mono">{sms.to}</span>
+                  <span className="text-xs font-medium text-gray-800">{sms.toName}</span>
+                  <span className="text-xs text-gray-500 font-mono">{sms.to}</span>
                   <span className={`ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
                     sms.status === 'sent' ? 'bg-green-500/15 text-green-400' :
                     sms.status === 'failed' ? 'bg-red-500/15 text-red-400' :
@@ -246,13 +246,13 @@ export function SMSView() {
                     {sms.status === 'sent' ? '✓ Skickat' : sms.status === 'failed' ? '✗ Misslyckades' : '⏳ Väntar'}
                   </span>
                 </div>
-                <p className="text-xs text-gray-400 truncate">{sms.message}</p>
+                <p className="text-xs text-gray-500 truncate">{sms.message}</p>
                 <div className="flex items-center gap-3 mt-1">
-                  <span className="text-xs text-gray-600 font-mono">
+                  <span className="text-xs text-gray-500 font-mono">
                     {new Date(sms.timestamp).toLocaleString('sv-SE')}
                   </span>
-                  <span className="text-xs text-gray-700">via {sms.provider}</span>
-                  {sms.cost && <span className="text-xs text-gray-700">{sms.cost}</span>}
+                  <span className="text-xs text-gray-600">via {sms.provider}</span>
+                  {sms.cost && <span className="text-xs text-gray-600">{sms.cost}</span>}
                 </div>
               </div>
             </div>

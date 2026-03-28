@@ -44,7 +44,7 @@ function SectionHeader({ title, icon }: { title: string; icon: string }) {
   return (
     <div className="flex items-center gap-2 mb-3">
       <span className="text-base">{icon}</span>
-      <h2 className="text-xs font-bold text-gray-300 uppercase tracking-widest">{title}</h2>
+      <h2 className="text-xs font-bold text-gray-600 uppercase tracking-widest">{title}</h2>
     </div>
   )
 }
@@ -83,8 +83,8 @@ export function ExecutiveSummary() {
             <div key={e.id} className="bg-white/[0.03] border border-white/[0.07] rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: e.color }} />
-                <span className="text-xs font-semibold text-gray-300">{e.shortName}</span>
-                <span className="text-[9px] text-gray-600 font-mono ml-auto">{e.country}</span>
+                <span className="text-xs font-semibold text-gray-600">{e.shortName}</span>
+                <span className="text-[9px] text-gray-500 font-mono ml-auto">{e.country}</span>
               </div>
               <p className="text-lg font-bold" style={{ color: e.color }}>{fmt(e.arr)}</p>
               <div className="mt-2 space-y-1">
@@ -123,7 +123,7 @@ export function ExecutiveSummary() {
                   <span className="text-base flex-shrink-0 mt-0.5">{TYPE_ICON[item.type]}</span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <p className="text-xs font-semibold text-white">{item.title}</p>
+                      <p className="text-xs font-semibold text-gray-900">{item.title}</p>
                       <span
                         className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
                         style={{ background: SEVERITY_COLOR[item.severity] + '25', color: SEVERITY_COLOR[item.severity] }}
@@ -133,7 +133,7 @@ export function ExecutiveSummary() {
                     </div>
                     <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
                     <div className="flex items-center gap-3 mt-1">
-                      <span className="text-[9px] text-gray-600 font-mono">→ {item.owner}</span>
+                      <span className="text-[9px] text-gray-500 font-mono">→ {item.owner}</span>
                       {item.deadline && (
                         <span
                           className="text-[9px] font-mono"
@@ -156,9 +156,9 @@ export function ExecutiveSummary() {
           <div>
             <SectionHeader title="Thailand Workcamp" icon="🇹🇭" />
             <div className="bg-gradient-to-br from-[#6C63FF]/10 to-[#00C2FF]/10 border border-[#6C63FF]/20 rounded-xl p-5 text-center">
-              <div className="text-5xl font-black text-white mb-1">{thailandDays}</div>
-              <div className="text-xs text-gray-400">dagar kvar</div>
-              <div className="text-xs text-gray-600 font-mono mt-2">{THAILAND_DATE}</div>
+              <div className="text-5xl font-black text-gray-900 mb-1">{thailandDays}</div>
+              <div className="text-xs text-gray-500">dagar kvar</div>
+              <div className="text-xs text-gray-500 font-mono mt-2">{THAILAND_DATE}</div>
               <div className="mt-3 space-y-1 text-left">
                 <div className="text-xs text-gray-500">Vecka 1: Teambuilding + utbildning</div>
                 <div className="text-xs text-gray-500">Vecka 2+: Projektuppsättning</div>
@@ -180,9 +180,9 @@ export function ExecutiveSummary() {
                       i === 0 && !isPast ? 'bg-[#6C63FF]/10 border border-[#6C63FF]/20' : 'bg-white/[0.02]'
                     }`}
                   >
-                    <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: i === 0 ? '#6C63FF' : '#374151' }} />
-                    <span className="flex-1 text-gray-300">{m.label}</span>
-                    <span className="font-mono text-[9px] text-gray-600">{isPast ? '✓' : `${days}d`}</span>
+                    <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: i === 0 ? '#6C63FF' : '#F3F4F6' }} />
+                    <span className="flex-1 text-gray-600">{m.label}</span>
+                    <span className="font-mono text-[9px] text-gray-500">{isPast ? '✓' : `${days}d`}</span>
                   </div>
                 )
               })}
@@ -193,11 +193,11 @@ export function ExecutiveSummary() {
 
       {/* Next Milestone highlight */}
       {nextMilestone && (
-        <div className="bg-white/[0.02] border border-white/[0.05] rounded-xl px-4 py-3 flex items-center gap-3">
+        <div className="bg-white/[0.02] border border-gray-200 rounded-xl px-4 py-3 flex items-center gap-3">
           <span className="text-lg">🎯</span>
           <div>
             <p className="text-xs text-gray-500 font-mono uppercase tracking-wider">Nästa milestone</p>
-            <p className="text-sm font-semibold text-white">{nextMilestone.label}</p>
+            <p className="text-sm font-semibold text-gray-900">{nextMilestone.label}</p>
           </div>
           <div className="ml-auto text-right">
             <p className="text-xs text-gray-500 font-mono">{nextMilestone.date}</p>

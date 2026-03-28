@@ -116,7 +116,7 @@ function IntegrationRow({ integration }: { integration: Integration }) {
   }
 
   return (
-    <div className="rounded-xl border border-white/[0.06] bg-[#0A0C14] px-5 py-4 flex items-center gap-4">
+    <div className="rounded-xl border border-gray-200 bg-[#0A0C14] px-5 py-4 flex items-center gap-4">
       {/* Status dot */}
       <div
         className="h-2.5 w-2.5 rounded-full flex-shrink-0"
@@ -126,13 +126,13 @@ function IntegrationRow({ integration }: { integration: Integration }) {
       {/* Name + env */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-sm font-semibold text-white">{integration.name}</span>
-          <span className="text-xs text-gray-600 font-mono bg-white/[0.04] px-1.5 py-0.5 rounded">
+          <span className="text-sm font-semibold text-gray-900">{integration.name}</span>
+          <span className="text-xs text-gray-500 font-mono bg-white/[0.04] px-1.5 py-0.5 rounded">
             {integration.env}
           </span>
         </div>
-        <div className="flex items-center gap-3 mt-1 text-xs text-gray-600 flex-wrap">
-          <span>Nyckel: <span className="text-gray-400 font-mono">{integration.keyHint}</span></span>
+        <div className="flex items-center gap-3 mt-1 text-xs text-gray-500 flex-wrap">
+          <span>Nyckel: <span className="text-gray-500 font-mono">{integration.keyHint}</span></span>
           <span>Scope: <span className="text-gray-500">{integration.scope}</span></span>
         </div>
       </div>
@@ -146,7 +146,7 @@ function IntegrationRow({ integration }: { integration: Integration }) {
       </div>
 
       {/* Last tested */}
-      <div className="text-xs text-gray-600 font-mono flex-shrink-0 hidden lg:block">
+      <div className="text-xs text-gray-500 font-mono flex-shrink-0 hidden lg:block">
         {integration.lastTested}
       </div>
 
@@ -192,7 +192,7 @@ export function APIKeysView() {
             ❌ {errCount} fel
           </div>
         )}
-        <span className="text-xs text-gray-700 font-mono ml-auto">
+        <span className="text-xs text-gray-600 font-mono ml-auto">
           {INTEGRATIONS.length} integrationer totalt
         </span>
       </div>
@@ -205,7 +205,7 @@ export function APIKeysView() {
       </div>
 
       {/* Footer note */}
-      <div className="rounded-xl border border-white/[0.04] bg-white/[0.02] px-4 py-3 text-xs text-gray-700 font-mono">
+      <div className="rounded-xl border border-gray-100 bg-white/[0.02] px-4 py-3 text-xs text-gray-600 font-mono">
         🔒 Nycklar lagras krypterat i miljövariabler. Sista 4 tecken visas för identifiering. Kontakta CTO för rotation.
       </div>
     </div>

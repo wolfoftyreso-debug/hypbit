@@ -21,11 +21,11 @@ function MilestoneChip({ item }: { item: typeof ROADMAP_ITEMS[0] }) {
     >
       <span className="text-base leading-none mt-0.5 flex-shrink-0">{meta.icon}</span>
       <div className="flex-1 min-w-0">
-        <p className={`text-xs font-medium leading-snug ${item.status === 'done' ? 'text-gray-500 line-through' : 'text-white'}`}>
+        <p className={`text-xs font-medium leading-snug ${item.status === 'done' ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
           {item.title}
         </p>
         {item.month && (
-          <p className="text-[9px] text-gray-600 font-mono mt-0.5">{item.month} 2026</p>
+          <p className="text-[9px] text-gray-500 font-mono mt-0.5">{item.month} 2026</p>
         )}
       </div>
       <div
@@ -46,11 +46,11 @@ export function RoadmapView() {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-lg font-bold text-white">Roadmap 2026</h2>
+          <h2 className="text-lg font-bold text-gray-900">Roadmap 2026</h2>
           <p className="text-xs text-gray-500 mt-0.5">Q2–Q4 · quiXzoom · Landvex · Hypbit OS</p>
         </div>
         <div className="text-right">
-          <p className="text-xs text-gray-400">{done}/{total} klara</p>
+          <p className="text-xs text-gray-500">{done}/{total} klara</p>
           <div className="w-24 bg-white/[0.06] rounded-full h-1.5 mt-1">
             <div
               className="h-1.5 rounded-full bg-brand-accent transition-all"
@@ -92,7 +92,7 @@ export function RoadmapView() {
           const qDone = quarterItems.filter(i => i.status === 'done').length
 
           return (
-            <div key={q.id} className="rounded-xl border border-white/[0.06] bg-[#0D0F1A] overflow-hidden">
+            <div key={q.id} className="rounded-xl border border-gray-200 bg-white overflow-hidden">
               {/* Quarter header */}
               <div
                 className="px-4 py-3 border-b flex items-center gap-2"
@@ -103,7 +103,7 @@ export function RoadmapView() {
                   style={{ background: q.color }}
                 />
                 <div>
-                  <p className="text-sm font-bold text-white">{q.label}</p>
+                  <p className="text-sm font-bold text-gray-900">{q.label}</p>
                   <p className="text-[9px] text-gray-500 font-mono">{q.months}</p>
                 </div>
                 <span
@@ -151,18 +151,18 @@ export function RoadmapView() {
         <h3 className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-3">
           🏛️ Bolagsstruktur
         </h3>
-        <div className="rounded-xl border border-white/[0.06] bg-[#0D0F1A] p-4">
+        <div className="rounded-xl border border-gray-200 bg-white p-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
             {QUARTERS.map(q => {
               const items = ROADMAP_ITEMS.filter(i => i.quarter === q.id && i.project === 'bolagsstruktur')
               if (items.length === 0) return (
                 <div key={q.id} className="text-center py-4">
-                  <p className="text-xs text-gray-700 font-mono">—</p>
+                  <p className="text-xs text-gray-600 font-mono">—</p>
                 </div>
               )
               return (
                 <div key={q.id}>
-                  <p className="text-[9px] font-mono text-gray-600 mb-2">{q.label}</p>
+                  <p className="text-[9px] font-mono text-gray-500 mb-2">{q.label}</p>
                   <div className="space-y-1.5">
                     {items.map(item => (
                       <MilestoneChip key={item.id} item={item} />

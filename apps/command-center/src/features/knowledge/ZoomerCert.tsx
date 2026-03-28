@@ -135,33 +135,33 @@ function CertificateView({ onReset }: { onReset: () => void }) {
 
         <p className="text-xs text-amber-400/60 font-mono tracking-[0.3em] mb-2">WAVULT GROUP — QUIXZOOM</p>
 
-        <h1 className="text-2xl font-bold text-white mb-1">Certifikat</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-1">Certifikat</h1>
         <h2 className="text-lg text-amber-300 mb-6">Standard Zoomer</h2>
 
-        <p className="text-sm text-gray-400 leading-relaxed mb-6">
+        <p className="text-sm text-gray-500 leading-relaxed mb-6">
           Innehavaren av detta certifikat har genomgått och godkänts i
           QuiXzoom Zoomer-certifieringen och uppfyller samtliga krav
           för att verka som certifierad Zoomer i QuiXzoom-plattformen.
         </p>
 
         <div className="border-t border-amber-400/20 pt-4 mb-6">
-          <p className="text-xs text-gray-600 font-mono">UTFÄRDAT AV</p>
-          <p className="text-sm text-white font-semibold mt-0.5">Wavult Group</p>
-          <p className="text-xs text-gray-600 mt-0.5">QuiXzoom UAB</p>
+          <p className="text-xs text-gray-500 font-mono">UTFÄRDAT AV</p>
+          <p className="text-sm text-gray-900 font-semibold mt-0.5">Wavult Group</p>
+          <p className="text-xs text-gray-500 mt-0.5">QuiXzoom UAB</p>
         </div>
 
         <div className="bg-amber-400/5 border border-amber-400/15 rounded-lg px-4 py-2 mb-6">
-          <p className="text-xs text-gray-600 font-mono">DATUM</p>
+          <p className="text-xs text-gray-500 font-mono">DATUM</p>
           <p className="text-sm text-amber-300">{date}</p>
         </div>
 
-        <div className="text-xs text-gray-600 font-mono mb-6">
+        <div className="text-xs text-gray-500 font-mono mb-6">
           CERT-ID: ZMR-{Math.random().toString(36).substring(2, 10).toUpperCase()}
         </div>
 
         <button
           onClick={onReset}
-          className="px-4 py-2 rounded-lg text-xs text-gray-500 border border-surface-border hover:text-gray-300 transition-colors"
+          className="px-4 py-2 rounded-lg text-xs text-gray-500 border border-surface-border hover:text-gray-600 transition-colors"
         >
           Ta om certifieringen
         </button>
@@ -228,16 +228,16 @@ export function ZoomerCert() {
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <div className="text-5xl mb-4">📸</div>
-            <h1 className="text-2xl font-bold text-white mb-2">Zoomer-certifiering</h1>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Zoomer-certifiering</h1>
+            <p className="text-gray-500 text-sm leading-relaxed">
               Bli en certifierad Zoomer i QuiXzoom-plattformen.
               Certifieringen testar din kunskap om plattformen,
               affärsmodellen och kvalitetskraven.
             </p>
           </div>
 
-          <div className="bg-[#0D0F1A] border border-surface-border rounded-xl p-5 mb-6">
-            <h3 className="text-sm font-semibold text-white mb-4">Vad du behöver veta</h3>
+          <div className="bg-white border border-surface-border rounded-xl p-5 mb-6">
+            <h3 className="text-sm font-semibold text-gray-900 mb-4">Vad du behöver veta</h3>
             <div className="space-y-3">
               {[
                 { icon: '❓', text: '10 frågor om plattform, etik, juridik och kvalitet' },
@@ -248,7 +248,7 @@ export function ZoomerCert() {
               ].map((item, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <span className="text-base w-6 text-center flex-shrink-0">{item.icon}</span>
-                  <span className="text-sm text-gray-400">{item.text}</span>
+                  <span className="text-sm text-gray-500">{item.text}</span>
                 </div>
               ))}
             </div>
@@ -271,15 +271,15 @@ export function ZoomerCert() {
       <div className="flex flex-col items-center justify-center h-full py-8">
         <div className="w-full max-w-md text-center">
           <div className="text-5xl mb-4">{passed ? '🎉' : '😔'}</div>
-          <h1 className="text-2xl font-bold text-white mb-2">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
             {passed ? 'Godkänt!' : 'Inte godkänt'}
           </h1>
-          <p className="text-gray-400 text-sm mb-6">
-            Du fick <span className="text-white font-semibold">{score} av {QUESTIONS.length}</span> rätt.
+          <p className="text-gray-500 text-sm mb-6">
+            Du fick <span className="text-gray-900 font-semibold">{score} av {QUESTIONS.length}</span> rätt.
             {!passed && ` Kräver ${PASS_THRESHOLD} av ${QUESTIONS.length} rätt. Läs "QuiXzoom Plattformsguide" och försök igen!`}
           </p>
 
-          <div className="bg-[#0D0F1A] border border-surface-border rounded-xl p-4 mb-6">
+          <div className="bg-white border border-surface-border rounded-xl p-4 mb-6">
             {QUESTIONS.map(q => {
               const userAnswer = answers[q.id]
               const isCorrect = userAnswer === q.correct
@@ -289,7 +289,7 @@ export function ZoomerCert() {
                     {isCorrect ? '✓' : '✗'}
                   </span>
                   <div>
-                    <p className="text-xs text-gray-300">{q.text}</p>
+                    <p className="text-xs text-gray-600">{q.text}</p>
                     {!isCorrect && (
                       <p className="text-xs text-green-400 mt-0.5">
                         Rätt svar: {q.options[q.correct]}
@@ -328,13 +328,13 @@ export function ZoomerCert() {
               }`}
             />
           ))}
-          <span className="text-xs text-gray-600 font-mono flex-shrink-0">{currentQ + 1}/{QUESTIONS.length}</span>
+          <span className="text-xs text-gray-500 font-mono flex-shrink-0">{currentQ + 1}/{QUESTIONS.length}</span>
         </div>
 
         {/* Question */}
-        <div className="bg-[#0D0F1A] border border-surface-border rounded-xl p-6 mb-4">
+        <div className="bg-white border border-surface-border rounded-xl p-6 mb-4">
           <p className="text-xs text-amber-400/60 font-mono mb-3">FRÅGA {currentQ + 1}</p>
-          <h2 className="text-base font-semibold text-white leading-snug">{question.text}</h2>
+          <h2 className="text-base font-semibold text-gray-900 leading-snug">{question.text}</h2>
         </div>
 
         {/* Options */}
@@ -343,15 +343,15 @@ export function ZoomerCert() {
             let cls = 'w-full text-left px-4 py-3 rounded-xl border text-sm transition-all '
             if (!showFeedback) {
               cls += selectedOption === i
-                ? 'bg-amber-500/10 border-amber-400 text-white'
-                : 'bg-[#0D0F1A] border-surface-border text-gray-400 hover:text-white hover:border-white/20'
+                ? 'bg-amber-500/10 border-amber-400 text-gray-900'
+                : 'bg-white border-surface-border text-gray-500 hover:text-gray-900 hover:border-gray-300'
             } else {
               if (i === question.correct) {
                 cls += 'bg-green-500/10 border-green-400/50 text-green-300'
               } else if (i === selectedOption && i !== question.correct) {
                 cls += 'bg-red-500/10 border-red-400/50 text-red-300'
               } else {
-                cls += 'bg-[#0D0F1A] border-surface-border text-gray-600'
+                cls += 'bg-white border-surface-border text-gray-500'
               }
             }
 

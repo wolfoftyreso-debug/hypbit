@@ -106,8 +106,8 @@ function ProductBadge({ product }: { product: ProductType }) {
 
 function PanelSection({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="border-t border-white/[0.05] pt-3 pb-3 px-4 space-y-2">
-      <p className="text-[9px] font-bold text-gray-700 uppercase tracking-[0.15em]">{label}</p>
+    <div className="border-t border-gray-200 pt-3 pb-3 px-4 space-y-2">
+      <p className="text-[9px] font-bold text-gray-600 uppercase tracking-[0.15em]">{label}</p>
       {children}
     </div>
   )
@@ -134,13 +134,13 @@ function SitePanel({ site, onClose }: { site: MarketSite; onClose: () => void })
     <div className="w-[340px] flex-shrink-0 flex flex-col h-full overflow-hidden"
       style={{ background: '#09090F', borderLeft: '1px solid rgba(255,255,255,0.06)' }}>
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.05]">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
         <div className="flex items-center gap-2">
           <span className="text-xl leading-none">{flagEmoji(site.countryCode)}</span>
-          <span className="text-sm font-semibold text-white">{site.name}</span>
+          <span className="text-sm font-semibold text-gray-900">{site.name}</span>
         </div>
         <button onClick={onClose}
-          className="text-gray-600 hover:text-gray-300 transition-colors text-sm leading-none">
+          className="text-gray-500 hover:text-gray-600 transition-colors text-sm leading-none">
           ✕
         </button>
       </div>
@@ -156,7 +156,7 @@ function SitePanel({ site, onClose }: { site: MarketSite; onClose: () => void })
           </div>
           <button
             onClick={() => navigate('/entities/' + site.entity_id)}
-            className="mt-2 text-xs font-mono text-gray-600 hover:text-gray-300 transition-colors flex items-center gap-1">
+            className="mt-2 text-xs font-mono text-gray-500 hover:text-gray-600 transition-colors flex items-center gap-1">
             Open entity →
           </button>
           <p className="text-xs text-gray-500 leading-relaxed mt-1">{site.strategy.purpose}</p>
@@ -175,12 +175,12 @@ function SitePanel({ site, onClose }: { site: MarketSite; onClose: () => void })
               <p className="text-[9px] text-gray-500">{nextActionAlert.action_required}</p>
             </div>
           ) : nextActionItem ? (
-            <div className="rounded-lg px-3 py-2 bg-white/[0.03] border border-white/[0.05]">
-              <p className="text-xs text-gray-300">☐ {nextActionItem.item}</p>
-              <p className="text-[9px] text-gray-600 mt-0.5">Current stage: {STAGE_LABEL[site.stage]}</p>
+            <div className="rounded-lg px-3 py-2 bg-white/[0.03] border border-gray-200">
+              <p className="text-xs text-gray-600">☐ {nextActionItem.item}</p>
+              <p className="text-[9px] text-gray-500 mt-0.5">Current stage: {STAGE_LABEL[site.stage]}</p>
             </div>
           ) : (
-            <p className="text-xs text-gray-600">No actions required</p>
+            <p className="text-xs text-gray-500">No actions required</p>
           )}
         </PanelSection>
 
@@ -201,14 +201,14 @@ function SitePanel({ site, onClose }: { site: MarketSite; onClose: () => void })
             {STAGE_ORDER.map((s, i) => {
               const isCurrent = s === site.stage
               const isDone = STAGE_ORDER.indexOf(site.stage) > i
-              const stageColor = isDone ? '#10B981' : isCurrent ? '#8B5CF6' : '#374151'
+              const stageColor = isDone ? '#10B981' : isCurrent ? '#8B5CF6' : '#F3F4F6'
               return (
                 <div key={s} className="flex items-center gap-1 flex-1">
                   <div className="flex flex-col items-center gap-0.5 flex-1">
                     <div className="h-1.5 w-full rounded-full transition-all"
                       style={{ background: stageColor }} />
                     <span className="text-[7px] font-mono"
-                      style={{ color: isCurrent ? '#8B5CF6' : isDone ? '#10B981' : '#374151' }}>
+                      style={{ color: isCurrent ? '#8B5CF6' : isDone ? '#10B981' : '#F3F4F6' }}>
                       {s.substring(0, 3).toUpperCase()}
                     </span>
                   </div>
@@ -230,7 +230,7 @@ function SitePanel({ site, onClose }: { site: MarketSite; onClose: () => void })
                   </span>
                 </div>
               ))}
-              <p className="text-[8px] text-gray-700 mt-1 font-mono">{currentStageData.kpi_targets}</p>
+              <p className="text-[8px] text-gray-600 mt-1 font-mono">{currentStageData.kpi_targets}</p>
             </div>
           )}
         </PanelSection>
@@ -238,7 +238,7 @@ function SitePanel({ site, onClose }: { site: MarketSite; onClose: () => void })
         {/* 5. MARKETING */}
         <PanelSection label="Marketing">
           {site.marketing.campaigns.length === 0 ? (
-            <p className="text-xs text-gray-600">No campaigns yet</p>
+            <p className="text-xs text-gray-500">No campaigns yet</p>
           ) : (
             <div className="space-y-2">
               {site.marketing.campaigns.map(campaign => {
@@ -248,20 +248,20 @@ function SitePanel({ site, onClose }: { site: MarketSite; onClose: () => void })
                   active: '#10B981', planned: '#6B7280', paused: '#F59E0B',
                 }
                 return (
-                  <div key={campaign.id} className="rounded-lg px-3 py-2 bg-white/[0.02] border border-white/[0.04] space-y-1.5">
+                  <div key={campaign.id} className="rounded-lg px-3 py-2 bg-white/[0.02] border border-gray-100 space-y-1.5">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs font-semibold text-white flex-1 truncate">{campaign.name}</span>
+                      <span className="text-xs font-semibold text-gray-900 flex-1 truncate">{campaign.name}</span>
                       <span className="text-[8px] font-bold uppercase px-1 rounded"
                         style={{ background: statusColor[campaign.status] + '20', color: statusColor[campaign.status] }}>
                         {campaign.status}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between text-[9px] text-gray-600">
+                    <div className="flex items-center justify-between text-[9px] text-gray-500">
                       <span className="font-mono uppercase">{campaign.channel}</span>
                       <span>{campaign.leads_generated} leads</span>
                     </div>
                     <div className="space-y-0.5">
-                      <div className="flex justify-between text-[8px] text-gray-700">
+                      <div className="flex justify-between text-[8px] text-gray-600">
                         <span>Spend</span>
                         <span>${campaign.spend_to_date.toLocaleString()} / ${campaign.budget_monthly.toLocaleString()}/mo</span>
                       </div>
@@ -279,7 +279,7 @@ function SitePanel({ site, onClose }: { site: MarketSite; onClose: () => void })
             className="flex items-center gap-2 mt-2 cursor-pointer hover:opacity-80 transition-opacity"
             onClick={() => navigate('/campaigns')}
           >
-            <span className="text-xs font-mono text-gray-600">⚡</span>
+            <span className="text-xs font-mono text-gray-500">⚡</span>
             <span className="text-xs text-gray-500">View in Campaign OS →</span>
           </div>
         </PanelSection>
@@ -289,7 +289,7 @@ function SitePanel({ site, onClose }: { site: MarketSite; onClose: () => void })
           <div className="space-y-2">
             <div className="flex justify-between text-xs">
               <span className="text-gray-500">Team size</span>
-              <span className="text-white font-mono">{site.operations.team_size} people</span>
+              <span className="text-gray-900 font-mono">{site.operations.team_size} people</span>
             </div>
             <div className="space-y-1">
               <div className="flex justify-between text-xs">
@@ -308,7 +308,7 @@ function SitePanel({ site, onClose }: { site: MarketSite; onClose: () => void })
               </div>
             </div>
             {site.operations.notes && (
-              <p className="text-[9px] text-gray-600 leading-relaxed">{site.operations.notes}</p>
+              <p className="text-[9px] text-gray-500 leading-relaxed">{site.operations.notes}</p>
             )}
           </div>
         </PanelSection>
@@ -317,8 +317,8 @@ function SitePanel({ site, onClose }: { site: MarketSite; onClose: () => void })
         <PanelSection label="Legal">
           <div className="space-y-2">
             <div>
-              <p className="text-[9px] text-gray-600">Entity linkage</p>
-              <p className="text-xs text-white mt-0.5">{site.legal.entity_linkage}</p>
+              <p className="text-[9px] text-gray-500">Entity linkage</p>
+              <p className="text-xs text-gray-900 mt-0.5">{site.legal.entity_linkage}</p>
             </div>
             {site.legal.contracts.length > 0 && (
               <div className="space-y-1">
@@ -328,7 +328,7 @@ function SitePanel({ site, onClose }: { site: MarketSite; onClose: () => void })
                   }
                   return (
                     <div key={idx} className="flex items-center justify-between gap-2">
-                      <span className="text-[9px] text-gray-400 flex-1 truncate">{contract.name}</span>
+                      <span className="text-[9px] text-gray-500 flex-1 truncate">{contract.name}</span>
                       <span className="text-[8px] font-bold uppercase px-1 rounded flex-shrink-0"
                         style={{ background: contractColors[contract.status] + '20', color: contractColors[contract.status] }}>
                         {contract.status}
@@ -351,14 +351,14 @@ function SitePanel({ site, onClose }: { site: MarketSite; onClose: () => void })
                   {responsible.initials}
                 </div>
                 <div>
-                  <p className="text-xs text-white">{responsible.person}</p>
-                  <p className="text-[9px] text-gray-600">{responsible.title}</p>
+                  <p className="text-xs text-gray-900">{responsible.person}</p>
+                  <p className="text-[9px] text-gray-500">{responsible.title}</p>
                 </div>
               </div>
             )}
             <button
               onClick={() => navigate('/org')}
-              className="text-xs font-mono text-gray-600 hover:text-gray-300 transition-colors flex items-center gap-1 mt-1">
+              className="text-xs font-mono text-gray-500 hover:text-gray-600 transition-colors flex items-center gap-1 mt-1">
               View in Corporate Graph →
             </button>
           </div>
@@ -386,7 +386,7 @@ function WorldSVG({
   return (
     <svg
       viewBox={`0 0 ${svgW} ${svgH}`}
-      style={{ width: '100%', height: '100%', background: '#07080F', display: 'block' }}
+      style={{ width: '100%', height: '100%', background: '#F9FAFB', display: 'block' }}
       preserveAspectRatio="xMidYMid meet"
     >
       {/* Pulse animation */}
@@ -550,16 +550,16 @@ export function MarketMap() {
 
   const activeSiteCount = MARKET_SITES.filter(s => s.status === 'active' || s.status === 'scaling').length
 
-  const selectEl = 'text-xs bg-[#0D0F1A] border border-white/[0.08] rounded-lg px-2.5 py-1 font-mono cursor-pointer focus:outline-none appearance-none text-gray-400'
+  const selectEl = 'text-xs bg-white border border-gray-200 rounded-lg px-2.5 py-1 font-mono cursor-pointer focus:outline-none appearance-none text-gray-500'
 
   return (
-    <div className="flex flex-col h-full" style={{ background: '#07080F' }}>
+    <div className="flex flex-col h-full" style={{ background: '#F9FAFB' }}>
 
       {/* ── Toolbar ─────────────────────────────────────────────────────────── */}
       <div className="flex-shrink-0 h-11 flex items-center justify-between px-4 border-b"
-        style={{ borderColor: 'rgba(255,255,255,0.06)', background: '#07080F' }}>
+        style={{ borderColor: 'rgba(255,255,255,0.06)', background: '#F9FAFB' }}>
         {/* Title */}
-        <span className="text-xs font-bold text-white tracking-wide">
+        <span className="text-xs font-bold text-gray-900 tracking-wide">
           Market Deployment Control
         </span>
 
@@ -596,12 +596,12 @@ export function MarketMap() {
             placeholder="Search…"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="text-xs bg-[#0D0F1A] border border-white/[0.08] rounded-lg px-2.5 py-1 font-mono focus:outline-none text-gray-400 placeholder-gray-700 w-24"
+            className="text-xs bg-white border border-gray-200 rounded-lg px-2.5 py-1 font-mono focus:outline-none text-gray-500 placeholder-gray-700 w-24"
           />
 
           {/* Summary pills */}
           <span className="text-[9px] font-mono px-2 py-0.5 rounded"
-            style={{ background: '#374151', color: '#9CA3AF' }}>
+            style={{ background: '#F3F4F6', color: '#9CA3AF' }}>
             {filteredSites.length} sites
           </span>
           <span className="text-[9px] font-mono px-2 py-0.5 rounded"
@@ -623,7 +623,7 @@ export function MarketMap() {
       <div className="flex flex-1 overflow-hidden">
 
         {/* World map */}
-        <div className="flex-1 overflow-hidden" style={{ background: '#07080F' }}>
+        <div className="flex-1 overflow-hidden" style={{ background: '#F9FAFB' }}>
           <WorldSVG
             sites={filteredSites}
             selectedSite={selectedSite}

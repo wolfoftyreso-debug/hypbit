@@ -195,13 +195,13 @@ function NodeDetail({ node, onClose, onDashboard }: {
   const statusColor = node.status ? (STATUS[node.status] ?? '#6B7280') : '#6B7280'
 
   return (
-    <div className="h-full flex flex-col bg-[#08090F] border-l border-white/[0.06] overflow-hidden">
-      <div className="flex-shrink-0 p-5 border-b border-white/[0.06]">
+    <div className="h-full flex flex-col bg-[#08090F] border-l border-gray-200 overflow-hidden">
+      <div className="flex-shrink-0 p-5 border-b border-gray-200">
         <div className="flex items-start justify-between">
           <div>
             <div className="flex items-center gap-2 flex-wrap">
               <span className="text-xl">{node.flag}</span>
-              <span className="font-bold text-white text-base">{node.label}</span>
+              <span className="font-bold text-gray-900 text-base">{node.label}</span>
               {node.status && (
                 <span className="text-xs px-2 py-0.5 rounded-full" style={{ background: statusColor + '18', color: statusColor }}>
                   {node.status}
@@ -211,9 +211,9 @@ function NodeDetail({ node, onClose, onDashboard }: {
                 {node.type}
               </span>
             </div>
-            <div className="text-sm text-gray-300 mt-1">{node.sublabel}</div>
+            <div className="text-sm text-gray-600 mt-1">{node.sublabel}</div>
           </div>
-          <button onClick={onClose} className="text-gray-600 hover:text-white transition-colors text-lg ml-3">✕</button>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-900 transition-colors text-lg ml-3">✕</button>
         </div>
 
         {/* Actions */}
@@ -227,7 +227,7 @@ function NodeDetail({ node, onClose, onDashboard }: {
               Open Dashboard →
             </button>
           )}
-          <span className="text-xs px-2 py-1.5 rounded-lg bg-white/[0.03] text-gray-600 border border-white/[0.05]">
+          <span className="text-xs px-2 py-1.5 rounded-lg bg-white/[0.03] text-gray-500 border border-gray-200">
             {node.position === 'above' ? '▲ Above you' : node.position === 'self' ? '🎯 Your role' : '▼ Below you'}
           </span>
         </div>
@@ -237,12 +237,12 @@ function NodeDetail({ node, onClose, onDashboard }: {
         {/* Metadata */}
         {node.metadata && Object.keys(node.metadata).length > 0 && (
           <div>
-            <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Details</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Details</h3>
             <div className="space-y-2.5">
               {Object.entries(node.metadata).map(([k, v]) => (
                 <div key={k} className="flex gap-3">
-                  <span className="text-xs text-gray-600 w-28 flex-shrink-0 font-mono">{k}</span>
-                  <span className="text-xs text-gray-300">{v}</span>
+                  <span className="text-xs text-gray-500 w-28 flex-shrink-0 font-mono">{k}</span>
+                  <span className="text-xs text-gray-600">{v}</span>
                 </div>
               ))}
             </div>
@@ -252,7 +252,7 @@ function NodeDetail({ node, onClose, onDashboard }: {
         {/* Role info */}
         {node.roleMapping && (
           <div>
-            <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Role</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Role</h3>
             <div className="rounded-xl border px-4 py-3" style={{ borderColor: node.color + '25', background: node.color + '08' }}>
               <div className="flex items-center gap-3">
                 <div className="h-9 w-9 rounded-full flex items-center justify-center font-bold"
@@ -260,13 +260,13 @@ function NodeDetail({ node, onClose, onDashboard }: {
                   {node.roleMapping.initials}
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-white">{node.roleMapping.person}</div>
+                  <div className="text-sm font-semibold text-gray-900">{node.roleMapping.person}</div>
                   <div className="text-xs text-gray-500">{node.roleMapping.role_type} · {node.roleMapping.scope}</div>
                 </div>
               </div>
               <div className="flex flex-wrap gap-1.5 mt-3 pl-12">
                 {node.roleMapping.permissions.map(p => (
-                  <span key={p} className="text-xs px-2 py-0.5 rounded bg-white/[0.05] text-gray-400 font-mono">{p}</span>
+                  <span key={p} className="text-xs px-2 py-0.5 rounded bg-white/[0.05] text-gray-500 font-mono">{p}</span>
                 ))}
               </div>
             </div>
@@ -276,7 +276,7 @@ function NodeDetail({ node, onClose, onDashboard }: {
         {/* Children preview */}
         {node.children && node.children.length > 0 && (
           <div>
-            <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
               Subordinates ({node.children.length})
             </h3>
             <div className="space-y-2">
@@ -300,7 +300,7 @@ function NodeDetail({ node, onClose, onDashboard }: {
         )}
 
         {/* Position explanation */}
-        <div className="text-xs text-gray-700 border border-white/[0.04] rounded-lg p-3 bg-white/[0.01]">
+        <div className="text-xs text-gray-600 border border-gray-100 rounded-lg p-3 bg-white/[0.01]">
           {node.position === 'above' && '▲ This node is above you in the hierarchy. You have visibility but not control.'}
           {node.position === 'self' && '🎯 This is your role or entity. You have full control over this domain.'}
           {node.position === 'below' && '▼ This is under your authority. You have full visibility and control.'}
@@ -383,10 +383,10 @@ export function ContextView() {
       {/* ── Canvas ── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Header */}
-        <div className="flex-shrink-0 flex items-center justify-between gap-4 px-5 py-3 border-b border-white/[0.06] bg-[#080A12]">
+        <div className="flex-shrink-0 flex items-center justify-between gap-4 px-5 py-3 border-b border-gray-200 bg-[#080A12]">
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-sm font-bold text-white">My Position</h1>
+              <h1 className="text-sm font-bold text-gray-900">My Position</h1>
               <div
                 className="text-xs px-2.5 py-1 rounded-full border flex items-center gap-1.5"
                 style={{ background: overlayInfo.color + '12', color: overlayInfo.color, borderColor: overlayInfo.color + '30' }}
@@ -395,7 +395,7 @@ export function ContextView() {
                 <span>{overlayInfo.label}</span>
               </div>
             </div>
-            <p className="text-xs text-gray-600 mt-0.5">
+            <p className="text-xs text-gray-500 mt-0.5">
               Wavult Group → {effectiveRole?.title ?? 'Group CEO'} — {nodes.length} nodes in view
             </p>
           </div>
@@ -403,7 +403,7 @@ export function ContextView() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => navigate('/org')}
-              className="text-xs text-gray-500 hover:text-gray-300 px-2.5 py-1.5 rounded-lg border border-white/[0.06] transition-colors"
+              className="text-xs text-gray-500 hover:text-gray-600 px-2.5 py-1.5 rounded-lg border border-gray-200 transition-colors"
             >
               ← Corporate Graph
             </button>
@@ -411,7 +411,7 @@ export function ContextView() {
         </div>
 
         {/* Path breadcrumb */}
-        <div className="flex-shrink-0 flex items-center gap-1 px-5 py-2 border-b border-white/[0.04] bg-[#060810] overflow-x-auto">
+        <div className="flex-shrink-0 flex items-center gap-1 px-5 py-2 border-b border-gray-100 bg-[#060810] overflow-x-auto">
           {nodes.filter(n => n.isOnPath).map((n, i, arr) => (
             <span key={n.id} className="flex items-center gap-1 text-xs flex-shrink-0">
               <span
@@ -421,22 +421,22 @@ export function ContextView() {
               >
                 {n.flag} {n.label}
               </span>
-              {i < arr.length - 1 && <span className="text-gray-700 mx-0.5">›</span>}
+              {i < arr.length - 1 && <span className="text-gray-600 mx-0.5">›</span>}
             </span>
           ))}
-          <span className="text-gray-700 mx-0.5">›</span>
+          <span className="text-gray-600 mx-0.5">›</span>
           {nodes.filter(n => n.position === 'below').slice(0, 2).map((n, i) => (
             <span key={n.id} className="flex items-center gap-1 text-xs flex-shrink-0">
               <span className="font-mono opacity-40" style={{ color: n.color }}>
                 {n.flag} {n.label.slice(0, 16)}
               </span>
               {i < 1 && nodes.filter(n => n.position === 'below').length > 2 && (
-                <span className="text-gray-700 mx-0.5">›</span>
+                <span className="text-gray-600 mx-0.5">›</span>
               )}
             </span>
           ))}
           {nodes.filter(n => n.position === 'below').length > 2 && (
-            <span className="text-xs text-gray-700">+{nodes.filter(n => n.position === 'below').length - 2} more</span>
+            <span className="text-xs text-gray-600">+{nodes.filter(n => n.position === 'below').length - 2} more</span>
           )}
         </div>
 
@@ -519,8 +519,8 @@ export function ContextView() {
         </div>
 
         {/* Footer */}
-        <div className="flex-shrink-0 px-5 py-2 border-t border-white/[0.06] bg-[#080A12]">
-          <div className="flex items-center gap-6 text-xs text-gray-700">
+        <div className="flex-shrink-0 px-5 py-2 border-t border-gray-200 bg-[#080A12]">
+          <div className="flex items-center gap-6 text-xs text-gray-600">
             <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-white/20" />Above: governance chain</span>
             <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full" style={{ background: effectiveRole?.color ?? '#8B5CF6' }} />Self: your role</span>
             <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-[#10B981]" />Below: your authority</span>

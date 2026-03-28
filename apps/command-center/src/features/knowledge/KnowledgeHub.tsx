@@ -19,12 +19,12 @@ export function KnowledgeHub() {
   const [activeTab, setActiveTab] = useState<Tab>('kunskapsbas')
 
   return (
-    <div className="flex flex-col h-full bg-[#07080F] overflow-hidden">
+    <div className="flex flex-col h-full bg-gray-50 overflow-hidden">
       {/* Header */}
-      <div className="flex-shrink-0 border-b border-white/[0.06] px-4 md:px-6 pt-4 md:pt-5 pb-0">
+      <div className="flex-shrink-0 border-b border-gray-200 px-4 md:px-6 pt-4 md:pt-5 pb-0">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-xl font-semibold text-white">Knowledge Hub</h1>
+            <h1 className="text-xl font-semibold text-gray-900">Knowledge Hub</h1>
             <p className="text-sm text-gray-500 mt-0.5">
               Wavult Groups samlade kunskap, strukturer och utbildningsmaterial —{' '}
               <button
@@ -46,7 +46,7 @@ export function KnowledgeHub() {
               className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors flex-shrink-0 ${
                 activeTab === tab.id
                   ? 'bg-[#8B5CF6]/15 text-[#8B5CF6] border border-[#8B5CF6]/30'
-                  : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
+                  : 'text-gray-500 hover:text-gray-600 hover:bg-white/[0.04]'
               }`}
             >
               {tab.label}

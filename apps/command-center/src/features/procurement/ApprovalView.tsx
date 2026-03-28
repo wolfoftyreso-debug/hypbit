@@ -32,29 +32,29 @@ export function ApprovalView() {
       <div className={`rounded-xl border p-4 transition-colors ${
         isPending
           ? 'border-amber-500/20 bg-amber-500/[0.03]'
-          : 'border-white/[0.06] bg-white/[0.02]'
+          : 'border-gray-200 bg-white/[0.02]'
       }`}>
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[14px] font-bold text-white">{req.supplierName}</span>
+              <span className="text-[14px] font-bold text-gray-900">{req.supplierName}</span>
               <span
                 className="text-xs px-2 py-0.5 rounded-full font-medium"
                 style={{ color: meta.color, background: meta.bg }}
               >
                 {meta.label}
               </span>
-              <span className="text-xs text-gray-600 font-mono ml-auto">{req.approver}-godkännande</span>
+              <span className="text-xs text-gray-500 font-mono ml-auto">{req.approver}-godkännande</span>
             </div>
-            <p className="text-xs text-gray-400 mb-2">{req.description}</p>
-            <div className="flex items-center gap-4 text-xs text-gray-600 font-mono">
+            <p className="text-xs text-gray-500 mb-2">{req.description}</p>
+            <div className="flex items-center gap-4 text-xs text-gray-500 font-mono">
               <span>PO: {req.purchaseOrderId.toUpperCase()}</span>
               <span>Begärd av: {req.requestedBy}</span>
               <span>{new Date(req.requestedAt).toLocaleDateString('sv-SE')}</span>
             </div>
           </div>
           <div className="text-right flex-shrink-0">
-            <div className="text-[18px] font-bold text-white font-mono">
+            <div className="text-[18px] font-bold text-gray-900 font-mono">
               {formatAmount(req.amount, req.currency)}
             </div>
             {req.amount > 10000 && (
@@ -66,13 +66,13 @@ export function ApprovalView() {
         </div>
 
         {isPending && (
-          <div className="mt-3 pt-3 border-t border-white/[0.05]">
+          <div className="mt-3 pt-3 border-t border-gray-200">
             <input
               type="text"
               placeholder="Kommentar (valfritt)…"
               value={comment[req.id] ?? ''}
               onChange={e => setComment(prev => ({ ...prev, [req.id]: e.target.value }))}
-              className="w-full bg-white/[0.05] border border-white/[0.08] rounded-lg px-3 py-1.5 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-white/20 mb-3"
+              className="w-full bg-white/[0.05] border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-900 placeholder-gray-600 focus:outline-none focus:border-gray-300 mb-3"
             />
             <div className="flex gap-2">
               <button
@@ -105,10 +105,10 @@ export function ApprovalView() {
         ].map(stat => (
           <div
             key={stat.label}
-            className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4"
+            className="rounded-xl border border-gray-200 bg-white/[0.02] p-4"
           >
             <div className="text-[24px] font-bold" style={{ color: stat.color }}>{stat.value}</div>
-            <div className="text-xs text-gray-600 font-mono uppercase tracking-wider mt-1">{stat.label}</div>
+            <div className="text-xs text-gray-500 font-mono uppercase tracking-wider mt-1">{stat.label}</div>
           </div>
         ))}
       </div>
@@ -126,7 +126,7 @@ export function ApprovalView() {
       )}
 
       {pending.length === 0 && (
-        <div className="text-center py-10 text-gray-600 text-sm">
+        <div className="text-center py-10 text-gray-500 text-sm">
           ✓ Inga väntande godkännanden
         </div>
       )}
@@ -134,7 +134,7 @@ export function ApprovalView() {
       {/* Resolved */}
       {resolved.length > 0 && (
         <div>
-          <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
             Hanterade ({resolved.length})
           </p>
           <div className="space-y-3">

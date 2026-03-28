@@ -25,7 +25,7 @@ function DeadlineBadge({ date }: { date: string }) {
   if (days < 0)  return <span className="text-xs text-red-400 font-mono">FÖRFALLEN ({Math.abs(days)}d)</span>
   if (days <= 14) return <span className="text-xs text-red-400 font-semibold font-mono animate-pulse">{days}d</span>
   if (days <= 30) return <span className="text-xs text-yellow-400 font-mono">{days}d</span>
-  return <span className="text-xs text-gray-600 font-mono">{new Date(date).toLocaleDateString('sv-SE', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+  return <span className="text-xs text-gray-500 font-mono">{new Date(date).toLocaleDateString('sv-SE', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
 }
 
 export function JurisdictionView() {
@@ -45,7 +45,7 @@ export function JurisdictionView() {
             className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
               selectedCompany === 'all'
                 ? 'bg-brand-accent/15 text-brand-accent border-brand-accent/30'
-                : 'bg-white/[0.02] text-gray-500 border-white/[0.06] hover:text-white'
+                : 'bg-white/[0.02] text-gray-500 border-gray-200 hover:text-gray-900'
             }`}
           >
             Alla bolag
@@ -57,7 +57,7 @@ export function JurisdictionView() {
               className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                 selectedCompany === c.id
                   ? 'border opacity-100'
-                  : 'bg-white/[0.02] text-gray-500 border-white/[0.06] hover:text-white'
+                  : 'bg-white/[0.02] text-gray-500 border-gray-200 hover:text-gray-900'
               }`}
               style={selectedCompany === c.id ? { background: c.color + '20', color: c.color, borderColor: c.color + '50' } : {}}
             >
@@ -79,9 +79,9 @@ export function JurisdictionView() {
                 <span className="text-xl">{FLAG[company.jurisdictionCode]}</span>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-[14px] font-semibold text-white">{company.name}</span>
+                    <span className="text-[14px] font-semibold text-gray-900">{company.name}</span>
                     {urgentCount > 0 && (
-                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-red-500 text-white">{urgentCount} brådskande</span>
+                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-red-500 text-gray-900">{urgentCount} brådskande</span>
                     )}
                   </div>
                   <div className="text-xs text-gray-500">{company.jurisdiction} · {company.orgNr}</div>
@@ -103,21 +103,21 @@ export function JurisdictionView() {
               <div className="overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead>
-                    <tr className="border-b border-white/[0.04] bg-white/[0.01]">
-                      <th className="text-left px-4 py-2 text-gray-600 font-medium">Myndighet</th>
-                      <th className="text-left px-4 py-2 text-gray-600 font-medium">Krav</th>
-                      <th className="text-left px-4 py-2 text-gray-600 font-medium">Deadline</th>
-                      <th className="text-left px-4 py-2 text-gray-600 font-medium">Belopp</th>
-                      <th className="text-left px-4 py-2 text-gray-600 font-medium">Status</th>
+                    <tr className="border-b border-gray-100 bg-white/[0.01]">
+                      <th className="text-left px-4 py-2 text-gray-500 font-medium">Myndighet</th>
+                      <th className="text-left px-4 py-2 text-gray-500 font-medium">Krav</th>
+                      <th className="text-left px-4 py-2 text-gray-500 font-medium">Deadline</th>
+                      <th className="text-left px-4 py-2 text-gray-500 font-medium">Belopp</th>
+                      <th className="text-left px-4 py-2 text-gray-500 font-medium">Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {reqs.map(req => (
                       <tr key={req.id} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
-                        <td className="px-4 py-2.5 text-gray-400 font-mono text-xs">{req.authority}</td>
+                        <td className="px-4 py-2.5 text-gray-500 font-mono text-xs">{req.authority}</td>
                         <td className="px-4 py-2.5">
-                          <div className="text-gray-200">{req.requirement}</div>
-                          {req.notes && <div className="text-xs text-gray-600 mt-0.5">{req.notes}</div>}
+                          <div className="text-gray-800">{req.requirement}</div>
+                          {req.notes && <div className="text-xs text-gray-500 mt-0.5">{req.notes}</div>}
                         </td>
                         <td className="px-4 py-2.5 whitespace-nowrap">
                           <DeadlineBadge date={req.deadline} />

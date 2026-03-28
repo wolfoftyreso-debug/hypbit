@@ -65,19 +65,19 @@ function MiniRelGraph({ entityId }: { entityId: string }) {
       {/* Parent chain */}
       {parent && (
         <div className="flex items-center gap-2">
-          <div className="text-xs text-gray-600">Parent</div>
+          <div className="text-xs text-gray-500">Parent</div>
           <div className="flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-semibold"
             style={{ background: parent.color + '10', borderColor: parent.color + '30', color: parent.color }}>
             {parent.flag} {parent.shortName}
           </div>
-          <div className="text-gray-600 text-xs">→ {entity?.shortName}</div>
+          <div className="text-gray-500 text-xs">→ {entity?.shortName}</div>
         </div>
       )}
 
       {/* Children */}
       {children.length > 0 && (
         <div className="flex items-start gap-2">
-          <div className="text-xs text-gray-600 pt-1.5">Owns</div>
+          <div className="text-xs text-gray-500 pt-1.5">Owns</div>
           <div className="flex flex-wrap gap-2">
             {children.map(c => (
               <div key={c.id} className="px-3 py-1.5 rounded-xl border text-xs font-semibold"
@@ -92,17 +92,17 @@ function MiniRelGraph({ entityId }: { entityId: string }) {
       {/* Relationships */}
       {rels.length > 0 && (
         <div>
-          <div className="text-xs text-gray-600 mb-2">Relationships ({rels.length})</div>
+          <div className="text-xs text-gray-500 mb-2">Relationships ({rels.length})</div>
           <div className="space-y-1.5">
             {rels.map(r => {
               const other = ENTITIES.find(e => e.id === (r.from_entity_id === entityId ? r.to_entity_id : r.from_entity_id))
               const dir = r.from_entity_id === entityId ? '→' : '←'
               return (
                 <div key={r.id} className="flex items-center gap-2 text-xs">
-                  <span className="text-gray-600 w-20 flex-shrink-0 font-mono">{r.type}</span>
+                  <span className="text-gray-500 w-20 flex-shrink-0 font-mono">{r.type}</span>
                   <span className="text-gray-500">{dir}</span>
                   <span style={{ color: other?.color }}>{other?.flag} {other?.shortName}</span>
-                  <span className="text-gray-700">· {r.label}</span>
+                  <span className="text-gray-600">· {r.label}</span>
                 </div>
               )
             })}
@@ -125,14 +125,14 @@ function OverviewTab({ entityId }: { entityId: string }) {
   return (
     <div className="space-y-6">
       {/* Description */}
-      <p className="text-sm text-gray-300 leading-relaxed">{entity.description}</p>
+      <p className="text-sm text-gray-600 leading-relaxed">{entity.description}</p>
 
       {/* Key facts */}
       <div className="grid grid-cols-2 gap-3">
         {Object.entries(entity.metadata).map(([k, v]) => (
-          <div key={k} className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3">
-            <div className="text-xs text-gray-600 font-mono mb-1">{k}</div>
-            <div className="text-sm text-gray-200">{v}</div>
+          <div key={k} className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3">
+            <div className="text-xs text-gray-500 font-mono mb-1">{k}</div>
+            <div className="text-sm text-gray-800">{v}</div>
           </div>
         ))}
       </div>
@@ -140,13 +140,13 @@ function OverviewTab({ entityId }: { entityId: string }) {
       {/* Quick KPIs */}
       {ops && ops.kpis.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Key Metrics</h3>
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Key Metrics</h3>
           <div className="flex flex-wrap gap-3">
             {ops.kpis.map(kpi => (
-              <div key={kpi.label} className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 min-w-[120px]">
-                <div className="text-xs text-gray-600 mb-1">{kpi.label}</div>
+              <div key={kpi.label} className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3 min-w-[120px]">
+                <div className="text-xs text-gray-500 mb-1">{kpi.label}</div>
                 <div className="text-lg font-bold" style={{ color: kpi.good ? '#10B981' : '#F59E0B' }}>{kpi.value}</div>
-                {kpi.delta && <div className="text-xs text-gray-600 mt-0.5">{kpi.delta}</div>}
+                {kpi.delta && <div className="text-xs text-gray-500 mt-0.5">{kpi.delta}</div>}
               </div>
             ))}
           </div>
@@ -156,12 +156,12 @@ function OverviewTab({ entityId }: { entityId: string }) {
       {/* Open risks */}
       {finance && finance.open_items.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Open Items</h3>
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Open Items</h3>
           <div className="space-y-1.5">
             {[...finance.open_items, ...(legal?.open_items ?? [])].map((item, i) => (
               <div key={i} className="flex items-center gap-2 text-sm">
                 <RiskDot level={item.status} />
-                <span className="text-gray-300">{item.label}</span>
+                <span className="text-gray-600">{item.label}</span>
               </div>
             ))}
           </div>
@@ -170,8 +170,8 @@ function OverviewTab({ entityId }: { entityId: string }) {
 
       {/* Mini rel graph */}
       <div>
-        <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Structure</h3>
-        <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
+        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Structure</h3>
+        <div className="rounded-xl border border-gray-200 bg-white/[0.02] p-4">
           <MiniRelGraph entityId={entityId} />
         </div>
       </div>
@@ -181,7 +181,7 @@ function OverviewTab({ entityId }: { entityId: string }) {
 
 function FinanceTab({ entityId }: { entityId: string }) {
   const finance = getEntityFinance(entityId)
-  if (!finance) return <p className="text-sm text-gray-600">No finance data.</p>
+  if (!finance) return <p className="text-sm text-gray-500">No finance data.</p>
 
   const incomeEntities = finance.intercompany_in.map(id => ENTITIES.find(e => e.id === id)).filter(Boolean)
   const outEntities = finance.intercompany_out.map(id => ENTITIES.find(e => e.id === id)).filter(Boolean)
@@ -190,16 +190,16 @@ function FinanceTab({ entityId }: { entityId: string }) {
     <div className="space-y-6">
       {/* Summary row */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3">
-          <div className="text-xs text-gray-600 mb-1">Currency</div>
-          <div className="text-lg font-bold text-white font-mono">{finance.currency}</div>
+        <div className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3">
+          <div className="text-xs text-gray-500 mb-1">Currency</div>
+          <div className="text-lg font-bold text-gray-900 font-mono">{finance.currency}</div>
         </div>
-        <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3">
-          <div className="text-xs text-gray-600 mb-1">Est. MRR</div>
-          <div className="text-sm font-semibold text-gray-300">{finance.estimated_mrr}</div>
+        <div className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3">
+          <div className="text-xs text-gray-500 mb-1">Est. MRR</div>
+          <div className="text-sm font-semibold text-gray-600">{finance.estimated_mrr}</div>
         </div>
-        <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3">
-          <div className="text-xs text-gray-600 mb-1">Cashflow</div>
+        <div className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3">
+          <div className="text-xs text-gray-500 mb-1">Cashflow</div>
           <div className="text-sm font-semibold" style={{ color: RISK_COLOR[finance.cashflow_status] }}>
             {finance.cashflow_status.toUpperCase()}
           </div>
@@ -207,25 +207,25 @@ function FinanceTab({ entityId }: { entityId: string }) {
       </div>
 
       {/* Revenue model */}
-      <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4">
-        <div className="text-xs text-gray-600 font-mono mb-1">Revenue model</div>
-        <div className="text-sm text-gray-200">{finance.revenue_model}</div>
+      <div className="rounded-xl border border-gray-200 bg-white/[0.02] p-4">
+        <div className="text-xs text-gray-500 font-mono mb-1">Revenue model</div>
+        <div className="text-sm text-gray-800">{finance.revenue_model}</div>
         {finance.billing_notes && (
-          <div className="text-xs text-gray-600 mt-2">{finance.billing_notes}</div>
+          <div className="text-xs text-gray-500 mt-2">{finance.billing_notes}</div>
         )}
       </div>
 
       {/* Intercompany */}
       {(incomeEntities.length > 0 || outEntities.length > 0) && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Intercompany Flows</h3>
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Intercompany Flows</h3>
           <div className="space-y-2">
             {incomeEntities.map(e => e && (
               <div key={e.id} className="flex items-center gap-3 rounded-xl border px-4 py-2.5 text-sm"
                 style={{ borderColor: '#10B98125', background: '#10B98108' }}>
                 <span className="text-[#10B981]">↓ IN</span>
                 <span style={{ color: e.color }}>{e.flag} {e.shortName}</span>
-                <span className="text-gray-600 text-xs">pays this entity</span>
+                <span className="text-gray-500 text-xs">pays this entity</span>
               </div>
             ))}
             {outEntities.map(e => e && (
@@ -233,7 +233,7 @@ function FinanceTab({ entityId }: { entityId: string }) {
                 style={{ borderColor: '#EF444425', background: '#EF444408' }}>
                 <span className="text-[#EF4444]">↑ OUT</span>
                 <span style={{ color: e.color }}>{e.flag} {e.shortName}</span>
-                <span className="text-gray-600 text-xs">receives from this entity</span>
+                <span className="text-gray-500 text-xs">receives from this entity</span>
               </div>
             ))}
           </div>
@@ -243,11 +243,11 @@ function FinanceTab({ entityId }: { entityId: string }) {
       {/* Open items */}
       {finance.open_items.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Open Items</h3>
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Open Items</h3>
           <div className="space-y-1.5">
             {finance.open_items.map((item, i) => (
               <div key={i} className="flex items-center gap-2 text-sm">
-                <RiskDot level={item.status} /><span className="text-gray-300">{item.label}</span>
+                <RiskDot level={item.status} /><span className="text-gray-600">{item.label}</span>
               </div>
             ))}
           </div>
@@ -259,20 +259,20 @@ function FinanceTab({ entityId }: { entityId: string }) {
 
 function LegalTab({ entityId }: { entityId: string }) {
   const legal = getEntityLegal(entityId)
-  if (!legal) return <p className="text-sm text-gray-600">No legal data.</p>
+  if (!legal) return <p className="text-sm text-gray-500">No legal data.</p>
 
   const incColor = { complete: '#10B981', 'in-progress': '#F59E0B', 'not-started': '#6B7280' }[legal.incorporation_status]
 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3">
-          <div className="text-xs text-gray-600 mb-1">Legal form</div>
-          <div className="text-sm font-semibold text-white">{legal.legal_form}</div>
-          <div className="text-xs text-gray-600 mt-1">{legal.jurisdiction_detail}</div>
+        <div className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3">
+          <div className="text-xs text-gray-500 mb-1">Legal form</div>
+          <div className="text-sm font-semibold text-gray-900">{legal.legal_form}</div>
+          <div className="text-xs text-gray-500 mt-1">{legal.jurisdiction_detail}</div>
         </div>
-        <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3">
-          <div className="text-xs text-gray-600 mb-1">Incorporation</div>
+        <div className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3">
+          <div className="text-xs text-gray-500 mb-1">Incorporation</div>
           <div className="text-sm font-semibold" style={{ color: incColor }}>{legal.incorporation_status}</div>
           <div className="text-xs mt-1" style={{ color: RISK_COLOR[legal.compliance_status] }}>
             Compliance: {legal.compliance_status}
@@ -282,15 +282,15 @@ function LegalTab({ entityId }: { entityId: string }) {
 
       {legal.contracts.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
             Contracts ({legal.contracts.length})
           </h3>
           <div className="space-y-2">
             {legal.contracts.map((c, i) => (
-              <div key={i} className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3">
+              <div key={i} className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3">
                 <div className="flex items-center gap-2 mb-1">
                   <RiskDot level={c.status} />
-                  <span className="text-sm font-semibold text-white">{c.name}</span>
+                  <span className="text-sm font-semibold text-gray-900">{c.name}</span>
                 </div>
                 <p className="text-xs text-gray-500">{c.note}</p>
               </div>
@@ -301,11 +301,11 @@ function LegalTab({ entityId }: { entityId: string }) {
 
       {legal.open_items.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Open Items</h3>
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Open Items</h3>
           <div className="space-y-1.5">
             {legal.open_items.map((item, i) => (
               <div key={i} className="flex items-center gap-2 text-sm">
-                <RiskDot level={item.status} /><span className="text-gray-300">{item.label}</span>
+                <RiskDot level={item.status} /><span className="text-gray-600">{item.label}</span>
               </div>
             ))}
           </div>
@@ -321,7 +321,7 @@ function PeopleTab({ entityId }: { entityId: string }) {
 
   if (!people.length) {
     return (
-      <div className="text-sm text-gray-600 p-4">
+      <div className="text-sm text-gray-500 p-4">
         No roles directly mapped to this entity. Check Wavult Operations for core team.
       </div>
     )
@@ -339,7 +339,7 @@ function PeopleTab({ entityId }: { entityId: string }) {
               {p.initials}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="font-semibold text-white text-sm">{p.person}</div>
+              <div className="font-semibold text-gray-900 text-sm">{p.person}</div>
               <div className="text-xs text-gray-500">{p.role_type} · {p.scope}</div>
             </div>
             <div className="text-xs px-2 py-0.5 rounded-full"
@@ -360,7 +360,7 @@ function PeopleTab({ entityId }: { entityId: string }) {
 
 function OpsTab({ entityId }: { entityId: string }) {
   const ops = getEntityOps(entityId)
-  if (!ops) return <p className="text-sm text-gray-600">No ops data.</p>
+  if (!ops) return <p className="text-sm text-gray-500">No ops data.</p>
 
   const workColor = { active: '#10B981', blocked: '#EF4444', done: '#6B7280', planned: '#F59E0B' }
   const delivColor = { 'on-track': '#10B981', 'at-risk': '#EF4444', done: '#6B7280' }
@@ -370,10 +370,10 @@ function OpsTab({ entityId }: { entityId: string }) {
       {ops.kpis.length > 0 && (
         <div className="flex flex-wrap gap-3">
           {ops.kpis.map(kpi => (
-            <div key={kpi.label} className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 min-w-[140px]">
-              <div className="text-xs text-gray-600 mb-1">{kpi.label}</div>
+            <div key={kpi.label} className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3 min-w-[140px]">
+              <div className="text-xs text-gray-500 mb-1">{kpi.label}</div>
               <div className="text-xl font-bold" style={{ color: kpi.good ? '#10B981' : '#F59E0B' }}>{kpi.value}</div>
-              {kpi.delta && <div className="text-xs text-gray-600 mt-0.5">{kpi.delta}</div>}
+              {kpi.delta && <div className="text-xs text-gray-500 mt-0.5">{kpi.delta}</div>}
             </div>
           ))}
         </div>
@@ -381,13 +381,13 @@ function OpsTab({ entityId }: { entityId: string }) {
 
       {ops.active_work.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Active Work</h3>
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Active Work</h3>
           <div className="space-y-2">
             {ops.active_work.map((w, i) => (
-              <div key={i} className="flex items-center gap-3 rounded-xl border border-white/[0.06] px-4 py-2.5">
+              <div key={i} className="flex items-center gap-3 rounded-xl border border-gray-200 px-4 py-2.5">
                 <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: workColor[w.status] }} />
-                <span className="flex-1 text-sm text-gray-200">{w.label}</span>
-                <span className="text-xs text-gray-600 flex-shrink-0">{w.owner}</span>
+                <span className="flex-1 text-sm text-gray-800">{w.label}</span>
+                <span className="text-xs text-gray-500 flex-shrink-0">{w.owner}</span>
                 <StatusBadge v={w.status} />
               </div>
             ))}
@@ -397,12 +397,12 @@ function OpsTab({ entityId }: { entityId: string }) {
 
       {ops.deliverables.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Deliverables</h3>
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Deliverables</h3>
           <div className="space-y-2">
             {ops.deliverables.map((d, i) => (
-              <div key={i} className="flex items-center gap-3 rounded-xl border border-white/[0.06] px-4 py-2.5">
-                <span className="flex-1 text-sm text-gray-200">{d.label}</span>
-                <span className="text-xs text-gray-600">{d.due}</span>
+              <div key={i} className="flex items-center gap-3 rounded-xl border border-gray-200 px-4 py-2.5">
+                <span className="flex-1 text-sm text-gray-800">{d.label}</span>
+                <span className="text-xs text-gray-500">{d.due}</span>
                 <span className="text-xs font-mono" style={{ color: delivColor[d.status] }}>{d.status}</span>
               </div>
             ))}
@@ -416,20 +416,20 @@ function OpsTab({ entityId }: { entityId: string }) {
 function SystemsTab({ entityId }: { entityId: string }) {
   const sys = getEntitySystems(entityId)
   if (!sys || (!sys.systems.length && !sys.pipelines.length)) {
-    return <p className="text-sm text-gray-600">No systems data.</p>
+    return <p className="text-sm text-gray-500">No systems data.</p>
   }
 
   return (
     <div className="space-y-6">
       {sys.systems.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Connected Systems</h3>
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Connected Systems</h3>
           <div className="space-y-2">
             {sys.systems.map((s, i) => (
-              <div key={i} className="flex items-start gap-3 rounded-xl border border-white/[0.06] px-4 py-3">
-                <span className="text-xs text-gray-600 font-mono w-16 flex-shrink-0 pt-0.5">{s.type}</span>
+              <div key={i} className="flex items-start gap-3 rounded-xl border border-gray-200 px-4 py-3">
+                <span className="text-xs text-gray-500 font-mono w-16 flex-shrink-0 pt-0.5">{s.type}</span>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm font-semibold text-white">{s.name}</div>
+                  <div className="text-sm font-semibold text-gray-900">{s.name}</div>
                   <div className="text-xs text-gray-500 mt-0.5">{s.note}</div>
                   {s.url && (
                     <a href={s.url} target="_blank" rel="noopener noreferrer"
@@ -447,14 +447,14 @@ function SystemsTab({ entityId }: { entityId: string }) {
 
       {sys.pipelines.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">CI/CD</h3>
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">CI/CD</h3>
           <div className="space-y-2">
             {sys.pipelines.map((p, i) => (
-              <div key={i} className="flex items-center gap-3 rounded-xl border border-white/[0.06] px-4 py-2.5">
+              <div key={i} className="flex items-center gap-3 rounded-xl border border-gray-200 px-4 py-2.5">
                 <span className="h-2 w-2 rounded-full flex-shrink-0"
                   style={{ background: p.status === 'passing' ? '#10B981' : p.status === 'failing' ? '#EF4444' : '#F59E0B' }} />
-                <span className="flex-1 text-sm text-gray-200">{p.name}</span>
-                <span className="text-xs text-gray-600">{p.last_run}</span>
+                <span className="flex-1 text-sm text-gray-800">{p.name}</span>
+                <span className="text-xs text-gray-500">{p.last_run}</span>
                 <StatusBadge v={p.status} />
               </div>
             ))}
@@ -464,11 +464,11 @@ function SystemsTab({ entityId }: { entityId: string }) {
 
       {sys.open_items.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Open Items</h3>
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Open Items</h3>
           <div className="space-y-1.5">
             {sys.open_items.map((item, i) => (
               <div key={i} className="flex items-center gap-2 text-sm">
-                <RiskDot level={item.status} /><span className="text-gray-300">{item.label}</span>
+                <RiskDot level={item.status} /><span className="text-gray-600">{item.label}</span>
               </div>
             ))}
           </div>
@@ -484,7 +484,7 @@ function RelationsTab({ entityId }: { entityId: string }) {
   return (
     <div className="space-y-4">
       <MiniRelGraph entityId={entityId} />
-      <p className="text-xs text-gray-700 mt-4">
+      <p className="text-xs text-gray-600 mt-4">
         Click any entity badge in the Corporate Graph to navigate to their control center.
         <button onClick={() => navigate('/org')} className="text-blue-400 hover:text-blue-300 ml-1 transition-colors">
           Open Corporate Graph →
@@ -539,7 +539,7 @@ export function EntityView() {
 
   if (!entity) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-600">
+      <div className="flex items-center justify-center h-full text-gray-500">
         Entity not found. <button onClick={() => navigate('/entities')} className="ml-2 text-blue-400">Browse entities →</button>
       </div>
     )
@@ -561,10 +561,10 @@ export function EntityView() {
         ${mobileShowDetail ? 'hidden md:flex' : 'flex'}
         w-full md:w-56 flex-shrink-0
         flex-col
-        border-r border-white/[0.06] bg-[#07090F] overflow-y-auto
+        border-r border-gray-200 bg-[#07090F] overflow-y-auto
       `}>
-        <div className="px-3 py-3 border-b border-white/[0.05]">
-          <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Entities</p>
+        <div className="px-3 py-3 border-b border-gray-200">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Entities</p>
         </div>
         <div className="py-2">
           {ENTITIES.map(ent => {
@@ -602,13 +602,13 @@ export function EntityView() {
       `}>
 
         {/* Header */}
-        <div className="flex-shrink-0 border-b border-white/[0.06] bg-[#08090F]">
+        <div className="flex-shrink-0 border-b border-gray-200 bg-[#08090F]">
           <div className="px-4 md:px-6 py-4">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3 min-w-0">
                 {/* Back button — mobile only */}
                 <button
-                  className="md:hidden flex-shrink-0 p-1 -ml-1 text-gray-500 hover:text-gray-300"
+                  className="md:hidden flex-shrink-0 p-1 -ml-1 text-gray-500 hover:text-gray-600"
                   onClick={() => setMobileShowDetail(false)}
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
@@ -616,21 +616,21 @@ export function EntityView() {
                 <span className="text-2xl flex-shrink-0">{entity.flag}</span>
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h1 className="text-base md:text-lg font-bold text-white truncate">{entity.name}</h1>
+                    <h1 className="text-base md:text-lg font-bold text-gray-900 truncate">{entity.name}</h1>
                     <span className="text-xs px-2 py-0.5 rounded-full font-mono flex-shrink-0"
                       style={{ background: statusColor + '18', color: statusColor, border: `1px solid ${statusColor}30` }}>
                       {entity.active_status}
                     </span>
                     <HealthBadge score={hs.overall} level={hs.level} />
                   </div>
-                  <div className="text-xs text-gray-600 font-mono mt-0.5">
+                  <div className="text-xs text-gray-500 font-mono mt-0.5">
                     {entity.jurisdiction} · Layer {entity.layer} · {entity.shortName}
                   </div>
                 </div>
               </div>
               <button
                 onClick={() => navigate('/org')}
-                className="hidden md:block text-xs text-gray-600 hover:text-gray-300 px-2.5 py-1.5 rounded-lg border border-white/[0.06] transition-colors flex-shrink-0 ml-4"
+                className="hidden md:block text-xs text-gray-500 hover:text-gray-600 px-2.5 py-1.5 rounded-lg border border-gray-200 transition-colors flex-shrink-0 ml-4"
               >
                 Graph →
               </button>
@@ -658,7 +658,7 @@ export function EntityView() {
 
         {/* Tab content */}
         <div className="flex-1 overflow-y-auto px-4 md:px-6 py-5">
-          <Suspense fallback={<div className="text-xs text-gray-600 animate-pulse">Loading…</div>}>
+          <Suspense fallback={<div className="text-xs text-gray-500 animate-pulse">Loading…</div>}>
             {activeTab === 'overview'  && <OverviewTab  entityId={resolvedId} />}
             {activeTab === 'health'    && <HealthTab    entityId={resolvedId} />}
             {activeTab === 'finance'   && <FinanceTab   entityId={resolvedId} />}

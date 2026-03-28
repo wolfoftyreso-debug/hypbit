@@ -15,11 +15,11 @@ export function ModuleHeader({ moduleId }: ModuleHeaderProps) {
   const description = MATURITY_DESCRIPTION[mod.level]
 
   return (
-    <div className="flex items-center gap-3 px-5 pb-4 pt-4 border-b border-white/[0.06] mb-6 flex-shrink-0">
+    <div className="flex items-center gap-3 px-5 pb-4 pt-4 border-b border-gray-200 mb-6 flex-shrink-0">
       {/* Module name + badge */}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <span className="text-xl font-semibold text-white">{mod.name}</span>
+          <span className="text-xl font-semibold text-gray-900">{mod.name}</span>
           <MaturityBadge level={mod.level} size="md" />
           <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/[0.04] text-gray-600 flex-shrink-0">
             Fas {mod.phase}
@@ -45,7 +45,7 @@ export function ModuleHeader({ moduleId }: ModuleHeaderProps) {
           <div className="text-[9px] text-gray-600 font-mono uppercase tracking-wider mb-0.5">
             Live-features
           </div>
-          <div className="text-xs text-gray-400">
+          <div className="text-xs text-gray-500">
             {mod.liveFeatures.slice(0, 3).join(', ')}
             {mod.liveFeatures.length > 3 ? `… +${mod.liveFeatures.length - 3}` : ''}
           </div>

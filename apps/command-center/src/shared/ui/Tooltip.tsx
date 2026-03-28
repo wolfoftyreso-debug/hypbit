@@ -71,9 +71,9 @@ export function Tooltip({ content, title, children, position = 'top', asIcon = f
         >
           <div className="p-3">
             {title && (
-              <p className="text-xs font-semibold text-white mb-1">{title}</p>
+              <p className="text-xs font-semibold text-gray-900 mb-1">{title}</p>
             )}
-            <p className="text-xs text-gray-400 leading-relaxed">{content}</p>
+            <p className="text-xs text-gray-500 leading-relaxed">{content}</p>
           </div>
         </div>
       )}
@@ -100,7 +100,7 @@ export function InfoRow({
         <span className="text-xs text-gray-600 font-mono">{label}</span>
         {tooltip && <Tooltip content={tooltip} asIcon position="right" />}
       </div>
-      <span className="text-xs text-gray-300 text-right">{value}</span>
+      <span className="text-xs text-gray-700 text-right">{value}</span>
     </div>
   )
 }

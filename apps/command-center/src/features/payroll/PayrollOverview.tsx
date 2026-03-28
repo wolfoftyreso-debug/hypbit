@@ -5,7 +5,7 @@ function KpiCard({ label, value, sub, color }: { label: string; value: string; s
     <div className="bg-surface-raised border border-surface-border rounded-xl px-5 py-4">
       <div className="text-xs text-gray-500 mb-1">{label}</div>
       <div className="text-2xl font-bold tabular-nums" style={{ color }}>{value}</div>
-      {sub && <div className="text-xs text-gray-600 mt-1">{sub}</div>}
+      {sub && <div className="text-xs text-gray-500 mt-1">{sub}</div>}
     </div>
   )
 }
@@ -64,7 +64,7 @@ export function PayrollOverview() {
       {/* Employee salary table */}
       <div className="bg-surface-raised border border-surface-border rounded-xl overflow-hidden">
         <div className="px-5 py-4 border-b border-surface-border">
-          <h2 className="text-sm font-semibold text-white">Anställda — löneöversikt</h2>
+          <h2 className="text-sm font-semibold text-gray-900">Anställda — löneöversikt</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -93,24 +93,24 @@ export function PayrollOverview() {
                         >
                           {emp.initials}
                         </div>
-                        <span className="text-white font-medium text-xs">{emp.name}</span>
+                        <span className="text-gray-900 font-medium text-xs">{emp.name}</span>
                       </div>
                     </td>
-                    <td className="px-5 py-3 text-xs text-gray-400">{emp.role}</td>
-                    <td className="px-5 py-3 text-right text-xs text-white tabular-nums">{fmt(c.gross)}</td>
+                    <td className="px-5 py-3 text-xs text-gray-500">{emp.role}</td>
+                    <td className="px-5 py-3 text-right text-xs text-gray-900 tabular-nums">{fmt(c.gross)}</td>
                     <td className="px-5 py-3 text-right text-xs text-red-400 tabular-nums">−{fmt(c.taxDeduction)}</td>
                     <td className="px-5 py-3 text-right text-xs text-green-400 tabular-nums font-semibold">{fmt(c.net)}</td>
                     <td className="px-5 py-3 text-right text-xs text-amber-400 tabular-nums">{fmt(c.employerTax)}</td>
                     <td className="px-5 py-3 text-right text-xs text-purple-400 tabular-nums font-semibold">{fmt(c.totalCost)}</td>
-                    <td className="px-5 py-3 text-right text-xs text-gray-400">{payrollDateStr}</td>
+                    <td className="px-5 py-3 text-right text-xs text-gray-500">{payrollDateStr}</td>
                   </tr>
                 )
               })}
             </tbody>
             <tfoot>
               <tr className="border-t border-surface-border bg-surface-overlay/20">
-                <td colSpan={2} className="px-5 py-3 text-xs font-semibold text-gray-400">TOTALT</td>
-                <td className="px-5 py-3 text-right text-xs font-bold text-white tabular-nums">{fmt(totalGross)}</td>
+                <td colSpan={2} className="px-5 py-3 text-xs font-semibold text-gray-500">TOTALT</td>
+                <td className="px-5 py-3 text-right text-xs font-bold text-gray-900 tabular-nums">{fmt(totalGross)}</td>
                 <td className="px-5 py-3 text-right text-xs font-bold text-red-400 tabular-nums">
                   −{fmt(active.reduce((s, e) => s + calcSalary(e.gross_salary).taxDeduction, 0))}
                 </td>

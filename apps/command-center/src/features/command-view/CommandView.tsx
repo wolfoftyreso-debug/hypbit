@@ -259,7 +259,7 @@ export function CommandView() {
           {SYSTEMS.map(svc => (
             <div key={svc.id} className="flex items-center gap-3 px-4 py-3">
               <StatusDot status={svc.status} />
-              <span className="text-xs font-mono text-gray-700 flex-1">{svc.name}</span>
+              <span className="text-xs font-mono text-gray-600 flex-1">{svc.name}</span>
               {svc.note && (
                 <span className="text-[10px] font-mono text-amber-600">{svc.note}</span>
               )}
@@ -277,11 +277,11 @@ export function CommandView() {
         <div className="rounded-xl border border-gray-200 bg-white shadow-sm divide-y divide-gray-100">
           {NEXT_ACTIONS.map(action => (
             <div key={action.rank} className="flex items-center gap-4 px-4 py-3">
-              <span className="text-xs font-mono text-gray-400 w-4 flex-shrink-0">
+              <span className="text-xs font-mono text-gray-500 w-4 flex-shrink-0">
                 {action.rank}.
               </span>
-              <span className="text-sm text-gray-700 flex-1">{action.text}</span>
-              <span className="text-xs font-mono text-gray-400 flex-shrink-0">
+              <span className="text-sm text-gray-600 flex-1">{action.text}</span>
+              <span className="text-xs font-mono text-gray-500 flex-shrink-0">
                 {action.owner}
               </span>
             </div>
@@ -290,7 +290,7 @@ export function CommandView() {
       </section>
 
       {/* Footer */}
-      <div className="flex items-center gap-2 text-xs font-mono text-gray-400 pt-2 pb-1">
+      <div className="flex items-center gap-2 text-xs font-mono text-gray-500 pt-2 pb-1">
         <TrendingDown className="w-3 h-3" />
         <span>Data uppdateras manuellt — live integration planerad Q2 2026</span>
       </div>

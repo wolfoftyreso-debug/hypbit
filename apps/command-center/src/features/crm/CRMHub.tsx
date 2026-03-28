@@ -34,32 +34,32 @@ function QuickStats() {
     <div className="flex gap-4 flex-wrap text-xs">
       <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay border border-surface-border">
         <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
-        <span className="text-gray-400">Aktiva:</span>
-        <span className="text-white font-semibold">{activeProspects}</span>
+        <span className="text-gray-500">Aktiva:</span>
+        <span className="text-gray-900 font-semibold">{activeProspects}</span>
       </div>
       <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay border border-surface-border">
         <span className="h-1.5 w-1.5 rounded-full bg-yellow-400" />
-        <span className="text-gray-400">Pipeline:</span>
-        <span className="text-white font-semibold">
+        <span className="text-gray-500">Pipeline:</span>
+        <span className="text-gray-900 font-semibold">
           {new Intl.NumberFormat('sv-SE', { notation: 'compact', maximumFractionDigits: 0 }).format(pipelineValue)} kr
         </span>
       </div>
       <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay border border-surface-border">
         <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
-        <span className="text-gray-400">Vunnet:</span>
-        <span className="text-white font-semibold">
+        <span className="text-gray-500">Vunnet:</span>
+        <span className="text-gray-900 font-semibold">
           {new Intl.NumberFormat('sv-SE', { notation: 'compact', maximumFractionDigits: 0 }).format(wonValue)} kr
         </span>
       </div>
       <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay border border-surface-border">
         <span className="h-1.5 w-1.5 rounded-full bg-purple-400" />
-        <span className="text-gray-400">Aktiviteter (7d):</span>
-        <span className="text-white font-semibold">{pendingActivities}</span>
+        <span className="text-gray-500">Aktiviteter (7d):</span>
+        <span className="text-gray-900 font-semibold">{pendingActivities}</span>
       </div>
       <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay border border-surface-border">
         <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-        <span className="text-gray-400">Signerade avtal:</span>
-        <span className="text-white font-semibold">{DEALS.filter(d => d.status === 'Signerad').length}</span>
+        <span className="text-gray-500">Signerade avtal:</span>
+        <span className="text-gray-900 font-semibold">{DEALS.filter(d => d.status === 'Signerad').length}</span>
       </div>
     </div>
   )
@@ -75,8 +75,8 @@ export function CRMHub() {
       <div className="px-4 md:px-6 pt-4 md:pt-6 pb-0 flex flex-col gap-4 flex-shrink-0">
         <div className="flex items-start justify-between flex-wrap gap-3">
           <div>
-            <h1 className="text-sm font-semibold text-white">CRM</h1>
-            <p className="text-sm text-gray-300 mt-0.5">
+            <h1 className="text-sm font-semibold text-gray-900">CRM</h1>
+            <p className="text-sm text-gray-600 mt-0.5">
               Wavult Sales — quiXzoom · Landvex · Hypbit
             </p>
           </div>
@@ -92,7 +92,7 @@ export function CRMHub() {
               className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors flex-shrink-0 ${
                 activeTab === tab.id
                   ? 'bg-[#8B5CF6]/15 text-[#8B5CF6] border border-[#8B5CF6]/30'
-                  : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
+                  : 'text-gray-500 hover:text-gray-600 hover:bg-white/[0.04]'
               }`}
             >
               {tab.label}

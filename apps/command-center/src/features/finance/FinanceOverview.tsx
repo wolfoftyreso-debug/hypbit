@@ -36,7 +36,7 @@ function KpiCard({ label, value, currency, sub, color, icon }: {
         <span className="text-lg">{icon}</span>
       </div>
       <p className="text-xl font-bold" style={{ color }}>{fmt(value, currency)}</p>
-      {sub && <p className="text-xs text-gray-600 mt-1">{sub}</p>}
+      {sub && <p className="text-xs text-gray-500 mt-1">{sub}</p>}
     </div>
   )
 }
@@ -135,7 +135,7 @@ export function FinanceOverview() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-40 text-gray-600 text-xs">
+      <div className="flex items-center justify-center h-40 text-gray-500 text-xs">
         Laddar finansiell data...
       </div>
     )
@@ -145,14 +145,14 @@ export function FinanceOverview() {
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-lg font-bold text-white">Finansiell Översikt</h2>
+          <h2 className="text-lg font-bold text-gray-900">Finansiell Översikt</h2>
           <p className="text-xs text-gray-500 mt-0.5">
             {isRoot ? 'Wavult Group — konsoliderad vy' : `${activeEntity.name}`}
-            {useMock && <span className="ml-2 text-gray-600 text-[9px] font-mono">[ej konfigurerat]</span>}
+            {useMock && <span className="ml-2 text-gray-500 text-[9px] font-mono">[ej konfigurerat]</span>}
           </p>
         </div>
         <div className="text-right flex-shrink-0">
-          <p className="text-[9px] text-gray-700 font-mono">Senast uppdaterad</p>
+          <p className="text-[9px] text-gray-600 font-mono">Senast uppdaterad</p>
           <p className="text-xs text-gray-500 font-mono">{updatedAt}</p>
         </div>
       </div>
@@ -163,12 +163,12 @@ export function FinanceOverview() {
         if (!kpi) return null
         const health = calcHealth(kpi.result ?? 0, kpi.revenue ?? 0, kpi.expenses ?? 0)
         return (
-          <div key={fe.id} className="rounded-xl border border-white/[0.06] bg-[#0D0F1A] overflow-hidden">
+          <div key={fe.id} className="rounded-xl border border-gray-200 bg-white overflow-hidden">
             {/* Entity header */}
-            <div className="px-4 py-3 border-b border-white/[0.06] flex items-center gap-2">
+            <div className="px-4 py-3 border-b border-gray-200 flex items-center gap-2">
               <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: fe.color }} />
-              <span className="text-xs font-semibold text-white">{fe.name}</span>
-              <span className="text-[9px] font-mono text-gray-600 ml-1">{fe.jurisdiction}</span>
+              <span className="text-xs font-semibold text-gray-900">{fe.name}</span>
+              <span className="text-[9px] font-mono text-gray-500 ml-1">{fe.jurisdiction}</span>
               {/* Health indicator */}
               <span
                 className="flex items-center gap-1 text-[9px] font-semibold px-2 py-0.5 rounded-full ml-2"
@@ -222,19 +222,19 @@ export function FinanceOverview() {
       })}
 
       {entitiesToShow.length === 0 && (
-        <div className="text-center py-8 text-gray-600 text-xs">
+        <div className="text-center py-8 text-gray-500 text-xs">
           Inga bolag att visa
         </div>
       )}
 
       {/* Recent ledger entries */}
-      <div className="rounded-xl border border-white/[0.06] bg-[#0D0F1A] overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/[0.06]">
-          <span className="text-xs font-semibold text-white">Senaste transaktioner</span>
+      <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+        <div className="px-4 py-3 border-b border-gray-200">
+          <span className="text-xs font-semibold text-gray-900">Senaste transaktioner</span>
         </div>
-        <div className="divide-y divide-white/[0.04]">
+        <div className="divide-y divide-gray-100">
           {recentTxns.length === 0 ? (
-            <div className="px-4 py-8 text-center text-gray-700 text-xs">Inga transaktioner</div>
+            <div className="px-4 py-8 text-center text-gray-600 text-xs">Inga transaktioner</div>
           ) : (
             recentTxns.map(tx => {
               const fe = entities.find(e => e.id === tx.entity_id)
@@ -248,8 +248,8 @@ export function FinanceOverview() {
                     {isCredit ? '↑' : '↓'}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs text-white truncate">{tx.description}</p>
-                    <p className="text-[9px] text-gray-600 font-mono mt-0.5">{tx.date} · {fe?.short_name}</p>
+                    <p className="text-xs text-gray-900 truncate">{tx.description}</p>
+                    <p className="text-[9px] text-gray-500 font-mono mt-0.5">{tx.date} · {fe?.short_name}</p>
                   </div>
                   <span
                     className="text-xs font-semibold font-mono flex-shrink-0"

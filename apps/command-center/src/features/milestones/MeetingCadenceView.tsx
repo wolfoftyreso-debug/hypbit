@@ -31,12 +31,12 @@ function MeetingCard({ meeting }: { meeting: MeetingCadence }) {
             </div>
             <div className="flex items-center gap-2 mt-0.5 flex-wrap">
               <span className="text-[11px] text-gray-500">{meeting.frequency}</span>
-              <span className="text-[11px] text-gray-600">·</span>
+              <span className="text-[11px] text-gray-500">·</span>
               <span className="text-[11px] text-gray-500">{meeting.duration}</span>
               {meeting.time && (
                 <>
-                  <span className="text-[11px] text-gray-600">·</span>
-                  <span className="text-[11px] text-gray-400 font-mono">{meeting.time}</span>
+                  <span className="text-[11px] text-gray-500">·</span>
+                  <span className="text-[11px] text-gray-500 font-mono">{meeting.time}</span>
                 </>
               )}
             </div>
@@ -50,15 +50,15 @@ function MeetingCard({ meeting }: { meeting: MeetingCadence }) {
       {/* Expanded content */}
       {expanded && (
         <div
-          className="border-t border-white/[0.06] p-3 space-y-3"
+          className="border-t border-gray-200 p-3 space-y-3"
           onClick={e => e.stopPropagation()}
         >
           {/* Deltagare */}
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-600 mb-1">👥 Deltagare</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">👥 Deltagare</p>
             <div className="flex flex-wrap gap-1">
               {meeting.participants.map(p => (
-                <span key={p} className="text-[11px] px-2 py-0.5 rounded-full bg-white/[0.06] text-gray-300 border border-white/[0.08]">
+                <span key={p} className="text-[11px] px-2 py-0.5 rounded-full bg-white/[0.06] text-gray-600 border border-gray-200">
                   {p}
                 </span>
               ))}
@@ -67,10 +67,10 @@ function MeetingCard({ meeting }: { meeting: MeetingCadence }) {
 
           {/* Agenda */}
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-600 mb-1">📋 Agenda</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">📋 Agenda</p>
             <ul className="space-y-0.5">
               {meeting.agenda.map((item, i) => (
-                <li key={i} className="flex items-start gap-1.5 text-[12px] text-gray-300">
+                <li key={i} className="flex items-start gap-1.5 text-[12px] text-gray-600">
                   <span className={`mt-0.5 flex-shrink-0 text-[8px] ${meta.color}`}>●</span>
                   {item}
                 </li>
@@ -80,10 +80,10 @@ function MeetingCard({ meeting }: { meeting: MeetingCadence }) {
 
           {/* Output */}
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-600 mb-1">✅ Output</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">✅ Output</p>
             <ul className="space-y-0.5">
               {meeting.output.map((item, i) => (
-                <li key={i} className="flex items-start gap-1.5 text-[12px] text-gray-300">
+                <li key={i} className="flex items-start gap-1.5 text-[12px] text-gray-600">
                   <span className="mt-0.5 flex-shrink-0 text-emerald-500 text-[8px]">●</span>
                   {item}
                 </li>
@@ -94,10 +94,10 @@ function MeetingCard({ meeting }: { meeting: MeetingCadence }) {
           {/* Verktyg */}
           {meeting.tools && meeting.tools.length > 0 && (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-600 mb-1">🛠 Verktyg</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">🛠 Verktyg</p>
               <div className="flex flex-wrap gap-1">
                 {meeting.tools.map(t => (
-                  <span key={t} className="text-[11px] px-2 py-0.5 rounded-full bg-white/[0.04] text-gray-400 border border-white/[0.06] font-mono">
+                  <span key={t} className="text-[11px] px-2 py-0.5 rounded-full bg-white/[0.04] text-gray-500 border border-gray-200 font-mono">
                     {t}
                   </span>
                 ))}
@@ -134,7 +134,7 @@ function LevelSection({ level }: { level: (typeof LEVEL_META)[0] }) {
           <span>Nivå {level.level} — {level.label}</span>
         </div>
         <div className="flex-1 h-px bg-white/[0.05]" />
-        <span className="text-[11px] text-gray-600">{level.description}</span>
+        <span className="text-[11px] text-gray-500">{level.description}</span>
       </div>
 
       {/* Möten */}
@@ -182,23 +182,23 @@ export function MeetingCadenceView() {
   const automatedCount = MEETING_CADENCE.filter(m => m.automate).length
 
   return (
-    <div className="min-h-full bg-[#07080F] text-white">
+    <div className="min-h-full bg-gray-50 text-gray-900">
       {/* Header */}
-      <div className="px-4 md:px-6 py-4 border-b border-white/[0.06]">
+      <div className="px-4 md:px-6 py-4 border-b border-gray-200">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3">
             <span className="text-xl">🗓️</span>
             <div>
-              <h1 className="text-[16px] font-bold text-white">Möteshierarki</h1>
-              <p className="text-xs text-gray-600 font-mono">
+              <h1 className="text-[16px] font-bold text-gray-900">Möteshierarki</h1>
+              <p className="text-xs text-gray-500 font-mono">
                 Wavult Group — OKR · EOS · Agile · {totalMeetings} möten definierade
               </p>
             </div>
           </div>
           {/* Stats */}
           <div className="flex items-center gap-3 flex-wrap">
-            <div className="px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-center">
-              <div className="text-lg font-bold text-white">{totalMeetings}</div>
+            <div className="px-3 py-1.5 rounded-lg bg-white/[0.04] border border-gray-200 text-center">
+              <div className="text-lg font-bold text-gray-900">{totalMeetings}</div>
               <div className="text-[10px] text-gray-500">Mötestyper</div>
             </div>
             <div className="px-3 py-1.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-center">
@@ -214,7 +214,7 @@ export function MeetingCadenceView() {
       </div>
 
       {/* Legend */}
-      <div className="px-4 md:px-6 py-2 border-b border-white/[0.04] bg-white/[0.01]">
+      <div className="px-4 md:px-6 py-2 border-b border-gray-100 bg-white/[0.01]">
         <Legend />
       </div>
 
@@ -222,7 +222,7 @@ export function MeetingCadenceView() {
       <div className="px-4 md:px-6 py-6 space-y-1">
         {/* Pyramid-topp label */}
         <div className="text-center mb-4">
-          <span className="text-[10px] font-mono text-gray-600 uppercase tracking-widest">
+          <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">
             ▲ Vision &amp; Strategi — Nivå 1
           </span>
         </div>
@@ -236,15 +236,15 @@ export function MeetingCadenceView() {
 
         {/* Pyramid-botten label */}
         <div className="text-center mt-4">
-          <span className="text-[10px] font-mono text-gray-600 uppercase tracking-widest">
+          <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">
             ▼ Incident &amp; Eskalering — Nivå 6
           </span>
         </div>
       </div>
 
       {/* Footer info */}
-      <div className="px-4 md:px-6 py-4 border-t border-white/[0.06] mt-4">
-        <p className="text-[11px] text-gray-600 text-center">
+      <div className="px-4 md:px-6 py-4 border-t border-gray-200 mt-4">
+        <p className="text-[11px] text-gray-500 text-center">
           Möteshierarkin följer EOS (Entrepreneurial Operating System) + OKR-metodologi.
           Bernt hanterar Morning Brief (08:00), WHOOP-check och automatiserade rapporter.
         </p>

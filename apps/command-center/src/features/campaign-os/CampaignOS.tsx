@@ -73,8 +73,8 @@ function dayLabel(iso: string): string {
 
 function PanelSection({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="border-t border-white/[0.05] pt-3 pb-3 px-4 space-y-2">
-      <p className="text-[9px] font-bold text-gray-700 uppercase tracking-[0.15em]">{label}</p>
+    <div className="border-t border-gray-200 pt-3 pb-3 px-4 space-y-2">
+      <p className="text-[9px] font-bold text-gray-600 uppercase tracking-[0.15em]">{label}</p>
       {children}
     </div>
   )
@@ -154,7 +154,7 @@ function ActivityCard({ activity, selected, onClick }: {
             style={{ color: brandColor }}>
             {BRAND_ABBR[activity.brand]}
           </span>
-          <span className="text-xs text-white font-semibold truncate flex-1">
+          <span className="text-xs text-gray-900 font-semibold truncate flex-1">
             {activity.name}
           </span>
         </div>
@@ -162,7 +162,7 @@ function ActivityCard({ activity, selected, onClick }: {
         {/* Channel + time row */}
         <div className="flex items-center justify-between gap-1">
           <ChannelBadge channel={activity.channel} />
-          <span className="text-[9px] font-mono text-gray-600">{activity.time}</span>
+          <span className="text-[9px] font-mono text-gray-500">{activity.time}</span>
         </div>
 
         {/* KPI dot + alert dot */}
@@ -171,7 +171,7 @@ function ActivityCard({ activity, selected, onClick }: {
           {hasAlerts && (
             <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
           )}
-          <span className="text-[8px] font-mono text-gray-700 capitalize">{activity.kpi.result}</span>
+          <span className="text-[8px] font-mono text-gray-600 capitalize">{activity.kpi.result}</span>
         </div>
       </div>
     </div>
@@ -206,17 +206,17 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
       style={{ background: '#09090F', borderLeft: '1px solid rgba(255,255,255,0.06)' }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.05]">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200">
         <div className="flex items-center gap-2 flex-1 min-w-0">
           <span className="text-[9px] font-bold font-mono"
             style={{ color: brandColor }}>
             {BRAND_ABBR[activity.brand]}
           </span>
-          <span className="text-sm font-semibold text-white truncate">{activity.name}</span>
+          <span className="text-sm font-semibold text-gray-900 truncate">{activity.name}</span>
         </div>
         <button
           onClick={onClose}
-          className="text-gray-600 hover:text-gray-300 transition-colors text-sm leading-none ml-2 flex-shrink-0"
+          className="text-gray-500 hover:text-gray-600 transition-colors text-sm leading-none ml-2 flex-shrink-0"
         >
           ✕
         </button>
@@ -236,7 +236,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
           </div>
           <div className="flex items-center justify-between text-xs mt-1">
             <span className="text-gray-500">{activity.country}</span>
-            <span className="font-mono text-gray-600">{formatDate(activity.date)} · {activity.time}</span>
+            <span className="font-mono text-gray-500">{formatDate(activity.date)} · {activity.time}</span>
           </div>
           <div className="flex items-center gap-1.5 mt-1">
             {valid ? (
@@ -278,19 +278,19 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
               ))}
             </div>
           ) : valid && activity.status === 'ready' ? (
-            <div className="rounded-lg px-3 py-2 bg-white/[0.03] border border-white/[0.05]">
+            <div className="rounded-lg px-3 py-2 bg-white/[0.03] border border-gray-200">
               <p className="text-xs" style={{ color: '#10B981' }}>✓ Ready to deploy</p>
-              <p className="text-[9px] text-gray-600 mt-0.5">All requirements met</p>
+              <p className="text-[9px] text-gray-500 mt-0.5">All requirements met</p>
             </div>
           ) : (
-            <p className="text-xs text-gray-600">No actions required</p>
+            <p className="text-xs text-gray-500">No actions required</p>
           )}
         </PanelSection>
 
         {/* 3. KPI TARGET */}
         <PanelSection label="KPI Target">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-white font-semibold capitalize">{activity.kpi.metric}</span>
+            <span className="text-xs text-gray-900 font-semibold capitalize">{activity.kpi.metric}</span>
             <span className="text-[8px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded"
               style={{ background: kpiColor + '20', color: kpiColor }}>
               {activity.kpi.result}
@@ -301,12 +301,12 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
             current={activity.kpi.current}
             target={activity.kpi.target}
           />
-          <p className="text-[9px] font-mono text-gray-700 mt-1">{kpiPct}% of target achieved</p>
+          <p className="text-[9px] font-mono text-gray-600 mt-1">{kpiPct}% of target achieved</p>
         </PanelSection>
 
         {/* 4. ASSET */}
         <PanelSection label="Asset">
-          <div className="rounded-lg px-3 py-2 bg-white/[0.02] border border-white/[0.04] space-y-1.5">
+          <div className="rounded-lg px-3 py-2 bg-white/[0.02] border border-gray-100 space-y-1.5">
             <div className="flex items-center justify-between gap-2">
               <span className="text-[9px] font-mono text-gray-500 uppercase">{activity.asset.type.replace('-', ' ')}</span>
               <span className="text-[8px] font-bold uppercase tracking-widest px-1 rounded"
@@ -317,13 +317,13 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
                 {activity.asset.ready ? 'Ready' : 'Not ready'}
               </span>
             </div>
-            <p className="text-xs text-white">{activity.asset.name}</p>
+            <p className="text-xs text-gray-900">{activity.asset.name}</p>
             {activity.asset.url && (
               <a
                 href={activity.asset.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[9px] font-mono text-gray-600 hover:text-gray-300 transition-colors truncate block"
+                className="text-[9px] font-mono text-gray-500 hover:text-gray-600 transition-colors truncate block"
               >
                 {activity.asset.url}
               </a>
@@ -336,7 +336,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs">
               <span className="text-gray-500">Monthly cost</span>
-              <span className="text-white font-mono">${activity.budget.cost_monthly.toLocaleString()}</span>
+              <span className="text-gray-900 font-mono">${activity.budget.cost_monthly.toLocaleString()}</span>
             </div>
             <div className="flex items-center justify-between text-xs">
               <span className="text-gray-500">Spend to date</span>
@@ -353,7 +353,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
                     background: spendPct > 90 ? '#EF4444' : '#3B82F6',
                   }} />
               </div>
-              <p className="text-[8px] font-mono text-gray-700">{spendPct}% utilized</p>
+              <p className="text-[8px] font-mono text-gray-600">{spendPct}% utilized</p>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="text-[8px] font-bold uppercase tracking-widest px-1 rounded"
@@ -376,12 +376,12 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs">
               <span className="text-gray-500">Trigger</span>
-              <span className="font-mono text-white uppercase">{activity.automation.trigger}</span>
+              <span className="font-mono text-gray-900 uppercase">{activity.automation.trigger}</span>
             </div>
             {activity.automation.schedule && (
               <div className="flex items-center justify-between text-xs">
                 <span className="text-gray-500">Schedule</span>
-                <span className="font-mono text-gray-400 text-[9px]">{activity.automation.schedule}</span>
+                <span className="font-mono text-gray-500 text-[9px]">{activity.automation.schedule}</span>
               </div>
             )}
             <div className="flex items-center justify-between text-xs">
@@ -390,7 +390,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
             </div>
             <div className="flex items-center justify-between text-xs">
               <span className="text-gray-500">Retry count</span>
-              <span className="font-mono text-gray-400">{activity.automation.retry_count}</span>
+              <span className="font-mono text-gray-500">{activity.automation.retry_count}</span>
             </div>
             {activity.automation.fallback_channel && (
               <div className="flex items-center justify-between text-xs">
@@ -401,7 +401,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
             {activity.automation.last_run && (
               <div className="flex items-center justify-between text-xs">
                 <span className="text-gray-500">Last run</span>
-                <span className="font-mono text-gray-600 text-[9px]">
+                <span className="font-mono text-gray-500 text-[9px]">
                   {activity.automation.last_run.substring(0, 10)}
                 </span>
               </div>
@@ -409,7 +409,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
             {activity.automation.next_run && (
               <div className="flex items-center justify-between text-xs">
                 <span className="text-gray-500">Next run</span>
-                <span className="font-mono text-gray-400 text-[9px]">
+                <span className="font-mono text-gray-500 text-[9px]">
                   {activity.automation.next_run.substring(0, 10)}
                 </span>
               </div>
@@ -425,7 +425,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
                 <span className="text-gray-500">Entity</span>
                 <button
                   onClick={() => navigate('/entities/' + entity.id)}
-                  className="font-mono text-gray-400 hover:text-white transition-colors flex items-center gap-1"
+                  className="font-mono text-gray-500 hover:text-gray-900 transition-colors flex items-center gap-1"
                 >
                   {entity.shortName} →
                 </button>
@@ -436,7 +436,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
                 <span className="text-gray-500">Market site</span>
                 <button
                   onClick={() => navigate('/markets')}
-                  className="font-mono text-gray-400 hover:text-white transition-colors flex items-center gap-1"
+                  className="font-mono text-gray-500 hover:text-gray-900 transition-colors flex items-center gap-1"
                 >
                   {site.name} →
                 </button>
@@ -449,8 +449,8 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
                   {role.initials}
                 </div>
                 <div>
-                  <p className="text-xs text-white">{role.person}</p>
-                  <p className="text-[9px] text-gray-600">{role.title}</p>
+                  <p className="text-xs text-gray-900">{role.person}</p>
+                  <p className="text-[9px] text-gray-500">{role.title}</p>
                 </div>
               </div>
             )}
@@ -459,7 +459,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
 
         {/* 8. DESCRIPTION */}
         <PanelSection label="Description">
-          <p className="text-xs text-gray-400 leading-relaxed">{activity.description}</p>
+          <p className="text-xs text-gray-500 leading-relaxed">{activity.description}</p>
         </PanelSection>
 
       </div>
@@ -535,10 +535,10 @@ export function CampaignOS() {
   const TODAY = '2026-03-25'
 
   const selectDropdownClass =
-    'text-xs bg-[#0D0F1A] border border-white/[0.08] rounded-lg px-2.5 py-1 font-mono cursor-pointer focus:outline-none appearance-none text-gray-400'
+    'text-xs bg-white border border-gray-200 rounded-lg px-2.5 py-1 font-mono cursor-pointer focus:outline-none appearance-none text-gray-500'
 
   return (
-    <div className="flex flex-col h-full" style={{ background: '#07080F' }}>
+    <div className="flex flex-col h-full" style={{ background: '#F9FAFB' }}>
       {/* ── TOOLBAR ─────────────────────────────────────────────────────────── */}
       <div
         className="flex-shrink-0 flex items-center justify-between px-5 border-b"
@@ -546,8 +546,8 @@ export function CampaignOS() {
       >
         {/* Left: title + period */}
         <div className="flex items-center gap-3">
-          <span className="text-xs font-bold text-white tracking-wide">Campaign OS</span>
-          <span className="text-[9px] font-mono text-gray-700 px-2 py-0.5 rounded border border-white/[0.06] bg-white/[0.02]">
+          <span className="text-xs font-bold text-gray-900 tracking-wide">Campaign OS</span>
+          <span className="text-[9px] font-mono text-gray-600 px-2 py-0.5 rounded border border-gray-200 bg-white/[0.02]">
             Q2 2026
           </span>
         </div>
@@ -574,8 +574,8 @@ export function CampaignOS() {
             {countries.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
 
-          <div className="flex items-center gap-1.5 ml-2 pl-2 border-l border-white/[0.06]">
-            <span className="text-[9px] font-mono text-gray-600">{filtered.length} activities</span>
+          <div className="flex items-center gap-1.5 ml-2 pl-2 border-l border-gray-200">
+            <span className="text-[9px] font-mono text-gray-500">{filtered.length} activities</span>
             {deployedCount > 0 && (
               <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full"
                 style={{ background: '#10B98120', color: '#10B981' }}>
@@ -607,7 +607,7 @@ export function CampaignOS() {
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-6">
           {grouped.size === 0 ? (
             <div className="flex items-center justify-center h-40">
-              <p className="text-xs text-gray-700">No activities match current filters</p>
+              <p className="text-xs text-gray-600">No activities match current filters</p>
             </div>
           ) : (
             Array.from(grouped.entries()).map(([mk, byDay]) => {
@@ -624,7 +624,7 @@ export function CampaignOS() {
                     >
                       {monthLabel(mk)}
                     </span>
-                    <span className="text-[9px] font-mono text-gray-700">
+                    <span className="text-[9px] font-mono text-gray-600">
                       {monthActivities.length} activit{monthActivities.length === 1 ? 'y' : 'ies'}
                     </span>
                     <div className="flex-1 h-px" style={{ background: monthColor + '20' }} />
@@ -646,7 +646,7 @@ export function CampaignOS() {
                             <div className="flex flex-col">
                               <span
                                 className="text-[9px] font-mono"
-                                style={{ color: isToday ? '#F59E0B' : '#374151' }}
+                                style={{ color: isToday ? '#F59E0B' : '#F3F4F6' }}
                               >
                                 {weekLabel_}
                               </span>

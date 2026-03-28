@@ -82,16 +82,16 @@ export function ExportView() {
                   className={`w-full flex items-start gap-3 px-4 py-3 rounded-xl border text-left transition-all ${
                     selectedReport === opt.id
                       ? 'border-[#6C63FF]/50 bg-[#6C63FF]/10'
-                      : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.12] hover:bg-white/[0.04]'
+                      : 'border-gray-200 bg-white/[0.02] hover:border-white/[0.12] hover:bg-white/[0.04]'
                   }`}
                 >
                   <span className="text-xl flex-shrink-0 mt-0.5">{opt.icon}</span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className={`text-xs font-semibold ${selectedReport === opt.id ? 'text-white' : 'text-gray-300'}`}>
+                      <span className={`text-xs font-semibold ${selectedReport === opt.id ? 'text-gray-900' : 'text-gray-600'}`}>
                         {opt.label}
                       </span>
-                      <span className="text-[9px] text-gray-600 font-mono">{opt.pages}</span>
+                      <span className="text-[9px] text-gray-500 font-mono">{opt.pages}</span>
                     </div>
                     <p className="text-xs text-gray-500 mt-0.5 leading-snug">{opt.description}</p>
                   </div>
@@ -113,8 +113,8 @@ export function ExportView() {
                   onClick={() => setSelectedPeriod(p.id)}
                   className={`px-3 py-2.5 rounded-lg border text-xs text-left transition-all ${
                     selectedPeriod === p.id
-                      ? 'border-[#6C63FF]/50 bg-[#6C63FF]/10 text-white'
-                      : 'border-white/[0.06] bg-white/[0.02] text-gray-400 hover:text-gray-200'
+                      ? 'border-[#6C63FF]/50 bg-[#6C63FF]/10 text-gray-900'
+                      : 'border-gray-200 bg-white/[0.02] text-gray-500 hover:text-gray-800'
                   }`}
                 >
                   {p.label}
@@ -133,8 +133,8 @@ export function ExportView() {
                   onClick={() => setSelectedEntity(e.id)}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg border text-xs transition-all ${
                     selectedEntity === e.id
-                      ? 'border-white/[0.15] bg-white/[0.06] text-white'
-                      : 'border-white/[0.04] bg-white/[0.01] text-gray-400 hover:text-gray-200'
+                      ? 'border-white/[0.15] bg-white/[0.06] text-gray-900'
+                      : 'border-gray-100 bg-white/[0.01] text-gray-500 hover:text-gray-800'
                   }`}
                 >
                   <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: e.color }} />
@@ -158,12 +158,12 @@ export function ExportView() {
                   className={`flex-1 flex flex-col items-center gap-1 px-3 py-3 rounded-xl border transition-all ${
                     selectedFormat === f.id
                       ? 'border-[#6C63FF]/50 bg-[#6C63FF]/10'
-                      : 'border-white/[0.06] bg-white/[0.02] hover:border-white/[0.1]'
+                      : 'border-gray-200 bg-white/[0.02] hover:border-gray-200'
                   }`}
                 >
                   <span className="text-xl">{f.icon}</span>
-                  <span className={`text-xs font-bold ${selectedFormat === f.id ? 'text-white' : 'text-gray-400'}`}>{f.label}</span>
-                  <span className="text-[9px] text-gray-600">{f.desc}</span>
+                  <span className={`text-xs font-bold ${selectedFormat === f.id ? 'text-gray-900' : 'text-gray-500'}`}>{f.label}</span>
+                  <span className="text-[9px] text-gray-500">{f.desc}</span>
                 </button>
               ))}
             </div>
@@ -180,7 +180,7 @@ export function ExportView() {
               <div className="flex items-center gap-3">
                 <span className="text-3xl">{report.icon}</span>
                 <div>
-                  <p className="text-[14px] font-bold text-white">{report.label}</p>
+                  <p className="text-[14px] font-bold text-gray-900">{report.label}</p>
                   <p className="text-xs text-gray-500">{report.pages}</p>
                 </div>
               </div>
@@ -190,16 +190,16 @@ export function ExportView() {
                   <span className="text-gray-500">Entitet</span>
                   <div className="flex items-center gap-1.5">
                     <span className="h-1.5 w-1.5 rounded-full" style={{ background: entity.color }} />
-                    <span className="text-gray-300">{entity.shortName}</span>
+                    <span className="text-gray-600">{entity.shortName}</span>
                   </div>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Period</span>
-                  <span className="text-gray-300">{period.label}</span>
+                  <span className="text-gray-600">{period.label}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Format</span>
-                  <span className="text-gray-300 uppercase font-mono">{selectedFormat}</span>
+                  <span className="text-gray-600 uppercase font-mono">{selectedFormat}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Filnamn</span>
@@ -207,7 +207,7 @@ export function ExportView() {
                 </div>
               </div>
 
-              <div className="pt-1 border-t border-white/[0.06]">
+              <div className="pt-1 border-t border-gray-200">
                 <p className="text-xs text-gray-500 leading-relaxed">{report.description}</p>
               </div>
             </div>
@@ -222,7 +222,7 @@ export function ExportView() {
                 ? 'bg-[#6C63FF]/30 text-[#6C63FF]/60 cursor-not-allowed'
                 : generated
                 ? 'bg-green-500/20 border border-green-500/30 text-green-400'
-                : 'bg-[#6C63FF] hover:bg-[#7C73FF] text-white shadow-lg shadow-[#6C63FF]/30 active:scale-95'
+                : 'bg-[#6C63FF] hover:bg-[#7C73FF] text-gray-900 shadow-lg shadow-[#6C63FF]/30 active:scale-95'
             }`}
           >
             {generating ? (
@@ -256,11 +256,11 @@ export function ExportView() {
               <div className="flex gap-2 mt-2">
                 <button
                   onClick={() => setGenerated(false)}
-                  className="flex-1 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-xs text-gray-300 hover:text-white transition-colors"
+                  className="flex-1 py-2 rounded-lg bg-white/[0.04] border border-gray-200 text-xs text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Ny rapport
                 </button>
-                <button className="flex-1 py-2 rounded-lg bg-white/[0.04] border border-white/[0.08] text-xs text-gray-300 hover:text-white transition-colors">
+                <button className="flex-1 py-2 rounded-lg bg-white/[0.04] border border-gray-200 text-xs text-gray-600 hover:text-gray-900 transition-colors">
                   Schemalägg
                 </button>
               </div>
@@ -268,7 +268,7 @@ export function ExportView() {
           )}
 
           {/* Scheduled reports hint */}
-          <div className="bg-white/[0.02] border border-white/[0.05] rounded-xl p-4">
+          <div className="bg-white/[0.02] border border-gray-200 rounded-xl p-4">
             <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-2">Schemalagda rapporter</p>
             <div className="space-y-2">
               {[
@@ -277,9 +277,9 @@ export function ExportView() {
               ].map((r, i) => (
                 <div key={i} className="flex items-center gap-2 text-xs">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#6C63FF] flex-shrink-0" />
-                  <span className="flex-1 text-gray-400">{r.label}</span>
-                  <span className="text-gray-600 font-mono">{r.freq}</span>
-                  <span className="text-gray-600">→ {r.next}</span>
+                  <span className="flex-1 text-gray-500">{r.label}</span>
+                  <span className="text-gray-500 font-mono">{r.freq}</span>
+                  <span className="text-gray-500">→ {r.next}</span>
                 </div>
               ))}
             </div>

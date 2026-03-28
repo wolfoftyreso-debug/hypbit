@@ -181,7 +181,7 @@ const STATUS_LABEL: Record<string, string> = {
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+    <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
       {children}
     </h2>
   )
@@ -204,7 +204,7 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-bold text-white">{person.name}</span>
+              <span className="text-sm font-bold text-gray-900">{person.name}</span>
               <span
                 className="h-2 w-2 rounded-full flex-shrink-0"
                 style={{
@@ -220,7 +220,7 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
 
         {/* Meta badges */}
         <div className="flex flex-wrap gap-2">
-          <span className="text-xs px-2 py-0.5 rounded-full bg-surface-overlay text-gray-400">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-surface-overlay text-gray-500">
             {person.location}
           </span>
           <span
@@ -254,7 +254,7 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
           <p className="text-xs text-gray-500 mb-1.5 font-medium uppercase tracking-wider">Nuvarande fokus</p>
           <ul className="space-y-1">
             {person.focus.map((f, i) => (
-              <li key={i} className="flex items-center gap-1.5 text-xs text-gray-400">
+              <li key={i} className="flex items-center gap-1.5 text-xs text-gray-500">
                 <span className="h-1 w-1 rounded-full flex-shrink-0" style={{ background: person.color }} />
                 {f}
               </li>
@@ -281,7 +281,7 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
             <p className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: person.color }}>
               🔺 Syfte
             </p>
-            <p className="text-xs text-gray-300 leading-relaxed">{person.purpose}</p>
+            <p className="text-xs text-gray-600 leading-relaxed">{person.purpose}</p>
           </div>
 
           {/* Mandat */}
@@ -291,7 +291,7 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
             </p>
             <ul className="space-y-1">
               {person.mandates.map((m, i) => (
-                <li key={i} className="flex items-start gap-1.5 text-xs text-gray-300">
+                <li key={i} className="flex items-start gap-1.5 text-xs text-gray-600">
                   <span className="mt-1.5 h-1 w-1 rounded-full flex-shrink-0" style={{ background: person.color }} />
                   {m}
                 </li>
@@ -315,12 +315,12 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
 
           {/* NOT this role */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider mb-1.5 text-gray-600">
+            <p className="text-xs font-semibold uppercase tracking-wider mb-1.5 text-gray-500">
               🚫 Ej denna rolls ansvar
             </p>
             <div className="flex flex-wrap gap-1.5">
               {person.notThisRole.map((n, i) => (
-                <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-white/[0.04] text-gray-600 line-through">
+                <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-white/[0.04] text-gray-500 line-through">
                   {n}
                 </span>
               ))}
@@ -345,8 +345,8 @@ export function PeopleView() {
     <div className="space-y-8 max-w-6xl">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">Teamroster</h1>
-        <p className="text-gray-400 mt-1">
+        <h1 className="text-2xl font-bold text-gray-900">Teamroster</h1>
+        <p className="text-gray-500 mt-1">
           {isRoot
             ? `Wavult Group — ${visibleTeam.length} core members`
             : `Showing people in ${activeEntity.name} — ${visibleTeam.length} members`}
@@ -383,7 +383,7 @@ export function PeopleView() {
 
       {/* Tuckman Team Phase Overview */}
       <div className="bg-surface-raised border border-surface-border rounded-xl px-5 py-4">
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Team Development Phases (Tuckman)</p>
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Team Development Phases (Tuckman)</p>
         <div className="flex gap-1 mb-4">
           {(['forming','storming','norming','performing','adjourning'] as TuckmanPhase[]).map((phase) => {
             const t = TUCKMAN[phase]
@@ -395,7 +395,7 @@ export function PeopleView() {
                   className="w-full h-2 rounded-full transition-all"
                   style={{ background: isActive ? t.color : t.color + '20' }}
                 />
-                <span className="text-[9px] font-mono" style={{ color: isActive ? t.color : '#374151' }}>
+                <span className="text-[9px] font-mono" style={{ color: isActive ? t.color : '#F3F4F6' }}>
                   {t.emoji} {t.label}
                 </span>
                 {isActive && (
@@ -425,7 +425,7 @@ export function PeopleView() {
       <div>
         <SectionHeading>Core Team</SectionHeading>
         {visibleTeam.length === 0 ? (
-          <div className="text-center py-12 text-gray-600">
+          <div className="text-center py-12 text-gray-500">
             <p className="text-3xl mb-3">👤</p>
             <p className="text-sm">No team members in {activeEntity.name}</p>
           </div>
@@ -455,20 +455,20 @@ export function PeopleView() {
                   </div>
                   <span className="text-xs font-semibold" style={{ color: info.color }}>{code}</span>
                 </div>
-                <p className="text-xs text-gray-400 mb-3">{info.label}</p>
+                <p className="text-xs text-gray-500 mb-3">{info.label}</p>
                 <div className="flex -space-x-1.5">
                   {members.map(m => (
                     <div
                       key={m.name}
                       title={m.name}
-                      className="h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold text-white border border-surface-base"
+                      className="h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold text-gray-900 border border-surface-base"
                       style={{ background: m.color }}
                     >
                       {m.initials[0]}
                     </div>
                   ))}
                   {members.length === 0 && (
-                    <span className="text-xs text-gray-600">Inga tilldelade</span>
+                    <span className="text-xs text-gray-500">Inga tilldelade</span>
                   )}
                 </div>
               </div>

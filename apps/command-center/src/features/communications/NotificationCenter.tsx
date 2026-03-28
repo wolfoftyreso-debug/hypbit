@@ -141,20 +141,20 @@ export function NotificationCenter() {
       {/* Header row */}
       <div className="flex items-center gap-3 flex-wrap">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-semibold text-white">System-notifikationer</span>
+          <span className="text-sm font-semibold text-gray-900">System-notifikationer</span>
           {unreadCount > 0 && (
-            <span className="text-xs font-bold px-1.5 py-0.5 rounded-full bg-blue-500 text-white">
+            <span className="text-xs font-bold px-1.5 py-0.5 rounded-full bg-blue-500 text-gray-900">
               {unreadCount}
             </span>
           )}
           {criticalCount > 0 && (
-            <span className="text-xs font-bold px-1.5 py-0.5 rounded-full bg-red-500 text-white animate-pulse">
+            <span className="text-xs font-bold px-1.5 py-0.5 rounded-full bg-red-500 text-gray-900 animate-pulse">
               {criticalCount} kritisk
             </span>
           )}
         </div>
         <div className="ml-auto flex items-center gap-2">
-          <div className="flex items-center gap-1 p-0.5 bg-[#0D0F1A] rounded-lg border border-white/[0.06]">
+          <div className="flex items-center gap-1 p-0.5 bg-white rounded-lg border border-gray-200">
             {(['all', 'info', 'warning', 'critical'] as const).map(f => (
               <button
                 key={f}
@@ -165,7 +165,7 @@ export function NotificationCenter() {
                       f === 'critical' ? 'bg-red-500/20 text-red-400' :
                       f === 'warning' ? 'bg-yellow-500/20 text-yellow-400' :
                       'bg-blue-500/20 text-blue-400'
-                    : 'text-gray-500 hover:text-gray-300'
+                    : 'text-gray-500 hover:text-gray-600'
                 }`}
               >
                 {f === 'all' ? 'Alla' : LEVEL_CONFIG[f].label}
@@ -175,7 +175,7 @@ export function NotificationCenter() {
           {unreadCount > 0 && (
             <button
               onClick={markAllRead}
-              className="text-xs text-gray-500 hover:text-gray-300 transition-colors px-2 py-1"
+              className="text-xs text-gray-500 hover:text-gray-600 transition-colors px-2 py-1"
             >
               Markera alla lästa
             </button>
@@ -184,7 +184,7 @@ export function NotificationCenter() {
       </div>
 
       {/* Live indicator */}
-      <div className="flex items-center gap-2 text-xs text-gray-600">
+      <div className="flex items-center gap-2 text-xs text-gray-500">
         <span className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
         <span className="font-mono">Realtid — polling var 15s</span>
       </div>
@@ -197,24 +197,24 @@ export function NotificationCenter() {
             <div
               key={notif.id}
               className={`rounded-xl border p-3 transition-all ${
-                !notif.read ? cfg.bg : 'bg-[#0D0F1A] border-white/[0.06]'
+                !notif.read ? cfg.bg : 'bg-white border-gray-200'
               }`}
             >
               <div className="flex items-start gap-3">
                 <div className={`h-2 w-2 rounded-full flex-shrink-0 mt-1.5 ${cfg.dot} ${!notif.read ? '' : 'opacity-30'}`} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
-                    <span className={`text-xs font-medium ${!notif.read ? 'text-white' : 'text-gray-400'}`}>
+                    <span className={`text-xs font-medium ${!notif.read ? 'text-gray-900' : 'text-gray-500'}`}>
                       {notif.title}
                     </span>
                     <div className="flex items-center gap-2 flex-shrink-0">
-                      <span className="text-xs text-gray-600 font-mono">
+                      <span className="text-xs text-gray-500 font-mono">
                         {new Date(notif.timestamp).toLocaleString('sv-SE', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </span>
                       {!notif.read && (
                         <button
                           onClick={() => markRead(notif.id)}
-                          className="text-[9px] text-gray-600 hover:text-gray-400 transition-colors"
+                          className="text-[9px] text-gray-500 hover:text-gray-500 transition-colors"
                         >
                           ✓
                         </button>
@@ -223,7 +223,7 @@ export function NotificationCenter() {
                   </div>
                   <p className="text-xs text-gray-500 mt-0.5">{notif.body}</p>
                   <div className="flex items-center gap-2 mt-1.5">
-                    <span className="text-[9px] text-gray-700 font-mono">{notif.source}</span>
+                    <span className="text-[9px] text-gray-600 font-mono">{notif.source}</span>
                     <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full border ${cfg.bg} ${cfg.color}`}>
                       {cfg.label}
                     </span>
@@ -234,7 +234,7 @@ export function NotificationCenter() {
           )
         })}
         {filtered.length === 0 && (
-          <div className="text-center py-12 text-gray-600 text-xs">
+          <div className="text-center py-12 text-gray-500 text-xs">
             Inga notifikationer för valt filter
           </div>
         )}

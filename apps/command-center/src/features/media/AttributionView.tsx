@@ -5,7 +5,7 @@ export function AttributionView() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-white font-semibold">Attribution</h2>
+        <h2 className="text-gray-900 font-semibold">Attribution</h2>
         <p className="text-xs text-gray-500 mt-0.5">Konverteringsspårning och touchpoint-analys</p>
       </div>
 
@@ -17,10 +17,10 @@ export function AttributionView() {
         </p>
       </div>
 
-      <div className="bg-[#0D0F1A] border border-white/10 rounded-xl overflow-hidden">
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-white/10">
+            <tr className="border-b border-gray-200">
               {COLUMNS.map(col => (
                 <th key={col} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {col}
@@ -31,8 +31,8 @@ export function AttributionView() {
           <tbody>
             <tr>
               <td colSpan={COLUMNS.length} className="px-4 py-12 text-center">
-                <div className="text-gray-600 text-sm">Inga attribution-events ännu</div>
-                <div className="text-gray-700 text-xs mt-1">Data visas här när kanaler är aktiva och spårning är konfigurerad</div>
+                <div className="text-gray-500 text-sm">Inga attribution-events ännu</div>
+                <div className="text-gray-600 text-xs mt-1">Data visas här när kanaler är aktiva och spårning är konfigurerad</div>
               </td>
             </tr>
           </tbody>
@@ -45,9 +45,9 @@ export function AttributionView() {
           { label: 'Klick', value: '0' },
           { label: 'Konverteringar', value: '0' },
         ].map(stat => (
-          <div key={stat.label} className="bg-[#0D0F1A] border border-white/10 rounded-xl p-4 text-center">
-            <div className="text-2xl font-mono text-gray-700">{stat.value}</div>
-            <div className="text-xs text-gray-600 mt-1">{stat.label}</div>
+          <div key={stat.label} className="bg-white border border-gray-200 rounded-xl p-4 text-center">
+            <div className="text-2xl font-mono text-gray-600">{stat.value}</div>
+            <div className="text-xs text-gray-500 mt-1">{stat.label}</div>
           </div>
         ))}
       </div>

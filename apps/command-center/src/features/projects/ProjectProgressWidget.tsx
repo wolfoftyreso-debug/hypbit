@@ -114,10 +114,10 @@ export function ProjectProgressWidget() {
   const avgVelocity = (PROJECTS.reduce((s, p) => s + p.velocity, 0) / PROJECTS.length).toFixed(1)
 
   return (
-    <div className="bg-white/[0.04] border border-white/[0.08] rounded-2xl overflow-hidden">
-      <div className="px-4 py-3 border-b border-white/[0.06] flex items-center justify-between">
-        <p className="text-sm font-medium text-white/70">Projekt</p>
-        <span className="text-xs text-white/30 font-mono">
+    <div className="bg-white/[0.04] border border-gray-200 rounded-2xl overflow-hidden">
+      <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
+        <p className="text-sm font-medium text-gray-900/70">Projekt</p>
+        <span className="text-xs text-gray-900/30 font-mono">
           ø {avgVelocity} pp/v
         </span>
       </div>
@@ -129,15 +129,15 @@ export function ProjectProgressWidget() {
             <div className="flex items-center justify-between mb-1.5 gap-2">
               <div className="flex items-center gap-2 min-w-0 flex-1">
                 <span className="text-base flex-shrink-0">{p.icon}</span>
-                <span className="text-sm font-medium text-white truncate">{p.name}</span>
+                <span className="text-sm font-medium text-gray-900 truncate">{p.name}</span>
               </div>
 
               <div className="flex items-center gap-2.5 flex-shrink-0">
                 <Sparkline data={p.history} color={p.color} />
                 <VelocityBadge velocity={p.velocity} color={p.color} />
                 <div className="text-right w-16">
-                  <span className="text-xs text-white/40">{p.phase}</span>
-                  <span className="text-xs text-white/60 ml-1.5">{p.progress}%</span>
+                  <span className="text-xs text-gray-900/40">{p.phase}</span>
+                  <span className="text-xs text-gray-900/60 ml-1.5">{p.progress}%</span>
                 </div>
               </div>
             </div>

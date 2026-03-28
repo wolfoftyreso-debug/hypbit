@@ -42,7 +42,7 @@ export function TaxComplianceView() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-sm font-semibold text-white">Skatt & Arbetsgivaravgift</h2>
+        <h2 className="text-sm font-semibold text-gray-900">Skatt & Arbetsgivaravgift</h2>
         <p className="text-xs text-gray-500 mt-0.5">Arbetsgivardeklaration (AGI) — Skatteverket</p>
       </div>
 
@@ -57,7 +57,7 @@ export function TaxComplianceView() {
           <div key={k.label} className="bg-surface-raised border border-surface-border rounded-xl px-5 py-4">
             <div className="text-xs text-gray-500 mb-1">{k.label}</div>
             <div className="text-xl font-bold tabular-nums" style={{ color: k.color }}>{k.value}</div>
-            {k.sub && <div className="text-xs text-gray-600 mt-1">{k.sub}</div>}
+            {k.sub && <div className="text-xs text-gray-500 mt-1">{k.sub}</div>}
           </div>
         ))}
       </div>
@@ -76,7 +76,7 @@ export function TaxComplianceView() {
       {/* Declaration table */}
       <div className="bg-surface-raised border border-surface-border rounded-xl overflow-hidden">
         <div className="px-5 py-4 border-b border-surface-border">
-          <h3 className="text-sm font-semibold text-white">Arbetsgivardeklarationer (AGI)</h3>
+          <h3 className="text-sm font-semibold text-gray-900">Arbetsgivardeklarationer (AGI)</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -92,7 +92,7 @@ export function TaxComplianceView() {
             <tbody>
               {TAX_DECLARATIONS.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-5 py-8 text-center text-gray-600 text-xs italic">
+                  <td colSpan={5} className="px-5 py-8 text-center text-gray-500 text-xs italic">
                     Inga skattedeklarationer registrerade — konfigureras via lönesystemet
                   </td>
                 </tr>
@@ -101,15 +101,15 @@ export function TaxComplianceView() {
                 const d = daysUntil(dec.deadline)
                 return (
                   <tr key={dec.period} className="border-b border-surface-border/50 hover:bg-surface-overlay/30 transition-colors">
-                    <td className="px-5 py-3 text-xs text-white">{fmtPeriod(dec.period)}</td>
-                    <td className="px-5 py-3 text-xs text-gray-400">{dec.deadline}</td>
+                    <td className="px-5 py-3 text-xs text-gray-900">{fmtPeriod(dec.period)}</td>
+                    <td className="px-5 py-3 text-xs text-gray-500">{dec.deadline}</td>
                     <td className="px-5 py-3 text-right text-xs text-amber-400 tabular-nums font-medium">{fmt(dec.amount)}</td>
                     <td className="px-5 py-3"><StatusPill status={dec.status} /></td>
                     <td className="px-5 py-3 text-xs">
                       {dec.status === 'paid' ? (
-                        <span className="text-gray-600">—</span>
+                        <span className="text-gray-500">—</span>
                       ) : (
-                        <span className={d <= 7 ? 'text-red-400 font-semibold' : d <= 14 ? 'text-amber-400' : 'text-gray-400'}>
+                        <span className={d <= 7 ? 'text-red-400 font-semibold' : d <= 14 ? 'text-amber-400' : 'text-gray-500'}>
                           {d > 0 ? `${d} dagar` : `${Math.abs(d)} dagar sedan`}
                         </span>
                       )}
@@ -124,7 +124,7 @@ export function TaxComplianceView() {
 
       {/* Skattekonton section */}
       <div className="bg-surface-raised border border-surface-border rounded-xl px-5 py-5 space-y-4">
-        <h3 className="text-sm font-semibold text-white">Skattekonton</h3>
+        <h3 className="text-sm font-semibold text-gray-900">Skattekonton</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
             {
@@ -146,7 +146,7 @@ export function TaxComplianceView() {
               <div className="flex items-start gap-3">
                 <span className="text-2xl">{acc.icon}</span>
                 <div>
-                  <div className="text-xs font-semibold text-white mb-1">{acc.title}</div>
+                  <div className="text-xs font-semibold text-gray-900 mb-1">{acc.title}</div>
                   <div className="text-xs text-gray-500 mb-2">{acc.desc}</div>
                   <div className="text-base font-bold tabular-nums" style={{ color: acc.color }}>{acc.amount}</div>
                 </div>
@@ -158,7 +158,7 @@ export function TaxComplianceView() {
 
       {/* Skatteverket deadline calendar */}
       <div className="bg-surface-raised border border-surface-border rounded-xl px-5 py-5">
-        <h3 className="text-sm font-semibold text-white mb-4">Skatteverket — deadlines 2026</h3>
+        <h3 className="text-sm font-semibold text-gray-900 mb-4">Skatteverket — deadlines 2026</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { month: 'Jan', deadline: '12 feb', paid: true },
@@ -179,7 +179,7 @@ export function TaxComplianceView() {
               }
             >
               <div className="text-xs text-gray-500">{d.month} 2026</div>
-              <div className={`text-xs font-semibold mt-1 ${d.paid ? 'text-green-400' : 'text-gray-300'}`}>
+              <div className={`text-xs font-semibold mt-1 ${d.paid ? 'text-green-400' : 'text-gray-600'}`}>
                 {d.paid ? '✓ ' : ''}{d.deadline}
               </div>
               <div className="text-xs mt-1" style={{ color: d.paid ? '#34D399' : '#6B7280' }}>

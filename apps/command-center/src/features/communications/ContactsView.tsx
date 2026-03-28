@@ -260,7 +260,7 @@ function ContactCard({ contact, expanded, onToggle }: {
           {initials}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-white truncate">{contact.name}</p>
+          <p className="text-sm font-semibold text-gray-900 truncate">{contact.name}</p>
           <p className="text-xs text-gray-500 truncate">{contact.role}</p>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
@@ -270,7 +270,7 @@ function ContactCard({ contact, expanded, onToggle }: {
           >
             {contact.entity}
           </span>
-          <span className="text-gray-600 text-xs">{expanded ? '▲' : '▼'}</span>
+          <span className="text-gray-500 text-xs">{expanded ? '▲' : '▼'}</span>
         </div>
       </div>
 
@@ -294,7 +294,7 @@ function ContactCard({ contact, expanded, onToggle }: {
               <span className="text-xs text-gray-500 w-20 flex-shrink-0 font-mono">TELEFON</span>
               <a
                 href={`tel:${contact.phone}`}
-                className="text-xs text-white hover:text-gray-300"
+                className="text-xs text-gray-900 hover:text-gray-600"
                 onClick={e => e.stopPropagation()}
               >
                 {contact.phone}
@@ -310,7 +310,7 @@ function ContactCard({ contact, expanded, onToggle }: {
           {contact.notes && (
             <div className="flex items-start gap-2 mt-2">
               <span className="text-xs text-gray-500 w-20 flex-shrink-0 font-mono pt-0.5">NOTERING</span>
-              <p className="text-xs text-gray-400 leading-relaxed">{contact.notes}</p>
+              <p className="text-xs text-gray-500 leading-relaxed">{contact.notes}</p>
             </div>
           )}
           {contact.tags && contact.tags.length > 0 && (
@@ -357,7 +357,7 @@ export function ContactsView() {
         value={search}
         onChange={e => setSearch(e.target.value)}
         placeholder="Sök namn, roll, mail..."
-        className="w-full px-4 py-2.5 rounded-xl bg-surface-raised border border-surface-border text-sm text-white placeholder-gray-600 focus:outline-none focus:border-brand-accent/50"
+        className="w-full px-4 py-2.5 rounded-xl bg-surface-raised border border-surface-border text-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:border-brand-accent/50"
       />
 
       {/* Category filter */}
@@ -367,7 +367,7 @@ export function ContactsView() {
           className={`text-xs font-mono px-3 py-1.5 rounded-lg flex-shrink-0 transition-colors ${
             activeCategory === 'all'
               ? 'bg-brand-accent/15 text-brand-accent border border-brand-accent/30'
-              : 'text-gray-500 border border-surface-border hover:text-gray-300'
+              : 'text-gray-500 border border-surface-border hover:text-gray-600'
           }`}
         >
           Alla ({CONTACTS.length})
@@ -381,7 +381,7 @@ export function ContactsView() {
               className={`text-xs font-mono px-3 py-1.5 rounded-lg flex-shrink-0 transition-colors whitespace-nowrap ${
                 activeCategory === key
                   ? 'bg-brand-accent/15 text-brand-accent border border-brand-accent/30'
-                  : 'text-gray-500 border border-surface-border hover:text-gray-300'
+                  : 'text-gray-500 border border-surface-border hover:text-gray-600'
               }`}
             >
               {meta.icon} {meta.label} ({count})
@@ -397,8 +397,8 @@ export function ContactsView() {
           <div key={category}>
             <div className="flex items-center gap-2 mb-2">
               <span className="text-sm">{meta?.icon}</span>
-              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{meta?.label}</h3>
-              <span className="text-xs text-gray-600">({contacts.length})</span>
+              <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{meta?.label}</h3>
+              <span className="text-xs text-gray-500">({contacts.length})</span>
             </div>
             <div className="space-y-2">
               {contacts.map(contact => (
@@ -415,7 +415,7 @@ export function ContactsView() {
       })}
 
       {filtered.length === 0 && (
-        <div className="text-center py-12 text-gray-600 text-sm">
+        <div className="text-center py-12 text-gray-500 text-sm">
           Inga kontakter matchar sökningen
         </div>
       )}

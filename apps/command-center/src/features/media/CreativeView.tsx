@@ -3,7 +3,7 @@ import type { Creative } from './types'
 import { MOCK_CREATIVES, MOCK_CAMPAIGNS } from './mockData'
 
 const STATUS_COLORS: Record<Creative['status'], string> = {
-  draft: 'bg-gray-700 text-gray-300',
+  draft: 'bg-gray-100 text-gray-600',
   review: 'bg-yellow-900 text-yellow-300',
   approved: 'bg-blue-900 text-blue-300',
   live: 'bg-green-900 text-green-300',
@@ -33,19 +33,19 @@ function NewCreativeModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
-      <div className="bg-[#0D0F1A] border border-white/10 rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 sticky top-0 bg-[#0D0F1A]">
-          <h2 className="text-white font-semibold">Ny creative</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-white text-lg leading-none">×</button>
+      <div className="bg-white border border-gray-200 rounded-xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 sticky top-0 bg-white">
+          <h2 className="text-gray-900 font-semibold">Ny creative</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-900 text-lg leading-none">×</button>
         </div>
         <div className="px-6 py-5 space-y-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs text-gray-400 mb-1">Kampanj</label>
+              <label className="block text-xs text-gray-500 mb-1">Kampanj</label>
               <select
                 value={form.campaign_id}
                 onChange={e => setForm({ ...form, campaign_id: e.target.value })}
-                className="w-full bg-[#070912] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none"
+                className="w-full bg-[#070912] border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none"
               >
                 {MOCK_CAMPAIGNS.map(c => (
                   <option key={c.id} value={c.id}>{c.name}</option>
@@ -53,11 +53,11 @@ function NewCreativeModal({ onClose }: { onClose: () => void }) {
               </select>
             </div>
             <div>
-              <label className="block text-xs text-gray-400 mb-1">Typ</label>
+              <label className="block text-xs text-gray-500 mb-1">Typ</label>
               <select
                 value={form.type}
                 onChange={e => setForm({ ...form, type: e.target.value as Creative['type'] })}
-                className="w-full bg-[#070912] border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none"
+                className="w-full bg-[#070912] border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none"
               >
                 <option value="audio">Audio</option>
                 <option value="video">Video</option>
@@ -68,39 +68,39 @@ function NewCreativeModal({ onClose }: { onClose: () => void }) {
           </div>
 
           <div>
-            <label className="block text-xs text-gray-400 mb-1">Hook (öppningsmening)</label>
+            <label className="block text-xs text-gray-500 mb-1">Hook (öppningsmening)</label>
             <input
               value={form.hook}
               onChange={e => setForm({ ...form, hook: e.target.value })}
               placeholder="t.ex. Sveriges infrastruktur behöver ögon."
-              className="w-full bg-[#070912] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none"
+              className="w-full bg-[#070912] border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-600 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs text-gray-400 mb-1">Budskap</label>
+            <label className="block text-xs text-gray-500 mb-1">Budskap</label>
             <textarea
               value={form.message}
               onChange={e => setForm({ ...form, message: e.target.value })}
               rows={3}
               placeholder="Beskriv erbjudandet eller varumärkesbudskapet..."
-              className="w-full bg-[#070912] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none resize-none"
+              className="w-full bg-[#070912] border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-600 focus:outline-none resize-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs text-gray-400 mb-1">CTA (Call to action)</label>
+            <label className="block text-xs text-gray-500 mb-1">CTA (Call to action)</label>
             <input
               value={form.cta}
               onChange={e => setForm({ ...form, cta: e.target.value })}
               placeholder="t.ex. Läs mer, Ansök nu, Se demo"
-              className="w-full bg-[#070912] border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none"
+              className="w-full bg-[#070912] border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-600 focus:outline-none"
             />
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="text-xs text-gray-400">Varianter (A/B-test)</label>
+              <label className="text-xs text-gray-500">Varianter (A/B-test)</label>
               <button
                 onClick={addVariant}
                 className="text-xs text-brand-accent hover:underline"
@@ -118,12 +118,12 @@ function NewCreativeModal({ onClose }: { onClose: () => void }) {
                       updated[i].label = e.target.value
                       setVariants(updated)
                     }}
-                    className="flex-1 bg-[#070912] border border-white/10 rounded-lg px-3 py-1.5 text-sm text-white focus:outline-none"
+                    className="flex-1 bg-[#070912] border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-900 focus:outline-none"
                   />
                   {variants.length > 1 && (
                     <button
                       onClick={() => setVariants(variants.filter((_, idx) => idx !== i))}
-                      className="text-gray-600 hover:text-red-400 text-xs"
+                      className="text-gray-500 hover:text-red-400 text-xs"
                     >
                       ×
                     </button>
@@ -133,8 +133,8 @@ function NewCreativeModal({ onClose }: { onClose: () => void }) {
             </div>
           </div>
         </div>
-        <div className="px-6 py-4 border-t border-white/10 flex justify-end gap-3 sticky bottom-0 bg-[#0D0F1A]">
-          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">Avbryt</button>
+        <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3 sticky bottom-0 bg-white">
+          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-gray-900 transition-colors">Avbryt</button>
           <button
             onClick={onClose}
             className="px-4 py-2 text-sm bg-brand-accent/20 text-brand-accent border border-brand-accent/30 rounded-lg hover:bg-brand-accent/30 transition-colors"
@@ -155,7 +155,7 @@ export function CreativeView() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-white font-semibold">Creatives</h2>
+          <h2 className="text-gray-900 font-semibold">Creatives</h2>
           <p className="text-xs text-gray-500 mt-0.5">{MOCK_CREATIVES.length} creatives · alla i draft</p>
         </div>
         <button
@@ -173,7 +173,7 @@ export function CreativeView() {
           return (
             <div
               key={creative.id}
-              className="bg-[#0D0F1A] border border-white/10 rounded-xl overflow-hidden"
+              className="bg-white border border-gray-200 rounded-xl overflow-hidden"
             >
               <div
                 className="flex items-center justify-between p-4 cursor-pointer hover:bg-white/[0.02] transition-colors"
@@ -183,7 +183,7 @@ export function CreativeView() {
                   <span className="text-xl">{TYPE_ICONS[creative.type]}</span>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-white">{creative.hook}</span>
+                      <span className="text-sm font-medium text-gray-900">{creative.hook}</span>
                       <span className={`text-xs px-2 py-0.5 rounded-full font-mono ${STATUS_COLORS[creative.status]}`}>
                         {creative.status}
                       </span>
@@ -193,14 +193,14 @@ export function CreativeView() {
                     </div>
                   </div>
                 </div>
-                <span className="text-gray-600 text-xs">{isExpanded ? '▲' : '▼'}</span>
+                <span className="text-gray-500 text-xs">{isExpanded ? '▲' : '▼'}</span>
               </div>
 
               {isExpanded && (
                 <div className="px-4 pb-4 border-t border-white/5 pt-3 space-y-3">
                   <div>
                     <div className="text-xs text-gray-500 mb-1">Budskap</div>
-                    <p className="text-sm text-gray-300">{creative.message}</p>
+                    <p className="text-sm text-gray-600">{creative.message}</p>
                   </div>
                   <div>
                     <div className="text-xs text-gray-500 mb-1">CTA</div>
@@ -211,8 +211,8 @@ export function CreativeView() {
                     <div className="space-y-1">
                       {creative.variants.map(v => (
                         <div key={v.id} className="flex items-center justify-between bg-white/[0.03] rounded-lg px-3 py-2">
-                          <span className="text-xs text-gray-300">{v.label}</span>
-                          <span className="text-xs text-gray-600">
+                          <span className="text-xs text-gray-600">{v.label}</span>
+                          <span className="text-xs text-gray-500">
                             {v.performance_score !== undefined ? `Score: ${v.performance_score}` : 'Inget data'}
                           </span>
                         </div>

@@ -37,15 +37,15 @@ function TourCard({
       <div className="fixed z-[60] inset-0 flex items-center justify-center pointer-events-none px-4">
         <div
           className="pointer-events-auto w-full max-w-sm rounded-2xl border border-white/[0.12] shadow-2xl"
-          style={{ background: '#0D0F1A' }}
+          style={{ background: '#FFFFFF' }}
         >
           {/* Header */}
-          <div className="px-5 pt-5 pb-3 border-b border-white/[0.06]">
+          <div className="px-5 pt-5 pb-3 border-b border-gray-200">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-xs text-gray-600 font-mono uppercase tracking-wider">{tourName}</span>
+              <span className="text-xs text-gray-500 font-mono uppercase tracking-wider">{tourName}</span>
               <button
                 onClick={onSkip}
-                className="text-xs text-gray-700 hover:text-gray-400 transition-colors font-mono"
+                className="text-xs text-gray-600 hover:text-gray-500 transition-colors font-mono"
               >
                 Hoppa över
               </button>
@@ -58,7 +58,7 @@ function TourCard({
                   className="h-1 rounded-full transition-all"
                   style={{
                     width: i === stepIndex ? '20px' : '6px',
-                    background: i <= stepIndex ? '#6366F1' : '#374151',
+                    background: i <= stepIndex ? '#6366F1' : '#F3F4F6',
                   }}
                 />
               ))}
@@ -68,8 +68,8 @@ function TourCard({
           {/* Content */}
           <div className="px-5 py-5">
             <div className="text-3xl mb-3">{step.icon}</div>
-            <h3 className="text-base font-bold text-white mb-2">{step.title}</h3>
-            <p className="text-sm text-gray-400 leading-relaxed">{step.description}</p>
+            <h3 className="text-base font-bold text-gray-900 mb-2">{step.title}</h3>
+            <p className="text-sm text-gray-500 leading-relaxed">{step.description}</p>
           </div>
 
           {/* Actions */}
@@ -77,11 +77,11 @@ function TourCard({
             <button
               onClick={onPrev}
               disabled={stepIndex === 0}
-              className="text-xs px-3 py-2 rounded-lg text-gray-600 hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              className="text-xs px-3 py-2 rounded-lg text-gray-500 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
               ← Tillbaka
             </button>
-            <span className="text-xs text-gray-700 font-mono">{stepIndex + 1} / {totalSteps}</span>
+            <span className="text-xs text-gray-600 font-mono">{stepIndex + 1} / {totalSteps}</span>
             <button
               onClick={onNext}
               className="text-xs px-4 py-2 rounded-lg font-semibold transition-colors"

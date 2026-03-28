@@ -110,7 +110,7 @@ export function CashFlowOptimizer() {
     <div className="space-y-5">
       {/* Header */}
       <div>
-        <h2 className="text-lg font-bold text-white">⚡ Cashflow-optimering</h2>
+        <h2 className="text-lg font-bold text-gray-900">⚡ Cashflow-optimering</h2>
         <p className="text-xs text-gray-500 mt-0.5">
           Simulera licensstruktur och se skatteeffekt per entitet och Dubai-ackumulering
         </p>
@@ -158,16 +158,16 @@ export function CashFlowOptimizer() {
               {kpi.value}
             </p>
             <p className="text-[9px] text-gray-500 font-mono uppercase mt-0.5">{kpi.label}</p>
-            <p className="text-[9px] text-gray-600 mt-0.5">{kpi.sub}</p>
+            <p className="text-[9px] text-gray-500 mt-0.5">{kpi.sub}</p>
           </div>
         ))}
       </div>
 
       {/* License rate slider */}
-      <div className="rounded-xl border border-white/[0.08] bg-[#0D0F1A] p-5">
+      <div className="rounded-xl border border-gray-200 bg-white p-5">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <p className="text-sm font-semibold text-white">License Rate Simulator</p>
+            <p className="text-sm font-semibold text-gray-900">License Rate Simulator</p>
             <p className="text-xs text-gray-500 mt-0.5">
               Justera licensavgiftsprocenten och se effekten i realtid
             </p>
@@ -197,7 +197,7 @@ export function CashFlowOptimizer() {
           onChange={e => setLicenseRate(Number(e.target.value))}
           className="w-full accent-blue-500"
         />
-        <div className="flex justify-between text-[9px] text-gray-600 font-mono mt-1">
+        <div className="flex justify-between text-[9px] text-gray-500 font-mono mt-1">
           <span>1%</span>
           <span className="text-emerald-600">← Arm's length: 8–15% →</span>
           <span>30%</span>
@@ -212,8 +212,8 @@ export function CashFlowOptimizer() {
       </div>
 
       {/* Entity revenue sliders */}
-      <div className="rounded-xl border border-white/[0.08] bg-[#0D0F1A] p-5 space-y-4">
-        <p className="text-sm font-semibold text-white">Omsättning per bolag</p>
+      <div className="rounded-xl border border-gray-200 bg-white p-5 space-y-4">
+        <p className="text-sm font-semibold text-gray-900">Omsättning per bolag</p>
         {ENTITIES.map(e => {
           const rev = revenues[e.id] ?? e.defaultRevenue
           const calc = entityCalcs.find(c => c.entity.id === e.id)!
@@ -222,15 +222,15 @@ export function CashFlowOptimizer() {
               <div className="flex items-center justify-between mb-1.5">
                 <div className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full" style={{ background: e.color }} />
-                  <span className="text-xs font-semibold text-white">{e.name}</span>
-                  <span className="text-[9px] text-gray-600 font-mono">{e.jurisdiction}</span>
+                  <span className="text-xs font-semibold text-gray-900">{e.name}</span>
+                  <span className="text-[9px] text-gray-500 font-mono">{e.jurisdiction}</span>
                 </div>
                 <div className="flex items-center gap-3 text-right">
-                  <span className="text-xs font-mono text-white">
+                  <span className="text-xs font-mono text-gray-900">
                     {rev.toLocaleString()} {e.currency}
                   </span>
                   <button
-                    className="text-[9px] text-gray-600 hover:text-gray-400 font-mono"
+                    className="text-[9px] text-gray-500 hover:text-gray-500 font-mono"
                     onClick={() => setShowDetails(showDetails === e.id ? null : e.id)}
                   >
                     {showDetails === e.id ? '▲ dölj' : '▼ detaljer'}
@@ -247,13 +247,13 @@ export function CashFlowOptimizer() {
                 className="w-full"
                 style={{ accentColor: e.color }}
               />
-              <div className="flex justify-between text-[9px] text-gray-700 font-mono mt-0.5">
-                <span>License fee: <span className="text-white">{calc.licenseFee.toLocaleString(undefined, { maximumFractionDigits: 0 })} {e.currency}</span></span>
-                <span>Mgmt fee: <span className="text-white">{calc.mgmtFee.toLocaleString(undefined, { maximumFractionDigits: 0 })} {e.currency}</span></span>
+              <div className="flex justify-between text-[9px] text-gray-600 font-mono mt-0.5">
+                <span>License fee: <span className="text-gray-900">{calc.licenseFee.toLocaleString(undefined, { maximumFractionDigits: 0 })} {e.currency}</span></span>
+                <span>Mgmt fee: <span className="text-gray-900">{calc.mgmtFee.toLocaleString(undefined, { maximumFractionDigits: 0 })} {e.currency}</span></span>
                 <span>Skatt: <span className="text-red-400">{calc.taxPaid.toLocaleString(undefined, { maximumFractionDigits: 0 })} {e.currency}</span></span>
               </div>
               {showDetails === e.id && (
-                <div className="mt-2 rounded-lg bg-white/[0.04] border border-white/[0.06] p-3 grid grid-cols-2 gap-2 text-xs">
+                <div className="mt-2 rounded-lg bg-white/[0.04] border border-gray-200 p-3 grid grid-cols-2 gap-2 text-xs">
                   {[
                     { label: 'Omsättning', value: `${rev.toLocaleString()} ${e.currency}` },
                     { label: '≈ EUR', value: fmtEur(calc.revEur) },
@@ -266,7 +266,7 @@ export function CashFlowOptimizer() {
                   ].map(row => (
                     <div key={row.label} className="flex justify-between gap-2">
                       <span className="text-gray-500">{row.label}</span>
-                      <span className={`font-mono font-semibold ${row.highlight ? 'text-emerald-400' : 'text-white'}`}>
+                      <span className={`font-mono font-semibold ${row.highlight ? 'text-emerald-400' : 'text-gray-900'}`}>
                         {row.value}
                       </span>
                     </div>
@@ -279,8 +279,8 @@ export function CashFlowOptimizer() {
       </div>
 
       {/* Dubai accumulation timeline */}
-      <div className="rounded-xl border border-emerald-500/20 bg-[#0D0F1A] p-5">
-        <p className="text-sm font-semibold text-white mb-3">
+      <div className="rounded-xl border border-emerald-500/20 bg-white p-5">
+        <p className="text-sm font-semibold text-gray-900 mb-3">
           🏦 Dubai-ackumulering — Wavult DevOps FZCO
         </p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -298,7 +298,7 @@ export function CashFlowOptimizer() {
             </div>
           ))}
         </div>
-        <div className="mt-4 pt-3 border-t border-white/[0.05]">
+        <div className="mt-4 pt-3 border-t border-gray-200">
           <div className="flex justify-between text-xs">
             <span className="text-gray-500">Total skatt i dotterbolag/mån</span>
             <span className="text-red-400 font-mono font-semibold">{fmtEur(totalTaxPaidMonthly)}</span>
@@ -326,7 +326,7 @@ export function CashFlowOptimizer() {
             return (
               <div key={e.id} className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: e.color }} />
-                <span className="text-xs text-white flex-1">{e.name}</span>
+                <span className="text-xs text-gray-900 flex-1">{e.name}</span>
                 <span className="text-xs text-gray-500 font-mono">
                   {(calc.rev * OPTIMAL_RATE.recommended).toLocaleString(undefined, { maximumFractionDigits: 0 })} {e.currency}/mån
                 </span>

@@ -52,7 +52,7 @@ export function ProspectList() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Sök företag eller kontakt..."
-              className="bg-surface-raised border border-surface-border rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-white/20 w-60"
+              className="bg-surface-raised border border-surface-border rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:border-gray-300 w-60"
             />
             <span className="text-xs text-gray-500 ml-auto">
               {filtered.length} prospects · {formatSEK(filtered.reduce((s, p) => s + p.valueSEK, 0))} total
@@ -66,7 +66,7 @@ export function ProspectList() {
                 className={`text-xs px-2.5 py-1 rounded-lg transition-colors ${
                   stageFilter === s
                     ? 'bg-brand-accent/10 text-brand-accent font-medium'
-                    : 'bg-surface-raised border border-surface-border text-gray-500 hover:text-white'
+                    : 'bg-surface-raised border border-surface-border text-gray-500 hover:text-gray-900'
                 }`}
               >
                 {s}
@@ -127,9 +127,9 @@ export function ProspectList() {
                   }`}
                 >
                   <td className="px-4 py-3">
-                    <span className="font-medium text-white">{p.company}</span>
+                    <span className="font-medium text-gray-900">{p.company}</span>
                   </td>
-                  <td className="px-4 py-3 text-gray-400">{p.contactName}</td>
+                  <td className="px-4 py-3 text-gray-500">{p.contactName}</td>
                   <td className="px-4 py-3">
                     <span
                       className="text-xs px-2 py-0.5 rounded-full font-medium"
@@ -146,7 +146,7 @@ export function ProspectList() {
                       {p.stage}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-white font-semibold tabular-nums">{formatSEK(p.valueSEK)}</td>
+                  <td className="px-4 py-3 text-gray-900 font-semibold tabular-nums">{formatSEK(p.valueSEK)}</td>
                   <td className="px-4 py-3 text-gray-500 text-xs">
                     {daysSince(p.lastActivity) === 0 ? 'Idag' : `${daysSince(p.lastActivity)}d sedan`}
                   </td>
@@ -162,7 +162,7 @@ export function ProspectList() {
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-gray-600 text-sm">
+                  <td colSpan={7} className="px-4 py-8 text-center text-gray-500 text-sm">
                     Inga prospects matchar filter
                   </td>
                 </tr>
@@ -179,12 +179,12 @@ export function ProspectList() {
           <div className="px-4 py-4 border-b border-surface-border">
             <div className="flex items-start justify-between gap-2">
               <div>
-                <h3 className="font-bold text-white">{selected.company}</h3>
-                <p className="text-sm text-gray-400 mt-0.5">{selected.contactName}</p>
+                <h3 className="font-bold text-gray-900">{selected.company}</h3>
+                <p className="text-sm text-gray-500 mt-0.5">{selected.contactName}</p>
               </div>
               <button
                 onClick={() => setSelected(null)}
-                className="text-gray-600 hover:text-white transition-colors text-lg leading-none"
+                className="text-gray-500 hover:text-gray-900 transition-colors text-lg leading-none"
               >
                 ×
               </button>
@@ -215,32 +215,32 @@ export function ProspectList() {
           <div className="px-4 py-3 border-b border-surface-border space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Värde</span>
-              <span className="text-white font-bold">{formatSEK(selected.valueSEK)}/år</span>
+              <span className="text-gray-900 font-bold">{formatSEK(selected.valueSEK)}/år</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Dagar i stage</span>
-              <span className="text-white">{selected.daysInStage}d</span>
+              <span className="text-gray-900">{selected.daysInStage}d</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Senaste aktivitet</span>
-              <span className="text-white">{daysSince(selected.lastActivity)}d sedan</span>
+              <span className="text-gray-900">{daysSince(selected.lastActivity)}d sedan</span>
             </div>
             {selected.notes && (
               <p className="text-xs text-gray-500 italic pt-1">{selected.notes}</p>
             )}
             <div className="pt-1">
               <p className="text-xs text-gray-500">Nästa steg</p>
-              <p className="text-xs text-white mt-0.5">{selected.nextStep}</p>
+              <p className="text-xs text-gray-900 mt-0.5">{selected.nextStep}</p>
             </div>
           </div>
 
           {/* Activity log */}
           <div className="flex-1 overflow-auto px-4 py-3">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
               Aktivitetslogg ({prospectActivities.length})
             </p>
             {prospectActivities.length === 0 ? (
-              <p className="text-xs text-gray-600 italic">Inga aktiviteter loggade</p>
+              <p className="text-xs text-gray-500 italic">Inga aktiviteter loggade</p>
             ) : (
               <div className="space-y-3">
                 {prospectActivities.map(a => (
@@ -248,12 +248,12 @@ export function ProspectList() {
                     <span className="text-base leading-none mt-0.5 flex-shrink-0">{ACTIVITY_ICONS[a.type]}</span>
                     <div className="min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-medium text-white">{a.type}</span>
-                        <span className="text-xs text-gray-600">·</span>
-                        <span className="text-xs text-gray-600">{a.by}</span>
-                        <span className="text-xs text-gray-700 ml-auto">{new Date(a.date).toLocaleDateString('sv-SE')}</span>
+                        <span className="text-xs font-medium text-gray-900">{a.type}</span>
+                        <span className="text-xs text-gray-500">·</span>
+                        <span className="text-xs text-gray-500">{a.by}</span>
+                        <span className="text-xs text-gray-600 ml-auto">{new Date(a.date).toLocaleDateString('sv-SE')}</span>
                       </div>
-                      <p className="text-xs text-gray-400 mt-0.5 leading-relaxed">{a.note}</p>
+                      <p className="text-xs text-gray-500 mt-0.5 leading-relaxed">{a.note}</p>
                     </div>
                   </div>
                 ))}

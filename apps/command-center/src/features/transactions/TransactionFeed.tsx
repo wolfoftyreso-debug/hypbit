@@ -11,8 +11,8 @@ export function TransactionFeed() {
   return (
     <div className="space-y-6 max-w-4xl">
       <div>
-        <h1 className="text-2xl font-bold text-white">Transactions</h1>
-        <p className="text-gray-400 mt-1">{ledgerLabel} — coming in v2.1</p>
+        <h1 className="text-2xl font-bold text-gray-900">Transactions</h1>
+        <p className="text-gray-500 mt-1">{ledgerLabel} — coming in v2.1</p>
         {/* Scope banner */}
         {!isRoot && (
           <div
@@ -31,8 +31,8 @@ export function TransactionFeed() {
 
       <div className="bg-surface-raised border border-surface-border rounded-xl p-12 text-center">
         <div className="text-5xl mb-4">↕</div>
-        <h3 className="text-lg font-semibold text-white mb-2">Ledger Core — Building</h3>
-        <p className="text-sm text-gray-400 max-w-sm mx-auto">
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">Ledger Core — Building</h3>
+        <p className="text-sm text-gray-500 max-w-sm mx-auto">
           {isRoot
             ? 'Multi-entity, multi-currency transaction engine med intercompany clearing.'
             : `Transaction engine for ${activeEntity.name} — intercompany clearing.`}

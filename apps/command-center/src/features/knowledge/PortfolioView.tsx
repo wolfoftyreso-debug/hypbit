@@ -34,7 +34,7 @@ export function PortfolioView() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-sm font-semibold text-white">Idéportfolio</h2>
+          <h2 className="text-sm font-semibold text-gray-900">Idéportfolio</h2>
           <p className="text-xs text-gray-500 mt-0.5">{IDEA_PORTFOLIO.length} projekt — klonare och analyserade 2026-03-27</p>
         </div>
         <div className="flex gap-2">
@@ -45,7 +45,7 @@ export function PortfolioView() {
               className={`text-xs font-mono px-2.5 py-1 rounded-lg capitalize transition-colors ${
                 filter === s
                   ? 'bg-brand-accent/15 text-brand-accent border border-brand-accent/30'
-                  : 'text-gray-500 border border-surface-border hover:text-gray-300'
+                  : 'text-gray-500 border border-surface-border hover:text-gray-600'
               }`}
             >
               {s === 'alla' ? `Alla (${IDEA_PORTFOLIO.length})` : s}
@@ -84,15 +84,15 @@ export function PortfolioView() {
         <div className="bg-surface-raised border border-surface-border rounded-xl p-5 animate-fade-in">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h3 className="text-base font-bold text-white">{selectedProject.title}</h3>
+              <h3 className="text-base font-bold text-gray-900">{selectedProject.title}</h3>
               <p className="text-xs text-gray-500 mt-0.5">{selectedProject.domain} · {selectedProject.pages} sidor · {selectedProject.updated}</p>
             </div>
-            <button onClick={() => setSelected(null)} className="text-gray-600 hover:text-gray-300 text-xs">✕</button>
+            <button onClick={() => setSelected(null)} className="text-gray-500 hover:text-gray-600 text-xs">✕</button>
           </div>
-          <p className="text-sm text-gray-300 leading-relaxed mb-4">{selectedProject.description}</p>
+          <p className="text-sm text-gray-600 leading-relaxed mb-4">{selectedProject.description}</p>
           <div className="p-3 rounded-lg mb-4" style={{ background: '#10B98110', border: '1px solid #10B98130' }}>
             <p className="text-xs text-gray-500 font-mono uppercase mb-1">Potential i Wavult-stacken</p>
-            <p className="text-xs text-gray-300">{selectedProject.potential}</p>
+            <p className="text-xs text-gray-600">{selectedProject.potential}</p>
           </div>
           <div className="flex flex-wrap gap-1.5">
             {selectedProject.tags.map(tag => (
@@ -120,7 +120,7 @@ function ProjectCard({ project, onClick, selected }: {
       style={{ borderColor: selected ? '#8B5CF640' : 'rgba(255,255,255,0.06)' }}
     >
       <div className="flex items-start justify-between gap-2 mb-2">
-        <p className="text-sm font-semibold text-white leading-tight">{project.title}</p>
+        <p className="text-sm font-semibold text-gray-900 leading-tight">{project.title}</p>
         <span
           className="text-[9px] font-mono px-1.5 py-0.5 rounded-full flex-shrink-0"
           style={{ background: status.bg, color: status.color, border: `1px solid ${status.color}30` }}
@@ -129,7 +129,7 @@ function ProjectCard({ project, onClick, selected }: {
         </span>
       </div>
       <p className="text-xs text-gray-500 mb-2">{project.domain} · {project.pages} sidor</p>
-      <p className="text-xs text-gray-400 leading-relaxed line-clamp-2">{project.description}</p>
+      <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{project.description}</p>
     </div>
   )
 }

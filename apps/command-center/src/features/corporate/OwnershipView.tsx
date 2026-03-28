@@ -101,7 +101,7 @@ function NodeCard({ node, depth = 0 }: { node: OwnerNode; depth?: number }) {
             <div>
               <div className="flex items-center gap-2 mb-0.5">
                 <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: node.color }} />
-                <span className="text-[15px] font-semibold text-white">{node.name}</span>
+                <span className="text-[15px] font-semibold text-gray-900">{node.name}</span>
                 <span
                   className={`text-[9px] font-medium px-2 py-0.5 rounded-full border ${
                     node.status === 'aktiv'
@@ -127,7 +127,7 @@ function NodeCard({ node, depth = 0 }: { node: OwnerNode; depth?: number }) {
                   {node.ownership}
                 </div>
               )}
-              <div className="text-xs text-gray-600 font-mono">
+              <div className="text-xs text-gray-500 font-mono">
                 Grundat {new Date(node.founded).toLocaleDateString('sv-SE', { year: 'numeric', month: 'short' })}
               </div>
             </div>
@@ -149,7 +149,7 @@ function NodeCard({ node, depth = 0 }: { node: OwnerNode; depth?: number }) {
                   {/* Connector */}
                   <div className="flex flex-col items-end flex-shrink-0" style={{ width: 16 }}>
                     <div
-                      className="border-l border-b border-white/[0.1] rounded-bl"
+                      className="border-l border-b border-gray-200 rounded-bl"
                       style={{ width: 16, height: 28, borderBottomLeftRadius: 4 }}
                     />
                     {i < node.children!.length - 1 && (
@@ -186,9 +186,9 @@ function StatsGrid() {
           className="rounded-xl p-3 border"
           style={{ borderColor: c.color + '30', background: c.color + '08' }}
         >
-          <div className="text-sm font-semibold text-white mb-0.5">{c.shortName}</div>
+          <div className="text-sm font-semibold text-gray-900 mb-0.5">{c.shortName}</div>
           <div className="text-xs text-gray-500 font-mono">{c.orgNr}</div>
-          <div className="text-xs text-gray-600 mt-1">{c.jurisdiction}</div>
+          <div className="text-xs text-gray-500 mt-1">{c.jurisdiction}</div>
           <div className="mt-2 flex items-center gap-1">
             <span className={`h-1.5 w-1.5 rounded-full ${c.status === 'aktiv' ? 'bg-green-400' : 'bg-yellow-400'}`} />
             <span className="text-xs text-gray-500">{c.status}</span>
@@ -206,8 +206,8 @@ export function OwnershipView() {
       <StatsGrid />
 
       {/* Ownership tree */}
-      <div className="rounded-xl border border-white/[0.06] bg-white/[0.01] p-5">
-        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-5">Ägarstruktur</h3>
+      <div className="rounded-xl border border-gray-200 bg-white/[0.01] p-5">
+        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-5">Ägarstruktur</h3>
         <OwnershipTree />
       </div>
 
@@ -225,7 +225,7 @@ export function OwnershipView() {
           <div className="w-4 h-px bg-white/[0.2]" />
           <span>Ägarrelation</span>
         </div>
-        <span className="text-gray-600">·</span>
+        <span className="text-gray-500">·</span>
         <span>Procent = ägarandel i dotterbolaget</span>
       </div>
     </div>

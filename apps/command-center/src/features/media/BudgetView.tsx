@@ -24,10 +24,10 @@ function CampaignBudgetPanel({ campaign }: { campaign: Campaign }) {
   )
 
   return (
-    <div className="bg-[#0D0F1A] border border-white/10 rounded-xl p-5 space-y-4">
+    <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-white">{campaign.name}</h3>
+          <h3 className="text-sm font-semibold text-gray-900">{campaign.name}</h3>
           <p className="text-xs text-gray-500 mt-0.5">
             Totalt: {campaign.budget_total.toLocaleString()} {campaign.currency}
             &nbsp;·&nbsp;Spenderat: 0
@@ -35,7 +35,7 @@ function CampaignBudgetPanel({ campaign }: { campaign: Campaign }) {
         </div>
         <div className="text-right">
           <div className="text-xs text-gray-500">ROI</div>
-          <div className="text-sm font-mono text-gray-600">—</div>
+          <div className="text-sm font-mono text-gray-500">—</div>
         </div>
       </div>
 
@@ -47,7 +47,7 @@ function CampaignBudgetPanel({ campaign }: { campaign: Campaign }) {
           const ch = MOCK_CHANNELS.find(c => c.id === alloc.channel_id)
           return (
             <div key={alloc.id} className="flex items-center gap-3 py-2 border-b border-white/5 last:border-0">
-              <span className="text-xs text-gray-300 w-32 flex-shrink-0">{ch?.provider ?? alloc.channel_id}</span>
+              <span className="text-xs text-gray-600 w-32 flex-shrink-0">{ch?.provider ?? alloc.channel_id}</span>
               <div className="flex-1">
                 <BudgetBar value={alloc.total_spent} max={alloc.daily_budget || 1} />
               </div>
@@ -55,9 +55,9 @@ function CampaignBudgetPanel({ campaign }: { campaign: Campaign }) {
                 type="number"
                 value={dailyBudgets[alloc.id] ?? '0'}
                 onChange={e => setDailyBudgets({ ...dailyBudgets, [alloc.id]: e.target.value })}
-                className="w-20 bg-[#070912] border border-white/10 rounded px-2 py-1 text-xs text-white font-mono text-right focus:outline-none focus:border-brand-accent/30"
+                className="w-20 bg-[#070912] border border-gray-200 rounded px-2 py-1 text-xs text-gray-900 font-mono text-right focus:outline-none focus:border-brand-accent/30"
               />
-              <span className="text-xs text-gray-600 w-10">{campaign.currency}/d</span>
+              <span className="text-xs text-gray-500 w-10">{campaign.currency}/d</span>
             </div>
           )
         })}
@@ -65,10 +65,10 @@ function CampaignBudgetPanel({ campaign }: { campaign: Campaign }) {
 
       <div className="flex items-center justify-between pt-1">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-4 rounded-full bg-gray-700 flex items-center px-0.5 cursor-not-allowed" title="Aktiveras i Fas 3">
+          <div className="w-8 h-4 rounded-full bg-gray-100 flex items-center px-0.5 cursor-not-allowed" title="Aktiveras i Fas 3">
             <div className="w-3 h-3 rounded-full bg-gray-500" />
           </div>
-          <span className="text-xs text-gray-600">Auto-optimize — Fas 3</span>
+          <span className="text-xs text-gray-500">Auto-optimize — Fas 3</span>
         </div>
         <button className="text-xs text-brand-accent/60 hover:text-brand-accent transition-colors cursor-default" disabled>
           Spara allokering
@@ -82,7 +82,7 @@ export function BudgetView() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-white font-semibold">Budgethantering</h2>
+        <h2 className="text-gray-900 font-semibold">Budgethantering</h2>
         <p className="text-xs text-gray-500 mt-0.5">Manuell allokering per kampanj och kanal</p>
       </div>
 
@@ -92,7 +92,7 @@ export function BudgetView() {
         ))}
       </div>
 
-      <div className="rounded-lg bg-gray-900/50 border border-white/10 px-4 py-3 text-xs text-gray-500">
+      <div className="rounded-lg bg-white/50 border border-gray-200 px-4 py-3 text-xs text-gray-500">
         ⚙️ Auto-optimering och AI-budgetjustering aktiveras i Fas 3 (Q3 2026).
       </div>
     </div>

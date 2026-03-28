@@ -170,23 +170,23 @@ export function WebhookLog() {
 
       {/* Stats */}
       <div className="flex items-center gap-3 flex-wrap">
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0D0F1A] border border-white/[0.06] text-xs">
-          <span className="text-gray-400">Total:</span>
-          <span className="text-white font-medium">{MOCK_WEBHOOKS.length}</span>
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-xs">
+          <span className="text-gray-500">Total:</span>
+          <span className="text-gray-900 font-medium">{MOCK_WEBHOOKS.length}</span>
         </div>
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-green-500/10 border border-green-500/20 text-xs">
-          <span className="text-gray-400">Lyckade:</span>
+          <span className="text-gray-500">Lyckade:</span>
           <span className="text-green-400 font-medium">{MOCK_WEBHOOKS.filter(w => w.status === 200).length}</span>
         </div>
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20 text-xs">
-          <span className="text-gray-400">Fel:</span>
+          <span className="text-gray-500">Fel:</span>
           <span className="text-red-400 font-medium">{MOCK_WEBHOOKS.filter(w => w.status >= 400).length}</span>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0D0F1A] border border-white/[0.06] text-xs">
-          <span className="text-gray-400">Success rate:</span>
-          <span className="text-white font-medium">{successRate}%</span>
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-xs">
+          <span className="text-gray-500">Success rate:</span>
+          <span className="text-gray-900 font-medium">{successRate}%</span>
         </div>
-        <div className="ml-auto flex items-center gap-1 p-0.5 bg-[#0D0F1A] rounded-lg border border-white/[0.06]">
+        <div className="ml-auto flex items-center gap-1 p-0.5 bg-white rounded-lg border border-gray-200">
           {sources.map(s => (
             <button
               key={s}
@@ -194,7 +194,7 @@ export function WebhookLog() {
               className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
                 sourceFilter === s
                   ? 'bg-brand-accent/20 text-brand-accent'
-                  : 'text-gray-500 hover:text-gray-300'
+                  : 'text-gray-500 hover:text-gray-600'
               }`}
             >
               {s === 'all' ? 'Alla' : s}
@@ -204,9 +204,9 @@ export function WebhookLog() {
       </div>
 
       {/* Table */}
-      <div className="bg-[#0D0F1A] rounded-xl border border-white/[0.06] overflow-hidden">
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         {/* Header */}
-        <div className="grid grid-cols-[1fr_1.5fr_140px_90px_60px] gap-3 px-4 py-2.5 border-b border-white/[0.06] text-xs text-gray-600 font-mono uppercase tracking-wider">
+        <div className="grid grid-cols-[1fr_1.5fr_140px_90px_60px] gap-3 px-4 py-2.5 border-b border-gray-200 text-xs text-gray-500 font-mono uppercase tracking-wider">
           <span>Källa</span>
           <span>Typ</span>
           <span>Tidsstämpel</span>
@@ -214,7 +214,7 @@ export function WebhookLog() {
           <span>ms</span>
         </div>
 
-        <div className="divide-y divide-white/[0.04]">
+        <div className="divide-y divide-gray-100">
           {filtered.map(wh => {
             const sc = STATUS_CONFIG[wh.status]
             const isExpanded = expanded === wh.id
@@ -224,24 +224,24 @@ export function WebhookLog() {
                   onClick={() => setExpanded(isExpanded ? null : wh.id)}
                   className="w-full grid grid-cols-[1fr_1.5fr_140px_90px_60px] gap-3 px-4 py-3 text-left hover:bg-white/[0.02] transition-colors"
                 >
-                  <span className="text-xs text-gray-300 font-medium">{wh.source}</span>
+                  <span className="text-xs text-gray-600 font-medium">{wh.source}</span>
                   <span className="text-xs text-gray-500 font-mono truncate">{wh.type}</span>
-                  <span className="text-xs text-gray-600 font-mono">
+                  <span className="text-xs text-gray-500 font-mono">
                     {new Date(wh.timestamp).toLocaleString('sv-SE', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                   </span>
                   <span className={`text-xs font-bold px-1.5 py-0.5 rounded-full border text-center ${sc.bg} ${sc.color}`}>
                     {sc.label}
                   </span>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-600 font-mono">{wh.duration_ms}</span>
-                    <span className={`text-gray-600 text-xs transition-transform ${isExpanded ? 'rotate-90' : ''}`}>›</span>
+                    <span className="text-xs text-gray-500 font-mono">{wh.duration_ms}</span>
+                    <span className={`text-gray-500 text-xs transition-transform ${isExpanded ? 'rotate-90' : ''}`}>›</span>
                   </div>
                 </button>
                 {isExpanded && (
                   <div className="px-4 pb-4">
-                    <div className="bg-[#07080F] rounded-lg p-3 border border-white/[0.06]">
-                      <div className="text-xs text-gray-600 font-mono uppercase tracking-wider mb-2">Payload</div>
-                      <pre className="text-xs text-gray-400 font-mono overflow-x-auto leading-relaxed whitespace-pre-wrap">
+                    <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                      <div className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-2">Payload</div>
+                      <pre className="text-xs text-gray-500 font-mono overflow-x-auto leading-relaxed whitespace-pre-wrap">
                         {JSON.stringify(wh.payload, null, 2)}
                       </pre>
                     </div>

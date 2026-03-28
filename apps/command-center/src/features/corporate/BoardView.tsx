@@ -21,12 +21,12 @@ function MeetingDetail({ meeting, onClose }: { meeting: BoardMeeting; onClose: (
   const company = COMPANIES.find(c => c.id === meeting.companyId)!
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-      <div className="bg-[#0D0F1A] border border-white/[0.08] rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <div className="px-6 py-4 border-b border-white/[0.06] flex items-start justify-between gap-4">
+      <div className="bg-white border border-gray-200 rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="px-6 py-4 border-b border-gray-200 flex items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-lg">{TYPE_ICONS[meeting.type]}</span>
-              <h2 className="text-[15px] font-bold text-white capitalize">{meeting.type}</h2>
+              <h2 className="text-[15px] font-bold text-gray-900 capitalize">{meeting.type}</h2>
               <span className={`text-xs font-medium px-2 py-0.5 rounded border capitalize ${STATUS_STYLES[meeting.status]}`}>
                 {meeting.status}
               </span>
@@ -38,15 +38,15 @@ function MeetingDetail({ meeting, onClose }: { meeting: BoardMeeting; onClose: (
               <span>{formatDate(meeting.date)}</span>
             </div>
           </div>
-          <button onClick={onClose} className="text-gray-600 hover:text-white text-xl leading-none mt-0.5">×</button>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-900 text-xl leading-none mt-0.5">×</button>
         </div>
         <div className="p-6 space-y-5">
           <div>
             <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Dagordning</h3>
             <ul className="space-y-1.5">
               {meeting.agenda.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-300">
-                  <span className="text-gray-600 font-mono mt-0.5 flex-shrink-0">{i + 1}.</span>
+                <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                  <span className="text-gray-500 font-mono mt-0.5 flex-shrink-0">{i + 1}.</span>
                   {item}
                 </li>
               ))}
@@ -57,7 +57,7 @@ function MeetingDetail({ meeting, onClose }: { meeting: BoardMeeting; onClose: (
               <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Beslut</h3>
               <ul className="space-y-2">
                 {meeting.decisions.map((dec, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-gray-200">
+                  <li key={i} className="flex items-start gap-2 text-sm text-gray-800">
                     <span className="text-green-400 mt-0.5 flex-shrink-0">✓</span>
                     {dec}
                   </li>
@@ -70,7 +70,7 @@ function MeetingDetail({ meeting, onClose }: { meeting: BoardMeeting; onClose: (
               <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Deltagare</h3>
               <ul className="space-y-1">
                 {meeting.attendees.map(a => (
-                  <li key={a} className="text-xs text-gray-300 flex items-center gap-1.5">
+                  <li key={a} className="text-xs text-gray-600 flex items-center gap-1.5">
                     <span className="h-1.5 w-1.5 rounded-full bg-gray-600" />
                     {a}
                     {a === meeting.chairperson && <span className="text-[9px] text-yellow-400/80 font-mono ml-1">ordf.</span>}
@@ -81,9 +81,9 @@ function MeetingDetail({ meeting, onClose }: { meeting: BoardMeeting; onClose: (
             </div>
             <div>
               <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Info</h3>
-              <div className="space-y-1 text-xs text-gray-400">
-                <div><span className="text-gray-600">Ordförande:</span> {meeting.chairperson}</div>
-                {meeting.minutesTaker && <div><span className="text-gray-600">Sekreterare:</span> {meeting.minutesTaker}</div>}
+              <div className="space-y-1 text-xs text-gray-500">
+                <div><span className="text-gray-500">Ordförande:</span> {meeting.chairperson}</div>
+                {meeting.minutesTaker && <div><span className="text-gray-500">Sekreterare:</span> {meeting.minutesTaker}</div>}
               </div>
             </div>
           </div>
@@ -134,17 +134,17 @@ export function BoardView() {
           { label: 'Planerade', value: counts.planerat, color: 'bg-blue-400' },
           { label: 'Protokoll klart', value: counts.klar, color: 'bg-green-400' },
         ].map(s => (
-          <div key={s.label} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/[0.06] text-xs">
+          <div key={s.label} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-gray-200 text-xs">
             <span className={`h-1.5 w-1.5 rounded-full ${s.color}`} />
             <span className="text-gray-500">{s.label}:</span>
-            <span className="text-white font-semibold">{s.value}</span>
+            <span className="text-gray-900 font-semibold">{s.value}</span>
           </div>
         ))}
         <div className="ml-auto flex items-center gap-2">
           <select
             value={filterCompany}
             onChange={e => setFilterCompany(e.target.value as CompanyId | 'all')}
-            className="text-xs bg-[#0D0F1A] border border-white/[0.08] rounded-lg px-2.5 py-1.5 text-gray-400 focus:outline-none"
+            className="text-xs bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 text-gray-500 focus:outline-none"
           >
             <option value="all">Alla bolag</option>
             {COMPANIES.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -159,11 +159,11 @@ export function BoardView() {
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-white/[0.06] overflow-hidden">
+      <div className="rounded-xl border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
         <table className="w-full text-xs min-w-[560px]">
           <thead>
-            <tr className="border-b border-white/[0.06] bg-white/[0.02]">
+            <tr className="border-b border-gray-200 bg-white/[0.02]">
               <th className="text-left px-4 py-2.5 text-gray-500 font-medium">Datum</th>
               <th className="text-left px-4 py-2.5 text-gray-500 font-medium">Bolag</th>
               <th className="text-left px-4 py-2.5 text-gray-500 font-medium">Typ</th>
@@ -178,17 +178,17 @@ export function BoardView() {
               return (
                 <tr
                   key={m.id}
-                  className={`border-b border-white/[0.04] cursor-pointer hover:bg-white/[0.03] transition-colors ${i % 2 === 0 ? '' : 'bg-white/[0.01]'}`}
+                  className={`border-b border-gray-100 cursor-pointer hover:bg-white/[0.03] transition-colors ${i % 2 === 0 ? '' : 'bg-white/[0.01]'}`}
                   onClick={() => setSelected(m)}
                 >
-                  <td className="px-4 py-3 text-gray-400 whitespace-nowrap">{formatDate(m.date)}</td>
+                  <td className="px-4 py-3 text-gray-500 whitespace-nowrap">{formatDate(m.date)}</td>
                   <td className="px-4 py-3">
                     <span className="flex items-center gap-1.5">
                       <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: company.color }} />
                       <span style={{ color: company.color }}>{company.shortName}</span>
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-300">
+                  <td className="px-4 py-3 text-gray-600">
                     <span className="flex items-center gap-1.5">
                       <span>{TYPE_ICONS[m.type]}</span>
                       <span className="capitalize">{m.type}</span>
@@ -202,7 +202,7 @@ export function BoardView() {
                       {m.status}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-600 text-right">→</td>
+                  <td className="px-4 py-3 text-gray-500 text-right">→</td>
                 </tr>
               )
             })}
@@ -217,10 +217,10 @@ export function BoardView() {
       {/* New decision form */}
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div className="bg-[#0D0F1A] border border-white/[0.08] rounded-xl w-full max-w-lg">
-            <div className="px-5 py-4 border-b border-white/[0.06] flex items-center justify-between">
-              <h2 className="text-[14px] font-semibold text-white">Skapa nytt beslut</h2>
-              <button onClick={() => setShowForm(false)} className="text-gray-600 hover:text-white text-xl">×</button>
+          <div className="bg-white border border-gray-200 rounded-xl w-full max-w-lg">
+            <div className="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
+              <h2 className="text-[14px] font-semibold text-gray-900">Skapa nytt beslut</h2>
+              <button onClick={() => setShowForm(false)} className="text-gray-500 hover:text-gray-900 text-xl">×</button>
             </div>
             <div className="p-5 space-y-4">
               <div className="grid grid-cols-2 gap-3">
@@ -229,7 +229,7 @@ export function BoardView() {
                   <select
                     value={form.companyId}
                     onChange={e => setForm(f => ({ ...f, companyId: e.target.value as CompanyId }))}
-                    className="w-full text-xs bg-[#07080F] border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-brand-accent/50"
+                    className="w-full text-xs bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-brand-accent/50"
                   >
                     {COMPANIES.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
@@ -239,7 +239,7 @@ export function BoardView() {
                   <select
                     value={form.type}
                     onChange={e => setForm(f => ({ ...f, type: e.target.value as MeetingType }))}
-                    className="w-full text-xs bg-[#07080F] border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-brand-accent/50"
+                    className="w-full text-xs bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-brand-accent/50"
                   >
                     <option value="styrelsemöte">Styrelsemöte</option>
                     <option value="extra styrelsemöte">Extra styrelsemöte</option>
@@ -253,7 +253,7 @@ export function BoardView() {
                   type="date"
                   value={form.date}
                   onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                  className="w-full text-xs bg-[#07080F] border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-brand-accent/50"
+                  className="w-full text-xs bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-brand-accent/50"
                 />
               </div>
               <div>
@@ -263,7 +263,7 @@ export function BoardView() {
                   value={form.agenda}
                   onChange={e => setForm(f => ({ ...f, agenda: e.target.value }))}
                   placeholder="Godkännande av budget&#10;Rekrytering av CTO"
-                  className="w-full text-xs bg-[#07080F] border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-brand-accent/50 resize-none"
+                  className="w-full text-xs bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-brand-accent/50 resize-none"
                 />
               </div>
               <div>
@@ -273,12 +273,12 @@ export function BoardView() {
                   value={form.decisions}
                   onChange={e => setForm(f => ({ ...f, decisions: e.target.value }))}
                   placeholder="Budget om X kr godkänd.&#10;CTO-rekrytering inleds."
-                  className="w-full text-xs bg-[#07080F] border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-brand-accent/50 resize-none"
+                  className="w-full text-xs bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:outline-none focus:border-brand-accent/50 resize-none"
                 />
               </div>
             </div>
-            <div className="px-5 py-4 border-t border-white/[0.06] flex justify-end gap-2">
-              <button onClick={() => { setShowForm(false); setForm(EMPTY_FORM) }} className="px-4 py-2 text-xs text-gray-400 hover:text-white transition-colors">Avbryt</button>
+            <div className="px-5 py-4 border-t border-gray-200 flex justify-end gap-2">
+              <button onClick={() => { setShowForm(false); setForm(EMPTY_FORM) }} className="px-4 py-2 text-xs text-gray-500 hover:text-gray-900 transition-colors">Avbryt</button>
               <button
                 onClick={() => { setShowForm(false); setForm(EMPTY_FORM) }}
                 className="px-4 py-2 text-xs bg-brand-accent/15 border border-brand-accent/30 text-brand-accent rounded-lg hover:bg-brand-accent/25 transition-colors"

@@ -134,13 +134,13 @@ export function SubmissionsView() {
     return (
       <div className="space-y-6 max-w-6xl">
         <div>
-          <h1 className="text-2xl font-bold text-white">Submissions</h1>
-          <p className="text-gray-400 text-sm mt-0.5">quiXzoom uppdragsinlämningar — godkänn och betala ut</p>
+          <h1 className="text-2xl font-bold text-gray-900">Submissions</h1>
+          <p className="text-gray-500 text-sm mt-0.5">quiXzoom uppdragsinlämningar — godkänn och betala ut</p>
         </div>
-        <div className="text-center py-20 text-gray-600">
+        <div className="text-center py-20 text-gray-500">
           <p className="text-5xl mb-4">📭</p>
-          <p className="text-base font-medium text-gray-400 mb-2">No submissions for {activeEntity.name}</p>
-          <p className="text-sm text-gray-600">Submissions are quiXzoom data only.<br />Switch to quiXzoom or root to view.</p>
+          <p className="text-base font-medium text-gray-500 mb-2">No submissions for {activeEntity.name}</p>
+          <p className="text-sm text-gray-500">Submissions are quiXzoom data only.<br />Switch to quiXzoom or root to view.</p>
           <div
             className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium"
             style={{
@@ -161,12 +161,12 @@ export function SubmissionsView() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Submissions</h1>
-          <p className="text-gray-400 text-sm mt-0.5">quiXzoom uppdragsinlämningar — godkänn och betala ut</p>
+          <h1 className="text-2xl font-bold text-gray-900">Submissions</h1>
+          <p className="text-gray-500 text-sm mt-0.5">quiXzoom uppdragsinlämningar — godkänn och betala ut</p>
         </div>
         <button
           onClick={loadSubmissions}
-          className="text-xs text-gray-500 hover:text-white px-3 py-1.5 border border-white/[0.08] rounded-lg transition-colors"
+          className="text-xs text-gray-500 hover:text-gray-900 px-3 py-1.5 border border-gray-200 rounded-lg transition-colors"
         >
           ↻ Uppdatera
         </button>
@@ -207,9 +207,9 @@ export function SubmissionsView() {
       {error && <p className="text-red-400 text-sm">{error}</p>}
 
       {!loading && !error && submissions.length === 0 && (
-        <div className="text-center py-16 text-gray-600">
+        <div className="text-center py-16 text-gray-500">
           <p className="text-4xl mb-3">📭</p>
-          <p className="text-sm">Inga inlämningar med status <span className="text-gray-400">"{filterStatus}"</span></p>
+          <p className="text-sm">Inga inlämningar med status <span className="text-gray-500">"{filterStatus}"</span></p>
         </div>
       )}
 
@@ -240,19 +240,19 @@ export function SubmissionsView() {
                     </span>
                     {sub.ai_score != null && (
                       <span className="text-xs text-gray-500 font-mono">
-                        AI score: <span className="text-white">{(sub.ai_score * 100).toFixed(0)}%</span>
+                        AI score: <span className="text-gray-900">{(sub.ai_score * 100).toFixed(0)}%</span>
                       </span>
                     )}
-                    <span className="text-xs text-gray-600 font-mono">{imgCount} bilder</span>
+                    <span className="text-xs text-gray-500 font-mono">{imgCount} bilder</span>
                   </div>
 
-                  <p className="text-sm font-semibold text-white truncate">
+                  <p className="text-sm font-semibold text-gray-900 truncate">
                     {sub.missions?.title ?? `Uppdrag ${sub.mission_id.slice(0,8)}`}
                   </p>
                   <p className="text-xs text-gray-500 mt-0.5">
                     {sub.profiles?.full_name ?? 'Okänd zoomer'} · {sub.profiles?.email ?? ''}
                   </p>
-                  <p className="text-xs text-gray-700 font-mono mt-1">
+                  <p className="text-xs text-gray-600 font-mono mt-1">
                     {new Date(sub.submitted_at).toLocaleString('sv-SE')}
                   </p>
                 </div>
@@ -265,12 +265,12 @@ export function SubmissionsView() {
                         type="number"
                         value={payout}
                         onChange={e => setPayoutInputs(p => ({ ...p, [sub.id]: e.target.value }))}
-                        className="w-20 bg-[#070709] border border-white/[0.08] rounded-lg px-2 py-1.5 text-xs text-white text-right focus:outline-none focus:border-emerald-500/50"
+                        className="w-20 bg-[#070709] border border-gray-200 rounded-lg px-2 py-1.5 text-xs text-gray-900 text-right focus:outline-none focus:border-emerald-500/50"
                         placeholder="SEK"
                         min="0"
                         step="1"
                       />
-                      <span className="text-xs text-gray-600">SEK</span>
+                      <span className="text-xs text-gray-500">SEK</span>
                     </div>
                     <button
                       onClick={() => handleApprove(sub)}
@@ -294,7 +294,7 @@ export function SubmissionsView() {
                 {sub.status === 'approved' && (
                   <div className="text-right flex-shrink-0">
                     <p className="text-emerald-400 font-bold text-sm">+{sub.payout_amount ?? 0} SEK</p>
-                    <p className="text-xs text-gray-600 font-mono mt-0.5">
+                    <p className="text-xs text-gray-500 font-mono mt-0.5">
                       {sub.approved_at ? new Date(sub.approved_at).toLocaleString('sv-SE') : ''}
                     </p>
                   </div>
@@ -309,11 +309,11 @@ export function SubmissionsView() {
                       key={i}
                       src={url}
                       alt=""
-                      className="h-16 w-24 object-cover rounded-lg border border-white/[0.06] flex-shrink-0"
+                      className="h-16 w-24 object-cover rounded-lg border border-gray-200 flex-shrink-0"
                     />
                   ))}
                   {imgCount > 6 && (
-                    <div className="h-16 w-24 rounded-lg border border-white/[0.06] bg-white/[0.04] flex items-center justify-center text-xs text-gray-500 flex-shrink-0">
+                    <div className="h-16 w-24 rounded-lg border border-gray-200 bg-white/[0.04] flex items-center justify-center text-xs text-gray-500 flex-shrink-0">
                       +{imgCount - 6}
                     </div>
                   )}

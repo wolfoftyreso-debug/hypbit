@@ -55,8 +55,8 @@ function SimpleCalendar({ month, year, employees }: { month: number; year: numbe
 
   return (
     <div className="bg-surface-raised border border-surface-border rounded-xl p-4">
-      <div className="text-xs font-semibold text-white mb-3">{MONTH_NAMES_LONG[month]} {year}</div>
-      <div className="grid grid-cols-7 gap-px text-center text-xs text-gray-600 mb-1">
+      <div className="text-xs font-semibold text-gray-900 mb-3">{MONTH_NAMES_LONG[month]} {year}</div>
+      <div className="grid grid-cols-7 gap-px text-center text-xs text-gray-500 mb-1">
         {['Mån','Tis','Ons','Tor','Fre','Lör','Sön'].map(d => <div key={d}>{d}</div>)}
       </div>
       <div className="grid grid-cols-7 gap-px">
@@ -70,7 +70,7 @@ function SimpleCalendar({ month, year, employees }: { month: number; year: numbe
               key={i}
               title={isHoliday ? SWEDISH_HOLIDAYS_2026.find(h => new Date(h.date).getDate() === day && new Date(h.date).getMonth() === month)?.name : undefined}
               className={`relative flex flex-col items-center justify-start py-1 rounded text-xs min-h-[28px] ${
-                isHoliday ? 'text-red-400' : isToday ? 'font-bold text-purple-300' : 'text-gray-400'
+                isHoliday ? 'text-red-400' : isToday ? 'font-bold text-purple-300' : 'text-gray-500'
               } ${isToday ? 'ring-1 ring-purple-500/60 bg-purple-500/10' : ''}`}
             >
               <span>{day}</span>
@@ -109,14 +109,14 @@ export function LeaveView() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-sm font-semibold text-white">Semester & Ledighet</h2>
+        <h2 className="text-sm font-semibold text-gray-900">Semester & Ledighet</h2>
         <p className="text-xs text-gray-500 mt-0.5">25 semesterdagar/år (semesterlagen) · Röda dagar markerade i rött</p>
       </div>
 
       {/* Per-person leave overview */}
       <div className="bg-surface-raised border border-surface-border rounded-xl overflow-hidden">
         <div className="px-5 py-4 border-b border-surface-border">
-          <h3 className="text-sm font-semibold text-white">Semesteröversikt 2026</h3>
+          <h3 className="text-sm font-semibold text-gray-900">Semesteröversikt 2026</h3>
           <div className="flex gap-4 mt-2">
             <div className="flex items-center gap-1.5 text-xs text-gray-500">
               <div className="h-2 w-4 rounded-full bg-amber-400" />
@@ -152,26 +152,26 @@ export function LeaveView() {
                       {emp.initials}
                     </div>
                     <div>
-                      <div className="text-xs font-medium text-white">{emp.name}</div>
+                      <div className="text-xs font-medium text-gray-900">{emp.name}</div>
                       <div className="text-xs text-gray-500">{emp.role}</div>
                     </div>
                   </div>
                   <div className="flex gap-4 text-right">
                     <div>
                       <div className="text-xs font-semibold text-amber-400">{used}</div>
-                      <div className="text-xs text-gray-600">uttaget</div>
+                      <div className="text-xs text-gray-500">uttaget</div>
                     </div>
                     <div>
                       <div className="text-xs font-semibold text-blue-400">{planned}</div>
-                      <div className="text-xs text-gray-600">planerat</div>
+                      <div className="text-xs text-gray-500">planerat</div>
                     </div>
                     <div>
                       <div className="text-xs font-semibold text-green-400">{remaining}</div>
-                      <div className="text-xs text-gray-600">kvar</div>
+                      <div className="text-xs text-gray-500">kvar</div>
                     </div>
                     <div>
-                      <div className="text-xs font-semibold text-gray-300">{entitled}</div>
-                      <div className="text-xs text-gray-600">totalt</div>
+                      <div className="text-xs font-semibold text-gray-600">{entitled}</div>
+                      <div className="text-xs text-gray-500">totalt</div>
                     </div>
                   </div>
                 </div>
@@ -208,7 +208,7 @@ export function LeaveView() {
 
       {/* Swedish holidays */}
       <div className="bg-surface-raised border border-surface-border rounded-xl px-5 py-5">
-        <h3 className="text-sm font-semibold text-white mb-4">Röda dagar 2026</h3>
+        <h3 className="text-sm font-semibold text-gray-900 mb-4">Röda dagar 2026</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           {SWEDISH_HOLIDAYS_2026.map(h => {
             const d = new Date(h.date)
@@ -218,7 +218,7 @@ export function LeaveView() {
                 <span className="text-red-400 font-mono text-xs w-20 flex-shrink-0">
                   {h.date.slice(5)}
                 </span>
-                <span className="text-gray-300">{h.name}</span>
+                <span className="text-gray-600">{h.name}</span>
               </div>
             )
           })}

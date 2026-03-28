@@ -124,7 +124,7 @@ function UptimeGraph({ points }: { points: { hour: number; value: number }[] }) 
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-xs font-mono text-gray-600 uppercase tracking-widest mb-3">
+    <h2 className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-3">
       {children}
     </h2>
   )
@@ -221,14 +221,14 @@ function LiveActivityFeed() {
               {evt.initials}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-gray-200">
+              <p className="text-xs text-gray-800">
                 <span className="font-semibold" style={{ color: evt.color }}>{evt.actor}</span>
                 {' '}{evt.action}{' '}
-                <span className="text-gray-400">{evt.target}</span>
+                <span className="text-gray-500">{evt.target}</span>
               </p>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
-              <span className="text-[9px] text-gray-600 font-mono tabular-nums">{formatMs(evt.age)}</span>
+              <span className="text-[9px] text-gray-500 font-mono tabular-nums">{formatMs(evt.age)}</span>
               <span className="text-xs">{CAT_ICON[evt.category]}</span>
             </div>
           </div>
@@ -267,7 +267,7 @@ function TalentRadarWidget() {
         </div>
         <button
           onClick={() => setExpanded(e => !e)}
-          className="text-xs text-gray-500 hover:text-gray-300 transition-colors mb-3"
+          className="text-xs text-gray-500 hover:text-gray-600 transition-colors mb-3"
         >
           {expanded ? 'Dölj' : 'Visa detaljer'}
         </button>
@@ -275,15 +275,15 @@ function TalentRadarWidget() {
 
       {/* Summary always visible */}
       <div className="bg-surface-raised border border-surface-border rounded-xl p-5 mb-3">
-        <p className="text-sm text-gray-300 mb-4">
-          Varsam rekrytering av <span className="text-white font-semibold">OpenClaw/AI-agent-nördar</span> — folk som faktiskt bygger, inte pratar om att bygga. Skapa relation INNAN rekrytering.
+        <p className="text-sm text-gray-600 mb-4">
+          Varsam rekrytering av <span className="text-gray-900 font-semibold">OpenClaw/AI-agent-nördar</span> — folk som faktiskt bygger, inte pratar om att bygga. Skapa relation INNAN rekrytering.
         </p>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <p className="text-xs text-gray-500 font-mono uppercase mb-2">Måste ha</p>
             <div className="space-y-1">
               {TALENT_MUST.map(t => (
-                <div key={t} className="flex items-center gap-2 text-xs text-gray-300">
+                <div key={t} className="flex items-center gap-2 text-xs text-gray-600">
                   <span style={{ color: '#34C759' }}>✓</span> {t}
                 </div>
               ))}
@@ -293,7 +293,7 @@ function TalentRadarWidget() {
             <p className="text-xs text-gray-500 font-mono uppercase mb-2">Röda flaggor</p>
             <div className="space-y-1">
               {TALENT_RED.map(t => (
-                <div key={t} className="flex items-center gap-2 text-xs text-gray-400">
+                <div key={t} className="flex items-center gap-2 text-xs text-gray-500">
                   <span style={{ color: '#EF4444' }}>✗</span> {t}
                 </div>
               ))}
@@ -318,7 +318,7 @@ function TalentRadarWidget() {
                 {ch.label.slice(0, 2).toUpperCase()}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-white">{ch.label}</p>
+                <p className="text-sm font-medium text-gray-900">{ch.label}</p>
                 <p className="text-xs text-gray-500 truncate">{ch.sub}</p>
               </div>
               <span
@@ -333,7 +333,7 @@ function TalentRadarWidget() {
             <p className="text-xs text-gray-500 font-mono uppercase mb-1.5">Bonus-profil</p>
             <div className="flex flex-wrap gap-2">
               {TALENT_BONUS.map(b => (
-                <span key={b} className="text-xs text-gray-400 px-2 py-0.5 rounded-full"
+                <span key={b} className="text-xs text-gray-500 px-2 py-0.5 rounded-full"
                   style={{ background: '#F59E0B10', border: '1px solid #F59E0B20' }}>
                   ⭐ {b}
                 </span>
@@ -358,8 +358,8 @@ export function CommandDashboard() {
     <div className="space-y-8 animate-fade-in max-w-6xl">
       {/* Header */}
       <div>
-        <h1 className="text-sm font-semibold text-white">Command Center</h1>
-        <p className="text-sm text-gray-300 mt-1">Wavult Group — Operationellt kontrollcenter</p>
+        <h1 className="text-sm font-semibold text-gray-900">Command Center</h1>
+        <p className="text-sm text-gray-600 mt-1">Wavult Group — Operationellt kontrollcenter</p>
       </div>
 
       {/* Thailand Workcamp Countdown */}
@@ -413,9 +413,9 @@ export function CommandDashboard() {
             live: true,
           },
         ].map((s, i) => (
-          <div key={i} className="bg-[#0D0F1A] border border-white/[0.06] rounded-xl p-5">
+          <div key={i} className="bg-white border border-gray-200 rounded-xl p-5">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-mono text-gray-600 uppercase tracking-widest">{s.label}</span>
+              <span className="text-xs font-mono text-gray-500 uppercase tracking-widest">{s.label}</span>
               {s.live && (
                 <span className="flex items-center gap-1 text-xs font-mono" style={{ color: s.color }}>
                   <span className="h-1.5 w-1.5 rounded-full animate-pulse" style={{ background: s.color }} />
@@ -444,8 +444,8 @@ export function CommandDashboard() {
                 <StatusDot status={svc.status} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-white">{svc.name}</span>
-                    <span className="text-xs text-gray-600 bg-surface-overlay px-1.5 py-0.5 rounded">
+                    <span className="text-sm font-medium text-gray-900">{svc.name}</span>
+                    <span className="text-xs text-gray-500 bg-surface-overlay px-1.5 py-0.5 rounded">
                       {svc.service}
                     </span>
                   </div>
@@ -455,7 +455,7 @@ export function CommandDashboard() {
                   <div className="text-xs font-mono tabular-nums" style={{ color: STATUS_COLOR[svc.status] }}>
                     {svc.uptime}% up
                   </div>
-                  <div className="text-xs text-gray-600 tabular-nums">{svc.latency}ms · {svc.lastCheck}</div>
+                  <div className="text-xs text-gray-500 tabular-nums">{svc.latency}ms · {svc.lastCheck}</div>
                 </div>
               </div>
             ))}
@@ -468,20 +468,20 @@ export function CommandDashboard() {
           <div className="bg-surface-raised border border-surface-border rounded-xl p-5">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <div className="text-2xl font-bold text-white tabular-nums">{avgUptime}%</div>
+                <div className="text-2xl font-bold text-gray-900 tabular-nums">{avgUptime}%</div>
                 <div className="text-xs text-gray-500 mt-0.5">genomsnitt alla tjänster</div>
               </div>
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-green-500" />
-                <span className="text-xs text-gray-400">Uptime %</span>
+                <span className="text-xs text-gray-500">Uptime %</span>
               </div>
             </div>
             <UptimeGraph points={UPTIME_POINTS} />
             <div className="flex justify-between mt-2">
-              <span className="text-xs text-gray-600 tabular-nums">
+              <span className="text-xs text-gray-500 tabular-nums">
                 {new Date(Date.now() - 23 * 3600000).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}
               </span>
-              <span className="text-xs text-gray-600 tabular-nums">Nu</span>
+              <span className="text-xs text-gray-500 tabular-nums">Nu</span>
             </div>
           </div>
         </div>
@@ -502,12 +502,12 @@ export function CommandDashboard() {
             >
               <span style={{ fontSize: 24 }}>{link.icon}</span>
               <span
-                className="text-xs font-semibold text-gray-300 group-hover:text-white transition-colors"
+                className="text-xs font-semibold text-gray-600 group-hover:text-gray-900 transition-colors"
                 style={{ lineHeight: 1.3 }}
               >
                 {link.name}
               </span>
-              <span className="text-xs text-gray-600">{link.sub}</span>
+              <span className="text-xs text-gray-500">{link.sub}</span>
             </a>
           ))}
         </div>
@@ -533,10 +533,10 @@ export function CommandDashboard() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium text-white">{member.name}</span>
-                    <span className="text-xs text-gray-600">{member.role}</span>
+                    <span className="text-sm font-medium text-gray-900">{member.name}</span>
+                    <span className="text-xs text-gray-500">{member.role}</span>
                   </div>
-                  <div className="text-xs text-gray-400 mt-0.5 truncate">{member.task}</div>
+                  <div className="text-xs text-gray-500 mt-0.5 truncate">{member.task}</div>
                 </div>
                 <div className="flex items-center gap-1.5 flex-shrink-0">
                   <span
@@ -559,7 +559,7 @@ export function CommandDashboard() {
             <SectionHeading>Aktiva Deploys</SectionHeading>
             <button
               onClick={() => setExpandedRuns(v => !v)}
-              className="text-xs text-gray-500 hover:text-gray-300 transition-colors"
+              className="text-xs text-gray-500 hover:text-gray-600 transition-colors"
             >
               {expandedRuns ? 'Visa färre' : 'Visa alla'}
             </button>
@@ -575,14 +575,14 @@ export function CommandDashboard() {
                 >
                   <RunStatusBadge status={run.status} />
                   <div className="flex-1 min-w-0">
-                    <div className="text-xs font-medium text-white truncate">{run.workflow}</div>
+                    <div className="text-xs font-medium text-gray-900 truncate">{run.workflow}</div>
                     <div className="text-xs text-gray-500 mt-0.5">
-                      {run.repo} · <span className="text-gray-600">{run.branch}</span>
+                      {run.repo} · <span className="text-gray-500">{run.branch}</span>
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <div className="text-xs text-gray-400 tabular-nums">{run.time}</div>
-                    <div className="text-xs text-gray-600 tabular-nums">{run.duration}</div>
+                    <div className="text-xs text-gray-500 tabular-nums">{run.time}</div>
+                    <div className="text-xs text-gray-500 tabular-nums">{run.duration}</div>
                   </div>
                 </div>
               )
@@ -603,26 +603,26 @@ export function CommandDashboard() {
             <div key={entity.code} className="bg-surface-raised border border-surface-border rounded-xl p-5">
               <div className="flex items-start gap-3 mb-4">
                 <div
-                  className="h-10 w-10 rounded-xl flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
+                  className="h-10 w-10 rounded-xl flex items-center justify-center text-sm font-bold text-gray-900 flex-shrink-0"
                   style={{ backgroundColor: entity.color + '33', border: `1px solid ${entity.color}55` }}
                 >
                   <span style={{ color: entity.color }}>{entity.code[0]}</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-white">{entity.name}</p>
+                  <p className="text-sm font-semibold text-gray-900">{entity.name}</p>
                   <p className="text-xs text-gray-500">{entity.jurisdiction}</p>
                 </div>
               </div>
               <div className="space-y-1">
                 {entity.products.map((p) => (
-                  <div key={p} className="text-xs text-gray-400 flex items-center gap-1.5">
+                  <div key={p} className="text-xs text-gray-500 flex items-center gap-1.5">
                     <span className="h-1 w-1 rounded-full bg-gray-600" />
                     {p}
                   </div>
                 ))}
               </div>
               <div className="mt-3 pt-3 border-t border-surface-border">
-                <span className="text-xs text-gray-600">{entity.type}</span>
+                <span className="text-xs text-gray-500">{entity.type}</span>
               </div>
             </div>
           ))}

@@ -145,7 +145,7 @@ export function BerntWidget() {
         <div
           className="fixed bottom-20 right-6 z-50 w-80 flex flex-col rounded-2xl shadow-2xl overflow-hidden"
           style={{
-            background: '#0D0F1A',
+            background: '#FFFFFF',
             border: '1px solid rgba(139,92,246,0.3)',
             height: '420px',
             boxShadow: '0 0 40px #8B5CF620, 0 20px 60px #0009',
@@ -161,7 +161,7 @@ export function BerntWidget() {
               🤖
             </div>
             <div className="flex-1">
-              <p className="text-xs font-bold text-white">Bernt</p>
+              <p className="text-xs font-bold text-gray-900">Bernt</p>
               <div className="flex items-center gap-1">
                 <span className={`h-1.5 w-1.5 rounded-full ${connected ? 'bg-green-400' : 'bg-yellow-400'}`} />
                 <p className="text-[9px] font-mono" style={{ color: connected ? '#4ade80' : '#facc15' }}>
@@ -171,7 +171,7 @@ export function BerntWidget() {
             </div>
             <button
               onClick={() => setShowSettings(s => !s)}
-              className="text-gray-600 hover:text-gray-300 transition-colors text-sm"
+              className="text-gray-500 hover:text-gray-600 transition-colors text-sm"
               title="Inställningar"
             >⚙️</button>
           </div>
@@ -185,7 +185,7 @@ export function BerntWidget() {
                   type="text"
                   defaultValue={tunnelUrl}
                   placeholder="https://xxx.trycloudflare.com"
-                  className="flex-1 text-xs bg-surface-raised border border-surface-border rounded-lg px-2.5 py-1.5 text-white placeholder-gray-700 focus:outline-none focus:border-purple-500/50"
+                  className="flex-1 text-xs bg-surface-raised border border-surface-border rounded-lg px-2.5 py-1.5 text-gray-900 placeholder-gray-700 focus:outline-none focus:border-purple-500/50"
                   onKeyDown={e => e.key === 'Enter' && saveTunnel((e.target as HTMLInputElement).value)}
                   id="tunnel-input"
                 />
@@ -197,7 +197,7 @@ export function BerntWidget() {
                   Spara
                 </button>
               </div>
-              <p className="text-[9px] text-gray-700 mt-1.5">Hitta URL i /tmp/bernt-tunnel.log på din dator</p>
+              <p className="text-[9px] text-gray-600 mt-1.5">Hitta URL i /tmp/bernt-tunnel.log på din dator</p>
             </div>
           )}
 
@@ -254,7 +254,7 @@ export function BerntWidget() {
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && !loading && sendMessage(input)}
               placeholder="Skriv eller tala..."
-              className="flex-1 text-xs bg-surface-raised border border-surface-border rounded-xl px-3 py-2 text-white placeholder-gray-700 focus:outline-none focus:border-purple-500/40 mt-2"
+              className="flex-1 text-xs bg-surface-raised border border-surface-border rounded-xl px-3 py-2 text-gray-900 placeholder-gray-700 focus:outline-none focus:border-purple-500/40 mt-2"
               disabled={loading}
             />
             <button

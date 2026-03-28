@@ -53,7 +53,7 @@ export function GuidanceToast() {
   const accentColor = isImmature ? '#F59E0B' : '#6366F1'
   const bgClass = isImmature
     ? 'bg-[#1C1107] border-amber-500/30'
-    : 'bg-[#0D0F1A] border-white/[0.10]'
+    : 'bg-white border-white/[0.10]'
   const dotColor = isImmature ? 'bg-amber-400' : 'bg-indigo-400'
 
   return (
@@ -80,13 +80,13 @@ export function GuidanceToast() {
         {/* Header row */}
         <div className="flex items-start gap-2">
           <span className={`h-1.5 w-1.5 rounded-full flex-shrink-0 mt-1.5 ${dotColor}`} />
-          <p className="text-xs text-gray-200 leading-snug flex-1">
+          <p className="text-xs text-gray-800 leading-snug flex-1">
             {activeToast.short}
           </p>
           {/* Close */}
           <button
             onClick={() => { setVisible(false); setTimeout(dismissToast, 350) }}
-            className="flex-shrink-0 text-gray-600 hover:text-gray-300 transition-colors ml-1 mt-0.5"
+            className="flex-shrink-0 text-gray-600 hover:text-gray-700 transition-colors ml-1 mt-0.5"
             aria-label="Stäng"
           >
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -97,7 +97,7 @@ export function GuidanceToast() {
 
         {/* Expanded content */}
         {expanded && activeToast.extended && (
-          <p className="text-xs text-gray-400 mt-2 leading-relaxed pl-3.5">
+          <p className="text-xs text-gray-500 mt-2 leading-relaxed pl-3.5">
             {activeToast.extended}
           </p>
         )}

@@ -24,14 +24,14 @@ export function ContactsView() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="text-sm font-semibold text-white">Kontakter</h2>
-          <p className="text-sm text-gray-400 mt-0.5">{CONTACTS.length} kontakter i registret</p>
+          <h2 className="text-sm font-semibold text-gray-900">Kontakter</h2>
+          <p className="text-sm text-gray-500 mt-0.5">{CONTACTS.length} kontakter i registret</p>
         </div>
         <input
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder="Sök namn, företag, roll..."
-          className="bg-surface-raised border border-surface-border rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-white/20 w-72"
+          className="bg-surface-raised border border-surface-border rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:border-gray-300 w-72"
         />
       </div>
 
@@ -42,7 +42,7 @@ export function ContactsView() {
           return (
             <div
               key={c.id}
-              className="bg-surface-raised border border-surface-border rounded-xl p-4 flex flex-col gap-3 hover:border-white/20 transition-colors"
+              className="bg-surface-raised border border-surface-border rounded-xl p-4 flex flex-col gap-3 hover:border-gray-300 transition-colors"
             >
               {/* Name + company */}
               <div className="flex items-start gap-3">
@@ -53,8 +53,8 @@ export function ContactsView() {
                   {c.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
                 </div>
                 <div className="min-w-0">
-                  <p className="font-semibold text-white text-sm">{c.name}</p>
-                  <p className="text-xs text-gray-400 mt-0.5">{c.role}</p>
+                  <p className="font-semibold text-gray-900 text-sm">{c.name}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{c.role}</p>
                   <p className="text-xs text-gray-500">{c.company}</p>
                 </div>
               </div>
@@ -63,16 +63,16 @@ export function ContactsView() {
               <div className="space-y-1.5">
                 <a
                   href={`mailto:${c.email}`}
-                  className="flex items-center gap-2 text-xs text-gray-400 hover:text-white transition-colors group"
+                  className="flex items-center gap-2 text-xs text-gray-500 hover:text-gray-900 transition-colors group"
                 >
-                  <span className="text-gray-600 group-hover:text-gray-400">📧</span>
+                  <span className="text-gray-500 group-hover:text-gray-500">📧</span>
                   <span className="truncate">{c.email}</span>
                 </a>
                 <a
                   href={`tel:${c.phone}`}
-                  className="flex items-center gap-2 text-xs text-gray-400 hover:text-white transition-colors group"
+                  className="flex items-center gap-2 text-xs text-gray-500 hover:text-gray-900 transition-colors group"
                 >
-                  <span className="text-gray-600 group-hover:text-gray-400">📞</span>
+                  <span className="text-gray-500 group-hover:text-gray-500">📞</span>
                   <span>{c.phone}</span>
                 </a>
               </div>
@@ -104,7 +104,7 @@ export function ContactsView() {
         })}
 
         {filtered.length === 0 && (
-          <div className="col-span-3 py-12 text-center text-gray-600 text-sm">
+          <div className="col-span-3 py-12 text-center text-gray-500 text-sm">
             Inga kontakter matchar sökningen
           </div>
         )}

@@ -27,28 +27,28 @@ export function ProcurementHub() {
   const [activeTab, setActiveTab] = useState<Tab>('suppliers')
 
   return (
-    <div className="flex flex-col h-full bg-[#07080F] text-white">
+    <div className="flex flex-col h-full bg-gray-50 text-gray-900">
       {/* Header */}
-      <div className="px-6 py-4 border-b border-white/[0.06] flex-shrink-0">
+      <div className="px-6 py-4 border-b border-gray-200 flex-shrink-0">
         <div className="flex items-center gap-3">
           <span className="text-xl">🛒</span>
           <div>
-            <h1 className="text-[16px] font-bold text-white">Inköp & Leverantörer</h1>
-            <p className="text-xs text-gray-600 font-mono">Procurement — Wavult Group</p>
+            <h1 className="text-[16px] font-bold text-gray-900">Inköp & Leverantörer</h1>
+            <p className="text-xs text-gray-500 font-mono">Procurement — Wavult Group</p>
           </div>
         </div>
       </div>
 
       {/* Tab navigation */}
-      <div className="flex gap-1 px-6 py-2 border-b border-white/[0.06] flex-shrink-0 overflow-x-auto">
+      <div className="flex gap-1 px-6 py-2 border-b border-gray-200 flex-shrink-0 overflow-x-auto">
         {TABS.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap flex-shrink-0 relative ${
               activeTab === tab.id
-                ? 'bg-white/[0.08] text-white'
-                : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.04]'
+                ? 'bg-white/[0.08] text-gray-900'
+                : 'text-gray-500 hover:text-gray-600 hover:bg-white/[0.04]'
             }`}
           >
             <span className="text-sm leading-none">{tab.icon}</span>

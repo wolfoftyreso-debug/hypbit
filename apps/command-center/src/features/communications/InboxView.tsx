@@ -161,9 +161,9 @@ export function InboxView() {
       <div className="flex flex-col flex-shrink-0 w-[400px]">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <h2 className="text-sm font-semibold text-white">Inkorg</h2>
+            <h2 className="text-sm font-semibold text-gray-900">Inkorg</h2>
             {unreadCount > 0 && (
-              <span className="text-xs font-bold px-1.5 py-0.5 rounded-full bg-blue-500 text-white">
+              <span className="text-xs font-bold px-1.5 py-0.5 rounded-full bg-blue-500 text-gray-900">
                 {unreadCount}
               </span>
             )}
@@ -185,8 +185,8 @@ export function InboxView() {
                 selected?.id === msg.id
                   ? 'bg-brand-accent/10 border-brand-accent/30'
                   : msg.read
-                  ? 'bg-[#0D0F1A] border-white/[0.06] hover:border-white/[0.12]'
-                  : 'bg-[#0D0F1A] border-blue-500/20 hover:border-blue-500/40'
+                  ? 'bg-white border-gray-200 hover:border-white/[0.12]'
+                  : 'bg-white border-blue-500/20 hover:border-blue-500/40'
               }`}
             >
               <div className="flex items-start gap-2.5">
@@ -198,17 +198,17 @@ export function InboxView() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
-                    <span className={`text-xs font-medium truncate ${!msg.read ? 'text-white' : 'text-gray-300'}`}>
+                    <span className={`text-xs font-medium truncate ${!msg.read ? 'text-gray-900' : 'text-gray-600'}`}>
                       {msg.from}
                     </span>
-                    <span className="text-xs text-gray-600 flex-shrink-0 font-mono">
+                    <span className="text-xs text-gray-500 flex-shrink-0 font-mono">
                       {new Date(msg.timestamp).toLocaleDateString('sv-SE', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
-                  <div className={`text-xs truncate ${!msg.read ? 'text-gray-200 font-medium' : 'text-gray-400'}`}>
+                  <div className={`text-xs truncate ${!msg.read ? 'text-gray-800 font-medium' : 'text-gray-500'}`}>
                     {msg.subject}
                   </div>
-                  <div className="text-xs text-gray-600 truncate mt-0.5">
+                  <div className="text-xs text-gray-500 truncate mt-0.5">
                     Till: {msg.to}
                   </div>
                 </div>
@@ -222,12 +222,12 @@ export function InboxView() {
       </div>
 
       {/* Message detail / Compose */}
-      <div className="flex-1 bg-[#0D0F1A] rounded-xl border border-white/[0.06] overflow-hidden">
+      <div className="flex-1 bg-white rounded-xl border border-gray-200 overflow-hidden">
         {showCompose ? (
           <div className="p-5 h-full flex flex-col">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-semibold text-white">Nytt meddelande</h3>
-              <button onClick={() => setShowCompose(false)} className="text-gray-500 hover:text-gray-300 text-lg leading-none">×</button>
+              <h3 className="text-sm font-semibold text-gray-900">Nytt meddelande</h3>
+              <button onClick={() => setShowCompose(false)} className="text-gray-500 hover:text-gray-600 text-lg leading-none">×</button>
             </div>
             <div className="space-y-3 flex-1 flex flex-col">
               <div>
@@ -235,7 +235,7 @@ export function InboxView() {
                 <select
                   value={form.to}
                   onChange={e => setForm(f => ({ ...f, to: e.target.value }))}
-                  className="w-full bg-[#07080F] border border-white/[0.08] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-accent/50"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 focus:outline-none focus:border-brand-accent/50"
                 >
                   <option value="">Välj mottagare…</option>
                   {TEAM_MEMBERS.map(m => (
@@ -249,7 +249,7 @@ export function InboxView() {
                   value={form.subject}
                   onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}
                   placeholder="Ämnesrad…"
-                  className="w-full bg-[#07080F] border border-white/[0.08] rounded-lg px-3 py-2 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-brand-accent/50"
+                  className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-600 focus:outline-none focus:border-brand-accent/50"
                 />
               </div>
               <div className="flex-1 flex flex-col">
@@ -258,12 +258,12 @@ export function InboxView() {
                   value={form.body}
                   onChange={e => setForm(f => ({ ...f, body: e.target.value }))}
                   placeholder="Skriv ditt meddelande…"
-                  className="flex-1 w-full bg-[#07080F] border border-white/[0.08] rounded-lg px-3 py-2 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-brand-accent/50 resize-none"
+                  className="flex-1 w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-xs text-gray-900 placeholder-gray-600 focus:outline-none focus:border-brand-accent/50 resize-none"
                 />
               </div>
               <button
                 onClick={sendMessage}
-                className="self-end px-5 py-2 rounded-lg text-xs font-medium bg-brand-accent text-white hover:bg-brand-accent/90 transition-colors"
+                className="self-end px-5 py-2 rounded-lg text-xs font-medium bg-brand-accent text-gray-900 hover:bg-brand-accent/90 transition-colors"
               >
                 Skicka →
               </button>
@@ -280,7 +280,7 @@ export function InboxView() {
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-[14px] font-semibold text-white">{selected.from}</span>
+                  <span className="text-[14px] font-semibold text-gray-900">{selected.from}</span>
                   <span className="text-xs text-gray-500 font-mono">
                     {new Date(selected.timestamp).toLocaleString('sv-SE')}
                   </span>
@@ -288,11 +288,11 @@ export function InboxView() {
                 <div className="text-xs text-gray-500">Till: {selected.to}</div>
               </div>
             </div>
-            <h2 className="text-[15px] font-bold text-white mb-4">{selected.subject}</h2>
-            <div className="text-xs text-gray-300 leading-relaxed whitespace-pre-line">
+            <h2 className="text-[15px] font-bold text-gray-900 mb-4">{selected.subject}</h2>
+            <div className="text-xs text-gray-600 leading-relaxed whitespace-pre-line">
               {selected.body}
             </div>
-            <div className="mt-5 pt-4 border-t border-white/[0.06]">
+            <div className="mt-5 pt-4 border-t border-gray-200">
               <button
                 onClick={() => {
                   setForm({ to: selected.from, subject: `Re: ${selected.subject}`, body: '' })
@@ -308,7 +308,7 @@ export function InboxView() {
           <div className="h-full flex items-center justify-center">
             <div className="text-center">
               <div className="text-4xl mb-3">📬</div>
-              <p className="text-gray-600 text-xs">Välj ett meddelande för att läsa det</p>
+              <p className="text-gray-500 text-xs">Välj ett meddelande för att läsa det</p>
             </div>
           </div>
         )}

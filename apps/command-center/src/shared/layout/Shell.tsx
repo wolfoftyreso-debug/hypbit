@@ -93,7 +93,7 @@ function SidebarNav({ criticalAlertCount, onNavigate }: {
       {NAV_GROUPS.map((group, gi) => (
         <div key={gi} className={gi > 0 ? 'mt-4' : ''}>
           {group.label && (
-            <div className="px-3 py-1 text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">
+            <div className="px-3 py-1 text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">
               {group.label}
             </div>
           )}
@@ -121,7 +121,7 @@ function SidebarNav({ criticalAlertCount, onNavigate }: {
                   <item.icon className="w-4 h-4 flex-shrink-0" />
                   <span className="flex-1 min-w-0 truncate">{item.label}</span>
                   {item.to === '/alerts' && criticalAlertCount > 0 && (
-                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-red-500 text-white flex-shrink-0">
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-red-500 text-gray-900 flex-shrink-0">
                       {criticalAlertCount}
                     </span>
                   )}
@@ -179,13 +179,13 @@ export function Shell({ children }: ShellProps) {
         <div className="h-14 flex items-center px-4 border-b border-gray-200">
           <div className="flex items-center gap-2.5 min-w-0">
             <div className="w-7 h-7 rounded-full bg-purple-700 flex items-center justify-center flex-shrink-0">
-              <span className="text-xs font-bold text-white">W</span>
+              <span className="text-xs font-bold text-gray-900">W</span>
             </div>
             <span className="text-sm font-semibold text-gray-900">Wavult OS</span>
           </div>
           {/* Close btn (mobile) */}
           <button
-            className="ml-auto md:hidden p-1 text-gray-400 hover:text-gray-600"
+            className="ml-auto md:hidden p-1 text-gray-500 hover:text-gray-600"
             onClick={() => setSidebarOpen(false)}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -202,7 +202,7 @@ export function Shell({ children }: ShellProps) {
 
         {/* Footer */}
         <div className="px-4 py-3 border-t border-gray-200">
-          <p className="text-xs text-gray-400 font-mono">Wavult Group 2026</p>
+          <p className="text-xs text-gray-500 font-mono">Wavult Group 2026</p>
         </div>
       </aside>
 
@@ -264,7 +264,7 @@ export function Shell({ children }: ShellProps) {
                 )}
                 <button
                   onClick={() => { setRole(null); setViewAs(null) }}
-                  className="text-xs text-gray-400 hover:text-gray-600 transition-colors font-medium"
+                  className="text-xs text-gray-500 hover:text-gray-600 transition-colors font-medium"
                 >
                   Exit
                 </button>
@@ -279,7 +279,7 @@ export function Shell({ children }: ShellProps) {
               >
                 <Bell className="w-4 h-4" />
                 {notificationCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-red-500 text-white text-[8px] font-bold flex items-center justify-center leading-none">
+                  <span className="absolute -top-0.5 -right-0.5 h-3.5 w-3.5 rounded-full bg-red-500 text-gray-900 text-[8px] font-bold flex items-center justify-center leading-none">
                     {notificationCount}
                   </span>
                 )}

@@ -24,7 +24,7 @@ function StepTrack({ currentStep, color }: { currentStep: Step; color: string })
       {STEPS.map((step, idx) => {
         const isDone = idx < currentIdx
         const isActive = idx === currentIdx
-        const stepColor = isDone ? color : isActive ? color : '#374151'
+        const stepColor = isDone ? color : isActive ? color : '#F3F4F6'
 
         return (
           <div key={step} className="flex items-center flex-1">
@@ -41,7 +41,7 @@ function StepTrack({ currentStep, color }: { currentStep: Step; color: string })
                 ) : isActive ? (
                   <span style={{ color }} className="text-[8px]">●</span>
                 ) : (
-                  <span className="text-gray-600 text-[8px]">○</span>
+                  <span className="text-gray-500 text-[8px]">○</span>
                 )}
               </div>
               <span
@@ -84,7 +84,7 @@ function BolagCard({ bolag }: { bolag: Bolag }) {
       >
         <span className="text-2xl">{bolag.flag}</span>
         <div className="flex-1 min-w-0">
-          <p className="text-[14px] font-bold text-white truncate">{bolag.name}</p>
+          <p className="text-[14px] font-bold text-gray-900 truncate">{bolag.name}</p>
           <p className="text-xs text-gray-500 font-mono">{bolag.jurisdiction}</p>
         </div>
         <div className="text-right flex-shrink-0">
@@ -100,7 +100,7 @@ function BolagCard({ bolag }: { bolag: Bolag }) {
               >
                 {daysLeft}d
               </p>
-              <p className="text-[9px] text-gray-600 font-mono">kvar</p>
+              <p className="text-[9px] text-gray-500 font-mono">kvar</p>
             </div>
           )}
         </div>
@@ -131,12 +131,12 @@ function BolagCard({ bolag }: { bolag: Bolag }) {
         style={{ borderColor: bolag.color + '10' }}
       >
         <div className="flex items-center gap-1.5">
-          <span className="text-[9px] text-gray-600 font-mono">👤 Ansvarig:</span>
-          <span className="text-xs text-gray-300">{bolag.owner}</span>
+          <span className="text-[9px] text-gray-500 font-mono">👤 Ansvarig:</span>
+          <span className="text-xs text-gray-600">{bolag.owner}</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="text-[9px] text-gray-600 font-mono">🗓️ Est.:</span>
-          <span className="text-xs text-gray-300">
+          <span className="text-[9px] text-gray-500 font-mono">🗓️ Est.:</span>
+          <span className="text-xs text-gray-600">
             {new Date(bolag.estimatedDate).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short', year: '2-digit' })}
           </span>
         </div>
@@ -171,7 +171,7 @@ export function BolagsstrukturView() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="text-lg font-bold text-white">Bolagsstruktur</h2>
+        <h2 className="text-lg font-bold text-gray-900">Bolagsstruktur</h2>
         <p className="text-xs text-gray-500 mt-0.5">Wavult Group — {BOLAG_LIST.length} bolag · Global expansion</p>
       </div>
 
@@ -192,13 +192,13 @@ export function BolagsstrukturView() {
       </div>
 
       {/* Step legend */}
-      <div className="rounded-xl border border-white/[0.06] bg-[#0D0F1A] p-3">
-        <p className="text-[9px] text-gray-600 font-mono uppercase tracking-wider mb-2">Registreringssteg</p>
+      <div className="rounded-xl border border-gray-200 bg-white p-3">
+        <p className="text-[9px] text-gray-500 font-mono uppercase tracking-wider mb-2">Registreringssteg</p>
         <div className="flex items-center gap-3 flex-wrap">
           {STEPS.map((step, i) => (
             <div key={step} className="flex items-center gap-1.5">
               <span className="text-sm">{STEP_ICONS[step]}</span>
-              <span className="text-xs text-gray-400">{i + 1}. {STEP_LABELS[step]}</span>
+              <span className="text-xs text-gray-500">{i + 1}. {STEP_LABELS[step]}</span>
             </div>
           ))}
         </div>

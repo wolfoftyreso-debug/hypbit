@@ -75,8 +75,8 @@ function statusColor(status: string): string {
   switch (status) {
     case 'active': return '#22c55e'
     case 'away': return '#f59e0b'
-    case 'offline': return '#6b7280'
-    default: return '#6b7280'
+    case 'offline': return '#9CA3AF'
+    default: return '#9CA3AF'
   }
 }
 
@@ -119,7 +119,7 @@ function createMarkerElement(member: TeamLocation): HTMLElement {
     top: 3px; left: 3px;
     width: 40px; height: 40px;
     border-radius: 50%;
-    background: ${isOffline ? '#4b5563' : member.avatar_color};
+    background: ${isOffline ? '#6B7280' : member.avatar_color};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -127,7 +127,7 @@ function createMarkerElement(member: TeamLocation): HTMLElement {
     color: white;
     font-size: 13px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    border: 3px solid ${isOffline ? '#374151' : 'white'};
+    border: 3px solid ${isOffline ? '#F3F4F6' : 'white'};
     box-shadow: 0 2px 8px rgba(0,0,0,0.5);
     user-select: none;
     transition: transform 0.2s;
@@ -282,7 +282,7 @@ export function TeamMap() {
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
             <div style="
               width:36px; height:36px; border-radius:50%;
-              background:${member.status === 'offline' ? '#4b5563' : member.avatar_color};
+              background:${member.status === 'offline' ? '#6B7280' : member.avatar_color};
               display:flex; align-items:center; justify-content:center;
               font-weight:700; color:white; font-size:12px;
               flex-shrink:0;
@@ -471,7 +471,7 @@ export function TeamMap() {
       `}</style>
 
       {error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-[#07080F]">
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
           <div className="rounded-xl bg-red-950/60 border border-red-800/40 p-6 max-w-sm text-center">
             <p className="text-red-400 text-sm font-mono">{error}</p>
           </div>
@@ -494,7 +494,7 @@ export function TeamMap() {
                 fontSize: '11px',
                 fontWeight: 600,
                 background: myStatus === s ? statusColor(s) + '22' : 'transparent',
-                color: myStatus === s ? statusColor(s) : '#6b7280',
+                color: myStatus === s ? statusColor(s) : '#9CA3AF',
                 cursor: 'pointer',
                 border: 'none',
                 transition: 'all 0.15s',
@@ -512,7 +512,7 @@ export function TeamMap() {
             background: 'rgba(7,8,15,0.80)',
             backdropFilter: 'blur(12px)',
             border: '1px solid rgba(255,255,255,0.08)',
-            color: '#e5e7eb',
+            color: '#111827',
             padding: '5px 12px',
             borderRadius: 8,
             fontSize: 11,
@@ -556,11 +556,11 @@ export function TeamMap() {
       >
         {/* Status info */}
         <div className="flex items-center gap-3 text-xs font-mono text-gray-500 shrink-0">
-          <span className="text-white font-semibold">{locations.length}</span>
+          <span className="text-gray-900 font-semibold">{locations.length}</span>
           <span>online</span>
-          <span className="text-gray-700">·</span>
+          <span className="text-gray-600">·</span>
           <span style={{ color: '#22c55e' }}>{locations.filter((l) => l.status === 'active').length} aktiva</span>
-          <span className="text-gray-700">·</span>
+          <span className="text-gray-600">·</span>
           <span>
             {lastUpdated
               ? secondsAgo < 5 ? 'live' : `${secondsAgo}s`
@@ -596,7 +596,7 @@ export function TeamMap() {
                   width: 32,
                   height: 32,
                   borderRadius: '50%',
-                  background: member.status === 'offline' ? '#374151' : member.avatar_color,
+                  background: member.status === 'offline' ? '#F3F4F6' : member.avatar_color,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -609,7 +609,7 @@ export function TeamMap() {
               >
                 {member.avatar_initials}
               </div>
-              <span style={{ color: '#6b7280', fontSize: 9, fontWeight: 500, letterSpacing: '0.01em' }}>
+              <span style={{ color: '#9CA3AF', fontSize: 9, fontWeight: 500, letterSpacing: '0.01em' }}>
                 {member.full_name.split(' ')[0]}
               </span>
             </button>
@@ -617,7 +617,7 @@ export function TeamMap() {
         </div>
 
         {/* Mapbox attribution — minimal, integrated */}
-        <span className="text-gray-700 font-mono text-[9px] shrink-0 ml-2">
+        <span className="text-gray-600 font-mono text-[9px] shrink-0 ml-2">
           © Mapbox · OSM
         </span>
       </div>

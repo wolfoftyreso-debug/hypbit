@@ -49,13 +49,13 @@ function ConnectModal({ channel, onClose }: { channel: MediaChannel; onClose: ()
 
   return (
     <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
-      <div className="bg-[#0D0F1A] border border-white/10 rounded-xl w-full max-w-md">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+      <div className="bg-white border border-gray-200 rounded-xl w-full max-w-md">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div className="flex items-center gap-2">
             <span className="text-xl">{PROVIDER_ICONS[channel.provider]}</span>
-            <h2 className="text-white font-semibold">Koppla {providerName}</h2>
+            <h2 className="text-gray-900 font-semibold">Koppla {providerName}</h2>
           </div>
-          <button onClick={onClose} className="text-gray-500 hover:text-white text-lg leading-none">×</button>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-900 text-lg leading-none">×</button>
         </div>
         <div className="px-6 py-5 space-y-4">
           <div className="rounded-lg bg-yellow-950/40 border border-yellow-500/20 px-4 py-3">
@@ -80,12 +80,12 @@ function ConnectModal({ channel, onClose }: { channel: MediaChannel; onClose: ()
             </div>
           )}
 
-          <div className="text-xs text-gray-600">
+          <div className="text-xs text-gray-500">
             Adapter: <code className="font-mono text-gray-500">{channel.api_adapter}</code>
           </div>
         </div>
-        <div className="px-6 py-4 border-t border-white/10 flex justify-end">
-          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors">Stäng</button>
+        <div className="px-6 py-4 border-t border-gray-200 flex justify-end">
+          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-gray-900 transition-colors">Stäng</button>
         </div>
       </div>
     </div>
@@ -98,7 +98,7 @@ export function ChannelView() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-white font-semibold">Kanaler</h2>
+        <h2 className="text-gray-900 font-semibold">Kanaler</h2>
         <p className="text-xs text-gray-500 mt-0.5">7 kanaler konfigurerade · Inga aktiva ännu</p>
       </div>
 
@@ -106,7 +106,7 @@ export function ChannelView() {
         {MOCK_CHANNELS.map(channel => (
           <div
             key={channel.id}
-            className="bg-[#0D0F1A] border border-white/10 rounded-xl p-4 flex flex-col gap-3"
+            className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col gap-3"
           >
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
@@ -114,7 +114,7 @@ export function ChannelView() {
                   {PROVIDER_ICONS[channel.provider]}
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-white">{PROVIDER_LABELS[channel.provider]}</div>
+                  <div className="text-sm font-medium text-gray-900">{PROVIDER_LABELS[channel.provider]}</div>
                   <div className="text-xs text-gray-500">{TYPE_LABELS[channel.type]}</div>
                 </div>
               </div>
@@ -123,13 +123,13 @@ export function ChannelView() {
               </span>
             </div>
 
-            <div className="text-xs text-gray-600 font-mono">
+            <div className="text-xs text-gray-500 font-mono">
               {channel.api_adapter}
             </div>
 
             <button
               onClick={() => setConnectingChannel(channel)}
-              className="w-full py-1.5 text-xs text-gray-400 border border-white/10 rounded-lg hover:border-white/20 hover:text-white transition-colors"
+              className="w-full py-1.5 text-xs text-gray-500 border border-gray-200 rounded-lg hover:border-gray-300 hover:text-gray-900 transition-colors"
             >
               Koppla
             </button>

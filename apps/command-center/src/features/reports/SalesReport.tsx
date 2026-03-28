@@ -57,8 +57,8 @@ function PipelineBar() {
         {stages.map(s => (
           <div key={s} className="flex items-center gap-1.5">
             <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STAGE_COLOR[s] }} />
-            <span className="text-xs text-gray-400">{s}</span>
-            <span className="text-xs text-gray-600 font-mono">({counts[s]})</span>
+            <span className="text-xs text-gray-500">{s}</span>
+            <span className="text-xs text-gray-500 font-mono">({counts[s]})</span>
             <span className="text-xs font-mono" style={{ color: STAGE_COLOR[s] }}>{fmt(values[s])}</span>
           </div>
         ))}
@@ -90,7 +90,7 @@ function WinRateCard() {
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-xl font-black text-white">{rate}%</span>
+          <span className="text-xl font-black text-gray-900">{rate}%</span>
         </div>
       </div>
       <p className="text-xs text-gray-500">{won} vann / {lost} förlorade</p>
@@ -108,12 +108,12 @@ function ARRByProduct() {
 
   return (
     <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl p-4">
-      <p className="text-xs font-bold text-gray-300 mb-3 uppercase tracking-widest">ARR per produkt (stängda)</p>
+      <p className="text-xs font-bold text-gray-600 mb-3 uppercase tracking-widest">ARR per produkt (stängda)</p>
       <div className="space-y-2.5">
         {Object.entries(products).map(([prod, val]) => (
           <div key={prod}>
             <div className="flex justify-between text-xs mb-1">
-              <span className="text-gray-300">{prod}</span>
+              <span className="text-gray-600">{prod}</span>
               <span className="font-mono" style={{ color: PRODUCT_COLOR[prod] ?? '#6B7280' }}>{fmt(val)}</span>
             </div>
             <div className="h-1.5 bg-white/[0.05] rounded-full overflow-hidden">
@@ -125,7 +125,7 @@ function ARRByProduct() {
           </div>
         ))}
         {Object.keys(products).length === 0 && (
-          <p className="text-xs text-gray-600">Inga stängda affärer ännu</p>
+          <p className="text-xs text-gray-500">Inga stängda affärer ännu</p>
         )}
       </div>
     </div>
@@ -135,26 +135,26 @@ function ARRByProduct() {
 function ActivityTable() {
   return (
     <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl overflow-hidden">
-      <div className="px-4 py-3 border-b border-white/[0.06]">
-        <p className="text-xs font-bold text-gray-300 uppercase tracking-widest">Aktiviteter per säljare</p>
+      <div className="px-4 py-3 border-b border-gray-200">
+        <p className="text-xs font-bold text-gray-600 uppercase tracking-widest">Aktiviteter per säljare</p>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-xs">
           <thead>
-            <tr className="border-b border-white/[0.05]">
+            <tr className="border-b border-gray-200">
               {['Säljare','Samtal','Mail','Möten','Demos','Vann','Förlorade','Pipeline'].map(h => (
-                <th key={h} className="px-3 py-2 text-left text-xs text-gray-600 font-mono">{h}</th>
+                <th key={h} className="px-3 py-2 text-left text-xs text-gray-500 font-mono">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {SALES_ACTIVITIES.map((a, i) => (
               <tr key={i} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
-                <td className="px-3 py-2.5 text-white font-medium">{a.owner}</td>
-                <td className="px-3 py-2.5 text-gray-400 font-mono">{a.calls}</td>
-                <td className="px-3 py-2.5 text-gray-400 font-mono">{a.emails}</td>
-                <td className="px-3 py-2.5 text-gray-400 font-mono">{a.meetings}</td>
-                <td className="px-3 py-2.5 text-gray-400 font-mono">{a.demos}</td>
+                <td className="px-3 py-2.5 text-gray-900 font-medium">{a.owner}</td>
+                <td className="px-3 py-2.5 text-gray-500 font-mono">{a.calls}</td>
+                <td className="px-3 py-2.5 text-gray-500 font-mono">{a.emails}</td>
+                <td className="px-3 py-2.5 text-gray-500 font-mono">{a.meetings}</td>
+                <td className="px-3 py-2.5 text-gray-500 font-mono">{a.demos}</td>
                 <td className="px-3 py-2.5 text-green-400 font-mono font-bold">{a.closedWon}</td>
                 <td className="px-3 py-2.5 text-red-400 font-mono">{a.closedLost}</td>
                 <td className="px-3 py-2.5 font-mono" style={{ color: a.revenue > 0 ? '#10B981' : '#6B7280' }}>
@@ -179,9 +179,9 @@ function DealsTable({ filter }: { filter: string }) {
       <div className="overflow-x-auto">
         <table className="w-full text-xs">
           <thead>
-            <tr className="border-b border-white/[0.06]">
+            <tr className="border-b border-gray-200">
               {['Deal','Produkt','Värde','Sannolikhet','Ansvarig','Stängs'].map(h => (
-                <th key={h} className="px-3 py-2 text-left text-xs text-gray-600 font-mono">{h}</th>
+                <th key={h} className="px-3 py-2 text-left text-xs text-gray-500 font-mono">{h}</th>
               ))}
             </tr>
           </thead>
@@ -192,8 +192,8 @@ function DealsTable({ filter }: { filter: string }) {
                   <div className="flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: STAGE_COLOR[d.stage] }} />
                     <div>
-                      <p className="text-white font-medium leading-tight">{d.name}</p>
-                      <p className="text-[9px] text-gray-600">{d.stage}</p>
+                      <p className="text-gray-900 font-medium leading-tight">{d.name}</p>
+                      <p className="text-[9px] text-gray-500">{d.stage}</p>
                     </div>
                   </div>
                 </td>
@@ -203,7 +203,7 @@ function DealsTable({ filter }: { filter: string }) {
                     {d.product}
                   </span>
                 </td>
-                <td className="px-3 py-2.5 text-white font-mono font-bold">{fmt(d.value)}</td>
+                <td className="px-3 py-2.5 text-gray-900 font-mono font-bold">{fmt(d.value)}</td>
                 <td className="px-3 py-2.5">
                   <div className="flex items-center gap-1.5">
                     <div className="h-1 w-16 bg-white/[0.08] rounded-full overflow-hidden">
@@ -212,10 +212,10 @@ function DealsTable({ filter }: { filter: string }) {
                         style={{ width: `${d.probability}%`, background: d.probability >= 70 ? '#10B981' : d.probability >= 40 ? '#F59E0B' : '#6B7280' }}
                       />
                     </div>
-                    <span className="text-gray-400 font-mono">{d.probability}%</span>
+                    <span className="text-gray-500 font-mono">{d.probability}%</span>
                   </div>
                 </td>
-                <td className="px-3 py-2.5 text-gray-400">{d.owner}</td>
+                <td className="px-3 py-2.5 text-gray-500">{d.owner}</td>
                 <td className="px-3 py-2.5 text-gray-500 font-mono">{d.expectedClose}</td>
               </tr>
             ))}
@@ -244,7 +244,7 @@ export function SalesReport() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl p-4 text-center">
           <p className="text-xs text-gray-500 font-mono uppercase mb-1">Total pipeline</p>
-          <p className="text-xl font-black text-white">{fmt(totalPipeline)}</p>
+          <p className="text-xl font-black text-gray-900">{fmt(totalPipeline)}</p>
         </div>
         <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl p-4 text-center">
           <p className="text-xs text-gray-500 font-mono uppercase mb-1">Viktat värde</p>
@@ -252,7 +252,7 @@ export function SalesReport() {
         </div>
         <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl p-4 text-center">
           <p className="text-xs text-gray-500 font-mono uppercase mb-1">Aktiva deals</p>
-          <p className="text-xl font-black text-white">{PIPELINE_DEALS.filter(d => d.stage !== 'Stängd-Vann' && d.stage !== 'Stängd-Förlorad').length}</p>
+          <p className="text-xl font-black text-gray-900">{PIPELINE_DEALS.filter(d => d.stage !== 'Stängd-Vann' && d.stage !== 'Stängd-Förlorad').length}</p>
         </div>
         <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl p-4 text-center">
           <p className="text-xs text-gray-500 font-mono uppercase mb-1">Stängda (vann)</p>
@@ -262,7 +262,7 @@ export function SalesReport() {
 
       {/* Pipeline bar */}
       <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl p-4">
-        <p className="text-xs font-bold text-gray-300 uppercase tracking-widest mb-3">Pipeline-konvertering</p>
+        <p className="text-xs font-bold text-gray-600 uppercase tracking-widest mb-3">Pipeline-konvertering</p>
         <PipelineBar />
       </div>
 
@@ -280,7 +280,7 @@ export function SalesReport() {
       {/* Deals table */}
       <div>
         <div className="flex items-center gap-2 mb-3 flex-wrap">
-          <p className="text-xs font-bold text-gray-300 uppercase tracking-widest flex-1">Alla deals</p>
+          <p className="text-xs font-bold text-gray-600 uppercase tracking-widest flex-1">Alla deals</p>
           <div className="flex gap-1">
             {['all', ...STAGE_ORDER].map(s => (
               <button
@@ -288,8 +288,8 @@ export function SalesReport() {
                 onClick={() => setStageFilter(s)}
                 className={`text-xs px-2.5 py-1 rounded-lg transition-colors ${
                   stageFilter === s
-                    ? 'bg-white/10 text-white'
-                    : 'text-gray-600 hover:text-gray-400'
+                    ? 'bg-white/10 text-gray-900'
+                    : 'text-gray-500 hover:text-gray-500'
                 }`}
                 style={stageFilter === s && s !== 'all' ? { background: STAGE_COLOR[s] + '25', color: STAGE_COLOR[s] } : {}}
               >

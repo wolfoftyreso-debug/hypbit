@@ -12,7 +12,7 @@ const CATEGORY_COLORS: Record<SupplierCategory, string> = {
 
 const STATUS_BADGE: Record<SupplierStatus, { label: string; color: string; bg: string }> = {
   aktiv:   { label: 'Aktiv',   color: '#10b981', bg: 'rgba(16,185,129,0.12)' },
-  inaktiv: { label: 'Inaktiv', color: '#6b7280', bg: 'rgba(107,114,128,0.12)' },
+  inaktiv: { label: 'Inaktiv', color: '#9CA3AF', bg: 'rgba(107,114,128,0.12)' },
 }
 
 const ALL_CATEGORIES: Array<SupplierCategory | 'Alla'> = [
@@ -34,13 +34,13 @@ export function SuppliersView() {
   return (
     <div className="flex flex-col h-full">
       {/* Filters */}
-      <div className="flex items-center gap-3 px-4 md:px-6 py-3 border-b border-white/[0.06] flex-shrink-0 flex-wrap">
+      <div className="flex items-center gap-3 px-4 md:px-6 py-3 border-b border-gray-200 flex-shrink-0 flex-wrap">
         <input
           type="text"
           placeholder="Sök leverantör…"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="bg-white/[0.05] border border-white/[0.08] rounded-lg px-3 py-1.5 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-white/20 w-44"
+          className="bg-white/[0.05] border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-900 placeholder-gray-600 focus:outline-none focus:border-gray-300 w-44"
         />
 
         <div className="flex gap-1">
@@ -50,8 +50,8 @@ export function SuppliersView() {
               onClick={() => setFilterCategory(cat as SupplierCategory | 'Alla')}
               className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${
                 filterCategory === cat
-                  ? 'bg-white/10 text-white'
-                  : 'text-gray-500 hover:text-gray-300'
+                  ? 'bg-white/10 text-gray-900'
+                  : 'text-gray-500 hover:text-gray-600'
               }`}
             >
               {cat !== 'Alla' && (
@@ -71,7 +71,7 @@ export function SuppliersView() {
               key={s}
               onClick={() => setFilterStatus(s as SupplierStatus | 'Alla')}
               className={`px-2.5 py-1 rounded-lg text-xs transition-colors ${
-                filterStatus === s ? 'bg-white/10 text-white' : 'text-gray-500 hover:text-gray-300'
+                filterStatus === s ? 'bg-white/10 text-gray-900' : 'text-gray-500 hover:text-gray-600'
               }`}
             >
               {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -85,9 +85,9 @@ export function SuppliersView() {
         <div className="overflow-x-auto">
         <table className="w-full min-w-[500px]">
           <thead>
-            <tr className="text-left border-b border-white/[0.06]">
+            <tr className="text-left border-b border-gray-200">
               {['Leverantör', 'Kategori', 'Land', 'Kontakt', 'Status'].map(h => (
-                <th key={h} className="pb-2 text-xs font-semibold text-gray-600 uppercase tracking-wider pr-6">{h}</th>
+                <th key={h} className="pb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider pr-6">{h}</th>
               ))}
             </tr>
           </thead>
@@ -97,7 +97,7 @@ export function SuppliersView() {
               return (
                 <tr key={s.id} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
                   <td className="py-3 pr-6">
-                    <span className="text-sm font-semibold text-white">{s.name}</span>
+                    <span className="text-sm font-semibold text-gray-900">{s.name}</span>
                   </td>
                   <td className="py-3 pr-6">
                     <span
@@ -108,7 +108,7 @@ export function SuppliersView() {
                     </span>
                   </td>
                   <td className="py-3 pr-6">
-                    <span className="text-xs text-gray-400">{s.country}</span>
+                    <span className="text-xs text-gray-500">{s.country}</span>
                   </td>
                   <td className="py-3 pr-6">
                     <span className="text-xs text-gray-500 font-mono">{s.email}</span>
@@ -129,10 +129,10 @@ export function SuppliersView() {
         </div>{/* /overflow-x-auto */}
 
         {filtered.length === 0 && (
-          <div className="text-center py-16 text-gray-600 text-sm">Inga leverantörer matchar filtret</div>
+          <div className="text-center py-16 text-gray-500 text-sm">Inga leverantörer matchar filtret</div>
         )}
 
-        <div className="mt-4 text-xs text-gray-700 font-mono">
+        <div className="mt-4 text-xs text-gray-600 font-mono">
           {filtered.length} av {SUPPLIERS.length} leverantörer
         </div>
       </div>

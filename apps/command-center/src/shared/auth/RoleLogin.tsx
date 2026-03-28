@@ -26,7 +26,7 @@ export function RoleLogin() {
       {/* Header */}
       <div className="mb-8 text-center">
         <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-purple-700 mb-4">
-          <span className="text-xl font-bold text-white">W</span>
+          <span className="text-xl font-bold text-gray-900">W</span>
         </div>
         <h1 className="text-xl font-semibold text-gray-900">Wavult OS</h1>
         <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mt-1">Wavult Ecosystem</p>
@@ -42,7 +42,7 @@ export function RoleLogin() {
         </div>
       </div>
 
-      <p className="mt-6 text-xs text-gray-400 font-mono">
+      <p className="mt-6 text-xs text-gray-500 font-mono">
         Wavult OS · Intern access
       </p>
     </div>

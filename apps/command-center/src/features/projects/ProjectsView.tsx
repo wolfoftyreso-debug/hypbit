@@ -28,7 +28,7 @@ function CountdownBlock({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center gap-1">
       <div
-        className="text-4xl font-bold tabular-nums text-white px-4 py-3 rounded-xl"
+        className="text-4xl font-bold tabular-nums text-gray-900 px-4 py-3 rounded-xl"
         style={{ background: 'rgba(59,130,246,0.12)', border: '1px solid rgba(59,130,246,0.25)', minWidth: 72, textAlign: 'center' }}
       >
         {String(value).padStart(2, '0')}
@@ -130,7 +130,7 @@ const STATUS_STYLE: Record<string, { bg: string; color: string }> = {
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+    <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
       {children}
     </h2>
   )
@@ -167,7 +167,7 @@ function ProjectCard({ project }: { project: typeof PROJECTS[0] }) {
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="text-base font-bold text-white">{project.name}</h3>
+            <h3 className="text-base font-bold text-gray-900">{project.name}</h3>
             <span
               className="text-xs font-semibold px-2 py-0.5 rounded-full"
               style={{ background: style.bg, color: style.color }}
@@ -175,7 +175,7 @@ function ProjectCard({ project }: { project: typeof PROJECTS[0] }) {
               {project.statusLabel}
             </span>
           </div>
-          <p className="text-xs text-gray-400 mt-0.5">{project.tagline}</p>
+          <p className="text-xs text-gray-500 mt-0.5">{project.tagline}</p>
         </div>
       </div>
 
@@ -184,8 +184,8 @@ function ProjectCard({ project }: { project: typeof PROJECTS[0] }) {
         {project.kpis.map(kpi => (
           <div key={kpi.label} className="bg-surface-overlay rounded-lg px-3 py-2.5">
             <div className="text-xs text-gray-500 mb-0.5">{kpi.label}</div>
-            <div className="text-sm font-bold text-white tabular-nums">{kpi.value}</div>
-            {kpi.note && <div className="text-xs text-gray-600 mt-0.5">{kpi.note}</div>}
+            <div className="text-sm font-bold text-gray-900 tabular-nums">{kpi.value}</div>
+            {kpi.note && <div className="text-xs text-gray-500 mt-0.5">{kpi.note}</div>}
           </div>
         ))}
       </div>
@@ -218,7 +218,7 @@ function ProjectCard({ project }: { project: typeof PROJECTS[0] }) {
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs px-2.5 py-1 rounded-md text-gray-400 hover:text-white transition-colors"
+              className="text-xs px-2.5 py-1 rounded-md text-gray-500 hover:text-gray-900 transition-colors"
               style={{ background: project.color + '15', border: `1px solid ${project.color}25` }}
             >
               {link.label} ↗
@@ -246,8 +246,8 @@ export function ProjectsView() {
     <div className="space-y-8 max-w-6xl">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-white">Projekt & KPI:er</h1>
-        <p className="text-gray-400 mt-1">
+        <h1 className="text-2xl font-bold text-gray-900">Projekt & KPI:er</h1>
+        <p className="text-gray-500 mt-1">
           {isRoot
             ? 'Wavult Group — alla aktiva initiativ'
             : `Showing projects in ${activeEntity.name}`}
@@ -281,18 +281,18 @@ export function ProjectsView() {
             <span className="text-2xl">🇹🇭</span>
             <span className="text-xs font-semibold text-purple-400 uppercase tracking-wider">Thailand Workcamp</span>
           </div>
-          <h2 className="text-xl font-bold text-white">11 april 2026</h2>
-          <p className="text-sm text-gray-400 mt-1">
+          <h2 className="text-xl font-bold text-gray-900">11 april 2026</h2>
+          <p className="text-sm text-gray-500 mt-1">
             Vecka 1: teambuilding + utbildning. Sedan: alla projekt redo att rullas ut.
           </p>
         </div>
         <div className="flex items-end gap-3">
           <CountdownBlock value={cd.days} label="dagar" />
-          <span className="text-2xl text-gray-600 mb-7">:</span>
+          <span className="text-2xl text-gray-500 mb-7">:</span>
           <CountdownBlock value={cd.hours} label="timmar" />
-          <span className="text-2xl text-gray-600 mb-7">:</span>
+          <span className="text-2xl text-gray-500 mb-7">:</span>
           <CountdownBlock value={cd.minutes} label="minuter" />
-          <span className="text-2xl text-gray-600 mb-7">:</span>
+          <span className="text-2xl text-gray-500 mb-7">:</span>
           <CountdownBlock value={cd.seconds} label="sekunder" />
         </div>
       </div>
@@ -301,7 +301,7 @@ export function ProjectsView() {
       <div>
         <SectionHeading>Aktiva Projekt</SectionHeading>
         {visibleProjects.length === 0 ? (
-          <div className="text-center py-12 text-gray-600">
+          <div className="text-center py-12 text-gray-500">
             <p className="text-3xl mb-3">📂</p>
             <p className="text-sm">No projects in {activeEntity.name}</p>
           </div>

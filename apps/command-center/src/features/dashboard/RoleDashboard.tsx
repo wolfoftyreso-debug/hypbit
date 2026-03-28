@@ -11,14 +11,14 @@ function WelcomeBanner() {
     <div className="mb-6 rounded-xl border border-indigo-500/30 bg-indigo-500/8 p-4 flex items-start gap-3">
       <span className="text-xl flex-shrink-0">👋</span>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold text-white mb-1">Välkommen till Wavult OS</p>
-        <p className="text-xs text-gray-400 leading-relaxed">
-          Det här är ert operativsystem. Alla moduler i vänstermenyn har ett <strong className="text-gray-300">?</strong>-märke — klicka på det för att förstå vad en flik eller funktion gör. Byt bolag med <strong className="text-gray-300">väljaren uppe till vänster</strong>.
+        <p className="text-sm font-semibold text-gray-900 mb-1">Välkommen till Wavult OS</p>
+        <p className="text-xs text-gray-500 leading-relaxed">
+          Det här är ert operativsystem. Alla moduler i vänstermenyn har ett <strong className="text-gray-600">?</strong>-märke — klicka på det för att förstå vad en flik eller funktion gör. Byt bolag med <strong className="text-gray-600">väljaren uppe till vänster</strong>.
         </p>
       </div>
       <button
         onClick={() => { localStorage.setItem('wavult-banner-dismissed', '1'); setDismissed(true) }}
-        className="text-gray-600 hover:text-gray-400 transition-colors flex-shrink-0 text-lg leading-none"
+        className="text-gray-500 hover:text-gray-500 transition-colors flex-shrink-0 text-lg leading-none"
       >
         ×
       </button>
@@ -32,8 +32,8 @@ function CeoDashboard() {
     <div className="space-y-8 max-w-6xl">
       <WelcomeBanner />
       <div>
-        <h1 className="text-sm font-semibold text-white">Group CEO</h1>
-        <p className="text-gray-400 mt-1">Strategisk överblick — Wavult Ecosystem</p>
+        <h1 className="text-sm font-semibold text-gray-900">Group CEO</h1>
+        <p className="text-gray-500 mt-1">Strategisk överblick — Wavult Ecosystem</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -89,8 +89,8 @@ function Opsdashboard() {
   return (
     <div className="space-y-8 max-w-6xl">
       <div>
-        <h1 className="text-sm font-semibold text-white">CEO Operations</h1>
-        <p className="text-gray-400 mt-1">Daglig drift & execution — Wavult Operations</p>
+        <h1 className="text-sm font-semibold text-gray-900">CEO Operations</h1>
+        <p className="text-gray-500 mt-1">Daglig drift & execution — Wavult Operations</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -137,8 +137,8 @@ function CfoDashboard() {
   return (
     <div className="space-y-8 max-w-6xl">
       <div>
-        <h1 className="text-sm font-semibold text-white">CFO</h1>
-        <p className="text-gray-400 mt-1">Finansiell kontroll — Wavult Ecosystem</p>
+        <h1 className="text-sm font-semibold text-gray-900">CFO</h1>
+        <p className="text-gray-500 mt-1">Finansiell kontroll — Wavult Ecosystem</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -185,8 +185,8 @@ function CtoDashboard() {
   return (
     <div className="space-y-8 max-w-6xl">
       <div>
-        <h1 className="text-sm font-semibold text-white">Group CTO</h1>
-        <p className="text-gray-400 mt-1">Teknisk arkitektur & infrastruktur — Wavult Ecosystem</p>
+        <h1 className="text-sm font-semibold text-gray-900">Group CTO</h1>
+        <p className="text-gray-500 mt-1">Teknisk arkitektur & infrastruktur — Wavult Ecosystem</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -242,8 +242,8 @@ function CloDashboard() {
   return (
     <div className="space-y-8 max-w-6xl">
       <div>
-        <h1 className="text-sm font-semibold text-white">Chief Legal & Compliance</h1>
-        <p className="text-gray-400 mt-1">Bolagsstruktur, avtal & risk — Wavult Ecosystem</p>
+        <h1 className="text-sm font-semibold text-gray-900">Chief Legal & Compliance</h1>
+        <p className="text-gray-500 mt-1">Bolagsstruktur, avtal & risk — Wavult Ecosystem</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -291,15 +291,15 @@ function CpoDashboard() {
   return (
     <div className="space-y-8 max-w-6xl">
       <div>
-        <h1 className="text-2xl font-bold text-white">Chief Product Officer</h1>
-        <p className="text-gray-400 mt-1">Produktstrategi & roadmap — Vakant (interim: Erik)</p>
+        <h1 className="text-2xl font-bold text-gray-900">Chief Product Officer</h1>
+        <p className="text-gray-500 mt-1">Produktstrategi & roadmap — Vakant (interim: Erik)</p>
       </div>
 
       <div className="bg-surface-raised border border-pink-500/20 rounded-2xl p-6 text-center">
         <div className="text-4xl mb-3">🧩</div>
-        <div className="text-white font-semibold mb-1">Rollen är vakant</div>
-        <div className="text-gray-400 text-sm">Erik Svensson håller CPO-ansvar interim tills rekrytering är klar</div>
-        <div className="mt-4 text-xs text-gray-600">Nästa rekrytering — CPO är prioritet 1</div>
+        <div className="text-gray-900 font-semibold mb-1">Rollen är vakant</div>
+        <div className="text-gray-500 text-sm">Erik Svensson håller CPO-ansvar interim tills rekrytering är klar</div>
+        <div className="mt-4 text-xs text-gray-500">Nästa rekrytering — CPO är prioritet 1</div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -343,7 +343,7 @@ const STATUS_LABELS: Record<string, string> = {
 function Section({ title, children }: { title: string; children: { text: string; status: string }[] }) {
   return (
     <div>
-      <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">{title}</h2>
+      <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">{title}</h2>
       <div className="bg-surface-raised border border-surface-border rounded-xl overflow-hidden">
         {children.map((item, i) => (
           <div
@@ -355,7 +355,7 @@ function Section({ title, children }: { title: string; children: { text: string;
               className="mt-1 h-2 w-2 rounded-full flex-shrink-0"
               style={{ background: STATUS_COLORS[item.status] ?? '#6B7280' }}
             />
-            <span className="text-sm text-gray-300 flex-1">{item.text}</span>
+            <span className="text-sm text-gray-600 flex-1">{item.text}</span>
             <span
               className="text-xs px-1.5 py-0.5 rounded flex-shrink-0"
               style={{
@@ -393,7 +393,7 @@ function ScopeBanner() {
         {isRoot ? 'Viewing: Wavult Group (All entities)' : `Viewing: ${activeEntity.name}`}
       </span>
       {!isRoot && (
-        <span className="text-gray-600 ml-1">— scoped view</span>
+        <span className="text-gray-500 ml-1">— scoped view</span>
       )}
     </div>
   )
