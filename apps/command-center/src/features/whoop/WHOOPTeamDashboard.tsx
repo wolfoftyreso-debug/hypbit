@@ -179,7 +179,7 @@ function SetupGuide() {
 // ─── Connect Tab ──────────────────────────────────────────────────────────────
 
 function ConnectTab({ onConnected }: { onConnected: () => void }) {
-  const { apiFetch, apiBase } = useApi()
+  const { apiFetch } = useApi()
   const [connected, setConnected] = useState(false)
   const [myData, setMyData] = useState<MyData | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -243,8 +243,18 @@ function ConnectTab({ onConnected }: { onConnected: () => void }) {
       .finally(() => setLoadingData(false))
   }, [connected])
 
-  function handleConnect() {
-    window.location.href = `${apiBase}/whoop/auth`
+  async function handleConnect() {
+    try {
+      const res = await apiFetch('/whoop/auth-url', { method: 'POST' })
+      if (res.ok) {
+        const { url } = await res.json()
+        window.location.href = url
+      } else {
+        setError('Kunde inte starta WHOOP-koppling — försök igen')
+      }
+    } catch (err) {
+      setError('Nätverksfel — kontrollera anslutningen')
+    }
   }
 
   function handleDisconnect() {

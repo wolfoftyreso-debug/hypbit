@@ -42,26 +42,59 @@ function getFrontendUrl(): string {
   return process.env.WHOOP_FRONTEND_URL ?? 'https://wavult-os.pages.dev';
 }
 
-// ─── HMAC-signerat state (löser CSRF utan in-memory store) ────────────────────
-// Format: <uuid>.<hmac-hex> — valideras utan lagring, fungerar i multi-instance ECS
+// ─── State store — binder OAuth state till userId (löser multi-instance via kort TTL) ───
+// State är HMAC-signerat + userId-bundet. TTL 10 min. Supabase-migration i fas 2.
 
 import { createHmac, timingSafeEqual } from 'crypto';
 
-function createSignedState(uuid: string): string {
+interface StateEntry {
+  userId: string;
+  createdAt: number;
+}
+
+const stateStore = new Map<string, StateEntry>();
+
+function cleanStates() {
+  const tenMinutesAgo = Date.now() - 10 * 60 * 1000;
+  for (const [k, v] of stateStore.entries()) {
+    if (v.createdAt < tenMinutesAgo) stateStore.delete(k);
+  }
+}
+
+function createSignedState(uuid: string, userId: string): string {
   const secret = process.env.OAUTH_STATE_SECRET ?? 'wavult-whoop-state-secret-change-me';
-  const hmac = createHmac('sha256', secret).update(uuid).digest('hex');
+  const payload = `${uuid}:${userId}`;
+  const hmac = createHmac('sha256', secret).update(payload).digest('hex');
+  // Spara i store så callback kan slå upp userId
+  cleanStates();
+  stateStore.set(uuid, { userId, createdAt: Date.now() });
   return `${uuid}.${hmac}`;
 }
 
-function verifySignedState(state: string): boolean {
+function verifyAndConsumeState(state: string): { valid: boolean; userId: string | null } {
   try {
-    const [uuid, hmac] = state.split('.');
-    if (!uuid || !hmac) return false;
-    const expected = createHmac('sha256', process.env.OAUTH_STATE_SECRET ?? 'wavult-whoop-state-secret-change-me')
-      .update(uuid).digest('hex');
-    return timingSafeEqual(Buffer.from(hmac, 'hex'), Buffer.from(expected, 'hex'));
+    const dotIdx = state.indexOf('.');
+    if (dotIdx === -1) return { valid: false, userId: null };
+    const uuid = state.slice(0, dotIdx);
+    const hmac = state.slice(dotIdx + 1);
+    const entry = stateStore.get(uuid);
+    if (!entry) return { valid: false, userId: null }; // Okänt state
+
+    const secret = process.env.OAUTH_STATE_SECRET ?? 'wavult-whoop-state-secret-change-me';
+    const expected = createHmac('sha256', secret).update(`${uuid}:${entry.userId}`).digest('hex');
+
+    let hmacBuf: Buffer, expectedBuf: Buffer;
+    try {
+      hmacBuf = Buffer.from(hmac, 'hex');
+      expectedBuf = Buffer.from(expected, 'hex');
+    } catch { return { valid: false, userId: null }; }
+
+    if (hmacBuf.length !== expectedBuf.length) return { valid: false, userId: null };
+    const valid = timingSafeEqual(hmacBuf, expectedBuf);
+    if (valid) stateStore.delete(uuid); // Engångsanvändning
+    return { valid, userId: valid ? entry.userId : null };
   } catch {
-    return false;
+    return { valid: false, userId: null };
   }
 }
 
@@ -129,11 +162,12 @@ async function getValidAccessToken(userId: string): Promise<string | null> {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// GET /whoop/auth — starta OAuth-flödet (kräver inloggning)
+// GET /whoop/auth — starta OAuth-flödet (kräver inloggning via Bearer header)
 // ─────────────────────────────────────────────────────────────────────────────
 
 router.get('/auth', requireAuth, (req: Request, res: Response) => {
   const cfg = getConfig();
+  const userId = (req as any).user.id;
 
   if (!cfg.WHOOP_CLIENT_ID || !cfg.WHOOP_REDIRECT_URI) {
     return res.status(503).json({
@@ -141,9 +175,7 @@ router.get('/auth', requireAuth, (req: Request, res: Response) => {
     });
   }
 
-  // HMAC-signerat state — fungerar i multi-instance ECS utan delad lagring
-  const state = createSignedState(randomUUID());
-
+  const state = createSignedState(randomUUID(), userId);
   const params = new URLSearchParams({
     response_type: 'code',
     client_id: cfg.WHOOP_CLIENT_ID,
@@ -152,8 +184,34 @@ router.get('/auth', requireAuth, (req: Request, res: Response) => {
     state,
   });
 
-  const authUrl = `https://api.prod.whoop.com/oauth/oauth2/auth?${params.toString()}`;
-  return res.redirect(authUrl);
+  return res.redirect(`https://api.prod.whoop.com/oauth/oauth2/auth?${params.toString()}`);
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// POST /whoop/auth-url — returnera OAuth URL (frontend kan inte göra redirect med Bearer header)
+// Frontend POSTar med JWT, får tillbaka en URL att navigera till
+// ─────────────────────────────────────────────────────────────────────────────
+
+router.post('/auth-url', requireAuth, (req: Request, res: Response) => {
+  const cfg = getConfig();
+  const userId = (req as any).user.id;
+
+  if (!cfg.WHOOP_CLIENT_ID || !cfg.WHOOP_REDIRECT_URI) {
+    return res.status(503).json({
+      error: 'WHOOP inte konfigurerat — saknar WHOOP_CLIENT_ID eller WHOOP_REDIRECT_URI',
+    });
+  }
+
+  const state = createSignedState(randomUUID(), userId);
+  const params = new URLSearchParams({
+    response_type: 'code',
+    client_id: cfg.WHOOP_CLIENT_ID,
+    redirect_uri: cfg.WHOOP_REDIRECT_URI,
+    scope: 'read:recovery read:sleep read:workout offline',
+    state,
+  });
+
+  return res.json({ url: `https://api.prod.whoop.com/oauth/oauth2/auth?${params.toString()}` });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -170,9 +228,10 @@ router.get('/callback', async (req: Request, res: Response) => {
     return res.redirect(`${frontendUrl}/whoop?error=oauth_denied`);
   }
 
-  // Validera HMAC-signerat state
-  if (!state || !verifySignedState(state)) {
-    console.warn('[WHOOP] Ogiltigt eller manipulerat state — möjlig CSRF');
+  // Validera state och hämta userId (state är bundet till userId vid skapandet)
+  const { valid, userId: stateUserId } = state ? verifyAndConsumeState(state) : { valid: false, userId: null };
+  if (!valid || !stateUserId) {
+    console.warn('[WHOOP] Ogiltigt state — CSRF eller session timeout');
     return res.redirect(`${frontendUrl}/whoop?error=invalid_state`);
   }
 
@@ -185,8 +244,8 @@ router.get('/callback', async (req: Request, res: Response) => {
     return res.redirect(`${frontendUrl}/whoop?error=token_exchange_failed`);
   }
 
-  // Om inloggad: spara tokens direkt
-  const userId = (req as any).user?.id;
+  // Spara tokens mot stateUserId (från state, inte req.user som är null vid callback)
+  const userId = stateUserId;
   if (userId) {
     try {
       const whoopUserId = await fetchWhoopUserId(tokens.access_token);
@@ -225,10 +284,10 @@ router.get('/callback', async (req: Request, res: Response) => {
       console.warn('[WHOOP] Kunde inte spara tokens:', err instanceof Error ? err.message : 'unknown');
       return res.redirect(`${frontendUrl}/whoop?error=save_failed`);
     }
+  } else {
+    // Ska inte hända — state validerade men userId saknades
+    return res.redirect(`${frontendUrl}/whoop?error=save_failed`);
   }
-
-  // Inte inloggad — kan inte spara tokens, be user logga in
-  return res.redirect(`${frontendUrl}/login?redirect=/whoop&error=login_required`);
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

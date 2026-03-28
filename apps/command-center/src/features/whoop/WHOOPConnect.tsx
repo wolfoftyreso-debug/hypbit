@@ -8,7 +8,7 @@
 import { useEffect, useState } from 'react'
 import { useApi } from '../../shared/auth/useApi'
 
-const API_BASE = import.meta.env.VITE_API_URL ?? 'https://api.hypbit.com'
+
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -105,8 +105,18 @@ export function WHOOPConnect() {
     }
   }
 
-  function handleConnect() {
-    window.location.href = `${API_BASE}/whoop/auth`
+  async function handleConnect() {
+    try {
+      const res = await apiFetch('/whoop/auth-url', { method: 'POST' })
+      if (res.ok) {
+        const { url } = await res.json()
+        window.location.href = url
+      } else {
+        console.error('[WHOOPConnect] auth-url failed:', res.status)
+      }
+    } catch (err) {
+      console.error('[WHOOPConnect] handleConnect error:', err)
+    }
   }
 
   if (loading) {
