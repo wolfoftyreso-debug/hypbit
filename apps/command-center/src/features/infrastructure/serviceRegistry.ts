@@ -20,6 +20,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
   // ─── COMPUTE ─────────────────────────────────────────────────────────────
   {
     id: 'hypbit-api',
+    // ECS service name: hypbit-api (deployed as hypbit-api in cluster hypbit)
     name: 'Wavult API (hypbit-api)',
     category: 'compute',
     provider: 'aws',
@@ -46,6 +47,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
     },
     alerts: [],
     settings: {
+      'ecs.service': 'hypbit-api',
       'ecs.desired_count': 1,
       'ecs.min_count': 1,
       'ecs.max_count': 3,
