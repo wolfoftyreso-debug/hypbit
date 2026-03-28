@@ -4076,8 +4076,7 @@ function LessonModal({ course, lessonIndex, progress, onUpdate, onClose }: {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={onClose}>
       <div
-        className="bg-white border border-surface-border rounded-xl w-full max-w-2xl mx-4 flex flex-col"
-        style={{ maxHeight: '88vh' }}
+        className="bg-white border border-surface-border rounded-xl w-full max-w-2xl mx-4 flex flex-col max-h-[90vh]"
         onClick={e => e.stopPropagation()}
       >
         {/* Header */}
@@ -4302,7 +4301,7 @@ export function AcademyView() {
       </div>
 
       {/* Course grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 flex-1 overflow-y-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 flex-1 overflow-y-auto">
         {COURSES.map(course => {
           const done = progress[course.id] ?? 0
           const total = course.lessons.length

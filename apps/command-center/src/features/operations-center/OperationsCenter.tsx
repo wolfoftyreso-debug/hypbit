@@ -120,7 +120,7 @@ export function OperationsCenter() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* GLOBAL STATUS BAR */}
-      <div className="sticky top-0 z-20 bg-white border-b border-slate-200 h-12 flex items-center px-6 gap-6 text-sm">
+      <div className="sticky top-0 z-20 bg-white border-b border-slate-200 min-h-12 flex flex-wrap items-center px-4 gap-2 py-2 text-sm">
         <button
           onClick={() => setActiveModule(null)}
           className={`flex items-center gap-1.5 px-3 py-1 rounded-lg font-medium transition-colors ${blockers.length > 0 ? 'bg-red-50 text-red-700 border border-red-200' : 'text-slate-400'}`}
@@ -150,7 +150,7 @@ export function OperationsCenter() {
         {/* ROW 1 */}
 
         {/* MODULES */}
-        <div className={`col-span-4 ${panelClass}`}>
+        <div className={`col-span-12 md:col-span-4 ${panelClass}`}>
           <div className={panelHeader}>
             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{t('ops.modules')}</span>
           </div>
@@ -175,7 +175,7 @@ export function OperationsCenter() {
         </div>
 
         {/* FLOWS */}
-        <div className={`col-span-4 ${panelClass}`}>
+        <div className={`col-span-12 md:col-span-4 ${panelClass}`}>
           <div className={panelHeader}>
             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{t('ops.flows')}</span>
           </div>
@@ -200,7 +200,7 @@ export function OperationsCenter() {
         </div>
 
         {/* TEAM */}
-        <div className={`col-span-4 ${panelClass}`}>
+        <div className={`col-span-12 md:col-span-4 overflow-x-auto ${panelClass}`}>
           <div className={panelHeader}>
             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{t('ops.team')}</span>
             <Users className="w-3.5 h-3.5 text-slate-400" />
@@ -226,7 +226,7 @@ export function OperationsCenter() {
         {/* ROW 2 */}
 
         {/* ALERTS */}
-        <div className={`col-span-4 ${panelClass}`}>
+        <div className={`col-span-12 md:col-span-4 ${panelClass}`}>
           <div className={panelHeader}>
             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{t('alerts.title')}</span>
             <AlertTriangle className="w-3.5 h-3.5 text-red-500" />
@@ -247,7 +247,7 @@ export function OperationsCenter() {
         </div>
 
         {/* TASK PRESSURE */}
-        <div className={`col-span-4 ${panelClass}`}>
+        <div className={`col-span-12 md:col-span-4 ${panelClass}`}>
           <div className={panelHeader}>
             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{t('ops.task_pressure')}</span>
             <Activity className="w-3.5 h-3.5 text-slate-400" />
@@ -273,7 +273,7 @@ export function OperationsCenter() {
         </div>
 
         {/* AUDIT LOG */}
-        <div className={`col-span-4 ${panelClass}`}>
+        <div className={`col-span-12 md:col-span-4 ${panelClass}`}>
           <div className={panelHeader}>
             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{t('ops.audit_log')}</span>
             <FileText className="w-3.5 h-3.5 text-slate-400" />

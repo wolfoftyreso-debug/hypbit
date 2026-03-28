@@ -38,7 +38,7 @@ export function KnowledgeHub() {
         </div>
 
         {/* Tabs — pill style */}
-        <div className="flex gap-1 pb-3">
+        <div className="flex gap-1 pb-3 overflow-x-auto no-scrollbar">
           {TABS.map(tab => (
             <button
               key={tab.id}
