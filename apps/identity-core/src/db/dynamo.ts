@@ -161,8 +161,59 @@ export async function rotateSession(
 }
 
 export async function revokeAllUserSessions(userId: string): Promise<void> {
-  // Full implementation requires GSI on user_id (see comment at top of file).
-  // Stub logs intent — wire up GSI scan when table is provisioned.
-  console.log('[Session] revokeAllUserSessions requested', { userId })
-  // TODO: Query GSI user_id-index, batch UpdateCommand state=revoked for each active session
+  // SECURITY CRITICAL: Session fixation prevention. Must revoke all existing sessions at login.
+  // Requires DynamoDB GSI on user_id. Create with:
+  //   aws dynamodb update-table --table-name ic-sessions \
+  //     --attribute-definitions AttributeName=user_id,AttributeType=S \
+  //     --global-secondary-indexes '[{"IndexName":"user_id-index","KeySchema":[{"AttributeName":"user_id","KeyType":"HASH"}],"Projection":{"ProjectionType":"ALL"}}]' \
+  //     --billing-mode PAY_PER_REQUEST
+  
+  try {
+    const { QueryCommand, BatchWriteCommand } = await import('@aws-sdk/lib-dynamodb')
+    
+    // Query all active sessions for this user via GSI
+    const queryResult = await ddb.send(new QueryCommand({
+      TableName: config.dynamo.sessionsTable,
+      IndexName: 'user_id-index',
+      KeyConditionExpression: 'user_id = :uid',
+      FilterExpression: '#s = :active',
+      ExpressionAttributeNames: { '#s': 'state' },
+      ExpressionAttributeValues: { ':uid': userId, ':active': 'active' },
+    }))
+    
+    const activeSessions = queryResult.Items || []
+    
+    if (activeSessions.length === 0) return
+    
+    console.log(`[Session] Revoking ${activeSessions.length} sessions for user ${userId}`)
+    
+    // Batch revoke (DynamoDB batch max 25 per request)
+    const now = new Date().toISOString()
+    const chunks: typeof activeSessions[] = []
+    for (let i = 0; i < activeSessions.length; i += 25) {
+      chunks.push(activeSessions.slice(i, i + 25))
+    }
+    
+    for (const chunk of chunks) {
+      await Promise.all(chunk.map(session =>
+        ddb.send(new UpdateCommand({
+          TableName: config.dynamo.sessionsTable,
+          Key: { session_id: session.session_id },
+          UpdateExpression: 'SET #s = :revoked, revoked_at = :now',
+          ExpressionAttributeNames: { '#s': 'state' },
+          ConditionExpression: '#s = :active',
+          ExpressionAttributeValues: { ':revoked': 'revoked', ':now': now, ':active': 'active' },
+        }))
+      ))
+    }
+    
+  } catch (err) {
+    // If GSI not provisioned yet: log critical warning but don't crash login
+    // This is acceptable ONLY before Identity Core goes live
+    console.error('[Session] CRITICAL: revokeAllUserSessions failed — GSI may not be provisioned', { userId, err })
+    // In production with AUTH_MODE=identity-core-only: this MUST succeed. Re-throw then.
+    if (process.env.AUTH_MODE === 'identity-core-only') {
+      throw new Error('SESSION_REVOCATION_FAILED: Cannot proceed without session fixation protection')
+    }
+  }
 }
