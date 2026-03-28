@@ -457,60 +457,47 @@ export function TeamMap() {
 
   // ─────────────────────────────────────────────────────────────────────────
   return (
-    <div className="relative w-full" style={{ height: 'calc(100vh - 60px)' }}>
-      {/* Map container */}
+    <div className="relative w-full" style={{ height: 'calc(100vh - 56px)' }}>
+      {/* Map container — full bleed */}
       <div ref={mapContainerRef} className="absolute inset-0" />
 
+      {/* Hide Mapbox logo & attribution — integrate into our UI */}
+      <style>{`
+        .mapboxgl-ctrl-logo { display: none !important; }
+        .mapboxgl-ctrl-attrib { display: none !important; }
+        .mapboxgl-ctrl-bottom-right { display: none !important; }
+        .mapboxgl-ctrl-bottom-left { display: none !important; }
+        .mapboxgl-ctrl-top-right { display: none !important; }
+      `}</style>
+
       {error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
-          <div className="rounded-lg bg-red-900/50 border border-red-700 p-6 max-w-sm text-center">
-            <div className="text-2xl mb-2">⚠️</div>
-            <p className="text-red-300 text-sm">{error}</p>
+        <div className="absolute inset-0 flex items-center justify-center bg-[#07080F]">
+          <div className="rounded-xl bg-red-950/60 border border-red-800/40 p-6 max-w-sm text-center">
+            <p className="text-red-400 text-sm font-mono">{error}</p>
           </div>
         </div>
       )}
 
-      {/* Top-right controls */}
-      <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
-        {/* Share location button */}
-        <button
-          onClick={shareLocation}
-          disabled={sharingLocation}
-          className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold shadow-lg transition-all"
-          style={{
-            background: sharingLocation ? '#374151' : '#8B5CF6',
-            color: 'white',
-            border: '1px solid rgba(255,255,255,0.1)',
-            cursor: sharingLocation ? 'not-allowed' : 'pointer',
-          }}
-        >
-          {sharingLocation ? (
-            <>
-              <span className="animate-spin">⟳</span> Hämtar…
-            </>
-          ) : (
-            <>📍 Dela min position</>
-          )}
-        </button>
-
+      {/* Top controls — integrated pill */}
+      <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
         {/* Status switch */}
         <div
-          className="flex rounded-lg overflow-hidden shadow-lg"
-          style={{ border: '1px solid rgba(255,255,255,0.1)' }}
+          className="flex rounded-lg overflow-hidden"
+          style={{ background: 'rgba(7,8,15,0.80)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.08)' }}
         >
           {(['active', 'away', 'offline'] as const).map((s) => (
             <button
               key={s}
               onClick={() => setMyStatus(s)}
               style={{
-                padding: '6px 10px',
+                padding: '5px 10px',
                 fontSize: '11px',
                 fontWeight: 600,
-                background: myStatus === s ? statusColor(s) : '#1f2937',
-                color: myStatus === s ? 'white' : '#9ca3af',
+                background: myStatus === s ? statusColor(s) + '22' : 'transparent',
+                color: myStatus === s ? statusColor(s) : '#6b7280',
                 cursor: 'pointer',
                 border: 'none',
-                transition: 'all 0.2s',
+                transition: 'all 0.15s',
               }}
             >
               {statusLabel(s)}
@@ -521,91 +508,118 @@ export function TeamMap() {
         {/* Center on team */}
         <button
           onClick={centerOnTeam}
-          className="flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold shadow-lg"
           style={{
-            background: '#1f2937',
+            background: 'rgba(7,8,15,0.80)',
+            backdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255,255,255,0.08)',
             color: '#e5e7eb',
-            border: '1px solid rgba(255,255,255,0.1)',
+            padding: '5px 12px',
+            borderRadius: 8,
+            fontSize: 11,
+            fontWeight: 600,
             cursor: 'pointer',
+            whiteSpace: 'nowrap',
           }}
         >
-          🎯 Centrera på teamet
+          Centrera
+        </button>
+
+        {/* Share location */}
+        <button
+          onClick={shareLocation}
+          disabled={sharingLocation}
+          style={{
+            background: sharingLocation ? 'rgba(55,65,81,0.80)' : 'rgba(139,92,246,0.90)',
+            backdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            color: 'white',
+            padding: '5px 12px',
+            borderRadius: 8,
+            fontSize: 11,
+            fontWeight: 600,
+            cursor: sharingLocation ? 'not-allowed' : 'pointer',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {sharingLocation ? 'Hämtar…' : 'Dela position'}
         </button>
       </div>
 
-      {/* Bottom-left: status bar */}
+      {/* Bottom bar — status + members — full width integrated */}
       <div
-        className="absolute bottom-8 left-4 z-10 flex items-center gap-3 rounded-lg px-3 py-2 text-xs"
+        className="absolute bottom-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-2"
         style={{
-          background: 'rgba(17, 24, 39, 0.85)',
-          backdropFilter: 'blur(8px)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          color: '#9ca3af',
+          background: 'rgba(7,8,15,0.88)',
+          backdropFilter: 'blur(16px)',
+          borderTop: '1px solid rgba(255,255,255,0.06)',
         }}
       >
-        <span>
-          {locations.length} teammedlemmar
-        </span>
-        <span>•</span>
-        <span>
-          {lastUpdated
-            ? secondsAgo < 5
-              ? 'Uppdaterad nyss'
-              : `Uppdaterad: ${secondsAgo}s sedan`
-            : 'Laddar…'}
-        </span>
-        <span>•</span>
-        <span style={{ color: '#22c55e' }}>
-          ● {locations.filter((l) => l.status === 'active').length} aktiva
-        </span>
-      </div>
+        {/* Status info */}
+        <div className="flex items-center gap-3 text-xs font-mono text-gray-500 shrink-0">
+          <span className="text-white font-semibold">{locations.length}</span>
+          <span>online</span>
+          <span className="text-gray-700">·</span>
+          <span style={{ color: '#22c55e' }}>{locations.filter((l) => l.status === 'active').length} aktiva</span>
+          <span className="text-gray-700">·</span>
+          <span>
+            {lastUpdated
+              ? secondsAgo < 5 ? 'live' : `${secondsAgo}s`
+              : '…'}
+          </span>
+        </div>
 
-      {/* Member list panel — bottom */}
-      <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-2 rounded-xl px-4 py-2 overflow-x-auto max-w-lg"
-        style={{
-          background: 'rgba(17, 24, 39, 0.85)',
-          backdropFilter: 'blur(8px)',
-          border: '1px solid rgba(255,255,255,0.1)',
-        }}
-      >
-        {locations.map((member) => (
-          <button
-            key={member.id}
-            onClick={() => {
-              mapRef.current?.flyTo({
-                center: [member.lng, member.lat],
-                zoom: 12,
-                duration: 800,
-              })
-              popupsRef.current.forEach((p) => p.remove())
-              popupsRef.current.get(member.id)?.addTo(mapRef.current!)
-            }}
-            className="flex flex-col items-center gap-1 rounded-lg p-2 transition-all hover:bg-white/10"
-            style={{ minWidth: '52px', cursor: 'pointer', background: 'transparent', border: 'none' }}
-          >
-            <div
+        {/* Member avatars */}
+        <div className="flex items-center gap-1.5 overflow-x-auto">
+          {locations.map((member) => (
+            <button
+              key={member.id}
+              onClick={() => {
+                mapRef.current?.flyTo({ center: [member.lng, member.lat], zoom: 12, duration: 800 })
+                popupsRef.current.forEach((p) => p.remove())
+                popupsRef.current.get(member.id)?.addTo(mapRef.current!)
+              }}
+              title={member.full_name}
               style={{
-                width: 36,
-                height: 36,
-                borderRadius: '50%',
-                background: member.status === 'offline' ? '#4b5563' : member.avatar_color,
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 700,
-                color: 'white',
-                fontSize: 11,
-                border: `2px solid ${statusColor(member.status)}`,
+                gap: 3,
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '2px 4px',
+                borderRadius: 8,
               }}
             >
-              {member.avatar_initials}
-            </div>
-            <span style={{ color: '#e5e7eb', fontSize: 9, fontWeight: 600 }}>
-              {member.full_name.split(' ')[0]}
-            </span>
-          </button>
-        ))}
+              <div
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: '50%',
+                  background: member.status === 'offline' ? '#374151' : member.avatar_color,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontWeight: 700,
+                  color: 'white',
+                  fontSize: 10,
+                  border: `2px solid ${statusColor(member.status)}`,
+                  boxShadow: member.status === 'active' ? `0 0 6px ${statusColor(member.status)}66` : 'none',
+                }}
+              >
+                {member.avatar_initials}
+              </div>
+              <span style={{ color: '#6b7280', fontSize: 9, fontWeight: 500, letterSpacing: '0.01em' }}>
+                {member.full_name.split(' ')[0]}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        {/* Mapbox attribution — minimal, integrated */}
+        <span className="text-gray-700 font-mono text-[9px] shrink-0 ml-2">
+          © Mapbox · OSM
+        </span>
       </div>
     </div>
   )
