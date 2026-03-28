@@ -39,14 +39,7 @@ const CATEGORY_ICON: Record<LiveEvent['category'], string> = {
   comms: '💬',
 }
 
-const CATEGORY_COLOR: Record<LiveEvent['category'], string> = {
-  deploy: '#4A7A5B',
-  sale: '#C4961A',
-  task: '#4A7A9B',
-  system: '#8B919A',
-  alert: '#D94040',
-  comms: '#8B5CF6',
-}
+
 
 const EVENT_POOL: Omit<LiveEvent, 'id' | 'time'>[] = [
   { actor: 'Leon', initials: 'LR', color: '#C4961A', action: 'stängde ett leadsamtal med', target: 'Stockholms Hamnar AB', category: 'sale' },
