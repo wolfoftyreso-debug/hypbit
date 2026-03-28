@@ -2908,6 +2908,750 @@ Alla ALPHA → BETA.
 Finance + CRM + Legal Hub → PRODUCTION.
 Reports-modulen byggd och live (automatiska månadsrapporter per entitet).`
   },
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // ENTERPRISE POLICY DOCUMENTS
+  // ─────────────────────────────────────────────────────────────────────────────
+  {
+    id: 'doc-policy-001',
+    title: 'Code of Conduct — Wavults Beteendekod',
+    category: 'Internt',
+    summary: 'Hur vi behandlar varandra, kunder och partners. Vad som är oacceptabelt och rapporteringsvägar.',
+    tags: ['code-of-conduct', 'beteende', 'policy', 'obligatorisk'],
+    updatedAt: '2026-03-28',
+    content: `## Code of Conduct — Wavults Beteendekod
+
+### Syfte
+
+Wavult Group bygger en kultur grundad på respekt, ärlighet och ansvar. Det här dokumentet definierar hur vi förväntas bete oss — mot varandra, mot kunder och mot partners. Det gäller alla som representerar Wavult, oavsett roll eller anställningsform.
+
+---
+
+### Grundläggande Principer
+
+**Respekt:** Varje person i och runt Wavult förtjänar att bli behandlad med värdighet. Det spelar ingen roll om det är en Zoomer på sitt första uppdrag eller en enterprise-kund med ett mångmiljonkontrakt — respekt är inte förhandlingsbart.
+
+**Ärlighet:** Vi kommunicerar transparent, även när det är obekvämt. Vi lovar inte det vi inte kan leverera. Vi erkänner misstag och lär oss av dem. Intern kultur av ärlighet är förutsättningen för extern trovärdighet.
+
+**Ägandeskap:** Vi tar ansvar för vårt arbete. Om något går fel lägger vi inte skulden på omständigheter eller andra — vi äger problemet, löser det och ser till att det inte händer igen.
+
+**Öppenhet:** Vi delar information som hjälper teamet att lyckas. Silotänk och informationsmonopol motarbetas aktivt. Beslutsunderlag och resultat dokumenteras i Wavult OS.
+
+---
+
+### Vad som är Oacceptabelt
+
+Följande beteenden tolereras inte under några omständigheter:
+
+- **Diskriminering:** Behandla någon sämre på grund av kön, ålder, etnicitet, religion, sexuell läggning, funktionsnedsättning eller annan personlig egenskap.
+- **Trakasserier:** Upprepat beteende som upplevs som hotfullt, förnedrande eller sexuellt oönskat — oavsett om det sker fysiskt, digitalt eller verbalt.
+- **Bedrägeri:** Förfalska kvitton, manipulera data, vilseleda kunder eller investerare.
+- **Illojal konkurrens:** Använda Wavults resurser, kontakter eller information för att bygga eller stödja konkurrerande verksamhet utan godkännande.
+- **Brott mot sekretess:** Dela konfidentiell information (kunddata, affärsplaner, credentials, personalärenden) med obehöriga.
+
+---
+
+### Rapporteringsvägar
+
+Om du upplever eller bevittnar ett brott mot denna policy:
+
+1. **Direkt till Dennis Bjarnemark** (Chief Legal & Operations): dennis@hypbit.com
+2. **Direkt till Erik Svensson** (CEO): erik@hypbit.com
+3. **Anonymt (planerat):** conduct@hypbit.com — kanalen byggs under Q2 2026
+
+Du kan alltid rapportera anonymt utan att ange ditt namn. Det är aldrig fel att rapportera om du har rimliga skäl att tro att något är fel.
+
+---
+
+### Konsekvenser
+
+Konsekvenserna anpassas efter allvarlighetsgrad:
+
+- **Formell varning** (dokumenterad): vid första och isolerade överträdelser av lättare karaktär.
+- **Omedelbar avslutning:** vid allvarliga överträdelser — diskriminering, trakasserier, bedrägeri, sekretessbrott eller upprepade överträdelser.
+
+Alla ärenden hanteras konfidentiellt. Den som rapporterar i god tro skyddas alltid mot repressalier.
+
+---
+
+### Tillämpningsområde
+
+Det här dokumentet gäller:
+
+- Alla anställda, oavsett roll eller senioritet
+- Konsulter och frilansare i uppdrag för Wavult
+- Partners och leverantörer som agerar på Wavults vägnar
+- Zoomers (QuiXzoom-uppdragstagare) under aktiva uppdrag
+
+Senast reviderat: 2026-03-28 av Erik Svensson (CEO) och Dennis Bjarnemark (CLO).`
+  },
+  {
+    id: 'doc-policy-002',
+    title: 'Varumärkesguide — Wavult Group',
+    category: 'Internt',
+    summary: 'Logotyp, färger, ton, förbjudna ord. Gäller alla produkter: QuiXzoom, Landvex, Wavult Group.',
+    tags: ['varumärke', 'brand', 'design', 'kommunikation', 'obligatorisk'],
+    updatedAt: '2026-03-28',
+    content: `## Varumärkesguide — Wavult Group
+
+### Varumärkeshierarki
+
+Wavult Group har tre distinkta varumärken som aldrig ska blandas eller förväxlas:
+
+| Varumärke | Segment | Målgrupp | Ton |
+|---|---|---|---|
+| Wavult Group | Holding / Corporate | Investerare, myndigheter, partners | Visionär, seriös, konkret |
+| QuiXzoom | B2C / Gig-ekonomi | Zoomers (18–30 år), yngre urban | Ung, fri, rebellisk |
+| Landvex | B2G / Enterprise | Kommuner, myndigheter, fastighetsägare | Kompetent, metodisk, trygg |
+| Quixom Ads | B2B / Marknadsföring | Annonsörer, mediebyråer | Datadriven, effektiv, precis |
+
+**Regeln:** Dessa varumärken kommunicerar aldrig med varandras röst. QuiXzoom-material ska ALDRIG låta som ett myndighetsdokument. Landvex-material ska ALDRIG låta som en TikTok-pitch.
+
+---
+
+### Wavult Groups Identitet
+
+**Visionär men konkret.** Vi pratar om framtiden med siffror och fakta — inte med buzzwords. Vi är inte ett "AI-bolag" eller ett "tech-bolag". Vi bygger infrastruktur för verklig intelligence capture.
+
+**Inte corporate-speak.** Vi skriver som vi tänker. Korta meningar. Aktiv röst. Inga onödiga adjektiv.
+
+---
+
+### QuiXzoom-identitet
+
+**Ung, fri, rebellisk.** QuiXzoom utmanar den traditionella fotografibranschen och ger vanliga människor möjlighet att tjäna pengar på att vara ute.
+
+**Zoomers — ALDRIG fotografer.** Våra uppdragstagare är Zoomers. Det är ett varumärkesord, inte en beskrivning. Fotografer är yrkesverksamma med dyra kameror. Zoomers är alla som kan ta ett bra foto med sin telefon.
+
+---
+
+### Landvex-identitet
+
+**Kompetent, metodisk, B2G-seriös.** Landvex kommunicerar till beslutsfattare i offentlig sektor. Varje ord ska signalera trygghet och kompetens.
+
+**ALDRIG "AI-övervakning".** Landvex säljer optisk analys och intelligent datainsamling — inte övervakning. Det är en principiell distinktion som alltid måste hållas.
+
+---
+
+### Förbjudna Ord och Ersättningar
+
+| Förbjudet | Ersättning | Varför |
+|---|---|---|
+| AI-driven | Optisk analys / Automatiserad analys | Undviker rädsla, mer precist |
+| Fotografer | Zoomers | Varumärkesskydd |
+| Disruptivt | Konkret beskrivning av vad vi gör | Tom buzzword |
+| World-class | Siffror och bevis | Obevisbart påstående |
+| Revolutionerande | Vad vi faktiskt levererar | Trovärdighetsrisk |
+| AI-övervakning | Optisk datainsamling | Juridisk och etisk risk |
+
+---
+
+### Färgpaletter
+
+**Wavult Group:** #8B5CF6 (lila) — primär identitetsfärg  
+**QuiXzoom:** #F59E0B (amber/gul) — energi, rörelse, ungdom  
+**Landvex:** #10B981 (grön) — trygghet, natur, offentlig sektor  
+
+Blanda aldrig primärfärgerna mellan varumärkena i samma kommunikationsmaterial.
+
+---
+
+### Typografi
+
+- **Löptext:** Inter, system-sans-serif (fallback)
+- **Koder och teknisk data:** Monospace (JetBrains Mono rekommenderas)
+- **Rubriker:** Inter Bold eller Semi-Bold
+
+---
+
+### Logotypanvändning
+
+**Minsta storlek:** 80px bred i digitala sammanhang. Aldrig mindre.  
+**Luft runt logotypen:** Minst lika med bokstavshöjden på alla sidor (clear space).  
+
+**Aldrig tillåtet:**
+- Rotera logotypen
+- Förvrida proportioner
+- Byta färg på logotypen (använd alltid original eller vit/svart-version)
+- Placera logotypen på bakgrunder med för låg kontrast
+- Kombinera Wavult-logotypen med konkurrenters material
+
+Senast reviderat: 2026-03-28.`
+  },
+  {
+    id: 'doc-policy-003',
+    title: 'Data & Informationssäkerhetspolicy',
+    category: 'Internt',
+    summary: 'Klassificering av data, credentials-hantering, device-policy och vad som aldrig skickas okrypterat.',
+    tags: ['säkerhet', 'credentials', 'gdpr', 'policy', 'obligatorisk'],
+    updatedAt: '2026-03-28',
+    content: `## Data & Informationssäkerhetspolicy
+
+### Syfte
+
+Den här policyn definierar hur Wavult Group hanterar data, credentials och enheter för att skydda företagets och kundernas information. Alla som hanterar Wavults system är skyldiga att följa den.
+
+---
+
+### Dataklassificering
+
+| Klass | Exempel | Hantering |
+|---|---|---|
+| **Publik** | Pressreleaser, publika produktbeskrivningar | Fri spridning |
+| **Intern** | Interna processdokument, mötesanteckningar | Bara teamet |
+| **Konfidentiell** | Kunddata, affärsplaner, prissättning | Behöver-att-veta |
+| **Strikt konfidentiell** | API-nycklar, lösenord, personnummer, investeraravtal | Krypterat + minsta möjliga access |
+
+Tveka aldrig att klassificera uppåt om du är osäker.
+
+---
+
+### Credentials-regler
+
+- **Aldrig i kod.** Inga API-nycklar, lösenord eller tokens i källkod — inte ens i kommentarer eller testfiler.
+- **Aldrig i Telegram eller e-post.** Credentials skickas inte i okrypterade kanaler. Någonsin.
+- **Alltid i credentials.env eller AWS Parameter Store.** Det är de enda godkända platserna.
+- **Roteras vid misstänkt läcka.** Om du tror att en nyckel har exponerades — rotera omedelbart och kontakta Johan (CTO) och Dennis (CLO).
+
+---
+
+### Device-policy
+
+- **2FA på alla jobbkonton.** Google, GitHub, AWS, Revolut — alla konton som rör Wavult kräver tvåfaktorsautentisering.
+- **Full disk-kryptering.** Alla enheter med jobbdata ska ha disk-kryptering aktiverad (BitLocker för Windows, FileVault för Mac).
+- **Lock screen vid 5 minuters inaktivitet.** Skärmen låses automatiskt. Inga undantag.
+- **Uppdateringar.** OS och kritiska applikationer hålls uppdaterade — inga kända sårbarheter accepteras.
+
+---
+
+### Vad som ALDRIG Skickas Okrypterat
+
+Följande information skickas ALDRIG via okrypterade kanaler (inklusive vanlig e-post utan kryptering, Telegram, SMS):
+
+- API-nycklar och access tokens
+- Lösenord (skicka via 1Password eller liknande)
+- Kunddata och personnummer
+- Kontrakt och juridiska dokument med känslig information
+- Finansiell data och bankinformation
+
+---
+
+### Clean Desk (Remote Work)
+
+- Inga skärmar synliga för obehöriga när du jobbar på offentliga platser.
+- Använd alltid VPN vid anslutning till offentliga nätverk (kaféer, flygplatser, hotell).
+- Stäng laptop eller lås skärm när du lämnar arbetsplatsen.
+
+---
+
+### Incidenthantering
+
+Vid misstänkt säkerhetsincident eller dataintrång:
+
+1. **Omedelbart:** Kontakta Johan Berglund (CTO) och Dennis Bjarnemark (CLO).
+2. **Dokumentera:** Vad hände, när, vilken data som potentiellt exponerades.
+3. **GDPR-anmälan:** Om persondata är inblandad måste Integritetsskyddsmyndigheten informeras inom 72 timmar.
+4. **Kommunikation:** Inga externa uttalanden om incidenten utan Eriks godkännande.
+
+Senast reviderat: 2026-03-28.`
+  },
+  {
+    id: 'doc-policy-004',
+    title: 'Travel & Expense Policy',
+    category: 'Internt',
+    summary: 'Vad som ersätts, godkännandeprocess, kvittokrav och Thailand-specifika regler.',
+    tags: ['resor', 'utgifter', 'expense', 'policy', 'thailand'],
+    updatedAt: '2026-03-28',
+    content: `## Travel & Expense Policy
+
+### Syfte
+
+Den här policyn klargör vilka resekostnader och utgifter Wavult Group ersätter, hur godkännandeprocessen ser ut och vilka krav som ställs på dokumentation.
+
+---
+
+### Vad som Ersätts
+
+- **Flyg:** Economy class. Business class kräver L3-godkännande (Erik) och motivering.
+- **Hotell:** Max 1 500 SEK per natt. Undantag om arbetsgivaren bokar direkt.
+- **Måltider:** Max 600 SEK per dag inklusive dryck (alkohol ersätts ej).
+- **Lokaltransport:** Taxi, kollektivtrafik, hyrbil för affärssyftet.
+- **Konferensavgifter:** Ersätts med L2-godkännande.
+- **Utrustning på resa:** Adapter, laddare etc. — ersätts upp till 500 SEK utan godkännande.
+
+---
+
+### Vad som INTE Ersätts
+
+- Alkohol (oavsett sammanhang, utan förhandsgodkännande)
+- Personliga souvenirer och presenter
+- Spa, underhållning, nöjesaktiviteter (utan förhandsgodkännande från L2)
+- Uppgraderingar av flyg eller hotell utöver policy
+- Böter och straffavgifter
+
+---
+
+### Kvittokrav
+
+- **Digitalt kvitto krävs alltid** — foto av papperkvitto accepteras.
+- Kvittot ska laddas upp inom **3 dagar** från utgiften.
+- Varje utgift ska ha en **beskrivning av affärssyftet** (vem träffade du? vilket projekt?).
+- Kvitton utan affärsbeskrivning ersätts inte.
+
+---
+
+### Godkännandenivåer
+
+| Belopp | Nivå | Godkännare |
+|---|---|---|
+| Under 1 000 SEK | L1 | Ingen godkännare krävs |
+| 1 000–10 000 SEK | L2 | Leon Russo eller Erik Svensson |
+| Över 10 000 SEK | L3 | Erik Svensson |
+
+---
+
+### Thailand Workcamp (April 2026)
+
+Specifika regler för teamets Thailand-vistelse:
+
+- **Hotell:** Betalas av bolaget direkt via Revolut corporate card. Bokningskostnad dras ej från individuell budget.
+- **Dagligt måltidstillägg:** 400 SEK per person och dag (lokal standard, ej 600 SEK).
+- **Transport till/från Thailand:** Hanteras och bokas centralt av Leon.
+- **Lokala aktiviteter:** Teamaktiviteter betalas av bolaget. Privata utflykter ersätts ej.
+
+---
+
+### Rapportering
+
+Alla utgifter rapporteras till Winston Bjarnemark (CFO) senast sista dagen i varje månad. Winston ansvarar för konsolidering och bokföring.
+
+Senast reviderat: 2026-03-28.`
+  },
+  {
+    id: 'doc-policy-005',
+    title: 'Kommunikationspolicy — Intern & Extern',
+    category: 'Internt',
+    summary: 'Vem kommunicerar vad, till vem och via vilken kanal. Mediahantering och social media-regler.',
+    tags: ['kommunikation', 'media', 'policy', 'social-media', 'extern'],
+    updatedAt: '2026-03-28',
+    content: `## Kommunikationspolicy — Intern & Extern
+
+### Syfte
+
+Den här policyn definierar hur Wavult Group kommunicerar — internt inom teamet och externt mot omvärlden. Tydlig kommunikation är en konkurrenskraft. Fel kommunikation kan skada varumärket, kundrelationer och investerarförtroende.
+
+---
+
+### Kanalval
+
+| Kanal | Används för | Används INTE för |
+|---|---|---|
+| **Telegram** | Dag-till-dag snabb kommunikation, frågor, uppdateringar | Viktiga beslut, dokumentation, konfidentiellt |
+| **E-post** | Formell extern kommunikation, avtal, myndigheter | Intern snabbkommunikation |
+| **Wavult OS** | Dokumentation, beslut, processer, policys | Chatt, informella frågor |
+| **GitHub** | Tekniska diskussioner, code review, issues | Affärsbeslut, HR-ärenden |
+
+---
+
+### Intern Kommunikation
+
+- **Inga viktiga beslut fattas bara muntligt.** Alla beslut som rör produkt, personal, ekonomi eller strategi dokumenteras i Wavult OS inom 24 timmar.
+- **Alla projektuppdateringar** ska finnas i Wavult OS — inte bara i Telegram.
+- **Konfidentiell information** (HR, löner, investerartermer) kommuniceras INTE i gruppchattar, oavsett kanal.
+
+---
+
+### Extern Kommunikation
+
+**BARA Erik pratar med press och investerare.** Ingen annan i teamet kommunicerar med journalister, medier eller potentiella investerare utan uttryckligt skriftligt OK från Erik.
+
+Detta gäller även "off the record"-samtal — de finns inte. Allt du säger till en journalist kan publiceras.
+
+---
+
+### Social Media för Anställda
+
+Du är välkommen att posta positivt om Wavult och vad du jobbar med. Men följande är förbjudet utan godkännande:
+
+- **Interna siffror:** Omsättning, antal kunder, uppdragsstatistik, burn rate.
+- **Personalfrågor:** Rekryteringar, avskedanden, organisationsförändringar.
+- **Produktplaner:** Features som inte är offentliga, lanseringsdatum, roadmap.
+- **Negativa kommentarer:** Om kunder, konkurrenter, partners eller kollegor.
+- **Finansiell information:** Investeringsrundor, värdering, term sheets.
+
+---
+
+### Mediahantering
+
+Om du kontaktas av en journalist, analytiker eller annan medieperson:
+
+1. Ta inte intervjun. Svara inte på frågor.
+2. Vidarebefordra omedelbart kontaktuppgifter till Erik.
+3. Svara INTE "inget att kommentera" — det är ett officiellt svar. Säg istället att du vidarebefordrar.
+4. Dokumentera kontakten i Wavult OS.
+
+---
+
+### Kriskommunikation
+
+Vid en kris (produkthaveri, säkerhetsincident, negativ pressbevakning):
+
+- **Erik godkänner alla externa uttalanden** — inget publiceras utan hans sign-off.
+- **Dennis hanterar myndigheter och juridiska kontakter.**
+- **Johan ansvarar för teknisk kommunikation** till berörda kunder vid systemhändelser.
+- Ingen improviserar externt. Intern kommunikation sker snabbt och transparent.
+
+Senast reviderat: 2026-03-28.`
+  },
+  {
+    id: 'doc-policy-006',
+    title: 'Acceptable Use Policy (AUP)',
+    category: 'Internt',
+    summary: 'Hur företagets system och verktyg får användas. Vad som är förbjudet på jobbenheter och konton.',
+    tags: ['aup', 'system', 'policy', 'säkerhet', 'verktyg'],
+    updatedAt: '2026-03-28',
+    content: `## Acceptable Use Policy (AUP)
+
+### Syfte
+
+Den här policyn definierar acceptabel och oacceptabel användning av Wavult Groups system, infrastruktur, konton och verktyg. Alla som har access till Wavults resurser är bundna av denna policy.
+
+---
+
+### Tillåten Användning
+
+Wavults system och verktyg används primärt för Wavult Groups affärsändamål. Begränsad personlig användning är acceptabel om den:
+
+- Inte stör produktivitet eller affärsverksamhet
+- Inte skapar säkerhetsrisker
+- Inte innebär kostnad för bolaget
+- Följer alla övriga delar av denna policy
+
+---
+
+### Förbjuden Användning
+
+Följande är strängt förbjudet:
+
+- **Olagligt innehåll:** Lagra, distribuera eller bearbeta olagligt material på Wavults system.
+- **Konkurrerande affärsverksamhet:** Använda Wavults tid, infrastruktur eller verktyg för att bygga eller driva konkurrerande verksamhet.
+- **Crypto mining och resursintensiva sidoprojekt:** Kör inga mining-operationer eller tunga beräkningar för privata ändamål på Wavults infrastruktur (AWS, servrar etc.).
+- **Dela credentials:** Ge aldrig dina inloggningsuppgifter till någon annan — inte ens kollegor. Varje person har sina egna credentials.
+- **Kringgå säkerhetskontroller:** Försök inte bypassa brandväggar, åtkomstkontroller, loggning eller andra säkerhetsmekanismer.
+
+---
+
+### AWS och GitHub — Specifika Regler
+
+**AWS:**
+- Skapa inga egna resurser på Wavults AWS-konto (155407238699) utan Johans (CTO) skriftliga godkännande.
+- Alla resurser ska taggas korrekt med projekt och miljö.
+- Inga produktionsändringar utan change management-process.
+
+**GitHub:**
+- Inga privata repos skapas under wolfoftyreso-debug-organisationen utan godkännande.
+- Källkod för kärnprodukter pushas aldrig till publika repos.
+- Alla repos ska ha tydlig README och ägarskap-dokumentation.
+
+---
+
+### Monitoring och Logging
+
+Wavult Group förbehåller sig rätten att granska systemloggar vid misstanke om missbruk eller säkerhetsincident. Bernt (AI-assistent) loggar alla kommandon som körs via systemet. Detta är inte dold övervakning — det är transparent säkerhetsloggning.
+
+---
+
+### Konsekvenser
+
+Brott mot denna policy hanteras beroende på allvarlighetsgrad:
+
+1. **Formell varning** — dokumenterad, vid första och isolerade överträdelser
+2. **Suspension av access** — vid upprepade eller mer allvarliga brott
+3. **Omedelbar avslutning** — vid grova brott (competitor-use, olagligt innehåll, credentials-delning)
+
+Senast reviderat: 2026-03-28.`
+  },
+  {
+    id: 'doc-policy-007',
+    title: 'Intressekonflikt & Sidointressen',
+    category: 'Internt',
+    summary: 'Vad som ska deklareras, hur man hanterar potentiella konflikter och vad som är förbjudet.',
+    tags: ['intressekonflikt', 'policy', 'sidointressen', 'deklaration'],
+    updatedAt: '2026-03-28',
+    content: `## Intressekonflikt & Sidointressen
+
+### Syfte
+
+Wavult Group kräver att alla i teamet agerar i bolagets bästa intresse. Den här policyn definierar vad en intressekonflikt är, vad som måste deklareras och vad som är förbjudet.
+
+---
+
+### Definition
+
+En **intressekonflikt** uppstår när personliga intressen — ekonomiska, relationella eller karriärmässiga — kan påverka (eller uppfattas påverka) beslut som fattas i Wavults tjänst.
+
+Det handlar inte om att misstänkliggöra utan om transparens. En deklarerad konflikt hanteras — en odeklarerad är ett problem.
+
+---
+
+### Vad som Måste Deklareras
+
+Följande situationer ska alltid deklareras skriftligt till Dennis Bjarnemark och Erik Svensson:
+
+- **Ägarandel i konkurrerande bolag:** Om du äger mer än 5% av ett bolag som konkurrerar med Wavult, QuiXzoom, Landvex eller Quixom Ads.
+- **Styrelseuppdrag:** Sitter i styrelsen för ett bolag som kan påverka eller konkurreras med Wavults verksamhet.
+- **Nära familjemedlemmar:** Om din make/maka, syskon, förälder eller barn är leverantör, kund eller anställd hos konkurrent.
+- **Personlig investering:** Finansiell investering i bolag som Wavult förhandlar med eller har affärsrelation med.
+
+Deklaration görs vid anställningsstart och löpande när situationen förändras.
+
+---
+
+### Förbjudet utan Godkännande
+
+- Starta eller ta anställning i konkurrerande verksamhet under anställningstiden
+- Använda Wavults information, kontakter eller resurser för personlig ekonomisk vinning
+- Ta emot gåvor, ersättningar eller förmåner till ett värde över 500 SEK från leverantörer eller kunder utan att deklarera det
+- Fatta inköpsbeslut där du eller en närstående har ekonomisk koppling till leverantören
+
+---
+
+### Godkännandeprocess
+
+1. Deklarera situationen skriftligt till Dennis och Erik.
+2. De granskar och beslutar gemensamt om en faktisk konflikt föreligger.
+3. Om konflikt konstateras: antingen avslutas relationen, eller hanteras konflikten via jäv-processen (du deltar inte i det berörda beslutet).
+4. Beslutet dokumenteras i Wavult OS.
+
+---
+
+### Konsekvenser vid Ej Deklaration
+
+Att undanhålla en deklarationspliktig intressekonflikt betraktas som ett allvarligt brott mot förtroendet och resulterar i omedelbar avslutning av anställning eller uppdrag.
+
+Senast reviderat: 2026-03-28.`
+  },
+  {
+    id: 'doc-policy-008',
+    title: 'IP & Äganderätt till Arbete',
+    category: 'Internt',
+    summary: 'Allt som byggs i Wavults tjänst ägs av Wavult Group. Regler för sidoprojekt och open source.',
+    tags: ['ip', 'upphovsrätt', 'ägande', 'policy', 'sidoprojekt'],
+    updatedAt: '2026-03-28',
+    content: `## IP & Äganderätt till Arbete
+
+### Syfte
+
+Den här policyn klargör äganderätten till immateriella tillgångar (IP) skapade i Wavults tjänst och regler kring sidoprojekt och open source-bidrag.
+
+---
+
+### Grundregeln
+
+Allt immateriellt arbete som utförs under anställnings- eller konsulttid för Wavult ägs av **Wavult Group FZCO** via IP-holdingstrukturen i Dubai. Detta gäller oavsett om arbetet utförs på kontorstid, hemifrån eller under resor i tjänsten.
+
+Äganderätten är en förutsättning för Wavults affärsmodell och investerarberättelse. Den är inte förhandlingsbar.
+
+---
+
+### Vad som Ingår i Wavults IP
+
+- **Kod:** All källkod skriven för Wavults produkter och system
+- **Design:** UI/UX-design, varumärkesmaterial, illustrationer, videoproduktioner
+- **Texter:** Produkttexter, dokumentation, marknadsföringsmaterial, affärsdokument
+- **Varumärken:** Produktnamn, logotyper, slogans skapade i tjänsten
+- **Affärsidéer:** Idéer relaterade till Wavults befintliga eller planerade verksamhet
+- **Databaser och dataset:** Data insamlad, strukturerad eller analyserad för Wavult
+
+---
+
+### Sidoprojekt
+
+Sidoprojekt är tillåtna om de uppfyller ALLA tre kriterier:
+
+1. De konkurrerar inte med Wavults nuvarande eller planerade verksamhet
+2. De använder inte Wavults resurser (servrar, tid, kontakter, verktyg, information)
+3. De deklareras skriftligt vid anställningsstart (eller när projektet påbörjas)
+
+Om du är osäker — fråga Dennis. Det är alltid bättre att deklarera i onödan än att riskera en konfliktsituation.
+
+---
+
+### Open Source-bidrag
+
+- Bidrag till open source-projekt med verktyg och bibliotek som INTE är Wavults kärnprodukter är tillåtna.
+- Bidrag som rör kod under wolfoftyreso-debug-organisationen på GitHub kräver L2-godkännande (Leon eller Erik).
+- Publicera aldrig Wavults kärnlogik, affärslogik eller kunddata som open source utan L3-godkännande (Erik).
+
+---
+
+### Konsulter och Frilansare
+
+Alla konsultavtal innehåller en IP-överlåtelseklausul. Allt arbete utfört i uppdraget övergår till Wavult Group FZCO vid slutleverans (eller löpande, beroende på avtalsform).
+
+Dennis Bjarnemark säkerställer att denna klausul finns i alla konsultavtal innan arbetet påbörjas.
+
+---
+
+### Äganderätt efter Avslutad Anställning
+
+IP-överlåtelsen gäller allt arbete utfört under anställningstiden, även om det inte formellt levererades. Vid avslutad anställning bekräftas detta skriftligt via exit-processen.
+
+Senast reviderat: 2026-03-28.`
+  },
+  {
+    id: 'doc-policy-009',
+    title: 'Whistleblower Policy',
+    category: 'Internt',
+    summary: 'Hur man rapporterar oegentligheter. Skydd mot repressalier. EU-direktivet 2019/1937.',
+    tags: ['whistleblower', 'policy', 'rapportering', 'eu-direktiv'],
+    updatedAt: '2026-03-28',
+    content: `## Whistleblower Policy
+
+### Syfte
+
+Wavult Group ska ha en kultur där oegentligheter kan rapporteras utan rädsla för konsekvenser. Den här policyn etablerar en trygg rapporteringsväg och garanterar skydd mot repressalier för den som rapporterar i god tro.
+
+---
+
+### Vad som Kan Rapporteras
+
+Whistleblower-kanalen är till för allvarliga oegentligheter — inte för vardagliga meningsskiljaktigheter. Följande kan rapporteras:
+
+- **Brott mot lag:** Skattefusk, bokföringsbrott, mutor, korruption
+- **GDPR-överträdelser:** Obehörig tillgång till persondata, ej rapporterade dataintrång
+- **Finansiellt bedrägeri:** Förfalskade rapporter, manipulerad bokföring, utbetalningar utan grund
+- **Säkerhetsrisker:** Allvarliga systemsårbarheter som inte åtgärdas, medvetet dold information
+- **Diskriminering och trakasserier:** Allvarliga och upprepade fall som inte hanteras internt
+- **Kränkningar av Code of Conduct:** Grova eller upprepade brott mot beteendekoden
+
+---
+
+### Hur man Rapporterar
+
+**Alternativ 1:** Direkt till Dennis Bjarnemark (CLO) — dennis@hypbit.com  
+**Alternativ 2:** Direkt till Erik Svensson (CEO) — erik@hypbit.com  
+**Alternativ 3 (planerat Q2 2026):** Anonymt via conduct@hypbit.com  
+**Alternativ 4 (externt):** Integritetsskyddsmyndigheten (IMY) för GDPR-relaterade brott — imy.se
+
+Om din rapport rör Erik eller Dennis direkt, kontakta det styrelsemedlem du känner mest förtroende för.
+
+---
+
+### Skydd mot Repressalier
+
+Den som rapporterar i god tro skyddas fullt ut:
+
+- Inga negativa konsekvenser för anställning, lön, karriär eller uppdrag
+- Konfidentiell hantering av identiteten
+- Omedelbar avslutning för den som vidtar repressalier mot en rapportör
+
+Repressalier mot en whistleblower betraktas som ett allvarligare brott än det ursprungliga som rapporterades.
+
+---
+
+### EU-direktiv 2019/1937
+
+EU:s whistleblower-direktiv (2019/1937) kräver att bolag med 50 eller fler anställda har ett formellt, konfidentiellt rapporteringssystem. Wavult är ännu under den gränsen men bygger systemet nu för att:
+
+1. Vara redo när vi passerar 50 anställda/uppdragstagare
+2. Visa investerare och partners att vi tar governance på allvar
+3. Skapa en kultur av öppenhet från dag ett
+
+---
+
+### Konfidentialitet
+
+Alla rapporter hanteras konfidentiellt. Bara Erik och Dennis informeras initialt. Utredning genomförs diskret. Rapportörens identitet avslöjas aldrig utan dennes uttryckliga medgivande.
+
+Senast reviderat: 2026-03-28.`
+  },
+  {
+    id: 'doc-policy-010',
+    title: 'Rekrytering & Anställningspolicy',
+    category: 'Internt',
+    summary: 'Hela rekryteringsprocessen: annonsering, intervjuer, erbjudande, onboarding och avslut.',
+    tags: ['rekrytering', 'anställning', 'hr', 'policy', 'onboarding'],
+    updatedAt: '2026-03-28',
+    content: `## Rekrytering & Anställningspolicy
+
+### Syfte
+
+Den här policyn beskriver Wavult Groups rekryteringsprocess, intervjustandard, erbjudandeprocess, onboarding och avslut. Målet är en konsekvent, rättvis och effektiv process som attraherar rätt person till rätt roll.
+
+---
+
+### Rekryteringsprinciper
+
+- **Kompetens och driv framför meriter.** En kandidat med rätt mindset och bevisad förmåga prioriteras före akademiska titlar.
+- **Kulturpassning är lika viktigt.** Teknisk kompetens utan värderingsalignment skapar problem. Båda måste finnas.
+- **Konsult-till-fastanställd-modell.** De flesta rekryteringar börjar med en konsultperiod på tre månader. Det ger båda parter chansen att utvärdera matchningen utan långsiktiga förpliktelser.
+
+---
+
+### Rekryteringsprocessen
+
+1. **Behovsidentifiering:** Ansvarig chef identifierar behov och skriver behovsunderlag.
+2. **L2-godkännande:** Leon Russo eller Erik Svensson godkänner att rekrytering påbörjas.
+3. **Jobbeskrivning:** Tas fram av ansvarig chef i samarbete med Leon.
+4. **Screening:** Leon granskar ansökningar och genomför initial screening (15–20 min samtal).
+5. **Intervju:** Kandidater som går vidare möter Leon och Erik för djupintervju.
+6. **Beslut:** Fattas gemensamt av Leon och Erik inom 48 timmar efter sista intervju.
+7. **Erbjudande:** Skriftligt erbjudande skickas via DocuSign.
+
+---
+
+### Intervjustandard
+
+**Förbjudna frågor** (diskriminerande, olagliga eller etiskt olämpliga):
+- Ålder (utöver behörighet för rollen)
+- Kön, könsidentitet, sexuell läggning
+- Religion eller politisk uppfattning
+- Familjesituation, graviditet, barn
+- Nationalitet eller etnisk bakgrund
+
+**Fokusera på:** Förmåga att lösa problem, tidigare erfarenhet av liknande utmaningar, värderingsalignment, arbetssätt och kommunikationsförmåga.
+
+---
+
+### Erbjudande
+
+Erbjudanden skickas skriftligt via DocuSign och innehåller alltid:
+
+- Roll och ansvarsområden
+- Lön och ersättningsmodell
+- Startdatum och anställningsform
+- Optionsprogram (om tillämpligt)
+- Sekretessåtagande och IP-överlåtelse
+- Länk till relevanta policydokument (denna lista)
+
+---
+
+### Onboarding
+
+Se doc-int-008 för fullständig dag 1–30 checklista. Kortversion:
+
+- **Dag 1:** Access, verktyg, introduktion till teamet, Wavult OS-genomgång
+- **Vecka 1:** Produkt-deep-dive, processgenomgång, policydokumentation
+- **Månad 1:** Första leverabel, 30-dagars check-in med Leon
+
+---
+
+### Avslut
+
+- **Uppsägningstid** per avtal (vanligen 30 dagar för konsulter, 1–3 månader för anställda).
+- **Exit-intervju** genomförs av Leon — syftet är att lära sig, inte konfrontera.
+- **Utrustning återlämnas** och access återkallas inom 24 timmar efter sista arbetsdag.
+- **IP-överlåtelse bekräftas** skriftligt som del av exit-processen.
+
+---
+
+### Equal Opportunity
+
+Wavult Group rekryterar utan diskriminering. Den bästa personen för rollen anställs, oavsett kön, ålder, etnisk bakgrund, religion, funktionsnedsättning eller annan personlig egenskap.
+
+Senast reviderat: 2026-03-28.`
+  },
 ]
 
 // ─── Knowledge Graph Nodes ────────────────────────────────────────────────────
