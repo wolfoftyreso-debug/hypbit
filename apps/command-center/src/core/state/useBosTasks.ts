@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import type { Task, ValidationInput } from './stateEngine'
 import { resolveTaskState, validateTaskInput } from './stateEngine'
+import { eventBus } from '../agent/eventBus'
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
@@ -36,7 +37,28 @@ export function useBosTasks() {
       .channel('bos_tasks_changes')
       .on('postgres_changes',
         { event: '*', schema: 'public', table: 'bos_tasks' },
-        () => fetchTasks()  // refetch on any change
+        (payload) => {
+          fetchTasks()  // refetch on any change
+
+          // Publish event to bus
+          const taskId = (payload.new as { id?: string })?.id || (payload.old as { id?: string })?.id
+          if (taskId) {
+            if (payload.eventType === 'UPDATE') {
+              const newState = (payload.new as { state?: string })?.state
+              if (newState === 'DONE') {
+                eventBus.publish({
+                  type: 'TASK_COMPLETED',
+                  taskId,
+                  ownerId: (payload.new as { owner_id?: string })?.owner_id || '',
+                })
+              } else {
+                eventBus.publish({ type: 'TASK_UPDATED', taskId })
+              }
+            } else if (payload.eventType === 'INSERT') {
+              eventBus.publish({ type: 'TASK_CREATED', taskId })
+            }
+          }
+        }
       )
       .subscribe()
 
@@ -77,6 +99,13 @@ export function useBosTasks() {
       .eq('id', taskId)
 
     if (error) return { success: false, error: error.message }
+
+    // Publish event to bus after successful state change
+    if (newState === 'DONE') {
+      eventBus.publish({ type: 'TASK_COMPLETED', taskId, ownerId: task.owner })
+    } else {
+      eventBus.publish({ type: 'TASK_UPDATED', taskId })
+    }
 
     // Log audit event
     await supabase.from('bos_task_events').insert({

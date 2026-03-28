@@ -15,6 +15,7 @@ import {
 } from '../../core/state/stateEngine'
 import { useBosTasks } from '../../core/state/useBosTasks'
 import { checkEscalations } from '../../core/state/escalationEngine'
+import { useTranslation } from '../../shared/i18n/useTranslation'
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -37,6 +38,7 @@ function getPersonName(ownerId: string): string {
 type UpdateTaskStateFn = (taskId: string, newState: Task['state']) => Promise<{ success: boolean; error?: string }>
 
 function TaskCard({ task, allTasks, updateTaskState }: { task: Task; allTasks: Task[]; updateTaskState: UpdateTaskStateFn }) {
+  const { t } = useTranslation()
   const effectiveState = resolveTaskState(task, allTasks)
   const isBlocked = effectiveState === 'BLOCKED'
   const isFailed = effectiveState === 'FAILED'
@@ -72,7 +74,7 @@ function TaskCard({ task, allTasks, updateTaskState }: { task: Task; allTasks: T
               <span className={`flex items-center gap-1 ${overdue ? 'text-red-600 font-bold' : 'text-gray-500'}`}>
                 <Clock className="w-3 h-3" />
                 {formatDeadline(task.deadline)}
-                {overdue && ' — FÖRSENAD'}
+                {overdue && ` — ${t('task.overdue')}`}
               </span>
             )}
             <span className="font-mono text-gray-400">{task.id}</span>
@@ -84,10 +86,10 @@ function TaskCard({ task, allTasks, updateTaskState }: { task: Task; allTasks: T
           {/* Blockers */}
           {isBlocked && blockerTasks.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-1">
-              <span className="bg-gray-100 text-gray-500 text-xs font-mono px-2 py-0.5 rounded">BLOCKED</span>
+              <span className="bg-gray-100 text-gray-500 text-xs font-mono px-2 py-0.5 rounded">{t('task.blocked').toUpperCase()}</span>
               {blockerTasks.map(bt => bt && (
                 <span key={bt.id} className="text-xs text-gray-500 font-mono">
-                  Väntar på: {bt.title}
+                  {t('task.waiting_for')}: {bt.title}
                 </span>
               ))}
             </div>
@@ -102,19 +104,22 @@ function TaskCard({ task, allTasks, updateTaskState }: { task: Task; allTasks: T
                 effectiveState === 'FAILED' ? 'bg-red-50 text-red-700' :
                 'bg-gray-100 text-gray-600'
               }`}>
-                {effectiveState}
+                {effectiveState === 'IN_PROGRESS' ? t('task.in_progress') :
+                 effectiveState === 'REVIEW' ? t('task.review') :
+                 effectiveState === 'FAILED' ? t('task.failed') :
+                 effectiveState}
               </span>
             </div>
           )}
         </div>
 
-        {/* Primary action — enforced Påbörja button */}
+        {/* Primary action button */}
         <button
           onClick={async () => {
-            if (effectiveState === 'BLOCKED') return  // hard block
+            if (effectiveState === 'BLOCKED') return
             const result = await updateTaskState(task.id, 'IN_PROGRESS')
             if (!result.success) {
-              alert(result.error)  // tillfällig feedback tills proper toast finns
+              alert(result.error)
             }
           }}
           disabled={effectiveState === 'BLOCKED' || effectiveState === 'DONE'}
@@ -127,11 +132,11 @@ function TaskCard({ task, allTasks, updateTaskState }: { task: Task; allTasks: T
           }`}
         >
           {effectiveState === 'BLOCKED' ? (
-            <><Lock className="w-3 h-3" />Blockerad</>
+            <><Lock className="w-3 h-3" />{t('task.blocked')}</>
           ) : effectiveState === 'DONE' ? (
-            <><CheckCircle className="w-3 h-3" />Klar</>
+            <><CheckCircle className="w-3 h-3" />{t('task.done')}</>
           ) : (
-            <><ArrowRight className="w-3 h-3" />{effectiveState === 'IN_PROGRESS' ? 'Fortsätt' : 'Påbörja'}</>
+            <><ArrowRight className="w-3 h-3" />{effectiveState === 'IN_PROGRESS' ? t('task.continue') : t('task.start')}</>
           )}
         </button>
       </div>
@@ -142,6 +147,7 @@ function TaskCard({ task, allTasks, updateTaskState }: { task: Task; allTasks: T
 // ─── Flow Progress Card ───────────────────────────────────────────────────────
 
 function FlowCard({ flow, allTasks }: { flow: Flow; allTasks: Task[] }) {
+  const { t } = useTranslation()
   const flowTasks = flow.tasks.map(id => allTasks.find(t => t.id === id)).filter(Boolean) as Task[]
   const doneTasks = flowTasks.filter(t => t.state === 'DONE')
   const progress = flowTasks.length > 0 ? (doneTasks.length / flowTasks.length) * 100 : 0
@@ -169,7 +175,7 @@ function FlowCard({ flow, allTasks }: { flow: Flow; allTasks: Task[] }) {
           </span>
         </div>
         <span className="text-xs font-mono text-gray-500">
-          {doneTasks.length}/{flowTasks.length} klara
+          {doneTasks.length}/{flowTasks.length} {t('flow.done_count')}
         </span>
       </div>
 
@@ -189,7 +195,7 @@ function FlowCard({ flow, allTasks }: { flow: Flow; allTasks: Task[] }) {
 
       {nextTask && (
         <div className="text-xs text-gray-600">
-          <span className="text-gray-400 font-mono">Nastan: </span>
+          <span className="text-gray-400 font-mono">{t('flow.next_step')}: </span>
           {nextTask.title}
         </div>
       )}
@@ -197,7 +203,7 @@ function FlowCard({ flow, allTasks }: { flow: Flow; allTasks: Task[] }) {
       {!nextTask && doneTasks.length < flowTasks.length && (
         <div className="flex items-center gap-1 text-xs text-gray-400 font-mono">
           <Lock className="w-3 h-3" />
-          Alla tillgängliga tasks är blockerade
+          {t('flow.all_blocked')}
         </div>
       )}
     </div>
@@ -241,6 +247,7 @@ function HealthIndicator({ item }: { item: HealthItem }) {
 
 export function MissionControl() {
   const { tasks: TASKS, loading, updateTaskState } = useBosTasks()
+  const { t } = useTranslation()
 
   const systemStatus = useMemo(() => getSystemStatus(TASKS), [TASKS])
 
@@ -249,7 +256,6 @@ export function MissionControl() {
       .sort((a, b) => {
         const ae = resolveTaskState(a, TASKS)
         const be = resolveTaskState(b, TASKS)
-        // REQUIRED/IN_PROGRESS before BLOCKED
         if (ae !== 'BLOCKED' && be === 'BLOCKED') return -1
         if (ae === 'BLOCKED' && be !== 'BLOCKED') return 1
         return 0
@@ -279,32 +285,32 @@ export function MissionControl() {
   if (loading) {
     return (
       <div className="min-h-full bg-gray-50 flex items-center justify-center">
-        <div className="text-gray-500 font-mono text-sm">Laddar BOS data...</div>
+        <div className="text-gray-500 font-mono text-sm">{t('system.loading')}</div>
       </div>
     )
   }
 
   const healthItems: HealthItem[] = [
     {
-      label: 'Legal',
+      label: t('module.legal'),
       value: `${legalDone}/${legalTotal} bolag`,
       status: legalDone === 0 ? 'red' : legalDone < legalTotal ? 'yellow' : 'green',
       icon: Building2,
     },
     {
-      label: 'Finance',
+      label: t('module.finance'),
       value: hasBookkeeping ? 'Bokföring aktiv' : 'Bokföring saknas',
       status: hasBookkeeping ? 'green' : 'red',
       icon: DollarSign,
     },
     {
-      label: 'Tech',
+      label: t('module.tech'),
       value: hasWavultCom ? 'wavult.com live' : 'wavult.com ej aktiv',
       status: hasWavultCom ? 'green' : 'yellow',
       icon: Globe,
     },
     {
-      label: 'Operations',
+      label: t('module.operations'),
       value: hasSupabasePro ? 'Supabase Pro' : 'Supabase Free (risk)',
       status: hasSupabasePro ? 'green' : 'red',
       icon: Users,
@@ -321,24 +327,26 @@ export function MissionControl() {
     red: {
       bg: 'bg-red-600',
       text: 'text-white',
-      label: 'SYSTEM: KRITISKT',
-      desc: `${criticalActionable.length} kritiska uppgifter kräver omedelbar handling`,
+      label: `SYSTEM: ${t('system.status.red').toUpperCase()}`,
+      desc: `${criticalActionable.length} ${t('agent.web.critical_issues').toLowerCase()} — ${t('agent.command.action_required').toLowerCase()}`,
     },
     yellow: {
       bg: 'bg-amber-500',
       text: 'text-white',
-      label: 'SYSTEM: VARNING',
-      desc: 'Höga prioriteter kräver handling inom 7 dagar',
+      label: `SYSTEM: ${t('system.status.yellow').toUpperCase()}`,
+      desc: t('agent.meta.priority_high'),
     },
     green: {
       bg: 'bg-emerald-500',
       text: 'text-white',
-      label: 'SYSTEM: OK',
-      desc: 'Inga kritiska blockers',
+      label: `SYSTEM: ${t('system.status.green').toUpperCase()}`,
+      desc: t('agent.system.no_tasks'),
     },
   }[systemStatus]
 
   const today = new Date().toISOString().split('T')[0]
+
+  const escalations = checkEscalations(TASKS)
 
   return (
     <div className="min-h-full bg-gray-50 space-y-6">
@@ -361,22 +369,22 @@ export function MissionControl() {
       </div>
 
       {/* ── Escalation Banner ────────────────────────────────────────────── */}
-      {checkEscalations(TASKS).length > 0 && (
+      {escalations.length > 0 && (
         <div className="mb-4 p-3 bg-red-600 text-white rounded-xl flex items-center gap-3">
           <AlertTriangle className="w-4 h-4 flex-shrink-0" />
           <span className="text-sm font-medium">
-            {checkEscalations(TASKS).length} tasks har passerat deadline — omedelbar åtgärd krävs
+            {t('alerts.critical_count', { count: escalations.length })}
           </span>
         </div>
       )}
 
-      {/* ── SYSTEM STATUS — Module overview only ─────────────────────────── */}
+      {/* ── Module overview ──────────────────────────────────────────────── */}
       <div className="grid grid-cols-5 gap-3 mb-6">
-        {['legal', 'finance', 'operations', 'tech', 'hr'].map(mod => {
-          const modTasks = TASKS.filter(t => t.module === mod)
-          const critical = modTasks.filter(t => t.priority === 'critical' && resolveTaskState(t, TASKS) !== 'DONE').length
-          const status = critical > 0 ? 'red' : modTasks.some(t => resolveTaskState(t, TASKS) !== 'DONE') ? 'amber' : 'green'
-          const labels: Record<string, string> = { legal: 'Legal', finance: 'Finance', operations: 'Ops', tech: 'Tech', hr: 'HR' }
+        {(['legal', 'finance', 'operations', 'tech', 'hr'] as const).map(mod => {
+          const modTasks = TASKS.filter(task => task.module === mod)
+          const critical = modTasks.filter(task => task.priority === 'critical' && resolveTaskState(task, TASKS) !== 'DONE').length
+          const status = critical > 0 ? 'red' : modTasks.some(task => resolveTaskState(task, TASKS) !== 'DONE') ? 'amber' : 'green'
+          const modKey = `module.${mod}` as const
           return (
             <div key={mod} className={`p-3 rounded-xl border text-center ${
               status === 'red' ? 'bg-red-50 border-red-200' :
@@ -384,10 +392,10 @@ export function MissionControl() {
               'bg-emerald-50 border-emerald-200'
             }`}>
               <div className={`text-lg font-mono font-bold ${status === 'red' ? 'text-red-700' : status === 'amber' ? 'text-amber-700' : 'text-emerald-700'}`}>
-                {modTasks.filter(t => resolveTaskState(t, TASKS) !== 'DONE').length}
+                {modTasks.filter(task => resolveTaskState(task, TASKS) !== 'DONE').length}
               </div>
               <div className={`text-xs font-medium ${status === 'red' ? 'text-red-600' : status === 'amber' ? 'text-amber-600' : 'text-emerald-600'}`}>
-                {labels[mod]}
+                {t(modKey)}
               </div>
             </div>
           )
@@ -399,7 +407,7 @@ export function MissionControl() {
         <div className="flex items-center gap-2 mb-3">
           <AlertTriangle className="w-4 h-4 text-red-500" />
           <h2 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
-            Kritiska uppgifter — kräver handling nu
+            {t('task.priority.critical')} — {t('agent.command.action_required')}
           </h2>
           <span className="text-xs font-mono bg-red-100 text-red-700 px-2 py-0.5 rounded">
             {criticalTasks.length}
@@ -408,7 +416,7 @@ export function MissionControl() {
         <div className="space-y-3">
           {criticalTasks.length === 0 ? (
             <div className="bg-white border border-gray-200 rounded-xl p-4 text-sm text-gray-500">
-              Inga kritiska uppgifter.
+              {t('task.no_critical')}
             </div>
           ) : (
             criticalTasks.map(task => <TaskCard key={task.id} task={task} allTasks={TASKS} updateTaskState={updateTaskState} />)
@@ -421,7 +429,7 @@ export function MissionControl() {
         <div className="flex items-center gap-2 mb-3">
           <Clock className="w-4 h-4 text-amber-500" />
           <h2 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
-            Hög prioritet — gör inom 7 dagar
+            {t('task.priority.high')}
           </h2>
           <span className="text-xs font-mono bg-amber-100 text-amber-700 px-2 py-0.5 rounded">
             {highTasks.length}
@@ -430,7 +438,7 @@ export function MissionControl() {
         <div className="space-y-3">
           {highTasks.length === 0 ? (
             <div className="bg-white border border-gray-200 rounded-xl p-4 text-sm text-gray-500">
-              Inga höga prioriteter.
+              {t('task.no_high')}
             </div>
           ) : (
             highTasks.map(task => <TaskCard key={task.id} task={task} allTasks={TASKS} updateTaskState={updateTaskState} />)
@@ -443,7 +451,7 @@ export function MissionControl() {
         <div className="flex items-center gap-2 mb-3">
           <CheckCircle className="w-4 h-4 text-blue-500" />
           <h2 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
-            Flows — pågående
+            {t('flow.ongoing')}
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -456,7 +464,7 @@ export function MissionControl() {
         <div className="flex items-center gap-2 mb-3">
           <TrendingUp className="w-4 h-4 text-gray-500" />
           <h2 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
-            System Health
+            {t('agent.web.system_overview')}
           </h2>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
