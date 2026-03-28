@@ -160,11 +160,14 @@ export async function getTeamSnapshots(): Promise<TeamMemberSnapshot[]> {
         .maybeSingle();
 
       // Hämta användarinfo — userId är public.users.id (inte auth_id)
-      const { data: userRow } = await supabase
+      const { data: userRow, error: userErr } = await supabase
         .from('users')
         .select('full_name, email')
         .eq('id', userId)
         .maybeSingle();
+
+      if (userErr) console.warn('[WHOOP Store] getTeamSnapshots userRow error:', userErr.message, 'for userId:', userId);
+      else if (!userRow) console.warn('[WHOOP Store] getTeamSnapshots: no user found for id:', userId);
 
       results.push({
         user_id: userId,
