@@ -28,6 +28,16 @@ export interface Task {
   completedAt: string | null
   blockedReason?: string    // why it is BLOCKED
   escalatedAt?: string      // if deadline has passed
+  validationRequired: boolean                                   // default false
+  validationType?: 'TEXT' | 'FILE' | 'SIGNATURE' | 'CONFIRMATION'
+  validationValue?: string | null                               // vad som loggades vid validering
+}
+
+export interface ValidationInput {
+  text?: string
+  file?: File | null
+  signed?: boolean
+  confirmed?: boolean
 }
 
 export interface Flow {
@@ -75,6 +85,26 @@ export function getSystemStatus(tasks: Task[]): 'red' | 'yellow' | 'green' {
   const required = tasks.some(t => t.state === 'REQUIRED' && t.priority === 'high')
   if (required) return 'yellow'
   return 'green'
+}
+
+// resolveFlowState — beräknar flow-state dynamiskt från tasks
+export function resolveFlowState(flowTasks: Task[]): 'not_started' | 'in_progress' | 'completed' | 'blocked' {
+  if (flowTasks.length === 0) return 'not_started'
+  if (flowTasks.every(t => t.state === 'DONE')) return 'completed'
+  if (flowTasks.some(t => resolveTaskState(t, flowTasks) === 'BLOCKED')) return 'blocked'
+  return 'in_progress'
+}
+
+// validateTaskInput — validerar input innan state-förändring tillåts
+export function validateTaskInput(task: Task, input: ValidationInput): boolean {
+  if (!task.validationRequired) return true
+  switch (task.validationType) {
+    case 'TEXT': return typeof input.text === 'string' && input.text.trim().length >= 3
+    case 'FILE': return input.file != null
+    case 'SIGNATURE': return input.signed === true
+    case 'CONFIRMATION': return input.confirmed === true
+    default: return true
+  }
 }
 
 // Tasks that are blocking other tasks owned by other people

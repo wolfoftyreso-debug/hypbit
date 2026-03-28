@@ -20,6 +20,7 @@ export const TASKS: Task[] = [
     outputValidation: 'Certificate of Incorporation mottaget från DMCC',
     assignedAt: '2026-03-28',
     completedAt: null,
+    validationRequired: false,
   },
   {
     id: 'legal-002',
@@ -36,6 +37,7 @@ export const TASKS: Task[] = [
     outputValidation: 'Certificate of Incorporation för DevOps FZCO',
     assignedAt: '2026-03-28',
     completedAt: null,
+    validationRequired: false,
     blockedReason: 'Wavult Group FZCO måste bildas först',
   },
   {
@@ -53,6 +55,7 @@ export const TASKS: Task[] = [
     outputValidation: 'IP Assignment Agreement signerat av alla parter',
     assignedAt: '2026-03-28',
     completedAt: null,
+    validationRequired: false,
     blockedReason: 'Wavult Group FZCO måste existera för att ta emot IP',
   },
   {
@@ -70,6 +73,7 @@ export const TASKS: Task[] = [
     outputValidation: 'Avtal signerat med bokföringsbyrå, org-nr bekräftat',
     assignedAt: '2026-03-28',
     completedAt: null,
+    validationRequired: false,
   },
   {
     id: 'legal-005',
@@ -86,6 +90,7 @@ export const TASKS: Task[] = [
     outputValidation: 'Certificate of Formation mottaget från Texas SOS',
     assignedAt: '2026-03-28',
     completedAt: null,
+    validationRequired: false,
   },
   {
     id: 'legal-006',
@@ -102,6 +107,7 @@ export const TASKS: Task[] = [
     outputValidation: 'Registreringsbevis från Bolagsverket med nytt namn',
     assignedAt: '2026-03-27',
     completedAt: null,
+    validationRequired: false,
   },
 
   // ── FINANCE ─────────────────────────────────────────────────────────────────
@@ -120,6 +126,7 @@ export const TASKS: Task[] = [
     outputValidation: 'Båda Supabase-projekt visar "Pro" i dashboard',
     assignedAt: '2026-03-28',
     completedAt: null,
+    validationRequired: false,
   },
   {
     id: 'finance-002',
@@ -136,6 +143,7 @@ export const TASKS: Task[] = [
     outputValidation: 'Uppdragsavtal signerat, första månadsrapporten planerad',
     assignedAt: '2026-03-28',
     completedAt: null,
+    validationRequired: false,
   },
   {
     id: 'finance-003',
@@ -152,6 +160,7 @@ export const TASKS: Task[] = [
     outputValidation: 'Första intercompany-faktura skickad och bokförd',
     assignedAt: '2026-03-28',
     completedAt: null,
+    validationRequired: false,
     blockedReason: 'Dubai-bolagen måste bildas och IP assignas först',
   },
 
@@ -171,6 +180,7 @@ export const TASKS: Task[] = [
     outputValidation: 'wavult.com svarar via Cloudflare, os.wavult.com live',
     assignedAt: '2026-03-28',
     completedAt: null,
+    validationRequired: false,
   },
   {
     id: 'tech-002',
@@ -187,6 +197,7 @@ export const TASKS: Task[] = [
     outputValidation: 'App installerbar via TestFlight på teamets iPhones',
     assignedAt: '2026-03-28',
     completedAt: null,
+    validationRequired: false,
   },
 
   // ── OPERATIONS / LAUNCH ─────────────────────────────────────────────────────
@@ -205,6 +216,7 @@ export const TASKS: Task[] = [
     outputValidation: 'App godkänd i TestFlight, 5 zoomers kan ta och leverera ett uppdrag',
     assignedAt: '2026-03-28',
     completedAt: null,
+    validationRequired: false,
   },
   {
     id: 'ops-002',
@@ -221,6 +233,7 @@ export const TASKS: Task[] = [
     outputValidation: 'Bokningsbekräftelse mottagen, alla 5 teammedlemmar har rum',
     assignedAt: '2026-03-27',
     completedAt: null,
+    validationRequired: false,
   },
   {
     id: 'ops-003',
@@ -237,6 +250,7 @@ export const TASKS: Task[] = [
     outputValidation: '3 demo-möten bokade i kalender',
     assignedAt: '2026-03-28',
     completedAt: null,
+    validationRequired: false,
   },
 ]
 

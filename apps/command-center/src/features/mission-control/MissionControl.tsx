@@ -14,6 +14,7 @@ import {
   type Flow,
 } from '../../core/state/stateEngine'
 import { useBosTasks } from '../../core/state/useBosTasks'
+import { checkEscalations } from '../../core/state/escalationEngine'
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -33,7 +34,9 @@ function getPersonName(ownerId: string): string {
 
 // ─── Task Card ────────────────────────────────────────────────────────────────
 
-function TaskCard({ task, allTasks }: { task: Task; allTasks: Task[] }) {
+type UpdateTaskStateFn = (taskId: string, newState: Task['state']) => Promise<{ success: boolean; error?: string }>
+
+function TaskCard({ task, allTasks, updateTaskState }: { task: Task; allTasks: Task[]; updateTaskState: UpdateTaskStateFn }) {
   const effectiveState = resolveTaskState(task, allTasks)
   const isBlocked = effectiveState === 'BLOCKED'
   const isFailed = effectiveState === 'FAILED'
@@ -105,28 +108,32 @@ function TaskCard({ task, allTasks }: { task: Task; allTasks: Task[] }) {
           )}
         </div>
 
-        {/* Primary action — only if not blocked */}
-        {!isBlocked && effectiveState !== 'DONE' && (
-          <button
-            className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-              task.priority === 'critical'
-                ? 'bg-red-600 hover:bg-red-700 text-white'
-                : 'bg-gray-900 hover:bg-gray-800 text-white'
-            }`}
-          >
-            {effectiveState === 'IN_PROGRESS' ? 'Fortsätt' : 'Påbörja'}
-            <ArrowRight className="w-3 h-3" />
-          </button>
-        )}
-
-        {isBlocked && (
-          <div
-            className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 text-gray-400 cursor-not-allowed"
-          >
-            <Lock className="w-3 h-3" />
-            Blockerad
-          </div>
-        )}
+        {/* Primary action — enforced Påbörja button */}
+        <button
+          onClick={async () => {
+            if (effectiveState === 'BLOCKED') return  // hard block
+            const result = await updateTaskState(task.id, 'IN_PROGRESS')
+            if (!result.success) {
+              alert(result.error)  // tillfällig feedback tills proper toast finns
+            }
+          }}
+          disabled={effectiveState === 'BLOCKED' || effectiveState === 'DONE'}
+          className={`flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+            effectiveState === 'BLOCKED'
+              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+              : effectiveState === 'DONE'
+              ? 'bg-emerald-50 text-emerald-600 cursor-not-allowed'
+              : 'bg-purple-700 hover:bg-purple-800 text-white cursor-pointer'
+          }`}
+        >
+          {effectiveState === 'BLOCKED' ? (
+            <><Lock className="w-3 h-3" />Blockerad</>
+          ) : effectiveState === 'DONE' ? (
+            <><CheckCircle className="w-3 h-3" />Klar</>
+          ) : (
+            <><ArrowRight className="w-3 h-3" />{effectiveState === 'IN_PROGRESS' ? 'Fortsätt' : 'Påbörja'}</>
+          )}
+        </button>
       </div>
     </div>
   )
@@ -233,7 +240,7 @@ function HealthIndicator({ item }: { item: HealthItem }) {
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export function MissionControl() {
-  const { tasks: TASKS, loading } = useBosTasks()
+  const { tasks: TASKS, loading, updateTaskState } = useBosTasks()
 
   const systemStatus = useMemo(() => getSystemStatus(TASKS), [TASKS])
 
@@ -353,6 +360,40 @@ export function MissionControl() {
         </div>
       </div>
 
+      {/* ── Escalation Banner ────────────────────────────────────────────── */}
+      {checkEscalations(TASKS).length > 0 && (
+        <div className="mb-4 p-3 bg-red-600 text-white rounded-xl flex items-center gap-3">
+          <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+          <span className="text-sm font-medium">
+            {checkEscalations(TASKS).length} tasks har passerat deadline — omedelbar åtgärd krävs
+          </span>
+        </div>
+      )}
+
+      {/* ── SYSTEM STATUS — Module overview only ─────────────────────────── */}
+      <div className="grid grid-cols-5 gap-3 mb-6">
+        {['legal', 'finance', 'operations', 'tech', 'hr'].map(mod => {
+          const modTasks = TASKS.filter(t => t.module === mod)
+          const critical = modTasks.filter(t => t.priority === 'critical' && resolveTaskState(t, TASKS) !== 'DONE').length
+          const status = critical > 0 ? 'red' : modTasks.some(t => resolveTaskState(t, TASKS) !== 'DONE') ? 'amber' : 'green'
+          const labels: Record<string, string> = { legal: 'Legal', finance: 'Finance', operations: 'Ops', tech: 'Tech', hr: 'HR' }
+          return (
+            <div key={mod} className={`p-3 rounded-xl border text-center ${
+              status === 'red' ? 'bg-red-50 border-red-200' :
+              status === 'amber' ? 'bg-amber-50 border-amber-200' :
+              'bg-emerald-50 border-emerald-200'
+            }`}>
+              <div className={`text-lg font-mono font-bold ${status === 'red' ? 'text-red-700' : status === 'amber' ? 'text-amber-700' : 'text-emerald-700'}`}>
+                {modTasks.filter(t => resolveTaskState(t, TASKS) !== 'DONE').length}
+              </div>
+              <div className={`text-xs font-medium ${status === 'red' ? 'text-red-600' : status === 'amber' ? 'text-amber-600' : 'text-emerald-600'}`}>
+                {labels[mod]}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
       {/* ── Critical Tasks ───────────────────────────────────────────────── */}
       <section>
         <div className="flex items-center gap-2 mb-3">
@@ -370,7 +411,7 @@ export function MissionControl() {
               Inga kritiska uppgifter.
             </div>
           ) : (
-            criticalTasks.map(task => <TaskCard key={task.id} task={task} allTasks={TASKS} />)
+            criticalTasks.map(task => <TaskCard key={task.id} task={task} allTasks={TASKS} updateTaskState={updateTaskState} />)
           )}
         </div>
       </section>
@@ -392,7 +433,7 @@ export function MissionControl() {
               Inga höga prioriteter.
             </div>
           ) : (
-            highTasks.map(task => <TaskCard key={task.id} task={task} allTasks={TASKS} />)
+            highTasks.map(task => <TaskCard key={task.id} task={task} allTasks={TASKS} updateTaskState={updateTaskState} />)
           )}
         </div>
       </section>

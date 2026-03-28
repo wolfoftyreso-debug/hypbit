@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
-import type { Task } from './stateEngine'
+import type { Task, ValidationInput } from './stateEngine'
+import { resolveTaskState, validateTaskInput } from './stateEngine'
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
@@ -42,22 +43,51 @@ export function useBosTasks() {
     return () => { supabase.removeChannel(channel) }
   }, [])
 
-  async function updateTaskState(taskId: string, newState: Task['state'], note?: string) {
+  async function updateTaskState(
+    taskId: string,
+    newState: Task['state'],
+    input?: ValidationInput,
+    note?: string
+  ): Promise<{ success: boolean; error?: string }> {
+    const task = tasks.find(t => t.id === taskId)
+    if (!task) return { success: false, error: 'Task not found' }
+
+    // HARD BLOCK: check dependencies
+    const resolvedState = resolveTaskState(task, tasks)
+    if (resolvedState === 'BLOCKED') {
+      return { success: false, error: `Blockerad: ${task.blockedReason || 'dependency ej klar'}` }
+    }
+
+    // VALIDATION REQUIRED: check input before allowing DONE
+    if (newState === 'DONE' && task.validationRequired) {
+      if (!input || !validateTaskInput(task, input)) {
+        return { success: false, error: 'Validation krävs för att slutföra denna task' }
+      }
+    }
+
+    // Apply state change
     const { error } = await supabase
       .from('bos_tasks')
-      .update({ state: newState, updated_at: new Date().toISOString() })
+      .update({
+        state: newState,
+        updated_at: new Date().toISOString(),
+        completed_at: newState === 'DONE' ? new Date().toISOString() : null,
+        validation_value: input ? JSON.stringify(input) : null,
+      })
       .eq('id', taskId)
 
-    if (!error) {
-      // Log event
-      await supabase.from('bos_task_events').insert({
-        task_id: taskId,
-        event_type: 'state_change',
-        to_state: newState,
-        note: note || null,
-      })
-    }
-    return { error }
+    if (error) return { success: false, error: error.message }
+
+    // Log audit event
+    await supabase.from('bos_task_events').insert({
+      task_id: taskId,
+      event_type: 'state_change',
+      to_state: newState,
+      note: note || null,
+      actor_id: 'current-user',
+    })
+
+    return { success: true }
   }
 
   return { tasks, loading, error, updateTaskState }
@@ -80,5 +110,8 @@ function mapRows(rows: any[]): Task[] {
     blockedReason: r.blocked_reason || undefined,
     assignedAt: r.assigned_at,
     completedAt: r.completed_at,
+    validationRequired: r.validation_required ?? false,
+    validationType: r.validation_type || undefined,
+    validationValue: r.validation_value || null,
   }))
 }

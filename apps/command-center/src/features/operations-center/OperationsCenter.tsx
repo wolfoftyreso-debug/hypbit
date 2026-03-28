@@ -5,12 +5,12 @@ import { resolveTaskState, getSystemStatus } from '../../core/state/stateEngine'
 
 // Fallback data om Supabase ej är live
 const FALLBACK_TASKS = [
-  { id: 'legal-001', title: 'Bilda Wavult Group FZCO (Dubai)', owner: 'erik-svensson', module: 'legal', flow: 'dubai-structure', state: 'REQUIRED' as const, priority: 'critical' as const, deadline: '2026-04-10', dependencies: [], requiredInputs: ['Pass', 'UAE-adress'], outputValidation: 'Certificate of Incorporation', assignedAt: '2026-03-28', completedAt: null, description: '' },
-  { id: 'legal-002', title: 'Bilda Wavult DevOps FZCO', owner: 'erik-svensson', module: 'legal', flow: 'dubai-structure', state: 'BLOCKED' as const, priority: 'critical' as const, deadline: '2026-04-10', dependencies: ['legal-001'], requiredInputs: [], outputValidation: '', assignedAt: '2026-03-28', completedAt: null, description: '', blockedReason: 'Wavult Group FZCO måste bildas först' },
-  { id: 'legal-004', title: 'Välj bokföringsbyrå — Landvex AB', owner: 'dennis-bjarnemark', module: 'legal', flow: 'landvex-compliance', state: 'REQUIRED' as const, priority: 'critical' as const, deadline: '2026-04-01', dependencies: [], requiredInputs: [], outputValidation: '', assignedAt: '2026-03-28', completedAt: null, description: '' },
-  { id: 'finance-001', title: 'Uppgradera Supabase till Pro', owner: 'winston-bjarnemark', module: 'finance', flow: 'infra-finance', state: 'REQUIRED' as const, priority: 'critical' as const, deadline: '2026-03-31', dependencies: [], requiredInputs: [], outputValidation: '', assignedAt: '2026-03-28', completedAt: null, description: '' },
-  { id: 'tech-001', title: 'Byt NS på Loopia — aktivera wavult.com', owner: 'johan-berglund', module: 'tech', flow: 'dns-activation', state: 'REQUIRED' as const, priority: 'high' as const, deadline: '2026-04-01', dependencies: [], requiredInputs: [], outputValidation: '', assignedAt: '2026-03-28', completedAt: null, description: '' },
-  { id: 'ops-002', title: 'Thailand Workcamp — hotellbokning', owner: 'leon-russo', module: 'operations', flow: 'thailand-workcamp', state: 'IN_PROGRESS' as const, priority: 'critical' as const, deadline: '2026-04-01', dependencies: [], requiredInputs: [], outputValidation: '', assignedAt: '2026-03-28', completedAt: null, description: '' },
+  { id: 'legal-001', title: 'Bilda Wavult Group FZCO (Dubai)', owner: 'erik-svensson', module: 'legal', flow: 'dubai-structure', state: 'REQUIRED' as const, priority: 'critical' as const, deadline: '2026-04-10', dependencies: [], requiredInputs: ['Pass', 'UAE-adress'], outputValidation: 'Certificate of Incorporation', assignedAt: '2026-03-28', completedAt: null, description: '', validationRequired: false },
+  { id: 'legal-002', title: 'Bilda Wavult DevOps FZCO', owner: 'erik-svensson', module: 'legal', flow: 'dubai-structure', state: 'BLOCKED' as const, priority: 'critical' as const, deadline: '2026-04-10', dependencies: ['legal-001'], requiredInputs: [], outputValidation: '', assignedAt: '2026-03-28', completedAt: null, description: '', blockedReason: 'Wavult Group FZCO måste bildas först', validationRequired: false },
+  { id: 'legal-004', title: 'Välj bokföringsbyrå — Landvex AB', owner: 'dennis-bjarnemark', module: 'legal', flow: 'landvex-compliance', state: 'REQUIRED' as const, priority: 'critical' as const, deadline: '2026-04-01', dependencies: [], requiredInputs: [], outputValidation: '', assignedAt: '2026-03-28', completedAt: null, description: '', validationRequired: false },
+  { id: 'finance-001', title: 'Uppgradera Supabase till Pro', owner: 'winston-bjarnemark', module: 'finance', flow: 'infra-finance', state: 'REQUIRED' as const, priority: 'critical' as const, deadline: '2026-03-31', dependencies: [], requiredInputs: [], outputValidation: '', assignedAt: '2026-03-28', completedAt: null, description: '', validationRequired: false },
+  { id: 'tech-001', title: 'Byt NS på Loopia — aktivera wavult.com', owner: 'johan-berglund', module: 'tech', flow: 'dns-activation', state: 'REQUIRED' as const, priority: 'high' as const, deadline: '2026-04-01', dependencies: [], requiredInputs: [], outputValidation: '', assignedAt: '2026-03-28', completedAt: null, description: '', validationRequired: false },
+  { id: 'ops-002', title: 'Thailand Workcamp — hotellbokning', owner: 'leon-russo', module: 'operations', flow: 'thailand-workcamp', state: 'IN_PROGRESS' as const, priority: 'critical' as const, deadline: '2026-04-01', dependencies: [], requiredInputs: [], outputValidation: '', assignedAt: '2026-03-28', completedAt: null, description: '', validationRequired: false },
 ]
 
 const OWNER_NAMES: Record<string, string> = {
@@ -85,9 +85,13 @@ export function OperationsCenter() {
     return { owner, name: OWNER_NAMES[owner], open: open.length, blocking: blocking.length, status }
   })
 
-  // Alerts (critical + overdue)
+  // Alerts (critical + overdue — BLOCKED excluded: not actionable for owner)
   const alerts = resolved
-    .filter(t => t.priority === 'critical' && t.resolvedState !== 'DONE')
+    .filter(t =>
+      t.priority === 'critical' &&
+      t.resolvedState !== 'DONE' &&
+      t.resolvedState !== 'BLOCKED'  // BLOCKED = inte actionable för ägaren
+    )
     .sort((a, b) => (a.deadline || '').localeCompare(b.deadline || ''))
     .slice(0, 6)
 
