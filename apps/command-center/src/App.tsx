@@ -1,11 +1,11 @@
 // ─── Wavult OS v2 — Application Root ───────────────────────────────────────────
 // Provider hierarchy: Auth → Role → EntityScope → Operator → Events → Shell
 
-import { lazy, Suspense } from 'react'
+import React, { lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './shared/auth/AuthContext'
 import { LoginPage } from './shared/auth/LoginPage'
-import { RoleProvider, useRole } from './shared/auth/RoleContext'
+import { RoleProvider, useRole, ROLES } from './shared/auth/RoleContext'
 import { EntityScopeProvider } from './shared/scope/EntityScopeContext'
 import { OperatorProvider } from './core/operator/OperatorContext'
 import { EventProvider } from './core/events/EventContext'
@@ -60,8 +60,24 @@ function PageLoader() {
 }
 
 function AuthenticatedApp() {
-  const { session, loading } = useAuth()
-  const { role } = useRole()
+  const { session, loading, user } = useAuth()
+  const { role, setRole } = useRole()
+
+  // Auto-sätt roll baserat på inloggad user (email → RoleProfile)
+  React.useEffect(() => {
+    if (!user || role) return
+    const autoRole = ROLES.find(r =>
+      r.name !== '—' && (
+        user.email === 'erik@hypbit.com'    ? r.id === 'group-ceo' :
+        user.email === 'winston@hypbit.com' ? r.id === 'cfo' :
+        user.email === 'leon@hypbit.com'    ? r.id === 'ceo-ops' :
+        user.email === 'dennis@hypbit.com'  ? r.id === 'clo' :
+        user.email === 'johan@hypbit.com'   ? r.id === 'cto' :
+        false
+      )
+    )
+    if (autoRole) setRole(autoRole)
+  }, [user, role, setRole])
 
   // Vänta på att session-check är klar
   if (loading) {
@@ -75,7 +91,7 @@ function AuthenticatedApp() {
   // Ej inloggad → visa login
   if (!session) return <LoginPage />
 
-  // Inloggad men ingen roll vald → visa rollval
+  // Inloggad men okänd email → visa rollval som fallback
   if (!role) return <RoleLogin />
 
   return (
