@@ -6,7 +6,7 @@ import {
   DollarSign, Receipt, ShoppingCart, CreditCard,
   Scale, Flag, Layers,
   BookOpen, Server, Settings,
-  Bell, Inbox, User,
+  Bell, Inbox, User, LayoutGrid,
 } from 'lucide-react'
 import { useRole, ROLES } from '../auth/RoleContext'
 import { generateIncidents } from '../../features/incidents/incidentEngine'
@@ -34,10 +34,11 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: null,
     items: [
-      { to: '/',        label: 'Mission Control', icon: Target },
-      { to: '/person',  label: 'Min vy',          icon: User },
-      { to: '/command', label: 'Command',          icon: LayoutDashboard },
-      { to: '/alerts',  label: 'Alerts',           icon: AlertTriangle },
+      { to: '/',        label: 'Mission Control',   icon: Target },
+      { to: '/ops',     label: 'Operations Center', icon: LayoutGrid },
+      { to: '/person',  label: 'Min vy',            icon: User },
+      { to: '/command', label: 'Command',            icon: LayoutDashboard },
+      { to: '/alerts',  label: 'Alerts',             icon: AlertTriangle },
     ],
   },
   {

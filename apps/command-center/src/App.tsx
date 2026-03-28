@@ -59,6 +59,7 @@ const CausalOS               = lazy(() => import('./features/causal-os/CausalOS'
 const CommandView            = lazy(() => import('./features/command-view/CommandView').then(m => ({ default: m.CommandView })))
 const MissionControl         = lazy(() => import('./features/mission-control/MissionControl').then(m => ({ default: m.MissionControl })))
 const PersonView             = lazy(() => import('./features/mission-control/PersonView').then(m => ({ default: m.PersonView })))
+const OperationsCenter       = lazy(() => import('./features/operations-center/OperationsCenter').then(m => ({ default: m.OperationsCenter })))
 
 // ─── Page loader fallback ───────────────────────────────────────────────────────
 function PageLoader() {
@@ -159,6 +160,7 @@ function AuthenticatedApp() {
               <Route path="/governance" element={<GovernanceDashboard />} />
               <Route path="/infrastructure" element={<InfrastructureDashboard />} />
               <Route path="/causal-os" element={<CausalOS />} />
+              <Route path="/ops" element={<OperationsCenter />} />
             </Routes>
           </Suspense>
         </Shell>
