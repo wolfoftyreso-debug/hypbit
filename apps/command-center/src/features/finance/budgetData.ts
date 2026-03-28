@@ -153,6 +153,73 @@ export const BUDGET_LINES_2026: BudgetLine[] = [
     type: 'lopande',
     entity: 'QuiXzoom Inc',
   },
+  // ─── Infrastruktur (detaljerad från Infrastructure Operations Center) ──────
+  {
+    id: 'i-infra-aws-ecs-s3',
+    category: 'infrastruktur',
+    title: 'AWS ECS + S3 + SSM — WG-TECH-2026-001/007/009',
+    description: 'ECS: hypbit-api (800 SEK) + quixzoom-api (400 SEK) + S3 EU/US primary/backup (120 SEK) = ~1 320 SEK/mån',
+    amountSEK: 15840,   // 1 320 × 12
+    quarter: 'Q1',
+    owner: 'Johan Berglund',
+    type: 'lopande',
+    entity: 'Wavult DevOps FZCO',
+  },
+  {
+    id: 'i-infra-supabase',
+    category: 'infrastruktur',
+    title: 'Supabase — Wavult OS + quiXzoom — WG-TECH-2026-005/006',
+    description: 'Supabase hypbit (250 SEK) + quixzoom-v2 (250 SEK) = 500 SEK/mån',
+    amountSEK: 6000,    // 500 × 12
+    quarter: 'Q1',
+    owner: 'Johan Berglund',
+    type: 'lopande',
+    entity: 'Wavult DevOps FZCO',
+  },
+  {
+    id: 'i-infra-cloudflare',
+    category: 'infrastruktur',
+    title: 'Cloudflare Pages — Wavult OS + quiXzoom — WG-TECH-2026-010/015',
+    description: 'Free tier — 0 SEK/mån',
+    amountSEK: 0,
+    quarter: 'Q1',
+    owner: 'Johan Berglund',
+    type: 'lopande',
+    entity: 'Wavult DevOps FZCO',
+  },
+  {
+    id: 'i-infra-mapbox',
+    category: 'infrastruktur',
+    title: 'Mapbox API — WG-TECH-2026-012',
+    description: 'Kartrendering quiXzoom — ~500 SEK/mån',
+    amountSEK: 6000,    // 500 × 12
+    quarter: 'Q2',
+    owner: 'Johan Berglund',
+    type: 'lopande',
+    entity: 'QuiXzoom Inc',
+  },
+  {
+    id: 'i-infra-github',
+    category: 'infrastruktur',
+    title: 'GitHub Actions CI/CD — WG-TECH-2026-013',
+    description: 'Free tier (public repo) — 0 SEK/mån',
+    amountSEK: 0,
+    quarter: 'Q1',
+    owner: 'Johan Berglund',
+    type: 'lopande',
+    entity: 'Wavult DevOps FZCO',
+  },
+  {
+    id: 'i-infra-stripe-tx',
+    category: 'infrastruktur',
+    title: 'Stripe — transaktionsbaserat (WG-FIN-2026-004)',
+    description: 'Ingen fast kostnad — transaktionsavgifter beräknas per volym. Konfigureras Q2.',
+    amountSEK: 0,
+    quarter: 'Q2',
+    owner: 'Winston Bjarnemark',
+    type: 'lopande',
+    entity: 'QuiXzoom Inc',
+  },
 
   // ─── Juridik & bolagsbildning — ~300 000 SEK ─────────────────────────
   {

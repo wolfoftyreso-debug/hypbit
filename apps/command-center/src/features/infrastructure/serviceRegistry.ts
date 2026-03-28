@@ -1,0 +1,446 @@
+// ─── Wavult OS — Service Registry ────────────────────────────────────────────
+// Fullständig infrastrukturregister för Wavult Group
+
+import type { ServiceDefinition, InfraHealthCheck } from './infraTypes'
+
+export const SERVICE_REGISTRY: ServiceDefinition[] = [
+  // ─── COMPUTE ─────────────────────────────────────────────────────────────
+  {
+    id: 'hypbit-api',
+    name: 'Wavult API (hypbit-api)',
+    category: 'compute',
+    provider: 'aws',
+    endpoint: 'https://api.hypbit.com/health',
+    region: 'eu-north-1',
+    criticalityLevel: 1,
+    owner: 'group-cto',
+    refCode: 'WG-TECH-2026-001',
+    status: 'operational',
+    lastChecked: null,
+    uptime30d: 99.2,
+    billing: {
+      provider: 'aws',
+      accountId: '155407238699',
+      monthlyEstimate: 800,
+      billingEmail: 'erik@hypbit.com',
+      status: 'active',
+    },
+    failover: {
+      primary: 'hypbit-api',
+      autoFailover: true,
+      rto: '5 min',
+      rpo: '0 min',
+    },
+    alerts: [],
+    settings: {
+      'ecs.desired_count': 1,
+      'ecs.min_count': 1,
+      'ecs.max_count': 3,
+      'ecs.cpu': 256,
+      'ecs.memory': 512,
+      'ecs.cluster': 'hypbit',
+      'ecs.region': 'eu-north-1',
+    },
+  },
+  {
+    id: 'quixzoom-api',
+    name: 'quiXzoom API',
+    category: 'compute',
+    provider: 'aws',
+    region: 'eu-north-1',
+    criticalityLevel: 1,
+    owner: 'group-cto',
+    refCode: 'WG-TECH-2026-004',
+    status: 'operational',
+    lastChecked: null,
+    billing: {
+      provider: 'aws',
+      accountId: '155407238699',
+      monthlyEstimate: 400,
+      billingEmail: 'erik@hypbit.com',
+      status: 'active',
+    },
+    alerts: [],
+    settings: {
+      'ecs.cluster': 'hypbit',
+      'ecs.service': 'quixzoom-api',
+    },
+  },
+
+  // ─── DATABASER ────────────────────────────────────────────────────────────
+  {
+    id: 'supabase-hypbit',
+    name: 'Supabase — Wavult OS (hypbit)',
+    category: 'database',
+    provider: 'supabase',
+    region: 'eu-west-1',
+    criticalityLevel: 1,
+    owner: 'group-cto',
+    refCode: 'WG-TECH-2026-005',
+    status: 'operational',
+    lastChecked: null,
+    billing: {
+      provider: 'supabase',
+      monthlyEstimate: 250,
+      billingEmail: 'erik@hypbit.com',
+      status: 'active',
+    },
+    alerts: [],
+    settings: {
+      'project.id': 'znmxtnxxjpmgtycmsqjv',
+      'project.name': 'hypbit',
+      'plan': 'free',
+    },
+  },
+  {
+    id: 'supabase-quixzoom',
+    name: 'Supabase — quiXzoom (quixzoom-v2)',
+    category: 'database',
+    provider: 'supabase',
+    region: 'eu-west-1',
+    criticalityLevel: 1,
+    owner: 'group-cto',
+    refCode: 'WG-TECH-2026-006',
+    status: 'operational',
+    lastChecked: null,
+    billing: {
+      provider: 'supabase',
+      monthlyEstimate: 250,
+      billingEmail: 'erik@hypbit.com',
+      status: 'active',
+    },
+    alerts: [],
+    settings: {
+      'project.id': 'lpeipzdmnnlbcoxlfhoe',
+      'project.name': 'quixzoom-v2',
+      'plan': 'free',
+    },
+  },
+
+  // ─── LAGRING ──────────────────────────────────────────────────────────────
+  {
+    id: 's3-eu-primary',
+    name: 'S3 — EU Primary (wavult-images-eu-primary)',
+    category: 'storage',
+    provider: 'aws',
+    region: 'eu-north-1',
+    criticalityLevel: 1,
+    owner: 'group-cto',
+    refCode: 'WG-TECH-2026-007',
+    status: 'operational',
+    lastChecked: null,
+    failover: {
+      primary: 's3-eu-primary',
+      secondary: 's3-eu-backup',
+      autoFailover: true,
+      rto: '1 min',
+      rpo: '1 timme',
+    },
+    billing: {
+      provider: 'aws',
+      accountId: '155407238699',
+      monthlyEstimate: 50,
+      billingEmail: 'erik@hypbit.com',
+      status: 'active',
+    },
+    alerts: [],
+    settings: {
+      'bucket': 'wavult-images-eu-primary',
+      'crr.target': 'wavult-images-eu-backup',
+      'crr.storage_class': 'STANDARD_IA',
+    },
+  },
+  {
+    id: 's3-eu-backup',
+    name: 'S3 — EU Backup (wavult-images-eu-backup)',
+    category: 'storage',
+    provider: 'aws',
+    region: 'eu-west-1',
+    criticalityLevel: 2,
+    owner: 'group-cto',
+    refCode: 'WG-TECH-2026-008',
+    status: 'operational',
+    lastChecked: null,
+    alerts: [],
+    billing: {
+      provider: 'aws',
+      accountId: '155407238699',
+      monthlyEstimate: 20,
+      billingEmail: 'erik@hypbit.com',
+      status: 'active',
+    },
+    settings: {
+      'bucket': 'wavult-images-eu-backup',
+      'storage_class': 'STANDARD_IA',
+    },
+  },
+  {
+    id: 's3-us-primary',
+    name: 'S3 — US Primary (wavult-images-us-primary)',
+    category: 'storage',
+    provider: 'aws',
+    region: 'us-east-1',
+    criticalityLevel: 1,
+    owner: 'group-cto',
+    refCode: 'WG-TECH-2026-009',
+    status: 'operational',
+    lastChecked: null,
+    alerts: [],
+    billing: {
+      provider: 'aws',
+      accountId: '155407238699',
+      monthlyEstimate: 50,
+      billingEmail: 'erik@hypbit.com',
+      status: 'active',
+    },
+    settings: {
+      'bucket': 'wavult-images-us-primary',
+    },
+  },
+  {
+    id: 's3-us-backup',
+    name: 'S3 — US Backup (wavult-images-us-backup)',
+    category: 'storage',
+    provider: 'aws',
+    region: 'us-west-2',
+    criticalityLevel: 2,
+    owner: 'group-cto',
+    refCode: 'WG-TECH-2026-014',
+    status: 'operational',
+    lastChecked: null,
+    alerts: [],
+    billing: {
+      provider: 'aws',
+      accountId: '155407238699',
+      monthlyEstimate: 20,
+      billingEmail: 'erik@hypbit.com',
+      status: 'active',
+    },
+    settings: {
+      'bucket': 'wavult-images-us-backup',
+      'storage_class': 'STANDARD_IA',
+    },
+  },
+
+  // ─── CDN / FRONTEND ───────────────────────────────────────────────────────
+  {
+    id: 'cf-wavult-os',
+    name: 'Cloudflare Pages — Wavult OS',
+    category: 'cdn',
+    provider: 'cloudflare',
+    endpoint: 'https://wavult-os.pages.dev',
+    criticalityLevel: 1,
+    owner: 'group-cto',
+    refCode: 'WG-TECH-2026-010',
+    status: 'operational',
+    lastChecked: null,
+    billing: {
+      provider: 'cloudflare',
+      monthlyEstimate: 0,
+      billingEmail: 'erik@hypbit.com',
+      status: 'active',
+    },
+    alerts: [],
+    settings: {
+      'project': 'wavult-os',
+      'zone': '5bed27e91d719b3f9d82c234d191ad99',
+    },
+  },
+  {
+    id: 'cf-quixzoom-landing',
+    name: 'Cloudflare Pages — quiXzoom Landing',
+    category: 'cdn',
+    provider: 'cloudflare',
+    endpoint: 'https://quixzoom-landing.pages.dev',
+    criticalityLevel: 2,
+    owner: 'group-cto',
+    refCode: 'WG-TECH-2026-015',
+    status: 'operational',
+    lastChecked: null,
+    billing: {
+      provider: 'cloudflare',
+      monthlyEstimate: 0,
+      billingEmail: 'erik@hypbit.com',
+      status: 'active',
+    },
+    alerts: [],
+    settings: { 'project': 'quixzoom-landing' },
+  },
+  {
+    id: 'cf-optical-insight-eu',
+    name: 'Cloudflare Pages — Optical Insight EU',
+    category: 'cdn',
+    provider: 'cloudflare',
+    endpoint: 'https://optical-insight-eu.pages.dev',
+    criticalityLevel: 2,
+    owner: 'group-cto',
+    refCode: 'WG-TECH-2026-016',
+    status: 'operational',
+    lastChecked: null,
+    billing: {
+      provider: 'cloudflare',
+      monthlyEstimate: 0,
+      billingEmail: 'erik@hypbit.com',
+      status: 'active',
+    },
+    alerts: [],
+    settings: { 'project': 'optical-insight-eu' },
+  },
+
+  // ─── EXTERNA APIer ────────────────────────────────────────────────────────
+  {
+    id: 'whoop-api',
+    name: 'WHOOP Developer API',
+    category: 'api',
+    provider: 'whoop',
+    endpoint: 'https://api.prod.whoop.com',
+    criticalityLevel: 2,
+    owner: 'group-cto',
+    refCode: 'WG-TECH-2026-011',
+    status: 'operational',
+    lastChecked: null,
+    alerts: [],
+    billing: {
+      provider: 'other',
+      monthlyEstimate: 0,
+      billingEmail: 'erik@hypbit.com',
+      status: 'active',
+    },
+    settings: {
+      'client_id': '65476e4f-b67d-4051-aaa5-14ebaa960b28',
+      'redirect_uri': 'https://api.hypbit.com/whoop/callback',
+      'mode': 'development',
+      'production_access': 'pending',
+    },
+  },
+  {
+    id: 'mapbox-api',
+    name: 'Mapbox API',
+    category: 'api',
+    provider: 'mapbox',
+    criticalityLevel: 2,
+    owner: 'group-cto',
+    refCode: 'WG-TECH-2026-012',
+    status: 'operational',
+    lastChecked: null,
+    alerts: [],
+    billing: {
+      provider: 'mapbox',
+      monthlyEstimate: 50,
+      billingEmail: 'erik@hypbit.com',
+      status: 'active',
+    },
+    settings: {
+      'account': 'certified12',
+      'token_type': 'public',
+    },
+  },
+  {
+    id: 'stripe',
+    name: 'Stripe (betalningar)',
+    category: 'payment',
+    provider: 'stripe',
+    criticalityLevel: 1,
+    owner: 'cfo',
+    refCode: 'WG-FIN-2026-004',
+    status: 'unknown',
+    lastChecked: null,
+    alerts: [
+      {
+        id: 'alert-stripe-001',
+        serviceId: 'stripe',
+        severity: 'warning',
+        message: 'STRIPE_SECRET_KEY inte konfigurerat — betalfunktioner inaktiva',
+        createdAt: '2026-03-28T00:00:00Z',
+        resolvedAt: null,
+      },
+    ],
+    billing: {
+      provider: 'stripe',
+      monthlyEstimate: 0,
+      billingEmail: 'erik@hypbit.com',
+      status: 'trial',
+    },
+    settings: {
+      'configured': false,
+      'mode': 'not_configured',
+    },
+  },
+
+  // ─── CI/CD ────────────────────────────────────────────────────────────────
+  {
+    id: 'github-actions',
+    name: 'GitHub Actions (CI/CD)',
+    category: 'monitoring',
+    provider: 'github',
+    criticalityLevel: 2,
+    owner: 'group-cto',
+    refCode: 'WG-TECH-2026-013',
+    status: 'operational',
+    lastChecked: null,
+    alerts: [],
+    billing: {
+      provider: 'github',
+      monthlyEstimate: 0,
+      billingEmail: 'erik@hypbit.com',
+      status: 'active',
+    },
+    settings: {
+      'repo': 'wolfoftyreso-debug/hypbit',
+      'branch': 'main',
+    },
+  },
+]
+
+export const HEALTH_CHECKS: InfraHealthCheck[] = [
+  {
+    serviceId: 'hypbit-api',
+    url: 'https://api.hypbit.com/health',
+    method: 'GET',
+    expectedStatus: 200,
+    timeout: 5000,
+    interval: 60,
+  },
+  {
+    serviceId: 'cf-wavult-os',
+    url: 'https://wavult-os.pages.dev',
+    method: 'HEAD',
+    expectedStatus: 200,
+    timeout: 5000,
+    interval: 300,
+  },
+  {
+    serviceId: 'whoop-api',
+    url: 'https://api.prod.whoop.com',
+    method: 'HEAD',
+    expectedStatus: 200,
+    timeout: 5000,
+    interval: 300,
+  },
+]
+
+// ─── Totalt månadsestimering ──────────────────────────────────────────────────
+
+export function getTotalMonthlyCost(): number {
+  return SERVICE_REGISTRY.reduce((sum, s) => sum + (s.billing?.monthlyEstimate ?? 0), 0)
+}
+
+export function getServiceById(id: string): ServiceDefinition | undefined {
+  return SERVICE_REGISTRY.find(s => s.id === id)
+}
+
+export function getServicesByCategory(
+  category: ServiceDefinition['category']
+): ServiceDefinition[] {
+  return SERVICE_REGISTRY.filter(s => s.category === category)
+}
+
+export function getCriticalServices(): ServiceDefinition[] {
+  return SERVICE_REGISTRY.filter(s => s.criticalityLevel === 1)
+}
+
+export function getAllActiveAlerts() {
+  return SERVICE_REGISTRY.flatMap(s =>
+    s.alerts.filter(a => a.resolvedAt === null)
+  )
+}

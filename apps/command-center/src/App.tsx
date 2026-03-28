@@ -54,6 +54,7 @@ const DecisionDashboard      = lazy(() => import('./features/decisions/DecisionD
 const MeetingCreator         = lazy(() => import('./features/decisions/MeetingCreator').then(m => ({ default: m.MeetingCreator })))
 const MeetingView            = lazy(() => import('./features/decisions/MeetingView').then(m => ({ default: m.MeetingView })))
 const GovernanceDashboard    = lazy(() => import('./features/governance/GovernanceDashboard').then(m => ({ default: m.GovernanceDashboard })))
+const InfrastructureDashboard = lazy(() => import('./features/infrastructure/InfrastructureDashboard').then(m => ({ default: m.InfrastructureDashboard })))
 
 // ─── Page loader fallback ───────────────────────────────────────────────────────
 function PageLoader() {
@@ -148,6 +149,7 @@ function AuthenticatedApp() {
               <Route path="/decisions/new" element={<MeetingCreator />} />
               <Route path="/decisions/:meetingId" element={<MeetingView />} />
               <Route path="/governance" element={<GovernanceDashboard />} />
+              <Route path="/infrastructure" element={<InfrastructureDashboard />} />
             </Routes>
           </Suspense>
         </Shell>
