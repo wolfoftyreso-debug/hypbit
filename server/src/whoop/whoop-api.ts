@@ -140,14 +140,13 @@ router.get('/callback', async (req: Request, res: Response) => {
     return res.redirect(`${FRONTEND_URL}/whoop?error=oauth_denied`);
   }
 
-  // Validera state mot vår store
-  if (!state || !oauthStateStore.has(state)) {
-    console.warn('[WHOOP] Ogiltig eller utgången state:', state);
-    return res.redirect(`${FRONTEND_URL}/whoop?error=invalid_state`);
+  // State-validering: in-memory store fungerar inte i multi-instance ECS (2 tasks).
+  // Temporärt: acceptera alla state-värden. Ersätt med Supabase-baserat state i fas 2.
+  // TODO: migrera till Supabase oauth_states-tabell för CSRF-skydd
+  if (state && oauthStateStore.has(state)) {
+    oauthStateStore.delete(state) // Rensa om vi råkar ha det
   }
-
-  // Ta bort state direkt (one-time use)
-  oauthStateStore.delete(state)
+  console.log('[WHOOP] callback received, state:', state?.substring(0, 8) + '...')
 
   if (!code) {
     return res.redirect(`${FRONTEND_URL}/whoop?error=no_code`);
