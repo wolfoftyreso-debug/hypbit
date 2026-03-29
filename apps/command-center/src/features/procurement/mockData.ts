@@ -11,7 +11,6 @@ export const SUPPLIERS: Supplier[] = [
   { id: 's7',  name: '46elks',     category: 'Tech/SaaS',     country: 'Sverige', contact: 'hello@46elks.com',         email: 'billing@46elks.com',         status: 'aktiv' },
   { id: 's8',  name: 'Twilio',     category: 'Tech/SaaS',     country: 'USA',     contact: 'help@twilio.com',          email: 'billing@twilio.com',         status: 'inaktiv' },
   { id: 's9',  name: 'GitHub',     category: 'Tech/SaaS',     country: 'USA',     contact: 'support@github.com',       email: 'billing@github.com',         status: 'aktiv' },
-  { id: 's10', name: 'Fortnox',    category: 'Redovisning',   country: 'Sverige', contact: 'support@fortnox.se',       email: 'faktura@fortnox.se',         status: 'aktiv' },
 ]
 
 // ─── Inköpsordrar — tomma tills konfigurerat ─────────────────────────────────

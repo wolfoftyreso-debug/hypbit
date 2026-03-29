@@ -253,6 +253,37 @@ function PersonDetail({ person, discProfile, onClose }: {
           )}
         </section>
 
+        {/* WHOOP Health Data */}
+        <section>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#8E8E93', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>
+            WHOOP — Hälsodata
+          </div>
+          <div style={{ background: '#F9FAFB', borderRadius: 12, padding: '16px' }}>
+            {person.id === 'erik-svensson' ? (
+              <div style={{ fontSize: 13, color: '#9CA3AF', fontStyle: 'italic' }}>
+                Koppla WHOOP under /whoop för att se hälsodata
+              </div>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                {[
+                  { label: 'Recovery', value: '—', unit: '/100', color: '#6B7280' },
+                  { label: 'Sömn', value: '—', unit: '%', color: '#6B7280' },
+                  { label: 'HRV', value: '—', unit: 'ms', color: '#6B7280' },
+                  { label: 'Strain', value: '—', unit: '/21', color: '#6B7280' },
+                ].map(m => (
+                  <div key={m.label} style={{ textAlign: 'center', padding: '10px', background: 'white', borderRadius: 8 }}>
+                    <div style={{ fontSize: 20, fontWeight: 700, color: m.color }}>{m.value}</div>
+                    <div style={{ fontSize: 10, color: '#8E8E93' }}>{m.label} {m.unit}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div style={{ marginTop: 8, fontSize: 11, color: '#8E8E93', textAlign: 'center' }}>
+              Senast uppdaterat: Koppla WHOOP via /whoop
+            </div>
+          </div>
+        </section>
+
         {/* Status */}
         <section>
           <div style={{ fontSize: 11, fontWeight: 700, color: '#8E8E93', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>Status</div>
