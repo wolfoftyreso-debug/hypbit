@@ -787,12 +787,7 @@ export function CampaignOS() {
 
         {/* Right: filters + summary */}
         <div className="flex items-center gap-2">
-          <select value={filterBrand} onChange={e => setFilterBrand(e.target.value)} className={selectDropdownClass}>
-            <option value="all">All brands</option>
-            {brands.map(b => <option key={b} value={b}>{b}</option>)}
-          </select>
-
-          <select value={filterChannel} onChange={e => setFilterChannel(e.target.value)} className={selectDropdownClass}>
+<select value={filterChannel} onChange={e => setFilterChannel(e.target.value)} className={selectDropdownClass}>
             <option value="all">All channels</option>
             {channels.map(c => <option key={c} value={c}>{CHANNEL_LABEL[c as CampaignChannel]}</option>)}
           </select>
