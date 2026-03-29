@@ -1,97 +1,198 @@
 import { useState } from 'react'
-import { useEntityScope } from '../../shared/scope/EntityScopeContext'
+import { Download, Search, ChevronRight } from 'lucide-react'
 import { TransactionDetail } from './TransactionDetail'
 
-const DEMO_TX_LIST = [
-  { id: 'kund-faktura-1042', title: 'Kund-faktura #1042 — konsulttjänster', date: '2026-03-24', amount: 125000, currency: 'SEK', status: 'approved', category: 'Intäkt' },
-  { id: 'loneutbetalning',   title: 'Löneutbetalning mars',                 date: '2026-03-26', amount: -160000, currency: 'SEK', status: 'paid',     category: 'Lön' },
-]
+type TxStatus = 'paid' | 'pending' | 'overdue' | 'cancelled' | 'approved'
+type TxType = 'invoice' | 'payment' | 'salary' | 'expense' | 'transfer' | 'intercompany'
 
-const STATUS_STYLES: Record<string, { color: string; bg: string; label: string }> = {
-  pending:   { color: '#FF9500', bg: '#FF950015', label: 'Väntar' },
-  approved:  { color: '#34C759', bg: '#34C75915', label: 'Godkänd' },
-  paid:      { color: '#007AFF', bg: '#007AFF15', label: 'Betald' },
-  overdue:   { color: '#FF3B30', bg: '#FF3B3015', label: 'Förfallen' },
-  cancelled: { color: '#8E8E93', bg: '#8E8E9315', label: 'Annullerad' },
+interface Transaction {
+  id: string
+  date: string
+  title: string
+  counterparty: string
+  entity: string
+  type: TxType
+  amount: number
+  currency: string
+  status: TxStatus
+  category: string
+  reference?: string
 }
 
+const TRANSACTIONS: Transaction[] = [
+  // Intäkter
+  { id: 'inv-1042', date: '2026-03-24', title: 'Faktura #1042 — Konsulttjänster', counterparty: 'Nacka Kommun', entity: 'Landvex AB', type: 'invoice', amount: 125000, currency: 'SEK', status: 'approved', category: 'Intäkt', reference: 'INV-2026-1042' },
+  { id: 'inv-1041', date: '2026-03-15', title: 'Faktura #1041 — Abonnemang mars', counterparty: 'Värmdö Kommun', entity: 'Landvex AB', type: 'invoice', amount: 14900, currency: 'SEK', status: 'paid', category: 'Intäkt', reference: 'INV-2026-1041' },
+  { id: 'inv-1040', date: '2026-03-10', title: 'Faktura #1040 — Optical Insight Q1', counterparty: 'Nacka Fastigheter AB', entity: 'Landvex AB', type: 'invoice', amount: 89500, currency: 'SEK', status: 'overdue', category: 'Intäkt', reference: 'INV-2026-1040' },
+
+  // Kostnader
+  { id: 'exp-0312', date: '2026-03-26', title: 'Löneutbetalning mars 2026', counterparty: 'Anställda', entity: 'Landvex AB', type: 'salary', amount: -160000, currency: 'SEK', status: 'paid', category: 'Lön' },
+  { id: 'exp-0311', date: '2026-03-15', title: 'Thailand Workcamp — Förskott', counterparty: 'Nysa Hotel Bangkok', entity: 'Landvex AB', type: 'expense', amount: -45000, currency: 'SEK', status: 'paid', category: 'Resa & Event' },
+  { id: 'exp-0310', date: '2026-03-01', title: 'AWS Infrastructure — mars', counterparty: 'Amazon Web Services', entity: 'Wavult Group', type: 'payment', amount: -18500, currency: 'SEK', status: 'paid', category: 'Infrastruktur' },
+  { id: 'exp-0309', date: '2026-03-01', title: 'Cloudflare Pro — mars', counterparty: 'Cloudflare Inc', entity: 'Wavult Group', type: 'payment', amount: -2200, currency: 'SEK', status: 'paid', category: 'Infrastruktur' },
+  { id: 'exp-0308', date: '2026-03-01', title: 'OpenClaw — mars', counterparty: 'OpenClaw Ltd', entity: 'Wavult Group', type: 'payment', amount: -10800, currency: 'SEK', status: 'paid', category: 'Mjukvara' },
+
+  // Intercompany
+  { id: 'ic-0302', date: '2026-03-31', title: 'IP Royalty Q1 2026', counterparty: 'Wavult Group FZCO', entity: 'Landvex AB', type: 'intercompany', amount: -12500, currency: 'SEK', status: 'pending', category: 'Intercompany', reference: 'IC-2026-0302' },
+  { id: 'ic-0301', date: '2026-03-31', title: 'Management Fee Q1 2026', counterparty: 'DevOps FZCO', entity: 'Landvex AB', type: 'intercompany', amount: -15000, currency: 'SEK', status: 'pending', category: 'Intercompany', reference: 'IC-2026-0301' },
+
+  // USD
+  { id: 'usd-001', date: '2026-03-20', title: 'Northwest Agent Fee', counterparty: 'Northwest Registered Agent', entity: 'Landvex Inc', type: 'payment', amount: -3060, currency: 'USD', status: 'paid', category: 'Juridik' },
+  { id: 'usd-002', date: '2026-03-28', title: 'Texas LLC Filing Fee', counterparty: 'Texas SOS / Northwest', entity: 'Landvex Inc', type: 'payment', amount: -3250, currency: 'USD', status: 'paid', category: 'Juridik', reference: 'TX-LLC-2026' },
+]
+
+const STATUS_LABELS: Record<TxStatus, { label: string; color: string; bg: string }> = {
+  paid:      { label: 'Betald',     color: '#374151', bg: '#F3F4F6' },
+  approved:  { label: 'Godkänd',   color: '#374151', bg: '#F3F4F6' },
+  pending:   { label: 'Väntande',  color: '#92400E', bg: '#FEF3C7' },
+  overdue:   { label: 'Förfallen', color: '#991B1B', bg: '#FEE2E2' },
+  cancelled: { label: 'Annullerad', color: '#6B7280', bg: '#F9FAFB' },
+}
+
+const TYPE_LABELS: Record<TxType, string> = {
+  invoice:      'Faktura',
+  payment:      'Betalning',
+  salary:       'Lön',
+  expense:      'Utlägg',
+  transfer:     'Överföring',
+  intercompany: 'Intercompany',
+}
+
+const ENTITIES = ['Alla', 'Landvex AB', 'Landvex Inc', 'Wavult Group', 'QuiXzoom UAB', 'QuiXzoom Inc']
+const CATEGORIES = ['Alla', 'Intäkt', 'Lön', 'Infrastruktur', 'Mjukvara', 'Intercompany', 'Juridik', 'Resa & Event']
+
 export function TransactionFeed() {
-  const { activeEntity } = useEntityScope()
-  const isRoot = activeEntity.layer === 0
+  const [search, setSearch] = useState('')
+  const [entityFilter, setEntityFilter] = useState('Alla')
+  const [categoryFilter, setCategoryFilter] = useState('Alla')
   const [selectedTx, setSelectedTx] = useState<string | null>(null)
 
-  const ledgerLabel = isRoot
-    ? 'Group-wide ledger'
-    : `Showing ledger for ${activeEntity.name}`
+  const filtered = TRANSACTIONS.filter(tx => {
+    const matchSearch = !search ||
+      tx.title.toLowerCase().includes(search.toLowerCase()) ||
+      tx.counterparty.toLowerCase().includes(search.toLowerCase()) ||
+      tx.reference?.toLowerCase().includes(search.toLowerCase())
+    const matchEntity = entityFilter === 'Alla' || tx.entity === entityFilter
+    const matchCat = categoryFilter === 'Alla' || tx.category === categoryFilter
+    return matchSearch && matchEntity && matchCat
+  })
+
+  const totalIn = filtered.filter(t => t.amount > 0).reduce((s, t) => s + t.amount, 0)
+  const totalOut = filtered.filter(t => t.amount < 0).reduce((s, t) => s + t.amount, 0)
+
+  function formatAmount(amount: number, currency: string): string {
+    const abs = Math.abs(amount)
+    const formatted = abs >= 1000 ? `${(abs / 1000).toFixed(0)} k` : abs.toString()
+    return `${amount > 0 ? '+' : '-'}${formatted} ${currency}`
+  }
 
   return (
-    <div className="space-y-6 max-w-4xl">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Transactions</h1>
-        <p className="text-gray-500 mt-1">{ledgerLabel}</p>
-        {/* Scope banner */}
-        {!isRoot && (
-          <div
-            className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium"
-            style={{
-              background: activeEntity.color + '15',
-              border: `1px solid ${activeEntity.color}30`,
-              color: activeEntity.color,
-            }}
-          >
-            <span className="h-1.5 w-1.5 rounded-full" style={{ background: activeEntity.color }} />
-            {activeEntity.name}
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: '#F2F2F7' }}>
+      {/* Header */}
+      <div style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(0,0,0,0.08)', padding: '16px 24px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+          <div>
+            <h2 style={{ fontSize: 20, fontWeight: 700, color: '#1C1C1E', margin: 0 }}>Transaktioner</h2>
+            <div style={{ fontSize: 13, color: '#6B7280', marginTop: 2 }}>Koncernredovisning — alla bolag</div>
+          </div>
+          <button style={{
+            display: 'flex', alignItems: 'center', gap: 6,
+            padding: '8px 16px', borderRadius: 10, border: '1px solid rgba(0,0,0,0.1)',
+            background: '#F9FAFB', color: '#374151', fontSize: 13, fontWeight: 500, cursor: 'pointer',
+          }}>
+            <Download style={{ width: 14, height: 14 }} />
+            Exportera
+          </button>
+        </div>
+
+        {/* Summary cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 16 }}>
+          {[
+            { label: 'Inkomster (filtrerat)', value: `+${(totalIn / 1000).toFixed(0)}k SEK`, sub: `${filtered.filter(t => t.amount > 0).length} transaktioner` },
+            { label: 'Utgifter (filtrerat)', value: `-${Math.abs(totalOut / 1000).toFixed(0)}k SEK`, sub: `${filtered.filter(t => t.amount < 0).length} transaktioner` },
+            { label: 'Netto', value: `${((totalIn + totalOut) / 1000).toFixed(0)}k SEK`, sub: 'Balans' },
+          ].map(card => (
+            <div key={card.label} style={{ background: '#F9FAFB', borderRadius: 10, padding: '12px 16px', border: '1px solid rgba(0,0,0,0.06)' }}>
+              <div style={{ fontSize: 10, fontWeight: 600, color: '#8E8E93', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 4 }}>{card.label}</div>
+              <div style={{ fontSize: 18, fontWeight: 700, color: '#1C1C1E', fontFamily: 'monospace' }}>{card.value}</div>
+              <div style={{ fontSize: 11, color: '#6B7280', marginTop: 2 }}>{card.sub}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Filters */}
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <div style={{ position: 'relative', flex: 1 }}>
+            <Search style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', width: 14, height: 14, color: '#9CA3AF' }} />
+            <input
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Sök på namn, motpart eller referens..."
+              style={{ width: '100%', paddingLeft: 32, paddingRight: 14, paddingTop: 8, paddingBottom: 8, borderRadius: 8, border: '1px solid rgba(0,0,0,0.1)', fontSize: 13, fontFamily: 'system-ui', boxSizing: 'border-box' }}
+            />
+          </div>
+          <select value={entityFilter} onChange={e => setEntityFilter(e.target.value)}
+            style={{ padding: '8px 12px', borderRadius: 8, border: '1px solid rgba(0,0,0,0.1)', fontSize: 13, color: '#374151', background: '#FFFFFF' }}>
+            {ENTITIES.map(e => <option key={e}>{e}</option>)}
+          </select>
+          <select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)}
+            style={{ padding: '8px 12px', borderRadius: 8, border: '1px solid rgba(0,0,0,0.1)', fontSize: 13, color: '#374151', background: '#FFFFFF' }}>
+            {CATEGORIES.map(c => <option key={c}>{c}</option>)}
+          </select>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div style={{ flex: 1, overflow: 'auto' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+          <thead>
+            <tr style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(0,0,0,0.08)', position: 'sticky', top: 0 }}>
+              {['Datum', 'Referens', 'Beskrivning', 'Motpart', 'Bolag', 'Typ', 'Belopp', 'Status', ''].map(h => (
+                <th key={h} style={{ padding: '10px 16px', textAlign: 'left', fontSize: 10, fontWeight: 600, color: '#8E8E93', textTransform: 'uppercase', letterSpacing: '0.07em', whiteSpace: 'nowrap' }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map((tx, i) => {
+              const s = STATUS_LABELS[tx.status]
+              return (
+                <tr
+                  key={tx.id}
+                  onClick={() => setSelectedTx(tx.id)}
+                  style={{ background: i % 2 === 0 ? '#FFFFFF' : '#FAFAFA', borderBottom: '1px solid rgba(0,0,0,0.04)', cursor: 'pointer', transition: 'background 0.1s' }}
+                  onMouseEnter={e => (e.currentTarget.style.background = '#F0F0F5')}
+                  onMouseLeave={e => (e.currentTarget.style.background = i % 2 === 0 ? '#FFFFFF' : '#FAFAFA')}
+                >
+                  <td style={{ padding: '12px 16px', color: '#6B7280', fontFamily: 'monospace', whiteSpace: 'nowrap' }}>{tx.date}</td>
+                  <td style={{ padding: '12px 16px', color: '#9CA3AF', fontFamily: 'monospace', fontSize: 11 }}>{tx.reference || '—'}</td>
+                  <td style={{ padding: '12px 16px', fontWeight: 500, color: '#1C1C1E', maxWidth: 240 }}>{tx.title}</td>
+                  <td style={{ padding: '12px 16px', color: '#6B7280' }}>{tx.counterparty}</td>
+                  <td style={{ padding: '12px 16px' }}>
+                    <span style={{ fontSize: 11, padding: '2px 8px', background: '#F3F4F6', color: '#374151', borderRadius: 6, fontWeight: 500 }}>{tx.entity}</span>
+                  </td>
+                  <td style={{ padding: '12px 16px', color: '#6B7280' }}>{TYPE_LABELS[tx.type]}</td>
+                  <td style={{ padding: '12px 16px', fontFamily: 'monospace', fontWeight: 600, color: tx.amount > 0 ? '#374151' : '#1C1C1E', whiteSpace: 'nowrap', textAlign: 'right' }}>
+                    {formatAmount(tx.amount, tx.currency)}
+                  </td>
+                  <td style={{ padding: '12px 16px' }}>
+                    <span style={{ fontSize: 11, padding: '3px 10px', borderRadius: 20, fontWeight: 600, background: s.bg, color: s.color }}>{s.label}</span>
+                  </td>
+                  <td style={{ padding: '12px 16px' }}>
+                    <ChevronRight style={{ width: 14, height: 14, color: '#D1D5DB' }} />
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+        {filtered.length === 0 && (
+          <div style={{ padding: '60px 24px', textAlign: 'center', color: '#9CA3AF' }}>
+            Inga transaktioner matchar filtret
           </div>
         )}
       </div>
 
-      {/* Transaction list */}
-      <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
-        <div className="grid grid-cols-12 px-4 py-2 text-[9px] font-mono text-gray-500 uppercase tracking-wider border-b border-gray-200">
-          <span className="col-span-5">Transaktion</span>
-          <span className="col-span-2">Datum</span>
-          <span className="col-span-2 text-right">Belopp</span>
-          <span className="col-span-2">Kategori</span>
-          <span className="col-span-1">Status</span>
-        </div>
-        {DEMO_TX_LIST.map(tx => {
-          const st = STATUS_STYLES[tx.status]
-          const isIncome = tx.amount > 0
-          return (
-            <div
-              key={tx.id}
-              onClick={() => setSelectedTx(tx.id)}
-              className="grid grid-cols-12 px-4 py-3 items-center border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors cursor-pointer"
-            >
-              <span className="col-span-5 text-xs text-gray-900 font-medium truncate pr-2">{tx.title}</span>
-              <span className="col-span-2 text-xs font-mono text-gray-500">{tx.date}</span>
-              <span className="col-span-2 text-right text-xs font-mono font-semibold" style={{ color: isIncome ? '#34C759' : '#FF3B30' }}>
-                {isIncome ? '+' : ''}{(tx.amount / 1000).toFixed(0)}k {tx.currency}
-              </span>
-              <span className="col-span-2 text-xs text-gray-500">{tx.category}</span>
-              <span className="col-span-1">
-                <span className="text-[9px] font-semibold px-2 py-0.5 rounded-full" style={{ color: st.color, background: st.bg }}>
-                  {st.label}
-                </span>
-              </span>
-            </div>
-          )
-        })}
-      </div>
-
-      <div className="bg-white border border-gray-200 rounded-xl p-6 text-center">
-        <div className="text-3xl mb-3">↕</div>
-        <h3 className="text-sm font-semibold text-gray-900 mb-1">Full Ledger Core — Rullar ut i v2.1 (Q2 2026)</h3>
-        <p className="text-xs text-gray-500 max-w-sm mx-auto">
-          Multi-entity, multi-currency transaction engine med intercompany clearing.
-        </p>
-        <div className="mt-4 flex gap-3 justify-center">
-          <span className="px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 text-xs rounded-full">SEK · EUR · USD · AED</span>
-          <span className="px-3 py-1 bg-purple-50 text-purple-700 border border-purple-200 text-xs rounded-full">TX ↔ LT ↔ DIFC</span>
-        </div>
-      </div>
-
-      {/* Transaction detail panel */}
+      {/* Detail panel */}
       {selectedTx && (
         <TransactionDetail
           transactionId={selectedTx}

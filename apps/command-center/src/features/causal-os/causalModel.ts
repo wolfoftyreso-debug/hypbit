@@ -8,8 +8,8 @@ export const CAUSAL_VARIABLES: CausalVariable[] = [
     label: 'Antal zoomers (aktiva)',
     category: 'capacity',
     unit: 'count',
-    baseValue: 0,
-    currentValue: 0,
+    baseValue: 10,
+    currentValue: 10,
     affects: [
       { targetId: 'missions_per_month', multiplier: 15, direction: 1, description: '15 uppdrag/zoomer/mån' }
     ]
@@ -19,8 +19,8 @@ export const CAUSAL_VARIABLES: CausalVariable[] = [
     label: 'Uppdrag per månad',
     category: 'revenue',
     unit: 'count',
-    baseValue: 0,
-    currentValue: 0,
+    baseValue: 150,
+    currentValue: 150,
     affects: [
       { targetId: 'monthly_revenue', multiplier: 25, direction: 1, description: '25 SEK/uppdrag (Wavults 25%)' }
     ]
@@ -41,8 +41,8 @@ export const CAUSAL_VARIABLES: CausalVariable[] = [
     label: 'Månadsintäkt',
     category: 'revenue',
     unit: 'SEK',
-    baseValue: 0,
-    currentValue: 0,
+    baseValue: 3750,
+    currentValue: 3750,
     affects: [
       { targetId: 'cash_balance', multiplier: 1, direction: 1, description: 'Intäkt → kassan' }
     ]
