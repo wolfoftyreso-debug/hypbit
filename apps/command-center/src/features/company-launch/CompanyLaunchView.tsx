@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { COMPANY_LAUNCHES, CompanyLaunch, LaunchStep } from './data'
+import { CompanyLaunchWizard } from './CompanyLaunchWizard'
 
 // ─── Owner colours ────────────────────────────────────────────────────────────
 const OWNER_META: Record<string, { label: string; color: string; bg: string }> = {
@@ -196,6 +197,7 @@ function StepRow({
 
 // ─── Main view ────────────────────────────────────────────────────────────────
 export function CompanyLaunchView() {
+  const [activeTab, setActiveTab] = useState<'tracker' | 'wizard'>('tracker')
   const [companies, setCompanies] = useState<CompanyLaunch[]>(COMPANY_LAUNCHES)
   const [selectedId, setSelectedId] = useState<string>(COMPANY_LAUNCHES[0].id)
 
@@ -236,7 +238,41 @@ export function CompanyLaunchView() {
   const selPct = selTotal === 0 ? 0 : Math.round((selDone / selTotal) * 100)
 
   return (
-    <div className="flex h-full overflow-hidden bg-gray-50 text-gray-900">
+    <div className="flex flex-col h-full overflow-hidden bg-gray-50 text-gray-900">
+      {/* ── Tab bar ── */}
+      <div className="flex items-center gap-1 px-4 pt-3 pb-0 border-b border-white/8 flex-shrink-0">
+        <button
+          onClick={() => setActiveTab('tracker')}
+          className={`px-4 py-2 text-xs font-semibold rounded-t-lg border-b-2 transition-colors ${
+            activeTab === 'tracker'
+              ? 'border-blue-500 text-blue-500 bg-white/[0.04]'
+              : 'border-transparent text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          📋 Launch Tracker
+        </button>
+        <button
+          onClick={() => setActiveTab('wizard')}
+          className={`px-4 py-2 text-xs font-semibold rounded-t-lg border-b-2 transition-colors ${
+            activeTab === 'wizard'
+              ? 'border-indigo-500 text-indigo-500 bg-white/[0.04]'
+              : 'border-transparent text-gray-500 hover:text-gray-700'
+          }`}
+        >
+          🚀 Starta ny registrering
+        </button>
+      </div>
+
+      {/* ── Wizard tab ── */}
+      {activeTab === 'wizard' && (
+        <div className="flex-1 overflow-y-auto">
+          <CompanyLaunchWizard />
+        </div>
+      )}
+
+      {/* ── Tracker tab ── */}
+      {activeTab === 'tracker' && (
+      <div className="flex flex-1 overflow-hidden">
       {/* ── Left panel ── */}
       <aside className="w-[280px] flex-shrink-0 border-r border-white/8 flex flex-col overflow-hidden">
         <div className="px-4 py-4 border-b border-white/8">
@@ -399,6 +435,8 @@ export function CompanyLaunchView() {
           </div>
         </div>
       </div>
+      </div>
+      )}
     </div>
   )
 }
