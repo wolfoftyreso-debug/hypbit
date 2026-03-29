@@ -24,25 +24,25 @@ function MeetingCard({ meeting }: { meeting: MeetingCadence }) {
             <div className="flex items-center gap-2 flex-wrap">
               <span className={`text-sm font-semibold ${meta.color}`}>{meeting.name}</span>
               {meeting.automate && (
-                <span className="text-[9px] font-medium px-1.5 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 flex-shrink-0">
+                <span className="text-[9px] font-medium px-1.5 py-0.5 rounded-full bg-blue-500/10 text-blue-700 border border-blue-500/20 flex-shrink-0">
                   Fastställd i Ledningsgenomgång · 28 mar 2026
                 </span>
               )}
             </div>
             <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-              <span className="text-[11px] text-gray-500">{meeting.frequency}</span>
-              <span className="text-[11px] text-gray-500">·</span>
-              <span className="text-[11px] text-gray-500">{meeting.duration}</span>
+              <span className="text-[11px] text-gray-9000">{meeting.frequency}</span>
+              <span className="text-[11px] text-gray-9000">·</span>
+              <span className="text-[11px] text-gray-9000">{meeting.duration}</span>
               {meeting.time && (
                 <>
-                  <span className="text-[11px] text-gray-500">·</span>
-                  <span className="text-[11px] text-gray-500 font-mono">{meeting.time}</span>
+                  <span className="text-[11px] text-gray-9000">·</span>
+                  <span className="text-[11px] text-gray-9000 font-mono">{meeting.time}</span>
                 </>
               )}
             </div>
           </div>
         </div>
-        <span className={`text-gray-500 flex-shrink-0 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}>
+        <span className={`text-gray-9000 flex-shrink-0 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}>
           ▾
         </span>
       </div>
@@ -55,10 +55,10 @@ function MeetingCard({ meeting }: { meeting: MeetingCadence }) {
         >
           {/* Deltagare */}
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">👥 Deltagare</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-9000 mb-1">👥 Deltagare</p>
             <div className="flex flex-wrap gap-1">
               {meeting.participants.map(p => (
-                <span key={p} className="text-[11px] px-2 py-0.5 rounded-full bg-white/[0.06] text-gray-600 border border-gray-200">
+                <span key={p} className="text-[11px] px-2 py-0.5 rounded-full bg-gray-50 text-gray-600 border border-gray-200">
                   {p}
                 </span>
               ))}
@@ -67,7 +67,7 @@ function MeetingCard({ meeting }: { meeting: MeetingCadence }) {
 
           {/* Agenda */}
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">📋 Agenda</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-9000 mb-1">📋 Agenda</p>
             <ul className="space-y-0.5">
               {meeting.agenda.map((item, i) => (
                 <li key={i} className="flex items-start gap-1.5 text-[12px] text-gray-600">
@@ -80,7 +80,7 @@ function MeetingCard({ meeting }: { meeting: MeetingCadence }) {
 
           {/* Output */}
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">✅ Output</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-gray-9000 mb-1">✅ Output</p>
             <ul className="space-y-0.5">
               {meeting.output.map((item, i) => (
                 <li key={i} className="flex items-start gap-1.5 text-[12px] text-gray-600">
@@ -94,10 +94,10 @@ function MeetingCard({ meeting }: { meeting: MeetingCadence }) {
           {/* Verktyg */}
           {meeting.tools && meeting.tools.length > 0 && (
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500 mb-1">🛠 Verktyg</p>
+              <p className="text-[10px] font-bold uppercase tracking-wider text-gray-9000 mb-1">🛠 Verktyg</p>
               <div className="flex flex-wrap gap-1">
                 {meeting.tools.map(t => (
-                  <span key={t} className="text-[11px] px-2 py-0.5 rounded-full bg-white/[0.04] text-gray-500 border border-gray-200 font-mono">
+                  <span key={t} className="text-[11px] px-2 py-0.5 rounded-full bg-gray-50 text-gray-9000 border border-gray-200 font-mono">
                     {t}
                   </span>
                 ))}
@@ -133,8 +133,8 @@ function LevelSection({ level }: { level: (typeof LEVEL_META)[0] }) {
           <span>{level.icon}</span>
           <span>Nivå {level.level} — {level.label}</span>
         </div>
-        <div className="flex-1 h-px bg-white/[0.05]" />
-        <span className="text-[11px] text-gray-500">{level.description}</span>
+        <div className="flex-1 h-px bg-gray-50" />
+        <span className="text-[11px] text-gray-9000">{level.description}</span>
       </div>
 
       {/* Möten */}
@@ -161,10 +161,10 @@ function LevelConnector() {
 
 function Legend() {
   return (
-    <div className="flex items-center gap-4 flex-wrap text-[11px] text-gray-500">
+    <div className="flex items-center gap-4 flex-wrap text-[11px] text-gray-9000">
       <span className="flex items-center gap-1.5">
-        <span className="text-[8px] text-blue-400">●</span>
-        <span className="text-blue-400 font-medium">Fastställd i Ledningsgenomgång · 28 mar 2026</span>
+        <span className="text-[8px] text-blue-700">●</span>
+        <span className="text-blue-700 font-medium">Fastställd i Ledningsgenomgång · 28 mar 2026</span>
         — automatisk exekvering via Wavult OS
       </span>
       <span className="flex items-center gap-1.5">
@@ -190,24 +190,24 @@ export function MeetingCadenceView() {
             <span className="text-xl">🗓️</span>
             <div>
               <h1 className="text-[16px] font-bold text-gray-900">Möteshierarki</h1>
-              <p className="text-xs text-gray-500 font-mono">
+              <p className="text-xs text-gray-9000 font-mono">
                 Wavult Group — OKR · EOS · Agile · {totalMeetings} möten definierade
               </p>
             </div>
           </div>
           {/* Stats */}
           <div className="flex items-center gap-3 flex-wrap">
-            <div className="px-3 py-1.5 rounded-lg bg-white/[0.04] border border-gray-200 text-center">
+            <div className="px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200 text-center">
               <div className="text-lg font-bold text-gray-900">{totalMeetings}</div>
-              <div className="text-[10px] text-gray-500">Mötestyper</div>
+              <div className="text-[10px] text-gray-9000">Mötestyper</div>
             </div>
             <div className="px-3 py-1.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-center">
-              <div className="text-lg font-bold text-blue-400">{automatedCount}</div>
-              <div className="text-[10px] text-gray-500">Automatisk exekvering</div>
+              <div className="text-lg font-bold text-blue-700">{automatedCount}</div>
+              <div className="text-[10px] text-gray-9000">Automatisk exekvering</div>
             </div>
             <div className="px-3 py-1.5 rounded-lg bg-purple-500/10 border border-purple-500/20 text-center">
-              <div className="text-lg font-bold text-purple-400">6</div>
-              <div className="text-[10px] text-gray-500">Nivåer</div>
+              <div className="text-lg font-bold text-purple-700">6</div>
+              <div className="text-[10px] text-gray-9000">Nivåer</div>
             </div>
           </div>
         </div>
@@ -222,7 +222,7 @@ export function MeetingCadenceView() {
       <div className="px-4 md:px-6 py-6 space-y-1">
         {/* Pyramid-topp label */}
         <div className="text-center mb-4">
-          <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">
+          <span className="text-[10px] font-mono text-gray-9000 uppercase tracking-widest">
             ▲ Vision &amp; Strategi — Nivå 1
           </span>
         </div>
@@ -236,7 +236,7 @@ export function MeetingCadenceView() {
 
         {/* Pyramid-botten label */}
         <div className="text-center mt-4">
-          <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">
+          <span className="text-[10px] font-mono text-gray-9000 uppercase tracking-widest">
             ▼ Incident &amp; Eskalering — Nivå 6
           </span>
         </div>
@@ -244,7 +244,7 @@ export function MeetingCadenceView() {
 
       {/* Footer info */}
       <div className="px-4 md:px-6 py-4 border-t border-gray-200 mt-4">
-        <p className="text-[11px] text-gray-500 text-center">
+        <p className="text-[11px] text-gray-9000 text-center">
           Möteshierarkin följer EOS (Entrepreneurial Operating System) + OKR-metodologi.
           Bernt hanterar Morning Brief (08:00), WHOOP-check och automatiserade rapporter.
         </p>

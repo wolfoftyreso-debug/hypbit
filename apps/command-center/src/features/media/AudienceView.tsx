@@ -13,15 +13,15 @@ function NewAudienceModal({ onClose }: { onClose: () => void }) {
   })
 
   return (
-    <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-white/70 z-50 flex items-center justify-center p-4">
       <div className="bg-white border border-gray-200 rounded-xl w-full max-w-lg">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <h2 className="text-gray-900 font-semibold">Ny audience</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-900 text-lg leading-none">×</button>
+          <button onClick={onClose} className="text-gray-9000 hover:text-gray-900 text-lg leading-none">×</button>
         </div>
         <div className="px-6 py-5 space-y-4">
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Kampanj</label>
+            <label className="block text-xs text-gray-9000 mb-1">Kampanj</label>
             <select
               value={form.campaign_id}
               onChange={e => setForm({ ...form, campaign_id: e.target.value })}
@@ -34,7 +34,7 @@ function NewAudienceModal({ onClose }: { onClose: () => void }) {
           </div>
 
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Geografi (kommaseparerat)</label>
+            <label className="block text-xs text-gray-9000 mb-1">Geografi (kommaseparerat)</label>
             <input
               value={form.geo}
               onChange={e => setForm({ ...form, geo: e.target.value })}
@@ -45,7 +45,7 @@ function NewAudienceModal({ onClose }: { onClose: () => void }) {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Ålder — från</label>
+              <label className="block text-xs text-gray-9000 mb-1">Ålder — från</label>
               <input
                 type="number"
                 value={form.age_min}
@@ -55,7 +55,7 @@ function NewAudienceModal({ onClose }: { onClose: () => void }) {
               />
             </div>
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Ålder — till</label>
+              <label className="block text-xs text-gray-9000 mb-1">Ålder — till</label>
               <input
                 type="number"
                 value={form.age_max}
@@ -67,7 +67,7 @@ function NewAudienceModal({ onClose }: { onClose: () => void }) {
           </div>
 
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Intressen (kommaseparerat)</label>
+            <label className="block text-xs text-gray-9000 mb-1">Intressen (kommaseparerat)</label>
             <input
               value={form.interests}
               onChange={e => setForm({ ...form, interests: e.target.value })}
@@ -77,7 +77,7 @@ function NewAudienceModal({ onClose }: { onClose: () => void }) {
           </div>
 
           <div>
-            <label className="block text-xs text-gray-500 mb-1">CRM-segment (valfritt)</label>
+            <label className="block text-xs text-gray-9000 mb-1">CRM-segment (valfritt)</label>
             <input
               value={form.custom_data}
               onChange={e => setForm({ ...form, custom_data: e.target.value })}
@@ -88,17 +88,17 @@ function NewAudienceModal({ onClose }: { onClose: () => void }) {
 
           <button
             disabled
-            className="w-full py-2 text-sm text-gray-500 border border-white/5 rounded-lg cursor-not-allowed"
+            className="w-full py-2 text-sm text-gray-9000 border border-white/5 rounded-lg cursor-not-allowed"
             title="Aktiveras i Fas 2"
           >
             📥 Importera från CRM — Fas 2
           </button>
         </div>
         <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3">
-          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-gray-900 transition-colors">Avbryt</button>
+          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-9000 hover:text-gray-900 transition-colors">Avbryt</button>
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm bg-brand-accent/20 text-brand-accent border border-brand-accent/30 rounded-lg hover:bg-brand-accent/30 transition-colors"
+            className="px-4 py-2 text-sm bg-brand-accent/20 text-purple-700 border border-purple-200 rounded-lg hover:bg-brand-accent/30 transition-colors"
           >
             Spara audience
           </button>
@@ -117,19 +117,19 @@ export function AudienceView() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-gray-900 font-semibold">Audiences</h2>
-          <p className="text-xs text-gray-500 mt-0.5">{MOCK_AUDIENCES.length} audiences definierade</p>
+          <p className="text-xs text-gray-9000 mt-0.5">{MOCK_AUDIENCES.length} audiences definierade</p>
         </div>
         <div className="flex items-center gap-2">
           <button
             disabled
-            className="px-3 py-1.5 text-sm text-gray-500 border border-white/5 rounded-lg cursor-not-allowed"
+            className="px-3 py-1.5 text-sm text-gray-9000 border border-white/5 rounded-lg cursor-not-allowed"
             title="Aktiveras i Fas 2"
           >
             📥 Importera från CRM
           </button>
           <button
             onClick={() => setShowModal(true)}
-            className="px-3 py-1.5 text-sm bg-brand-accent/20 text-brand-accent border border-brand-accent/30 rounded-lg hover:bg-brand-accent/30 transition-colors"
+            className="px-3 py-1.5 text-sm bg-brand-accent/20 text-purple-700 border border-purple-200 rounded-lg hover:bg-brand-accent/30 transition-colors"
           >
             + Ny audience
           </button>
@@ -149,10 +149,10 @@ export function AudienceView() {
                   <div className="text-sm font-medium text-gray-900 mb-0.5">
                     {audience.custom_data ?? `Audience ${audience.id}`}
                   </div>
-                  <div className="text-xs text-gray-500">{campaign?.name}</div>
+                  <div className="text-xs text-gray-9000">{campaign?.name}</div>
                 </div>
                 {audience.age_range && (
-                  <span className="text-xs text-gray-500 font-mono">
+                  <span className="text-xs text-gray-9000 font-mono">
                     {audience.age_range[0]}–{audience.age_range[1]} år
                   </span>
                 )}
@@ -180,7 +180,7 @@ export function AudienceView() {
         })}
       </div>
 
-      <div className="rounded-lg bg-white/50 border border-gray-200 px-4 py-3 text-xs text-gray-500">
+      <div className="rounded-lg bg-gray-500 border border-gray-200 px-4 py-3 text-xs text-gray-9000">
         💡 CRM-import och lookalike audiences aktiveras i Fas 2 (Q2 2026).
       </div>
 

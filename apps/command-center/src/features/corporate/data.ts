@@ -1,6 +1,6 @@
 // ─── Corporate data types & mock data ──────────────────────────────────────
 
-export type CompanyId = 'landvex-ab' | 'quixzoom-inc' | 'landvex-inc' | 'quixzoom-uab' | 'wavult-group'
+export type CompanyId = 'landvex-ab' | 'quixzoom-inc' | 'landvex-inc' | 'quixzoom-uab' | 'wavult-group' | 'financecoFzco' | 'devopsFzco'
 
 export interface Company {
   id: CompanyId
@@ -15,6 +15,28 @@ export interface Company {
 }
 
 export const COMPANIES: Company[] = [
+  {
+    id: 'financecoFzco',
+    name: 'FinanceCo FZCO',
+    shortName: 'FinanceCo',
+    jurisdiction: 'Dubai, UAE',
+    jurisdictionCode: 'AE',
+    orgNr: 'FZCO-2025-FCO1',
+    founded: '2025-06-01',
+    status: 'aktiv',
+    color: '#10B981',
+  },
+  {
+    id: 'devopsFzco',
+    name: 'DevOps FZCO',
+    shortName: 'DevOps FZCO',
+    jurisdiction: 'Dubai, UAE',
+    jurisdictionCode: 'AE',
+    orgNr: 'FZCO-2025-DVO1',
+    founded: '2025-06-01',
+    status: 'aktiv',
+    color: '#7C3AED',
+  },
   {
     id: 'wavult-group',
     name: 'Wavult Group DMCC',

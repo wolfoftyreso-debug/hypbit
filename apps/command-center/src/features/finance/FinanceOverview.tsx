@@ -15,7 +15,7 @@ function fmt(n: number, currency: string) {
 function ProgressBar({ value, max, color }: { value: number; max: number; color: string }) {
   const pct = max > 0 ? Math.min(100, Math.round((value / max) * 100)) : 0
   return (
-    <div className="w-full bg-white/[0.06] rounded-full h-1.5 mt-1.5">
+    <div className="w-full bg-gray-50 rounded-full h-1.5 mt-1.5">
       <div
         className="h-1.5 rounded-full transition-all"
         style={{ width: `${pct}%`, background: color }}
@@ -33,11 +33,11 @@ function KpiCard({ label, value, currency, sub, color, icon }: {
       style={{ background: color + '08', borderColor: color + '20' }}
     >
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-gray-500 font-mono uppercase tracking-wider">{label}</span>
+        <span className="text-xs text-gray-9000 font-mono uppercase tracking-wider">{label}</span>
         <span className="text-lg">{icon}</span>
       </div>
       <p className="text-xl font-bold" style={{ color }}>{fmt(value, currency)}</p>
-      {sub && <p className="text-xs text-gray-500 mt-1">{sub}</p>}
+      {sub && <p className="text-xs text-gray-9000 mt-1">{sub}</p>}
     </div>
   )
 }
@@ -137,7 +137,7 @@ export function FinanceOverview() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-40 text-gray-500 text-xs">
+      <div className="flex items-center justify-center h-40 text-gray-9000 text-xs">
         Laddar finansiell data...
       </div>
     )
@@ -148,14 +148,14 @@ export function FinanceOverview() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h2 className="text-lg font-bold text-gray-900">Finansiell Översikt</h2>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-xs text-gray-9000 mt-0.5">
             {isRoot ? 'Wavult Group — konsoliderad vy' : `${activeEntity.name}`}
-            {useMock && <span className="ml-2 text-gray-500 text-[9px] font-mono">[ej konfigurerat]</span>}
+            {useMock && <span className="ml-2 text-gray-9000 text-[9px] font-mono">[ej konfigurerat]</span>}
           </p>
         </div>
         <div className="text-right flex-shrink-0">
           <p className="text-[9px] text-gray-600 font-mono">Senast uppdaterad</p>
-          <p className="text-xs text-gray-500 font-mono">{updatedAt}</p>
+          <p className="text-xs text-gray-9000 font-mono">{updatedAt}</p>
         </div>
       </div>
 
@@ -170,7 +170,7 @@ export function FinanceOverview() {
             <div className="px-4 py-3 border-b border-gray-200 flex items-center gap-2">
               <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: fe.color }} />
               <span className="text-xs font-semibold text-gray-900">{fe.name}</span>
-              <span className="text-[9px] font-mono text-gray-500 ml-1">{fe.jurisdiction}</span>
+              <span className="text-[9px] font-mono text-gray-9000 ml-1">{fe.jurisdiction}</span>
               {/* Health indicator */}
               <span
                 className="flex items-center gap-1 text-[9px] font-semibold px-2 py-0.5 rounded-full ml-2"
@@ -202,7 +202,7 @@ export function FinanceOverview() {
             <div className="px-4 pb-4 grid grid-cols-2 gap-3">
               <div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[9px] text-gray-500 font-mono">Intäktsmål</span>
+                  <span className="text-[9px] text-gray-9000 font-mono">Intäktsmål</span>
                   <span className="text-[9px] font-mono" style={{ color: '#10B981' }}>
                     {(kpi.budget_revenue ?? 0) > 0 ? Math.round(((kpi.revenue ?? 0) / kpi.budget_revenue) * 100) : 0}%
                   </span>
@@ -211,7 +211,7 @@ export function FinanceOverview() {
               </div>
               <div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[9px] text-gray-500 font-mono">Kostnadsbudget</span>
+                  <span className="text-[9px] text-gray-9000 font-mono">Kostnadsbudget</span>
                   <span className="text-[9px] font-mono" style={{ color: '#F59E0B' }}>
                     {(kpi.budget_expenses ?? 0) > 0 ? Math.round(((kpi.expenses ?? 0) / kpi.budget_expenses) * 100) : 0}%
                   </span>
@@ -224,7 +224,7 @@ export function FinanceOverview() {
       })}
 
       {entitiesToShow.length === 0 && (
-        <div className="text-center py-8 text-gray-500 text-xs">
+        <div className="text-center py-8 text-gray-9000 text-xs">
           Inga bolag att visa
         </div>
       )}
@@ -251,7 +251,7 @@ export function FinanceOverview() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-900 truncate">{tx.description}</p>
-                    <p className="text-[9px] text-gray-500 font-mono mt-0.5">{tx.date} · {fe?.short_name}</p>
+                    <p className="text-[9px] text-gray-9000 font-mono mt-0.5">{tx.date} · {fe?.short_name}</p>
                   </div>
                   <span
                     className="text-xs font-semibold font-mono flex-shrink-0"

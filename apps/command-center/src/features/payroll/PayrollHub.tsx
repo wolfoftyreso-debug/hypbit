@@ -35,8 +35,8 @@ export function PayrollHub() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-2.5 text-xs font-medium whitespace-nowrap border-b-2 transition-colors -mb-px ${
                 activeTab === tab.id
-                  ? 'border-purple-500 text-purple-400'
-                  : 'border-transparent text-gray-500 hover:text-gray-600 hover:border-gray-600'
+                  ? 'border-purple-500 text-purple-700'
+                  : 'border-transparent text-gray-9000 hover:text-gray-600 hover:border-gray-600'
               }`}
             >
               <span>{tab.icon}</span>

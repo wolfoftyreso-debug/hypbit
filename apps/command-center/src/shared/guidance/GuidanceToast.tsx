@@ -97,7 +97,7 @@ export function GuidanceToast() {
 
         {/* Expanded content */}
         {expanded && activeToast.extended && (
-          <p className="text-xs text-gray-500 mt-2 leading-relaxed pl-3.5">
+          <p className="text-xs text-gray-9000 mt-2 leading-relaxed pl-3.5">
             {activeToast.extended}
           </p>
         )}
@@ -115,7 +115,7 @@ export function GuidanceToast() {
           )}
           {(expanded || !activeToast.extended) && <span />}
           {/* Progress bar */}
-          <div className="h-px flex-1 max-w-[80px] ml-auto rounded-full overflow-hidden bg-white/[0.05]">
+          <div className="h-px flex-1 max-w-[80px] ml-auto rounded-full overflow-hidden bg-gray-50">
             <div
               className="h-px rounded-full"
               style={{

@@ -88,9 +88,9 @@ const BASE_NOTIFICATIONS: SystemNotification[] = [
 ]
 
 const LEVEL_CONFIG: Record<NotifLevel, { label: string; color: string; bg: string; dot: string }> = {
-  info: { label: 'Info', color: 'text-blue-400', bg: 'bg-blue-500/10 border-blue-500/20', dot: 'bg-blue-400' },
-  warning: { label: 'Varning', color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/20', dot: 'bg-yellow-400' },
-  critical: { label: 'Kritisk', color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20', dot: 'bg-red-400' },
+  info: { label: 'Info', color: 'text-blue-700', bg: 'bg-blue-500/10 border-blue-500/20', dot: 'bg-blue-400' },
+  warning: { label: 'Varning', color: 'text-yellow-700', bg: 'bg-yellow-500/10 border-yellow-500/20', dot: 'bg-yellow-400' },
+  critical: { label: 'Kritisk', color: 'text-red-700', bg: 'bg-red-500/10 border-red-500/20', dot: 'bg-red-400' },
 }
 
 export function NotificationCenter() {
@@ -161,11 +161,11 @@ export function NotificationCenter() {
                 onClick={() => setFilter(f)}
                 className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
                   filter === f
-                    ? f === 'all' ? 'bg-brand-accent/20 text-brand-accent' :
-                      f === 'critical' ? 'bg-red-500/20 text-red-400' :
-                      f === 'warning' ? 'bg-yellow-500/20 text-yellow-400' :
-                      'bg-blue-500/20 text-blue-400'
-                    : 'text-gray-500 hover:text-gray-600'
+                    ? f === 'all' ? 'bg-brand-accent/20 text-purple-700' :
+                      f === 'critical' ? 'bg-red-500/20 text-red-700' :
+                      f === 'warning' ? 'bg-yellow-500/20 text-yellow-700' :
+                      'bg-blue-500/20 text-blue-700'
+                    : 'text-gray-9000 hover:text-gray-600'
                 }`}
               >
                 {f === 'all' ? 'Alla' : LEVEL_CONFIG[f].label}
@@ -175,7 +175,7 @@ export function NotificationCenter() {
           {unreadCount > 0 && (
             <button
               onClick={markAllRead}
-              className="text-xs text-gray-500 hover:text-gray-600 transition-colors px-2 py-1"
+              className="text-xs text-gray-9000 hover:text-gray-600 transition-colors px-2 py-1"
             >
               Markera alla lästa
             </button>
@@ -184,7 +184,7 @@ export function NotificationCenter() {
       </div>
 
       {/* Live indicator */}
-      <div className="flex items-center gap-2 text-xs text-gray-500">
+      <div className="flex items-center gap-2 text-xs text-gray-9000">
         <span className="h-1.5 w-1.5 rounded-full bg-green-400 animate-pulse" />
         <span className="font-mono">Realtid — polling var 15s</span>
       </div>
@@ -204,24 +204,24 @@ export function NotificationCenter() {
                 <div className={`h-2 w-2 rounded-full flex-shrink-0 mt-1.5 ${cfg.dot} ${!notif.read ? '' : 'opacity-30'}`} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
-                    <span className={`text-xs font-medium ${!notif.read ? 'text-gray-900' : 'text-gray-500'}`}>
+                    <span className={`text-xs font-medium ${!notif.read ? 'text-gray-900' : 'text-gray-9000'}`}>
                       {notif.title}
                     </span>
                     <div className="flex items-center gap-2 flex-shrink-0">
-                      <span className="text-xs text-gray-500 font-mono">
+                      <span className="text-xs text-gray-9000 font-mono">
                         {new Date(notif.timestamp).toLocaleString('sv-SE', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                       </span>
                       {!notif.read && (
                         <button
                           onClick={() => markRead(notif.id)}
-                          className="text-[9px] text-gray-500 hover:text-gray-500 transition-colors"
+                          className="text-[9px] text-gray-9000 hover:text-gray-9000 transition-colors"
                         >
                           ✓
                         </button>
                       )}
                     </div>
                   </div>
-                  <p className="text-xs text-gray-500 mt-0.5">{notif.body}</p>
+                  <p className="text-xs text-gray-9000 mt-0.5">{notif.body}</p>
                   <div className="flex items-center gap-2 mt-1.5">
                     <span className="text-[9px] text-gray-600 font-mono">{notif.source}</span>
                     <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full border ${cfg.bg} ${cfg.color}`}>
@@ -234,7 +234,7 @@ export function NotificationCenter() {
           )
         })}
         {filtered.length === 0 && (
-          <div className="text-center py-12 text-gray-500 text-xs">
+          <div className="text-center py-12 text-gray-9000 text-xs">
             Inga notifikationer för valt filter
           </div>
         )}

@@ -55,7 +55,7 @@ function doneSteps(steps: LaunchStep[]) {
 function ProgressBar({ value, max, color = '#60A5FA' }: { value: number; max: number; color?: string }) {
   const pct = max === 0 ? 0 : Math.round((value / max) * 100)
   return (
-    <div className="h-1 w-full rounded-full bg-white/10 overflow-hidden">
+    <div className="h-1 w-full rounded-full bg-gray-100 overflow-hidden">
       <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: color }} />
     </div>
   )
@@ -103,7 +103,7 @@ function StepRow({
           ? 'border-white/5 opacity-50'
           : isBlocked
           ? 'border-red-900/30 bg-red-950/10'
-          : 'border-white/8 bg-white/[0.02] hover:bg-white/[0.04]'
+          : 'border-white/8 bg-gray-50 hover:bg-gray-50'
       }`}
     >
       {/* Checkbox */}
@@ -129,7 +129,7 @@ function StepRow({
       {/* Content */}
       <div className="flex-1 min-w-0 space-y-1">
         <div className="flex items-start gap-2 flex-wrap">
-          <span className={`text-sm font-medium ${done ? 'line-through text-gray-500' : 'text-gray-900'}`}>
+          <span className={`text-sm font-medium ${done ? 'line-through text-gray-9000' : 'text-gray-900'}`}>
             {step.title}
           </span>
 
@@ -143,16 +143,16 @@ function StepRow({
 
           {/* Blocked tag */}
           {isBlocked && !done && (
-            <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-red-900/40 text-red-400 flex-shrink-0">
+            <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-red-900/40 text-red-700 flex-shrink-0">
               ⛔ blocked
             </span>
           )}
         </div>
 
-        <p className="text-xs text-gray-500">{step.description}</p>
+        <p className="text-xs text-gray-9000">{step.description}</p>
 
         {/* Meta row */}
-        <div className="flex items-center gap-3 flex-wrap text-xs text-gray-500">
+        <div className="flex items-center gap-3 flex-wrap text-xs text-gray-9000">
           <span>⏱ {step.estimated_days}d</span>
           {step.cost_eur && <span>💰 {fmtCost(step.cost_eur)}</span>}
           {step.external_url && (
@@ -160,7 +160,7 @@ function StepRow({
               href={step.external_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 hover:text-blue-400 underline"
+              className="text-blue-500 hover:text-blue-700 underline"
             >
               🔗 {new URL(step.external_url).hostname.replace('www.', '')}
             </a>
@@ -189,7 +189,7 @@ function StepRow({
         )}
 
         {/* Evidence required */}
-        <p className="text-xs text-gray-500 italic">📎 {step.evidence_required}</p>
+        <p className="text-xs text-gray-9000 italic">📎 {step.evidence_required}</p>
       </div>
     </div>
   )
@@ -245,8 +245,8 @@ export function CompanyLaunchView() {
           onClick={() => setActiveTab('tracker')}
           className={`px-4 py-2 text-xs font-semibold rounded-t-lg border-b-2 transition-colors ${
             activeTab === 'tracker'
-              ? 'border-blue-500 text-blue-500 bg-white/[0.04]'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
+              ? 'border-blue-500 text-blue-500 bg-gray-50'
+              : 'border-transparent text-gray-9000 hover:text-gray-700'
           }`}
         >
           📋 Launch Tracker
@@ -255,8 +255,8 @@ export function CompanyLaunchView() {
           onClick={() => setActiveTab('wizard')}
           className={`px-4 py-2 text-xs font-semibold rounded-t-lg border-b-2 transition-colors ${
             activeTab === 'wizard'
-              ? 'border-indigo-500 text-indigo-500 bg-white/[0.04]'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
+              ? 'border-indigo-500 text-indigo-500 bg-gray-50'
+              : 'border-transparent text-gray-9000 hover:text-gray-700'
           }`}
         >
           🚀 Starta ny registrering
@@ -276,7 +276,7 @@ export function CompanyLaunchView() {
       {/* ── Left panel ── */}
       <aside className="w-[280px] flex-shrink-0 border-r border-white/8 flex flex-col overflow-hidden">
         <div className="px-4 py-4 border-b border-white/8">
-          <h2 className="text-xs font-mono text-gray-500 uppercase tracking-widest">Company Launch</h2>
+          <h2 className="text-xs font-mono text-gray-9000 uppercase tracking-widest">Company Launch</h2>
           <p className="text-xs text-gray-600 mt-0.5">Wavult Ecosystem · 5 bolag</p>
         </div>
 
@@ -294,8 +294,8 @@ export function CompanyLaunchView() {
                   onClick={() => setSelectedId(c.id)}
                   className={`w-full text-left px-4 py-3 transition-colors border-l-2 ${
                     active
-                      ? 'bg-white/[0.05] border-blue-500'
-                      : 'border-transparent hover:bg-white/[0.03]'
+                      ? 'bg-gray-50 border-blue-500'
+                      : 'border-transparent hover:bg-gray-50'
                   }`}
                 >
                   <div className="flex items-center gap-2 mb-1.5">
@@ -303,12 +303,12 @@ export function CompanyLaunchView() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-1">
                         <span className="text-xs font-semibold text-gray-900 truncate">{c.name}</span>
-                        <span className="text-[9px] font-mono text-gray-500 flex-shrink-0">{c.type}</span>
+                        <span className="text-[9px] font-mono text-gray-9000 flex-shrink-0">{c.type}</span>
                       </div>
                     </div>
                   </div>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-[9px] text-gray-500 font-mono">{done}/{total} steps</span>
+                    <span className="text-[9px] text-gray-9000 font-mono">{done}/{total} steps</span>
                     <StatusBadge status={c.status} />
                   </div>
                   <ProgressBar
@@ -332,12 +332,12 @@ export function CompanyLaunchView() {
               <div>
                 <div className="flex items-center gap-2">
                   <h1 className="text-lg font-bold text-gray-900">{selected.name}</h1>
-                  <span className="text-xs font-mono text-gray-500 bg-white/5 px-2 py-0.5 rounded">
+                  <span className="text-xs font-mono text-gray-9000 bg-gray-50 px-2 py-0.5 rounded">
                     {selected.type}
                   </span>
                   <StatusBadge status={selected.status} />
                 </div>
-                <p className="text-xs text-gray-500 font-mono mt-0.5">
+                <p className="text-xs text-gray-9000 font-mono mt-0.5">
                   {selected.jurisdiction} · Priority #{selected.priority}
                 </p>
               </div>
@@ -346,17 +346,17 @@ export function CompanyLaunchView() {
             {/* Stats */}
             <div className="flex gap-4 text-right flex-shrink-0">
               <div>
-                <p className="text-xs text-gray-500">Progress</p>
+                <p className="text-xs text-gray-9000">Progress</p>
                 <p className="text-sm font-bold text-gray-900">{selPct}%</p>
                 <p className="text-[9px] text-gray-600">{selDone}/{selTotal} done</p>
               </div>
               <div>
-                <p className="text-xs text-gray-500">Est. time</p>
+                <p className="text-xs text-gray-9000">Est. time</p>
                 <p className="text-sm font-bold text-gray-900">{selDays}d</p>
                 <p className="text-[9px] text-gray-600">critical path</p>
               </div>
               <div>
-                <p className="text-xs text-gray-500">Total cost</p>
+                <p className="text-xs text-gray-9000">Total cost</p>
                 <p className="text-sm font-bold text-gray-900">{fmtCost(selCost)}</p>
                 <p className="text-[9px] text-gray-600">approx EUR</p>
               </div>
@@ -382,7 +382,7 @@ export function CompanyLaunchView() {
               <section key={category}>
                 <div className="flex items-center gap-2 mb-2">
                   <span className="text-sm">{catMeta.icon}</span>
-                  <h3 className="text-xs font-mono uppercase tracking-widest text-gray-500">
+                  <h3 className="text-xs font-mono uppercase tracking-widest text-gray-9000">
                     {catMeta.label}
                   </h3>
                   <span className="text-[9px] font-mono text-gray-600 ml-auto">
@@ -405,18 +405,18 @@ export function CompanyLaunchView() {
         </div>
 
         {/* Summary footer */}
-        <div className="px-6 py-3 border-t border-white/8 flex-shrink-0 bg-white/[0.02]">
+        <div className="px-6 py-3 border-t border-white/8 flex-shrink-0 bg-gray-50">
           <div className="flex items-center gap-6 flex-wrap">
             <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-500 font-mono">TOTAL COST</span>
+              <span className="text-xs text-gray-9000 font-mono">TOTAL COST</span>
               <span className="text-sm font-bold text-gray-900">{fmtCost(selCost)}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-500 font-mono">CRITICAL PATH</span>
+              <span className="text-xs text-gray-9000 font-mono">CRITICAL PATH</span>
               <span className="text-sm font-bold text-gray-900">{selDays} days</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-500 font-mono">REMAINING</span>
+              <span className="text-xs text-gray-9000 font-mono">REMAINING</span>
               <span className="text-sm font-bold text-gray-900">{selTotal - selDone} steps</span>
             </div>
 

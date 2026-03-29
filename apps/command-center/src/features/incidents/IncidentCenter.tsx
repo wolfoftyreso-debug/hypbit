@@ -184,7 +184,7 @@ function IncidentCard({
       {/* Incident header — always visible */}
       <button
         onClick={() => setOpen(p => !p)}
-        className="w-full flex items-start gap-4 px-5 py-4 text-left hover:bg-black/[0.01] transition-colors"
+        className="w-full flex items-start gap-4 px-5 py-4 text-left hover:bg-white/[0.01] transition-colors"
       >
         {/* Status bar left edge */}
         <div className="w-1 self-stretch rounded-full flex-shrink-0"
@@ -321,7 +321,7 @@ function KPIRow({ kpi }: { kpi: KPIDefinition }) {
   const trendColor = kpi.trend === 'up' && status !== 'red' ? '#10B981' : kpi.trend === 'down' ? '#EF4444' : '#6B7280'
 
   return (
-    <div className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-black/[0.02] transition-colors">
+    <div className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors">
       <span className="h-2 w-2 rounded-full flex-shrink-0 transition-all"
         style={{ background: color, boxShadow: status === 'red' ? `0 0 8px ${color}` : 'none' }} />
       <span className="flex-1 text-xs truncate" style={{ color: '#1C1C1E' }}>{kpi.name}</span>

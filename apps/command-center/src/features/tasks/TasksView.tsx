@@ -201,14 +201,14 @@ function TaskCard({
           {task.project}
         </span>
         {task.tags.map(t => (
-          <span key={t} className="text-xs px-1.5 py-0.5 rounded bg-surface-base text-gray-500">
+          <span key={t} className="text-xs px-1.5 py-0.5 rounded bg-surface-base text-gray-9000">
             {t}
           </span>
         ))}
       </div>
 
       {/* Title */}
-      <p className={`text-sm text-gray-900 leading-snug ${task.column === 'done' ? 'line-through text-gray-500' : ''}`}>
+      <p className={`text-sm text-gray-900 leading-snug ${task.column === 'done' ? 'line-through text-gray-9000' : ''}`}>
         {task.title}
       </p>
 
@@ -234,7 +234,7 @@ function TaskCard({
           {idx > 0 && (
             <button
               onClick={() => onMove(task.id, cols[idx - 1] as Column)}
-              className="text-xs px-1.5 py-0.5 rounded bg-surface-base text-gray-500 hover:text-gray-900 transition-colors"
+              className="text-xs px-1.5 py-0.5 rounded bg-surface-base text-gray-9000 hover:text-gray-900 transition-colors"
               title="Flytta bakåt"
             >
               ←
@@ -243,7 +243,7 @@ function TaskCard({
           {idx < cols.length - 1 && (
             <button
               onClick={() => onMove(task.id, cols[idx + 1] as Column)}
-              className="text-xs px-1.5 py-0.5 rounded bg-surface-base text-gray-500 hover:text-gray-900 transition-colors"
+              className="text-xs px-1.5 py-0.5 rounded bg-surface-base text-gray-9000 hover:text-gray-900 transition-colors"
               title="Flytta framåt"
             >
               →
@@ -283,7 +283,7 @@ export function TasksView() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Task Board</h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-9000 mt-1">
             {isRoot
               ? `Wavult Group — ${scopedTasks.length} uppgifter`
               : `${activeEntity.name} — ${scopedTasks.length} uppgifter`}
@@ -312,7 +312,7 @@ export function TasksView() {
               className={`text-xs px-3 py-1.5 rounded-lg transition-colors ${
                 filter === p
                   ? 'bg-brand-accent text-gray-900'
-                  : 'bg-surface-raised border border-surface-border text-gray-500 hover:text-gray-900'
+                  : 'bg-surface-raised border border-surface-border text-gray-9000 hover:text-gray-900'
               }`}
             >
               {p === 'all' ? 'Alla' : p}
@@ -350,7 +350,7 @@ export function TasksView() {
                   <TaskCard key={t.id} task={t} onMove={move} />
                 ))}
                 {colTasks.length === 0 && (
-                  <div className="flex items-center justify-center h-16 text-xs text-gray-500">
+                  <div className="flex items-center justify-center h-16 text-xs text-gray-9000">
                     Tom
                   </div>
                 )}
@@ -361,7 +361,7 @@ export function TasksView() {
       </div>
 
       {/* Stats footer */}
-      <div className="flex gap-4 flex-wrap text-xs text-gray-500 pt-2 border-t border-surface-border">
+      <div className="flex gap-4 flex-wrap text-xs text-gray-9000 pt-2 border-t border-surface-border">
         {COLUMNS.map(col => (
           <span key={col.id}>
             <span style={{ color: col.color }}>●</span>{' '}

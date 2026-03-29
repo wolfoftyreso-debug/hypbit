@@ -41,42 +41,42 @@ const pct = (n: number): string => `${n > 0 ? '+' : ''}${n.toFixed(1)}%`
 
 function riskColor(risk: RiskLevel): string {
   switch (risk) {
-    case 'critical': return 'text-red-400'
-    case 'high': return 'text-orange-400'
-    case 'medium': return 'text-yellow-400'
-    case 'low': return 'text-emerald-400'
+    case 'critical': return 'text-red-700'
+    case 'high': return 'text-orange-700'
+    case 'medium': return 'text-yellow-700'
+    case 'low': return 'text-emerald-700'
   }
 }
 
 function riskBg(risk: RiskLevel): string {
   switch (risk) {
-    case 'critical': return 'bg-red-500/10 border-red-500/30 text-red-400'
-    case 'high': return 'bg-orange-500/10 border-orange-500/30 text-orange-400'
-    case 'medium': return 'bg-yellow-500/10 border-yellow-500/30 text-yellow-400'
-    case 'low': return 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+    case 'critical': return 'bg-red-500/10 border-red-500/30 text-red-700'
+    case 'high': return 'bg-orange-500/10 border-orange-500/30 text-orange-700'
+    case 'medium': return 'bg-yellow-500/10 border-yellow-500/30 text-yellow-700'
+    case 'low': return 'bg-emerald-500/10 border-emerald-500/30 text-emerald-700'
   }
 }
 
 function severityIcon(severity: WarningSeverity) {
   switch (severity) {
-    case 'critical': return <XCircle size={16} className="text-red-400 flex-shrink-0" />
-    case 'warning': return <AlertTriangle size={16} className="text-yellow-400 flex-shrink-0" />
-    case 'info': return <Info size={16} className="text-blue-400 flex-shrink-0" />
+    case 'critical': return <XCircle size={16} className="text-red-700 flex-shrink-0" />
+    case 'warning': return <AlertTriangle size={16} className="text-yellow-700 flex-shrink-0" />
+    case 'info': return <Info size={16} className="text-blue-700 flex-shrink-0" />
   }
 }
 
 function balanceColor(balance: number): string {
-  if (balance < 0) return 'text-red-400'
+  if (balance < 0) return 'text-red-700'
   if (balance < 10000) return 'text-red-300'
-  if (balance < 50000) return 'text-yellow-400'
-  return 'text-emerald-400'
+  if (balance < 50000) return 'text-yellow-700'
+  return 'text-emerald-700'
 }
 
 function confidenceBadge(c: Confidence): string {
   switch (c) {
-    case 'certain': return 'bg-emerald-500/15 text-emerald-400'
-    case 'probable': return 'bg-yellow-500/15 text-yellow-400'
-    case 'speculative': return 'bg-purple-500/15 text-purple-400'
+    case 'certain': return 'bg-emerald-500/15 text-emerald-700'
+    case 'probable': return 'bg-yellow-500/15 text-yellow-700'
+    case 'speculative': return 'bg-purple-500/15 text-purple-700'
   }
 }
 
@@ -206,12 +206,12 @@ export function CausalOS() {
             { label: 'Saldo 365d', value: SEK(summary.balanceIn365d), sub: '365 dagar', colored: true, n: summary.balanceIn365d },
             { label: 'Runway', value: `${Math.round(runway)} dagar`, sub: `≈ ${(runway / 30).toFixed(1)} mån` },
           ].map(card => (
-            <div key={card.label} className="rounded-lg border border-gray-200 bg-white/[0.02] p-4">
-              <div className="text-xs text-gray-500 mb-1">{card.label}</div>
+            <div key={card.label} className="rounded-lg border border-gray-200 bg-gray-50 p-4">
+              <div className="text-xs text-gray-9000 mb-1">{card.label}</div>
               <div className={`font-mono text-lg font-semibold ${card.colored ? balanceColor(card.n ?? 0) : 'text-gray-800'}`}>
                 {card.value}
               </div>
-              <div className="text-xs text-gray-500 mt-0.5">{card.sub}</div>
+              <div className="text-xs text-gray-9000 mt-0.5">{card.sub}</div>
             </div>
           ))}
         </div>
@@ -219,7 +219,7 @@ export function CausalOS() {
         {/* Critical warning banner */}
         {criticalDay && (
           <div className="flex items-center gap-3 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3">
-            <XCircle size={18} className="text-red-400 flex-shrink-0" />
+            <XCircle size={18} className="text-red-700 flex-shrink-0" />
             <span className="text-sm text-red-300">
               Kassan går negativ om <span className="font-mono font-semibold">{criticalDay.daysFromNow}</span> dagar
               ({criticalDay.day.date})
@@ -236,7 +236,7 @@ export function CausalOS() {
               className={`rounded px-3 py-1 text-xs transition-colors ${
                 confidenceFilter === f
                   ? 'bg-[#8B5CF6] text-gray-900'
-                  : 'border border-gray-200 text-gray-500 hover:text-gray-800'
+                  : 'border border-gray-200 text-gray-9000 hover:text-gray-800'
               }`}
             >
               {f === 'all' ? 'Alla' : f === 'certain' ? 'Säkra' : f === 'probable' ? 'Sannolika' : 'Spekulativa'}
@@ -252,17 +252,17 @@ export function CausalOS() {
             const barPct = Math.min(100, Math.max(0, (day.balance / maxBalance) * 100))
 
             return (
-              <div key={day.date} className="rounded-lg border border-gray-200 bg-white/[0.02] overflow-hidden">
+              <div key={day.date} className="rounded-lg border border-gray-200 bg-gray-50 overflow-hidden">
                 <button
-                  className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.02] transition-colors text-left"
+                  className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors text-left"
                   onClick={() => setExpandedDay(isExpanded ? null : day.date)}
                 >
-                  <span className="font-mono text-xs text-gray-500 w-24 flex-shrink-0">{day.date}</span>
+                  <span className="font-mono text-xs text-gray-9000 w-24 flex-shrink-0">{day.date}</span>
                   <span className={`font-mono text-sm font-semibold w-28 flex-shrink-0 ${balanceColor(day.balance)}`}>
                     {SEK(day.balance)}
                   </span>
                   {/* Bar */}
-                  <div className="flex-1 h-1.5 bg-white/[0.05] rounded-full overflow-hidden">
+                  <div className="flex-1 h-1.5 bg-gray-50 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all ${
                         day.balance < 0 ? 'bg-red-500' :
@@ -274,15 +274,15 @@ export function CausalOS() {
                   </div>
                   {day.warning && (
                     <AlertTriangle size={14} className={
-                      day.warning === 'negative' || day.warning === 'critical' ? 'text-red-400' : 'text-yellow-400'
+                      day.warning === 'negative' || day.warning === 'critical' ? 'text-red-700' : 'text-yellow-700'
                     } />
                   )}
                   {(day.inflows > 0 || day.outflows > 0) && (
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-gray-9000">
                       {day.entries.length} post{day.entries.length !== 1 ? 'er' : ''}
                     </span>
                   )}
-                  {isExpanded ? <ChevronUp size={14} className="text-gray-500" /> : <ChevronDown size={14} className="text-gray-500" />}
+                  {isExpanded ? <ChevronUp size={14} className="text-gray-9000" /> : <ChevronDown size={14} className="text-gray-9000" />}
                 </button>
 
                 {isExpanded && day.entries.length > 0 && (
@@ -293,16 +293,16 @@ export function CausalOS() {
                           <span className={`text-xs px-1.5 py-0.5 rounded font-mono ${confidenceBadge(entry.confidence)}`}>
                             {entry.confidence === 'certain' ? 'SÄKER' : entry.confidence === 'probable' ? 'SANNOLIK' : 'SPEKULATIV'}
                           </span>
-                          <span className="text-xs text-gray-500 truncate">{entry.label}</span>
+                          <span className="text-xs text-gray-9000 truncate">{entry.label}</span>
                         </div>
-                        <span className={`font-mono text-sm font-semibold flex-shrink-0 ${entry.amount >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                        <span className={`font-mono text-sm font-semibold flex-shrink-0 ${entry.amount >= 0 ? 'text-emerald-700' : 'text-red-700'}`}>
                           {entry.amount >= 0 ? '+' : ''}{SEK(entry.amount)}
                         </span>
                       </div>
                     ))}
                     <div className="pt-1 border-t border-gray-100 flex justify-between text-xs">
-                      <span className="text-emerald-400 font-mono">+{SEK(day.inflows)}</span>
-                      <span className="text-red-400 font-mono">-{SEK(day.outflows)}</span>
+                      <span className="text-emerald-700 font-mono">+{SEK(day.inflows)}</span>
+                      <span className="text-red-700 font-mono">-{SEK(day.outflows)}</span>
                     </div>
                   </div>
                 )}
@@ -328,20 +328,20 @@ export function CausalOS() {
         <div className="space-y-4">
           {/* Presets */}
           <div>
-            <div className="text-xs text-gray-500 mb-2 uppercase tracking-wider">Preset-scenarion</div>
+            <div className="text-xs text-gray-9000 mb-2 uppercase tracking-wider">Preset-scenarion</div>
             <div className="flex gap-2 flex-wrap">
               {PRESET_SCENARIOS.map(ps => (
                 <button
                   key={ps.id}
                   onClick={() => applyPreset(ps.id)}
-                  className="rounded px-3 py-1.5 text-xs border border-gray-200 text-gray-600 hover:bg-white/[0.04] hover:border-[#8B5CF6]/50 transition-colors"
+                  className="rounded px-3 py-1.5 text-xs border border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-[#8B5CF6]/50 transition-colors"
                 >
                   {ps.name}
                 </button>
               ))}
               <button
                 onClick={() => setScenarioAdjustments([])}
-                className="rounded px-3 py-1.5 text-xs border border-gray-200 text-gray-500 hover:text-gray-600 transition-colors"
+                className="rounded px-3 py-1.5 text-xs border border-gray-200 text-gray-9000 hover:text-gray-600 transition-colors"
               >
                 Återställ
               </button>
@@ -350,18 +350,18 @@ export function CausalOS() {
 
           {/* Sliders */}
           <div className="space-y-3">
-            <div className="text-xs text-gray-500 uppercase tracking-wider">Justera variabler</div>
+            <div className="text-xs text-gray-9000 uppercase tracking-wider">Justera variabler</div>
             {CAUSAL_VARIABLES.filter(v => !['monthly_burn', 'missions_per_month', 'runway_days'].includes(v.id)).map(variable => {
               const delta = getAdjustment(variable.id)
               const adjusted = variable.baseValue * (1 + delta / 100)
               return (
-                <div key={variable.id} className="rounded-lg border border-gray-200 bg-white/[0.02] p-3">
+                <div key={variable.id} className="rounded-lg border border-gray-200 bg-gray-50 p-3">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs text-gray-600">{variable.label}</span>
                     <div className="flex gap-3 text-xs font-mono">
-                      <span className="text-gray-500">{variable.baseValue.toLocaleString('sv-SE')} {variable.unit}</span>
-                      <ArrowRight size={12} className="text-gray-500 my-auto" />
-                      <span className={delta !== 0 ? 'text-[#8B5CF6]' : 'text-gray-500'}>
+                      <span className="text-gray-9000">{variable.baseValue.toLocaleString('sv-SE')} {variable.unit}</span>
+                      <ArrowRight size={12} className="text-gray-9000 my-auto" />
+                      <span className={delta !== 0 ? 'text-[#8B5CF6]' : 'text-gray-9000'}>
                         {adjusted.toLocaleString('sv-SE', { maximumFractionDigits: 0 })} {variable.unit}
                       </span>
                     </div>
@@ -376,7 +376,7 @@ export function CausalOS() {
                       onChange={e => setAdjustment(variable.id, Number(e.target.value))}
                       className="flex-1 accent-[#8B5CF6] h-1"
                     />
-                    <span className="font-mono text-xs w-12 text-right text-gray-500">{pct(delta)}</span>
+                    <span className="font-mono text-xs w-12 text-right text-gray-9000">{pct(delta)}</span>
                   </div>
                 </div>
               )
@@ -386,9 +386,9 @@ export function CausalOS() {
 
         {/* Right: Live Preview */}
         <div className="space-y-4">
-          <div className="text-xs text-gray-500 uppercase tracking-wider">Live preview</div>
+          <div className="text-xs text-gray-9000 uppercase tracking-wider">Live preview</div>
 
-          <div className="rounded-lg border border-gray-200 bg-white/[0.02] p-4 space-y-3">
+          <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-3">
             {[
               {
                 label: 'Revenue/mån',
@@ -418,14 +418,14 @@ export function CausalOS() {
               },
             ].map(row => (
               <div key={row.label} className="flex items-center justify-between gap-2">
-                <span className="text-xs text-gray-500 w-24">{row.label}</span>
+                <span className="text-xs text-gray-9000 w-24">{row.label}</span>
                 <div className="flex items-center gap-2 text-xs font-mono">
-                  <span className="text-gray-500">{row.base}</span>
-                  <ArrowRight size={12} className="text-gray-500" />
+                  <span className="text-gray-9000">{row.base}</span>
+                  <ArrowRight size={12} className="text-gray-9000" />
                   <span className="text-gray-800">{row.scenario}</span>
                   {row.delta && (
                     <span className={`text-xs px-1.5 py-0.5 rounded font-mono ${
-                      row.delta.startsWith('+') ? 'text-emerald-400 bg-emerald-500/10' : 'text-red-400 bg-red-500/10'
+                      row.delta.startsWith('+') ? 'text-emerald-700 bg-emerald-500/10' : 'text-red-700 bg-red-500/10'
                     }`}>
                       {row.delta}
                     </span>
@@ -435,7 +435,7 @@ export function CausalOS() {
             ))}
 
             <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
-              <span className="text-xs text-gray-500">Risk</span>
+              <span className="text-xs text-gray-9000">Risk</span>
               <span className={`text-xs font-semibold px-2 py-0.5 rounded border ${riskBg(risk)}`}>
                 {risk.toUpperCase()}
               </span>
@@ -445,16 +445,16 @@ export function CausalOS() {
           {/* Propagation effects */}
           {propagatedEffects.length > 0 && (
             <div>
-              <div className="text-xs text-gray-500 uppercase tracking-wider mb-2">Kausala effekter</div>
+              <div className="text-xs text-gray-9000 uppercase tracking-wider mb-2">Kausala effekter</div>
               <div className="space-y-1.5">
                 {propagatedEffects.map((effect, idx) => (
                   <div key={idx} className="flex items-start gap-2 rounded border border-gray-100 bg-white/[0.01] px-3 py-2">
                     <GitBranch size={12} className="text-[#8B5CF6] mt-0.5 flex-shrink-0" />
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-gray-9000">
                       <span className="text-gray-600">{effect.from}</span>
-                      <ArrowRight size={10} className="inline mx-1 text-gray-500" />
+                      <ArrowRight size={10} className="inline mx-1 text-gray-9000" />
                       <span className="text-gray-600">{effect.to}</span>
-                      <span className={`ml-1 font-mono ${effect.impact > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                      <span className={`ml-1 font-mono ${effect.impact > 0 ? 'text-emerald-700' : 'text-red-700'}`}>
                         ({effect.impact > 0 ? '+' : ''}{effect.impact.toFixed(0)})
                       </span>
                     </div>
@@ -488,7 +488,7 @@ export function CausalOS() {
               <div
                 key={option.id}
                 className={`rounded-lg border transition-colors ${
-                  isExpanded ? 'border-[#8B5CF6]/40 bg-[#8B5CF6]/[0.04]' : 'border-gray-200 bg-white/[0.02]'
+                  isExpanded ? 'border-[#8B5CF6]/40 bg-[#8B5CF6]/[0.04]' : 'border-gray-200 bg-gray-50'
                 }`}
               >
                 <button
@@ -499,15 +499,15 @@ export function CausalOS() {
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-sm font-semibold text-gray-800">{option.label}</span>
                       {computed.feasible ? (
-                        <span className="text-xs px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400">Genomförbart</span>
+                        <span className="text-xs px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-700">Genomförbart</span>
                       ) : (
-                        <span className="text-xs px-1.5 py-0.5 rounded bg-red-500/15 text-red-400">Ej genomförbart</span>
+                        <span className="text-xs px-1.5 py-0.5 rounded bg-red-500/15 text-red-700">Ej genomförbart</span>
                       )}
                       <span className={`text-xs px-1.5 py-0.5 rounded border ${riskBg(computed.risk)}`}>
                         {computed.risk.toUpperCase()}
                       </span>
                     </div>
-                    <div className="text-xs text-gray-500">{option.description}</div>
+                    <div className="text-xs text-gray-9000">{option.description}</div>
                   </div>
                   <div className="flex items-center gap-2">
                     <button
@@ -523,12 +523,12 @@ export function CausalOS() {
                       className={`text-xs px-2 py-1 rounded border transition-colors ${
                         isInCompare
                           ? 'border-[#8B5CF6]/50 text-[#8B5CF6] bg-[#8B5CF6]/10'
-                          : 'border-gray-200 text-gray-500 hover:text-gray-600'
+                          : 'border-gray-200 text-gray-9000 hover:text-gray-600'
                       }`}
                     >
                       Jämför
                     </button>
-                    {isExpanded ? <ChevronUp size={16} className="text-gray-500" /> : <ChevronDown size={16} className="text-gray-500" />}
+                    {isExpanded ? <ChevronUp size={16} className="text-gray-9000" /> : <ChevronDown size={16} className="text-gray-9000" />}
                   </div>
                 </button>
 
@@ -541,17 +541,17 @@ export function CausalOS() {
                         { label: 'Risk', value: computed.risk.toUpperCase(), colored: computed.risk },
                         { label: 'Genomförbart', value: computed.feasible ? 'Ja' : 'Nej', bool: computed.feasible },
                       ].map(card => (
-                        <div key={card.label} className="rounded border border-gray-100 bg-white/[0.02] p-3">
-                          <div className="text-xs text-gray-500 mb-1">{card.label}</div>
+                        <div key={card.label} className="rounded border border-gray-100 bg-gray-50 p-3">
+                          <div className="text-xs text-gray-9000 mb-1">{card.label}</div>
                           <div className={`font-mono text-sm font-semibold ${
                             card.colored ? riskColor(card.colored as RiskLevel) :
-                            card.bool !== undefined ? (card.bool ? 'text-emerald-400' : 'text-red-400') :
+                            card.bool !== undefined ? (card.bool ? 'text-emerald-700' : 'text-red-700') :
                             'text-gray-800'
                           }`}>
                             {card.value}
                           </div>
                           {card.delta !== undefined && (
-                            <div className={`font-mono text-xs mt-0.5 ${card.delta > 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                            <div className={`font-mono text-xs mt-0.5 ${card.delta > 0 ? 'text-emerald-700' : 'text-red-700'}`}>
                               {card.delta > 0 ? '+' : ''}{typeof card.delta === 'number' && card.label === 'Kassa 90d' ? SEK(card.delta) : Math.round(card.delta) + ' d'}
                             </div>
                           )}
@@ -560,16 +560,16 @@ export function CausalOS() {
                     </div>
 
                     <div>
-                      <div className="text-xs text-gray-500 mb-1.5">Direkta påverkningar</div>
+                      <div className="text-xs text-gray-9000 mb-1.5">Direkta påverkningar</div>
                       <div className="space-y-1">
                         {option.impacts.map((impact, idx) => {
                           const vari = CAUSAL_VARIABLES.find(v => v.id === impact.variableId)
                           return (
                             <div key={idx} className="flex items-center justify-between text-xs">
-                              <span className="text-gray-500">{vari?.label ?? impact.variableId}</span>
+                              <span className="text-gray-9000">{vari?.label ?? impact.variableId}</span>
                               <div className="flex items-center gap-2 font-mono">
-                                <span className="text-gray-500">{impact.timeframe}</span>
-                                <span className={impact.deltaPercent > 0 ? 'text-emerald-400' : 'text-red-400'}>
+                                <span className="text-gray-9000">{impact.timeframe}</span>
+                                <span className={impact.deltaPercent > 0 ? 'text-emerald-700' : 'text-red-700'}>
                                   {pct(impact.deltaPercent)}
                                 </span>
                               </div>
@@ -588,27 +588,27 @@ export function CausalOS() {
         {/* Side-by-side comparison */}
         {compareA && compareB && (
           <div>
-            <div className="text-xs text-gray-500 uppercase tracking-wider mb-3">Jämförelse</div>
+            <div className="text-xs text-gray-9000 uppercase tracking-wider mb-3">Jämförelse</div>
             <div className="grid grid-cols-2 gap-3">
               {[compareA, compareB].map(({ option, computed }) => (
-                <div key={option.id} className="rounded-lg border border-gray-200 bg-white/[0.02] p-4 space-y-2">
+                <div key={option.id} className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-2">
                   <div className="text-sm font-semibold text-gray-800">{option.label}</div>
                   <div className="space-y-1.5 text-xs">
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Runway</span>
+                      <span className="text-gray-9000">Runway</span>
                       <span className="font-mono text-gray-800">{Math.round(computed.runway)} d</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Kassa 90d</span>
+                      <span className="text-gray-9000">Kassa 90d</span>
                       <span className={`font-mono ${balanceColor(computed.cashIn90d)}`}>{SEK(computed.cashIn90d)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Risk</span>
+                      <span className="text-gray-9000">Risk</span>
                       <span className={`font-semibold ${riskColor(computed.risk)}`}>{computed.risk.toUpperCase()}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-500">Genomförbart</span>
-                      <span className={computed.feasible ? 'text-emerald-400' : 'text-red-400'}>
+                      <span className="text-gray-9000">Genomförbart</span>
+                      <span className={computed.feasible ? 'text-emerald-700' : 'text-red-700'}>
                         {computed.feasible ? 'Ja' : 'Nej'}
                       </span>
                     </div>
@@ -639,26 +639,26 @@ export function CausalOS() {
     return (
       <div className="space-y-4">
         {/* Status indicator */}
-        <div className="flex items-center gap-4 rounded-lg border border-gray-200 bg-white/[0.02] px-4 py-3">
+        <div className="flex items-center gap-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
           <div className="flex items-center gap-1.5">
-            <span className="font-mono text-lg font-semibold text-red-400">{counts.critical}</span>
-            <span className="text-xs text-gray-500">kritiska</span>
+            <span className="font-mono text-lg font-semibold text-red-700">{counts.critical}</span>
+            <span className="text-xs text-gray-9000">kritiska</span>
           </div>
-          <div className="w-px h-4 bg-white/[0.06]" />
+          <div className="w-px h-4 bg-gray-50" />
           <div className="flex items-center gap-1.5">
-            <span className="font-mono text-lg font-semibold text-yellow-400">{counts.warning}</span>
-            <span className="text-xs text-gray-500">varningar</span>
+            <span className="font-mono text-lg font-semibold text-yellow-700">{counts.warning}</span>
+            <span className="text-xs text-gray-9000">varningar</span>
           </div>
-          <div className="w-px h-4 bg-white/[0.06]" />
+          <div className="w-px h-4 bg-gray-50" />
           <div className="flex items-center gap-1.5">
-            <span className="font-mono text-lg font-semibold text-blue-400">{counts.info}</span>
-            <span className="text-xs text-gray-500">info</span>
+            <span className="font-mono text-lg font-semibold text-blue-700">{counts.info}</span>
+            <span className="text-xs text-gray-9000">info</span>
           </div>
         </div>
 
         {sorted.length === 0 && (
           <div className="flex items-center gap-3 rounded-lg border border-emerald-500/20 bg-emerald-500/[0.06] px-4 py-3">
-            <CheckCircle size={18} className="text-emerald-400" />
+            <CheckCircle size={18} className="text-emerald-700" />
             <span className="text-sm text-emerald-300">Inga aktiva varningar — systemet är stabilt.</span>
           </div>
         )}
@@ -679,15 +679,15 @@ export function CausalOS() {
                 {severityIcon(warning.severity)}
                 <div className="flex-1 min-w-0">
                   <div className="text-sm text-gray-800 mb-1">{warning.message}</div>
-                  <div className="text-xs text-gray-500 font-mono">{warning.trigger}</div>
+                  <div className="text-xs text-gray-9000 font-mono">{warning.trigger}</div>
                   {warning.daysUntil !== undefined && (
-                    <div className="text-xs text-gray-500 mt-0.5">
+                    <div className="text-xs text-gray-9000 mt-0.5">
                       Om <span className="font-mono text-gray-600">{warning.daysUntil}</span> dagar
                     </div>
                   )}
                   {warning.suggestedAction && (
-                    <div className="mt-2 text-xs text-gray-500 border-t border-gray-100 pt-2">
-                      <span className="text-gray-500">Åtgärd: </span>{warning.suggestedAction}
+                    <div className="mt-2 text-xs text-gray-9000 border-t border-gray-100 pt-2">
+                      <span className="text-gray-9000">Åtgärd: </span>{warning.suggestedAction}
                     </div>
                   )}
                 </div>
@@ -725,7 +725,7 @@ export function CausalOS() {
               className={`rounded px-3 py-1 text-xs transition-colors ${
                 categoryFilter === cat
                   ? 'bg-[#8B5CF6] text-gray-900'
-                  : 'border border-gray-200 text-gray-500 hover:text-gray-800'
+                  : 'border border-gray-200 text-gray-9000 hover:text-gray-800'
               }`}
             >
               {categoryLabels[cat]}
@@ -749,7 +749,7 @@ export function CausalOS() {
                     ? 'border-[#8B5CF6]/50 bg-[#8B5CF6]/[0.06]'
                     : isAffectedByHighlighted
                     ? 'border-[#8B5CF6]/20 bg-[#8B5CF6]/[0.02]'
-                    : 'border-gray-200 bg-white/[0.02] hover:border-gray-200'
+                    : 'border-gray-200 bg-gray-50 hover:border-gray-200'
                 }`}
                 onClick={() => setHighlightedVar(isHighlighted ? null : variable.id)}
               >
@@ -758,31 +758,31 @@ export function CausalOS() {
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-sm text-gray-800">{variable.label}</span>
                       <span className={`text-xs px-1.5 py-0.5 rounded font-mono ${
-                        variable.category === 'revenue' ? 'bg-emerald-500/15 text-emerald-400' :
-                        variable.category === 'cost' ? 'bg-red-500/15 text-red-400' :
-                        variable.category === 'liquidity' ? 'bg-blue-500/15 text-blue-400' :
-                        variable.category === 'capacity' ? 'bg-purple-500/15 text-purple-400' :
-                        'bg-gray-500/15 text-gray-500'
+                        variable.category === 'revenue' ? 'bg-emerald-500/15 text-emerald-700' :
+                        variable.category === 'cost' ? 'bg-red-500/15 text-red-700' :
+                        variable.category === 'liquidity' ? 'bg-blue-500/15 text-blue-700' :
+                        variable.category === 'capacity' ? 'bg-purple-500/15 text-purple-700' :
+                        'bg-gray-500/15 text-gray-9000'
                       }`}>
                         {variable.category}
                       </span>
                     </div>
                     <span className="font-mono text-lg font-semibold text-gray-800">
                       {variable.currentValue.toLocaleString('sv-SE', { maximumFractionDigits: 0 })}{' '}
-                      <span className="text-xs text-gray-500">{variable.unit}</span>
+                      <span className="text-xs text-gray-9000">{variable.unit}</span>
                     </span>
                   </div>
 
                   {variable.affects.length > 0 && (
                     <div className="text-right space-y-1">
-                      <div className="text-xs text-gray-500 mb-1">Påverkar</div>
+                      <div className="text-xs text-gray-9000 mb-1">Påverkar</div>
                       {variable.affects.map((link, idx) => {
                         const target = varMap.get(link.targetId)
                         return (
                           <div key={idx} className="flex items-center gap-1.5 text-xs justify-end">
-                            <ArrowRight size={10} className="text-gray-500" />
-                            <span className="text-gray-500">{target?.label ?? link.targetId}</span>
-                            <span className={`font-mono ${link.direction === 1 ? 'text-emerald-400' : 'text-red-400'}`}>
+                            <ArrowRight size={10} className="text-gray-9000" />
+                            <span className="text-gray-9000">{target?.label ?? link.targetId}</span>
+                            <span className={`font-mono ${link.direction === 1 ? 'text-emerald-700' : 'text-red-700'}`}>
                               ×{link.multiplier}
                             </span>
                           </div>
@@ -795,7 +795,7 @@ export function CausalOS() {
                 {isHighlighted && variable.affects.length > 0 && (
                   <div className="mt-3 pt-3 border-t border-gray-200 space-y-1">
                     {variable.affects.map((link, idx) => (
-                      <div key={idx} className="text-xs text-gray-500 flex items-center gap-1.5">
+                      <div key={idx} className="text-xs text-gray-9000 flex items-center gap-1.5">
                         <GitBranch size={10} className="text-[#8B5CF6]" />
                         {link.description}
                       </div>
@@ -823,7 +823,7 @@ export function CausalOS() {
             </div>
             <div>
               <h1 className="text-base font-semibold text-gray-800">Causal OS</h1>
-              <p className="text-xs text-gray-500">Financial & Operational Simulation Layer</p>
+              <p className="text-xs text-gray-9000">Financial & Operational Simulation Layer</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -832,8 +832,8 @@ export function CausalOS() {
             </span>
             {warnings.filter(w => w.severity === 'critical').length > 0 && (
               <div className="flex items-center gap-1 rounded bg-red-500/15 border border-red-500/30 px-2 py-1">
-                <XCircle size={12} className="text-red-400" />
-                <span className="text-xs font-mono text-red-400">
+                <XCircle size={12} className="text-red-700" />
+                <span className="text-xs font-mono text-red-700">
                   {warnings.filter(w => w.severity === 'critical').length}
                 </span>
               </div>
@@ -850,7 +850,7 @@ export function CausalOS() {
               className={`flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium whitespace-nowrap transition-colors ${
                 activeTab === tab.id
                   ? 'bg-[#8B5CF6]/15 text-[#8B5CF6]'
-                  : 'text-gray-500 hover:text-gray-600 hover:bg-white/[0.03]'
+                  : 'text-gray-9000 hover:text-gray-600 hover:bg-gray-50'
               }`}
             >
               {tab.icon}

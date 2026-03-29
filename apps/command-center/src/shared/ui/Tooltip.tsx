@@ -73,7 +73,7 @@ export function Tooltip({ content, title, children, position = 'top', asIcon = f
             {title && (
               <p className="text-xs font-semibold text-gray-900 mb-1">{title}</p>
             )}
-            <p className="text-xs text-gray-500 leading-relaxed">{content}</p>
+            <p className="text-xs text-gray-9000 leading-relaxed">{content}</p>
           </div>
         </div>
       )}

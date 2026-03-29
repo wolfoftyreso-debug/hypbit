@@ -45,7 +45,7 @@ export function ThailandCountdown() {
         <span className="text-3xl">🇹🇭</span>
         <div>
           <h3 className="text-sm font-semibold text-gray-900">Thailand Workcamp</h3>
-          <p className="text-xs text-gray-500 mt-0.5">11 April 2026 — Projektstart</p>
+          <p className="text-xs text-gray-9000 mt-0.5">11 April 2026 — Projektstart</p>
         </div>
       </div>
 
@@ -65,14 +65,14 @@ export function ThailandCountdown() {
             <p className="text-3xl md:text-5xl font-bold tabular-nums leading-none" style={{ color: '#a78bfa' }}>
               {String(value).padStart(2, '0')}
             </p>
-            <p className="text-[9px] text-gray-500 uppercase tracking-wider mt-2">{label}</p>
+            <p className="text-[9px] text-gray-9000 uppercase tracking-wider mt-2">{label}</p>
           </div>
         ))}
       </div>
 
       {/* Footer */}
       <div className="px-5 pb-4 text-center">
-        <p className="text-xs text-gray-500">Hela teamet samlas — projekten rullas ut 🚀</p>
+        <p className="text-xs text-gray-9000">Hela teamet samlas — projekten rullas ut 🚀</p>
       </div>
     </div>
   )

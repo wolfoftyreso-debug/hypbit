@@ -93,10 +93,10 @@ const INITIAL_SERVICES: APIService[] = [
 ]
 
 const STATUS_CONFIG = {
-  ok: { label: '✅ OK', color: 'text-green-400', bg: 'bg-green-500/10 border-green-500/20', dot: 'bg-green-400' },
-  degraded: { label: '⚠️ Degraderad', color: 'text-yellow-400', bg: 'bg-yellow-500/10 border-yellow-500/20', dot: 'bg-yellow-400' },
-  error: { label: '❌ Fel', color: 'text-red-400', bg: 'bg-red-500/10 border-red-500/20', dot: 'bg-red-400' },
-  unknown: { label: '? Okänd', color: 'text-gray-500', bg: 'bg-gray-500/10 border-gray-500/20', dot: 'bg-gray-400' },
+  ok: { label: '✅ OK', color: 'text-green-700', bg: 'bg-green-500/10 border-green-500/20', dot: 'bg-green-400' },
+  degraded: { label: '⚠️ Degraderad', color: 'text-yellow-700', bg: 'bg-yellow-500/10 border-yellow-500/20', dot: 'bg-yellow-400' },
+  error: { label: '❌ Fel', color: 'text-red-700', bg: 'bg-red-500/10 border-red-500/20', dot: 'bg-red-400' },
+  unknown: { label: '? Okänd', color: 'text-gray-9000', bg: 'bg-gray-500/10 border-gray-500/20', dot: 'bg-gray-400' },
 }
 
 function LatencyBar({ ms }: { ms: number }) {
@@ -105,10 +105,10 @@ function LatencyBar({ ms }: { ms: number }) {
   const color = ms < 100 ? 'bg-green-400' : ms < 400 ? 'bg-yellow-400' : 'bg-red-400'
   return (
     <div className="flex items-center gap-2">
-      <div className="flex-1 h-1 bg-white/[0.05] rounded-full overflow-hidden">
+      <div className="flex-1 h-1 bg-gray-50 rounded-full overflow-hidden">
         <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
       </div>
-      <span className="text-xs font-mono text-gray-500 w-12 text-right">{ms} ms</span>
+      <span className="text-xs font-mono text-gray-9000 w-12 text-right">{ms} ms</span>
     </div>
   )
 }
@@ -154,13 +154,13 @@ export function APIStatusView() {
           </span>
         </div>
         <div className="flex items-center gap-2 ml-auto">
-          <span className="text-xs text-gray-500 font-mono">
+          <span className="text-xs text-gray-9000 font-mono">
             Uppdaterad {lastRefresh.toLocaleTimeString('sv-SE')}
           </span>
           <button
             onClick={simulateRefresh}
             disabled={refreshing}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-white border border-gray-200 text-gray-500 hover:text-gray-900 hover:border-white/[0.16] transition-colors disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-white border border-gray-200 text-gray-9000 hover:text-gray-900 hover:border-white/[0.16] transition-colors disabled:opacity-50"
           >
             <span className={refreshing ? 'animate-spin' : ''}>↻</span>
             {refreshing ? 'Checkar…' : 'Refresha'}
@@ -171,16 +171,16 @@ export function APIStatusView() {
       {/* Quick summary */}
       <div className="grid grid-cols-3 gap-3">
         <div className="bg-white rounded-xl border border-green-500/20 p-3 text-center">
-          <div className="text-2xl font-bold text-green-400">{okCount}</div>
-          <div className="text-xs text-gray-500 mt-0.5">Operativa</div>
+          <div className="text-2xl font-bold text-green-700">{okCount}</div>
+          <div className="text-xs text-gray-9000 mt-0.5">Operativa</div>
         </div>
         <div className={`bg-white rounded-xl border p-3 text-center ${errorCount > 0 ? 'border-yellow-500/20' : 'border-gray-200'}`}>
-          <div className={`text-2xl font-bold ${errorCount > 0 ? 'text-yellow-400' : 'text-gray-500'}`}>{errorCount}</div>
-          <div className="text-xs text-gray-500 mt-0.5">Problem</div>
+          <div className={`text-2xl font-bold ${errorCount > 0 ? 'text-yellow-700' : 'text-gray-9000'}`}>{errorCount}</div>
+          <div className="text-xs text-gray-9000 mt-0.5">Problem</div>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 p-3 text-center">
           <div className="text-2xl font-bold text-gray-600">{services.length}</div>
-          <div className="text-xs text-gray-500 mt-0.5">Totalt</div>
+          <div className="text-xs text-gray-9000 mt-0.5">Totalt</div>
         </div>
       </div>
 
@@ -205,16 +205,16 @@ export function APIStatusView() {
                     </span>
                     <span className={`text-[9px] px-1.5 py-0.5 rounded-full ${
                       svc.configured
-                        ? 'bg-green-500/10 text-green-400 border border-green-500/20'
-                        : 'bg-gray-500/10 text-gray-500 border border-gray-500/20'
+                        ? 'bg-green-500/10 text-green-700 border border-green-500/20'
+                        : 'bg-gray-500/10 text-gray-9000 border border-gray-500/20'
                     }`}>
                       {svc.configured ? '✓ Konfigurerad' : '✗ Ej konfigurerad'}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-500 mb-2">{svc.description}</p>
+                  <p className="text-xs text-gray-9000 mb-2">{svc.description}</p>
                   <div className="flex items-center gap-4">
                     <span className="text-xs text-gray-600 font-mono">{svc.endpoint}</span>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-gray-9000">
                       Senaste anrop: {new Date(svc.lastPing).toLocaleTimeString('sv-SE')}
                     </span>
                   </div>
@@ -224,7 +224,7 @@ export function APIStatusView() {
                     </div>
                   )}
                   {svc.latency_ms === null && (
-                    <div className="mt-2 text-xs text-red-400">Ingen respons — timeout</div>
+                    <div className="mt-2 text-xs text-red-700">Ingen respons — timeout</div>
                   )}
                 </div>
               </div>

@@ -19,7 +19,7 @@ export function PayrollRun() {
   const { activeEmployees: active, loading, error, calcSalary, fmt, fmtPeriod, EMPLOYER_TAX_RATE, createPayrollRun } = usePayroll()
 
   if (loading) {
-    return <div className="flex items-center justify-center h-64 text-gray-500">Laddar lönedata...</div>
+    return <div className="flex items-center justify-center h-64 text-gray-9000">Laddar lönedata...</div>
   }
 
   if (error) {
@@ -74,7 +74,7 @@ export function PayrollRun() {
     <div className="space-y-6">
       <div>
         <h2 className="text-sm font-semibold text-gray-900">Lönekörning</h2>
-        <p className="text-xs text-gray-500 mt-0.5">Period: {fmtPeriod(currentPeriod)}</p>
+        <p className="text-xs text-gray-9000 mt-0.5">Period: {fmtPeriod(currentPeriod)}</p>
       </div>
 
       {!ran ? (
@@ -89,8 +89,8 @@ export function PayrollRun() {
                     s < step
                       ? 'bg-green-500 border-green-500 text-gray-900'
                       : s === step
-                      ? 'border-purple-500 text-purple-400 bg-purple-500/10'
-                      : 'border-surface-border text-gray-500 bg-transparent'
+                      ? 'border-purple-500 text-purple-700 bg-purple-500/10'
+                      : 'border-surface-border text-gray-9000 bg-transparent'
                   }`}
                 >
                   {s < step ? '✓' : s}
@@ -103,7 +103,7 @@ export function PayrollRun() {
           </div>
           <div className="flex justify-between px-0 -mt-2">
             {([1, 2, 3, 4] as Step[]).map(s => (
-              <span key={s} className={`text-xs ${s === step ? 'text-purple-400' : 'text-gray-500'}`}>
+              <span key={s} className={`text-xs ${s === step ? 'text-purple-700' : 'text-gray-9000'}`}>
                 {STEP_LABELS[s]}
               </span>
             ))}
@@ -115,12 +115,12 @@ export function PayrollRun() {
               <div>
                 <div className="px-5 py-4 border-b border-surface-border">
                   <h3 className="text-sm font-semibold text-gray-900">Steg 1: Kontrollera anställda</h3>
-                  <p className="text-xs text-gray-500 mt-0.5">Alla aktiva anställda ingår i körningen</p>
+                  <p className="text-xs text-gray-9000 mt-0.5">Alla aktiva anställda ingår i körningen</p>
                 </div>
                 <div className="overflow-x-auto">
                 <table className="w-full text-sm min-w-[400px]">
                   <thead>
-                    <tr className="border-b border-surface-border text-xs text-gray-500">
+                    <tr className="border-b border-surface-border text-xs text-gray-9000">
                       <th className="text-left px-5 py-3">Namn</th>
                       <th className="text-left px-5 py-3">Roll</th>
                       <th className="text-right px-5 py-3">Bruttolön</th>
@@ -131,10 +131,10 @@ export function PayrollRun() {
                     {active.map(emp => (
                       <tr key={emp.id} className="border-b border-surface-border/50">
                         <td className="px-5 py-3 text-xs text-gray-900">{emp.name}</td>
-                        <td className="px-5 py-3 text-xs text-gray-500">{emp.role}</td>
+                        <td className="px-5 py-3 text-xs text-gray-9000">{emp.role}</td>
                         <td className="px-5 py-3 text-right text-xs text-gray-900 tabular-nums">{fmt(emp.gross_salary)}</td>
                         <td className="px-5 py-3">
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/15 text-green-400">✓ OK</span>
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/15 text-green-700">✓ OK</span>
                         </td>
                       </tr>
                     ))}
@@ -152,7 +152,7 @@ export function PayrollRun() {
                 <div className="overflow-x-auto">
                 <table className="w-full text-sm min-w-[420px]">
                   <thead>
-                    <tr className="border-b border-surface-border text-xs text-gray-500">
+                    <tr className="border-b border-surface-border text-xs text-gray-9000">
                       <th className="text-left px-5 py-3">Namn</th>
                       <th className="text-right px-5 py-3">Brutto</th>
                       <th className="text-right px-5 py-3">Skatt</th>
@@ -167,9 +167,9 @@ export function PayrollRun() {
                         <tr key={emp.id} className="border-b border-surface-border/50">
                           <td className="px-5 py-3 text-xs text-gray-900">{emp.name}</td>
                           <td className="px-5 py-3 text-right text-xs text-gray-900 tabular-nums">{fmt(c.gross)}</td>
-                          <td className="px-5 py-3 text-right text-xs text-red-400 tabular-nums">−{fmt(c.taxDeduction)}</td>
-                          <td className="px-5 py-3 text-right text-xs text-green-400 tabular-nums">{fmt(c.net)}</td>
-                          <td className="px-5 py-3 text-right text-xs text-amber-400 tabular-nums">{fmt(c.employerTax)}</td>
+                          <td className="px-5 py-3 text-right text-xs text-red-700 tabular-nums">−{fmt(c.taxDeduction)}</td>
+                          <td className="px-5 py-3 text-right text-xs text-green-700 tabular-nums">{fmt(c.net)}</td>
+                          <td className="px-5 py-3 text-right text-xs text-amber-700 tabular-nums">{fmt(c.employerTax)}</td>
                         </tr>
                       )
                     })}
@@ -192,7 +192,7 @@ export function PayrollRun() {
                     { label: 'Antal anställda', value: String(active.length), color: '#60A5FA' },
                   ].map(s => (
                     <div key={s.label} className="bg-surface-overlay/30 rounded-xl p-4">
-                      <div className="text-xs text-gray-500 mb-1">{s.label}</div>
+                      <div className="text-xs text-gray-9000 mb-1">{s.label}</div>
                       <div className="text-lg font-bold tabular-nums" style={{ color: s.color }}>{s.value}</div>
                     </div>
                   ))}
@@ -203,13 +203,13 @@ export function PayrollRun() {
             {step === 4 && (
               <div className="px-5 py-5 space-y-4">
                 <h3 className="text-sm font-semibold text-gray-900">Steg 4: Godkänn & kör</h3>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-9000">
                   Bekräfta att du vill köra lönerna för {fmtPeriod(currentPeriod)}.
-                  Totalt utbetalas <span className="text-green-400 font-semibold">{fmt(totalNet)}</span> netto
-                  till {active.length} anställda. Arbetsgivaravgift på <span className="text-amber-400 font-semibold">{fmt(totalEmployerTax)}</span> deklareras till Skatteverket.
+                  Totalt utbetalas <span className="text-green-700 font-semibold">{fmt(totalNet)}</span> netto
+                  till {active.length} anställda. Arbetsgivaravgift på <span className="text-amber-700 font-semibold">{fmt(totalEmployerTax)}</span> deklareras till Skatteverket.
                 </p>
                 <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl px-4 py-3">
-                  <p className="text-xs text-amber-400">⚠️ Denna åtgärd markerar lönekörningen som genomförd. Kan ej ångras.</p>
+                  <p className="text-xs text-amber-700">⚠️ Denna åtgärd markerar lönekörningen som genomförd. Kan ej ångras.</p>
                 </div>
               </div>
             )}
@@ -220,7 +220,7 @@ export function PayrollRun() {
             <button
               onClick={() => step > 1 && setStep((step - 1) as Step)}
               disabled={step === 1}
-              className="text-xs px-4 py-2 rounded-lg bg-surface-overlay border border-surface-border text-gray-500 hover:text-gray-900 transition-colors disabled:opacity-30"
+              className="text-xs px-4 py-2 rounded-lg bg-surface-overlay border border-surface-border text-gray-9000 hover:text-gray-900 transition-colors disabled:opacity-30"
             >
               ← Föregående
             </button>
@@ -247,17 +247,17 @@ export function PayrollRun() {
             <>
               <div className="text-4xl">✅</div>
               <div className="text-sm font-bold text-gray-900">Lönekörning genomförd!</div>
-              <div className="text-xs text-gray-500">
+              <div className="text-xs text-gray-9000">
                 {fmtPeriod(currentPeriod)} — {fmt(totalNet)} utbetalas till {active.length} anställda
               </div>
-              <button onClick={reset} className="mt-4 text-xs px-4 py-2 rounded-lg bg-surface-overlay border border-surface-border text-gray-500 hover:text-gray-900 transition-colors">
+              <button onClick={reset} className="mt-4 text-xs px-4 py-2 rounded-lg bg-surface-overlay border border-surface-border text-gray-9000 hover:text-gray-900 transition-colors">
                 Ny körning
               </button>
             </>
           ) : (
             <>
               <div className="text-2xl animate-pulse">⏳</div>
-              <div className="text-sm text-gray-500">Kör löner...</div>
+              <div className="text-sm text-gray-9000">Kör löner...</div>
             </>
           )}
         </div>
@@ -265,12 +265,12 @@ export function PayrollRun() {
 
       {/* History */}
       <div>
-        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Historik — körda löner</h3>
+        <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Historik — körda löner</h3>
         <div className="bg-surface-raised border border-surface-border rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[580px]">
             <thead>
-              <tr className="border-b border-surface-border text-xs text-gray-500">
+              <tr className="border-b border-surface-border text-xs text-gray-9000">
                 <th className="text-left px-5 py-3">Period</th>
                 <th className="text-left px-5 py-3">Körd datum</th>
                 <th className="text-right px-5 py-3">Brutto</th>
@@ -283,7 +283,7 @@ export function PayrollRun() {
             <tbody>
               {PAYROLL_HISTORY.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-5 py-8 text-center text-gray-500 text-xs italic">
+                  <td colSpan={7} className="px-5 py-8 text-center text-gray-9000 text-xs italic">
                     Inga lönekörningar genomförda ännu
                   </td>
                 </tr>
@@ -291,14 +291,14 @@ export function PayrollRun() {
               {PAYROLL_HISTORY.map(run => (
                 <tr key={run.id} className="border-b border-surface-border/50">
                   <td className="px-5 py-3 text-xs text-gray-900">{fmtPeriod(run.period)}</td>
-                  <td className="px-5 py-3 text-xs text-gray-500">{run.runDate}</td>
+                  <td className="px-5 py-3 text-xs text-gray-9000">{run.runDate}</td>
                   <td className="px-5 py-3 text-right text-xs text-gray-900 tabular-nums">{fmt(run.totalGross)}</td>
-                  <td className="px-5 py-3 text-right text-xs text-green-400 tabular-nums">{fmt(run.totalNet)}</td>
-                  <td className="px-5 py-3 text-right text-xs text-purple-400 tabular-nums">{fmt(run.totalCost)}</td>
+                  <td className="px-5 py-3 text-right text-xs text-green-700 tabular-nums">{fmt(run.totalNet)}</td>
+                  <td className="px-5 py-3 text-right text-xs text-purple-700 tabular-nums">{fmt(run.totalCost)}</td>
                   <td className="px-5 py-3">
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/15 text-green-400">✓ Genomförd</span>
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/15 text-green-700">✓ Genomförd</span>
                   </td>
-                  <td className="px-5 py-3 text-xs text-gray-500">{run.approvedBy}</td>
+                  <td className="px-5 py-3 text-xs text-gray-9000">{run.approvedBy}</td>
                 </tr>
               ))}
             </tbody>

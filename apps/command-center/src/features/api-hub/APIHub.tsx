@@ -15,10 +15,10 @@ import { useTranslation } from '../../shared/i18n/useTranslation'
 // ─── Status badge ─────────────────────────────────────────────────────────────
 function StatusBadge({ status }: { status: APIIntegration['status'] }) {
   const config = {
-    live:       { label: 'LIVE',       bg: 'bg-emerald-500/20', text: 'text-emerald-400', dot: 'bg-emerald-400' },
-    configured: { label: 'KONFIGURERAD', bg: 'bg-blue-500/20',   text: 'text-blue-400',    dot: 'bg-blue-400' },
+    live:       { label: 'LIVE',       bg: 'bg-emerald-500/20', text: 'text-emerald-700', dot: 'bg-emerald-400' },
+    configured: { label: 'KONFIGURERAD', bg: 'bg-blue-500/20',   text: 'text-blue-700',    dot: 'bg-blue-400' },
     available:  { label: 'TILLGÄNGLIG', bg: 'bg-slate-500/20',   text: 'text-slate-400',   dot: 'bg-slate-400' },
-    planned:    { label: 'PLANERAD',   bg: 'bg-amber-500/20',   text: 'text-amber-400',   dot: 'bg-amber-400' },
+    planned:    { label: 'PLANERAD',   bg: 'bg-amber-500/20',   text: 'text-amber-700',   dot: 'bg-amber-400' },
   }[status]
 
   return (
@@ -32,13 +32,13 @@ function StatusBadge({ status }: { status: APIIntegration['status'] }) {
 // ─── Price badge ─────────────────────────────────────────────────────────────
 function PriceBadge({ price }: { price: APIIntegration['price'] }) {
   if (price === 'free') return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-emerald-900/40 text-emerald-400 font-medium">GRATIS</span>
+    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-emerald-900/40 text-emerald-700 font-medium">GRATIS</span>
   )
   if (price === 'usage-based') return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-blue-900/40 text-blue-400 font-medium">USAGE</span>
+    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-blue-900/40 text-blue-700 font-medium">USAGE</span>
   )
   return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-orange-900/40 text-orange-400 font-medium">BETALD</span>
+    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-orange-900/40 text-orange-700 font-medium">BETALD</span>
   )
 }
 
@@ -53,7 +53,7 @@ function IntegrationCard({
   return (
     <button
       onClick={onClick}
-      className="flex flex-col gap-2 p-4 rounded-xl border border-gray-200 bg-white/5 hover:bg-white/10 hover:border-gray-300 transition-all text-left w-full group"
+      className="flex flex-col gap-2 p-4 rounded-xl border border-gray-200 bg-gray-50 hover:bg-gray-100 hover:border-gray-300 transition-all text-left w-full group"
     >
       <div className="flex items-start justify-between gap-2">
         <span className="text-2xl leading-none">{integration.icon}</span>
@@ -67,7 +67,7 @@ function IntegrationCard({
       <div className="flex items-center justify-between mt-auto pt-1">
         <PriceBadge price={integration.price} />
         {integration.wavultUsage && (
-          <span className="text-xs text-emerald-400/70 truncate max-w-[120px]" title={integration.wavultUsage}>
+          <span className="text-xs text-emerald-700/70 truncate max-w-[120px]" title={integration.wavultUsage}>
             ✓ {integration.wavultUsage}
           </span>
         )}
@@ -86,7 +86,7 @@ function IntegrationModal({
 }) {
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/70 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
@@ -113,7 +113,7 @@ function IntegrationModal({
 
         {integration.wavultUsage && (
           <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3 mb-4">
-            <div className="text-xs font-semibold text-emerald-400 mb-1">🟢 WAVULT USAGE</div>
+            <div className="text-xs font-semibold text-emerald-700 mb-1">🟢 WAVULT USAGE</div>
             <div className="text-sm text-gray-900/80">{integration.wavultUsage}</div>
           </div>
         )}
@@ -142,7 +142,7 @@ function LiveIntegrationRow({ integration }: { integration: APIIntegration }) {
         <div className="flex items-center gap-2 flex-wrap">
           <span className="font-semibold text-gray-900">{integration.name}</span>
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-xs font-mono text-emerald-400">LIVE</span>
+          <span className="text-xs font-mono text-emerald-700">LIVE</span>
         </div>
         <div className="text-xs text-gray-900/50 mt-0.5">{integration.provider}</div>
         {integration.wavultUsage && (
@@ -156,7 +156,7 @@ function LiveIntegrationRow({ integration }: { integration: APIIntegration }) {
             href={integration.docsUrl}
             target="_blank"
             rel="noreferrer"
-            className="block text-xs text-blue-400 hover:text-blue-300 mt-1"
+            className="block text-xs text-blue-700 hover:text-blue-300 mt-1"
           >
             Docs →
           </a>
@@ -169,14 +169,14 @@ function LiveIntegrationRow({ integration }: { integration: APIIntegration }) {
 // ─── News Card ─────────────────────────────────────────────────────────────────
 function NewsCard({ news }: { news: ProviderNews }) {
   const typeConfig = {
-    new:         { label: 'NY', color: 'text-emerald-400 bg-emerald-500/20' },
-    update:      { label: 'UPDATE', color: 'text-blue-400 bg-blue-500/20' },
-    deprecation: { label: 'DEPRECATED', color: 'text-red-400 bg-red-500/20' },
-    security:    { label: 'SÄKERHET', color: 'text-orange-400 bg-orange-500/20' },
+    new:         { label: 'NY', color: 'text-emerald-700 bg-emerald-500/20' },
+    update:      { label: 'UPDATE', color: 'text-blue-700 bg-blue-500/20' },
+    deprecation: { label: 'DEPRECATED', color: 'text-red-700 bg-red-500/20' },
+    security:    { label: 'SÄKERHET', color: 'text-orange-700 bg-orange-500/20' },
   }[news.type]
 
   return (
-    <div className="p-4 rounded-xl border border-gray-200 bg-white/5 hover:bg-white/8 transition-colors">
+    <div className="p-4 rounded-xl border border-gray-200 bg-gray-50 hover:bg-white/8 transition-colors">
       <div className="flex items-start gap-3 mb-2">
         <span className="text-xl mt-0.5">{news.icon}</span>
         <div className="flex-1 min-w-0">
@@ -190,7 +190,7 @@ function NewsCard({ news }: { news: ProviderNews }) {
         </div>
       </div>
       <div className="mt-2">
-        <span className="text-xs text-gray-900/40 bg-white/5 px-2 py-0.5 rounded">{news.category}</span>
+        <span className="text-xs text-gray-900/40 bg-gray-50 px-2 py-0.5 rounded">{news.category}</span>
       </div>
     </div>
   )
@@ -265,13 +265,13 @@ export function APIHub() {
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeTab === tab.id
                     ? 'bg-blue-600 text-gray-900'
-                    : 'text-gray-900/60 hover:text-gray-900 hover:bg-white/10'
+                    : 'text-gray-900/60 hover:text-gray-900 hover:bg-gray-100'
                 }`}
               >
                 <span>{tab.icon}</span>
                 <span>{tab.label}</span>
                 <span className={`text-xs px-1.5 py-0.5 rounded-full ${
-                  activeTab === tab.id ? 'bg-white/20' : 'bg-white/10'
+                  activeTab === tab.id ? 'bg-white/20' : 'bg-gray-100'
                 }`}>
                   {tab.count}
                 </span>
@@ -293,7 +293,7 @@ export function APIHub() {
                 placeholder="Sök API, provider, kategori..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="flex-1 bg-white/5 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-900/30 focus:outline-none focus:border-blue-500 focus:bg-white/8"
+                className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-900/30 focus:outline-none focus:border-blue-500 focus:bg-white/8"
               />
               <div className="text-sm text-gray-900/40 flex items-center px-2">
                 {filteredIntegrations.length} integrationer
@@ -309,7 +309,7 @@ export function APIHub() {
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
                     selectedCategory === cat.id
                       ? 'bg-blue-600 border-blue-600 text-gray-900'
-                      : 'border-gray-300 text-gray-900/60 hover:border-white/40 hover:text-gray-900 bg-white/5'
+                      : 'border-gray-300 text-gray-900/60 hover:border-white/40 hover:text-gray-900 bg-gray-50'
                   }`}
                 >
                   <span>{cat.icon}</span>
@@ -345,12 +345,12 @@ export function APIHub() {
             {/* Stats row */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
-                { label: 'Live', value: LIVE_INTEGRATIONS.filter(i => i.status === 'live').length, color: 'text-emerald-400', icon: '🟢' },
-                { label: 'Kategorier', value: [...new Set(LIVE_INTEGRATIONS.map(i => i.categoryId))].length, color: 'text-blue-400', icon: '📦' },
-                { label: 'Paid', value: LIVE_INTEGRATIONS.filter(i => i.price === 'paid' || i.price === 'usage-based').length, color: 'text-orange-400', icon: '💳' },
-                { label: 'Free', value: LIVE_INTEGRATIONS.filter(i => i.price === 'free').length, color: 'text-emerald-400', icon: '✅' },
+                { label: 'Live', value: LIVE_INTEGRATIONS.filter(i => i.status === 'live').length, color: 'text-emerald-700', icon: '🟢' },
+                { label: 'Kategorier', value: [...new Set(LIVE_INTEGRATIONS.map(i => i.categoryId))].length, color: 'text-blue-700', icon: '📦' },
+                { label: 'Paid', value: LIVE_INTEGRATIONS.filter(i => i.price === 'paid' || i.price === 'usage-based').length, color: 'text-orange-700', icon: '💳' },
+                { label: 'Free', value: LIVE_INTEGRATIONS.filter(i => i.price === 'free').length, color: 'text-emerald-700', icon: '✅' },
               ].map(stat => (
-                <div key={stat.label} className="bg-white/5 border border-gray-200 rounded-xl p-4 text-center">
+                <div key={stat.label} className="bg-gray-50 border border-gray-200 rounded-xl p-4 text-center">
                   <div className="text-2xl mb-1">{stat.icon}</div>
                   <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
                   <div className="text-xs text-gray-900/40 mt-0.5">{stat.label}</div>
@@ -373,7 +373,7 @@ export function APIHub() {
               <h3 className="text-sm font-semibold text-gray-900/60 mb-3">🗓️ Planerade integrationer (Fas 2)</h3>
               <div className="flex flex-wrap gap-2">
                 {API_INTEGRATIONS.filter(i => i.status === 'planned').map(i => (
-                  <span key={i.id} className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                  <span key={i.id} className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs bg-amber-500/10 text-amber-700 border border-amber-500/20">
                     {i.icon} {i.name}
                   </span>
                 ))}
@@ -389,7 +389,7 @@ export function APIHub() {
               <h2 className="text-sm font-semibold text-gray-900/60 uppercase tracking-wider">
                 Provider Updates
               </h2>
-              <span className="text-xs text-gray-900/30 bg-white/5 px-2 py-1 rounded">
+              <span className="text-xs text-gray-900/30 bg-gray-50 px-2 py-1 rounded">
                 Statisk demo — uapix live-data planeras
               </span>
             </div>
@@ -403,7 +403,7 @@ export function APIHub() {
             <div className="mt-4 p-4 rounded-xl border border-dashed border-gray-300 bg-white/2 text-center">
               <div className="text-2xl mb-2">📡</div>
               <div className="text-sm text-gray-900/50">
-                Live nyheter via uapix Supabase <code className="text-blue-400">provider_updates</code>-tabellen
+                Live nyheter via uapix Supabase <code className="text-blue-700">provider_updates</code>-tabellen
               </div>
               <div className="text-xs text-gray-900/30 mt-1">
                 Kräver uapix Supabase-koppling — planeras i fas 2

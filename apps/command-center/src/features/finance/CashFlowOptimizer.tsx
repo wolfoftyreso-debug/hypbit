@@ -111,7 +111,7 @@ export function CashFlowOptimizer() {
       {/* Header */}
       <div>
         <h2 className="text-lg font-bold text-gray-900">⚡ Cashflow-optimering</h2>
-        <p className="text-xs text-gray-500 mt-0.5">
+        <p className="text-xs text-gray-9000 mt-0.5">
           Simulera licensstruktur och se skatteeffekt per entitet och Dubai-ackumulering
         </p>
       </div>
@@ -157,8 +157,8 @@ export function CashFlowOptimizer() {
             <p className="text-[20px] font-bold mt-1 font-mono" style={{ color: kpi.color }}>
               {kpi.value}
             </p>
-            <p className="text-[9px] text-gray-500 font-mono uppercase mt-0.5">{kpi.label}</p>
-            <p className="text-[9px] text-gray-500 mt-0.5">{kpi.sub}</p>
+            <p className="text-[9px] text-gray-9000 font-mono uppercase mt-0.5">{kpi.label}</p>
+            <p className="text-[9px] text-gray-9000 mt-0.5">{kpi.sub}</p>
           </div>
         ))}
       </div>
@@ -168,7 +168,7 @@ export function CashFlowOptimizer() {
         <div className="flex items-center justify-between mb-3">
           <div>
             <p className="text-sm font-semibold text-gray-900">License Rate Simulator</p>
-            <p className="text-xs text-gray-500 mt-0.5">
+            <p className="text-xs text-gray-9000 mt-0.5">
               Justera licensavgiftsprocenten och se effekten i realtid
             </p>
           </div>
@@ -197,9 +197,9 @@ export function CashFlowOptimizer() {
           onChange={e => setLicenseRate(Number(e.target.value))}
           className="w-full accent-blue-500"
         />
-        <div className="flex justify-between text-[9px] text-gray-500 font-mono mt-1">
+        <div className="flex justify-between text-[9px] text-gray-9000 font-mono mt-1">
           <span>1%</span>
-          <span className="text-gray-500">← Arm's length: 8–15% →</span>
+          <span className="text-gray-9000">← Arm's length: 8–15% →</span>
           <span>30%</span>
         </div>
         {/* OECD markers */}
@@ -223,14 +223,14 @@ export function CashFlowOptimizer() {
                 <div className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full" style={{ background: e.color }} />
                   <span className="text-xs font-semibold text-gray-900">{e.name}</span>
-                  <span className="text-[9px] text-gray-500 font-mono">{e.jurisdiction}</span>
+                  <span className="text-[9px] text-gray-9000 font-mono">{e.jurisdiction}</span>
                 </div>
                 <div className="flex items-center gap-3 text-right">
                   <span className="text-xs font-mono text-gray-900">
                     {rev.toLocaleString()} {e.currency}
                   </span>
                   <button
-                    className="text-[9px] text-gray-500 hover:text-gray-500 font-mono"
+                    className="text-[9px] text-gray-9000 hover:text-gray-9000 font-mono"
                     onClick={() => setShowDetails(showDetails === e.id ? null : e.id)}
                   >
                     {showDetails === e.id ? '▲ dölj' : '▼ detaljer'}
@@ -250,10 +250,10 @@ export function CashFlowOptimizer() {
               <div className="flex justify-between text-[9px] text-gray-600 font-mono mt-0.5">
                 <span>License fee: <span className="text-gray-900">{calc.licenseFee.toLocaleString(undefined, { maximumFractionDigits: 0 })} {e.currency}</span></span>
                 <span>Mgmt fee: <span className="text-gray-900">{calc.mgmtFee.toLocaleString(undefined, { maximumFractionDigits: 0 })} {e.currency}</span></span>
-                <span>Skatt: <span className="text-red-400">{calc.taxPaid.toLocaleString(undefined, { maximumFractionDigits: 0 })} {e.currency}</span></span>
+                <span>Skatt: <span className="text-red-700">{calc.taxPaid.toLocaleString(undefined, { maximumFractionDigits: 0 })} {e.currency}</span></span>
               </div>
               {showDetails === e.id && (
-                <div className="mt-2 rounded-lg bg-white/[0.04] border border-gray-200 p-3 grid grid-cols-2 gap-2 text-xs">
+                <div className="mt-2 rounded-lg bg-gray-50 border border-gray-200 p-3 grid grid-cols-2 gap-2 text-xs">
                   {[
                     { label: 'Omsättning', value: `${rev.toLocaleString()} ${e.currency}` },
                     { label: '≈ EUR', value: fmtEur(calc.revEur) },
@@ -265,8 +265,8 @@ export function CashFlowOptimizer() {
                     { label: 'Skattebesparning', value: fmtEur(calc.taxSavedEur), highlight: true },
                   ].map(row => (
                     <div key={row.label} className="flex justify-between gap-2">
-                      <span className="text-gray-500">{row.label}</span>
-                      <span className={`font-mono font-semibold ${row.highlight ? 'text-gray-500' : 'text-gray-900'}`}>
+                      <span className="text-gray-9000">{row.label}</span>
+                      <span className={`font-mono font-semibold ${row.highlight ? 'text-gray-9000' : 'text-gray-900'}`}>
                         {row.value}
                       </span>
                     </div>
@@ -289,7 +289,7 @@ export function CashFlowOptimizer() {
               key={months}
               className="rounded-lg border border-emerald-500/20 bg-emerald-500/05 p-3 text-center"
             >
-              <p className="text-[9px] text-gray-500 font-mono uppercase">
+              <p className="text-[9px] text-gray-9000 font-mono uppercase">
                 {months === 1 ? '1 mån' : months === 12 ? '1 år' : `${months} mån`}
               </p>
               <p className="text-[15px] font-bold text-gray-700 font-mono mt-1">
@@ -300,15 +300,15 @@ export function CashFlowOptimizer() {
         </div>
         <div className="mt-4 pt-3 border-t border-gray-200">
           <div className="flex justify-between text-xs">
-            <span className="text-gray-500">Total skatt i dotterbolag/mån</span>
-            <span className="text-red-400 font-mono font-semibold">{fmtEur(totalTaxPaidMonthly)}</span>
+            <span className="text-gray-9000">Total skatt i dotterbolag/mån</span>
+            <span className="text-red-700 font-mono font-semibold">{fmtEur(totalTaxPaidMonthly)}</span>
           </div>
           <div className="flex justify-between text-xs mt-1">
-            <span className="text-gray-500">Skattebesparning vs. ingen struktur/mån</span>
-            <span className="text-gray-500 font-mono font-semibold">{fmtEur(totalTaxSavedMonthly)}</span>
+            <span className="text-gray-9000">Skattebesparning vs. ingen struktur/mån</span>
+            <span className="text-gray-9000 font-mono font-semibold">{fmtEur(totalTaxSavedMonthly)}</span>
           </div>
           <div className="flex justify-between text-xs mt-1">
-            <span className="text-gray-500">Effektiv total skattebörda (grupp)</span>
+            <span className="text-gray-9000">Effektiv total skattebörda (grupp)</span>
             <span className="text-gray-600 font-mono font-semibold">
               {(() => { const tot = entityCalcs.reduce((s, c) => s + c.revEur, 0); return tot > 0 ? ((totalTaxPaidMonthly / tot) * 100).toFixed(1) : '0.0' })()}%
             </span>
@@ -327,7 +327,7 @@ export function CashFlowOptimizer() {
               <div key={e.id} className="flex items-center gap-3">
                 <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: e.color }} />
                 <span className="text-xs text-gray-900 flex-1">{e.name}</span>
-                <span className="text-xs text-gray-500 font-mono">
+                <span className="text-xs text-gray-9000 font-mono">
                   {(calc.rev * OPTIMAL_RATE.recommended).toLocaleString(undefined, { maximumFractionDigits: 0 })} {e.currency}/mån
                 </span>
                 <span className="text-xs text-gray-600 font-mono">≈ {fmtEur(optimal)}</span>
@@ -337,7 +337,7 @@ export function CashFlowOptimizer() {
         </div>
         <div className="mt-3 pt-3 border-t border-gray-200">
           <div className="flex justify-between text-xs">
-            <span className="text-gray-500">Total optimal license income till Dubai</span>
+            <span className="text-gray-9000">Total optimal license income till Dubai</span>
             <span className="text-gray-600 font-mono font-bold">
               {fmtEur(entityCalcs.reduce((s, c) => s + c.revEur * OPTIMAL_RATE.recommended, 0))}/mån
             </span>
@@ -347,7 +347,7 @@ export function CashFlowOptimizer() {
 
       {/* Disclaimer */}
       <div className="rounded-xl border border-yellow-500/20 bg-yellow-500/05 px-4 py-3 flex gap-3">
-        <span className="text-yellow-400 flex-shrink-0">⚠️</span>
+        <span className="text-yellow-700 flex-shrink-0">⚠️</span>
         <p className="text-xs text-yellow-200/60 leading-relaxed">
           Denna simulering är för strategisk planering och illustrativa syften. Alla licensavgifter och
           management fees måste dokumenteras i enlighet med OECD Transfer Pricing Guidelines och lokala

@@ -1,7 +1,7 @@
 // ─── Entity & Relationship data model ─────────────────────────────────────────
 // Extends existing EntitySwitcher / PeopleView data — never replaces.
 
-export type EntityType = 'holding' | 'operations' | 'product' | 'legal' | 'system'
+export type EntityType = 'holding' | 'operations' | 'product' | 'legal' | 'system' | 'financial'
 export type Jurisdiction = 'Dubai' | 'EU-LT' | 'US-DE' | 'US-TX' | 'SE' | 'Global'
 export type ActiveStatus = 'live' | 'forming' | 'planned'
 
@@ -86,6 +86,47 @@ export const ENTITIES: Entity[] = [
       'Revenue model': 'Service fee from subsidiaries',
       'Systems': 'Hypbit OS',
       'Team': 'All core team members',
+    },
+  },
+  // Layer 1 — Dubai FZCOs (Finance + DevOps)
+  {
+    id: 'financo-fzco',
+    name: 'FinanceCo FZCO',
+    shortName: 'FCO',
+    type: 'financial',
+    jurisdiction: 'Dubai',
+    parent_entity_id: 'wavult-group',
+    description: 'Dubai FZCO handling all payment processing, treasury management, intercompany settlements and zoomer payouts. All revenue flows through FinanceCo before distribution.',
+    active_status: 'planned',
+    color: '#10B981',
+    flag: '🇦🇪',
+    layer: 1,
+    metadata: {
+      'Function': 'Payments, Treasury & Payouts',
+      'Revenue model': 'Intercompany service fee',
+      'Legal form': 'DMCC Free Zone LLC',
+      'Tax rate': '0% (UAE FZCO)',
+      'Role': 'Central payment hub for all group entities',
+    },
+  },
+  {
+    id: 'devops-fzco',
+    name: 'DevOps FZCO',
+    shortName: 'DVO',
+    type: 'operations',
+    jurisdiction: 'Dubai',
+    parent_entity_id: 'wavult-group',
+    description: 'Dubai FZCO for tech infrastructure and operations. Manages cloud services, CI/CD, and provides technical services to all product entities via management fee.',
+    active_status: 'planned',
+    color: '#7C3AED',
+    flag: '🇦🇪',
+    layer: 1,
+    metadata: {
+      'Function': 'Tech & Operations',
+      'Revenue model': 'Management fee from subsidiaries',
+      'Legal form': 'DMCC Free Zone LLC',
+      'Tax rate': '0% (UAE FZCO)',
+      'Role': 'Technical services provider for all group entities',
     },
   },
   // Layer 2 — Product entities
@@ -220,6 +261,26 @@ export const RELATIONSHIPS: EntityRelationship[] = [
   { id: 'r15', from_entity_id: 'quixzoom-inc', to_entity_id: 'wavult-group', type: 'financial_flow', label: 'Royalty + dividends' },
   { id: 'r16', from_entity_id: 'landvex-inc', to_entity_id: 'wavult-group', type: 'financial_flow', label: 'Royalty + dividends' },
   { id: 'r17', from_entity_id: 'landvex-ab', to_entity_id: 'wavult-group', type: 'financial_flow', label: 'Royalty + dividends' },
+
+  // WGH owns FCO + DVO
+  { id: 'r21', from_entity_id: 'wavult-group', to_entity_id: 'financo-fzco', type: 'ownership', label: 'Owns 100%' },
+  { id: 'r22', from_entity_id: 'wavult-group', to_entity_id: 'devops-fzco', type: 'ownership', label: 'Owns 100%' },
+
+  // WGH → FCO + DVO intercompany flows
+  { id: 'r23', from_entity_id: 'wavult-group', to_entity_id: 'financo-fzco', type: 'financial_flow', label: 'Intercompany financial flow' },
+  { id: 'r24', from_entity_id: 'wavult-group', to_entity_id: 'devops-fzco', type: 'service', label: 'Management fee' },
+
+  // FCO → Product Entities (payouts/splits)
+  { id: 'r25', from_entity_id: 'financo-fzco', to_entity_id: 'quixzoom-uab', type: 'financial_flow', label: 'Payouts & splits' },
+  { id: 'r26', from_entity_id: 'financo-fzco', to_entity_id: 'quixzoom-inc', type: 'financial_flow', label: 'Payouts & splits' },
+  { id: 'r27', from_entity_id: 'financo-fzco', to_entity_id: 'landvex-inc', type: 'financial_flow', label: 'Payouts & splits' },
+  { id: 'r28', from_entity_id: 'financo-fzco', to_entity_id: 'landvex-ab', type: 'financial_flow', label: 'Payouts & splits' },
+
+  // DVO → Product Entities (tech services)
+  { id: 'r29', from_entity_id: 'devops-fzco', to_entity_id: 'quixzoom-uab', type: 'service', label: 'Tech services' },
+  { id: 'r30', from_entity_id: 'devops-fzco', to_entity_id: 'quixzoom-inc', type: 'service', label: 'Tech services' },
+  { id: 'r31', from_entity_id: 'devops-fzco', to_entity_id: 'landvex-inc', type: 'service', label: 'Tech services' },
+  { id: 'r32', from_entity_id: 'devops-fzco', to_entity_id: 'landvex-ab', type: 'service', label: 'Tech services' },
 
   // Hypbit serves all
   { id: 'r18', from_entity_id: 'hypbit-system', to_entity_id: 'wavult-operations', type: 'service', label: 'Powers operations' },

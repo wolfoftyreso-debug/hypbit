@@ -124,7 +124,7 @@ function UptimeGraph({ points }: { points: { hour: number; value: number }[] }) 
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-3">
+    <h2 className="text-xs font-mono text-gray-9000 uppercase tracking-widest mb-3">
       {children}
     </h2>
   )
@@ -224,11 +224,11 @@ function LiveActivityFeed() {
               <p className="text-xs text-gray-800">
                 <span className="font-semibold" style={{ color: evt.color }}>{evt.actor}</span>
                 {' '}{evt.action}{' '}
-                <span className="text-gray-500">{evt.target}</span>
+                <span className="text-gray-9000">{evt.target}</span>
               </p>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
-              <span className="text-[9px] text-gray-500 font-mono tabular-nums">{formatMs(evt.age)}</span>
+              <span className="text-[9px] text-gray-9000 font-mono tabular-nums">{formatMs(evt.age)}</span>
               <span className="text-xs">{CAT_ICON[evt.category]}</span>
             </div>
           </div>
@@ -267,7 +267,7 @@ function TalentRadarWidget() {
         </div>
         <button
           onClick={() => setExpanded(e => !e)}
-          className="text-xs text-gray-500 hover:text-gray-600 transition-colors mb-3"
+          className="text-xs text-gray-9000 hover:text-gray-600 transition-colors mb-3"
         >
           {expanded ? 'Dölj' : 'Visa detaljer'}
         </button>
@@ -280,7 +280,7 @@ function TalentRadarWidget() {
         </p>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-xs text-gray-500 font-mono uppercase mb-2">Måste ha</p>
+            <p className="text-xs text-gray-9000 font-mono uppercase mb-2">Måste ha</p>
             <div className="space-y-1">
               {TALENT_MUST.map(t => (
                 <div key={t} className="flex items-center gap-2 text-xs text-gray-600">
@@ -290,10 +290,10 @@ function TalentRadarWidget() {
             </div>
           </div>
           <div>
-            <p className="text-xs text-gray-500 font-mono uppercase mb-2">Röda flaggor</p>
+            <p className="text-xs text-gray-9000 font-mono uppercase mb-2">Röda flaggor</p>
             <div className="space-y-1">
               {TALENT_RED.map(t => (
-                <div key={t} className="flex items-center gap-2 text-xs text-gray-500">
+                <div key={t} className="flex items-center gap-2 text-xs text-gray-9000">
                   <span style={{ color: '#EF4444' }}>✗</span> {t}
                 </div>
               ))}
@@ -319,7 +319,7 @@ function TalentRadarWidget() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-gray-900">{ch.label}</p>
-                <p className="text-xs text-gray-500 truncate">{ch.sub}</p>
+                <p className="text-xs text-gray-9000 truncate">{ch.sub}</p>
               </div>
               <span
                 className="text-xs font-mono px-2 py-0.5 rounded-full flex-shrink-0"
@@ -330,10 +330,10 @@ function TalentRadarWidget() {
             </div>
           ))}
           <div className="px-5 py-3 border-t border-surface-border">
-            <p className="text-xs text-gray-500 font-mono uppercase mb-1.5">Bonus-profil</p>
+            <p className="text-xs text-gray-9000 font-mono uppercase mb-1.5">Bonus-profil</p>
             <div className="flex flex-wrap gap-2">
               {TALENT_BONUS.map(b => (
-                <span key={b} className="text-xs text-gray-500 px-2 py-0.5 rounded-full"
+                <span key={b} className="text-xs text-gray-9000 px-2 py-0.5 rounded-full"
                   style={{ background: '#F59E0B10', border: '1px solid #F59E0B20' }}>
                   ⭐ {b}
                 </span>
@@ -415,7 +415,7 @@ export function CommandDashboard() {
         ].map((s, i) => (
           <div key={i} className="bg-white border border-gray-200 rounded-xl p-5">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-mono text-gray-500 uppercase tracking-widest">{s.label}</span>
+              <span className="text-xs font-mono text-gray-9000 uppercase tracking-widest">{s.label}</span>
               {s.live && (
                 <span className="flex items-center gap-1 text-xs font-mono" style={{ color: s.color }}>
                   <span className="h-1.5 w-1.5 rounded-full animate-pulse" style={{ background: s.color }} />
@@ -424,7 +424,7 @@ export function CommandDashboard() {
               )}
             </div>
             <div className="text-3xl font-mono font-bold tabular-nums" style={{ color: s.color }}>{s.value}</div>
-            {s.delta && <div className="mt-2 text-xs text-gray-500">{s.delta}</div>}
+            {s.delta && <div className="mt-2 text-xs text-gray-9000">{s.delta}</div>}
           </div>
         ))}
       </div>
@@ -445,17 +445,17 @@ export function CommandDashboard() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-gray-900">{svc.name}</span>
-                    <span className="text-xs text-gray-500 bg-surface-overlay px-1.5 py-0.5 rounded">
+                    <span className="text-xs text-gray-9000 bg-surface-overlay px-1.5 py-0.5 rounded">
                       {svc.service}
                     </span>
                   </div>
-                  <div className="text-xs text-gray-500 mt-0.5">{svc.env}</div>
+                  <div className="text-xs text-gray-9000 mt-0.5">{svc.env}</div>
                 </div>
                 <div className="text-right">
                   <div className="text-xs font-mono tabular-nums" style={{ color: STATUS_COLOR[svc.status] }}>
                     {svc.uptime}% up
                   </div>
-                  <div className="text-xs text-gray-500 tabular-nums">{svc.latency}ms · {svc.lastCheck}</div>
+                  <div className="text-xs text-gray-9000 tabular-nums">{svc.latency}ms · {svc.lastCheck}</div>
                 </div>
               </div>
             ))}
@@ -469,19 +469,19 @@ export function CommandDashboard() {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <div className="text-2xl font-bold text-gray-900 tabular-nums">{avgUptime}%</div>
-                <div className="text-xs text-gray-500 mt-0.5">genomsnitt alla tjänster</div>
+                <div className="text-xs text-gray-9000 mt-0.5">genomsnitt alla tjänster</div>
               </div>
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-green-500" />
-                <span className="text-xs text-gray-500">Uptime %</span>
+                <span className="text-xs text-gray-9000">Uptime %</span>
               </div>
             </div>
             <UptimeGraph points={UPTIME_POINTS} />
             <div className="flex justify-between mt-2">
-              <span className="text-xs text-gray-500 tabular-nums">
+              <span className="text-xs text-gray-9000 tabular-nums">
                 {new Date(Date.now() - 23 * 3600000).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}
               </span>
-              <span className="text-xs text-gray-500 tabular-nums">Nu</span>
+              <span className="text-xs text-gray-9000 tabular-nums">Nu</span>
             </div>
           </div>
         </div>
@@ -507,7 +507,7 @@ export function CommandDashboard() {
               >
                 {link.name}
               </span>
-              <span className="text-xs text-gray-500">{link.sub}</span>
+              <span className="text-xs text-gray-9000">{link.sub}</span>
             </a>
           ))}
         </div>
@@ -534,9 +534,9 @@ export function CommandDashboard() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-medium text-gray-900">{member.name}</span>
-                    <span className="text-xs text-gray-500">{member.role}</span>
+                    <span className="text-xs text-gray-9000">{member.role}</span>
                   </div>
-                  <div className="text-xs text-gray-500 mt-0.5 truncate">{member.task}</div>
+                  <div className="text-xs text-gray-9000 mt-0.5 truncate">{member.task}</div>
                 </div>
                 <div className="flex items-center gap-1.5 flex-shrink-0">
                   <span
@@ -546,7 +546,7 @@ export function CommandDashboard() {
                       boxShadow: member.status === 'active' ? `0 0 5px ${TEAM_STATUS_COLOR[member.status]}` : 'none',
                     }}
                   />
-                  <span className="text-xs text-gray-500 tabular-nums">{member.since}</span>
+                  <span className="text-xs text-gray-9000 tabular-nums">{member.since}</span>
                 </div>
               </div>
             ))}
@@ -559,7 +559,7 @@ export function CommandDashboard() {
             <SectionHeading>Aktiva Deploys</SectionHeading>
             <button
               onClick={() => setExpandedRuns(v => !v)}
-              className="text-xs text-gray-500 hover:text-gray-600 transition-colors"
+              className="text-xs text-gray-9000 hover:text-gray-600 transition-colors"
             >
               {expandedRuns ? 'Visa färre' : 'Visa alla'}
             </button>
@@ -576,13 +576,13 @@ export function CommandDashboard() {
                   <RunStatusBadge status={run.status} />
                   <div className="flex-1 min-w-0">
                     <div className="text-xs font-medium text-gray-900 truncate">{run.workflow}</div>
-                    <div className="text-xs text-gray-500 mt-0.5">
-                      {run.repo} · <span className="text-gray-500">{run.branch}</span>
+                    <div className="text-xs text-gray-9000 mt-0.5">
+                      {run.repo} · <span className="text-gray-9000">{run.branch}</span>
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <div className="text-xs text-gray-500 tabular-nums">{run.time}</div>
-                    <div className="text-xs text-gray-500 tabular-nums">{run.duration}</div>
+                    <div className="text-xs text-gray-9000 tabular-nums">{run.time}</div>
+                    <div className="text-xs text-gray-9000 tabular-nums">{run.duration}</div>
                   </div>
                 </div>
               )
@@ -610,19 +610,19 @@ export function CommandDashboard() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-gray-900">{entity.name}</p>
-                  <p className="text-xs text-gray-500">{entity.jurisdiction}</p>
+                  <p className="text-xs text-gray-9000">{entity.jurisdiction}</p>
                 </div>
               </div>
               <div className="space-y-1">
                 {entity.products.map((p) => (
-                  <div key={p} className="text-xs text-gray-500 flex items-center gap-1.5">
+                  <div key={p} className="text-xs text-gray-9000 flex items-center gap-1.5">
                     <span className="h-1 w-1 rounded-full bg-gray-600" />
                     {p}
                   </div>
                 ))}
               </div>
               <div className="mt-3 pt-3 border-t border-surface-border">
-                <span className="text-xs text-gray-500">{entity.type}</span>
+                <span className="text-xs text-gray-9000">{entity.type}</span>
               </div>
             </div>
           ))}

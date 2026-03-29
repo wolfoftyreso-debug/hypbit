@@ -31,8 +31,8 @@ export function RoleLogin() {
           <span className="text-xl font-bold text-gray-900">W</span>
         </div>
         <h1 className="text-xl font-semibold text-gray-900">Wavult OS</h1>
-        <p className="text-xs text-gray-500 uppercase tracking-wide font-medium mt-1">Wavult Ecosystem</p>
-        <p className="text-sm text-gray-500 mt-2">{t('auth.select_role')}</p>
+        <p className="text-xs text-gray-9000 uppercase tracking-wide font-medium mt-1">Wavult Ecosystem</p>
+        <p className="text-sm text-gray-9000 mt-2">{t('auth.select_role')}</p>
       </div>
 
       {/* Role grid */}
@@ -44,7 +44,7 @@ export function RoleLogin() {
         </div>
       </div>
 
-      <p className="mt-6 text-xs text-gray-500 font-mono">
+      <p className="mt-6 text-xs text-gray-9000 font-mono">
         Wavult OS · Intern access
       </p>
     </div>
@@ -76,7 +76,7 @@ function RoleCard({ role, onSelect }: { role: RoleProfile; onSelect: () => void 
         <div className="text-xs font-medium mt-0.5 truncate" style={{ color: role.color }}>
           {role.title}
         </div>
-        <div className="text-xs text-gray-500 mt-1 truncate">{role.name}</div>
+        <div className="text-xs text-gray-9000 mt-1 truncate">{role.name}</div>
       </div>
 
       {/* Access scopes */}
@@ -91,7 +91,7 @@ function RoleCard({ role, onSelect }: { role: RoleProfile; onSelect: () => void 
           </span>
         ))}
         {role.access.length > 2 && (
-          <span className="text-xs px-1.5 py-0.5 rounded-full font-mono bg-gray-100 text-gray-500">
+          <span className="text-xs px-1.5 py-0.5 rounded-full font-mono bg-gray-100 text-gray-9000">
             +{role.access.length - 2}
           </span>
         )}

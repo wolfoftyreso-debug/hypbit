@@ -11,17 +11,17 @@ const TEAM = [
 
 export function TeamStatusWidget() {
   return (
-    <div className="bg-white/[0.04] border border-gray-200 rounded-2xl overflow-hidden">
+    <div className="bg-gray-50 border border-gray-200 rounded-2xl overflow-hidden">
       <div className="px-4 py-3 border-b border-gray-200 flex justify-between items-center">
         <p className="text-sm font-medium text-gray-900/70">Team</p>
-        <span className="text-xs text-emerald-400">
+        <span className="text-xs text-emerald-700">
           {TEAM.filter(m => m.status === 'active').length} aktiva
         </span>
       </div>
       {TEAM.map(member => (
         <div key={member.name} className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 last:border-0">
           <div className="relative">
-            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-sm">
+            <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-sm">
               {member.emoji}
             </div>
             <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border border-[#0A0A1B] ${member.status === 'active' ? 'bg-emerald-400' : 'bg-yellow-400'}`} />

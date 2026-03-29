@@ -43,7 +43,7 @@ function ScoreCircle({ score }: { score: number }) {
           {label}
         </text>
       </svg>
-      <span className="text-xs text-gray-500">Täckningspoäng</span>
+      <span className="text-xs text-gray-9000">Täckningspoäng</span>
     </div>
   )
 }
@@ -57,7 +57,7 @@ function PolicyRow({ policy }: { policy: InsurancePolicy }) {
 
   return (
     <div
-      className="rounded-xl border border-gray-200 bg-white/[0.02] cursor-pointer transition-colors hover:bg-white/[0.04]"
+      className="rounded-xl border border-gray-200 bg-gray-50 cursor-pointer transition-colors hover:bg-gray-50"
       onClick={() => setExpanded(v => !v)}
     >
       <div className="flex items-center gap-3 px-4 py-3">
@@ -67,7 +67,7 @@ function PolicyRow({ policy }: { policy: InsurancePolicy }) {
         {/* Name + category */}
         <div className="flex-1 min-w-0">
           <div className="text-sm text-gray-900 font-medium truncate">{policy.name}</div>
-          <div className="text-xs text-gray-500 mt-0.5">
+          <div className="text-xs text-gray-9000 mt-0.5">
             {CATEGORY_LABELS[policy.category]} · {policy.entities.length} {policy.entities.length === 1 ? 'bolag' : 'bolag'}
             {policy.coverage ? ` · ${policy.coverage}` : ''}
           </div>
@@ -84,7 +84,7 @@ function PolicyRow({ policy }: { policy: InsurancePolicy }) {
         {/* Chevron */}
         <svg
           width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-          className={`flex-shrink-0 text-gray-500 transition-transform ${expanded ? 'rotate-180' : ''}`}
+          className={`flex-shrink-0 text-gray-9000 transition-transform ${expanded ? 'rotate-180' : ''}`}
         >
           <path d="M6 9l6 6 6-6" />
         </svg>
@@ -95,13 +95,13 @@ function PolicyRow({ policy }: { policy: InsurancePolicy }) {
           <p className="text-sm text-gray-600">{policy.description}</p>
 
           <div className="rounded-lg px-3 py-2.5" style={{ background: '#1C1107' }}>
-            <div className="text-[10px] text-amber-400 font-semibold uppercase tracking-wider mb-1">Varför viktigt</div>
+            <div className="text-[10px] text-amber-700 font-semibold uppercase tracking-wider mb-1">Varför viktigt</div>
             <p className="text-xs text-amber-200">{policy.why}</p>
           </div>
 
           {policy.recommendation && (
             <div className="rounded-lg px-3 py-2.5" style={{ background: '#0D1B3E' }}>
-              <div className="text-[10px] text-blue-400 font-semibold uppercase tracking-wider mb-1">Rekommendation</div>
+              <div className="text-[10px] text-blue-700 font-semibold uppercase tracking-wider mb-1">Rekommendation</div>
               <p className="text-xs text-blue-200">{policy.recommendation}</p>
             </div>
           )}
@@ -111,7 +111,7 @@ function PolicyRow({ policy }: { policy: InsurancePolicy }) {
             {policy.entities.map(e => {
               const ent = INSURANCE_ENTITIES.find(x => x.id === e)
               return (
-                <span key={e} className="text-[10px] px-2 py-0.5 rounded-full bg-white/[0.06] text-gray-500">
+                <span key={e} className="text-[10px] px-2 py-0.5 rounded-full bg-gray-50 text-gray-9000">
                   {ent?.shortName ?? e}
                 </span>
               )
@@ -119,10 +119,10 @@ function PolicyRow({ policy }: { policy: InsurancePolicy }) {
           </div>
 
           {policy.provider && (
-            <p className="text-xs text-gray-500">Leverantör: {policy.provider}</p>
+            <p className="text-xs text-gray-9000">Leverantör: {policy.provider}</p>
           )}
           {policy.premium && (
-            <p className="text-xs text-gray-500">Premie: {policy.premium}</p>
+            <p className="text-xs text-gray-9000">Premie: {policy.premium}</p>
           )}
         </div>
       )}
@@ -158,16 +158,16 @@ function OverviewTab({ score }: { score: number }) {
         <ScoreCircle score={score} />
         <div className="flex-1 grid grid-cols-3 gap-4 w-full">
           <div className="text-center">
-            <div className="text-2xl font-bold text-red-400">{criticalCount}</div>
-            <div className="text-xs text-gray-500 mt-1">Kritiska gap</div>
+            <div className="text-2xl font-bold text-red-700">{criticalCount}</div>
+            <div className="text-xs text-gray-9000 mt-1">Kritiska gap</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-amber-400">{importantCount}</div>
-            <div className="text-xs text-gray-500 mt-1">Viktiga saknas</div>
+            <div className="text-2xl font-bold text-amber-700">{importantCount}</div>
+            <div className="text-xs text-gray-9000 mt-1">Viktiga saknas</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-emerald-400">{activeCount}</div>
-            <div className="text-xs text-gray-500 mt-1">Aktiva</div>
+            <div className="text-2xl font-bold text-emerald-700">{activeCount}</div>
+            <div className="text-xs text-gray-9000 mt-1">Aktiva</div>
           </div>
         </div>
       </div>
@@ -180,7 +180,7 @@ function OverviewTab({ score }: { score: number }) {
             <div className="text-sm font-semibold text-red-300">
               {criticalCount} kritisk{criticalCount !== 1 ? 'a' : ''} täckning{criticalCount !== 1 ? 'ar' : ''} saknas
             </div>
-            <div className="text-xs text-red-400 mt-0.5">
+            <div className="text-xs text-red-700 mt-0.5">
               Organisationen är exponerad mot skadeståndskrav, dataintrång och arbetsgivaransvar utan adekvat skydd.
             </div>
           </div>
@@ -189,7 +189,7 @@ function OverviewTab({ score }: { score: number }) {
 
       {/* Policies list */}
       <div className="space-y-2">
-        <div className="text-xs text-gray-500 uppercase tracking-wider font-semibold px-1">
+        <div className="text-xs text-gray-9000 uppercase tracking-wider font-semibold px-1">
           Alla försäkringar ({POLICIES.length})
         </div>
         {sorted.map(p => <PolicyRow key={p.id} policy={p} />)}
@@ -209,11 +209,11 @@ function AuditTab() {
       <div className="flex items-center justify-between p-4 rounded-xl border border-gray-200 bg-white/[0.01]">
         <div>
           <div className="text-sm font-semibold text-gray-900">Veckorevision — vecka {audit.weekNumber}</div>
-          <div className="text-xs text-gray-500 mt-0.5">Utförd: {audit.auditDate}</div>
+          <div className="text-xs text-gray-9000 mt-0.5">Utförd: {audit.auditDate}</div>
         </div>
         <div className="text-right">
-          <div className="text-xs text-gray-500">Nästa revision</div>
-          <div className="text-sm font-mono text-brand-accent">{audit.nextReviewDate}</div>
+          <div className="text-xs text-gray-9000">Nästa revision</div>
+          <div className="text-sm font-mono text-purple-700">{audit.nextReviewDate}</div>
         </div>
       </div>
 
@@ -224,11 +224,11 @@ function AuditTab() {
 
       {/* Recommendations */}
       <div className="space-y-3">
-        <div className="text-xs text-gray-500 uppercase tracking-wider font-semibold px-1">
+        <div className="text-xs text-gray-9000 uppercase tracking-wider font-semibold px-1">
           Rekommendationer ({audit.recommendations.length})
         </div>
         {audit.recommendations.length === 0 ? (
-          <div className="text-center py-8 text-gray-500 text-sm">Inga aktiva rekommendationer</div>
+          <div className="text-center py-8 text-gray-9000 text-sm">Inga aktiva rekommendationer</div>
         ) : (
           audit.recommendations.map((rec) => {
             const pc = PRIORITY_CONFIG[rec.priority]
@@ -250,15 +250,15 @@ function AuditTab() {
                   >
                     {pc.label.toUpperCase()}
                   </span>
-                  <span className="text-[10px] text-gray-500 font-mono">{actionLabels[rec.action]}</span>
+                  <span className="text-[10px] text-gray-9000 font-mono">{actionLabels[rec.action]}</span>
                   {rec.deadline && (
-                    <span className="text-[10px] text-red-400 font-mono ml-auto">
+                    <span className="text-[10px] text-red-700 font-mono ml-auto">
                       Deadline: {rec.deadline}
                     </span>
                   )}
                 </div>
                 <div className="text-sm text-gray-900 font-medium">{rec.title}</div>
-                <div className="text-xs text-gray-500">{rec.detail}</div>
+                <div className="text-xs text-gray-9000">{rec.detail}</div>
               </div>
             )
           })
@@ -267,13 +267,13 @@ function AuditTab() {
 
       {/* Historical audit log */}
       <div className="space-y-2">
-        <div className="text-xs text-gray-500 uppercase tracking-wider font-semibold px-1">
+        <div className="text-xs text-gray-9000 uppercase tracking-wider font-semibold px-1">
           Revisionshistorik
         </div>
         <div className="rounded-xl border border-gray-200 overflow-hidden">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-gray-200 text-gray-500">
+              <tr className="border-b border-gray-200 text-gray-9000">
                 <th className="text-left px-4 py-2 font-medium">Datum</th>
                 <th className="text-left px-4 py-2 font-medium">Vecka</th>
                 <th className="text-left px-4 py-2 font-medium">Poäng</th>
@@ -282,7 +282,7 @@ function AuditTab() {
             </thead>
             <tbody>
               {MOCK_AUDIT_HISTORY.map((h, i) => (
-                <tr key={i} className="border-b border-white/[0.03] text-gray-500">
+                <tr key={i} className="border-b border-white/[0.03] text-gray-9000">
                   <td className="px-4 py-2 font-mono">{h.date}</td>
                   <td className="px-4 py-2">V{h.week}</td>
                   <td className="px-4 py-2 font-mono">
@@ -290,10 +290,10 @@ function AuditTab() {
                       {h.score}
                     </span>
                   </td>
-                  <td className="px-4 py-2 text-red-400 text-[10px] font-mono">KRITISK</td>
+                  <td className="px-4 py-2 text-red-700 text-[10px] font-mono">KRITISK</td>
                 </tr>
               ))}
-              <tr className="text-gray-600 bg-white/[0.02]">
+              <tr className="text-gray-600 bg-gray-50">
                 <td className="px-4 py-2 font-mono">{audit.auditDate}</td>
                 <td className="px-4 py-2">V{audit.weekNumber}</td>
                 <td className="px-4 py-2 font-mono">
@@ -301,12 +301,12 @@ function AuditTab() {
                     {audit.overallScore}
                   </span>
                 </td>
-                <td className="px-4 py-2 text-[10px] font-mono text-blue-400">SENASTE</td>
+                <td className="px-4 py-2 text-[10px] font-mono text-blue-700">SENASTE</td>
               </tr>
             </tbody>
           </table>
         </div>
-        <p className="text-[10px] text-gray-500 px-1">Revisioner sker automatiskt varje måndag. Score baseras på kritiska och viktiga täckningsgap.</p>
+        <p className="text-[10px] text-gray-9000 px-1">Revisioner sker automatiskt varje måndag. Score baseras på kritiska och viktiga täckningsgap.</p>
       </div>
     </div>
   )
@@ -326,12 +326,12 @@ function EntityCoverage({ entityId, name }: { entityId: string; name: string }) 
       <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
         <div>
           <div className="text-sm font-semibold text-gray-900">{name}</div>
-          <div className="text-xs text-gray-500 mt-0.5">
+          <div className="text-xs text-gray-9000 mt-0.5">
             {active.length} aktiva · {missing.length} saknas
           </div>
         </div>
         {criticalGaps.length > 0 && (
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500/20 text-red-400">
+          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-500/20 text-red-700">
             {criticalGaps.length} kritisk{criticalGaps.length !== 1 ? 'a' : ''} gap
           </span>
         )}
@@ -340,7 +340,7 @@ function EntityCoverage({ entityId, name }: { entityId: string; name: string }) 
       {/* Policies */}
       <div className="divide-y divide-white/[0.03]">
         {covered.length === 0 ? (
-          <div className="px-4 py-3 text-xs text-gray-500">Inga försäkringar registrerade för denna enhet.</div>
+          <div className="px-4 py-3 text-xs text-gray-9000">Inga försäkringar registrerade för denna enhet.</div>
         ) : (
           covered.map(p => {
             const sc = STATUS_CONFIG[p.status]
@@ -350,7 +350,7 @@ function EntityCoverage({ entityId, name }: { entityId: string; name: string }) 
                 <div className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: pc.color }} />
                 <div className="flex-1 min-w-0">
                   <div className="text-xs text-gray-600 truncate">{p.name}</div>
-                  <div className="text-[10px] text-gray-500">{CATEGORY_LABELS[p.category]}</div>
+                  <div className="text-[10px] text-gray-9000">{CATEGORY_LABELS[p.category]}</div>
                 </div>
                 <span
                   className="text-[9px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0"
@@ -370,7 +370,7 @@ function EntityCoverage({ entityId, name }: { entityId: string; name: string }) 
 function EntitiesTab() {
   return (
     <div className="space-y-4">
-      <div className="text-xs text-gray-500 px-1">
+      <div className="text-xs text-gray-9000 px-1">
         Visar försäkringsskydd per juridisk enhet inom Wavult Group.
       </div>
       {INSURANCE_ENTITIES.map(e => (
@@ -379,8 +379,8 @@ function EntitiesTab() {
 
       {/* Note on missing entities */}
       <div className="px-4 py-3 rounded-xl border border-gray-100 bg-white/[0.01]">
-        <div className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-1">Notering</div>
-        <p className="text-xs text-gray-500">
+        <div className="text-[10px] text-gray-9000 font-semibold uppercase tracking-wider mb-1">Notering</div>
+        <p className="text-xs text-gray-9000">
           Texas LLC, Litauisk UAB och Dubai Holding saknas ännu i registret. Lägg till försäkringsuppgifter när dessa enheter är etablerade.
         </p>
       </div>
@@ -407,7 +407,7 @@ export function InsuranceHub() {
       {/* Page header */}
       <div>
         <h1 className="text-xl font-bold text-gray-900 tracking-tight">Insurance Hub</h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-gray-9000 mt-1">
           Organisationens försäkringsskydd — revideras automatiskt varje vecka
         </p>
       </div>
@@ -419,7 +419,7 @@ export function InsuranceHub() {
           <span className="text-xs text-red-300 flex-1">
             <strong>{audit.criticalGaps.length} kritiska</strong> försäkringsgap kräver omedelbar åtgärd
           </span>
-          <span className="text-[10px] text-gray-500 font-mono">V{audit.weekNumber}</span>
+          <span className="text-[10px] text-gray-9000 font-mono">V{audit.weekNumber}</span>
         </div>
       )}
 
@@ -432,7 +432,7 @@ export function InsuranceHub() {
             className={`px-4 py-2.5 text-sm font-medium transition-colors border-b-2 -mb-px ${
               activeTab === t.id
                 ? 'border-brand-accent text-gray-900'
-                : 'border-transparent text-gray-500 hover:text-gray-600'
+                : 'border-transparent text-gray-9000 hover:text-gray-600'
             }`}
           >
             {t.label}

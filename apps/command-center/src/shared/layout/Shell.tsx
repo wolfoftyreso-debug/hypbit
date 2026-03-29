@@ -200,7 +200,7 @@ export function Shell({ children }: ShellProps) {
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/30 md:hidden"
+          className="fixed inset-0 z-30 bg-white/30 md:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -278,7 +278,7 @@ export function Shell({ children }: ShellProps) {
           <div className="flex items-center gap-3 min-w-0">
             {/* Hamburger — mobile only */}
             <button
-              className="md:hidden flex-shrink-0 p-1 -ml-1 text-gray-500 hover:text-gray-700"
+              className="md:hidden flex-shrink-0 p-1 -ml-1 text-gray-9000 hover:text-gray-700"
               onClick={() => setSidebarOpen(v => !v)}
               aria-label="Toggle menu"
             >
@@ -329,7 +329,7 @@ export function Shell({ children }: ShellProps) {
                 )}
                 <button
                   onClick={() => signOut()}
-                  className="flex items-center gap-1 text-xs text-gray-500 hover:text-red-600 transition-colors font-medium"
+                  className="flex items-center gap-1 text-xs text-gray-9000 hover:text-red-600 transition-colors font-medium"
                 >
                   Logga ut
                 </button>
@@ -340,7 +340,7 @@ export function Shell({ children }: ShellProps) {
             <div className="relative">
               <button
                 onClick={() => setNotifOpen(v => !v)}
-                className="relative p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors rounded-lg"
+                className="relative p-2 text-gray-9000 hover:text-gray-700 hover:bg-gray-100 transition-colors rounded-lg"
               >
                 <Bell className="w-4 h-4" />
                 {notificationCount > 0 && (

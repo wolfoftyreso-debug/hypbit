@@ -38,9 +38,9 @@ function QuickStats() {
         { label: 'Förfallna', value: overdue, color: 'bg-red-400' },
         { label: 'Brådskande (30d)', value: urgentDeadlines, color: 'bg-orange-400' },
       ].map(s => (
-        <div key={s.label} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-gray-200">
+        <div key={s.label} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200">
           <span className={`h-1.5 w-1.5 rounded-full ${s.color}`} />
-          <span className="text-gray-500">{s.label}:</span>
+          <span className="text-gray-9000">{s.label}:</span>
           <span className="text-gray-900 font-semibold">{s.value}</span>
         </div>
       ))}
@@ -60,7 +60,7 @@ export function CorporateHub() {
             <span className="text-xl">⚖️</span>
             <div>
               <h1 className="text-[16px] font-bold text-gray-900">Bolagsadmin</h1>
-              <p className="text-xs text-gray-500 font-mono">
+              <p className="text-xs text-gray-9000 font-mono">
                 Wavult Group — {COMPANIES.length} entiteter · SE · US-DE · US-TX · LT · AE
               </p>
             </div>
@@ -77,8 +77,8 @@ export function CorporateHub() {
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
               activeTab === tab.id
-                ? 'bg-brand-accent/15 text-brand-accent border border-brand-accent/30'
-                : 'text-gray-500 hover:text-gray-600 hover:bg-white/[0.04]'
+                ? 'bg-purple-50 text-purple-700 border border-purple-200'
+                : 'text-gray-9000 hover:text-gray-600 hover:bg-gray-50'
             }`}
           >
             <span className="text-sm leading-none">{tab.icon}</span>

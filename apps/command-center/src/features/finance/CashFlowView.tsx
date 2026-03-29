@@ -46,7 +46,7 @@ function EntityCashFlow({ entityId, entityColor }: { entityId: EntityId; entityC
       <div className="px-4 py-3 border-b border-gray-200 flex items-center gap-2">
         <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: entityColor }} />
         <span className="text-xs font-semibold text-gray-900">{fe.name}</span>
-        <span className="text-[9px] font-mono text-gray-500 ml-1">{fe.jurisdiction}</span>
+        <span className="text-[9px] font-mono text-gray-9000 ml-1">{fe.jurisdiction}</span>
         <span className="ml-auto text-[9px] font-mono px-2 py-0.5 rounded-full"
           style={{ background: entityColor + '15', color: entityColor }}>
           {fe.currency}
@@ -56,18 +56,18 @@ function EntityCashFlow({ entityId, entityColor }: { entityId: EntityId; entityC
       <div className="p-4 space-y-4">
         {/* Summary row + Runway + Burn Rate */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <div className="px-3 py-2 rounded-lg bg-white/[0.04] text-center">
-            <p className="text-[9px] text-gray-500 font-mono uppercase">Inbetalningar 6m</p>
-            <p className="text-[14px] font-bold text-green-400 mt-1">{fmt(totalInflow)} {fe.currency}</p>
+          <div className="px-3 py-2 rounded-lg bg-gray-50 text-center">
+            <p className="text-[9px] text-gray-9000 font-mono uppercase">Inbetalningar 6m</p>
+            <p className="text-[14px] font-bold text-green-700 mt-1">{fmt(totalInflow)} {fe.currency}</p>
             <p className="text-[8px] text-gray-600 mt-0.5">pengar som kommit in</p>
           </div>
-          <div className="px-3 py-2 rounded-lg bg-white/[0.04] text-center">
-            <p className="text-[9px] text-gray-500 font-mono uppercase">Utbetalningar 6m</p>
-            <p className="text-[14px] font-bold text-red-400 mt-1">{fmt(totalOutflow)} {fe.currency}</p>
+          <div className="px-3 py-2 rounded-lg bg-gray-50 text-center">
+            <p className="text-[9px] text-gray-9000 font-mono uppercase">Utbetalningar 6m</p>
+            <p className="text-[14px] font-bold text-red-700 mt-1">{fmt(totalOutflow)} {fe.currency}</p>
             <p className="text-[8px] text-gray-600 mt-0.5">pengar som gått ut</p>
           </div>
-          <div className="px-3 py-2 rounded-lg bg-white/[0.04] text-center">
-            <p className="text-[9px] text-gray-500 font-mono uppercase">Netto 6m</p>
+          <div className="px-3 py-2 rounded-lg bg-gray-50 text-center">
+            <p className="text-[9px] text-gray-9000 font-mono uppercase">Netto 6m</p>
             <p className="text-[14px] font-bold mt-1" style={{ color: netTotal >= 0 ? '#10B981' : '#EF4444' }}>
               {netTotal >= 0 ? '+' : ''}{fmt(netTotal)} {fe.currency}
             </p>
@@ -83,7 +83,7 @@ function EntityCashFlow({ entityId, entityColor }: { entityId: EntityId; entityC
 
         {/* Chart */}
         <div>
-          <p className="text-xs text-gray-500 font-mono mb-1">Inbetalningar (grön) vs Utbetalningar (röd) per månad</p>
+          <p className="text-xs text-gray-9000 font-mono mb-1">Inbetalningar (grön) vs Utbetalningar (röd) per månad</p>
           <p className="text-[9px] text-gray-600 mb-3">Y-axeln visar belopp i {fe.currency} — högre stapel = mer pengar</p>
           <div className="flex gap-2">
             {/* Y-axis label */}
@@ -113,7 +113,7 @@ function EntityCashFlow({ entityId, entityColor }: { entityId: EntityId; entityC
               {/* Month labels */}
               <div className="flex gap-2 mt-1">
                 {data.map((d, i) => (
-                  <div key={i} className="flex-1 text-center text-[9px] font-mono text-gray-500">{d.month}</div>
+                  <div key={i} className="flex-1 text-center text-[9px] font-mono text-gray-9000">{d.month}</div>
                 ))}
               </div>
             </div>
@@ -122,29 +122,29 @@ function EntityCashFlow({ entityId, entityColor }: { entityId: EntityId; entityC
           <div className="flex gap-4 mt-2">
             <div className="flex items-center gap-1.5">
               <span className="h-2 w-3 rounded-sm bg-green-500/70" />
-              <span className="text-[9px] text-gray-500">Inbetalningar (pengar in)</span>
+              <span className="text-[9px] text-gray-9000">Inbetalningar (pengar in)</span>
             </div>
             <div className="flex items-center gap-1.5">
               <span className="h-2 w-3 rounded-sm bg-red-500/70" />
-              <span className="text-[9px] text-gray-500">Utbetalningar (pengar ut)</span>
+              <span className="text-[9px] text-gray-9000">Utbetalningar (pengar ut)</span>
             </div>
           </div>
         </div>
 
         {/* 30-day forecast */}
         <div className="rounded-lg border border-gray-200 p-3">
-          <p className="text-xs text-gray-500 font-semibold mb-2">📈 Prognos nästa 30 dagar</p>
+          <p className="text-xs text-gray-9000 font-semibold mb-2">📈 Prognos nästa 30 dagar</p>
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <p className="text-[9px] text-gray-500 font-mono">Inbetalningar</p>
-              <p className="text-sm font-bold text-green-400">{fmt(forecastInflow)} {fe.currency}</p>
+              <p className="text-[9px] text-gray-9000 font-mono">Inbetalningar</p>
+              <p className="text-sm font-bold text-green-700">{fmt(forecastInflow)} {fe.currency}</p>
             </div>
             <div>
-              <p className="text-[9px] text-gray-500 font-mono">Utbetalningar</p>
-              <p className="text-sm font-bold text-red-400">{fmt(forecastOutflow)} {fe.currency}</p>
+              <p className="text-[9px] text-gray-9000 font-mono">Utbetalningar</p>
+              <p className="text-sm font-bold text-red-700">{fmt(forecastOutflow)} {fe.currency}</p>
             </div>
             <div>
-              <p className="text-[9px] text-gray-500 font-mono">Prognos netto</p>
+              <p className="text-[9px] text-gray-9000 font-mono">Prognos netto</p>
               <p className="text-sm font-bold" style={{ color: forecastNet >= 0 ? '#10B981' : '#EF4444' }}>
                 {forecastNet >= 0 ? '+' : ''}{fmt(forecastNet)} {fe.currency}
               </p>
@@ -170,7 +170,7 @@ export function CashFlowView() {
     <div className="space-y-4">
       {/* MOCKDATA banner */}
       <div className="rounded-xl border border-yellow-500/40 bg-yellow-500/10 px-4 py-3 flex items-start gap-3">
-        <span className="text-yellow-400 text-lg flex-shrink-0">🧪</span>
+        <span className="text-yellow-700 text-lg flex-shrink-0">🧪</span>
         <div>
           <p className="text-xs font-semibold text-yellow-300">DEMO-DATA — inte live</p>
           <p className="text-xs text-yellow-200/60 mt-0.5 leading-relaxed">
@@ -182,7 +182,7 @@ export function CashFlowView() {
 
       <div>
         <h2 className="text-lg font-bold text-gray-900">Kassaflöde</h2>
-        <p className="text-xs text-gray-500 mt-0.5">Inbetalningar vs utbetalningar per bolag — senaste 6 månader + 30-dagarsprognos + runway</p>
+        <p className="text-xs text-gray-9000 mt-0.5">Inbetalningar vs utbetalningar per bolag — senaste 6 månader + 30-dagarsprognos + runway</p>
       </div>
 
       {entitiesToShow.map(fe => (

@@ -64,22 +64,22 @@ export function ChartOfAccounts() {
   return (
     <div className="space-y-4">
       {/* Explanatory ingress */}
-      <div className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3">
-        <p className="text-xs text-gray-500 leading-relaxed">
+      <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+        <p className="text-xs text-gray-9000 leading-relaxed">
           <span className="font-semibold text-gray-900">Vad är en kontoplan?</span>{' '}
           En kontoplan är bokföringens "adressbok" — varje konto har ett nummer och ett syfte.
           Sverige använder <span className="text-gray-600 font-mono">BAS-kontoplanen</span>:{' '}
           <span className="text-gray-600">1xxx</span> = tillgångar (vad bolaget äger),{' '}
-          <span className="text-amber-400">2xxx</span> = skulder &amp; eget kapital (vad bolaget är skyldigt),{' '}
-          <span className="text-gray-500">3xxx</span> = intäkter (försäljning),{' '}
-          <span className="text-red-400">4–7xxx</span> = kostnader (löner, hyra, material m.m.).
+          <span className="text-amber-700">2xxx</span> = skulder &amp; eget kapital (vad bolaget är skyldigt),{' '}
+          <span className="text-gray-9000">3xxx</span> = intäkter (försäljning),{' '}
+          <span className="text-red-700">4–7xxx</span> = kostnader (löner, hyra, material m.m.).
         </p>
       </div>
 
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-lg font-bold text-gray-900">Kontoplan</h2>
-          <p className="text-xs text-gray-500 mt-0.5">BAS-kontoplan — Wavult Group</p>
+          <p className="text-xs text-gray-9000 mt-0.5">BAS-kontoplan — Wavult Group</p>
         </div>
         {/* Entity filter */}
         <select
@@ -95,7 +95,7 @@ export function ChartOfAccounts() {
       </div>
 
       {isLoading && (
-        <div className="flex items-center justify-center py-12 text-gray-500 text-xs">
+        <div className="flex items-center justify-center py-12 text-gray-9000 text-xs">
           Laddar kontoplan...
         </div>
       )}
@@ -116,7 +116,7 @@ export function ChartOfAccounts() {
             >
               <span className="text-base">{isExpanded ? '▾' : '▸'}</span>
               <span className="text-sm font-semibold text-gray-900 flex-1">{group}</span>
-              <span className="text-xs font-mono text-gray-500">{groupAccounts.length} konton</span>
+              <span className="text-xs font-mono text-gray-9000">{groupAccounts.length} konton</span>
               <span className="text-xs font-mono ml-4"
                 style={{ color: total < 0 ? '#EF4444' : '#10B981' }}>
                 {fmt(total, groupAccounts[0]?.currency ?? '')}
@@ -127,7 +127,7 @@ export function ChartOfAccounts() {
             {isExpanded && (
               <div className="border-t border-gray-200 overflow-x-auto">
                 {/* Table header */}
-                <div className="grid grid-cols-12 px-4 py-2 text-[9px] font-mono text-gray-500 uppercase tracking-wider border-b border-gray-100 min-w-[500px]">
+                <div className="grid grid-cols-12 px-4 py-2 text-[9px] font-mono text-gray-9000 uppercase tracking-wider border-b border-gray-100 min-w-[500px]">
                   <span className="col-span-1">Konto</span>
                   <span className="col-span-4">Benämning</span>
                   <span className="col-span-2">Typ</span>
@@ -144,7 +144,7 @@ export function ChartOfAccounts() {
                       key={account.id}
                       className="grid grid-cols-12 px-4 py-2.5 items-center border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors min-w-[500px]"
                     >
-                      <span className="col-span-1 text-xs font-mono text-gray-500">{account.account_nr}</span>
+                      <span className="col-span-1 text-xs font-mono text-gray-9000">{account.account_nr}</span>
                       <span className="col-span-4 text-xs text-gray-900">{account.name}</span>
                       <span className="col-span-2">
                         <span className="text-[9px] font-mono px-1.5 py-0.5 rounded"
@@ -154,9 +154,9 @@ export function ChartOfAccounts() {
                       </span>
                       <div className="col-span-2 flex items-center gap-1.5">
                         <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: fe?.color }} />
-                        <span className="text-xs text-gray-500 font-mono truncate">{fe?.short_name}</span>
+                        <span className="text-xs text-gray-9000 font-mono truncate">{fe?.short_name}</span>
                       </div>
-                      <span className="col-span-2 text-xs font-mono text-gray-500">{account.currency}</span>
+                      <span className="col-span-2 text-xs font-mono text-gray-9000">{account.currency}</span>
                       <span className="col-span-1 text-right text-xs font-mono font-semibold"
                         style={{ color: account.balance < 0 ? '#EF4444' : '#10B981' }}>
                         {fmt(account.balance, account.currency)}

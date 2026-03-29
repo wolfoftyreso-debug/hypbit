@@ -475,7 +475,7 @@ export function TeamMap() {
       {error && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-50">
           <div className="rounded-xl bg-red-950/60 border border-red-800/40 p-6 max-w-sm text-center">
-            <p className="text-red-400 text-sm font-mono">{error}</p>
+            <p className="text-red-700 text-sm font-mono">{error}</p>
           </div>
         </div>
       )}
@@ -557,7 +557,7 @@ export function TeamMap() {
         }}
       >
         {/* Status info */}
-        <div className="flex items-center gap-3 text-xs font-mono text-gray-500 shrink-0">
+        <div className="flex items-center gap-3 text-xs font-mono text-gray-9000 shrink-0">
           <span className="text-gray-900 font-semibold">{locations.length}</span>
           <span>online</span>
           <span className="text-gray-600">·</span>

@@ -107,13 +107,13 @@ export function MediaPipelineView() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Media Pipeline</h1>
-          <p className="text-gray-500 text-sm mt-1">Upload · Geo-tagging · AI-analys · CDN-leverans · Arkiv</p>
+          <p className="text-gray-9000 text-sm mt-1">Upload · Geo-tagging · AI-analys · CDN-leverans · Arkiv</p>
         </div>
         <div className="flex gap-3 text-sm">
-          <span className="bg-green-900/50 text-green-400 px-3 py-1 rounded-full border border-green-700">
+          <span className="bg-green-900/50 text-green-700 px-3 py-1 rounded-full border border-green-700">
             {MOCK_FILES.filter(f => f.status === 'done').length} levererade
           </span>
-          <span className="bg-blue-900/50 text-blue-400 px-3 py-1 rounded-full border border-blue-700">
+          <span className="bg-blue-900/50 text-blue-700 px-3 py-1 rounded-full border border-blue-700">
             {MOCK_FILES.filter(f => f.status === 'uploading' || f.status === 'processing').length} aktiva
           </span>
         </div>
@@ -134,8 +134,8 @@ export function MediaPipelineView() {
             dragging ? 'border-blue-400 bg-blue-900/20' : 'border-gray-600 hover:border-gray-500'
           }`}
         >
-          <p className="text-gray-500">Dra och släpp bilder här, eller <span className="text-blue-400 underline cursor-pointer">välj filer</span></p>
-          <p className="text-gray-500 text-xs mt-1">Stöder: JPG, PNG, HEIC · Max 50 MB per fil</p>
+          <p className="text-gray-9000">Dra och släpp bilder här, eller <span className="text-blue-700 underline cursor-pointer">välj filer</span></p>
+          <p className="text-gray-9000 text-xs mt-1">Stöder: JPG, PNG, HEIC · Max 50 MB per fil</p>
         </div>
 
         {/* File list */}
@@ -150,11 +150,11 @@ export function MediaPipelineView() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-medium text-sm truncate">{file.name}</span>
-                    <span className="text-xs text-gray-500">{file.sizeMb} MB</span>
-                    <span className="text-xs text-gray-500">#{file.missionId}</span>
+                    <span className="text-xs text-gray-9000">{file.sizeMb} MB</span>
+                    <span className="text-xs text-gray-9000">#{file.missionId}</span>
                   </div>
                   {file.lat && (
-                    <div className="text-xs text-gray-500">📍 {file.lat.toFixed(4)}, {file.lng?.toFixed(4)}</div>
+                    <div className="text-xs text-gray-9000">📍 {file.lat.toFixed(4)}, {file.lng?.toFixed(4)}</div>
                   )}
                   {(file.status === 'uploading' || file.status === 'processing') && (
                     <div className="mt-2 h-1.5 bg-gray-100 rounded-full overflow-hidden">
@@ -167,7 +167,7 @@ export function MediaPipelineView() {
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
                   {(file.status === 'uploading' || file.status === 'processing') && (
-                    <span className="text-xs text-gray-500">{file.progress}%</span>
+                    <span className="text-xs text-gray-9000">{file.progress}%</span>
                   )}
                   <span
                     className="text-xs px-2 py-0.5 rounded-full font-medium"
@@ -193,12 +193,12 @@ export function MediaPipelineView() {
               <div key={s.stage} className="bg-gray-50 rounded-xl p-4 text-center min-w-[120px] flex-shrink-0">
                 <div className="text-2xl mb-1">{s.emoji}</div>
                 <div className="text-xs font-semibold text-gray-800 mb-2">{s.label}</div>
-                <div className="text-2xl font-bold text-blue-400">{s.count}</div>
-                <div className="text-xs text-gray-500 mt-1">filer</div>
-                <div className="text-xs text-gray-500 mt-1">~{s.avgMs < 1000 ? `${s.avgMs}ms` : `${(s.avgMs/1000).toFixed(1)}s`} snitt</div>
+                <div className="text-2xl font-bold text-blue-700">{s.count}</div>
+                <div className="text-xs text-gray-9000 mt-1">filer</div>
+                <div className="text-xs text-gray-9000 mt-1">~{s.avgMs < 1000 ? `${s.avgMs}ms` : `${(s.avgMs/1000).toFixed(1)}s`} snitt</div>
               </div>
               {i < PIPELINE_STAGES.length - 1 && (
-                <div key={`arrow-${i}`} className="text-gray-500 text-xl flex-shrink-0">→</div>
+                <div key={`arrow-${i}`} className="text-gray-9000 text-xl flex-shrink-0">→</div>
               )}
             </>
           ))}
@@ -215,7 +215,7 @@ export function MediaPipelineView() {
             <select
               value={filterStatus}
               onChange={e => setFilterStatus(e.target.value as FileStatus | 'all')}
-              className="bg-gray-50 border border-gray-700 text-gray-600 text-xs rounded px-2 py-1"
+              className="bg-gray-50 border border-gray-200 text-gray-600 text-xs rounded px-2 py-1"
             >
               <option value="all">Alla statusar</option>
               {Object.entries(STATUS_META).map(([k, v]) => (
@@ -225,7 +225,7 @@ export function MediaPipelineView() {
             <select
               value={filterMission}
               onChange={e => setFilterMission(e.target.value)}
-              className="bg-gray-50 border border-gray-700 text-gray-600 text-xs rounded px-2 py-1"
+              className="bg-gray-50 border border-gray-200 text-gray-600 text-xs rounded px-2 py-1"
             >
               <option value="all">Alla uppdrag</option>
               {missions.map(m => <option key={m} value={m}>{m}</option>)}
@@ -236,7 +236,7 @@ export function MediaPipelineView() {
         <div className="bg-gray-50 rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-700 text-gray-500 text-xs uppercase">
+              <tr className="border-b border-gray-200 text-gray-9000 text-xs uppercase">
                 <th className="text-left p-3 pl-4">Fil</th>
                 <th className="text-left p-3">Uppdrag</th>
                 <th className="text-left p-3">Geo</th>
@@ -250,15 +250,15 @@ export function MediaPipelineView() {
               {filtered.map((f, i) => {
                 const meta = STATUS_META[f.status]
                 return (
-                  <tr key={f.id} className={`border-b border-gray-700/50 hover:bg-gray-750 transition-colors ${i % 2 === 0 ? '' : 'bg-gray-50/50'}`}>
+                  <tr key={f.id} className={`border-b border-gray-200/50 hover:bg-gray-750 transition-colors ${i % 2 === 0 ? '' : 'bg-gray-50/50'}`}>
                     <td className="p-3 pl-4">
                       <div className="flex items-center gap-2">
                         <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center text-sm">🖼️</div>
                         <span className="font-medium text-gray-800">{f.name}</span>
                       </div>
                     </td>
-                    <td className="p-3 text-gray-500 text-xs">{f.missionId}</td>
-                    <td className="p-3 text-gray-500 text-xs">
+                    <td className="p-3 text-gray-9000 text-xs">{f.missionId}</td>
+                    <td className="p-3 text-gray-9000 text-xs">
                       {f.lat ? `${f.lat.toFixed(3)}, ${f.lng?.toFixed(3)}` : '—'}
                     </td>
                     <td className="p-3">
@@ -268,7 +268,7 @@ export function MediaPipelineView() {
                             {tag}
                           </span>
                         ))}
-                        {!f.aiTags && <span className="text-gray-500 text-xs">—</span>}
+                        {!f.aiTags && <span className="text-gray-9000 text-xs">—</span>}
                       </div>
                     </td>
                     <td className="p-3">
@@ -276,14 +276,14 @@ export function MediaPipelineView() {
                         {meta.label}
                       </span>
                     </td>
-                    <td className="p-3 text-gray-500 text-xs">{f.uploadedAt}</td>
+                    <td className="p-3 text-gray-9000 text-xs">{f.uploadedAt}</td>
                     <td className="p-3">
                       {f.cdnUrl && (
                         <a
                           href={f.cdnUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs text-blue-400 hover:text-blue-300 underline whitespace-nowrap"
+                          className="text-xs text-blue-700 hover:text-blue-300 underline whitespace-nowrap"
                         >
                           View CDN ↗
                         </a>
@@ -294,7 +294,7 @@ export function MediaPipelineView() {
               })}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="text-center text-gray-500 py-8">Inga filer matchar filtret</td>
+                  <td colSpan={7} className="text-center text-gray-9000 py-8">Inga filer matchar filtret</td>
                 </tr>
               )}
             </tbody>
@@ -309,26 +309,26 @@ export function MediaPipelineView() {
         </h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {STORAGE_BUCKETS.map(b => (
-            <div key={b.id} className="bg-gray-50 rounded-xl p-4 border border-gray-700">
+            <div key={b.id} className="bg-gray-50 rounded-xl p-4 border border-gray-200">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xl">{b.flag}</span>
                 <span className={`text-xs px-2 py-0.5 rounded-full border ${
                   b.role === 'primary'
-                    ? 'text-blue-400 border-blue-800 bg-blue-900/30'
-                    : 'text-gray-500 border-gray-700 bg-gray-50'
+                    ? 'text-blue-700 border-blue-800 bg-blue-900/30'
+                    : 'text-gray-9000 border-gray-200 bg-gray-50'
                 }`}>
                   {b.role === 'primary' ? 'Primary' : 'Backup (CRR)'}
                 </span>
               </div>
               <div className="font-semibold text-gray-800 mb-1">{b.label}</div>
-              <div className="text-xs text-gray-500 mb-3">{b.region}</div>
+              <div className="text-xs text-gray-9000 mb-3">{b.region}</div>
               <div className="space-y-1">
                 <div className="flex justify-between text-xs">
-                  <span className="text-gray-500">Lagring</span>
+                  <span className="text-gray-9000">Lagring</span>
                   <span className="text-gray-900 font-medium">{b.estimatedGb} GB</span>
                 </div>
                 <div className="flex justify-between text-xs">
-                  <span className="text-gray-500">Objekt</span>
+                  <span className="text-gray-9000">Objekt</span>
                   <span className="text-gray-900 font-medium">{b.objectCount.toLocaleString()}</span>
                 </div>
               </div>
@@ -339,7 +339,7 @@ export function MediaPipelineView() {
                   style={{ width: `${Math.min((b.estimatedGb / 50) * 100, 100)}%` }}
                 />
               </div>
-              <div className="text-xs text-gray-500 mt-1">{((b.estimatedGb / 50) * 100).toFixed(1)}% av 50 GB</div>
+              <div className="text-xs text-gray-9000 mt-1">{((b.estimatedGb / 50) * 100).toFixed(1)}% av 50 GB</div>
             </div>
           ))}
         </div>

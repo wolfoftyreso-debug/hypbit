@@ -116,7 +116,7 @@ export function RolesView() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setSelectedRole(null)}
-            className="text-xs text-gray-500 hover:text-gray-600 transition-colors flex items-center gap-1"
+            className="text-xs text-gray-9000 hover:text-gray-600 transition-colors flex items-center gap-1"
           >
             ← Tillbaka
           </button>
@@ -128,7 +128,7 @@ export function RolesView() {
           </div>
           <div>
             <h2 className="text-sm font-bold text-gray-900">{role.person} — {role.title}</h2>
-            <p className="text-xs text-gray-500">{role.description}</p>
+            <p className="text-xs text-gray-9000">{role.description}</p>
           </div>
         </div>
 
@@ -183,7 +183,7 @@ export function RolesView() {
         )}
 
         {selectedRole === 'admin' && (
-          <div className="rounded-xl border border-purple-200 bg-purple-50 px-4 py-3 text-xs text-gray-500">
+          <div className="rounded-xl border border-purple-200 bg-purple-50 px-4 py-3 text-xs text-gray-9000">
             🔐 Admin har alltid full tillgång och kan inte begränsas.
           </div>
         )}
@@ -193,7 +193,7 @@ export function RolesView() {
 
   return (
     <div className="space-y-3">
-      <p className="text-xs text-gray-500">Klicka på en roll för att redigera modultillgång.</p>
+      <p className="text-xs text-gray-9000">Klicka på en roll för att redigera modultillgång.</p>
 
       {ROLES.map(r => {
         const modules = getModules(r.id)
@@ -225,7 +225,7 @@ export function RolesView() {
                     {r.title}
                   </span>
                 </div>
-                <p className="text-xs text-gray-500 mt-0.5 truncate">{r.description}</p>
+                <p className="text-xs text-gray-9000 mt-0.5 truncate">{r.description}</p>
               </div>
 
               {/* Module count */}
@@ -234,7 +234,7 @@ export function RolesView() {
                 <div className="text-[9px] text-gray-600 font-mono">moduler</div>
               </div>
 
-              <span className="text-gray-600 group-hover:text-gray-500 transition-colors text-sm flex-shrink-0">›</span>
+              <span className="text-gray-600 group-hover:text-gray-9000 transition-colors text-sm flex-shrink-0">›</span>
             </div>
 
             {/* Module pills */}

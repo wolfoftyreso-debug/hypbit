@@ -55,7 +55,7 @@ export function PurchaseOrdersView() {
               key={s}
               onClick={() => setFilterStatus(s)}
               className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${
-                filterStatus === s ? 'bg-white/10 text-gray-900' : 'text-gray-500 hover:text-gray-600'
+                filterStatus === s ? 'bg-gray-100 text-gray-900' : 'text-gray-9000 hover:text-gray-600'
               }`}
             >
               {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -72,15 +72,15 @@ export function PurchaseOrdersView() {
 
       {/* New PO form */}
       {showForm && (
-        <div className="mx-6 mt-4 p-4 rounded-xl border border-gray-200 bg-white/[0.03] flex-shrink-0">
+        <div className="mx-6 mt-4 p-4 rounded-xl border border-gray-200 bg-gray-50 flex-shrink-0">
           <p className="text-xs font-semibold text-gray-900 mb-3">Ny inköpsorder</p>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">Leverantör</label>
+              <label className="text-xs text-gray-9000 mb-1 block">Leverantör</label>
               <select
                 value={form.supplierId}
                 onChange={e => setForm({ ...form, supplierId: e.target.value })}
-                className="w-full bg-white/[0.05] border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-900 focus:outline-none focus:border-gray-300"
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-900 focus:outline-none focus:border-gray-300"
               >
                 <option value="">Välj leverantör…</option>
                 {SUPPLIERS.filter(s => s.status === 'aktiv').map(s => (
@@ -89,31 +89,31 @@ export function PurchaseOrdersView() {
               </select>
             </div>
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">Beskrivning</label>
+              <label className="text-xs text-gray-9000 mb-1 block">Beskrivning</label>
               <input
                 type="text"
                 placeholder="Vad beställs?"
                 value={form.description}
                 onChange={e => setForm({ ...form, description: e.target.value })}
-                className="w-full bg-white/[0.05] border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-900 placeholder-gray-600 focus:outline-none focus:border-gray-300"
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-900 placeholder-gray-600 focus:outline-none focus:border-gray-300"
               />
             </div>
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">Belopp</label>
+              <label className="text-xs text-gray-9000 mb-1 block">Belopp</label>
               <input
                 type="number"
                 placeholder="0"
                 value={form.amount}
                 onChange={e => setForm({ ...form, amount: e.target.value })}
-                className="w-full bg-white/[0.05] border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-900 placeholder-gray-600 focus:outline-none focus:border-gray-300"
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-900 placeholder-gray-600 focus:outline-none focus:border-gray-300"
               />
             </div>
             <div>
-              <label className="text-xs text-gray-500 mb-1 block">Valuta</label>
+              <label className="text-xs text-gray-9000 mb-1 block">Valuta</label>
               <select
                 value={form.currency}
                 onChange={e => setForm({ ...form, currency: e.target.value as Currency })}
-                className="w-full bg-white/[0.05] border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-900 focus:outline-none focus:border-gray-300"
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-900 focus:outline-none focus:border-gray-300"
               >
                 <option>SEK</option>
                 <option>USD</option>
@@ -130,7 +130,7 @@ export function PurchaseOrdersView() {
             </button>
             <button
               onClick={() => { setShowForm(false); setForm(EMPTY_PO) }}
-              className="px-4 py-1.5 rounded-lg text-xs text-gray-500 hover:text-gray-600 transition-colors"
+              className="px-4 py-1.5 rounded-lg text-xs text-gray-9000 hover:text-gray-600 transition-colors"
             >
               Avbryt
             </button>
@@ -145,7 +145,7 @@ export function PurchaseOrdersView() {
           <thead>
             <tr className="text-left border-b border-gray-200">
               {['Leverantör', 'Beskrivning', 'Belopp', 'Status', 'Datum', 'Skapad av'].map(h => (
-                <th key={h} className="pb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider pr-6">{h}</th>
+                <th key={h} className="pb-2 text-xs font-semibold text-gray-9000 uppercase tracking-wider pr-6">{h}</th>
               ))}
             </tr>
           </thead>
@@ -153,12 +153,12 @@ export function PurchaseOrdersView() {
             {filtered.map(o => {
               const meta = STATUS_META[o.status]
               return (
-                <tr key={o.id} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
+                <tr key={o.id} className="border-b border-white/[0.03] hover:bg-gray-50 transition-colors">
                   <td className="py-3 pr-6">
                     <span className="text-sm font-semibold text-gray-900">{o.supplierName}</span>
                   </td>
                   <td className="py-3 pr-6">
-                    <span className="text-xs text-gray-500">{o.description}</span>
+                    <span className="text-xs text-gray-9000">{o.description}</span>
                   </td>
                   <td className="py-3 pr-6">
                     <span className="text-sm font-mono text-gray-900">{formatAmount(o.amount, o.currency)}</span>
@@ -172,10 +172,10 @@ export function PurchaseOrdersView() {
                     </span>
                   </td>
                   <td className="py-3 pr-6">
-                    <span className="text-xs text-gray-500 font-mono">{o.date}</span>
+                    <span className="text-xs text-gray-9000 font-mono">{o.date}</span>
                   </td>
                   <td className="py-3">
-                    <span className="text-xs text-gray-500">{o.createdBy}</span>
+                    <span className="text-xs text-gray-9000">{o.createdBy}</span>
                   </td>
                 </tr>
               )
@@ -185,7 +185,7 @@ export function PurchaseOrdersView() {
         </div>{/* /overflow-x-auto */}
 
         {filtered.length === 0 && (
-          <div className="text-center py-16 text-gray-500 text-sm">Inga inköpsordrar matchar filtret</div>
+          <div className="text-center py-16 text-gray-9000 text-sm">Inga inköpsordrar matchar filtret</div>
         )}
 
         <div className="mt-4 text-xs text-gray-600 font-mono">{filtered.length} av {orders.length} ordrar</div>

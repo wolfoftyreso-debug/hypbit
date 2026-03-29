@@ -110,12 +110,12 @@ function KpiBar({ label, current, target }: { label: string; current: number; ta
   return (
     <div className="space-y-1">
       <div className="flex justify-between items-center">
-        <span className="text-xs text-gray-500">{label}</span>
+        <span className="text-xs text-gray-9000">{label}</span>
         <span className="text-xs font-mono" style={{ color }}>
           {current.toLocaleString()} / {target.toLocaleString()}
         </span>
       </div>
-      <div className="h-1 rounded-full bg-white/[0.05] overflow-hidden">
+      <div className="h-1 rounded-full bg-gray-50 overflow-hidden">
         <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: color }} />
       </div>
     </div>
@@ -166,7 +166,7 @@ function ActivityCard({ activity, selected, onClick }: {
         {/* Channel + time row */}
         <div className="flex items-center justify-between gap-1">
           <ChannelBadge channel={activity.channel} />
-          <span className="text-[9px] font-mono text-gray-500">{activity.time}</span>
+          <span className="text-[9px] font-mono text-gray-9000">{activity.time}</span>
         </div>
 
         {/* Region + KPI dot + alert dot */}
@@ -229,7 +229,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
         </div>
         <button
           onClick={onClose}
-          className="text-gray-500 hover:text-gray-600 transition-colors text-sm leading-none ml-2 flex-shrink-0"
+          className="text-gray-9000 hover:text-gray-600 transition-colors text-sm leading-none ml-2 flex-shrink-0"
         >
           ✕
         </button>
@@ -248,8 +248,8 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
             </span>
           </div>
           <div className="flex items-center justify-between text-xs mt-1">
-            <span className="text-gray-500">{activity.country}</span>
-            <span className="font-mono text-gray-500">{formatDate(activity.date)} · {activity.time}</span>
+            <span className="text-gray-9000">{activity.country}</span>
+            <span className="font-mono text-gray-9000">{formatDate(activity.date)} · {activity.time}</span>
           </div>
           <div className="flex items-center gap-1.5 mt-1">
             {valid ? (
@@ -283,20 +283,20 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
                     style={{ color: alert.severity === 'critical' ? '#EF4444' : '#F59E0B' }}>
                     ⚠ {alert.message}
                   </p>
-                  <p className="text-[9px] text-gray-500">{alert.action}</p>
+                  <p className="text-[9px] text-gray-9000">{alert.action}</p>
                   {alert.escalated && (
-                    <p className="text-[8px] font-bold text-red-400 uppercase tracking-wider">Escalated</p>
+                    <p className="text-[8px] font-bold text-red-700 uppercase tracking-wider">Escalated</p>
                   )}
                 </div>
               ))}
             </div>
           ) : valid && activity.status === 'ready' ? (
-            <div className="rounded-lg px-3 py-2 bg-white/[0.03] border border-gray-200">
+            <div className="rounded-lg px-3 py-2 bg-gray-50 border border-gray-200">
               <p className="text-xs" style={{ color: '#10B981' }}>✓ Ready to deploy</p>
-              <p className="text-[9px] text-gray-500 mt-0.5">All requirements met</p>
+              <p className="text-[9px] text-gray-9000 mt-0.5">All requirements met</p>
             </div>
           ) : (
-            <p className="text-xs text-gray-500">No actions required</p>
+            <p className="text-xs text-gray-9000">No actions required</p>
           )}
         </PanelSection>
 
@@ -319,9 +319,9 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
 
         {/* 4. ASSET */}
         <PanelSection label="Asset">
-          <div className="rounded-lg px-3 py-2 bg-white/[0.02] border border-gray-100 space-y-1.5">
+          <div className="rounded-lg px-3 py-2 bg-gray-50 border border-gray-100 space-y-1.5">
             <div className="flex items-center justify-between gap-2">
-              <span className="text-[9px] font-mono text-gray-500 uppercase">{activity.asset.type.replace('-', ' ')}</span>
+              <span className="text-[9px] font-mono text-gray-9000 uppercase">{activity.asset.type.replace('-', ' ')}</span>
               <span className="text-[8px] font-bold uppercase tracking-widest px-1 rounded"
                 style={{
                   background: activity.asset.ready ? '#10B98120' : '#EF444420',
@@ -336,7 +336,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
                 href={activity.asset.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[9px] font-mono text-gray-500 hover:text-gray-600 transition-colors truncate block"
+                className="text-[9px] font-mono text-gray-9000 hover:text-gray-600 transition-colors truncate block"
               >
                 {activity.asset.url}
               </a>
@@ -348,18 +348,18 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
         <PanelSection label="Budget">
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-gray-500">Monthly cost</span>
+              <span className="text-gray-9000">Monthly cost</span>
               <span className="text-gray-900 font-mono">${activity.budget.cost_monthly.toLocaleString()}</span>
             </div>
             <div className="flex items-center justify-between text-xs">
-              <span className="text-gray-500">Spend to date</span>
+              <span className="text-gray-9000">Spend to date</span>
               <span className="font-mono"
                 style={{ color: spendPct > 90 ? '#EF4444' : '#10B981' }}>
                 ${activity.budget.spend_to_date.toLocaleString()}
               </span>
             </div>
             <div className="space-y-1">
-              <div className="h-1 rounded-full bg-white/[0.05] overflow-hidden">
+              <div className="h-1 rounded-full bg-gray-50 overflow-hidden">
                 <div className="h-full rounded-full"
                   style={{
                     width: `${spendPct}%`,
@@ -388,41 +388,41 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
         <PanelSection label="Automation">
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <span className="text-gray-500">Trigger</span>
+              <span className="text-gray-9000">Trigger</span>
               <span className="font-mono text-gray-900 uppercase">{activity.automation.trigger}</span>
             </div>
             {activity.automation.schedule && (
               <div className="flex items-center justify-between text-xs">
-                <span className="text-gray-500">Schedule</span>
-                <span className="font-mono text-gray-500 text-[9px]">{activity.automation.schedule}</span>
+                <span className="text-gray-9000">Schedule</span>
+                <span className="font-mono text-gray-9000 text-[9px]">{activity.automation.schedule}</span>
               </div>
             )}
             <div className="flex items-center justify-between text-xs">
-              <span className="text-gray-500">Channel API</span>
+              <span className="text-gray-9000">Channel API</span>
               <ChannelBadge channel={activity.automation.channel_api} />
             </div>
             <div className="flex items-center justify-between text-xs">
-              <span className="text-gray-500">Retry count</span>
-              <span className="font-mono text-gray-500">{activity.automation.retry_count}</span>
+              <span className="text-gray-9000">Retry count</span>
+              <span className="font-mono text-gray-9000">{activity.automation.retry_count}</span>
             </div>
             {activity.automation.fallback_channel && (
               <div className="flex items-center justify-between text-xs">
-                <span className="text-gray-500">Fallback</span>
+                <span className="text-gray-9000">Fallback</span>
                 <ChannelBadge channel={activity.automation.fallback_channel} />
               </div>
             )}
             {activity.automation.last_run && (
               <div className="flex items-center justify-between text-xs">
-                <span className="text-gray-500">Last run</span>
-                <span className="font-mono text-gray-500 text-[9px]">
+                <span className="text-gray-9000">Last run</span>
+                <span className="font-mono text-gray-9000 text-[9px]">
                   {activity.automation.last_run.substring(0, 10)}
                 </span>
               </div>
             )}
             {activity.automation.next_run && (
               <div className="flex items-center justify-between text-xs">
-                <span className="text-gray-500">Next run</span>
-                <span className="font-mono text-gray-500 text-[9px]">
+                <span className="text-gray-9000">Next run</span>
+                <span className="font-mono text-gray-9000 text-[9px]">
                   {activity.automation.next_run.substring(0, 10)}
                 </span>
               </div>
@@ -435,10 +435,10 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
           <div className="space-y-2">
             {entity && (
               <div className="flex items-center justify-between text-xs">
-                <span className="text-gray-500">Entity</span>
+                <span className="text-gray-9000">Entity</span>
                 <button
                   onClick={() => navigate('/entities/' + entity.id)}
-                  className="font-mono text-gray-500 hover:text-gray-900 transition-colors flex items-center gap-1"
+                  className="font-mono text-gray-9000 hover:text-gray-900 transition-colors flex items-center gap-1"
                 >
                   {entity.shortName} →
                 </button>
@@ -446,10 +446,10 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
             )}
             {site && (
               <div className="flex items-center justify-between text-xs">
-                <span className="text-gray-500">Market site</span>
+                <span className="text-gray-9000">Market site</span>
                 <button
                   onClick={() => navigate('/markets')}
-                  className="font-mono text-gray-500 hover:text-gray-900 transition-colors flex items-center gap-1"
+                  className="font-mono text-gray-9000 hover:text-gray-900 transition-colors flex items-center gap-1"
                 >
                   {site.name} →
                 </button>
@@ -463,7 +463,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
                 </div>
                 <div>
                   <p className="text-xs text-gray-900">{role.person}</p>
-                  <p className="text-[9px] text-gray-500">{role.title}</p>
+                  <p className="text-[9px] text-gray-9000">{role.title}</p>
                 </div>
               </div>
             )}
@@ -472,7 +472,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
 
         {/* 8. DESCRIPTION */}
         <PanelSection label="Description">
-          <p className="text-xs text-gray-500 leading-relaxed">{activity.description}</p>
+          <p className="text-xs text-gray-9000 leading-relaxed">{activity.description}</p>
         </PanelSection>
 
       </div>
@@ -551,7 +551,7 @@ export function CampaignOS() {
   const TODAY = '2026-03-25'
 
   const selectDropdownClass =
-    'text-xs bg-white border border-gray-200 rounded-lg px-2.5 py-1 font-mono cursor-pointer focus:outline-none appearance-none text-gray-500'
+    'text-xs bg-white border border-gray-200 rounded-lg px-2.5 py-1 font-mono cursor-pointer focus:outline-none appearance-none text-gray-9000'
 
   return (
     <div className="flex flex-col h-full" style={{ background: '#F9FAFB' }}>
@@ -612,7 +612,7 @@ export function CampaignOS() {
         {/* Left: title + period */}
         <div className="flex items-center gap-3">
           <span className="text-xs font-bold text-gray-900 tracking-wide">Campaign OS</span>
-          <span className="text-[9px] font-mono text-gray-600 px-2 py-0.5 rounded border border-gray-200 bg-white/[0.02]">
+          <span className="text-[9px] font-mono text-gray-600 px-2 py-0.5 rounded border border-gray-200 bg-gray-50">
             Q2 2026
           </span>
         </div>
@@ -640,7 +640,7 @@ export function CampaignOS() {
           </select>
 
           <div className="flex items-center gap-1.5 ml-2 pl-2 border-l border-gray-200">
-            <span className="text-[9px] font-mono text-gray-500">{filtered.length} activities</span>
+            <span className="text-[9px] font-mono text-gray-9000">{filtered.length} activities</span>
             {deployedCount > 0 && (
               <span className="text-[8px] font-bold px-1.5 py-0.5 rounded-full"
                 style={{ background: '#10B98120', color: '#10B981' }}>

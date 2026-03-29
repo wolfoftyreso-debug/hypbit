@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { JURISDICTION_REQUIREMENTS, COMPANIES, FilingStatus, CompanyId } from './data'
 
 const STATUS_STYLES: Record<FilingStatus, string> = {
-  'ej inlämnad': 'bg-red-500/15 text-red-400 border-red-500/30',
-  'inlämnad':    'bg-yellow-500/15 text-yellow-400 border-yellow-500/30',
-  'betald':      'bg-green-500/15 text-green-400 border-green-500/30',
+  'ej inlämnad': 'bg-red-500/15 text-red-700 border-red-500/30',
+  'inlämnad':    'bg-yellow-500/15 text-yellow-700 border-yellow-500/30',
+  'betald':      'bg-green-500/15 text-green-700 border-green-500/30',
 }
 
 const FLAG: Record<string, string> = {
@@ -22,10 +22,10 @@ function daysUntil(date: string) {
 
 function DeadlineBadge({ date }: { date: string }) {
   const days = daysUntil(date)
-  if (days < 0)  return <span className="text-xs text-red-400 font-mono">FÖRFALLEN ({Math.abs(days)}d)</span>
-  if (days <= 14) return <span className="text-xs text-red-400 font-semibold font-mono animate-pulse">{days}d</span>
-  if (days <= 30) return <span className="text-xs text-yellow-400 font-mono">{days}d</span>
-  return <span className="text-xs text-gray-500 font-mono">{new Date(date).toLocaleDateString('sv-SE', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+  if (days < 0)  return <span className="text-xs text-red-700 font-mono">FÖRFALLEN ({Math.abs(days)}d)</span>
+  if (days <= 14) return <span className="text-xs text-red-700 font-semibold font-mono animate-pulse">{days}d</span>
+  if (days <= 30) return <span className="text-xs text-yellow-700 font-mono">{days}d</span>
+  return <span className="text-xs text-gray-9000 font-mono">{new Date(date).toLocaleDateString('sv-SE', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
 }
 
 export function JurisdictionView() {
@@ -44,8 +44,8 @@ export function JurisdictionView() {
             onClick={() => setSelectedCompany('all')}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
               selectedCompany === 'all'
-                ? 'bg-brand-accent/15 text-brand-accent border-brand-accent/30'
-                : 'bg-white/[0.02] text-gray-500 border-gray-200 hover:text-gray-900'
+                ? 'bg-purple-50 text-purple-700 border-purple-200'
+                : 'bg-gray-50 text-gray-9000 border-gray-200 hover:text-gray-900'
             }`}
           >
             Alla bolag
@@ -57,7 +57,7 @@ export function JurisdictionView() {
               className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                 selectedCompany === c.id
                   ? 'border opacity-100'
-                  : 'bg-white/[0.02] text-gray-500 border-gray-200 hover:text-gray-900'
+                  : 'bg-gray-50 text-gray-9000 border-gray-200 hover:text-gray-900'
               }`}
               style={selectedCompany === c.id ? { background: c.color + '20', color: c.color, borderColor: c.color + '50' } : {}}
             >
@@ -84,7 +84,7 @@ export function JurisdictionView() {
                       <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-red-500 text-gray-900">{urgentCount} brådskande</span>
                     )}
                   </div>
-                  <div className="text-xs text-gray-500">{company.jurisdiction} · {company.orgNr}</div>
+                  <div className="text-xs text-gray-9000">{company.jurisdiction} · {company.orgNr}</div>
                 </div>
                 <div className="flex gap-2 text-xs">
                   {(['ej inlämnad', 'inlämnad', 'betald'] as FilingStatus[]).map(s => {
@@ -104,25 +104,25 @@ export function JurisdictionView() {
                 <table className="w-full text-xs">
                   <thead>
                     <tr className="border-b border-gray-100 bg-white/[0.01]">
-                      <th className="text-left px-4 py-2 text-gray-500 font-medium">Myndighet</th>
-                      <th className="text-left px-4 py-2 text-gray-500 font-medium">Krav</th>
-                      <th className="text-left px-4 py-2 text-gray-500 font-medium">Deadline</th>
-                      <th className="text-left px-4 py-2 text-gray-500 font-medium">Belopp</th>
-                      <th className="text-left px-4 py-2 text-gray-500 font-medium">Status</th>
+                      <th className="text-left px-4 py-2 text-gray-9000 font-medium">Myndighet</th>
+                      <th className="text-left px-4 py-2 text-gray-9000 font-medium">Krav</th>
+                      <th className="text-left px-4 py-2 text-gray-9000 font-medium">Deadline</th>
+                      <th className="text-left px-4 py-2 text-gray-9000 font-medium">Belopp</th>
+                      <th className="text-left px-4 py-2 text-gray-9000 font-medium">Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {reqs.map(req => (
-                      <tr key={req.id} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
-                        <td className="px-4 py-2.5 text-gray-500 font-mono text-xs">{req.authority}</td>
+                      <tr key={req.id} className="border-b border-white/[0.03] hover:bg-gray-50 transition-colors">
+                        <td className="px-4 py-2.5 text-gray-9000 font-mono text-xs">{req.authority}</td>
                         <td className="px-4 py-2.5">
                           <div className="text-gray-800">{req.requirement}</div>
-                          {req.notes && <div className="text-xs text-gray-500 mt-0.5">{req.notes}</div>}
+                          {req.notes && <div className="text-xs text-gray-9000 mt-0.5">{req.notes}</div>}
                         </td>
                         <td className="px-4 py-2.5 whitespace-nowrap">
                           <DeadlineBadge date={req.deadline} />
                         </td>
-                        <td className="px-4 py-2.5 text-gray-500 whitespace-nowrap">{req.amount || '—'}</td>
+                        <td className="px-4 py-2.5 text-gray-9000 whitespace-nowrap">{req.amount || '—'}</td>
                         <td className="px-4 py-2.5">
                           <span className={`text-xs font-medium px-2 py-0.5 rounded border ${STATUS_STYLES[req.status]}`}>
                             {req.status}

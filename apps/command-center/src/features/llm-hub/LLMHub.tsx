@@ -40,7 +40,7 @@ function apiUrl(path: string): string {
 function ProviderBadge({ provider, fallbackUsed }: { provider: LLMResult['provider']; fallbackUsed: boolean }) {
   if (provider === 'error') {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-red-500/20 text-red-400 font-mono">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-red-500/20 text-red-700 font-mono">
         ⚠️ Fel
       </span>
     )
@@ -48,7 +48,7 @@ function ProviderBadge({ provider, fallbackUsed }: { provider: LLMResult['provid
 
   if (fallbackUsed) {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-amber-500/20 text-amber-400 font-mono">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-amber-500/20 text-amber-700 font-mono">
         ⚠️ Fallback · {provider === 'openai' ? 'OpenAI' : 'Anthropic'}
       </span>
     )
@@ -56,14 +56,14 @@ function ProviderBadge({ provider, fallbackUsed }: { provider: LLMResult['provid
 
   if (provider === 'openai') {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-emerald-500/20 text-emerald-400 font-mono">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-emerald-500/20 text-emerald-700 font-mono">
         ✦ OpenAI
       </span>
     )
   }
 
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-violet-500/20 text-violet-400 font-mono">
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-violet-500/20 text-violet-700 font-mono">
       ◆ Anthropic
     </span>
   )
@@ -73,18 +73,18 @@ function ProviderBadge({ provider, fallbackUsed }: { provider: LLMResult['provid
 
 function StatusPanel({ status, loading }: { status: LLMStatus | null; loading: boolean }) {
   return (
-    <div className="flex flex-wrap items-center gap-3 px-4 py-2 bg-white/[0.03] border border-gray-200 rounded-xl text-xs font-mono">
+    <div className="flex flex-wrap items-center gap-3 px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-mono">
       <span className="text-gray-900/40">PROVIDERS</span>
       {loading && <span className="text-gray-900/30 animate-pulse">Laddar...</span>}
-      {!loading && !status && <span className="text-red-400/70">Kunde inte hämta status</span>}
+      {!loading && !status && <span className="text-red-700/70">Kunde inte hämta status</span>}
       {!loading && status && status.providers.map(p => (
-        <span key={p.name} className={`flex items-center gap-1.5 ${p.available ? 'text-emerald-400' : 'text-gray-900/30'}`}>
+        <span key={p.name} className={`flex items-center gap-1.5 ${p.available ? 'text-emerald-700' : 'text-gray-900/30'}`}>
           {p.available ? '✅' : '❌'}
           <span className="capitalize">{p.name === 'openai' ? 'OpenAI' : 'Anthropic'}</span>
         </span>
       ))}
       {!loading && status && (
-        <span className={`ml-auto ${status.ok ? 'text-emerald-400/60' : 'text-red-400/60'}`}>
+        <span className={`ml-auto ${status.ok ? 'text-emerald-700/60' : 'text-red-700/60'}`}>
           {status.message}
         </span>
       )}
@@ -172,7 +172,7 @@ function ChatTab() {
                     ? 'bg-blue-600 text-gray-900 rounded-br-sm'
                     : msg.provider === 'error'
                     ? 'bg-red-500/10 border border-red-500/20 text-red-300 rounded-bl-sm'
-                    : 'bg-white/[0.07] text-gray-900/90 rounded-bl-sm'
+                    : 'bg-gray-100 text-gray-900/90 rounded-bl-sm'
                 }`}
               >
                 {msg.content}
@@ -185,7 +185,7 @@ function ChatTab() {
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="bg-white/[0.07] px-4 py-3 rounded-2xl rounded-bl-sm">
+            <div className="bg-gray-100 px-4 py-3 rounded-2xl rounded-bl-sm">
               <span className="inline-flex gap-1">
                 <span className="w-2 h-2 bg-white/30 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                 <span className="w-2 h-2 bg-white/30 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -210,7 +210,7 @@ function ChatTab() {
           }}
           placeholder="Skriv ett meddelande... (Enter för att skicka, Shift+Enter för ny rad)"
           rows={2}
-          className="flex-1 bg-white/[0.05] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-900/20 focus:outline-none focus:border-blue-500 focus:bg-white/[0.08] resize-none"
+          className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-900/20 focus:outline-none focus:border-blue-500 focus:bg-white/[0.08] resize-none"
           disabled={loading}
         />
         <button
@@ -286,7 +286,7 @@ function PlaygroundTab() {
           onChange={e => setSystemPrompt(e.target.value)}
           placeholder="Du är en hjälpsam assistent..."
           rows={3}
-          className="w-full bg-white/[0.05] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-900/20 focus:outline-none focus:border-blue-500 focus:bg-white/[0.08] resize-none font-mono"
+          className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-900/20 focus:outline-none focus:border-blue-500 focus:bg-white/[0.08] resize-none font-mono"
         />
       </div>
 
@@ -297,7 +297,7 @@ function PlaygroundTab() {
           onChange={e => setUserPrompt(e.target.value)}
           placeholder="Skriv din prompt här..."
           rows={4}
-          className="w-full bg-white/[0.05] border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-900/20 focus:outline-none focus:border-blue-500 focus:bg-white/[0.08] resize-none"
+          className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder:text-gray-900/20 focus:outline-none focus:border-blue-500 focus:bg-white/[0.08] resize-none"
         />
       </div>
 
@@ -318,7 +318,7 @@ function PlaygroundTab() {
               <span className="text-gray-900/30 font-mono">{latencyMs} ms</span>
             )}
             {result.fallbackUsed && result.provider !== 'error' && (
-              <span className="text-amber-400/70">Fallback användes</span>
+              <span className="text-amber-700/70">Fallback användes</span>
             )}
           </div>
 
@@ -326,7 +326,7 @@ function PlaygroundTab() {
           <div className={`p-4 rounded-xl border text-sm whitespace-pre-wrap leading-relaxed ${
             result.provider === 'error'
               ? 'bg-red-500/10 border-red-500/20 text-red-300'
-              : 'bg-white/[0.04] border-gray-200 text-gray-900/90'
+              : 'bg-gray-50 border-gray-200 text-gray-900/90'
           }`}>
             {result.provider === 'error'
               ? (result.userMessage ?? 'Systemet är tillfälligt otillgängligt.')
@@ -395,7 +395,7 @@ export function LLMHub() {
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeTab === tab.id
                     ? 'bg-blue-600 text-gray-900'
-                    : 'text-gray-900/60 hover:text-gray-900 hover:bg-white/10'
+                    : 'text-gray-900/60 hover:text-gray-900 hover:bg-gray-100'
                 }`}
               >
                 <span>{tab.icon}</span>

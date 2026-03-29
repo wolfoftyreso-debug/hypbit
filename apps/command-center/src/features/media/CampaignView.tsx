@@ -10,11 +10,11 @@ const OBJECTIVE_LABELS: Record<Campaign['objective'], string> = {
 }
 
 const STATUS_COLORS: Record<Campaign['status'], string> = {
-  draft: 'bg-white/[0.06] text-gray-500 border border-gray-200',
-  active: 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/25',
-  paused: 'bg-amber-500/15 text-amber-400 border border-amber-500/25',
-  completed: 'bg-blue-500/15 text-blue-400 border border-blue-500/25',
-  archived: 'bg-white/[0.04] text-gray-500 border border-gray-200',
+  draft: 'bg-gray-50 text-gray-9000 border border-gray-200',
+  active: 'bg-emerald-500/15 text-emerald-700 border border-emerald-500/25',
+  paused: 'bg-amber-500/15 text-amber-700 border border-amber-500/25',
+  completed: 'bg-blue-500/15 text-blue-700 border border-blue-500/25',
+  archived: 'bg-gray-50 text-gray-9000 border border-gray-200',
 }
 
 const STATUS_DOT: Record<Campaign['status'], string> = {
@@ -43,15 +43,15 @@ function NewCampaignModal({ onClose }: { onClose: () => void }) {
   })
 
   return (
-    <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-white/70 z-50 flex items-center justify-center p-4">
       <div className="bg-white border border-gray-200 rounded-xl w-full max-w-lg">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <h2 className="text-gray-900 font-semibold">Ny kampanj</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-900 text-lg leading-none">×</button>
+          <button onClick={onClose} className="text-gray-9000 hover:text-gray-900 text-lg leading-none">×</button>
         </div>
         <div className="px-6 py-5 space-y-4">
           <div>
-            <label className="block text-xs text-gray-500 mb-1">Kampanjnamn</label>
+            <label className="block text-xs text-gray-9000 mb-1">Kampanjnamn</label>
             <input
               value={form.name}
               onChange={e => setForm({ ...form, name: e.target.value })}
@@ -61,7 +61,7 @@ function NewCampaignModal({ onClose }: { onClose: () => void }) {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Mål</label>
+              <label className="block text-xs text-gray-9000 mb-1">Mål</label>
               <select
                 value={form.objective}
                 onChange={e => setForm({ ...form, objective: e.target.value as Campaign['objective'] })}
@@ -74,7 +74,7 @@ function NewCampaignModal({ onClose }: { onClose: () => void }) {
               </select>
             </div>
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Geografisk räckvidd</label>
+              <label className="block text-xs text-gray-9000 mb-1">Geografisk räckvidd</label>
               <select
                 value={form.geo_scope}
                 onChange={e => setForm({ ...form, geo_scope: e.target.value as Campaign['geo_scope'] })}
@@ -88,7 +88,7 @@ function NewCampaignModal({ onClose }: { onClose: () => void }) {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Budget (totalt)</label>
+              <label className="block text-xs text-gray-9000 mb-1">Budget (totalt)</label>
               <input
                 type="number"
                 value={form.budget_total}
@@ -98,7 +98,7 @@ function NewCampaignModal({ onClose }: { onClose: () => void }) {
               />
             </div>
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Valuta</label>
+              <label className="block text-xs text-gray-9000 mb-1">Valuta</label>
               <select
                 value={form.currency}
                 onChange={e => setForm({ ...form, currency: e.target.value })}
@@ -113,7 +113,7 @@ function NewCampaignModal({ onClose }: { onClose: () => void }) {
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Startdatum</label>
+              <label className="block text-xs text-gray-9000 mb-1">Startdatum</label>
               <input
                 type="date"
                 value={form.start_date}
@@ -122,7 +122,7 @@ function NewCampaignModal({ onClose }: { onClose: () => void }) {
               />
             </div>
             <div>
-              <label className="block text-xs text-gray-500 mb-1">Slutdatum</label>
+              <label className="block text-xs text-gray-9000 mb-1">Slutdatum</label>
               <input
                 type="date"
                 value={form.end_date}
@@ -137,10 +137,10 @@ function NewCampaignModal({ onClose }: { onClose: () => void }) {
           </div>
         </div>
         <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3">
-          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-gray-900 transition-colors">Avbryt</button>
+          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-9000 hover:text-gray-900 transition-colors">Avbryt</button>
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm bg-brand-accent/20 text-brand-accent border border-brand-accent/30 rounded-lg hover:bg-brand-accent/30 transition-colors"
+            className="px-4 py-2 text-sm bg-brand-accent/20 text-purple-700 border border-purple-200 rounded-lg hover:bg-brand-accent/30 transition-colors"
           >
             Spara kampanj
           </button>
@@ -156,7 +156,7 @@ function CampaignDetail({ campaign, onBack }: { campaign: Campaign; onBack: () =
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <button onClick={onBack} className="text-gray-500 hover:text-gray-900 text-sm transition-colors">← Tillbaka</button>
+        <button onClick={onBack} className="text-gray-9000 hover:text-gray-900 text-sm transition-colors">← Tillbaka</button>
         <span className="text-gray-600">/</span>
         <span className="text-gray-900 font-medium">{campaign.name}</span>
         <span className={`text-xs px-2 py-0.5 rounded-full font-mono ${STATUS_COLORS[campaign.status]}`}>
@@ -172,7 +172,7 @@ function CampaignDetail({ campaign, onBack }: { campaign: Campaign; onBack: () =
           { label: 'Mål', value: OBJECTIVE_LABELS[campaign.objective] },
         ].map(stat => (
           <div key={stat.label} className="bg-white border border-gray-200 rounded-xl p-4">
-            <div className="text-xs text-gray-500 mb-1">{stat.label}</div>
+            <div className="text-xs text-gray-9000 mb-1">{stat.label}</div>
             <div className="text-xl font-mono text-gray-900">{stat.value}</div>
           </div>
         ))}
@@ -181,7 +181,7 @@ function CampaignDetail({ campaign, onBack }: { campaign: Campaign; onBack: () =
       <div className="bg-white border border-gray-200 rounded-xl p-5">
         <h3 className="text-sm font-semibold text-gray-900 mb-4">Kanal-allokering</h3>
         {allocations.length === 0 ? (
-          <p className="text-sm text-gray-500">Inga kanalallokationer konfigurerade.</p>
+          <p className="text-sm text-gray-9000">Inga kanalallokationer konfigurerade.</p>
         ) : (
           <div className="space-y-2">
             {allocations.map(alloc => {
@@ -189,7 +189,7 @@ function CampaignDetail({ campaign, onBack }: { campaign: Campaign; onBack: () =
               return (
                 <div key={alloc.id} className="flex items-center justify-between py-2 border-b border-white/5 last:border-0">
                   <span className="text-sm text-gray-600">{ch?.provider ?? alloc.channel_id}</span>
-                  <div className="flex items-center gap-4 text-xs text-gray-500">
+                  <div className="flex items-center gap-4 text-xs text-gray-9000">
                     <span>Budget: 0 {campaign.currency}/dag</span>
                     <span>Spend: 0</span>
                     <span>Score: —</span>
@@ -221,11 +221,11 @@ export function CampaignView() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-gray-900 font-semibold">Kampanjer</h2>
-          <p className="text-xs text-gray-500 mt-0.5">{MOCK_CAMPAIGNS.length} kampanjer totalt</p>
+          <p className="text-xs text-gray-9000 mt-0.5">{MOCK_CAMPAIGNS.length} kampanjer totalt</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="px-3 py-1.5 text-sm bg-brand-accent/20 text-brand-accent border border-brand-accent/30 rounded-lg hover:bg-brand-accent/30 transition-colors"
+          className="px-3 py-1.5 text-sm bg-brand-accent/20 text-purple-700 border border-purple-200 rounded-lg hover:bg-brand-accent/30 transition-colors"
         >
           + Ny kampanj
         </button>
@@ -249,8 +249,8 @@ export function CampaignView() {
                   </span>
                 </div>
                 {/* Metadata */}
-                <div className="flex items-center gap-2 text-xs text-gray-500 flex-wrap">
-                  <span className="px-1.5 py-0.5 rounded bg-white/[0.04] text-gray-500">{OBJECTIVE_LABELS[campaign.objective]}</span>
+                <div className="flex items-center gap-2 text-xs text-gray-9000 flex-wrap">
+                  <span className="px-1.5 py-0.5 rounded bg-gray-50 text-gray-9000">{OBJECTIVE_LABELS[campaign.objective]}</span>
                   <span>·</span>
                   <span>{GEO_SCOPE_LABELS[campaign.geo_scope]}</span>
                   <span>·</span>
@@ -260,9 +260,9 @@ export function CampaignView() {
               {/* Budget */}
               <div className="text-right flex-shrink-0">
                 <div className="text-gray-900 font-semibold text-sm font-mono">
-                  {campaign.budget_total.toLocaleString()} <span className="text-gray-500 text-xs font-sans">{campaign.currency}</span>
+                  {campaign.budget_total.toLocaleString()} <span className="text-gray-9000 text-xs font-sans">{campaign.currency}</span>
                 </div>
-                <div className="text-xs text-gray-500 mt-0.5">0 spenderat</div>
+                <div className="text-xs text-gray-9000 mt-0.5">0 spenderat</div>
               </div>
             </div>
           </div>

@@ -218,7 +218,7 @@ export function BerntWidget() {
             </div>
             <button
               onClick={() => setShowSettings(s => !s)}
-              className="text-gray-500 hover:text-gray-600 transition-colors text-sm"
+              className="text-gray-9000 hover:text-gray-600 transition-colors text-sm"
               title={t('nav.settings')}
             >⚙️</button>
           </div>
@@ -226,7 +226,7 @@ export function BerntWidget() {
           {/* Settings panel */}
           {showSettings && (
             <div className="px-4 py-3 flex-shrink-0 border-b border-surface-border animate-fade-in">
-              <p className="text-xs text-gray-500 font-mono mb-1.5">{t('bernt.tunnel_url_label')}</p>
+              <p className="text-xs text-gray-9000 font-mono mb-1.5">{t('bernt.tunnel_url_label')}</p>
               <div className="flex gap-2">
                 <input
                   type="text"

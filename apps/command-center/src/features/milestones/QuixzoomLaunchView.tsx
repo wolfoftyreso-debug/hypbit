@@ -31,7 +31,7 @@ function GanttBar({ startDate, endDate, color, status }: {
   return (
     <div className="relative h-6 w-full">
       {/* Track */}
-      <div className="absolute inset-y-2 inset-x-0 bg-white/[0.04] rounded-full" />
+      <div className="absolute inset-y-2 inset-x-0 bg-gray-50 rounded-full" />
       {/* Bar */}
       <div
         className="absolute inset-y-1 rounded-full transition-all"
@@ -78,7 +78,7 @@ export function QuixzoomLaunchView() {
           <span className="text-4xl">📷</span>
           <div className="flex-1">
             <h2 className="text-[18px] font-bold text-gray-900">quiXzoom — Sverige-launch</h2>
-            <p className="text-xs text-gray-500 mt-0.5">Mitten juni 2026 · Crowdsourcad kamerainfrastruktur</p>
+            <p className="text-xs text-gray-9000 mt-0.5">Mitten juni 2026 · Crowdsourcad kamerainfrastruktur</p>
             <div className="flex items-center gap-3 mt-2">
               <div className="flex-1 bg-white/[0.08] rounded-full h-2">
                 <div
@@ -90,15 +90,15 @@ export function QuixzoomLaunchView() {
             </div>
           </div>
           <div className="text-right flex-shrink-0">
-            <p className="text-4xl font-bold leading-none text-blue-400">{daysLeft}</p>
-            <p className="text-xs text-gray-500 font-mono mt-1">dagar kvar</p>
+            <p className="text-4xl font-bold leading-none text-blue-700">{daysLeft}</p>
+            <p className="text-xs text-gray-9000 font-mono mt-1">dagar kvar</p>
           </div>
         </div>
       </div>
 
       {/* Milestone list */}
       <div>
-        <h3 className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-3">Milstolpar</h3>
+        <h3 className="text-xs text-gray-9000 font-mono uppercase tracking-wider mb-3">Milstolpar</h3>
         <div className="rounded-xl border border-gray-200 bg-white overflow-hidden divide-y divide-gray-100">
           {QUIXZOOM_MILESTONES.map(m => {
             const daysToEnd = getDaysUntil(m.endDate)
@@ -108,10 +108,10 @@ export function QuixzoomLaunchView() {
                   {m.status === 'done' ? '✅' : m.status === 'in-progress' ? '🔄' : '⏳'}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <p className={`text-sm font-medium ${m.status === 'done' ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
+                  <p className={`text-sm font-medium ${m.status === 'done' ? 'text-gray-9000 line-through' : 'text-gray-900'}`}>
                     {m.title}
                   </p>
-                  <p className="text-[9px] text-gray-500 font-mono mt-0.5">👤 {m.owner}</p>
+                  <p className="text-[9px] text-gray-9000 font-mono mt-0.5">👤 {m.owner}</p>
                 </div>
                 <div className="text-right flex-shrink-0 space-y-1">
                   <StatusBadge status={m.status} />
@@ -130,7 +130,7 @@ export function QuixzoomLaunchView() {
 
       {/* Gantt timeline */}
       <div>
-        <h3 className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-3">
+        <h3 className="text-xs text-gray-9000 font-mono uppercase tracking-wider mb-3">
           Tidslinje — Apr → Jun 2026
         </h3>
         <div className="rounded-xl border border-gray-200 bg-white p-4">
@@ -138,7 +138,7 @@ export function QuixzoomLaunchView() {
           <div className="flex mb-3">
             {MONTHS.map((month, i) => (
               <div key={month} className="flex-1 text-center">
-                <span className="text-[9px] font-mono text-gray-500">{month}</span>
+                <span className="text-[9px] font-mono text-gray-9000">{month}</span>
                 {i < MONTHS.length - 1 && (
                   <div className="absolute h-full border-l border-gray-200" />
                 )}
@@ -153,7 +153,7 @@ export function QuixzoomLaunchView() {
                 className="absolute top-0 bottom-0 w-px bg-yellow-400/50 z-10"
                 style={{ left: `${todayPct}%` }}
               >
-                <div className="absolute -top-4 left-1 text-[8px] font-mono text-yellow-400 whitespace-nowrap">IDAG</div>
+                <div className="absolute -top-4 left-1 text-[8px] font-mono text-yellow-700 whitespace-nowrap">IDAG</div>
               </div>
             )}
 
@@ -163,7 +163,7 @@ export function QuixzoomLaunchView() {
                 const color = getStatusColor(m.status)
                 return (
                   <div key={m.id} className="flex items-center gap-3">
-                    <span className="text-xs text-gray-500 w-40 flex-shrink-0 truncate">{m.title}</span>
+                    <span className="text-xs text-gray-9000 w-40 flex-shrink-0 truncate">{m.title}</span>
                     <div className="flex-1">
                       <GanttBar
                         startDate={m.startDate}
@@ -187,7 +187,7 @@ export function QuixzoomLaunchView() {
             ].map(({ color, label }) => (
               <div key={label} className="flex items-center gap-1.5">
                 <div className="h-2 w-6 rounded-full" style={{ background: color }} />
-                <span className="text-[9px] text-gray-500 font-mono">{label}</span>
+                <span className="text-[9px] text-gray-9000 font-mono">{label}</span>
               </div>
             ))}
           </div>

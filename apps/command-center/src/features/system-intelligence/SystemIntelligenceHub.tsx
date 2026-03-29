@@ -391,7 +391,7 @@ function EntityCard({ entity }: { entity: EntityHealth }) {
               {entity.code}
             </span>
           </div>
-          <div className="text-xs text-gray-500 mt-0.5">{entity.jurisdiction}</div>
+          <div className="text-xs text-gray-9000 mt-0.5">{entity.jurisdiction}</div>
           <div className="flex items-center gap-1.5 mt-1">
             <div
               className="w-2 h-2 rounded-full"
@@ -400,8 +400,8 @@ function EntityCard({ entity }: { entity: EntityHealth }) {
             <span className="text-xs" style={{ color: statusColors[entity.status] }}>
               {entity.status === 'green' ? 'Hälsosam' : entity.status === 'yellow' ? 'Varning' : 'Kritisk'}
             </span>
-            {entity.trend === 'up' && <span className="text-green-400"><TrendingUpIcon /></span>}
-            {entity.trend === 'down' && <span className="text-red-400"><TrendingDownIcon /></span>}
+            {entity.trend === 'up' && <span className="text-green-700"><TrendingUpIcon /></span>}
+            {entity.trend === 'down' && <span className="text-red-700"><TrendingDownIcon /></span>}
           </div>
         </div>
       </div>
@@ -410,12 +410,12 @@ function EntityCard({ entity }: { entity: EntityHealth }) {
       <div className="mt-3 flex flex-col gap-1">
         {entity.signals.slice(0, 2).map(s => (
           <div key={s} className="flex items-start gap-1.5 text-xs text-gray-600">
-            <span className="text-green-400 flex-shrink-0 mt-0.5"><CheckIcon /></span>{s}
+            <span className="text-green-700 flex-shrink-0 mt-0.5"><CheckIcon /></span>{s}
           </div>
         ))}
         {entity.stressors.slice(0, 2).map(s => (
-          <div key={s} className="flex items-start gap-1.5 text-xs text-gray-500">
-            <span className="text-red-400 flex-shrink-0 mt-0.5"><AlertIcon /></span>{s}
+          <div key={s} className="flex items-start gap-1.5 text-xs text-gray-9000">
+            <span className="text-red-700 flex-shrink-0 mt-0.5"><AlertIcon /></span>{s}
           </div>
         ))}
       </div>
@@ -453,7 +453,7 @@ function RiskMatrix() {
             key={risk.id}
             onClick={() => setSelectedRisk(selectedRisk === risk.id ? null : risk.id)}
             className={`text-left rounded-xl p-3 border transition-all ${
-              selectedRisk === risk.id ? 'border-white/30 bg-white/10' : 'border-gray-200 bg-white/5 hover:bg-white/8'
+              selectedRisk === risk.id ? 'border-white/30 bg-gray-100' : 'border-gray-200 bg-gray-50 hover:bg-white/8'
             }`}
           >
             <div className="flex items-center gap-2 mb-1">
@@ -463,27 +463,27 @@ function RiskMatrix() {
               >
                 {levelLabels[risk.level]}
               </div>
-              <span className="text-xs text-gray-500">{risk.category}</span>
+              <span className="text-xs text-gray-9000">{risk.category}</span>
               <span className="ml-auto text-xs font-bold text-gray-900">{risk.riskScore}</span>
             </div>
             <div className="text-sm font-medium text-gray-900">{risk.title}</div>
-            <div className="text-xs text-gray-500 mt-0.5 truncate">{risk.owner}</div>
+            <div className="text-xs text-gray-9000 mt-0.5 truncate">{risk.owner}</div>
 
             {/* P×I bars */}
             <div className="flex gap-3 mt-2">
               <div className="flex items-center gap-1.5 text-xs">
-                <span className="text-gray-500">P</span>
-                <div className="w-20 bg-white/5 rounded-full h-1.5">
+                <span className="text-gray-9000">P</span>
+                <div className="w-20 bg-gray-50 rounded-full h-1.5">
                   <div className="h-full rounded-full bg-amber-500" style={{ width: `${risk.probability * 10}%` }} />
                 </div>
-                <span className="text-amber-400">{risk.probability}</span>
+                <span className="text-amber-700">{risk.probability}</span>
               </div>
               <div className="flex items-center gap-1.5 text-xs">
-                <span className="text-gray-500">I</span>
-                <div className="w-20 bg-white/5 rounded-full h-1.5">
+                <span className="text-gray-9000">I</span>
+                <div className="w-20 bg-gray-50 rounded-full h-1.5">
                   <div className="h-full rounded-full bg-red-500" style={{ width: `${risk.impact * 10}%` }} />
                 </div>
-                <span className="text-red-400">{risk.impact}</span>
+                <span className="text-red-700">{risk.impact}</span>
               </div>
             </div>
           </button>
@@ -493,7 +493,7 @@ function RiskMatrix() {
       {/* Right: detail */}
       <div className="flex-1">
         {selected ? (
-          <div className="rounded-xl border border-gray-200 bg-white/5 p-5 flex flex-col gap-4">
+          <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 flex flex-col gap-4">
             <div className="flex items-start gap-3">
               <div
                 className="text-xs font-bold px-2 py-1 rounded uppercase"
@@ -503,22 +503,22 @@ function RiskMatrix() {
               </div>
               <div>
                 <h3 className="text-lg font-bold text-gray-900">{selected.title}</h3>
-                <div className="text-xs text-gray-500">{selected.category} · Owner: {selected.owner}</div>
+                <div className="text-xs text-gray-9000">{selected.category} · Owner: {selected.owner}</div>
               </div>
             </div>
             <p className="text-sm text-gray-600 leading-relaxed">{selected.description}</p>
             <div className="flex gap-4">
               <div className="text-center">
-                <div className="text-2xl font-bold text-amber-400">{selected.probability}</div>
-                <div className="text-xs text-gray-500">Sannolikhet</div>
+                <div className="text-2xl font-bold text-amber-700">{selected.probability}</div>
+                <div className="text-xs text-gray-9000">Sannolikhet</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-red-400">{selected.impact}</div>
-                <div className="text-xs text-gray-500">Impact</div>
+                <div className="text-2xl font-bold text-red-700">{selected.impact}</div>
+                <div className="text-xs text-gray-9000">Impact</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-gray-900">{selected.riskScore}</div>
-                <div className="text-xs text-gray-500">Risk Score</div>
+                <div className="text-xs text-gray-9000">Risk Score</div>
               </div>
             </div>
             <div>
@@ -526,13 +526,13 @@ function RiskMatrix() {
               <p className="text-sm text-gray-600">{selected.mitigation}</p>
             </div>
             {selected.eta && (
-              <div className="flex items-center gap-2 text-xs text-gray-500">
+              <div className="flex items-center gap-2 text-xs text-gray-9000">
                 <ClockIcon /> Deadline: <span className="text-gray-900">{selected.eta}</span>
               </div>
             )}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-2">
+          <div className="flex flex-col items-center justify-center h-full text-gray-9000 gap-2">
             <RadarIcon />
             <div className="text-sm">Välj en risk för detaljer</div>
           </div>
@@ -561,7 +561,7 @@ function DecisionLog() {
   return (
     <div className="flex flex-col gap-3">
       {DECISION_LOG.map(entry => (
-        <div key={entry.id} className="rounded-xl border border-gray-200 bg-white/5 p-4">
+        <div key={entry.id} className="rounded-xl border border-gray-200 bg-gray-50 p-4">
           <div className="flex items-start gap-3">
             <div className="flex flex-col items-center gap-1 flex-shrink-0 pt-1">
               <div
@@ -580,16 +580,16 @@ function DecisionLog() {
                 >
                   {statusLabels[entry.status]}
                 </div>
-                <span className="text-xs text-gray-500 flex items-center gap-1">
+                <span className="text-xs text-gray-9000 flex items-center gap-1">
                   <ClockIcon />{entry.date}
                 </span>
-                <span className="text-xs text-gray-500">av {entry.decisionMaker}</span>
-                <span className="ml-auto text-xs text-gray-500">Impact: {'★'.repeat(entry.impactScore)}</span>
+                <span className="text-xs text-gray-9000">av {entry.decisionMaker}</span>
+                <span className="ml-auto text-xs text-gray-9000">Impact: {'★'.repeat(entry.impactScore)}</span>
               </div>
               <h4 className="text-sm font-bold text-gray-900 mb-1">{entry.decision}</h4>
-              <p className="text-xs text-gray-500 mb-2">{entry.context}</p>
-              <div className="rounded bg-white/5 border border-gray-200 px-3 py-2">
-                <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Konsekvens</div>
+              <p className="text-xs text-gray-9000 mb-2">{entry.context}</p>
+              <div className="rounded bg-gray-50 border border-gray-200 px-3 py-2">
+                <div className="text-xs font-semibold text-gray-9000 uppercase tracking-wide mb-0.5">Konsekvens</div>
                 <p className="text-xs text-gray-600">{entry.consequence}</p>
               </div>
             </div>
@@ -618,13 +618,13 @@ function MarketSignals() {
       {MARKET_SIGNALS.map(signal => (
         <div
           key={signal.id}
-          className={`rounded-xl border p-4 ${signal.actionable ? 'border-white/15 bg-white/5' : 'border-white/8 bg-white/3 opacity-70'}`}
+          className={`rounded-xl border p-4 ${signal.actionable ? 'border-white/15 bg-gray-50' : 'border-white/8 bg-white/3 opacity-70'}`}
         >
           <div className="flex items-start gap-3">
             <div className="mt-0.5">
-              {signal.direction === 'up' && <span className="text-green-400"><TrendingUpIcon /></span>}
-              {signal.direction === 'down' && <span className="text-red-400"><TrendingDownIcon /></span>}
-              {signal.direction === 'stable' && <span className="text-gray-500">→</span>}
+              {signal.direction === 'up' && <span className="text-green-700"><TrendingUpIcon /></span>}
+              {signal.direction === 'down' && <span className="text-red-700"><TrendingDownIcon /></span>}
+              {signal.direction === 'stable' && <span className="text-gray-9000">→</span>}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap mb-1">
@@ -641,13 +641,13 @@ function MarketSignals() {
                   {signal.strength}
                 </div>
                 {signal.actionable && (
-                  <div className="text-xs font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-400 uppercase">
+                  <div className="text-xs font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-700 uppercase">
                     Actionable
                   </div>
                 )}
               </div>
               <p className="text-sm text-gray-800">{signal.signal}</p>
-              <div className="text-xs text-gray-500 mt-1">{signal.source} · {signal.date}</div>
+              <div className="text-xs text-gray-9000 mt-1">{signal.source} · {signal.date}</div>
             </div>
           </div>
         </div>
@@ -693,24 +693,24 @@ function PixPhilosophy() {
         </div>
         <div className="mt-4 grid grid-cols-3 gap-4">
           <div className="text-center">
-            <div className="text-3xl font-bold text-purple-400">∞</div>
-            <div className="text-xs text-gray-500">PIX per operation</div>
+            <div className="text-3xl font-bold text-purple-700">∞</div>
+            <div className="text-xs text-gray-9000">PIX per operation</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-blue-400">0s</div>
-            <div className="text-xs text-gray-500">Delay till synlighet</div>
+            <div className="text-3xl font-bold text-blue-700">0s</div>
+            <div className="text-xs text-gray-9000">Delay till synlighet</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-green-400">1</div>
-            <div className="text-xs text-gray-500">Källa för sanning</div>
+            <div className="text-3xl font-bold text-green-700">1</div>
+            <div className="text-xs text-gray-9000">Källa för sanning</div>
           </div>
         </div>
       </div>
 
       {/* Core Philosophy */}
       <div>
-        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Kärnprincip</div>
-        <div className="rounded-xl border border-gray-200 bg-white/5 p-5">
+        <div className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Kärnprincip</div>
+        <div className="rounded-xl border border-gray-200 bg-gray-50 p-5">
           <div className="text-lg font-bold text-gray-900 mb-2 italic">"Systems should run the business. Not the other way around."</div>
           <p className="text-sm text-gray-600 leading-relaxed">
             Avancerade bolag som Amazon, Nvidia och Tesla uppnår inte hög output av slumpen. De opererar på system som
@@ -722,7 +722,7 @@ function PixPhilosophy() {
 
       {/* Architecture Layers */}
       <div>
-        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Arkitekturlager</div>
+        <div className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Arkitekturlager</div>
         <div className="flex flex-col gap-2">
           {pixLayers.map((layer, i) => (
             <div
@@ -748,7 +748,7 @@ function PixPhilosophy() {
 
       {/* quiXzoom PIX flow */}
       <div>
-        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">quiXzoom: Varje bild = en PIX</div>
+        <div className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">quiXzoom: Varje bild = en PIX</div>
         <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-5">
           <p className="text-sm text-gray-600 mb-4">
             quiXzoom är PIX-konceptet applicerat på bildinfrastruktur. Varje foto-uppdrag genererar en kedja av operationella pixels —
@@ -765,13 +765,13 @@ function PixPhilosophy() {
                     {i + 1}
                   </div>
                   {i < quixzoomPix.length - 1 && (
-                    <div className="w-px h-4 bg-white/10 ml-2" />
+                    <div className="w-px h-4 bg-gray-100 ml-2" />
                   )}
                 </div>
-                <div className="flex-1 rounded-lg bg-white/5 border border-gray-200 px-3 py-2">
+                <div className="flex-1 rounded-lg bg-gray-50 border border-gray-200 px-3 py-2">
                   <div className="flex items-center gap-2">
                     <code className="text-xs font-mono" style={{ color: pix.color }}>{pix.event}</code>
-                    <span className="text-xs text-gray-500">— {pix.desc}</span>
+                    <span className="text-xs text-gray-9000">— {pix.desc}</span>
                   </div>
                 </div>
               </div>
@@ -782,24 +782,24 @@ function PixPhilosophy() {
 
       {/* Competitor comparison */}
       <div>
-        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Systemic Thinking — vs Konkurrenter</div>
+        <div className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Systemic Thinking — vs Konkurrenter</div>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
               <tr className="border-b border-gray-200">
-                <th className="text-left text-gray-500 pb-2 pr-4">System</th>
-                <th className="text-left text-gray-500 pb-2 pr-4">Kostnad</th>
-                <th className="text-left text-gray-500 pb-2 pr-4">Driftsättning</th>
-                <th className="text-left text-gray-500 pb-2">Verklighet</th>
+                <th className="text-left text-gray-9000 pb-2 pr-4">System</th>
+                <th className="text-left text-gray-9000 pb-2 pr-4">Kostnad</th>
+                <th className="text-left text-gray-9000 pb-2 pr-4">Driftsättning</th>
+                <th className="text-left text-gray-9000 pb-2">Verklighet</th>
               </tr>
             </thead>
             <tbody>
               {competitors.map((c, i) => (
                 <tr key={c.name} className={`border-b border-white/5 ${i === competitors.length - 1 ? 'bg-green-500/5' : ''}`}>
-                  <td className={`py-2 pr-4 font-medium ${i === competitors.length - 1 ? 'text-green-400' : 'text-gray-900'}`}>{c.name}</td>
-                  <td className={`py-2 pr-4 ${i === competitors.length - 1 ? 'text-green-300' : 'text-red-400'}`}>{c.cost}</td>
-                  <td className={`py-2 pr-4 ${i === competitors.length - 1 ? 'text-green-300' : 'text-amber-400'}`}>{c.setup}</td>
-                  <td className="py-2 text-gray-500">{c.verdict}</td>
+                  <td className={`py-2 pr-4 font-medium ${i === competitors.length - 1 ? 'text-green-700' : 'text-gray-900'}`}>{c.name}</td>
+                  <td className={`py-2 pr-4 ${i === competitors.length - 1 ? 'text-green-300' : 'text-red-700'}`}>{c.cost}</td>
+                  <td className={`py-2 pr-4 ${i === competitors.length - 1 ? 'text-green-300' : 'text-amber-700'}`}>{c.setup}</td>
+                  <td className="py-2 text-gray-9000">{c.verdict}</td>
                 </tr>
               ))}
             </tbody>
@@ -808,23 +808,23 @@ function PixPhilosophy() {
       </div>
 
       {/* Modular strategy */}
-      <div className="rounded-xl border border-gray-200 bg-white/5 p-5">
-        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Modulär Strategi</div>
+      <div className="rounded-xl border border-gray-200 bg-gray-50 p-5">
+        <div className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Modulär Strategi</div>
         <div className="grid grid-cols-2 gap-3 text-xs">
           <div>
-            <div className="text-red-400 font-semibold mb-1">❌ Säljer INTE</div>
-            <div className="text-gray-500">• Licenser per användare</div>
-            <div className="text-gray-500">• Per-seat pricing</div>
-            <div className="text-gray-500">• Isolerade verktyg</div>
+            <div className="text-red-700 font-semibold mb-1">❌ Säljer INTE</div>
+            <div className="text-gray-9000">• Licenser per användare</div>
+            <div className="text-gray-9000">• Per-seat pricing</div>
+            <div className="text-gray-9000">• Isolerade verktyg</div>
           </div>
           <div>
-            <div className="text-green-400 font-semibold mb-1">✅ Säljer</div>
+            <div className="text-green-700 font-semibold mb-1">✅ Säljer</div>
             <div className="text-gray-600">• Kapacitet + funktion</div>
             <div className="text-gray-600">• Team-flat pricing</div>
             <div className="text-gray-600">• Operativsystem (BOS)</div>
           </div>
         </div>
-        <div className="mt-3 text-xs text-gray-500 italic border-t border-gray-200 pt-3">
+        <div className="mt-3 text-xs text-gray-9000 italic border-t border-gray-200 pt-3">
           Sell modularity. Build as modular monolith. Extract to microservices under scale pressure.
         </div>
       </div>
@@ -854,7 +854,7 @@ export function SystemIntelligenceHub() {
   const highRisks = RISK_MATRIX.filter(r => r.level === 'high').length
 
   return (
-    <div className="h-full flex flex-col bg-gray-950 text-gray-900 overflow-hidden">
+    <div className="h-full flex flex-col bg-gray-50 text-gray-900 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-gray-200 flex-shrink-0">
         <div className="flex items-center gap-3">
@@ -863,25 +863,25 @@ export function SystemIntelligenceHub() {
           </div>
           <div>
             <h1 className="text-lg font-bold text-gray-900">System Intelligence</h1>
-            <p className="text-xs text-gray-500">Koncernhälsa · Risker · Beslut · Marknad</p>
+            <p className="text-xs text-gray-9000">Koncernhälsa · Risker · Beslut · Marknad</p>
           </div>
         </div>
 
         {/* Summary KPIs */}
         <div className="flex items-center gap-4">
           <div className="text-center">
-            <div className={`text-xl font-bold ${avgHealth >= 70 ? 'text-green-400' : avgHealth >= 40 ? 'text-amber-400' : 'text-red-400'}`}>
+            <div className={`text-xl font-bold ${avgHealth >= 70 ? 'text-green-700' : avgHealth >= 40 ? 'text-amber-700' : 'text-red-700'}`}>
               λ {(avgHealth / 100).toFixed(2)}
             </div>
-            <div className="text-xs text-gray-500">Group Lambda</div>
+            <div className="text-xs text-gray-9000">Group Lambda</div>
           </div>
           <div className="text-center">
-            <div className="text-xl font-bold text-red-400">{criticalRisks}</div>
-            <div className="text-xs text-gray-500">Kritiska risker</div>
+            <div className="text-xl font-bold text-red-700">{criticalRisks}</div>
+            <div className="text-xs text-gray-9000">Kritiska risker</div>
           </div>
           <div className="text-center">
-            <div className="text-xl font-bold text-amber-400">{highRisks}</div>
-            <div className="text-xs text-gray-500">Höga risker</div>
+            <div className="text-xl font-bold text-amber-700">{highRisks}</div>
+            <div className="text-xs text-gray-9000">Höga risker</div>
           </div>
         </div>
       </div>
@@ -895,7 +895,7 @@ export function SystemIntelligenceHub() {
             className={`flex items-center gap-1.5 text-xs px-3 py-2 rounded-t-lg font-medium border-b-2 transition-all ${
               activeTab === t.id
                 ? 'text-gray-900 border-blue-500 bg-white/8'
-                : 'text-gray-500 border-transparent hover:text-gray-900 hover:bg-white/5'
+                : 'text-gray-9000 border-transparent hover:text-gray-900 hover:bg-gray-50'
             }`}
           >
             <span>{t.icon}</span>
@@ -903,7 +903,7 @@ export function SystemIntelligenceHub() {
           </button>
         ))}
       </div>
-      <div className="h-px bg-white/10 flex-shrink-0" />
+      <div className="h-px bg-gray-100 flex-shrink-0" />
 
       {/* Content */}
       <div className="flex-1 overflow-auto p-5">
@@ -913,20 +913,20 @@ export function SystemIntelligenceHub() {
               <EntityCard key={entity.id} entity={entity} />
             ))}
             {/* Group summary card */}
-            <div className="rounded-xl border border-gray-200 bg-white/5 p-4 flex flex-col gap-2">
-              <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Koncernhälsa (λ)</div>
-              <div className={`text-4xl font-mono font-bold ${avgHealth >= 70 ? 'text-green-400' : avgHealth >= 40 ? 'text-amber-400' : 'text-red-400'}`}>
+            <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 flex flex-col gap-2">
+              <div className="text-xs font-semibold text-gray-9000 uppercase tracking-wider">Koncernhälsa (λ)</div>
+              <div className={`text-4xl font-mono font-bold ${avgHealth >= 70 ? 'text-green-700' : avgHealth >= 40 ? 'text-amber-700' : 'text-red-700'}`}>
                 λ {(avgHealth / 100).toFixed(2)}
               </div>
-              <p className="text-xs text-gray-500 leading-relaxed">
+              <p className="text-xs text-gray-9000 leading-relaxed">
                 Lambda &lt; 0.5 = kritisk systemstress. Wavult Group är i uppbyggnadsfas — 
                 hälsopoäng reflekterar att bolagsstruktur och produkter ännu ej är live, inte operativa problem.
               </p>
               <div className="mt-2 flex flex-col gap-1.5">
                 {ENTITY_HEALTH.map(e => (
                   <div key={e.id} className="flex items-center gap-2 text-xs">
-                    <span className="w-16 text-gray-500">{e.code}</span>
-                    <div className="flex-1 bg-white/5 rounded-full h-1.5">
+                    <span className="w-16 text-gray-9000">{e.code}</span>
+                    <div className="flex-1 bg-gray-50 rounded-full h-1.5">
                       <div
                         className="h-full rounded-full"
                         style={{

@@ -153,7 +153,7 @@ export function InboxView() {
   return (
     <div className="flex flex-col h-full gap-4">
       {/* MOCKDATA BANNER */}
-      <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-yellow-500/10 border border-yellow-500/25 text-yellow-400 text-xs font-medium flex-shrink-0">
+      <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-yellow-500/10 border border-yellow-500/25 text-yellow-700 text-xs font-medium flex-shrink-0">
         <span>⚠️</span>
         <span>Visar mockdata — live IMAP kopplas in i fas 2</span>
         <span className="ml-auto text-yellow-600 font-mono text-xs">SMTP ut: live via Loopia · IMAP in: ej konfigurerat</span>
@@ -172,7 +172,7 @@ export function InboxView() {
           </div>
           <button
             onClick={() => setShowCompose(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-accent/15 text-brand-accent border border-brand-accent/30 hover:bg-brand-accent/25 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200 hover:bg-brand-accent/25 transition-colors"
           >
             ✏️ Nytt meddelande
           </button>
@@ -185,9 +185,9 @@ export function InboxView() {
               onClick={() => openMessage(msg)}
               className={`w-full text-left px-3 py-3 rounded-xl border transition-all ${
                 selected?.id === msg.id
-                  ? 'bg-brand-accent/10 border-brand-accent/30'
+                  ? 'bg-purple-50 border-purple-200'
                   : msg.read
-                  ? 'bg-white border-gray-200 hover:border-white/[0.12]'
+                  ? 'bg-white border-gray-200 hover:border-gray-200'
                   : 'bg-white border-blue-500/20 hover:border-blue-500/40'
               }`}
             >
@@ -203,14 +203,14 @@ export function InboxView() {
                     <span className={`text-xs font-medium truncate ${!msg.read ? 'text-gray-900' : 'text-gray-600'}`}>
                       {msg.from}
                     </span>
-                    <span className="text-xs text-gray-500 flex-shrink-0 font-mono">
+                    <span className="text-xs text-gray-9000 flex-shrink-0 font-mono">
                       {new Date(msg.timestamp).toLocaleDateString('sv-SE', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
-                  <div className={`text-xs truncate ${!msg.read ? 'text-gray-800 font-medium' : 'text-gray-500'}`}>
+                  <div className={`text-xs truncate ${!msg.read ? 'text-gray-800 font-medium' : 'text-gray-9000'}`}>
                     {msg.subject}
                   </div>
-                  <div className="text-xs text-gray-500 truncate mt-0.5">
+                  <div className="text-xs text-gray-9000 truncate mt-0.5">
                     Till: {msg.to}
                   </div>
                 </div>
@@ -229,11 +229,11 @@ export function InboxView() {
           <div className="p-5 h-full flex flex-col">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-semibold text-gray-900">Nytt meddelande</h3>
-              <button onClick={() => setShowCompose(false)} className="text-gray-500 hover:text-gray-600 text-lg leading-none">×</button>
+              <button onClick={() => setShowCompose(false)} className="text-gray-9000 hover:text-gray-600 text-lg leading-none">×</button>
             </div>
             <div className="space-y-3 flex-1 flex flex-col">
               <div>
-                <label className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1 block">Till</label>
+                <label className="text-xs text-gray-9000 font-mono uppercase tracking-wider mb-1 block">Till</label>
                 <select
                   value={form.to}
                   onChange={e => setForm(f => ({ ...f, to: e.target.value }))}
@@ -246,7 +246,7 @@ export function InboxView() {
                 </select>
               </div>
               <div>
-                <label className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1 block">Ämne</label>
+                <label className="text-xs text-gray-9000 font-mono uppercase tracking-wider mb-1 block">Ämne</label>
                 <input
                   value={form.subject}
                   onChange={e => setForm(f => ({ ...f, subject: e.target.value }))}
@@ -255,7 +255,7 @@ export function InboxView() {
                 />
               </div>
               <div className="flex-1 flex flex-col">
-                <label className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1 block">Meddelande</label>
+                <label className="text-xs text-gray-9000 font-mono uppercase tracking-wider mb-1 block">Meddelande</label>
                 <textarea
                   value={form.body}
                   onChange={e => setForm(f => ({ ...f, body: e.target.value }))}
@@ -283,11 +283,11 @@ export function InboxView() {
               <div className="flex-1">
                 <div className="flex items-center justify-between">
                   <span className="text-[14px] font-semibold text-gray-900">{selected.from}</span>
-                  <span className="text-xs text-gray-500 font-mono">
+                  <span className="text-xs text-gray-9000 font-mono">
                     {new Date(selected.timestamp).toLocaleString('sv-SE')}
                   </span>
                 </div>
-                <div className="text-xs text-gray-500">Till: {selected.to}</div>
+                <div className="text-xs text-gray-9000">Till: {selected.to}</div>
               </div>
             </div>
             <h2 className="text-[15px] font-bold text-gray-900 mb-4">{selected.subject}</h2>
@@ -300,7 +300,7 @@ export function InboxView() {
                   setForm({ to: selected.from, subject: `Re: ${selected.subject}`, body: '' })
                   setShowCompose(true)
                 }}
-                className="text-xs text-brand-accent hover:text-brand-accent/80 font-medium transition-colors"
+                className="text-xs text-purple-700 hover:text-purple-700/80 font-medium transition-colors"
               >
                 ↩ Svara
               </button>
@@ -310,7 +310,7 @@ export function InboxView() {
           <div className="h-full flex items-center justify-center">
             <div className="text-center">
               <div className="text-4xl mb-3">📬</div>
-              <p className="text-gray-500 text-xs">Välj ett meddelande för att läsa det</p>
+              <p className="text-gray-9000 text-xs">Välj ett meddelande för att läsa det</p>
             </div>
           </div>
         )}

@@ -79,7 +79,7 @@ export function SystemView() {
         <div className="grid grid-cols-1 gap-2">
           {SYSTEM_INFO.map(row => (
             <div key={row.label} className="flex items-center gap-3">
-              <span className="text-xs text-gray-500 w-36 flex-shrink-0">{row.label}</span>
+              <span className="text-xs text-gray-9000 w-36 flex-shrink-0">{row.label}</span>
               <span
                 className={`text-xs ${row.mono ? 'font-mono' : 'font-medium'}`}
                 style={{ color: row.highlight ?? '#D1D5DB' }}
@@ -111,8 +111,8 @@ export function SystemView() {
                   style={{ background: cfg.color, boxShadow: svc.status === 'running' ? `0 0 5px ${cfg.color}80` : 'none' }}
                 />
                 <span className="flex-1 text-xs text-gray-600">{svc.name}</span>
-                <span className="text-xs font-mono text-gray-500">{svc.latency}</span>
-                <span className="text-xs font-mono text-gray-500">{svc.uptime}</span>
+                <span className="text-xs font-mono text-gray-9000">{svc.latency}</span>
+                <span className="text-xs font-mono text-gray-9000">{svc.uptime}</span>
                 <span
                   className="text-[9px] px-2 py-0.5 rounded font-mono flex-shrink-0"
                   style={{ background: cfg.bg, border: `1px solid ${cfg.border}`, color: cfg.color }}
@@ -148,7 +148,7 @@ export function SystemView() {
               {deploying ? 'Deploying…' : deployDone ? 'Deploy triggered!' : 'Force Deploy'}
             </span>
           </div>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-gray-9000">
             {deploying
               ? 'GitHub Actions workflow aktiverad…'
               : deployDone
@@ -156,7 +156,7 @@ export function SystemView() {
               : 'Triggar GitHub Actions deploy pipeline'}
           </p>
           {deploying && (
-            <div className="mt-2 h-1 rounded-full bg-white/[0.06] overflow-hidden">
+            <div className="mt-2 h-1 rounded-full bg-gray-50 overflow-hidden">
               <div
                 className="h-full rounded-full bg-red-500 animate-pulse"
                 style={{ width: '60%', transition: 'width 2.5s ease' }}
@@ -186,7 +186,7 @@ export function SystemView() {
               {clearing ? 'Rensar…' : clearDone ? 'Cache rensad!' : 'Clear Cache'}
             </span>
           </div>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-gray-9000">
             {clearing
               ? 'Rensar Cloudflare edge cache…'
               : clearDone

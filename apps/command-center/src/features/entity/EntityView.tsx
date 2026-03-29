@@ -67,19 +67,19 @@ function MiniRelGraph({ entityId }: { entityId: string }) {
       {/* Parent chain */}
       {parent && (
         <div className="flex items-center gap-2">
-          <div className="text-xs text-gray-500">Parent</div>
+          <div className="text-xs text-gray-9000">Parent</div>
           <div className="flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-semibold"
             style={{ background: parent.color + '10', borderColor: parent.color + '30', color: parent.color }}>
             {parent.flag} {parent.shortName}
           </div>
-          <div className="text-gray-500 text-xs">→ {entity?.shortName}</div>
+          <div className="text-gray-9000 text-xs">→ {entity?.shortName}</div>
         </div>
       )}
 
       {/* Children */}
       {children.length > 0 && (
         <div className="flex items-start gap-2">
-          <div className="text-xs text-gray-500 pt-1.5">Owns</div>
+          <div className="text-xs text-gray-9000 pt-1.5">Owns</div>
           <div className="flex flex-wrap gap-2">
             {children.map(c => (
               <div key={c.id} className="px-3 py-1.5 rounded-xl border text-xs font-semibold"
@@ -94,15 +94,15 @@ function MiniRelGraph({ entityId }: { entityId: string }) {
       {/* Relationships */}
       {rels.length > 0 && (
         <div>
-          <div className="text-xs text-gray-500 mb-2">Relationships ({rels.length})</div>
+          <div className="text-xs text-gray-9000 mb-2">Relationships ({rels.length})</div>
           <div className="space-y-1.5">
             {rels.map(r => {
               const other = ENTITIES.find(e => e.id === (r.from_entity_id === entityId ? r.to_entity_id : r.from_entity_id))
               const dir = r.from_entity_id === entityId ? '→' : '←'
               return (
                 <div key={r.id} className="flex items-center gap-2 text-xs">
-                  <span className="text-gray-500 w-20 flex-shrink-0 font-mono">{r.type}</span>
-                  <span className="text-gray-500">{dir}</span>
+                  <span className="text-gray-9000 w-20 flex-shrink-0 font-mono">{r.type}</span>
+                  <span className="text-gray-9000">{dir}</span>
                   <span style={{ color: other?.color }}>{other?.flag} {other?.shortName}</span>
                   <span className="text-gray-600">· {r.label}</span>
                 </div>
@@ -132,8 +132,8 @@ function OverviewTab({ entityId }: { entityId: string }) {
       {/* Key facts */}
       <div className="grid grid-cols-2 gap-3">
         {Object.entries(entity.metadata).map(([k, v]) => (
-          <div key={k} className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3">
-            <div className="text-xs text-gray-500 font-mono mb-1">{k}</div>
+          <div key={k} className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+            <div className="text-xs text-gray-9000 font-mono mb-1">{k}</div>
             <div className="text-sm text-gray-800">{v}</div>
           </div>
         ))}
@@ -142,13 +142,13 @@ function OverviewTab({ entityId }: { entityId: string }) {
       {/* Quick KPIs */}
       {ops && ops.kpis.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Key Metrics</h3>
+          <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Key Metrics</h3>
           <div className="flex flex-wrap gap-3">
             {ops.kpis.map(kpi => (
-              <div key={kpi.label} className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3 min-w-[120px]">
-                <div className="text-xs text-gray-500 mb-1">{kpi.label}</div>
+              <div key={kpi.label} className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 min-w-[120px]">
+                <div className="text-xs text-gray-9000 mb-1">{kpi.label}</div>
                 <div className="text-lg font-bold" style={{ color: kpi.good ? '#10B981' : '#F59E0B' }}>{kpi.value}</div>
-                {kpi.delta && <div className="text-xs text-gray-500 mt-0.5">{kpi.delta}</div>}
+                {kpi.delta && <div className="text-xs text-gray-9000 mt-0.5">{kpi.delta}</div>}
               </div>
             ))}
           </div>
@@ -158,7 +158,7 @@ function OverviewTab({ entityId }: { entityId: string }) {
       {/* Open risks */}
       {finance && finance.open_items.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Open Items</h3>
+          <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Open Items</h3>
           <div className="space-y-1.5">
             {[...finance.open_items, ...(legal?.open_items ?? [])].map((item, i) => (
               <div key={i} className="flex items-center gap-2 text-sm">
@@ -172,8 +172,8 @@ function OverviewTab({ entityId }: { entityId: string }) {
 
       {/* Mini rel graph */}
       <div>
-        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Structure</h3>
-        <div className="rounded-xl border border-gray-200 bg-white/[0.02] p-4">
+        <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Structure</h3>
+        <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
           <MiniRelGraph entityId={entityId} />
         </div>
       </div>
@@ -183,7 +183,7 @@ function OverviewTab({ entityId }: { entityId: string }) {
 
 function FinanceTab({ entityId }: { entityId: string }) {
   const finance = getEntityFinance(entityId)
-  if (!finance) return <p className="text-sm text-gray-500">No finance data.</p>
+  if (!finance) return <p className="text-sm text-gray-9000">No finance data.</p>
 
   const incomeEntities = finance.intercompany_in.map(id => ENTITIES.find(e => e.id === id)).filter(Boolean)
   const outEntities = finance.intercompany_out.map(id => ENTITIES.find(e => e.id === id)).filter(Boolean)
@@ -192,16 +192,16 @@ function FinanceTab({ entityId }: { entityId: string }) {
     <div className="space-y-6">
       {/* Summary row */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3">
-          <div className="text-xs text-gray-500 mb-1">Currency</div>
+        <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+          <div className="text-xs text-gray-9000 mb-1">Currency</div>
           <div className="text-lg font-bold text-gray-900 font-mono">{finance.currency}</div>
         </div>
-        <div className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3">
-          <div className="text-xs text-gray-500 mb-1">Est. MRR</div>
+        <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+          <div className="text-xs text-gray-9000 mb-1">Est. MRR</div>
           <div className="text-sm font-semibold text-gray-600">{finance.estimated_mrr}</div>
         </div>
-        <div className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3">
-          <div className="text-xs text-gray-500 mb-1">Cashflow</div>
+        <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+          <div className="text-xs text-gray-9000 mb-1">Cashflow</div>
           <div className="text-sm font-semibold" style={{ color: RISK_COLOR[finance.cashflow_status] }}>
             {finance.cashflow_status.toUpperCase()}
           </div>
@@ -209,25 +209,25 @@ function FinanceTab({ entityId }: { entityId: string }) {
       </div>
 
       {/* Revenue model */}
-      <div className="rounded-xl border border-gray-200 bg-white/[0.02] p-4">
-        <div className="text-xs text-gray-500 font-mono mb-1">Revenue model</div>
+      <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
+        <div className="text-xs text-gray-9000 font-mono mb-1">Revenue model</div>
         <div className="text-sm text-gray-800">{finance.revenue_model}</div>
         {finance.billing_notes && (
-          <div className="text-xs text-gray-500 mt-2">{finance.billing_notes}</div>
+          <div className="text-xs text-gray-9000 mt-2">{finance.billing_notes}</div>
         )}
       </div>
 
       {/* Intercompany */}
       {(incomeEntities.length > 0 || outEntities.length > 0) && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Intercompany Flows</h3>
+          <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Intercompany Flows</h3>
           <div className="space-y-2">
             {incomeEntities.map(e => e && (
               <div key={e.id} className="flex items-center gap-3 rounded-xl border px-4 py-2.5 text-sm"
                 style={{ borderColor: '#10B98125', background: '#10B98108' }}>
                 <span className="text-[#10B981]">↓ IN</span>
                 <span style={{ color: e.color }}>{e.flag} {e.shortName}</span>
-                <span className="text-gray-500 text-xs">pays this entity</span>
+                <span className="text-gray-9000 text-xs">pays this entity</span>
               </div>
             ))}
             {outEntities.map(e => e && (
@@ -235,7 +235,7 @@ function FinanceTab({ entityId }: { entityId: string }) {
                 style={{ borderColor: '#EF444425', background: '#EF444408' }}>
                 <span className="text-[#EF4444]">↑ OUT</span>
                 <span style={{ color: e.color }}>{e.flag} {e.shortName}</span>
-                <span className="text-gray-500 text-xs">receives from this entity</span>
+                <span className="text-gray-9000 text-xs">receives from this entity</span>
               </div>
             ))}
           </div>
@@ -245,7 +245,7 @@ function FinanceTab({ entityId }: { entityId: string }) {
       {/* Open items */}
       {finance.open_items.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Open Items</h3>
+          <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Open Items</h3>
           <div className="space-y-1.5">
             {finance.open_items.map((item, i) => (
               <div key={i} className="flex items-center gap-2 text-sm">
@@ -261,20 +261,20 @@ function FinanceTab({ entityId }: { entityId: string }) {
 
 function LegalTab({ entityId }: { entityId: string }) {
   const legal = getEntityLegal(entityId)
-  if (!legal) return <p className="text-sm text-gray-500">No legal data.</p>
+  if (!legal) return <p className="text-sm text-gray-9000">No legal data.</p>
 
   const incColor = { complete: '#10B981', 'in-progress': '#F59E0B', 'not-started': '#6B7280' }[legal.incorporation_status]
 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3">
-          <div className="text-xs text-gray-500 mb-1">Legal form</div>
+        <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+          <div className="text-xs text-gray-9000 mb-1">Legal form</div>
           <div className="text-sm font-semibold text-gray-900">{legal.legal_form}</div>
-          <div className="text-xs text-gray-500 mt-1">{legal.jurisdiction_detail}</div>
+          <div className="text-xs text-gray-9000 mt-1">{legal.jurisdiction_detail}</div>
         </div>
-        <div className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3">
-          <div className="text-xs text-gray-500 mb-1">Incorporation</div>
+        <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+          <div className="text-xs text-gray-9000 mb-1">Incorporation</div>
           <div className="text-sm font-semibold" style={{ color: incColor }}>{legal.incorporation_status}</div>
           <div className="text-xs mt-1" style={{ color: RISK_COLOR[legal.compliance_status] }}>
             Compliance: {legal.compliance_status}
@@ -284,17 +284,17 @@ function LegalTab({ entityId }: { entityId: string }) {
 
       {legal.contracts.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+          <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">
             Contracts ({legal.contracts.length})
           </h3>
           <div className="space-y-2">
             {legal.contracts.map((c, i) => (
-              <div key={i} className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3">
+              <div key={i} className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
                 <div className="flex items-center gap-2 mb-1">
                   <RiskDot level={c.status} />
                   <span className="text-sm font-semibold text-gray-900">{c.name}</span>
                 </div>
-                <p className="text-xs text-gray-500">{c.note}</p>
+                <p className="text-xs text-gray-9000">{c.note}</p>
               </div>
             ))}
           </div>
@@ -303,7 +303,7 @@ function LegalTab({ entityId }: { entityId: string }) {
 
       {legal.open_items.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Open Items</h3>
+          <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Open Items</h3>
           <div className="space-y-1.5">
             {legal.open_items.map((item, i) => (
               <div key={i} className="flex items-center gap-2 text-sm">
@@ -323,7 +323,7 @@ function PeopleTab({ entityId }: { entityId: string }) {
 
   if (!people.length) {
     return (
-      <div className="text-sm text-gray-500 p-4">
+      <div className="text-sm text-gray-9000 p-4">
         No roles directly mapped to this entity. Check Wavult Operations for core team.
       </div>
     )
@@ -342,7 +342,7 @@ function PeopleTab({ entityId }: { entityId: string }) {
             </div>
             <div className="flex-1 min-w-0">
               <div className="font-semibold text-gray-900 text-sm">{p.person}</div>
-              <div className="text-xs text-gray-500">{p.role_type} · {p.scope}</div>
+              <div className="text-xs text-gray-9000">{p.role_type} · {p.scope}</div>
             </div>
             <div className="text-xs px-2 py-0.5 rounded-full"
               style={{ background: (entity?.color ?? p.color) + '15', color: entity?.color ?? p.color }}>
@@ -351,7 +351,7 @@ function PeopleTab({ entityId }: { entityId: string }) {
           </div>
           <div className="flex flex-wrap gap-1.5 mt-3 pl-13">
             {p.permissions.map(perm => (
-              <span key={perm} className="text-xs px-2 py-0.5 rounded bg-white/[0.04] text-gray-500 font-mono">{perm}</span>
+              <span key={perm} className="text-xs px-2 py-0.5 rounded bg-gray-50 text-gray-9000 font-mono">{perm}</span>
             ))}
           </div>
         </div>
@@ -362,7 +362,7 @@ function PeopleTab({ entityId }: { entityId: string }) {
 
 function OpsTab({ entityId }: { entityId: string }) {
   const ops = getEntityOps(entityId)
-  if (!ops) return <p className="text-sm text-gray-500">No ops data.</p>
+  if (!ops) return <p className="text-sm text-gray-9000">No ops data.</p>
 
   const workColor = { active: '#10B981', blocked: '#EF4444', done: '#6B7280', planned: '#F59E0B' }
   const delivColor = { 'on-track': '#10B981', 'at-risk': '#EF4444', done: '#6B7280' }
@@ -372,10 +372,10 @@ function OpsTab({ entityId }: { entityId: string }) {
       {ops.kpis.length > 0 && (
         <div className="flex flex-wrap gap-3">
           {ops.kpis.map(kpi => (
-            <div key={kpi.label} className="rounded-xl border border-gray-200 bg-white/[0.02] px-4 py-3 min-w-[140px]">
-              <div className="text-xs text-gray-500 mb-1">{kpi.label}</div>
+            <div key={kpi.label} className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 min-w-[140px]">
+              <div className="text-xs text-gray-9000 mb-1">{kpi.label}</div>
               <div className="text-xl font-bold" style={{ color: kpi.good ? '#10B981' : '#F59E0B' }}>{kpi.value}</div>
-              {kpi.delta && <div className="text-xs text-gray-500 mt-0.5">{kpi.delta}</div>}
+              {kpi.delta && <div className="text-xs text-gray-9000 mt-0.5">{kpi.delta}</div>}
             </div>
           ))}
         </div>
@@ -383,13 +383,13 @@ function OpsTab({ entityId }: { entityId: string }) {
 
       {ops.active_work.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Active Work</h3>
+          <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Active Work</h3>
           <div className="space-y-2">
             {ops.active_work.map((w, i) => (
               <div key={i} className="flex items-center gap-3 rounded-xl border border-gray-200 px-4 py-2.5">
                 <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: workColor[w.status] }} />
                 <span className="flex-1 text-sm text-gray-800">{w.label}</span>
-                <span className="text-xs text-gray-500 flex-shrink-0">{w.owner}</span>
+                <span className="text-xs text-gray-9000 flex-shrink-0">{w.owner}</span>
                 <StatusBadge v={w.status} />
               </div>
             ))}
@@ -399,12 +399,12 @@ function OpsTab({ entityId }: { entityId: string }) {
 
       {ops.deliverables.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Deliverables</h3>
+          <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Deliverables</h3>
           <div className="space-y-2">
             {ops.deliverables.map((d, i) => (
               <div key={i} className="flex items-center gap-3 rounded-xl border border-gray-200 px-4 py-2.5">
                 <span className="flex-1 text-sm text-gray-800">{d.label}</span>
-                <span className="text-xs text-gray-500">{d.due}</span>
+                <span className="text-xs text-gray-9000">{d.due}</span>
                 <span className="text-xs font-mono" style={{ color: delivColor[d.status] }}>{d.status}</span>
               </div>
             ))}
@@ -418,24 +418,24 @@ function OpsTab({ entityId }: { entityId: string }) {
 function SystemsTab({ entityId }: { entityId: string }) {
   const sys = getEntitySystems(entityId)
   if (!sys || (!sys.systems.length && !sys.pipelines.length)) {
-    return <p className="text-sm text-gray-500">No systems data.</p>
+    return <p className="text-sm text-gray-9000">No systems data.</p>
   }
 
   return (
     <div className="space-y-6">
       {sys.systems.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Connected Systems</h3>
+          <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Connected Systems</h3>
           <div className="space-y-2">
             {sys.systems.map((s, i) => (
               <div key={i} className="flex items-start gap-3 rounded-xl border border-gray-200 px-4 py-3">
-                <span className="text-xs text-gray-500 font-mono w-16 flex-shrink-0 pt-0.5">{s.type}</span>
+                <span className="text-xs text-gray-9000 font-mono w-16 flex-shrink-0 pt-0.5">{s.type}</span>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-semibold text-gray-900">{s.name}</div>
-                  <div className="text-xs text-gray-500 mt-0.5">{s.note}</div>
+                  <div className="text-xs text-gray-9000 mt-0.5">{s.note}</div>
                   {s.url && (
                     <a href={s.url} target="_blank" rel="noopener noreferrer"
-                      className="text-xs text-blue-400 hover:text-blue-300 transition-colors mt-0.5 block truncate">
+                      className="text-xs text-blue-700 hover:text-blue-300 transition-colors mt-0.5 block truncate">
                       {s.url}
                     </a>
                   )}
@@ -449,14 +449,14 @@ function SystemsTab({ entityId }: { entityId: string }) {
 
       {sys.pipelines.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">CI/CD</h3>
+          <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">CI/CD</h3>
           <div className="space-y-2">
             {sys.pipelines.map((p, i) => (
               <div key={i} className="flex items-center gap-3 rounded-xl border border-gray-200 px-4 py-2.5">
                 <span className="h-2 w-2 rounded-full flex-shrink-0"
                   style={{ background: p.status === 'passing' ? '#10B981' : p.status === 'failing' ? '#EF4444' : '#F59E0B' }} />
                 <span className="flex-1 text-sm text-gray-800">{p.name}</span>
-                <span className="text-xs text-gray-500">{p.last_run}</span>
+                <span className="text-xs text-gray-9000">{p.last_run}</span>
                 <StatusBadge v={p.status} />
               </div>
             ))}
@@ -466,7 +466,7 @@ function SystemsTab({ entityId }: { entityId: string }) {
 
       {sys.open_items.length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Open Items</h3>
+          <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Open Items</h3>
           <div className="space-y-1.5">
             {sys.open_items.map((item, i) => (
               <div key={i} className="flex items-center gap-2 text-sm">
@@ -488,7 +488,7 @@ function RelationsTab({ entityId }: { entityId: string }) {
       <MiniRelGraph entityId={entityId} />
       <p className="text-xs text-gray-600 mt-4">
         Click any entity badge in the Corporate Graph to navigate to their control center.
-        <button onClick={() => navigate('/org')} className="text-blue-400 hover:text-blue-300 ml-1 transition-colors">
+        <button onClick={() => navigate('/org')} className="text-blue-700 hover:text-blue-300 ml-1 transition-colors">
           Open Corporate Graph →
         </button>
       </p>
@@ -516,7 +516,7 @@ function FlowCard({ flow }: { flow: Flow }) {
   const typeColor = FLOW_TYPE_COLOR[flow.type] ?? '#6B7280'
   const statusColor = FLOW_STATUS_COLOR[flow.status] ?? '#6B7280'
   return (
-    <div className="rounded-xl border border-gray-200 bg-white/[0.02] p-4 space-y-3">
+    <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 space-y-3">
       {/* Header */}
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2 flex-wrap">
@@ -536,10 +536,10 @@ function FlowCard({ flow }: { flow: Flow }) {
         </span>
       </div>
       {/* Description */}
-      <p className="text-xs text-gray-500 leading-relaxed">{flow.description}</p>
+      <p className="text-xs text-gray-9000 leading-relaxed">{flow.description}</p>
       {/* Value */}
       {flow.value && (
-        <div className="text-xs font-mono px-3 py-1.5 rounded-lg bg-white/[0.04] text-gray-400">
+        <div className="text-xs font-mono px-3 py-1.5 rounded-lg bg-gray-50 text-gray-400">
           💰 {flow.value}
         </div>
       )}
@@ -547,7 +547,7 @@ function FlowCard({ flow }: { flow: Flow }) {
       <ol className="space-y-1">
         {flow.steps.map((step, i) => (
           <li key={i} className="flex items-start gap-2 text-xs text-gray-600">
-            <span className="flex-shrink-0 w-5 h-5 rounded-full bg-white/[0.06] flex items-center justify-center text-gray-500 font-mono font-semibold mt-0.5">
+            <span className="flex-shrink-0 w-5 h-5 rounded-full bg-gray-50 flex items-center justify-center text-gray-9000 font-mono font-semibold mt-0.5">
               {i + 1}
             </span>
             <span className="leading-relaxed pt-0.5">{step}</span>
@@ -562,14 +562,14 @@ function FlowsTab({ entityId }: { entityId: string }) {
   const flows = getFlowsByEntity(entityId)
   if (!flows.length) {
     return (
-      <div className="text-sm text-gray-500 p-4">
+      <div className="text-sm text-gray-9000 p-4">
         No explicit flows registered for this entity.
       </div>
     )
   }
   return (
     <div className="space-y-4">
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-gray-9000">
         {flows.length} flow{flows.length !== 1 ? 's' : ''} involving this entity
       </p>
       {flows.map(flow => (
@@ -624,8 +624,8 @@ export function EntityView() {
 
   if (!entity) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-500">
-        Entity not found. <button onClick={() => navigate('/entities')} className="ml-2 text-blue-400">Browse entities →</button>
+      <div className="flex items-center justify-center h-full text-gray-9000">
+        Entity not found. <button onClick={() => navigate('/entities')} className="ml-2 text-blue-700">Browse entities →</button>
       </div>
     )
   }
@@ -649,7 +649,7 @@ export function EntityView() {
         border-r border-gray-200 bg-[#07090F] overflow-y-auto
       `}>
         <div className="px-3 py-3 border-b border-gray-200">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Entities</p>
+          <p className="text-xs font-semibold text-gray-9000 uppercase tracking-wider">Entities</p>
         </div>
         <div className="py-2">
           {ENTITIES.map(ent => {
@@ -660,7 +660,7 @@ export function EntityView() {
               <button
                 key={ent.id}
                 onClick={() => handleSelectEntity(ent.id)}
-                className="w-full flex items-center gap-2.5 px-3 py-3 md:py-2.5 text-left transition-colors hover:bg-white/[0.03]"
+                className="w-full flex items-center gap-2.5 px-3 py-3 md:py-2.5 text-left transition-colors hover:bg-gray-50"
                 style={{ background: active ? ent.color + '12' : undefined }}
               >
                 <span className="text-base flex-shrink-0">{ent.flag}</span>
@@ -693,7 +693,7 @@ export function EntityView() {
               <div className="flex items-center gap-3 min-w-0">
                 {/* Back button — mobile only */}
                 <button
-                  className="md:hidden flex-shrink-0 p-1 -ml-1 text-gray-500 hover:text-gray-600"
+                  className="md:hidden flex-shrink-0 p-1 -ml-1 text-gray-9000 hover:text-gray-600"
                   onClick={() => setMobileShowDetail(false)}
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
@@ -708,14 +708,14 @@ export function EntityView() {
                     </span>
                     <HealthBadge score={hs.overall} level={hs.level} />
                   </div>
-                  <div className="text-xs text-gray-500 font-mono mt-0.5">
+                  <div className="text-xs text-gray-9000 font-mono mt-0.5">
                     {entity.jurisdiction} · Layer {entity.layer} · {entity.shortName}
                   </div>
                 </div>
               </div>
               <button
                 onClick={() => navigate('/org')}
-                className="hidden md:block text-xs text-gray-500 hover:text-gray-600 px-2.5 py-1.5 rounded-lg border border-gray-200 transition-colors flex-shrink-0 ml-4"
+                className="hidden md:block text-xs text-gray-9000 hover:text-gray-600 px-2.5 py-1.5 rounded-lg border border-gray-200 transition-colors flex-shrink-0 ml-4"
               >
                 Graph →
               </button>
@@ -743,7 +743,7 @@ export function EntityView() {
 
         {/* Tab content */}
         <div className="flex-1 overflow-y-auto px-4 md:px-6 py-5">
-          <Suspense fallback={<div className="text-xs text-gray-500 animate-pulse">Loading…</div>}>
+          <Suspense fallback={<div className="text-xs text-gray-9000 animate-pulse">Loading…</div>}>
             {activeTab === 'overview'  && <OverviewTab  entityId={resolvedId} />}
             {activeTab === 'health'    && <HealthTab    entityId={resolvedId} />}
             {activeTab === 'finance'   && <FinanceTab   entityId={resolvedId} />}

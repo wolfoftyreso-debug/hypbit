@@ -12,7 +12,7 @@ function CategoryProgress({ items }: { items: typeof THAILAND_CHECKLIST }) {
   const pct = Math.round((done / items.length) * 100)
   return (
     <div className="flex items-center gap-2 mt-1.5">
-      <div className="flex-1 bg-white/[0.06] rounded-full h-1">
+      <div className="flex-1 bg-gray-50 rounded-full h-1">
         <div
           className="h-1 rounded-full transition-all"
           style={{
@@ -21,7 +21,7 @@ function CategoryProgress({ items }: { items: typeof THAILAND_CHECKLIST }) {
           }}
         />
       </div>
-      <span className="text-[9px] font-mono text-gray-500 flex-shrink-0">{done}/{items.length}</span>
+      <span className="text-[9px] font-mono text-gray-9000 flex-shrink-0">{done}/{items.length}</span>
     </div>
   )
 }
@@ -36,15 +36,15 @@ function CheckItem({ item }: { item: typeof THAILAND_CHECKLIST[0] }) {
     >
       <span className="text-base mt-0.5 flex-shrink-0">{STATUS_ICON[item.status]}</span>
       <div className="flex-1 min-w-0">
-        <p className={`text-sm font-medium ${item.status === 'done' ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
+        <p className={`text-sm font-medium ${item.status === 'done' ? 'text-gray-9000 line-through' : 'text-gray-900'}`}>
           {item.title}
         </p>
         {item.notes && (
-          <p className="text-xs text-gray-500 mt-0.5 italic">{item.notes}</p>
+          <p className="text-xs text-gray-9000 mt-0.5 italic">{item.notes}</p>
         )}
         <div className="flex items-center gap-2 mt-1">
-          <span className="text-[9px] text-gray-500 font-mono">👤 {item.owner}</span>
-          <span className="text-[9px] text-gray-500 font-mono">·</span>
+          <span className="text-[9px] text-gray-9000 font-mono">👤 {item.owner}</span>
+          <span className="text-[9px] text-gray-9000 font-mono">·</span>
           <span
             className="text-[9px] font-mono"
             style={{ color: days <= 0 ? '#EF4444' : days <= 3 ? '#F59E0B' : '#6B7280' }}
@@ -82,7 +82,7 @@ export function ThailandPrepView() {
           <span className="text-4xl">🇹🇭</span>
           <div className="flex-1">
             <h2 className="text-[18px] font-bold text-gray-900">Thailand Workcamp</h2>
-            <p className="text-xs text-gray-500 mt-0.5">
+            <p className="text-xs text-gray-9000 mt-0.5">
               11 april 2026 — Vecka 1: Teambuilding & Utbildning
             </p>
             <div className="flex items-center gap-3 mt-2">
@@ -99,7 +99,7 @@ export function ThailandPrepView() {
             <p className="text-5xl font-bold leading-none" style={{ color: urgencyColor }}>
               {daysLeft}
             </p>
-            <p className="text-xs text-gray-500 font-mono mt-1">dagar kvar</p>
+            <p className="text-xs text-gray-9000 font-mono mt-1">dagar kvar</p>
           </div>
         </div>
 

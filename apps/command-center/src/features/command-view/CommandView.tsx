@@ -136,7 +136,7 @@ function StatusDot({ status }: { status: 'green' | 'yellow' | 'red' }) {
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">
+    <div className="text-xs font-medium text-gray-9000 uppercase tracking-wide mb-3">
       {children}
     </div>
   )
@@ -160,10 +160,10 @@ export function CommandView() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
           <h1 className="text-lg font-semibold text-gray-900">Command Center</h1>
-          <p className="text-xs font-mono text-gray-500 mt-0.5">{dateStr}</p>
+          <p className="text-xs font-mono text-gray-9000 mt-0.5">{dateStr}</p>
         </div>
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 bg-white shadow-sm self-start">
-          <span className="text-xs font-mono text-gray-500">System Score</span>
+          <span className="text-xs font-mono text-gray-9000">System Score</span>
           <span className={`text-sm font-mono font-bold ${
             systemScore >= 80 ? 'text-emerald-600' :
             systemScore >= 60 ? 'text-amber-600'   :
@@ -238,14 +238,14 @@ export function CommandView() {
                 metric.warning ? 'border-amber-200' : 'border-gray-200'
               }`}
             >
-              <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">
+              <p className="text-xs font-medium text-gray-9000 uppercase tracking-wide mb-1">
                 {metric.label}
               </p>
               <p className={`text-xl font-mono font-bold ${metric.warning ? 'text-amber-600' : 'text-gray-900'}`}>
                 {metric.value}
               </p>
               {metric.sub && (
-                <p className="text-[10px] font-mono text-gray-500 mt-1">{metric.sub}</p>
+                <p className="text-[10px] font-mono text-gray-9000 mt-1">{metric.sub}</p>
               )}
             </div>
           ))}
@@ -277,11 +277,11 @@ export function CommandView() {
         <div className="rounded-xl border border-gray-200 bg-white shadow-sm divide-y divide-gray-100">
           {NEXT_ACTIONS.map(action => (
             <div key={action.rank} className="flex items-center gap-4 px-4 py-3">
-              <span className="text-xs font-mono text-gray-500 w-4 flex-shrink-0">
+              <span className="text-xs font-mono text-gray-9000 w-4 flex-shrink-0">
                 {action.rank}.
               </span>
               <span className="text-sm text-gray-600 flex-1">{action.text}</span>
-              <span className="text-xs font-mono text-gray-500 flex-shrink-0">
+              <span className="text-xs font-mono text-gray-9000 flex-shrink-0">
                 {action.owner}
               </span>
             </div>
@@ -290,7 +290,7 @@ export function CommandView() {
       </section>
 
       {/* Footer */}
-      <div className="flex items-center gap-2 text-xs font-mono text-gray-500 pt-2 pb-1">
+      <div className="flex items-center gap-2 text-xs font-mono text-gray-9000 pt-2 pb-1">
         <TrendingDown className="w-3 h-3" />
         <span>Data uppdateras manuellt — live integration planerad Q2 2026</span>
       </div>

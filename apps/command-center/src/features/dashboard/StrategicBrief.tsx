@@ -391,9 +391,9 @@ const COMPLIANCE_ITEMS: ComplianceItem[] = [
 
 function statusBadge(status: 'Klar' | 'Draft' | 'Saknas') {
   const map: Record<typeof status, { bg: string; text: string; label: string }> = {
-    Klar: { bg: 'bg-green-500/15 border-green-500/30', text: 'text-green-400', label: '✓ Klar' },
-    Draft: { bg: 'bg-yellow-500/15 border-yellow-500/30', text: 'text-yellow-400', label: '~ Draft' },
-    Saknas: { bg: 'bg-red-500/15 border-red-500/30', text: 'text-red-400', label: '✗ Saknas' },
+    Klar: { bg: 'bg-green-500/15 border-green-500/30', text: 'text-green-700', label: '✓ Klar' },
+    Draft: { bg: 'bg-yellow-500/15 border-yellow-500/30', text: 'text-yellow-700', label: '~ Draft' },
+    Saknas: { bg: 'bg-red-500/15 border-red-500/30', text: 'text-red-700', label: '✗ Saknas' },
   }
   const s = map[status]
   return (
@@ -405,9 +405,9 @@ function statusBadge(status: 'Klar' | 'Draft' | 'Saknas') {
 
 function complianceStatusBadge(status: ComplianceStatus) {
   const map: Record<ComplianceStatus, { bg: string; text: string }> = {
-    Certifierat: { bg: 'bg-green-500/15 border-green-500/30', text: 'text-green-400' },
-    'I process': { bg: 'bg-yellow-500/15 border-yellow-500/30', text: 'text-yellow-400' },
-    'Ej påbörjat': { bg: 'bg-red-500/15 border-red-500/30', text: 'text-red-400' },
+    Certifierat: { bg: 'bg-green-500/15 border-green-500/30', text: 'text-green-700' },
+    'I process': { bg: 'bg-yellow-500/15 border-yellow-500/30', text: 'text-yellow-700' },
+    'Ej påbörjat': { bg: 'bg-red-500/15 border-red-500/30', text: 'text-red-700' },
   }
   const s = map[status]
   return (
@@ -422,9 +422,9 @@ function complianceStatusBadge(status: ComplianceStatus) {
 function MissionCard() {
   return (
     <div className="rounded-2xl bg-gradient-to-br from-purple-500/10 via-blue-500/5 to-transparent border border-purple-500/20 p-5">
-      <div className="text-xs font-bold text-purple-400 uppercase tracking-widest mb-3">Wavult Group — Mission</div>
+      <div className="text-xs font-bold text-purple-700 uppercase tracking-widest mb-3">Wavult Group — Mission</div>
       <p className="text-sm text-gray-900 leading-relaxed font-medium">{WAVULT_MISSION.line1}</p>
-      <p className="text-sm text-gray-500 leading-relaxed mt-2">{WAVULT_MISSION.line2}</p>
+      <p className="text-sm text-gray-9000 leading-relaxed mt-2">{WAVULT_MISSION.line2}</p>
       <div className="mt-4 flex flex-wrap gap-2">
         {['IP-ägande', 'Plattformskontroll', 'Optiskt lager', 'Dubai-holding', 'Global scale'].map(tag => (
           <span
@@ -458,7 +458,7 @@ function PositionsGrid() {
             <div className="flex-1">
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="font-bold text-gray-900 text-sm">{pos.product}</span>
-                <span className="text-xs italic text-gray-500">"{pos.tagline}"</span>
+                <span className="text-xs italic text-gray-9000">"{pos.tagline}"</span>
               </div>
               <p className="text-xs text-gray-600 mt-1 leading-relaxed">{pos.positioning}</p>
               <div
@@ -501,7 +501,7 @@ function CompetitorTable() {
             className={`text-xs px-3 py-1 rounded-full border font-medium transition-all ${
               filter === f
                 ? 'border-purple-500/60 bg-purple-500/20 text-purple-300'
-                : 'border-white/15 bg-white/5 text-gray-500 hover:text-gray-900 hover:bg-white/8'
+                : 'border-white/15 bg-gray-50 text-gray-9000 hover:text-gray-900 hover:bg-white/8'
             }`}
           >
             {f}
@@ -518,7 +518,7 @@ function CompetitorTable() {
             className={`text-left rounded-xl border p-3 transition-all ${
               selected === comp.name
                 ? 'border-white/25 bg-white/8'
-                : 'border-gray-200 bg-white/5 hover:bg-white/8'
+                : 'border-gray-200 bg-gray-50 hover:bg-white/8'
             }`}
           >
             <div className="flex items-center gap-2">
@@ -527,7 +527,7 @@ function CompetitorTable() {
                 style={{ backgroundColor: comp.color === '#000000' ? '#666' : comp.color }}
               />
               <span className="font-semibold text-gray-900 text-sm">{comp.name}</span>
-              <span className="text-xs text-gray-500">({comp.category})</span>
+              <span className="text-xs text-gray-9000">({comp.category})</span>
               <span
                 className="ml-auto text-xs px-1.5 py-0.5 rounded font-medium"
                 style={{ color: productColor[comp.product] ?? '#aaa', backgroundColor: (productColor[comp.product] ?? '#aaa') + '18' }}
@@ -538,11 +538,11 @@ function CompetitorTable() {
             {selected === comp.name && (
               <div className="mt-3 flex flex-col gap-2">
                 <div className="rounded-lg bg-red-500/10 border border-red-500/20 px-3 py-2">
-                  <div className="text-xs font-semibold text-red-400 uppercase tracking-wide mb-0.5">Deras svaghet</div>
+                  <div className="text-xs font-semibold text-red-700 uppercase tracking-wide mb-0.5">Deras svaghet</div>
                   <p className="text-xs text-gray-600">{comp.weakness}</p>
                 </div>
                 <div className="rounded-lg bg-green-500/10 border border-green-500/20 px-3 py-2">
-                  <div className="text-xs font-semibold text-green-400 uppercase tracking-wide mb-0.5">Vår respons</div>
+                  <div className="text-xs font-semibold text-green-700 uppercase tracking-wide mb-0.5">Vår respons</div>
                   <p className="text-xs text-gray-800 italic">{comp.ourResponse}</p>
                 </div>
               </div>
@@ -564,7 +564,7 @@ function MarketFacts() {
           style={{ borderColor: fact.color + '33', backgroundColor: fact.color + '08' }}
         >
           <div className="text-xl font-bold" style={{ color: fact.color }}>{fact.stat}</div>
-          <div className="text-xs text-gray-500 mt-0.5 leading-snug">{fact.label}</div>
+          <div className="text-xs text-gray-9000 mt-0.5 leading-snug">{fact.label}</div>
         </div>
       ))}
     </div>
@@ -596,16 +596,16 @@ function PitchMaterials() {
       {/* Summary */}
       <div className="grid grid-cols-3 gap-2">
         <div className="rounded-lg border border-green-500/25 bg-green-500/8 px-3 py-2 text-center">
-          <div className="text-lg font-bold text-green-400">{counts.Klar}</div>
-          <div className="text-xs text-gray-500">Klara</div>
+          <div className="text-lg font-bold text-green-700">{counts.Klar}</div>
+          <div className="text-xs text-gray-9000">Klara</div>
         </div>
         <div className="rounded-lg border border-yellow-500/25 bg-yellow-500/8 px-3 py-2 text-center">
-          <div className="text-lg font-bold text-yellow-400">{counts.Draft}</div>
-          <div className="text-xs text-gray-500">Drafts</div>
+          <div className="text-lg font-bold text-yellow-700">{counts.Draft}</div>
+          <div className="text-xs text-gray-9000">Drafts</div>
         </div>
         <div className="rounded-lg border border-red-500/25 bg-red-500/8 px-3 py-2 text-center">
-          <div className="text-lg font-bold text-red-400">{counts.Saknas}</div>
-          <div className="text-xs text-gray-500">Saknas</div>
+          <div className="text-lg font-bold text-red-700">{counts.Saknas}</div>
+          <div className="text-xs text-gray-9000">Saknas</div>
         </div>
       </div>
 
@@ -618,7 +618,7 @@ function PitchMaterials() {
             className={`text-xs px-3 py-1 rounded-full border font-medium transition-all ${
               filter === cat
                 ? 'border-purple-500/60 bg-purple-500/20 text-purple-300'
-                : 'border-white/15 bg-white/5 text-gray-500 hover:text-gray-900 hover:bg-white/8'
+                : 'border-white/15 bg-gray-50 text-gray-9000 hover:text-gray-900 hover:bg-white/8'
             }`}
           >
             {cat === 'Alla' ? 'Alla' : (categoryLabel[cat] ?? cat)}
@@ -629,13 +629,13 @@ function PitchMaterials() {
       {/* List */}
       <div className="flex flex-col gap-2">
         {visible.map(doc => (
-          <div key={doc.title} className="rounded-xl border border-gray-200 bg-white/5 px-4 py-3">
+          <div key={doc.title} className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
             <div className="flex items-start gap-2 flex-wrap">
               <span className="text-sm font-semibold text-gray-900 flex-1">{doc.title}</span>
               {statusBadge(doc.status)}
             </div>
-            <p className="text-xs text-gray-500 mt-1 leading-relaxed">{doc.description}</p>
-            <div className="mt-1.5 text-xs text-gray-500">{categoryLabel[doc.category] ?? doc.category}</div>
+            <p className="text-xs text-gray-9000 mt-1 leading-relaxed">{doc.description}</p>
+            <div className="mt-1.5 text-xs text-gray-9000">{categoryLabel[doc.category] ?? doc.category}</div>
           </div>
         ))}
       </div>
@@ -657,16 +657,16 @@ function ComplianceFramework() {
       {/* Summary */}
       <div className="grid grid-cols-3 gap-2">
         <div className="rounded-lg border border-green-500/25 bg-green-500/8 px-3 py-2 text-center">
-          <div className="text-lg font-bold text-green-400">{counts.Certifierat}</div>
-          <div className="text-xs text-gray-500">Certifierat</div>
+          <div className="text-lg font-bold text-green-700">{counts.Certifierat}</div>
+          <div className="text-xs text-gray-9000">Certifierat</div>
         </div>
         <div className="rounded-lg border border-yellow-500/25 bg-yellow-500/8 px-3 py-2 text-center">
-          <div className="text-lg font-bold text-yellow-400">{counts['I process']}</div>
-          <div className="text-xs text-gray-500">I process</div>
+          <div className="text-lg font-bold text-yellow-700">{counts['I process']}</div>
+          <div className="text-xs text-gray-9000">I process</div>
         </div>
         <div className="rounded-lg border border-red-500/25 bg-red-500/8 px-3 py-2 text-center">
-          <div className="text-lg font-bold text-red-400">{counts['Ej påbörjat']}</div>
-          <div className="text-xs text-gray-500">Ej påbörjat</div>
+          <div className="text-lg font-bold text-red-700">{counts['Ej påbörjat']}</div>
+          <div className="text-xs text-gray-9000">Ej påbörjat</div>
         </div>
       </div>
 
@@ -679,7 +679,7 @@ function ComplianceFramework() {
             className={`text-left rounded-xl border p-3 transition-all ${
               selected === item.standard
                 ? 'border-white/25 bg-white/8'
-                : 'border-gray-200 bg-white/5 hover:bg-white/8'
+                : 'border-gray-200 bg-gray-50 hover:bg-white/8'
             }`}
           >
             <div className="flex items-center gap-2 flex-wrap">
@@ -689,26 +689,26 @@ function ComplianceFramework() {
               />
               <span className="font-bold text-gray-900 text-sm">{item.standard}</span>
               {complianceStatusBadge(item.status)}
-              <span className="ml-auto text-xs text-gray-500">{item.targetDate}</span>
+              <span className="ml-auto text-xs text-gray-9000">{item.targetDate}</span>
             </div>
 
             {selected === item.standard && (
               <div className="mt-3 flex flex-col gap-2">
-                <div className="rounded-lg bg-white/5 border border-gray-200 px-3 py-2">
-                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Beskrivning</div>
+                <div className="rounded-lg bg-gray-50 border border-gray-200 px-3 py-2">
+                  <div className="text-xs font-semibold text-gray-9000 uppercase tracking-wide mb-0.5">Beskrivning</div>
                   <p className="text-xs text-gray-600 leading-relaxed">{item.description}</p>
                 </div>
                 <div className="rounded-lg bg-blue-500/8 border border-blue-500/20 px-3 py-2">
-                  <div className="text-xs font-semibold text-blue-400 uppercase tracking-wide mb-0.5">Krävs för</div>
+                  <div className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-0.5">Krävs för</div>
                   <p className="text-xs text-gray-600">{item.requiredFor}</p>
                 </div>
                 <div className="flex gap-2">
                   <div className="flex-1 rounded-lg bg-purple-500/8 border border-purple-500/20 px-3 py-2">
-                    <div className="text-xs font-semibold text-purple-400 uppercase tracking-wide mb-0.5">Ansvarig</div>
+                    <div className="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-0.5">Ansvarig</div>
                     <p className="text-xs text-gray-600">{item.responsible}</p>
                   </div>
                   <div className="flex-1 rounded-lg bg-gray-500/8 border border-gray-500/20 px-3 py-2">
-                    <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-0.5">Target</div>
+                    <div className="text-xs font-semibold text-gray-9000 uppercase tracking-wide mb-0.5">Target</div>
                     <p className="text-xs text-gray-600">{item.targetDate}</p>
                   </div>
                 </div>
@@ -739,15 +739,15 @@ export function StrategicBrief() {
   ]
 
   return (
-    <div className="h-full flex flex-col bg-gray-950 text-gray-900 overflow-hidden">
+    <div className="h-full flex flex-col bg-gray-50 text-gray-900 overflow-hidden">
       {/* Header */}
       <div className="flex items-center gap-3 px-4 md:px-6 py-4 border-b border-gray-200 flex-shrink-0">
         <div className="w-9 h-9 rounded-xl bg-purple-500/20 flex items-center justify-center text-base">🏛️</div>
         <div>
           <h1 className="text-lg font-bold text-gray-900">Strategic Brief</h1>
-          <p className="text-xs text-gray-500">Mission · Positioning · Konkurrenter · Marknad · Material · Compliance</p>
+          <p className="text-xs text-gray-9000">Mission · Positioning · Konkurrenter · Marknad · Material · Compliance</p>
         </div>
-        <div className="ml-auto text-xs text-gray-500 italic hidden sm:block">
+        <div className="ml-auto text-xs text-gray-9000 italic hidden sm:block">
           Uppdaterad 2026-03-28
         </div>
       </div>
@@ -761,7 +761,7 @@ export function StrategicBrief() {
             className={`flex items-center gap-1.5 text-xs px-3 py-2 rounded-t-lg font-medium border-b-2 transition-all whitespace-nowrap ${
               activeTab === t.id
                 ? 'text-gray-900 border-purple-500 bg-white/8'
-                : 'text-gray-500 border-transparent hover:text-gray-900 hover:bg-white/5'
+                : 'text-gray-9000 border-transparent hover:text-gray-900 hover:bg-gray-50'
             }`}
           >
             <span>{t.icon}</span>
@@ -769,7 +769,7 @@ export function StrategicBrief() {
           </button>
         ))}
       </div>
-      <div className="h-px bg-white/10 flex-shrink-0" />
+      <div className="h-px bg-gray-100 flex-shrink-0" />
 
       {/* Content */}
       <div className="flex-1 overflow-auto p-5">

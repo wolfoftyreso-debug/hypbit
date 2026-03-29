@@ -73,7 +73,7 @@ export function ExportView() {
 
           {/* Report type */}
           <div>
-            <p className="text-xs text-gray-500 font-mono uppercase tracking-widest mb-2">1. Välj rapport</p>
+            <p className="text-xs text-gray-9000 font-mono uppercase tracking-widest mb-2">1. Välj rapport</p>
             <div className="space-y-2">
               {REPORT_OPTIONS.map(opt => (
                 <button
@@ -82,7 +82,7 @@ export function ExportView() {
                   className={`w-full flex items-start gap-3 px-4 py-3 rounded-xl border text-left transition-all ${
                     selectedReport === opt.id
                       ? 'border-[#6C63FF]/50 bg-[#6C63FF]/10'
-                      : 'border-gray-200 bg-white/[0.02] hover:border-white/[0.12] hover:bg-white/[0.04]'
+                      : 'border-gray-200 bg-gray-50 hover:border-gray-200 hover:bg-gray-50'
                   }`}
                 >
                   <span className="text-xl flex-shrink-0 mt-0.5">{opt.icon}</span>
@@ -91,9 +91,9 @@ export function ExportView() {
                       <span className={`text-xs font-semibold ${selectedReport === opt.id ? 'text-gray-900' : 'text-gray-600'}`}>
                         {opt.label}
                       </span>
-                      <span className="text-[9px] text-gray-500 font-mono">{opt.pages}</span>
+                      <span className="text-[9px] text-gray-9000 font-mono">{opt.pages}</span>
                     </div>
-                    <p className="text-xs text-gray-500 mt-0.5 leading-snug">{opt.description}</p>
+                    <p className="text-xs text-gray-9000 mt-0.5 leading-snug">{opt.description}</p>
                   </div>
                   {selectedReport === opt.id && (
                     <span className="text-[#6C63FF] flex-shrink-0 mt-1"><CheckIcon /></span>
@@ -105,7 +105,7 @@ export function ExportView() {
 
           {/* Period */}
           <div>
-            <p className="text-xs text-gray-500 font-mono uppercase tracking-widest mb-2">2. Period</p>
+            <p className="text-xs text-gray-9000 font-mono uppercase tracking-widest mb-2">2. Period</p>
             <div className="grid grid-cols-2 gap-2">
               {PERIOD_OPTIONS.map(p => (
                 <button
@@ -114,7 +114,7 @@ export function ExportView() {
                   className={`px-3 py-2.5 rounded-lg border text-xs text-left transition-all ${
                     selectedPeriod === p.id
                       ? 'border-[#6C63FF]/50 bg-[#6C63FF]/10 text-gray-900'
-                      : 'border-gray-200 bg-white/[0.02] text-gray-500 hover:text-gray-800'
+                      : 'border-gray-200 bg-gray-50 text-gray-9000 hover:text-gray-800'
                   }`}
                 >
                   {p.label}
@@ -125,7 +125,7 @@ export function ExportView() {
 
           {/* Entity */}
           <div>
-            <p className="text-xs text-gray-500 font-mono uppercase tracking-widest mb-2">3. Entitet</p>
+            <p className="text-xs text-gray-9000 font-mono uppercase tracking-widest mb-2">3. Entitet</p>
             <div className="space-y-1.5">
               {ENTITY_FINANCIALS.map(e => (
                 <button
@@ -133,8 +133,8 @@ export function ExportView() {
                   onClick={() => setSelectedEntity(e.id)}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg border text-xs transition-all ${
                     selectedEntity === e.id
-                      ? 'border-white/[0.15] bg-white/[0.06] text-gray-900'
-                      : 'border-gray-100 bg-white/[0.01] text-gray-500 hover:text-gray-800'
+                      ? 'border-white/[0.15] bg-gray-50 text-gray-900'
+                      : 'border-gray-100 bg-white/[0.01] text-gray-9000 hover:text-gray-800'
                   }`}
                 >
                   <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: e.color }} />
@@ -149,7 +149,7 @@ export function ExportView() {
 
           {/* Format */}
           <div>
-            <p className="text-xs text-gray-500 font-mono uppercase tracking-widest mb-2">4. Format</p>
+            <p className="text-xs text-gray-9000 font-mono uppercase tracking-widest mb-2">4. Format</p>
             <div className="flex gap-2">
               {FORMAT_OPTIONS.map(f => (
                 <button
@@ -158,12 +158,12 @@ export function ExportView() {
                   className={`flex-1 flex flex-col items-center gap-1 px-3 py-3 rounded-xl border transition-all ${
                     selectedFormat === f.id
                       ? 'border-[#6C63FF]/50 bg-[#6C63FF]/10'
-                      : 'border-gray-200 bg-white/[0.02] hover:border-gray-200'
+                      : 'border-gray-200 bg-gray-50 hover:border-gray-200'
                   }`}
                 >
                   <span className="text-xl">{f.icon}</span>
-                  <span className={`text-xs font-bold ${selectedFormat === f.id ? 'text-gray-900' : 'text-gray-500'}`}>{f.label}</span>
-                  <span className="text-[9px] text-gray-500">{f.desc}</span>
+                  <span className={`text-xs font-bold ${selectedFormat === f.id ? 'text-gray-900' : 'text-gray-9000'}`}>{f.label}</span>
+                  <span className="text-[9px] text-gray-9000">{f.desc}</span>
                 </button>
               ))}
             </div>
@@ -175,40 +175,40 @@ export function ExportView() {
 
           {/* Preview card */}
           <div>
-            <p className="text-xs text-gray-500 font-mono uppercase tracking-widest mb-2">Förhandsgranskning</p>
-            <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl p-5 space-y-3">
+            <p className="text-xs text-gray-9000 font-mono uppercase tracking-widest mb-2">Förhandsgranskning</p>
+            <div className="bg-gray-50 border border-white/[0.07] rounded-xl p-5 space-y-3">
               <div className="flex items-center gap-3">
                 <span className="text-3xl">{report.icon}</span>
                 <div>
                   <p className="text-[14px] font-bold text-gray-900">{report.label}</p>
-                  <p className="text-xs text-gray-500">{report.pages}</p>
+                  <p className="text-xs text-gray-9000">{report.pages}</p>
                 </div>
               </div>
 
               <div className="space-y-1.5 text-xs">
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Entitet</span>
+                  <span className="text-gray-9000">Entitet</span>
                   <div className="flex items-center gap-1.5">
                     <span className="h-1.5 w-1.5 rounded-full" style={{ background: entity.color }} />
                     <span className="text-gray-600">{entity.shortName}</span>
                   </div>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Period</span>
+                  <span className="text-gray-9000">Period</span>
                   <span className="text-gray-600">{period.label}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Format</span>
+                  <span className="text-gray-9000">Format</span>
                   <span className="text-gray-600 uppercase font-mono">{selectedFormat}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Filnamn</span>
-                  <span className="text-gray-500 font-mono text-[9px] truncate max-w-[180px]">{filename}</span>
+                  <span className="text-gray-9000">Filnamn</span>
+                  <span className="text-gray-9000 font-mono text-[9px] truncate max-w-[180px]">{filename}</span>
                 </div>
               </div>
 
               <div className="pt-1 border-t border-gray-200">
-                <p className="text-xs text-gray-500 leading-relaxed">{report.description}</p>
+                <p className="text-xs text-gray-9000 leading-relaxed">{report.description}</p>
               </div>
             </div>
           </div>
@@ -221,7 +221,7 @@ export function ExportView() {
               generating
                 ? 'bg-[#6C63FF]/30 text-[#6C63FF]/60 cursor-not-allowed'
                 : generated
-                ? 'bg-green-500/20 border border-green-500/30 text-green-400'
+                ? 'bg-green-500/20 border border-green-500/30 text-green-700'
                 : 'bg-[#6C63FF] hover:bg-[#7C73FF] text-gray-900 shadow-lg shadow-[#6C63FF]/30 active:scale-95'
             }`}
           >
@@ -249,18 +249,18 @@ export function ExportView() {
           {generated && (
             <div className="bg-green-500/5 border border-green-500/20 rounded-xl p-4 space-y-2">
               <div className="flex items-center gap-2">
-                <span className="text-green-400 text-sm">✅</span>
-                <p className="text-xs font-semibold text-green-400">Rapport genererad</p>
+                <span className="text-green-700 text-sm">✅</span>
+                <p className="text-xs font-semibold text-green-700">Rapport genererad</p>
               </div>
-              <p className="text-xs text-gray-500">{filename}</p>
+              <p className="text-xs text-gray-9000">{filename}</p>
               <div className="flex gap-2 mt-2">
                 <button
                   onClick={() => setGenerated(false)}
-                  className="flex-1 py-2 rounded-lg bg-white/[0.04] border border-gray-200 text-xs text-gray-600 hover:text-gray-900 transition-colors"
+                  className="flex-1 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   Ny rapport
                 </button>
-                <button className="flex-1 py-2 rounded-lg bg-white/[0.04] border border-gray-200 text-xs text-gray-600 hover:text-gray-900 transition-colors">
+                <button className="flex-1 py-2 rounded-lg bg-gray-50 border border-gray-200 text-xs text-gray-600 hover:text-gray-900 transition-colors">
                   Schemalägg
                 </button>
               </div>
@@ -268,8 +268,8 @@ export function ExportView() {
           )}
 
           {/* Scheduled reports hint */}
-          <div className="bg-white/[0.02] border border-gray-200 rounded-xl p-4">
-            <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-2">Schemalagda rapporter</p>
+          <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+            <p className="text-xs text-gray-9000 font-mono uppercase tracking-wider mb-2">Schemalagda rapporter</p>
             <div className="space-y-2">
               {[
                 { label: 'Executive Summary', freq: 'Varje måndag 08:00', next: '30 mar' },
@@ -277,9 +277,9 @@ export function ExportView() {
               ].map((r, i) => (
                 <div key={i} className="flex items-center gap-2 text-xs">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#6C63FF] flex-shrink-0" />
-                  <span className="flex-1 text-gray-500">{r.label}</span>
-                  <span className="text-gray-500 font-mono">{r.freq}</span>
-                  <span className="text-gray-500">→ {r.next}</span>
+                  <span className="flex-1 text-gray-9000">{r.label}</span>
+                  <span className="text-gray-9000 font-mono">{r.freq}</span>
+                  <span className="text-gray-9000">→ {r.next}</span>
                 </div>
               ))}
             </div>

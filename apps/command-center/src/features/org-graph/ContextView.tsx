@@ -207,13 +207,13 @@ function NodeDetail({ node, onClose, onDashboard }: {
                   {node.status}
                 </span>
               )}
-              <span className="text-xs px-2 py-0.5 rounded-full bg-white/[0.05] text-gray-500 font-mono">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-gray-50 text-gray-9000 font-mono">
                 {node.type}
               </span>
             </div>
             <div className="text-sm text-gray-600 mt-1">{node.sublabel}</div>
           </div>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-900 transition-colors text-lg ml-3">✕</button>
+          <button onClick={onClose} className="text-gray-9000 hover:text-gray-900 transition-colors text-lg ml-3">✕</button>
         </div>
 
         {/* Actions */}
@@ -227,7 +227,7 @@ function NodeDetail({ node, onClose, onDashboard }: {
               Open Dashboard →
             </button>
           )}
-          <span className="text-xs px-2 py-1.5 rounded-lg bg-white/[0.03] text-gray-500 border border-gray-200">
+          <span className="text-xs px-2 py-1.5 rounded-lg bg-gray-50 text-gray-9000 border border-gray-200">
             {node.position === 'above' ? '▲ Above you' : node.position === 'self' ? '🎯 Your role' : '▼ Below you'}
           </span>
         </div>
@@ -237,11 +237,11 @@ function NodeDetail({ node, onClose, onDashboard }: {
         {/* Metadata */}
         {node.metadata && Object.keys(node.metadata).length > 0 && (
           <div>
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Details</h3>
+            <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Details</h3>
             <div className="space-y-2.5">
               {Object.entries(node.metadata).map(([k, v]) => (
                 <div key={k} className="flex gap-3">
-                  <span className="text-xs text-gray-500 w-28 flex-shrink-0 font-mono">{k}</span>
+                  <span className="text-xs text-gray-9000 w-28 flex-shrink-0 font-mono">{k}</span>
                   <span className="text-xs text-gray-600">{v}</span>
                 </div>
               ))}
@@ -252,7 +252,7 @@ function NodeDetail({ node, onClose, onDashboard }: {
         {/* Role info */}
         {node.roleMapping && (
           <div>
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Role</h3>
+            <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Role</h3>
             <div className="rounded-xl border px-4 py-3" style={{ borderColor: node.color + '25', background: node.color + '08' }}>
               <div className="flex items-center gap-3">
                 <div className="h-9 w-9 rounded-full flex items-center justify-center font-bold"
@@ -261,12 +261,12 @@ function NodeDetail({ node, onClose, onDashboard }: {
                 </div>
                 <div>
                   <div className="text-sm font-semibold text-gray-900">{node.roleMapping.person}</div>
-                  <div className="text-xs text-gray-500">{node.roleMapping.role_type} · {node.roleMapping.scope}</div>
+                  <div className="text-xs text-gray-9000">{node.roleMapping.role_type} · {node.roleMapping.scope}</div>
                 </div>
               </div>
               <div className="flex flex-wrap gap-1.5 mt-3 pl-12">
                 {node.roleMapping.permissions.map(p => (
-                  <span key={p} className="text-xs px-2 py-0.5 rounded bg-white/[0.05] text-gray-500 font-mono">{p}</span>
+                  <span key={p} className="text-xs px-2 py-0.5 rounded bg-gray-50 text-gray-9000 font-mono">{p}</span>
                 ))}
               </div>
             </div>
@@ -276,7 +276,7 @@ function NodeDetail({ node, onClose, onDashboard }: {
         {/* Children preview */}
         {node.children && node.children.length > 0 && (
           <div>
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+            <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">
               Subordinates ({node.children.length})
             </h3>
             <div className="space-y-2">
@@ -287,7 +287,7 @@ function NodeDetail({ node, onClose, onDashboard }: {
                   <span className="text-base">{c.flag}</span>
                   <div className="flex-1 min-w-0">
                     <div className="text-xs font-semibold" style={{ color: c.color }}>{c.label}</div>
-                    <div className="text-xs text-gray-500 truncate">{c.sublabel}</div>
+                    <div className="text-xs text-gray-9000 truncate">{c.sublabel}</div>
                   </div>
                   {c.status && (
                     <span className="text-xs w-2 h-2 rounded-full flex-shrink-0"
@@ -395,7 +395,7 @@ export function ContextView() {
                 <span>{overlayInfo.label}</span>
               </div>
             </div>
-            <p className="text-xs text-gray-500 mt-0.5">
+            <p className="text-xs text-gray-9000 mt-0.5">
               Wavult Group → {effectiveRole?.title ?? 'Group CEO'} — {nodes.length} nodes in view
             </p>
           </div>
@@ -403,7 +403,7 @@ export function ContextView() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => navigate('/org')}
-              className="text-xs text-gray-500 hover:text-gray-600 px-2.5 py-1.5 rounded-lg border border-gray-200 transition-colors"
+              className="text-xs text-gray-9000 hover:text-gray-600 px-2.5 py-1.5 rounded-lg border border-gray-200 transition-colors"
             >
               ← Corporate Graph
             </button>

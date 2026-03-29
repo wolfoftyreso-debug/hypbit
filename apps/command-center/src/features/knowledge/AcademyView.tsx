@@ -4044,7 +4044,7 @@ function saveProgress(p: ProgressMap) {
 function ProgressBar({ value, max, color }: { value: number; max: number; color: string }) {
   const pct = max === 0 ? 0 : Math.round((value / max) * 100)
   return (
-    <div className="w-full bg-white/[0.06] rounded-full h-1.5 overflow-hidden">
+    <div className="w-full bg-gray-50 rounded-full h-1.5 overflow-hidden">
       <div
         className="h-full rounded-full transition-all duration-500"
         style={{ width: `${pct}%`, background: color }}
@@ -4074,7 +4074,7 @@ function LessonModal({ course, lessonIndex, progress, onUpdate, onClose }: {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/70 backdrop-blur-sm" onClick={onClose}>
       <div
         className="bg-white border border-surface-border rounded-xl w-full max-w-2xl mx-4 flex flex-col max-h-[90vh]"
         onClick={e => e.stopPropagation()}
@@ -4084,10 +4084,10 @@ function LessonModal({ course, lessonIndex, progress, onUpdate, onClose }: {
           <div className="flex items-center gap-3 mb-3">
             <span className="text-2xl">{course.icon}</span>
             <div className="flex-1">
-              <p className="text-xs text-gray-500 font-mono uppercase">{course.title}</p>
+              <p className="text-xs text-gray-9000 font-mono uppercase">{course.title}</p>
               <h2 className="text-sm font-semibold text-gray-900">{lesson.title}</h2>
             </div>
-            <button onClick={onClose} className="text-gray-500 hover:text-gray-600 text-xl leading-none">×</button>
+            <button onClick={onClose} className="text-gray-9000 hover:text-gray-600 text-xl leading-none">×</button>
           </div>
 
           {/* Lesson selector */}
@@ -4101,7 +4101,7 @@ function LessonModal({ course, lessonIndex, progress, onUpdate, onClose }: {
                     ? 'text-gray-900'
                     : i < progress
                     ? 'text-green-500 bg-green-500/10'
-                    : 'text-gray-500 bg-white/[0.03] hover:text-gray-500'
+                    : 'text-gray-9000 bg-gray-50 hover:text-gray-9000'
                 }`}
                 style={i === currentLesson ? { background: course.color + '25', color: course.color } : {}}
               >
@@ -4120,7 +4120,7 @@ function LessonModal({ course, lessonIndex, progress, onUpdate, onClose }: {
             >
               Lektion {currentLesson + 1} av {course.lessons.length}
             </div>
-            <span className="text-xs text-gray-500 font-mono">~{lesson.duration} min</span>
+            <span className="text-xs text-gray-9000 font-mono">~{lesson.duration} min</span>
             {isCompleted && (
               <span className="text-xs text-green-500 font-mono ml-auto">✓ Avklarad</span>
             )}
@@ -4139,7 +4139,7 @@ function LessonModal({ course, lessonIndex, progress, onUpdate, onClose }: {
               if (line.startsWith('• ')) {
                 return (
                   <div key={i} className="flex gap-2 text-xs text-gray-600 leading-relaxed pl-2">
-                    <span className="text-gray-500 flex-shrink-0">•</span>
+                    <span className="text-gray-9000 flex-shrink-0">•</span>
                     <span dangerouslySetInnerHTML={{ __html: line.slice(2).replace(/\*\*(.+?)\*\*/g, '<strong class="text-gray-900">$1</strong>') }} />
                   </div>
                 )
@@ -4157,7 +4157,7 @@ function LessonModal({ course, lessonIndex, progress, onUpdate, onClose }: {
         {/* Footer */}
         <div className="flex-shrink-0 p-4 border-t border-gray-200">
           <ProgressBar value={progress} max={course.lessons.length} color={course.color} />
-          <p className="text-xs text-gray-500 font-mono mt-1 mb-3">
+          <p className="text-xs text-gray-9000 font-mono mt-1 mb-3">
             {progress}/{course.lessons.length} lektioner avklarade
           </p>
 
@@ -4165,14 +4165,14 @@ function LessonModal({ course, lessonIndex, progress, onUpdate, onClose }: {
             <button
               onClick={() => setCurrentLesson(Math.max(0, currentLesson - 1))}
               disabled={currentLesson === 0}
-              className="px-3 py-1.5 rounded-lg text-xs text-gray-500 border border-surface-border hover:text-gray-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              className="px-3 py-1.5 rounded-lg text-xs text-gray-9000 border border-surface-border hover:text-gray-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
             >
               ← Föregående
             </button>
 
             <div className="flex-1" />
 
-            <button onClick={onClose} className="px-3 py-1.5 rounded-lg text-xs text-gray-500 border border-surface-border hover:text-gray-600 transition-colors">
+            <button onClick={onClose} className="px-3 py-1.5 rounded-lg text-xs text-gray-9000 border border-surface-border hover:text-gray-600 transition-colors">
               Stäng
             </button>
 
@@ -4239,11 +4239,11 @@ export function AcademyView() {
     <div className="h-full flex flex-col">
       {/* Onboarding "Var börjar jag?" — visas tills 2 kurser är klara */}
       {showOnboarding && (
-        <div className="mb-4 bg-white border border-brand-accent/20 rounded-xl p-4">
+        <div className="mb-4 bg-white border border-purple-200 rounded-xl p-4">
           <div className="flex items-center gap-2 mb-2">
             <span className="text-base">🧭</span>
             <h3 className="text-sm font-semibold text-gray-900">Ny här? Börja i den här ordningen</h3>
-            <span className="ml-auto text-xs text-gray-500 font-mono">Försvinner när 2 kurser är klara</span>
+            <span className="ml-auto text-xs text-gray-9000 font-mono">Försvinner när 2 kurser är klara</span>
           </div>
           <div className="flex flex-wrap gap-2">
             {ONBOARDING_ORDER.map((item, idx) => {
@@ -4259,15 +4259,15 @@ export function AcademyView() {
                   }}
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs border transition-all ${
                     done
-                      ? 'border-green-500/20 bg-green-500/5 text-green-400'
-                      : 'border-brand-accent/20 bg-brand-accent/5 text-gray-600 hover:text-gray-900 hover:border-brand-accent/40'
+                      ? 'border-green-500/20 bg-green-500/5 text-green-700'
+                      : 'border-purple-200 bg-purple-50 text-gray-600 hover:text-gray-900 hover:border-brand-accent/40'
                   }`}
                 >
-                  <span className="font-mono text-gray-500">{idx + 1}.</span>
+                  <span className="font-mono text-gray-9000">{idx + 1}.</span>
                   <span>{course.icon}</span>
                   <span>{course.title}</span>
                   {done && <span className="text-green-500">✓</span>}
-                  {!done && <span className="text-gray-500 text-xs">— {item.reason}</span>}
+                  {!done && <span className="text-gray-9000 text-xs">— {item.reason}</span>}
                 </button>
               )
             })}
@@ -4278,24 +4278,24 @@ export function AcademyView() {
       {/* Header stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
         <div className="bg-white border border-surface-border rounded-xl p-4">
-          <p className="text-xs text-gray-500 font-mono mb-1">TOTAL PROGRESS</p>
+          <p className="text-xs text-gray-9000 font-mono mb-1">TOTAL PROGRESS</p>
           <p className="text-2xl font-bold text-gray-900">{overallPct}%</p>
           <div className="mt-2">
             <ProgressBar value={completedLessons} max={totalLessons} color="#8B5CF6" />
           </div>
         </div>
         <div className="bg-white border border-surface-border rounded-xl p-4">
-          <p className="text-xs text-gray-500 font-mono mb-1">KURSER KLARA</p>
+          <p className="text-xs text-gray-9000 font-mono mb-1">KURSER KLARA</p>
           <p className="text-2xl font-bold text-gray-900">
             {COURSES.filter(c => (progress[c.id] ?? 0) >= c.lessons.length).length}
-            <span className="text-base text-gray-500">/{COURSES.length}</span>
+            <span className="text-base text-gray-9000">/{COURSES.length}</span>
           </p>
         </div>
         <div className="bg-white border border-surface-border rounded-xl p-4">
-          <p className="text-xs text-gray-500 font-mono mb-1">LEKTIONER KLARA</p>
+          <p className="text-xs text-gray-9000 font-mono mb-1">LEKTIONER KLARA</p>
           <p className="text-2xl font-bold text-gray-900">
             {completedLessons}
-            <span className="text-base text-gray-500">/{totalLessons}</span>
+            <span className="text-base text-gray-9000">/{totalLessons}</span>
           </p>
         </div>
       </div>
@@ -4319,7 +4319,7 @@ export function AcademyView() {
                 <span className="text-3xl">{course.icon}</span>
                 <div className="flex flex-col items-end gap-1">
                   {isComplete && (
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/15 text-green-400 font-mono border border-green-500/20">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/15 text-green-700 font-mono border border-green-500/20">
                       ✓ Klar
                     </span>
                   )}
@@ -4337,10 +4337,10 @@ export function AcademyView() {
                 </div>
               </div>
 
-              <h3 className="text-sm font-semibold text-gray-900 mb-1.5 group-hover:text-brand-accent transition-colors">
+              <h3 className="text-sm font-semibold text-gray-900 mb-1.5 group-hover:text-purple-700 transition-colors">
                 {course.title}
               </h3>
-              <p className="text-xs text-gray-500 leading-relaxed mb-4">{course.description}</p>
+              <p className="text-xs text-gray-9000 leading-relaxed mb-4">{course.description}</p>
 
               {/* Next lesson preview */}
               {!isComplete && (
@@ -4355,8 +4355,8 @@ export function AcademyView() {
               <div className="space-y-2">
                 <ProgressBar value={done} max={total} color={course.color} />
                 <div className="flex justify-between text-xs font-mono">
-                  <span className="text-gray-500">{done}/{total} lektioner</span>
-                  <span className="text-gray-500">
+                  <span className="text-gray-9000">{done}/{total} lektioner</span>
+                  <span className="text-gray-9000">
                     ~{course.lessons.reduce((s, l) => s + l.duration, 0)} min totalt
                   </span>
                 </div>

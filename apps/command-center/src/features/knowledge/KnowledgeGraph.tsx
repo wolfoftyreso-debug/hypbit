@@ -186,9 +186,9 @@ export function KnowledgeGraph() {
               system: '#3B82F6', person: '#EC4899', market: '#0EA5E9'
             }
             return (
-              <div key={type} className="flex items-center gap-1.5 bg-black/40 px-2 py-1 rounded-lg">
+              <div key={type} className="flex items-center gap-1.5 bg-white/40 px-2 py-1 rounded-lg">
                 <div className="h-2 w-2 rounded-full" style={{ background: colorMap[type] }} />
-                <span className="text-[9px] text-gray-500 font-mono">{TYPE_LABELS[type]}</span>
+                <span className="text-[9px] text-gray-9000 font-mono">{TYPE_LABELS[type]}</span>
               </div>
             )
           })}
@@ -204,18 +204,18 @@ export function KnowledgeGraph() {
       {/* Info panel */}
       <div className="w-72 flex-shrink-0 flex flex-col gap-3">
         <div className="bg-white border border-surface-border rounded-xl p-4 flex-shrink-0">
-          <h3 className="text-xs font-mono text-gray-500 mb-3">KUNSKAPSGRAF</h3>
-          <p className="text-xs text-gray-500 leading-relaxed">
+          <h3 className="text-xs font-mono text-gray-9000 mb-3">KUNSKAPSGRAF</h3>
+          <p className="text-xs text-gray-9000 leading-relaxed">
             Interaktiv karta över Wavult Groups bolag, system och relationer.
             Klicka på en nod för att se detaljer.
           </p>
           <div className="mt-3 pt-3 border-t border-surface-border">
-            <div className="flex justify-between text-xs font-mono text-gray-500">
-              <span>Noder</span><span className="text-gray-500">{GRAPH_NODES.length}</span>
+            <div className="flex justify-between text-xs font-mono text-gray-9000">
+              <span>Noder</span><span className="text-gray-9000">{GRAPH_NODES.length}</span>
             </div>
-            <div className="flex justify-between text-xs font-mono text-gray-500 mt-1">
+            <div className="flex justify-between text-xs font-mono text-gray-9000 mt-1">
               <span>Kopplingar</span>
-              <span className="text-gray-500">
+              <span className="text-gray-9000">
                 {GRAPH_NODES.reduce((sum, n) => sum + (n.links?.length ?? 0), 0)}
               </span>
             </div>
@@ -236,11 +236,11 @@ export function KnowledgeGraph() {
               {TYPE_LABELS[selectedNode.type]}
             </div>
 
-            <p className="text-xs text-gray-500 leading-relaxed mb-4">{selectedNode.description}</p>
+            <p className="text-xs text-gray-9000 leading-relaxed mb-4">{selectedNode.description}</p>
 
             {selectedNode.links && selectedNode.links.length > 0 && (
               <div>
-                <p className="text-xs text-gray-500 font-mono mb-2">KOPPLINGAR ({selectedNode.links.length})</p>
+                <p className="text-xs text-gray-9000 font-mono mb-2">KOPPLINGAR ({selectedNode.links.length})</p>
                 <div className="flex flex-col gap-1">
                   {selectedNode.links.map(linkId => {
                     const linked = GRAPH_NODES.find(n => n.id === linkId)
@@ -248,7 +248,7 @@ export function KnowledgeGraph() {
                     return (
                       <div key={linkId} className="flex items-center gap-2">
                         <div className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: linked.color }} />
-                        <span className="text-xs text-gray-500">{linked.name}</span>
+                        <span className="text-xs text-gray-9000">{linked.name}</span>
                       </div>
                     )
                   })}
@@ -263,7 +263,7 @@ export function KnowledgeGraph() {
         ) : (
           <div className="bg-white border border-surface-border rounded-xl p-4 flex-1 flex flex-col items-center justify-center text-center">
             <span className="text-3xl mb-2">🔬</span>
-            <p className="text-xs text-gray-500">Klicka på en nod i grafen för att se detaljer</p>
+            <p className="text-xs text-gray-9000">Klicka på en nod i grafen för att se detaljer</p>
           </div>
         )}
       </div>

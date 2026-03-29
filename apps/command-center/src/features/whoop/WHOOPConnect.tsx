@@ -122,7 +122,7 @@ export function WHOOPConnect() {
   if (loading) {
     return (
       <div className="rounded-2xl border border-gray-200 bg-white p-6 animate-pulse">
-        <div className="h-8 w-48 bg-white/5 rounded-lg" />
+        <div className="h-8 w-48 bg-gray-50 rounded-lg" />
       </div>
     )
   }
@@ -136,10 +136,10 @@ export function WHOOPConnect() {
           <span className="text-3xl">⌚</span>
           <div>
             <h2 className="text-gray-900 font-semibold text-lg">WHOOP</h2>
-            <p className="text-gray-500 text-sm">Inte kopplat</p>
+            <p className="text-gray-9000 text-sm">Inte kopplat</p>
           </div>
         </div>
-        <p className="text-gray-500 text-sm leading-relaxed">
+        <p className="text-gray-9000 text-sm leading-relaxed">
           Wavult Group har WHOOP-armband till hela teamet. Koppla ditt konto för att
           synka recovery, sömn och belastning med Wavult OS.
         </p>
@@ -169,11 +169,11 @@ export function WHOOPConnect() {
           <span className="text-3xl">⌚</span>
           <div>
             <h2 className="text-gray-900 font-semibold text-lg">WHOOP</h2>
-            <p className="text-xs text-green-400 font-mono">● Kopplat</p>
+            <p className="text-xs text-green-700 font-mono">● Kopplat</p>
           </div>
         </div>
         {data?.last_updated && (
-          <span className="text-xs text-gray-500 font-mono">
+          <span className="text-xs text-gray-9000 font-mono">
             {new Date(data.last_updated).toLocaleString('sv-SE', {
               hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short',
             })}
@@ -195,7 +195,7 @@ export function WHOOPConnect() {
         >
           {label}
         </div>
-        <div className="mt-1 text-xs text-gray-500 font-mono uppercase tracking-wider">
+        <div className="mt-1 text-xs text-gray-9000 font-mono uppercase tracking-wider">
           Recovery
         </div>
       </div>
@@ -203,46 +203,46 @@ export function WHOOPConnect() {
       {/* Metrics grid */}
       <div className="grid grid-cols-3 gap-3">
         {/* HRV */}
-        <div className="rounded-xl bg-white/[0.03] border border-gray-200 p-3 text-center">
+        <div className="rounded-xl bg-gray-50 border border-gray-200 p-3 text-center">
           <div className="text-xl font-bold text-gray-900 tabular-nums">
             {data?.recovery?.hrv != null ? Math.round(data.recovery.hrv) : '—'}
           </div>
-          <div className="text-xs text-gray-500 font-mono mt-1">HRV ms</div>
+          <div className="text-xs text-gray-9000 font-mono mt-1">HRV ms</div>
         </div>
 
         {/* Sömn % */}
-        <div className="rounded-xl bg-white/[0.03] border border-gray-200 p-3 text-center">
+        <div className="rounded-xl bg-gray-50 border border-gray-200 p-3 text-center">
           <div className="text-xl font-bold text-gray-900 tabular-nums">
             {data?.sleep?.performancePercent != null
               ? `${Math.round(data.sleep.performancePercent)}%`
               : '—'}
           </div>
-          <div className="text-xs text-gray-500 font-mono mt-1">Sömn</div>
+          <div className="text-xs text-gray-9000 font-mono mt-1">Sömn</div>
         </div>
 
         {/* Strain */}
-        <div className="rounded-xl bg-white/[0.03] border border-gray-200 p-3 text-center">
+        <div className="rounded-xl bg-gray-50 border border-gray-200 p-3 text-center">
           <div className="text-xl font-bold text-gray-900 tabular-nums">
             {data?.strain?.score != null
               ? Math.round(data.strain.score * 10) / 10
               : '—'}
           </div>
-          <div className="text-xs text-gray-500 font-mono mt-1">Strain /21</div>
+          <div className="text-xs text-gray-9000 font-mono mt-1">Strain /21</div>
         </div>
       </div>
 
       {/* Extra: sömn duration + vila HR */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-xl bg-white/[0.03] border border-gray-200 p-3">
-          <div className="text-xs text-gray-500 font-mono mb-1">Sovtid</div>
+        <div className="rounded-xl bg-gray-50 border border-gray-200 p-3">
+          <div className="text-xs text-gray-9000 font-mono mb-1">Sovtid</div>
           <div className="text-sm font-semibold text-gray-900">
             {data?.sleep?.durationHours != null
               ? `${data.sleep.durationHours}h`
               : '—'}
           </div>
         </div>
-        <div className="rounded-xl bg-white/[0.03] border border-gray-200 p-3">
-          <div className="text-xs text-gray-500 font-mono mb-1">Vilopuls</div>
+        <div className="rounded-xl bg-gray-50 border border-gray-200 p-3">
+          <div className="text-xs text-gray-9000 font-mono mb-1">Vilopuls</div>
           <div className="text-sm font-semibold text-gray-900">
             {data?.recovery?.restingHr != null
               ? `${Math.round(data.recovery.restingHr)} bpm`
@@ -252,7 +252,7 @@ export function WHOOPConnect() {
       </div>
 
       {data?.cached && (
-        <p className="text-xs text-gray-500 text-center">
+        <p className="text-xs text-gray-9000 text-center">
           Visar cachad data — kunde inte nå WHOOP API just nu
         </p>
       )}
@@ -262,7 +262,7 @@ export function WHOOPConnect() {
         <button
           onClick={handleDisconnect}
           disabled={disconnecting}
-          className="text-xs text-gray-500 hover:text-red-400 transition-colors disabled:opacity-50"
+          className="text-xs text-gray-9000 hover:text-red-700 transition-colors disabled:opacity-50"
         >
           {disconnecting ? 'Kopplar bort…' : 'Koppla bort WHOOP'}
         </button>

@@ -21,12 +21,12 @@ export function ModuleHeader({ moduleId }: ModuleHeaderProps) {
         <div className="flex items-center gap-2">
           <span className="text-xl font-semibold text-gray-900">{mod.name}</span>
           <MaturityBadge level={mod.level} size="md" />
-          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/[0.04] text-gray-600 flex-shrink-0">
+          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-gray-50 text-gray-600 flex-shrink-0">
             Fas {mod.phase}
           </span>
         </div>
         <div className="flex items-center gap-2 mt-0.5">
-          <p className="text-sm text-gray-500">{description}</p>
+          <p className="text-sm text-gray-9000">{description}</p>
           {mod.dataSource === 'mock' && (
             <span className="text-[9px] font-mono text-amber-600/70">· mockdata</span>
           )}
@@ -45,7 +45,7 @@ export function ModuleHeader({ moduleId }: ModuleHeaderProps) {
           <div className="text-[9px] text-gray-600 font-mono uppercase tracking-wider mb-0.5">
             Live-features
           </div>
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-gray-9000">
             {mod.liveFeatures.slice(0, 3).join(', ')}
             {mod.liveFeatures.length > 3 ? `… +${mod.liveFeatures.length - 3}` : ''}
           </div>
@@ -63,7 +63,7 @@ export function ModuleHeader({ moduleId }: ModuleHeaderProps) {
 
       {/* Notes */}
       {mod.notes && (
-        <div className="text-[9px] font-mono px-2 py-1 rounded flex-shrink-0 hidden lg:block bg-white/[0.04] text-gray-500">
+        <div className="text-[9px] font-mono px-2 py-1 rounded flex-shrink-0 hidden lg:block bg-gray-50 text-gray-9000">
           {mod.notes}
         </div>
       )}

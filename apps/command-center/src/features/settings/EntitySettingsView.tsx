@@ -121,11 +121,11 @@ function EntityCard({ entity }: { entity: EntityConfig }) {
         </div>
         <div className="flex-1 min-w-0">
           <div className="text-sm font-bold text-gray-900">{entity.name}</div>
-          <div className="text-xs text-gray-500">{entity.country}{entity.orgNumber ? ` · ${entity.orgNumber}` : ' · Org.nr (ej registrerat)'}</div>
+          <div className="text-xs text-gray-9000">{entity.country}{entity.orgNumber ? ` · ${entity.orgNumber}` : ' · Org.nr (ej registrerat)'}</div>
         </div>
         <button
           onClick={() => setEditing(e => !e)}
-          className="text-xs text-gray-500 hover:text-gray-600 transition-colors font-mono"
+          className="text-xs text-gray-9000 hover:text-gray-600 transition-colors font-mono"
         >
           {editing ? '✕ stäng' : '✎ redigera'}
         </button>
@@ -141,7 +141,7 @@ function EntityCard({ entity }: { entity: EntityConfig }) {
               <select
                 value={currency}
                 onChange={e => setCurrency(e.target.value)}
-                className="w-full bg-white/[0.04] border border-gray-200 rounded-lg px-2 py-1.5 text-xs text-gray-900 focus:outline-none"
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-2 py-1.5 text-xs text-gray-900 focus:outline-none"
               >
                 <option>SEK</option>
                 <option>EUR</option>
@@ -169,7 +169,7 @@ function EntityCard({ entity }: { entity: EntityConfig }) {
           {/* VAT */}
           <div className="space-y-1">
             <div className="text-[9px] text-gray-600 font-mono uppercase">Momsregistrering</div>
-            <div className="text-xs text-gray-500 font-mono">{entity.vatNumber || <span className="text-gray-500 italic">VAT-nummer (ej registrerat)</span>}</div>
+            <div className="text-xs text-gray-9000 font-mono">{entity.vatNumber || <span className="text-gray-9000 italic">VAT-nummer (ej registrerat)</span>}</div>
           </div>
 
           {/* Address */}
@@ -179,10 +179,10 @@ function EntityCard({ entity }: { entity: EntityConfig }) {
               <input
                 value={address}
                 onChange={e => setAddress(e.target.value)}
-                className="w-full bg-white/[0.04] border border-gray-200 rounded-lg px-2 py-1.5 text-xs text-gray-900 focus:outline-none"
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-2 py-1.5 text-xs text-gray-900 focus:outline-none"
               />
             ) : (
-              <div className="text-xs text-gray-500">{address || <span className="text-gray-500 italic">Lägg till adress</span>}</div>
+              <div className="text-xs text-gray-9000">{address || <span className="text-gray-9000 italic">Lägg till adress</span>}</div>
             )}
           </div>
 
@@ -192,25 +192,25 @@ function EntityCard({ entity }: { entity: EntityConfig }) {
               Bankkontonummer
               <button
                 onClick={() => setShowBank(b => !b)}
-                className="text-gray-500 hover:text-gray-500 transition-colors"
+                className="text-gray-9000 hover:text-gray-9000 transition-colors"
               >
                 {showBank ? '🙈 dölj' : '👁 visa'}
               </button>
             </div>
-            <div className="text-xs font-mono text-gray-500">
+            <div className="text-xs font-mono text-gray-9000">
               {entity.bankAccount
                 ? (showBank ? entity.bankAccount.replace(/•/g, '0') : entity.bankAccount)
-                : <span className="italic text-gray-500">Bankkontonummer (ej registrerat)</span>}
+                : <span className="italic text-gray-9000">Bankkontonummer (ej registrerat)</span>}
             </div>
           </div>
         </div>
 
         {/* Invoice template preview */}
-        <div className="rounded-lg border border-gray-100 bg-white/[0.02] px-3 py-2 text-xs text-gray-500">
+        <div className="rounded-lg border border-gray-100 bg-gray-50 px-3 py-2 text-xs text-gray-9000">
           <div className="font-mono uppercase text-gray-600 mb-1">Fakturamall</div>
-          <div>Logotyp: <span className="text-gray-500">{entity.invoiceLogoUrl || 'ej uppladdad'}</span></div>
-          <div>Adress: <span className="text-gray-500">{address || 'Lägg till adress'}</span></div>
-          <div>Org.nr: <span className="text-gray-500">{entity.orgNumber || 'Org.nr (ej registrerat)'}</span></div>
+          <div>Logotyp: <span className="text-gray-9000">{entity.invoiceLogoUrl || 'ej uppladdad'}</span></div>
+          <div>Adress: <span className="text-gray-9000">{address || 'Lägg till adress'}</span></div>
+          <div>Org.nr: <span className="text-gray-9000">{entity.orgNumber || 'Org.nr (ej registrerat)'}</span></div>
           {editing && (
             <button className="mt-2 text-xs text-blue-700 hover:text-blue-300 transition-colors">
               + Ladda upp logotyp
@@ -225,7 +225,7 @@ function EntityCard({ entity }: { entity: EntityConfig }) {
             {entity.contacts.map((c, i) => (
               <div
                 key={i}
-                className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/[0.02] border border-gray-100"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg bg-gray-50 border border-gray-100"
               >
                 <div
                   className="h-7 w-7 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0"
@@ -235,9 +235,9 @@ function EntityCard({ entity }: { entity: EntityConfig }) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-xs font-semibold text-gray-900">{c.name}</div>
-                  <div className="text-xs text-gray-500">{c.role}</div>
+                  <div className="text-xs text-gray-9000">{c.role}</div>
                 </div>
-                <div className="text-right text-xs text-gray-500">
+                <div className="text-right text-xs text-gray-9000">
                   <div>{c.email}</div>
                   <div>{c.phone}</div>
                 </div>
@@ -269,7 +269,7 @@ function EntityCard({ entity }: { entity: EntityConfig }) {
 export function EntitySettingsView() {
   return (
     <div className="space-y-4">
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-gray-9000">
         Inställningar per bolag — valuta, skatt, fakturamall, bankkonto, kontaktpersoner.
       </p>
       {ENTITIES.map(entity => (

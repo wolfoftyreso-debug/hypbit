@@ -480,5 +480,3 @@ export function SystemGraph() {
   )
 }
 
-  )
-}

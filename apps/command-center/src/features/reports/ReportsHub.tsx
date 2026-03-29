@@ -28,7 +28,7 @@ export function ReportsHub() {
           <span className="text-xl">📊</span>
           <div>
             <h1 className="text-[16px] font-bold text-gray-900">Rapporter & Analytics</h1>
-            <p className="text-xs text-gray-500 font-mono">
+            <p className="text-xs text-gray-9000 font-mono">
               {activeEntity.layer === 0 ? 'Wavult Group — konsoliderat' : activeEntity.name}
             </p>
           </div>
@@ -54,8 +54,8 @@ export function ReportsHub() {
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
               activeTab === tab.id
-                ? 'bg-brand-accent/15 text-brand-accent border border-brand-accent/30'
-                : 'text-gray-500 hover:text-gray-600 hover:bg-white/[0.04]'
+                ? 'bg-purple-50 text-purple-700 border border-purple-200'
+                : 'text-gray-9000 hover:text-gray-600 hover:bg-gray-50'
             }`}
           >
             <span className="text-sm leading-none">{tab.icon}</span>

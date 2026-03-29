@@ -70,11 +70,11 @@ export function LedgerView() {
       <div className="flex items-center justify-between flex-shrink-0">
         <div>
           <h2 className="text-lg font-bold text-gray-900">Huvudbok</h2>
-          <p className="text-xs text-gray-500 mt-0.5">Dubbel bokföring — debet/kredit per transaktion</p>
+          <p className="text-xs text-gray-9000 mt-0.5">Dubbel bokföring — debet/kredit per transaktion</p>
         </div>
         <button
           onClick={() => exportCSV(filtered)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.06] hover:bg-white/[0.10] text-gray-900 text-xs transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 hover:bg-white/[0.10] text-gray-900 text-xs transition-colors"
         >
           <span>↓</span> Exportera CSV
         </button>
@@ -127,17 +127,17 @@ export function LedgerView() {
 
       {/* Summary */}
       <div className="flex gap-4 flex-shrink-0">
-        <div className="px-3 py-1.5 rounded-lg bg-white/[0.04] border border-gray-200">
-          <span className="text-[9px] text-gray-500 font-mono uppercase">Poster</span>
+        <div className="px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200">
+          <span className="text-[9px] text-gray-9000 font-mono uppercase">Poster</span>
           <span className="ml-2 text-xs font-bold text-gray-900">{filtered.length}</span>
         </div>
-        <div className="px-3 py-1.5 rounded-lg bg-white/[0.04] border border-gray-200">
-          <span className="text-[9px] text-gray-500 font-mono uppercase">Total Debet</span>
+        <div className="px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200">
+          <span className="text-[9px] text-gray-9000 font-mono uppercase">Total Debet</span>
           <span className="ml-2 text-xs font-bold text-gray-600">{fmt(totalDebit)}</span>
         </div>
-        <div className="px-3 py-1.5 rounded-lg bg-white/[0.04] border border-gray-200">
-          <span className="text-[9px] text-gray-500 font-mono uppercase">Total Kredit</span>
-          <span className="ml-2 text-xs font-bold text-green-400">{fmt(totalCredit)}</span>
+        <div className="px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200">
+          <span className="text-[9px] text-gray-9000 font-mono uppercase">Total Kredit</span>
+          <span className="ml-2 text-xs font-bold text-green-700">{fmt(totalCredit)}</span>
         </div>
       </div>
 
@@ -145,7 +145,7 @@ export function LedgerView() {
       <div className="rounded-xl border border-gray-200 bg-white overflow-hidden flex-1">
         <div className="overflow-x-auto">
         {/* Header */}
-        <div className="grid grid-cols-12 px-4 py-2 text-[9px] font-mono text-gray-500 uppercase tracking-wider border-b border-gray-200 sticky top-0 bg-white min-w-[600px]">
+        <div className="grid grid-cols-12 px-4 py-2 text-[9px] font-mono text-gray-9000 uppercase tracking-wider border-b border-gray-200 sticky top-0 bg-white min-w-[600px]">
           <span className="col-span-1">Datum</span>
           <span className="col-span-1">Ref</span>
           <span className="col-span-3">Beskrivning</span>
@@ -159,7 +159,7 @@ export function LedgerView() {
         {/* Rows */}
         <div className="overflow-y-auto max-h-[500px] min-w-[600px]">
           {isLoading ? (
-            <div className="flex items-center justify-center py-12 text-gray-500 text-xs">
+            <div className="flex items-center justify-center py-12 text-gray-9000 text-xs">
               Laddar...
             </div>
           ) : isError ? (
@@ -179,26 +179,26 @@ export function LedgerView() {
                   onClick={() => setSelectedTx(entry.ref_nr || 'kund-faktura-1042')}
                   className="grid grid-cols-12 px-4 py-2.5 items-center border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors cursor-pointer"
                 >
-                  <span className="col-span-1 text-xs font-mono text-gray-500">{entry.date.slice(5)}</span>
-                  <span className="col-span-1 text-[9px] font-mono text-gray-500 truncate">{entry.ref_nr}</span>
+                  <span className="col-span-1 text-xs font-mono text-gray-9000">{entry.date.slice(5)}</span>
+                  <span className="col-span-1 text-[9px] font-mono text-gray-9000 truncate">{entry.ref_nr}</span>
                   <span className="col-span-3 text-xs text-gray-900 truncate">{entry.description}</span>
                   <div className="col-span-2">
-                    <span className="text-xs font-mono text-gray-500">{entry.account_nr}</span>
-                    <span className="text-[9px] text-gray-500 ml-1 truncate">{entry.account_name}</span>
+                    <span className="text-xs font-mono text-gray-9000">{entry.account_nr}</span>
+                    <span className="text-[9px] text-gray-9000 ml-1 truncate">{entry.account_name}</span>
                   </div>
                   <div className="col-span-1 flex items-center gap-1">
                     <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: fe?.color }} />
-                    <span className="text-[9px] font-mono text-gray-500 truncate">{fe?.short_name?.split(' ')[0]}</span>
+                    <span className="text-[9px] font-mono text-gray-9000 truncate">{fe?.short_name?.split(' ')[0]}</span>
                   </div>
                   <span className="col-span-1 text-right text-xs font-mono text-gray-600">
                     {entry.debit > 0 ? fmt(entry.debit) : ''}
                   </span>
-                  <span className="col-span-1 text-right text-xs font-mono text-green-400">
+                  <span className="col-span-1 text-right text-xs font-mono text-green-700">
                     {entry.credit > 0 ? fmt(entry.credit) : ''}
                   </span>
                   <span className="col-span-2 text-right text-xs font-mono font-semibold"
                     style={{ color: entry.balance < 0 ? '#EF4444' : '#10B981' }}>
-                    {fmt(entry.balance)} <span className="text-[9px] text-gray-500">{entry.currency}</span>
+                    {fmt(entry.balance)} <span className="text-[9px] text-gray-9000">{entry.currency}</span>
                   </span>
                 </div>
               )

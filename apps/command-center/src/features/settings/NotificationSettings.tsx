@@ -111,7 +111,7 @@ export function NotificationSettings() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-gray-9000">
           Välj vilka händelser som ska trigga notifikationer och via vilken kanal.
         </p>
         <button
@@ -130,7 +130,7 @@ export function NotificationSettings() {
       {/* Channel header */}
       <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
         {/* Column headers */}
-        <div className="flex items-center gap-2 px-5 py-2 border-b border-gray-100 bg-white/[0.02]">
+        <div className="flex items-center gap-2 px-5 py-2 border-b border-gray-100 bg-gray-50">
           <div className="flex-1 text-[9px] text-gray-600 font-mono uppercase">Händelse</div>
           {(Object.entries(CHANNEL_CONFIG) as [Channel, typeof CHANNEL_CONFIG[Channel]][]).map(([key, cfg]) => (
             <div key={key} className="w-20 text-center text-[9px] text-gray-600 font-mono uppercase flex-shrink-0">
@@ -160,7 +160,7 @@ export function NotificationSettings() {
                     {catCfg.label}
                   </span>
                 </div>
-                <div className="text-xs text-gray-500 mt-0.5 ml-6">{rule.description}</div>
+                <div className="text-xs text-gray-9000 mt-0.5 ml-6">{rule.description}</div>
                 {rule.threshold !== undefined && (
                   <div className="flex items-center gap-1.5 mt-1 ml-6">
                     <span className="text-xs text-gray-600">Tröskel:</span>
@@ -169,7 +169,7 @@ export function NotificationSettings() {
                       onChange={e =>
                         setThresholds(prev => ({ ...prev, [rule.id]: e.target.value }))
                       }
-                      className="text-xs font-mono text-gray-500 bg-white/[0.04] border border-gray-200 rounded px-2 py-0.5 w-24 focus:outline-none"
+                      className="text-xs font-mono text-gray-9000 bg-gray-50 border border-gray-200 rounded px-2 py-0.5 w-24 focus:outline-none"
                     />
                   </div>
                 )}
@@ -202,7 +202,7 @@ export function NotificationSettings() {
       {/* Legend */}
       <div className="flex items-center gap-4 flex-wrap">
         {(Object.entries(CHANNEL_CONFIG) as [Channel, typeof CHANNEL_CONFIG[Channel]][]).map(([key, cfg]) => (
-          <div key={key} className="flex items-center gap-1.5 text-xs text-gray-500">
+          <div key={key} className="flex items-center gap-1.5 text-xs text-gray-9000">
             <span>{cfg.icon}</span>
             <span className="font-mono">{cfg.label}</span>
             <span>— notifierar via {key === 'email' ? 'e-post' : key === 'sms' ? 'SMS (46elks)' : 'app-notis'}</span>

@@ -187,15 +187,15 @@ function EnterpriseLayer({
 
         {/* Stats strip */}
         <div className="grid grid-cols-3 gap-3 mt-2">
-          <div className="rounded-xl bg-white/5 border border-gray-200 p-3 text-center">
+          <div className="rounded-xl bg-gray-50 border border-gray-200 p-3 text-center">
             <div className="text-2xl font-bold text-gray-900">{totalEmployees}</div>
             <div className="text-xs text-zinc-400 mt-0.5">Teammedlemmar</div>
           </div>
-          <div className="rounded-xl bg-white/5 border border-gray-200 p-3 text-center">
+          <div className="rounded-xl bg-gray-50 border border-gray-200 p-3 text-center">
             <div className="text-2xl font-bold text-gray-900">{ENTITIES.length}</div>
             <div className="text-xs text-zinc-400 mt-0.5">Bolag/Enheter</div>
           </div>
-          <div className="rounded-xl bg-white/5 border border-gray-200 p-3 text-center">
+          <div className="rounded-xl bg-gray-50 border border-gray-200 p-3 text-center">
             <div className="text-2xl font-bold" style={{ color: connectedCount > 0 ? '#22C55E' : '#71717A' }}>
               {connectedCount}
             </div>
@@ -212,7 +212,7 @@ function EnterpriseLayer({
             <button
               key={entity.id}
               onClick={() => onSelectEntity(entity)}
-              className="text-left rounded-xl border border-gray-200 p-4 hover:border-white/25 hover:bg-white/5 transition-all duration-200 group"
+              className="text-left rounded-xl border border-gray-200 p-4 hover:border-white/25 hover:bg-gray-50 transition-all duration-200 group"
               style={{ borderColor: entity.color + '33' }}
             >
               <div className="flex items-start justify-between gap-2">
@@ -231,9 +231,9 @@ function EnterpriseLayer({
                 <span
                   className={`text-[10px] px-2 py-0.5 rounded-full flex-shrink-0 font-medium ${
                     entity.status === 'active'
-                      ? 'bg-green-500/20 text-green-400'
+                      ? 'bg-green-500/20 text-green-700'
                       : entity.status === 'forming'
-                      ? 'bg-amber-500/20 text-amber-400'
+                      ? 'bg-amber-500/20 text-amber-700'
                       : 'bg-zinc-500/20 text-zinc-400'
                   }`}
                 >
@@ -304,9 +304,9 @@ function EntityLayer({
               <span
                 className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
                   entity.status === 'active'
-                    ? 'bg-green-500/20 text-green-400'
+                    ? 'bg-green-500/20 text-green-700'
                     : entity.status === 'forming'
-                    ? 'bg-amber-500/20 text-amber-400'
+                    ? 'bg-amber-500/20 text-amber-700'
                     : 'bg-zinc-500/20 text-zinc-400'
                 }`}
               >
@@ -337,7 +337,7 @@ function EntityLayer({
             <button
               key={member.id}
               onClick={() => onSelectPerson(member)}
-              className="flex items-center gap-3 text-left rounded-xl border border-gray-200 p-3 hover:border-white/25 hover:bg-white/5 transition-all duration-200"
+              className="flex items-center gap-3 text-left rounded-xl border border-gray-200 p-3 hover:border-white/25 hover:bg-gray-50 transition-all duration-200"
             >
               <Avatar member={member} size="sm" />
               <div className="flex-1 min-w-0">
@@ -374,7 +374,7 @@ function TeamLayer({
     return (
       <button
         onClick={() => onSelectPerson(member)}
-        className={`flex flex-col items-center text-center gap-1.5 p-3 rounded-xl border transition-all duration-200 hover:bg-white/5 ${
+        className={`flex flex-col items-center text-center gap-1.5 p-3 rounded-xl border transition-all duration-200 hover:bg-gray-50 ${
           isRoot ? 'border-gray-300 min-w-[120px]' : 'border-gray-200 min-w-[100px]'
         }`}
         style={{ borderColor: member.color + (isRoot ? '55' : '33') }}
@@ -459,7 +459,7 @@ function TeamLayer({
               <button
                 key={member.id}
                 onClick={() => onSelectPerson(member)}
-                className="flex items-center gap-3 text-left rounded-xl border border-gray-200 p-3 hover:border-white/25 hover:bg-white/5 transition-all duration-200"
+                className="flex items-center gap-3 text-left rounded-xl border border-gray-200 p-3 hover:border-white/25 hover:bg-gray-50 transition-all duration-200"
               >
                 <Avatar member={member} size="sm" />
                 <div className="flex-1 min-w-0">
@@ -611,12 +611,12 @@ function PersonLayer({
                 </span>
               )}
               {member.mbti && (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-zinc-300">
+                <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-zinc-300">
                   {member.mbti}
                 </span>
               )}
               {whoopData?.connected && (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 flex items-center gap-1">
+                <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/20 text-green-700 flex items-center gap-1">
                   <WatchIcon /> WHOOP
                 </span>
               )}
@@ -631,7 +631,7 @@ function PersonLayer({
                 ? `tel:${member.phone}`
                 : `https://t.me/${member.name.split(' ')[0].toLowerCase()}`
             }
-            className="flex-shrink-0 text-xs px-3 py-1.5 rounded-lg border border-gray-300 bg-white/5 hover:bg-white/10 transition-all text-zinc-300"
+            className="flex-shrink-0 text-xs px-3 py-1.5 rounded-lg border border-gray-300 bg-gray-50 hover:bg-gray-100 transition-all text-zinc-300"
             target={member.contactPreference === 'telegram' ? '_blank' : undefined}
             rel="noreferrer"
           >
@@ -664,7 +664,7 @@ function PersonLayer({
           <div className="flex flex-col gap-5">
             <div>
               <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Befattning</div>
-              <div className="rounded-xl bg-white/5 border border-gray-200 p-4">
+              <div className="rounded-xl bg-gray-50 border border-gray-200 p-4">
                 <div className="text-gray-900 font-medium">{member.title}</div>
                 <div className="text-sm text-zinc-400 mt-1">{member.entity === 'wavult-group' ? 'Wavult Group' : member.entity}</div>
               </div>
@@ -685,7 +685,7 @@ function PersonLayer({
             {reportsToMember && (
               <div>
                 <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Rapporterar till</div>
-                <div className="flex items-center gap-3 rounded-xl bg-white/5 border border-gray-200 p-3">
+                <div className="flex items-center gap-3 rounded-xl bg-gray-50 border border-gray-200 p-3">
                   <Avatar member={reportsToMember} size="sm" />
                   <div>
                     <div className="text-sm font-medium text-gray-900">{reportsToMember.name}</div>
@@ -702,7 +702,7 @@ function PersonLayer({
                 </div>
                 <div className="flex flex-col gap-2">
                   {directReportMembers.map(m => (
-                    <div key={m.id} className="flex items-center gap-3 rounded-xl bg-white/5 border border-gray-200 p-3">
+                    <div key={m.id} className="flex items-center gap-3 rounded-xl bg-gray-50 border border-gray-200 p-3">
                       <Avatar member={m} size="sm" />
                       <div>
                         <div className="text-sm font-medium text-gray-900">{m.name}</div>
@@ -720,7 +720,7 @@ function PersonLayer({
           <div className="flex flex-col gap-4">
             <div>
               <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Daglig arbetsbeskrivning</div>
-              <div className="rounded-xl bg-white/5 border border-gray-200 p-4">
+              <div className="rounded-xl bg-gray-50 border border-gray-200 p-4">
                 <p className="text-sm text-zinc-300 leading-relaxed">{member.workDescription}</p>
               </div>
             </div>
@@ -744,12 +744,12 @@ function PersonLayer({
                     Hälsa & Kapacitet
                   </div>
                   {whoopData.cached && (
-                    <span className="text-[10px] text-zinc-500 px-2 py-0.5 rounded-full bg-white/5">
+                    <span className="text-[10px] text-zinc-500 px-2 py-0.5 rounded-full bg-gray-50">
                       Cachad data
                     </span>
                   )}
                   {!whoopData.cached && isCurrentUser && (
-                    <span className="text-[10px] text-green-400 px-2 py-0.5 rounded-full bg-green-500/10">
+                    <span className="text-[10px] text-green-700 px-2 py-0.5 rounded-full bg-green-500/10">
                       Live data
                     </span>
                   )}
@@ -775,25 +775,25 @@ function PersonLayer({
                 {/* Details */}
                 <div className="grid grid-cols-2 gap-3">
                   {whoopData.hrv !== null && (
-                    <div className="rounded-xl bg-white/5 border border-gray-200 p-3">
+                    <div className="rounded-xl bg-gray-50 border border-gray-200 p-3">
                       <div className="text-xs text-zinc-400">HRV</div>
                       <div className="text-xl font-bold text-gray-900 mt-1">{whoopData.hrv} <span className="text-xs text-zinc-500">ms</span></div>
                     </div>
                   )}
                   {whoopData.restingHr !== null && (
-                    <div className="rounded-xl bg-white/5 border border-gray-200 p-3">
+                    <div className="rounded-xl bg-gray-50 border border-gray-200 p-3">
                       <div className="text-xs text-zinc-400">Vilopuls</div>
                       <div className="text-xl font-bold text-gray-900 mt-1">{whoopData.restingHr} <span className="text-xs text-zinc-500">bpm</span></div>
                     </div>
                   )}
                   {whoopData.sleepHours !== null && (
-                    <div className="rounded-xl bg-white/5 border border-gray-200 p-3">
+                    <div className="rounded-xl bg-gray-50 border border-gray-200 p-3">
                       <div className="text-xs text-zinc-400">Sömntid</div>
                       <div className="text-xl font-bold text-gray-900 mt-1">{whoopData.sleepHours.toFixed(1)} <span className="text-xs text-zinc-500">h</span></div>
                     </div>
                   )}
                   {whoopData.strain !== null && (
-                    <div className="rounded-xl bg-white/5 border border-gray-200 p-3">
+                    <div className="rounded-xl bg-gray-50 border border-gray-200 p-3">
                       <div className="text-xs text-zinc-400">Strain</div>
                       <div className="text-xl font-bold text-gray-900 mt-1">{whoopData.strain.toFixed(1)} <span className="text-xs text-zinc-500">/ 21</span></div>
                     </div>
@@ -840,9 +840,9 @@ function PersonLayer({
                     <span
                       className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium flex-shrink-0 ${
                         task.priority === 'high'
-                          ? 'bg-red-500/20 text-red-400'
+                          ? 'bg-red-500/20 text-red-700'
                           : task.priority === 'medium'
-                          ? 'bg-amber-500/20 text-amber-400'
+                          ? 'bg-amber-500/20 text-amber-700'
                           : 'bg-zinc-500/20 text-zinc-400'
                       }`}
                     >
@@ -861,9 +861,9 @@ function PersonLayer({
             <div className="flex flex-col gap-2">
               <a
                 href={`mailto:${member.email}`}
-                className="flex items-center gap-3 rounded-xl border border-gray-200 p-3 hover:bg-white/5 transition-all"
+                className="flex items-center gap-3 rounded-xl border border-gray-200 p-3 hover:bg-gray-50 transition-all"
               >
-                <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400">
+                <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-700">
                   <MailIcon />
                 </div>
                 <div>
@@ -871,15 +871,15 @@ function PersonLayer({
                   <div className="text-sm text-gray-900">{member.email}</div>
                 </div>
                 {member.contactPreference === 'email' && (
-                  <span className="ml-auto text-[10px] text-green-400 bg-green-500/10 px-2 py-0.5 rounded-full">Föredrar</span>
+                  <span className="ml-auto text-[10px] text-green-700 bg-green-500/10 px-2 py-0.5 rounded-full">Föredrar</span>
                 )}
               </a>
 
               <a
                 href={`tel:${member.phone}`}
-                className="flex items-center gap-3 rounded-xl border border-gray-200 p-3 hover:bg-white/5 transition-all"
+                className="flex items-center gap-3 rounded-xl border border-gray-200 p-3 hover:bg-gray-50 transition-all"
               >
-                <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center text-green-400">
+                <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center text-green-700">
                   <PhoneIcon />
                 </div>
                 <div>
@@ -887,7 +887,7 @@ function PersonLayer({
                   <div className="text-sm text-gray-900">{member.phone}</div>
                 </div>
                 {member.contactPreference === 'phone' && (
-                  <span className="ml-auto text-[10px] text-green-400 bg-green-500/10 px-2 py-0.5 rounded-full">Föredrar</span>
+                  <span className="ml-auto text-[10px] text-green-700 bg-green-500/10 px-2 py-0.5 rounded-full">Föredrar</span>
                 )}
               </a>
 
@@ -900,14 +900,14 @@ function PersonLayer({
                   <div className="text-sm text-gray-900">@{member.name.split(' ')[0].toLowerCase()}</div>
                 </div>
                 {member.contactPreference === 'telegram' && (
-                  <span className="ml-auto text-[10px] text-green-400 bg-green-500/10 px-2 py-0.5 rounded-full">Föredrar</span>
+                  <span className="ml-auto text-[10px] text-green-700 bg-green-500/10 px-2 py-0.5 rounded-full">Föredrar</span>
                 )}
               </div>
             </div>
 
             <div>
               <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Feedback-stil</div>
-              <div className="rounded-xl bg-white/5 border border-gray-200 p-4">
+              <div className="rounded-xl bg-gray-50 border border-gray-200 p-4">
                 <p className="text-sm text-zinc-300 leading-relaxed">{member.feedbackStyle}</p>
               </div>
             </div>
@@ -917,12 +917,12 @@ function PersonLayer({
         {tab === 'psyk' && (
           <div className="flex flex-col gap-5">
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-xl bg-white/5 border border-gray-200 p-4 text-center">
+              <div className="rounded-xl bg-gray-50 border border-gray-200 p-4 text-center">
                 <div className="text-xs text-zinc-400 mb-1">Myers-Briggs</div>
                 <div className="text-2xl font-bold" style={{ color: member.color }}>{member.mbti ?? '–'}</div>
                 {!member.mbti && <div className="text-[10px] text-zinc-600 mt-1">Ej kartlagd</div>}
               </div>
-              <div className="rounded-xl bg-white/5 border border-gray-200 p-4 text-center">
+              <div className="rounded-xl bg-gray-50 border border-gray-200 p-4 text-center">
                 <div className="text-xs text-zinc-400 mb-1">DISC</div>
                 <div className="text-2xl font-bold" style={{ color: member.color }}>{member.disc ?? '–'}</div>
                 {!member.disc && <div className="text-[10px] text-zinc-600 mt-1">Ej kartlagd</div>}
@@ -946,7 +946,7 @@ function PersonLayer({
 
             <div>
               <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Feedback-stil</div>
-              <div className="rounded-xl bg-white/5 border border-gray-200 p-4">
+              <div className="rounded-xl bg-gray-50 border border-gray-200 p-4">
                 <p className="text-sm text-zinc-300 leading-relaxed">{member.feedbackStyle}</p>
               </div>
             </div>
@@ -1068,7 +1068,7 @@ export function PeopleIntelligenceHub() {
           <div className="flex items-center gap-2">
             {/* WHOOP indicator */}
             {whoopTeam && whoopTeam.total_connected > 0 && (
-              <div className="hidden sm:flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 px-2.5 py-1 rounded-full">
+              <div className="hidden sm:flex items-center gap-1.5 text-xs text-green-700 bg-green-500/10 px-2.5 py-1 rounded-full">
                 <WatchIcon />
                 <span>{whoopTeam.total_connected} WHOOP</span>
               </div>

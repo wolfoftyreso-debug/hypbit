@@ -15,21 +15,21 @@ function daysUntil(dateStr: string): number {
 function ExpiryBadge({ days }: { days: number }) {
   if (days < 0) {
     return (
-      <span className="text-xs px-2 py-0.5 rounded-full font-semibold bg-red-500/20 text-red-400">
+      <span className="text-xs px-2 py-0.5 rounded-full font-semibold bg-red-500/20 text-red-700">
         Utgånget
       </span>
     )
   }
   if (days <= 30) {
     return (
-      <span className="text-xs px-2 py-0.5 rounded-full font-semibold bg-red-500/20 text-red-400">
+      <span className="text-xs px-2 py-0.5 rounded-full font-semibold bg-red-500/20 text-red-700">
         ⚠ {days}d kvar
       </span>
     )
   }
   if (days <= 90) {
     return (
-      <span className="text-xs px-2 py-0.5 rounded-full font-semibold bg-amber-500/20 text-amber-400">
+      <span className="text-xs px-2 py-0.5 rounded-full font-semibold bg-amber-500/20 text-amber-700">
         ⚠ {days}d kvar
       </span>
     )
@@ -50,7 +50,7 @@ export function ProcurementContractsView() {
       {/* Warning banner */}
       {expiringSoon.length > 0 && (
         <div className="mx-6 mt-4 p-3 rounded-xl border border-amber-500/30 bg-amber-500/[0.06] flex items-start gap-3 flex-shrink-0">
-          <span className="text-amber-400 text-lg leading-none mt-0.5">⚠</span>
+          <span className="text-amber-700 text-lg leading-none mt-0.5">⚠</span>
           <div>
             <p className="text-xs font-semibold text-amber-300">
               {expiringSoon.length} avtal löper ut inom 90 dagar
@@ -69,7 +69,7 @@ export function ProcurementContractsView() {
           <thead>
             <tr className="text-left border-b border-gray-200">
               {['Leverantör', 'Beskrivning', 'Start', 'Slutar', 'Status', 'Auto-förlängning', 'Värde/år'].map(h => (
-                <th key={h} className="pb-2 text-xs font-semibold text-gray-500 uppercase tracking-wider pr-5">{h}</th>
+                <th key={h} className="pb-2 text-xs font-semibold text-gray-9000 uppercase tracking-wider pr-5">{h}</th>
               ))}
             </tr>
           </thead>
@@ -79,7 +79,7 @@ export function ProcurementContractsView() {
               return (
                 <tr
                   key={c.id}
-                  className={`border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors ${
+                  className={`border-b border-white/[0.03] hover:bg-gray-50 transition-colors ${
                     days <= 90 ? 'bg-amber-500/[0.02]' : ''
                   }`}
                 >
@@ -87,13 +87,13 @@ export function ProcurementContractsView() {
                     <span className="text-sm font-semibold text-gray-900">{c.supplierName}</span>
                   </td>
                   <td className="py-3 pr-5">
-                    <span className="text-xs text-gray-500">{c.description}</span>
+                    <span className="text-xs text-gray-9000">{c.description}</span>
                   </td>
                   <td className="py-3 pr-5">
-                    <span className="text-xs text-gray-500 font-mono">{c.startDate}</span>
+                    <span className="text-xs text-gray-9000 font-mono">{c.startDate}</span>
                   </td>
                   <td className="py-3 pr-5">
-                    <span className={`text-xs font-mono ${days <= 90 ? 'text-amber-400' : 'text-gray-500'}`}>
+                    <span className={`text-xs font-mono ${days <= 90 ? 'text-amber-700' : 'text-gray-9000'}`}>
                       {c.endDate}
                     </span>
                   </td>
@@ -101,7 +101,7 @@ export function ProcurementContractsView() {
                     <ExpiryBadge days={days} />
                   </td>
                   <td className="py-3 pr-5">
-                    <span className={`text-xs font-medium ${c.autoRenewal ? 'text-emerald-400' : 'text-gray-500'}`}>
+                    <span className={`text-xs font-medium ${c.autoRenewal ? 'text-emerald-700' : 'text-gray-9000'}`}>
                       {c.autoRenewal ? '✓ Ja' : '✗ Nej'}
                     </span>
                   </td>

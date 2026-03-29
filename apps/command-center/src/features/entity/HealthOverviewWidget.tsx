@@ -14,24 +14,24 @@ export function HealthOverviewWidget() {
   const watching = scores.filter(s => s.level === 'watch').length
 
   return (
-    <div className="bg-white/[0.04] border border-gray-200 rounded-2xl overflow-hidden">
+    <div className="bg-gray-50 border border-gray-200 rounded-2xl overflow-hidden">
       <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <p className="text-sm font-medium text-gray-900/70">Entity Health</p>
           {critical > 0 && (
-            <span className="text-xs px-1.5 py-0.5 rounded font-mono bg-red-500/15 text-red-400 border border-red-500/20">
+            <span className="text-xs px-1.5 py-0.5 rounded font-mono bg-red-500/15 text-red-700 border border-red-500/20">
               {critical} critical
             </span>
           )}
           {watching > 0 && (
-            <span className="text-xs px-1.5 py-0.5 rounded font-mono bg-yellow-500/15 text-yellow-400 border border-yellow-500/20">
+            <span className="text-xs px-1.5 py-0.5 rounded font-mono bg-yellow-500/15 text-yellow-700 border border-yellow-500/20">
               {watching} watch
             </span>
           )}
         </div>
         <button
           onClick={() => navigate('/entities')}
-          className="text-xs text-gray-500 hover:text-gray-500 transition-colors"
+          className="text-xs text-gray-9000 hover:text-gray-9000 transition-colors"
         >
           Details →
         </button>
@@ -50,7 +50,7 @@ export function HealthOverviewWidget() {
             <button
               key={hs.entity_id}
               onClick={() => navigate(`/entities/${hs.entity_id}`)}
-              className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-white/[0.02] transition-colors text-left"
+              className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors text-left"
             >
               {/* Gauge */}
               <div className="flex-shrink-0">
@@ -67,7 +67,7 @@ export function HealthOverviewWidget() {
                     {LEVEL_LABEL[hs.level]}
                   </span>
                 </div>
-                <div className="text-xs text-gray-500 truncate mt-0.5">{hs.summary.slice(2, 60)}…</div>
+                <div className="text-xs text-gray-9000 truncate mt-0.5">{hs.summary.slice(2, 60)}…</div>
               </div>
 
               {/* Dimension mini-bars */}

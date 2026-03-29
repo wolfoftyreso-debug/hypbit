@@ -167,7 +167,7 @@ function MemberCard({ member }: { member: TeamMember }) {
               <span className="text-xs font-semibold" style={{ color }}>
                 {recoveryLabel(score)}
               </span>
-              <span className="text-xs text-gray-500">Recovery</span>
+              <span className="text-xs text-gray-9000">Recovery</span>
             </div>
           </div>
 
@@ -189,7 +189,7 @@ function MemberCard({ member }: { member: TeamMember }) {
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-[10px] font-bold text-gray-500">
+              <span className="text-[10px] font-bold text-gray-9000">
                 {score != null ? '%' : '—'}
               </span>
             </div>
@@ -199,39 +199,39 @@ function MemberCard({ member }: { member: TeamMember }) {
         {/* HRV / Sömn / Strain */}
         <div className="grid grid-cols-3 gap-2">
           {/* HRV */}
-          <div className="rounded-xl bg-white/[0.04] p-3 flex flex-col items-center gap-1">
-            <span className="text-[10px] text-gray-500 uppercase font-semibold tracking-wider">HRV</span>
+          <div className="rounded-xl bg-gray-50 p-3 flex flex-col items-center gap-1">
+            <span className="text-[10px] text-gray-9000 uppercase font-semibold tracking-wider">HRV</span>
             <span className="text-xl font-bold text-gray-900 tabular-nums">
               {member.hrv != null ? Math.round(member.hrv) : '—'}
             </span>
-            <span className="text-[9px] text-gray-500">ms</span>
+            <span className="text-[9px] text-gray-9000">ms</span>
           </div>
 
           {/* Sömn */}
-          <div className="rounded-xl bg-white/[0.04] p-3 flex flex-col items-center gap-1">
-            <span className="text-[10px] text-gray-500 uppercase font-semibold tracking-wider">Sömn</span>
-            <span className="text-xl font-bold text-blue-400 tabular-nums">
+          <div className="rounded-xl bg-gray-50 p-3 flex flex-col items-center gap-1">
+            <span className="text-[10px] text-gray-9000 uppercase font-semibold tracking-wider">Sömn</span>
+            <span className="text-xl font-bold text-blue-700 tabular-nums">
               {member.sleep_hours != null ? `${member.sleep_hours.toFixed(1)}h` : '—'}
             </span>
-            <span className="text-[9px] text-gray-500">
+            <span className="text-[9px] text-gray-9000">
               {member.sleep_performance != null ? `${Math.round(member.sleep_performance)}%` : '—'}
             </span>
           </div>
 
           {/* Strain */}
-          <div className="rounded-xl bg-white/[0.04] p-3 flex flex-col items-center gap-1">
-            <span className="text-[10px] text-gray-500 uppercase font-semibold tracking-wider">Strain</span>
-            <span className="text-xl font-bold text-orange-400 tabular-nums">
+          <div className="rounded-xl bg-gray-50 p-3 flex flex-col items-center gap-1">
+            <span className="text-[10px] text-gray-9000 uppercase font-semibold tracking-wider">Strain</span>
+            <span className="text-xl font-bold text-orange-700 tabular-nums">
               {member.strain_score != null ? (Math.round(member.strain_score * 10) / 10).toFixed(1) : '—'}
             </span>
-            <span className="text-[9px] text-gray-500">/21</span>
+            <span className="text-[9px] text-gray-9000">/21</span>
           </div>
         </div>
 
         {/* Strain bar */}
         {member.strain_score != null && (
           <div>
-            <div className="h-1 rounded-full bg-white/[0.05] overflow-hidden">
+            <div className="h-1 rounded-full bg-gray-50 overflow-hidden">
               <div
                 className="h-full rounded-full transition-all"
                 style={{
@@ -244,7 +244,7 @@ function MemberCard({ member }: { member: TeamMember }) {
         )}
 
         {/* Timestamp */}
-        <p className="text-[10px] text-gray-500 font-mono">
+        <p className="text-[10px] text-gray-9000 font-mono">
           Uppdaterad {minutesAgo(member.snapshot_at)}
         </p>
       </div>
@@ -269,8 +269,8 @@ function TeamPulse({
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-4 text-center">
         <span className="text-5xl">⌚</span>
-        <p className="text-gray-500 text-sm">Ingen i teamet har kopplat WHOOP ännu.</p>
-        <p className="text-gray-500 text-xs max-w-xs">
+        <p className="text-gray-9000 text-sm">Ingen i teamet har kopplat WHOOP ännu.</p>
+        <p className="text-gray-9000 text-xs max-w-xs">
           Gå till "Koppla &amp; Kom igång"-fliken och koppla ditt konto. Dela sedan länken med teamet.
         </p>
       </div>
@@ -283,13 +283,13 @@ function TeamPulse({
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <p className="text-gray-500 text-sm">
+        <p className="text-gray-9000 text-sm">
           {total_connected} kopplade · uppdaterad {minutesAgo(lastFetch?.toISOString() ?? null)}
         </p>
         <button
           onClick={onRefresh}
           disabled={loading}
-          className="text-xs px-3 py-1.5 rounded-lg bg-white/[0.06] text-gray-500 hover:bg-white/[0.10] transition-colors disabled:opacity-50"
+          className="text-xs px-3 py-1.5 rounded-lg bg-gray-50 text-gray-9000 hover:bg-white/[0.10] transition-colors disabled:opacity-50"
         >
           {loading ? '↻ Synkar…' : '↻ Synka'}
         </button>
@@ -297,7 +297,7 @@ function TeamPulse({
 
       {/* Team-genomsnitt */}
       <div className="rounded-2xl border border-gray-200 bg-white p-6">
-        <p className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-5">
+        <p className="text-xs text-gray-9000 font-mono uppercase tracking-wider mb-5">
           Team-genomsnitt
         </p>
 
@@ -310,7 +310,7 @@ function TeamPulse({
             >
               {averages.recovery != null ? `${averages.recovery}` : '—'}
             </div>
-            <div className="text-xs text-gray-500 font-mono uppercase tracking-wider">% Recovery</div>
+            <div className="text-xs text-gray-9000 font-mono uppercase tracking-wider">% Recovery</div>
             {averages.recovery != null && (
               <div
                 className="text-xs font-semibold px-2 py-0.5 rounded-full mt-1"
@@ -326,18 +326,18 @@ function TeamPulse({
 
           {/* Sömn */}
           <div className="flex flex-col items-center gap-1">
-            <div className="text-5xl font-black text-blue-400 tabular-nums">
+            <div className="text-5xl font-black text-blue-700 tabular-nums">
               {averages.sleep != null ? `${averages.sleep}` : '—'}
             </div>
-            <div className="text-xs text-gray-500 font-mono uppercase tracking-wider">% Sömn</div>
+            <div className="text-xs text-gray-9000 font-mono uppercase tracking-wider">% Sömn</div>
           </div>
 
           {/* Strain */}
           <div className="flex flex-col items-center gap-1">
-            <div className="text-5xl font-black text-orange-400 tabular-nums">
+            <div className="text-5xl font-black text-orange-700 tabular-nums">
               {averages.strain != null ? averages.strain : '—'}
             </div>
-            <div className="text-xs text-gray-500 font-mono uppercase tracking-wider">Strain /21</div>
+            <div className="text-xs text-gray-9000 font-mono uppercase tracking-wider">Strain /21</div>
           </div>
         </div>
 
@@ -345,15 +345,15 @@ function TeamPulse({
         <div className="flex flex-wrap items-center gap-4 mt-5 pt-4 border-t border-gray-200">
           <div className="flex items-center gap-1.5">
             <div className="h-2 w-2 rounded-full bg-red-500" />
-            <span className="text-xs text-gray-500">Röd &lt;33 — vila idag</span>
+            <span className="text-xs text-gray-9000">Röd &lt;33 — vila idag</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="h-2 w-2 rounded-full bg-amber-400" />
-            <span className="text-xs text-gray-500">Gul 33–66 — bevaka</span>
+            <span className="text-xs text-gray-9000">Gul 33–66 — bevaka</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="h-2 w-2 rounded-full bg-emerald-500" />
-            <span className="text-xs text-gray-500">Grön &gt;66 — redo</span>
+            <span className="text-xs text-gray-9000">Grön &gt;66 — redo</span>
           </div>
         </div>
       </div>
@@ -364,7 +364,7 @@ function TeamPulse({
           <span className="text-xl flex-shrink-0">📡</span>
           <div>
             <p className="text-sm font-semibold text-amber-300">Armbanden samlar data</p>
-            <p className="text-xs text-gray-500 leading-relaxed mt-0.5">
+            <p className="text-xs text-gray-9000 leading-relaxed mt-0.5">
               WHOOP behöver bäras dygnet runt i{' '}
               <strong className="text-gray-900">4–5 dagar</strong> innan recovery-data är pålitlig.
               Data börjar visas successivt — håll armbanden på.
@@ -479,10 +479,10 @@ function SetupAndConnectTab({ onConnected }: { onConnected: () => void }) {
           <span className="text-4xl">✅</span>
           <div>
             <h2 className="text-lg font-bold text-gray-900">WHOOP kopplat!</h2>
-            <p className="text-sm text-gray-500 mt-1">Din data synkas automatiskt.</p>
+            <p className="text-sm text-gray-9000 mt-1">Din data synkas automatiskt.</p>
           </div>
 
-          {loadingData && <p className="text-xs text-gray-500">Hämtar din data…</p>}
+          {loadingData && <p className="text-xs text-gray-9000">Hämtar din data…</p>}
 
           {myData && !loadingData && (() => {
             const hasData =
@@ -495,7 +495,7 @@ function SetupAndConnectTab({ onConnected }: { onConnected: () => void }) {
                 <div className="w-full rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-center space-y-2">
                   <div className="text-2xl">📡</div>
                   <p className="text-sm font-semibold text-amber-300">Samlar data</p>
-                  <p className="text-xs text-gray-500 leading-relaxed">
+                  <p className="text-xs text-gray-9000 leading-relaxed">
                     WHOOP behöver bäras dygnet runt i{' '}
                     <strong className="text-gray-900">minst 4–5 dagar</strong> innan recovery-data är
                     tillgänglig.
@@ -513,23 +513,23 @@ function SetupAndConnectTab({ onConnected }: { onConnected: () => void }) {
                   >
                     {myData.recovery?.score != null ? `${Math.round(myData.recovery.score)}%` : '—'}
                   </div>
-                  <div className="text-xs text-gray-500 mt-1 uppercase">Recovery</div>
+                  <div className="text-xs text-gray-9000 mt-1 uppercase">Recovery</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-blue-400">
+                  <div className="text-2xl font-bold text-blue-700">
                     {myData.sleep?.performancePercent != null
                       ? `${Math.round(myData.sleep.performancePercent)}%`
                       : '—'}
                   </div>
-                  <div className="text-xs text-gray-500 mt-1 uppercase">Sömn</div>
+                  <div className="text-xs text-gray-9000 mt-1 uppercase">Sömn</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold text-orange-400">
+                  <div className="text-2xl font-bold text-orange-700">
                     {myData.strain?.score != null
                       ? Math.round(myData.strain.score * 10) / 10
                       : '—'}
                   </div>
-                  <div className="text-xs text-gray-500 mt-1 uppercase">Strain</div>
+                  <div className="text-xs text-gray-9000 mt-1 uppercase">Strain</div>
                 </div>
               </div>
             )
@@ -537,7 +537,7 @@ function SetupAndConnectTab({ onConnected }: { onConnected: () => void }) {
 
           <button
             onClick={handleDisconnect}
-            className="text-xs text-gray-500 hover:text-red-400 transition-colors"
+            className="text-xs text-gray-9000 hover:text-red-700 transition-colors"
           >
             Koppla bort
           </button>
@@ -599,14 +599,14 @@ function SetupAndConnectTab({ onConnected }: { onConnected: () => void }) {
   return (
     <div className="max-w-2xl mx-auto space-y-4 pb-8">
       {error && (
-        <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-400">
+        <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-700">
           {error}
         </div>
       )}
 
       <div className="rounded-2xl border border-gray-200 bg-white p-5">
         <h2 className="text-base font-semibold text-gray-900 mb-1">Koppla &amp; Kom igång</h2>
-        <p className="text-sm text-gray-500">Följ stegen nedan — från kartong till kopplat.</p>
+        <p className="text-sm text-gray-9000">Följ stegen nedan — från kartong till kopplat.</p>
       </div>
 
       {steps.map(({ num, emoji, title, body, tip }) => {
@@ -620,17 +620,17 @@ function SetupAndConnectTab({ onConnected }: { onConnected: () => void }) {
               <div className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-sm font-bold text-gray-900">
                 {num}
               </div>
-              {!isLastStep && <div className="w-px flex-1 bg-white/10 min-h-[20px]" />}
+              {!isLastStep && <div className="w-px flex-1 bg-gray-100 min-h-[20px]" />}
             </div>
             <div className="flex-1 pb-2">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-xl">{emoji}</span>
                 <h3 className="text-sm font-semibold text-gray-900">{title}</h3>
               </div>
-              <p className="text-sm text-gray-500 leading-relaxed">{body}</p>
+              <p className="text-sm text-gray-9000 leading-relaxed">{body}</p>
               {tip && (
                 <div className="mt-3 flex gap-2 rounded-lg bg-blue-500/10 border border-blue-500/20 px-3 py-2">
-                  <span className="text-blue-400 text-xs font-semibold flex-shrink-0">Tips</span>
+                  <span className="text-blue-700 text-xs font-semibold flex-shrink-0">Tips</span>
                   <p className="text-xs text-blue-300 leading-relaxed">{tip}</p>
                 </div>
               )}
@@ -653,9 +653,9 @@ function SetupAndConnectTab({ onConnected }: { onConnected: () => void }) {
 
       <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-5">
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-emerald-400 font-semibold text-sm">✓ Redo!</span>
+          <span className="text-emerald-700 font-semibold text-sm">✓ Redo!</span>
         </div>
-        <p className="text-sm text-gray-500 leading-relaxed">
+        <p className="text-sm text-gray-9000 leading-relaxed">
           När alla i teamet är kopplade visas live-data under "Team Pulse". Recovery, sömn och
           daglig belastning synkas automatiskt varje timme. Lägst recovery visas överst — vi
           anpassar workload efter faktisk kapacitet.
@@ -714,7 +714,7 @@ export function WHOOPTeamDashboard() {
           <span className="text-2xl">⌚</span>
           <div>
             <h1 className="text-lg font-bold text-gray-900">WHOOP</h1>
-            <p className="text-xs text-gray-500">Team Pulse · Biometri · Recovery</p>
+            <p className="text-xs text-gray-9000">Team Pulse · Biometri · Recovery</p>
           </div>
         </div>
 
@@ -727,7 +727,7 @@ export function WHOOPTeamDashboard() {
               className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors border-b-2 ${
                 tab === t.id
                   ? 'text-gray-900 border-amber-400'
-                  : 'text-gray-500 border-transparent hover:text-gray-600'
+                  : 'text-gray-9000 border-transparent hover:text-gray-600'
               }`}
             >
               {t.label}

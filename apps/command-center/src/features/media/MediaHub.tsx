@@ -26,7 +26,7 @@ export function MediaHub() {
             className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 -mb-px ${
               activeTab === tab.id
                 ? 'text-gray-900 border-white/60'
-                : 'text-gray-500 border-transparent hover:text-gray-600'
+                : 'text-gray-9000 border-transparent hover:text-gray-600'
             }`}
           >
             {tab.label}

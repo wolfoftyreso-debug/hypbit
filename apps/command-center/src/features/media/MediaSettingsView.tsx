@@ -37,7 +37,7 @@ export function MediaSettingsView() {
     <div className="space-y-6">
       <div>
         <h2 className="text-gray-900 font-semibold">Media Inställningar</h2>
-        <p className="text-xs text-gray-500 mt-0.5">Integrationsstatus och API-konfiguration</p>
+        <p className="text-xs text-gray-9000 mt-0.5">Integrationsstatus och API-konfiguration</p>
       </div>
 
       {/* Integration status */}
@@ -54,10 +54,10 @@ export function MediaSettingsView() {
                   <span className="text-sm text-gray-900">{PROVIDER_LABELS[ch.provider]}</span>
                   <div className="flex items-center gap-1.5">
                     <span className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT[ch.status]}`} />
-                    <span className="text-xs text-gray-500 font-mono">{ch.status}</span>
+                    <span className="text-xs text-gray-9000 font-mono">{ch.status}</span>
                   </div>
                 </div>
-                <span className="text-xs text-gray-500 font-mono">{ch.api_adapter}</span>
+                <span className="text-xs text-gray-9000 font-mono">{ch.api_adapter}</span>
               </div>
               <div className="flex items-center gap-2">
                 <input
@@ -70,7 +70,7 @@ export function MediaSettingsView() {
                 />
                 <button
                   disabled
-                  className="px-3 py-1.5 text-xs text-gray-500 border border-white/5 rounded-lg cursor-not-allowed"
+                  className="px-3 py-1.5 text-xs text-gray-9000 border border-white/5 rounded-lg cursor-not-allowed"
                 >
                   Spara
                 </button>
@@ -84,10 +84,10 @@ export function MediaSettingsView() {
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
         <div className="px-5 py-4 border-b border-gray-200 flex items-center justify-between">
           <h3 className="text-sm font-semibold text-gray-900">Event Log</h3>
-          <span className="text-xs text-gray-500 font-mono">0 events</span>
+          <span className="text-xs text-gray-9000 font-mono">0 events</span>
         </div>
         <div className="px-5 py-8 text-center">
-          <div className="text-gray-500 text-sm">Inga events ännu</div>
+          <div className="text-gray-9000 text-sm">Inga events ännu</div>
           <div className="text-gray-600 text-xs mt-1">
             MediaEvents loggas här när integrationer är aktiva (Fas 2+)
           </div>

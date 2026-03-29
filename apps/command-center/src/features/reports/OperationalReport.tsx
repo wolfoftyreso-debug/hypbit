@@ -17,7 +17,7 @@ function UptimeBar({ value }: { value: number }) {
   const pct = Math.max(0, Math.min(100, value))
   const color = pct >= 99.9 ? '#10B981' : pct >= 99 ? '#F59E0B' : '#EF4444'
   return (
-    <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden w-24">
+    <div className="h-1.5 bg-gray-50 rounded-full overflow-hidden w-24">
       <div
         className="h-full rounded-full transition-all duration-700"
         style={{ width: `${pct}%`, background: color }}
@@ -32,7 +32,7 @@ const DEPLOY_LABELS  = ['Mar W1','Mar W2','Mar W3','Mar W4','Apr W1','Apr W2','A
 function DeployChart() {
   const max = Math.max(...WEEKLY_DEPLOYS, 1)
   return (
-    <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl p-4">
+    <div className="bg-gray-50 border border-white/[0.07] rounded-xl p-4">
       <p className="text-xs font-bold text-gray-600 uppercase tracking-widest mb-3">Deploys per vecka (alla tjänster)</p>
       <div className="flex items-end gap-1 h-24">
         {WEEKLY_DEPLOYS.map((d, i) => {
@@ -40,7 +40,7 @@ function DeployChart() {
           const isLast4 = i >= WEEKLY_DEPLOYS.length - 4
           return (
             <div key={i} className="flex-1 flex flex-col items-center gap-0.5" title={`${DEPLOY_LABELS[i]}: ${d} deploys`}>
-              <span className="text-[8px] text-gray-500 font-mono">{d}</span>
+              <span className="text-[8px] text-gray-9000 font-mono">{d}</span>
               <div
                 className="w-full rounded-t-sm transition-all"
                 style={{
@@ -58,7 +58,7 @@ function DeployChart() {
           <div key={i} className="flex-1 text-center text-[7px] text-gray-600 font-mono leading-tight">{l.split(' ')[1]}</div>
         ))}
       </div>
-      <p className="text-[9px] text-gray-500 mt-1 font-mono">Lila = senaste 4 veckorna</p>
+      <p className="text-[9px] text-gray-9000 mt-1 font-mono">Lila = senaste 4 veckorna</p>
     </div>
   )
 }
@@ -68,7 +68,7 @@ const ERROR_HISTORY = [0.8, 0.5, 0.3, 0.7, 0.4, 0.2, 0.6, 0.3, 0.4, 0.3, 0.2, 0.
 function ErrorRateChart() {
   const max = Math.max(...ERROR_HISTORY, 0.01)
   return (
-    <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl p-4">
+    <div className="bg-gray-50 border border-white/[0.07] rounded-xl p-4">
       <p className="text-xs font-bold text-gray-600 uppercase tracking-widest mb-3">API-felfrekvens (%) — 12 veckor</p>
       <div className="flex items-end gap-1 h-20">
         {ERROR_HISTORY.map((v, i) => {
@@ -85,10 +85,10 @@ function ErrorRateChart() {
         })}
       </div>
       <div className="flex items-center gap-4 mt-2">
-        <div className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-green-500" /><span className="text-[9px] text-gray-500">{'< 0.5%'}</span></div>
-        <div className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-amber-500" /><span className="text-[9px] text-gray-500">0.5–1%</span></div>
-        <div className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-red-500" /><span className="text-[9px] text-gray-500">{'> 1%'}</span></div>
-        <span className="ml-auto text-xs text-gray-500 font-mono">
+        <div className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-green-500" /><span className="text-[9px] text-gray-9000">{'< 0.5%'}</span></div>
+        <div className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-amber-500" /><span className="text-[9px] text-gray-9000">0.5–1%</span></div>
+        <div className="flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full bg-red-500" /><span className="text-[9px] text-gray-9000">{'> 1%'}</span></div>
+        <span className="ml-auto text-xs text-gray-9000 font-mono">
           Snitt: {(ERROR_HISTORY.reduce((s, v) => s + v, 0) / ERROR_HISTORY.length).toFixed(2)}%
         </span>
       </div>
@@ -106,32 +106,32 @@ export function OperationalReport() {
 
       {/* Top KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl p-4 text-center">
-          <p className="text-xs text-gray-500 font-mono uppercase mb-1">Avg. Uptime</p>
-          <p className="text-xl font-black text-green-400">{avgUptime.toFixed(2)}%</p>
-          <p className="text-[9px] text-gray-500 mt-0.5">alla tjänster</p>
+        <div className="bg-gray-50 border border-white/[0.07] rounded-xl p-4 text-center">
+          <p className="text-xs text-gray-9000 font-mono uppercase mb-1">Avg. Uptime</p>
+          <p className="text-xl font-black text-green-700">{avgUptime.toFixed(2)}%</p>
+          <p className="text-[9px] text-gray-9000 mt-0.5">alla tjänster</p>
         </div>
-        <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl p-4 text-center">
-          <p className="text-xs text-gray-500 font-mono uppercase mb-1">Deploys/vecka</p>
+        <div className="bg-gray-50 border border-white/[0.07] rounded-xl p-4 text-center">
+          <p className="text-xs text-gray-9000 font-mono uppercase mb-1">Deploys/vecka</p>
           <p className="text-xl font-black text-[#6C63FF]">{totalDeploys}</p>
-          <p className="text-[9px] text-gray-500 mt-0.5">denna vecka</p>
+          <p className="text-[9px] text-gray-9000 mt-0.5">denna vecka</p>
         </div>
-        <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl p-4 text-center">
-          <p className="text-xs text-gray-500 font-mono uppercase mb-1">Aktiva Zoomers</p>
+        <div className="bg-gray-50 border border-white/[0.07] rounded-xl p-4 text-center">
+          <p className="text-xs text-gray-9000 font-mono uppercase mb-1">Aktiva Zoomers</p>
           <p className="text-xl font-black text-[#00C2FF]">{ZOOMER_COUNT}</p>
-          <p className="text-[9px] text-gray-500 mt-0.5">fotografer</p>
+          <p className="text-[9px] text-gray-9000 mt-0.5">fotografer</p>
         </div>
-        <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl p-4 text-center">
-          <p className="text-xs text-gray-500 font-mono uppercase mb-1">API-felfrekvens</p>
+        <div className="bg-gray-50 border border-white/[0.07] rounded-xl p-4 text-center">
+          <p className="text-xs text-gray-9000 font-mono uppercase mb-1">API-felfrekvens</p>
           <p className="text-xl font-black" style={{ color: avgError > 0.5 ? '#F59E0B' : '#10B981' }}>
             {avgError.toFixed(2)}%
           </p>
-          <p className="text-[9px] text-gray-500 mt-0.5">snitt alla tjänster</p>
+          <p className="text-[9px] text-gray-9000 mt-0.5">snitt alla tjänster</p>
         </div>
       </div>
 
       {/* Service table */}
-      <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl overflow-hidden">
+      <div className="bg-gray-50 border border-white/[0.07] rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-gray-200">
           <p className="text-xs font-bold text-gray-600 uppercase tracking-widest">Tjänster — systemstatus</p>
         </div>
@@ -140,13 +140,13 @@ export function OperationalReport() {
             <thead>
               <tr className="border-b border-gray-200">
                 {['Tjänst','Uptime','Status','Deploys/v','API-fel','Resp. tid'].map(h => (
-                  <th key={h} className="px-4 py-2 text-left text-xs text-gray-500 font-mono">{h}</th>
+                  <th key={h} className="px-4 py-2 text-left text-xs text-gray-9000 font-mono">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {SYSTEM_METRICS.map((m, i) => (
-                <tr key={i} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
+                <tr key={i} className="border-b border-white/[0.03] hover:bg-gray-50 transition-colors">
                   <td className="px-4 py-3 text-gray-900 font-medium">{m.service}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
@@ -155,11 +155,11 @@ export function OperationalReport() {
                     </div>
                   </td>
                   <td className="px-4 py-3"><UptimeBadge uptime={m.uptime} /></td>
-                  <td className="px-4 py-3 text-gray-500 font-mono">{m.deploysThisWeek}</td>
+                  <td className="px-4 py-3 text-gray-9000 font-mono">{m.deploysThisWeek}</td>
                   <td className="px-4 py-3 font-mono" style={{ color: m.apiErrorRate >= 1 ? '#EF4444' : m.apiErrorRate >= 0.5 ? '#F59E0B' : '#10B981' }}>
                     {m.apiErrorRate}%
                   </td>
-                  <td className="px-4 py-3 text-gray-500 font-mono">{m.avgResponseMs}ms</td>
+                  <td className="px-4 py-3 text-gray-9000 font-mono">{m.avgResponseMs}ms</td>
                 </tr>
               ))}
             </tbody>
@@ -174,7 +174,7 @@ export function OperationalReport() {
       </div>
 
       {/* Zoomer breakdown */}
-      <div className="bg-white/[0.03] border border-white/[0.07] rounded-xl p-4">
+      <div className="bg-gray-50 border border-white/[0.07] rounded-xl p-4">
         <p className="text-xs font-bold text-gray-600 uppercase tracking-widest mb-4">QuixZoom — Photographer Network</p>
         <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
           {[
@@ -187,7 +187,7 @@ export function OperationalReport() {
           ].map(item => (
             <div key={item.label} className="text-center">
               <p className="text-xl font-black" style={{ color: item.color }}>{item.value}</p>
-              <p className="text-[9px] text-gray-500 font-mono mt-0.5">{item.label}</p>
+              <p className="text-[9px] text-gray-9000 font-mono mt-0.5">{item.label}</p>
             </div>
           ))}
         </div>

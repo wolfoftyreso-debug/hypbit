@@ -114,7 +114,7 @@ export function ProjectProgressWidget() {
   const avgVelocity = (PROJECTS.reduce((s, p) => s + p.velocity, 0) / PROJECTS.length).toFixed(1)
 
   return (
-    <div className="bg-white/[0.04] border border-gray-200 rounded-2xl overflow-hidden">
+    <div className="bg-gray-50 border border-gray-200 rounded-2xl overflow-hidden">
       <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
         <p className="text-sm font-medium text-gray-900/70">Projekt</p>
         <span className="text-xs text-gray-900/30 font-mono">
@@ -143,7 +143,7 @@ export function ProjectProgressWidget() {
             </div>
 
             {/* Progress bar */}
-            <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
+            <div className="h-1.5 bg-gray-50 rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all"
                 style={{ width: `${p.progress}%`, backgroundColor: p.color }}

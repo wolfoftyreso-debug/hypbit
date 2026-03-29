@@ -51,12 +51,12 @@ function FlowCard({ flow, allTasks }: { flow: Flow; allTasks: Task[] }) {
             {flow.module.toUpperCase()}
           </span>
         </div>
-        <span className="text-xs font-mono text-gray-500">
+        <span className="text-xs font-mono text-gray-9000">
           {doneTasks.length}/{flowTasks.length} {t('flow.done_count')}
         </span>
       </div>
 
-      <p className="text-xs text-gray-500 mb-3">{flow.description}</p>
+      <p className="text-xs text-gray-9000 mb-3">{flow.description}</p>
 
       {/* Progress bar */}
       <div className="w-full bg-gray-100 rounded-full h-1.5 mb-3">
@@ -172,7 +172,7 @@ export function MissionControl() {
   if (loading) {
     return (
       <div className="min-h-full bg-gray-50 flex items-center justify-center">
-        <div className="text-gray-500 font-mono text-sm">{t('system.loading')}</div>
+        <div className="text-gray-9000 font-mono text-sm">{t('system.loading')}</div>
       </div>
     )
   }
@@ -213,19 +213,19 @@ export function MissionControl() {
   const statusConfig = {
     red: {
       bg: 'bg-red-600',
-      text: 'text-white',
+      text: 'text-gray-900',
       label: `SYSTEM: ${t('system.status.red').toUpperCase()}`,
       desc: `${sysVM.criticalCount} ${t('agent.web.critical_issues').toLowerCase()} — ${t('agent.command.action_required').toLowerCase()}`,
     },
     yellow: {
       bg: 'bg-amber-500',
-      text: 'text-white',
+      text: 'text-gray-900',
       label: `SYSTEM: ${t('system.status.yellow').toUpperCase()}`,
       desc: t('agent.meta.priority_high'),
     },
     green: {
       bg: 'bg-emerald-500',
-      text: 'text-white',
+      text: 'text-gray-900',
       label: `SYSTEM: ${t('system.status.green').toUpperCase()}`,
       desc: t('agent.system.no_tasks'),
     },
@@ -256,7 +256,7 @@ export function MissionControl() {
 
       {/* ── Escalation Banner ────────────────────────────────────────────── */}
       {escalations.length > 0 && (
-        <div className="mb-4 p-3 bg-red-600 text-white rounded-xl flex items-center gap-3">
+        <div className="mb-4 p-3 bg-red-600 text-gray-900 rounded-xl flex items-center gap-3">
           <AlertTriangle className="w-4 h-4 flex-shrink-0" />
           <span className="text-sm font-medium">
             {t('alerts.critical_count', { count: escalations.length })}
@@ -307,7 +307,7 @@ export function MissionControl() {
         </div>
         <div className="space-y-3">
           {criticalVMs.length === 0 ? (
-            <div className="bg-white border border-gray-200 rounded-xl p-4 text-sm text-gray-500">
+            <div className="bg-white border border-gray-200 rounded-xl p-4 text-sm text-gray-9000">
               {t('task.no_critical')}
             </div>
           ) : (
@@ -331,7 +331,7 @@ export function MissionControl() {
         </div>
         <div className="space-y-3">
           {highVMs.length === 0 ? (
-            <div className="bg-white border border-gray-200 rounded-xl p-4 text-sm text-gray-500">
+            <div className="bg-white border border-gray-200 rounded-xl p-4 text-sm text-gray-9000">
               {t('task.no_high')}
             </div>
           ) : (
@@ -358,7 +358,7 @@ export function MissionControl() {
       {/* ── System Health ────────────────────────────────────────────────── */}
       <section>
         <div className="flex items-center gap-2 mb-3">
-          <TrendingUp className="w-4 h-4 text-gray-500" />
+          <TrendingUp className="w-4 h-4 text-gray-9000" />
           <h2 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
             {t('agent.web.system_overview')}
           </h2>

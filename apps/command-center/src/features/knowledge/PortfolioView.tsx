@@ -35,7 +35,7 @@ export function PortfolioView() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-sm font-semibold text-gray-900">Idéportfolio</h2>
-          <p className="text-xs text-gray-500 mt-0.5">{IDEA_PORTFOLIO.length} projekt — klonare och analyserade 2026-03-27</p>
+          <p className="text-xs text-gray-9000 mt-0.5">{IDEA_PORTFOLIO.length} projekt — klonare och analyserade 2026-03-27</p>
         </div>
         <div className="flex gap-2">
           {['alla', 'aktiv', 'pausad', 'tidig', 'referens'].map(s => (
@@ -44,8 +44,8 @@ export function PortfolioView() {
               onClick={() => setFilter(s)}
               className={`text-xs font-mono px-2.5 py-1 rounded-lg capitalize transition-colors ${
                 filter === s
-                  ? 'bg-brand-accent/15 text-brand-accent border border-brand-accent/30'
-                  : 'text-gray-500 border border-surface-border hover:text-gray-600'
+                  ? 'bg-purple-50 text-purple-700 border border-purple-200'
+                  : 'text-gray-9000 border border-surface-border hover:text-gray-600'
               }`}
             >
               {s === 'alla' ? `Alla (${IDEA_PORTFOLIO.length})` : s}
@@ -61,7 +61,7 @@ export function PortfolioView() {
             const projects = IDEA_PORTFOLIO.filter(p => group.ids.includes(p.id))
             return (
               <div key={group.label}>
-                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{group.label}</h3>
+                <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-2">{group.label}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   {projects.map(p => (
                     <ProjectCard key={p.id} project={p} onClick={() => setSelected(p.id === selected ? null : p.id)} selected={selected === p.id} />
@@ -85,18 +85,18 @@ export function PortfolioView() {
           <div className="flex items-start justify-between mb-4">
             <div>
               <h3 className="text-base font-bold text-gray-900">{selectedProject.title}</h3>
-              <p className="text-xs text-gray-500 mt-0.5">{selectedProject.domain} · {selectedProject.pages} sidor · {selectedProject.updated}</p>
+              <p className="text-xs text-gray-9000 mt-0.5">{selectedProject.domain} · {selectedProject.pages} sidor · {selectedProject.updated}</p>
             </div>
-            <button onClick={() => setSelected(null)} className="text-gray-500 hover:text-gray-600 text-xs">✕</button>
+            <button onClick={() => setSelected(null)} className="text-gray-9000 hover:text-gray-600 text-xs">✕</button>
           </div>
           <p className="text-sm text-gray-600 leading-relaxed mb-4">{selectedProject.description}</p>
           <div className="p-3 rounded-lg mb-4" style={{ background: '#10B98110', border: '1px solid #10B98130' }}>
-            <p className="text-xs text-gray-500 font-mono uppercase mb-1">Potential i Wavult-stacken</p>
+            <p className="text-xs text-gray-9000 font-mono uppercase mb-1">Potential i Wavult-stacken</p>
             <p className="text-xs text-gray-600">{selectedProject.potential}</p>
           </div>
           <div className="flex flex-wrap gap-1.5">
             {selectedProject.tags.map(tag => (
-              <span key={tag} className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-surface-overlay text-gray-500 border border-surface-border">
+              <span key={tag} className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-surface-overlay text-gray-9000 border border-surface-border">
                 {tag}
               </span>
             ))}
@@ -128,8 +128,8 @@ function ProjectCard({ project, onClick, selected }: {
           {status.label}
         </span>
       </div>
-      <p className="text-xs text-gray-500 mb-2">{project.domain} · {project.pages} sidor</p>
-      <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{project.description}</p>
+      <p className="text-xs text-gray-9000 mb-2">{project.domain} · {project.pages} sidor</p>
+      <p className="text-xs text-gray-9000 leading-relaxed line-clamp-2">{project.description}</p>
     </div>
   )
 }

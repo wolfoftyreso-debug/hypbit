@@ -34,11 +34,11 @@ function TaskRow({ task, variant }: { task: Task; variant: 'action' | 'blocking'
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-0.5">
             {variant === 'done' && <CheckCircle className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />}
-            {variant === 'blocking' && <Lock className="w-3.5 h-3.5 text-orange-400 flex-shrink-0" />}
+            {variant === 'blocking' && <Lock className="w-3.5 h-3.5 text-orange-700 flex-shrink-0" />}
             {variant === 'action' && effectiveState === 'IN_PROGRESS' && (
               <span className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
             )}
-            <span className={`text-sm font-semibold ${variant === 'done' ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
+            <span className={`text-sm font-semibold ${variant === 'done' ? 'text-gray-9000 line-through' : 'text-gray-900'}`}>
               {task.title}
             </span>
           </div>
@@ -62,7 +62,7 @@ function TaskRow({ task, variant }: { task: Task; variant: 'action' | 'blocking'
         </div>
 
         {variant === 'action' && (
-          <button className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white ${
+          <button className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-gray-900 ${
             task.priority === 'critical' ? 'bg-red-600 hover:bg-red-700' : 'bg-white hover:bg-gray-50'
           } transition-colors`}>
             {effectiveState === 'IN_PROGRESS' ? t('task.continue') : t('task.start')}
@@ -105,7 +105,7 @@ export function PersonView() {
       <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-5">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <div className="flex-1">
-            <label className="block text-xs font-mono text-gray-500 mb-1 uppercase tracking-wide">
+            <label className="block text-xs font-mono text-gray-9000 mb-1 uppercase tracking-wide">
               {t('person.select')}
             </label>
             <select
@@ -124,7 +124,7 @@ export function PersonView() {
           {person && (
             <div className="text-right">
               <div className="text-lg font-bold text-gray-900">{person.name}</div>
-              <div className="text-sm text-gray-500 font-mono">{person.role}</div>
+              <div className="text-sm text-gray-9000 font-mono">{person.role}</div>
             </div>
           )}
         </div>
@@ -144,7 +144,7 @@ export function PersonView() {
 
         <div className="space-y-2">
           {nextActions.length === 0 ? (
-            <div className="bg-white border border-gray-200 rounded-xl p-4 text-sm text-gray-500">
+            <div className="bg-white border border-gray-200 rounded-xl p-4 text-sm text-gray-9000">
               {t('person.no_tasks')}
             </div>
           ) : (
@@ -159,7 +159,7 @@ export function PersonView() {
       {blockingTasks.length > 0 && (
         <section>
           <div className="flex items-center gap-2 mb-3">
-            <Lock className="w-4 h-4 text-orange-400" />
+            <Lock className="w-4 h-4 text-orange-700" />
             <h2 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">
               {t('task.blocking_others')}
             </h2>
@@ -190,7 +190,7 @@ export function PersonView() {
 
         <div className="space-y-2">
           {doneTasks.length === 0 ? (
-            <div className="bg-white border border-gray-200 rounded-xl p-4 text-sm text-gray-500">
+            <div className="bg-white border border-gray-200 rounded-xl p-4 text-sm text-gray-9000">
               {t('agent.no_actions')}
             </div>
           ) : (

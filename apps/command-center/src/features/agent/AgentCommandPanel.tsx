@@ -68,7 +68,7 @@ export function AgentCommandPanel() {
         <span className={`text-xs font-medium ${sysConfig.text}`}>
           {renderAgentMessage(systemMessage, t)}
         </span>
-        <Zap className="w-3 h-3 text-purple-400 ml-auto" />
+        <Zap className="w-3 h-3 text-purple-700 ml-auto" />
       </div>
 
       {/* Priority queue */}

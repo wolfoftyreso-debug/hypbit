@@ -139,7 +139,7 @@ export function SMSView() {
   return (
     <div className="space-y-4">
       {/* MOCKDATA BANNER for log */}
-      <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-yellow-500/10 border border-yellow-500/25 text-yellow-400 text-xs font-medium">
+      <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-yellow-500/10 border border-yellow-500/25 text-yellow-700 text-xs font-medium">
         <span>⚠️</span>
         <span>SMS-loggen visar mockdata — utgående SMS via "Skicka SMS"-knappen är live (46elks API)</span>
         <span className="ml-auto text-yellow-600 font-mono text-xs">LOG: MOCK · SEND: LIVE</span>
@@ -149,21 +149,21 @@ export function SMSView() {
       <div className="flex items-center gap-3 flex-wrap">
         <div className={`flex items-center gap-2 px-3 py-2 rounded-xl border text-xs font-medium ${
           ELKS_CONFIGURED
-            ? 'bg-green-500/10 border-green-500/20 text-green-400'
-            : 'bg-yellow-500/10 border-yellow-500/20 text-yellow-400'
+            ? 'bg-green-500/10 border-green-500/20 text-green-700'
+            : 'bg-yellow-500/10 border-yellow-500/20 text-yellow-700'
         }`}>
           <span className={`h-2 w-2 rounded-full ${ELKS_CONFIGURED ? 'bg-green-400' : 'bg-yellow-400'}`} />
           46elks: {ELKS_CONFIGURED ? 'Konfigurerad ✓' : 'Ej konfigurerad — Twilio fallback aktiv'}
         </div>
-        <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-500/20 bg-gray-500/10 text-gray-500 text-xs font-medium">
+        <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-500/20 bg-gray-500/10 text-gray-9000 text-xs font-medium">
           <span className="h-2 w-2 rounded-full bg-gray-500" />
           Twilio: Ej konfigurerad (ej behövs)
         </div>
         <div className="ml-auto flex items-center gap-3">
-          <span className="text-xs text-gray-500">{sentCount} skickade · {failedCount} misslyckade</span>
+          <span className="text-xs text-gray-9000">{sentCount} skickade · {failedCount} misslyckade</span>
           <button
             onClick={() => setShowForm(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-accent/15 text-brand-accent border border-brand-accent/30 hover:bg-brand-accent/25 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-purple-50 text-purple-700 border border-purple-200 hover:bg-brand-accent/25 transition-colors"
           >
             📱 Skicka SMS
           </button>
@@ -172,13 +172,13 @@ export function SMSView() {
 
       {/* Compose form */}
       {showForm && (
-        <div className="bg-white rounded-xl border border-brand-accent/20 p-4 space-y-3">
+        <div className="bg-white rounded-xl border border-purple-200 p-4 space-y-3">
           <div className="flex items-center justify-between">
             <h3 className="text-xs font-semibold text-gray-900">Nytt SMS</h3>
-            <button onClick={() => setShowForm(false)} className="text-gray-500 hover:text-gray-600">×</button>
+            <button onClick={() => setShowForm(false)} className="text-gray-9000 hover:text-gray-600">×</button>
           </div>
           <div>
-            <label className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1 block">Mottagare</label>
+            <label className="text-xs text-gray-9000 font-mono uppercase tracking-wider mb-1 block">Mottagare</label>
             <select
               value={recipient}
               onChange={e => setRecipient(e.target.value)}
@@ -193,7 +193,7 @@ export function SMSView() {
           </div>
           {recipient === 'custom' && (
             <div>
-              <label className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1 block">Telefonnummer</label>
+              <label className="text-xs text-gray-9000 font-mono uppercase tracking-wider mb-1 block">Telefonnummer</label>
               <input
                 value={customNumber}
                 onChange={e => setCustomNumber(e.target.value)}
@@ -203,7 +203,7 @@ export function SMSView() {
             </div>
           )}
           <div>
-            <label className="text-xs text-gray-500 font-mono uppercase tracking-wider mb-1 block">
+            <label className="text-xs text-gray-9000 font-mono uppercase tracking-wider mb-1 block">
               Meddelande ({message.length}/160)
             </label>
             <textarea
@@ -215,7 +215,7 @@ export function SMSView() {
             />
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-gray-9000">
               Provider: {ELKS_CONFIGURED ? '46elks (primär)' : 'Twilio (fallback)'}
             </span>
             <button
@@ -239,18 +239,18 @@ export function SMSView() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-xs font-medium text-gray-800">{sms.toName}</span>
-                  <span className="text-xs text-gray-500 font-mono">{sms.to}</span>
+                  <span className="text-xs text-gray-9000 font-mono">{sms.to}</span>
                   <span className={`ml-auto text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
-                    sms.status === 'sent' ? 'bg-green-500/15 text-green-400' :
-                    sms.status === 'failed' ? 'bg-red-500/15 text-red-400' :
-                    'bg-yellow-500/15 text-yellow-400'
+                    sms.status === 'sent' ? 'bg-green-500/15 text-green-700' :
+                    sms.status === 'failed' ? 'bg-red-500/15 text-red-700' :
+                    'bg-yellow-500/15 text-yellow-700'
                   }`}>
                     {sms.status === 'sent' ? '✓ Skickat' : sms.status === 'failed' ? '✗ Misslyckades' : '⏳ Väntar'}
                   </span>
                 </div>
-                <p className="text-xs text-gray-500 truncate">{sms.message}</p>
+                <p className="text-xs text-gray-9000 truncate">{sms.message}</p>
                 <div className="flex items-center gap-3 mt-1">
-                  <span className="text-xs text-gray-500 font-mono">
+                  <span className="text-xs text-gray-9000 font-mono">
                     {new Date(sms.timestamp).toLocaleString('sv-SE')}
                   </span>
                   <span className="text-xs text-gray-600">via {sms.provider}</span>

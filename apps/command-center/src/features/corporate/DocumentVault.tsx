@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { DOCUMENTS, COMPANIES, DocumentCategory, DocumentStatus, CompanyId } from './data'
 
 const STATUS_STYLES: Record<DocumentStatus, string> = {
-  'utkast':    'bg-yellow-500/15 text-yellow-400 border-yellow-500/30',
-  'signerat':  'bg-green-500/15 text-green-400 border-green-500/30',
-  'arkiverat': 'bg-gray-500/15 text-gray-500 border-gray-500/30',
+  'utkast':    'bg-yellow-500/15 text-yellow-700 border-yellow-500/30',
+  'signerat':  'bg-green-500/15 text-green-700 border-green-500/30',
+  'arkiverat': 'bg-gray-500/15 text-gray-9000 border-gray-500/30',
 }
 
 const FILE_ICONS: Record<string, string> = {
@@ -36,7 +36,7 @@ export function DocumentVault() {
       <div className="flex flex-wrap gap-3 items-start">
         {/* Company */}
         <div>
-          <label className="text-xs text-gray-500 block mb-1.5 font-mono uppercase tracking-wider">Bolag</label>
+          <label className="text-xs text-gray-9000 block mb-1.5 font-mono uppercase tracking-wider">Bolag</label>
           <select
             value={selectedCompany}
             onChange={e => setSelectedCompany(e.target.value as CompanyId | 'all')}
@@ -49,17 +49,17 @@ export function DocumentVault() {
 
         {/* Category pills */}
         <div>
-          <label className="text-xs text-gray-500 block mb-1.5 font-mono uppercase tracking-wider">Kategori</label>
+          <label className="text-xs text-gray-9000 block mb-1.5 font-mono uppercase tracking-wider">Kategori</label>
           <div className="flex gap-1.5 flex-wrap">
             <button
               onClick={() => setSelectedCategory('all')}
-              className={`px-2.5 py-1 rounded-lg text-xs border transition-colors ${selectedCategory === 'all' ? 'bg-brand-accent/15 text-brand-accent border-brand-accent/30' : 'bg-white/[0.02] text-gray-500 border-gray-200 hover:text-gray-900'}`}
+              className={`px-2.5 py-1 rounded-lg text-xs border transition-colors ${selectedCategory === 'all' ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-gray-50 text-gray-9000 border-gray-200 hover:text-gray-900'}`}
             >Alla</button>
             {CATEGORIES.map(cat => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-2.5 py-1 rounded-lg text-xs border transition-colors ${selectedCategory === cat ? 'bg-brand-accent/15 text-brand-accent border-brand-accent/30' : 'bg-white/[0.02] text-gray-500 border-gray-200 hover:text-gray-900'}`}
+                className={`px-2.5 py-1 rounded-lg text-xs border transition-colors ${selectedCategory === cat ? 'bg-purple-50 text-purple-700 border-purple-200' : 'bg-gray-50 text-gray-9000 border-gray-200 hover:text-gray-900'}`}
               >{cat}</button>
             ))}
           </div>
@@ -67,8 +67,8 @@ export function DocumentVault() {
 
         {/* Upload button */}
         <div className="ml-auto flex flex-col items-end gap-1.5">
-          <label className="text-xs text-gray-500 block font-mono uppercase tracking-wider opacity-0">·</label>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/[0.04] border border-gray-200 text-gray-600 text-xs hover:bg-white/[0.07] transition-colors">
+          <label className="text-xs text-gray-9000 block font-mono uppercase tracking-wider opacity-0">·</label>
+          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-50 border border-gray-200 text-gray-600 text-xs hover:bg-gray-100 transition-colors">
             <span>⬆</span> Ladda upp dokument
           </button>
         </div>
@@ -87,7 +87,7 @@ export function DocumentVault() {
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors cursor-pointer ${
                 selectedStatus === s
                   ? STATUS_STYLES[s]
-                  : 'bg-white/[0.02] text-gray-500 border-gray-200 hover:text-gray-900'
+                  : 'bg-gray-50 text-gray-9000 border-gray-200 hover:text-gray-900'
               }`}
             >
               <span className="capitalize">{s}:</span>
@@ -95,8 +95,8 @@ export function DocumentVault() {
             </button>
           )
         })}
-        <span className="flex items-center text-gray-500">·</span>
-        <span className="flex items-center gap-1 text-gray-500">
+        <span className="flex items-center text-gray-9000">·</span>
+        <span className="flex items-center gap-1 text-gray-9000">
           <span className="font-semibold text-gray-900">{filtered.length}</span> dokument
         </span>
       </div>
@@ -104,16 +104,16 @@ export function DocumentVault() {
       {/* Document list */}
       <div className="rounded-xl border border-gray-200 overflow-hidden">
         {filtered.length === 0 ? (
-          <div className="px-6 py-12 text-center text-gray-500 text-sm">Inga dokument matchar filtret.</div>
+          <div className="px-6 py-12 text-center text-gray-9000 text-sm">Inga dokument matchar filtret.</div>
         ) : (
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-gray-200 bg-white/[0.02]">
-                <th className="text-left px-4 py-2.5 text-gray-500 font-medium">Dokument</th>
-                <th className="text-left px-4 py-2.5 text-gray-500 font-medium">Bolag</th>
-                <th className="text-left px-4 py-2.5 text-gray-500 font-medium">Kategori</th>
-                <th className="text-left px-4 py-2.5 text-gray-500 font-medium">Datum</th>
-                <th className="text-left px-4 py-2.5 text-gray-500 font-medium">Status</th>
+              <tr className="border-b border-gray-200 bg-gray-50">
+                <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Dokument</th>
+                <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Bolag</th>
+                <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Kategori</th>
+                <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Datum</th>
+                <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Status</th>
                 <th className="px-4 py-2.5" />
               </tr>
             </thead>
@@ -121,13 +121,13 @@ export function DocumentVault() {
               {filtered.map((doc, i) => {
                 const company = COMPANIES.find(c => c.id === doc.companyId)!
                 return (
-                  <tr key={doc.id} className={`border-b border-gray-100 hover:bg-white/[0.02] transition-colors ${i % 2 === 0 ? '' : 'bg-white/[0.01]'}`}>
+                  <tr key={doc.id} className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${i % 2 === 0 ? '' : 'bg-white/[0.01]'}`}>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <span className="text-base">{FILE_ICONS[doc.fileType]}</span>
                         <div>
                           <div className="text-gray-800">{doc.name}</div>
-                          <div className="text-xs text-gray-500 font-mono uppercase">{doc.fileType}{doc.size ? ` · ${doc.size}` : ''}</div>
+                          <div className="text-xs text-gray-9000 font-mono uppercase">{doc.fileType}{doc.size ? ` · ${doc.size}` : ''}</div>
                         </div>
                       </div>
                     </td>
@@ -138,18 +138,18 @@ export function DocumentVault() {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-xs text-gray-500 bg-white/[0.04] px-2 py-0.5 rounded border border-gray-200">
+                      <span className="text-xs text-gray-9000 bg-gray-50 px-2 py-0.5 rounded border border-gray-200">
                         {doc.category}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-gray-500 whitespace-nowrap">{formatDate(doc.date)}</td>
+                    <td className="px-4 py-3 text-gray-9000 whitespace-nowrap">{formatDate(doc.date)}</td>
                     <td className="px-4 py-3">
                       <span className={`text-xs font-medium px-2 py-0.5 rounded border ${STATUS_STYLES[doc.status]}`}>
                         {doc.status}
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <button className="text-xs text-gray-500 hover:text-brand-accent transition-colors">⬇ Hämta</button>
+                      <button className="text-xs text-gray-9000 hover:text-purple-700 transition-colors">⬇ Hämta</button>
                     </td>
                   </tr>
                 )

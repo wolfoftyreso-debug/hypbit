@@ -30,14 +30,14 @@ class FinanceErrorBoundary extends Component<
       return (
         <div className="flex flex-col items-center justify-center h-60 gap-4">
           <p className="text-sm font-semibold text-gray-900">{this.props.tabLabel} — data saknas</p>
-          <p className="text-xs text-gray-500 max-w-sm text-center">
+          <p className="text-xs text-gray-9000 max-w-sm text-center">
             Den här modulen behöver live-data från Supabase. Tabellerna är inte satta upp ännu.
             All data är mockad tills Supabase-scheman är live.
           </p>
-          <p className="text-xs text-gray-500 font-mono">{this.state.error?.message}</p>
+          <p className="text-xs text-gray-9000 font-mono">{this.state.error?.message}</p>
           <button
             onClick={() => this.setState({ hasError: false, error: null })}
-            className="text-xs px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-500 hover:bg-gray-50 transition-colors"
+            className="text-xs px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-9000 hover:bg-gray-50 transition-colors"
           >
             Försök igen
           </button>
@@ -132,7 +132,7 @@ export function FinanceHub() {
         <div className="flex items-center gap-3">
           <div className="min-w-0 flex-1">
             <h1 className="text-base font-semibold text-gray-900">Finance Hub</h1>
-            <p className="text-xs text-gray-500 font-mono truncate">
+            <p className="text-xs text-gray-9000 font-mono truncate">
               {activeEntity.layer === 0 ? 'Wavult Group — konsoliderad' : activeEntity.name}
             </p>
           </div>
@@ -159,7 +159,7 @@ export function FinanceHub() {
             className={`flex items-center gap-1.5 px-3 py-2.5 text-xs font-medium transition-colors whitespace-nowrap flex-shrink-0 border-b-2 -mb-px ${
               activeTab === tab.id
                 ? 'border-purple-600 text-purple-700'
-                : 'border-transparent text-gray-500 hover:text-gray-600 hover:border-gray-300'
+                : 'border-transparent text-gray-9000 hover:text-gray-600 hover:border-gray-300'
             }`}
           >
             {tab.label}
@@ -173,10 +173,10 @@ export function FinanceHub() {
         const tab = TABS.find(t => t.id === activeTab)
         return tab ? (
           <div className="px-6 py-2 border-b border-gray-100 flex-shrink-0 flex items-center gap-2 bg-gray-50">
-            <p className="text-xs text-gray-500 leading-snug">{tab.ingress}</p>
+            <p className="text-xs text-gray-9000 leading-snug">{tab.ingress}</p>
             <button
               onClick={() => setShowIngress(false)}
-              className="ml-auto text-gray-500 hover:text-gray-500 transition-colors flex-shrink-0"
+              className="ml-auto text-gray-9000 hover:text-gray-9000 transition-colors flex-shrink-0"
               aria-label="Stang beskrivning"
             >
               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">

@@ -125,7 +125,7 @@ export function DimensionPill({
             <span className="text-xs font-mono flex-shrink-0" style={{ color }}>{dim.score}</span>
           </div>
         </div>
-        <span className="text-gray-500 text-xs">{expanded ? '▲' : '▾'}</span>
+        <span className="text-gray-9000 text-xs">{expanded ? '▲' : '▾'}</span>
       </div>
 
       {/* Expanded signals */}
@@ -137,12 +137,12 @@ export function DimensionPill({
             return (
               <div key={i} className="flex items-start gap-2 text-xs">
                 <span style={{ color: sigColor, fontSize: 10 }}>{sigIcon}</span>
-                <span className="text-gray-500 leading-relaxed">{s.text}</span>
+                <span className="text-gray-9000 leading-relaxed">{s.text}</span>
               </div>
             )
           })}
           {negSignals.length === 0 && (
-            <div className="text-xs text-gray-500">All signals clear in this dimension.</div>
+            <div className="text-xs text-gray-9000">All signals clear in this dimension.</div>
           )}
         </div>
       )}
@@ -171,7 +171,7 @@ export function HealthScorePanel({ hs }: { hs: EntityHealthScore }) {
               {LEVEL_LABEL[hs.level]}
             </span>
           </div>
-          <p className="text-xs text-gray-500 mt-1 leading-relaxed">{hs.summary}</p>
+          <p className="text-xs text-gray-9000 mt-1 leading-relaxed">{hs.summary}</p>
         </div>
       </div>
 
