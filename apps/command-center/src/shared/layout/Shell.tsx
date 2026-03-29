@@ -72,10 +72,15 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/submissions', labelKey: 'nav.submissions', icon: Inbox },
       { to: '/decisions',   labelKey: 'nav.decisions',   icon: Scale },
       { to: '/projects',    labelKey: 'nav.projects',    icon: Layers },
-      { to: '/quixzoom-app',    labelKey: 'nav.quixzoom_app',    icon: Smartphone },
-      { to: '/landvex-portal',  labelKey: 'nav.landvex_portal',  icon: MapPin },
-      { to: '/quixzoom-ads',    labelKey: 'nav.quixzoom_ads',    icon: Package },
       { to: '/finance-flow',    labelKey: 'nav.finance_flow',    icon: ArrowRight },
+    ],
+  },
+  {
+    labelKey: 'nav.platforms',
+    items: [
+      { to: '/quixzoom-app',   labelKey: 'nav.quixzoom_app',   icon: Smartphone },
+      { to: '/landvex-portal', labelKey: 'nav.landvex_portal', icon: MapPin },
+      { to: '/quixzoom-ads',   labelKey: 'nav.quixzoom_ads',   icon: Package },
     ],
   },
   {

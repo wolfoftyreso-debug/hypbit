@@ -7,7 +7,6 @@
   "system.loading": "Laddar...",
   "system.error": "Fel uppstod",
   "system.offline": "Offline — visar lokal data",
-
   "nav.command": "Mission Control",
   "nav.person": "Min vy",
   "nav.ops": "Operations Center",
@@ -32,7 +31,6 @@
   "nav.systemGraph": "Systemkarta",
   "nav.settings": "Inställningar",
   "nav.alerts": "Alerts",
-
   "task.start": "Påbörja",
   "task.complete": "Slutför",
   "task.blocked": "Blockerad",
@@ -58,7 +56,6 @@
   "task.continue": "Fortsätt",
   "task.no_critical": "Inga kritiska uppgifter.",
   "task.no_high": "Inga höga prioriteter.",
-
   "flow.next_step": "Nästa steg",
   "flow.progress": "Framsteg",
   "flow.blocked": "Blockerat flöde",
@@ -67,21 +64,17 @@
   "flow.all_blocked": "Alla tillgängliga tasks är blockerade",
   "flow.done_count": "klara",
   "flow.ongoing": "Flows — pågående",
-
   "module.legal": "Legal",
   "module.finance": "Finance",
   "module.operations": "Operations",
   "module.tech": "Tech",
   "module.hr": "HR",
   "module.open_tasks": "öppna",
-
   "team.blocking": "blockerar",
   "team.tasks_left": "kvar",
-
   "alerts.none": "Inga kritiska alerts",
   "alerts.title": "Alerts",
   "alerts.critical_count": "{{count}} tasks har passerat deadline — omedelbar åtgärd krävs",
-
   "ops.modules": "Moduler",
   "ops.flows": "Aktiva flöden",
   "ops.team": "Team",
@@ -94,7 +87,6 @@
   "ops.center": "Operations Center",
   "ops.risk": "Risk",
   "ops.ok": "OK",
-
   "auth.login": "Logga in",
   "auth.email": "E-post",
   "auth.password": "Lösenord",
@@ -106,11 +98,9 @@
   "auth.continue_as": "Fortsätt som",
   "auth.exit": "Exit",
   "auth.admin": "Admin",
-
   "lang.switch": "Language",
   "lang.sv": "Svenska",
   "lang.en": "English",
-
   "person.my_tasks": "Mina uppgifter",
   "person.select": "Välj person",
   "person.view": "Min vy",
@@ -119,11 +109,9 @@
   "person.completed_tasks": "Klara uppgifter",
   "person.validation_required": "Validering krävs",
   "person.no_tasks": "Inga uppgifter",
-
   "time.live": "live",
   "time.seconds_ago": "{{n}}s sedan",
   "time.updated": "Uppdaterad",
-
   "action.center": "Centrera",
   "action.share_location": "Dela position",
   "action.fetching": "Hämtar...",
@@ -147,7 +135,6 @@
   "action.submit": "Skicka",
   "action.stop": "Stoppa",
   "action.speak": "Tala",
-
   "status.connected": "ANSLUTEN",
   "status.not_configured": "EJ KONFIGURERAD",
   "status.loading": "Laddar...",
@@ -158,12 +145,10 @@
   "status.inactive": "Inaktiv",
   "status.unknown": "Okänd",
   "status.no_reply": "Inget svar.",
-
   "bernt.tunnel_not_configured": "Bernt-tunnel är inte konfigurerad. Tryck ⚙️ och klistra in tunnel-URL:en.",
   "bernt.tunnel_unreachable": "Kunde inte nå Bernt-tunneln. Kontrollera att din dator är igång och tunneln aktiv.",
   "bernt.tunnel_url_label": "TUNNEL URL",
   "bernt.tunnel_url_hint": "Hitta URL i /tmp/bernt-tunnel.log på din dator",
-
   "agent.blocking_tasks": "Du blockerar {{count}} uppgifter",
   "agent.critical_deadline": "Deadline om {{days}} dagar — omedelbar åtgärd krävs",
   "agent.task_overdue": "{{title}} är försenad med {{days}} dagar",
@@ -178,7 +163,6 @@
   "agent.task_started": "{{title}} påbörjad",
   "agent.validation_required": "Validering krävs innan {{title}} kan slutföras",
   "agent.dependency_missing": "{{title}} väntar på: {{dependency}}",
-
   "agent.system.ok": "Systemet är stabilt",
   "agent.system.risk": "{{count}} risker",
   "agent.system.blocked": "{{count}} kritiska problem kräver åtgärd",
@@ -245,5 +229,11 @@
   "nav.quixzoom_app": "Zoomer-app",
   "nav.landvex_portal": "Landvex Portal",
   "nav.quixzoom_ads": "Quixzoom Ads",
-  "nav.finance_flow": "Finance Flow"
+  "nav.finance_flow": "Finance Flow",
+  "nav": {
+    "platforms": "Plattformar",
+    "quixzoom_app": "quiXzoom",
+    "landvex_portal": "Landvex",
+    "quixzoom_ads": "Quixom Ads"
+  }
 }
