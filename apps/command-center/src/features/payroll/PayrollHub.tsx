@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { PayrollOverview } from './PayrollOverview'
 import { EmployeeList } from './EmployeeList'
 import { PayslipView } from './PayslipView'
@@ -19,13 +20,14 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
 
 export function PayrollHub() {
   const [activeTab, setActiveTab] = useState<Tab>('overview')
+  const { activeEntity } = useEntityScope()
 
   return (
     <div className="h-full flex flex-col overflow-hidden">
       {/* Page header */}
       <div className="px-6 pt-6 pb-0 flex-shrink-0">
         <h1 className="text-sm font-semibold text-gray-900">Lön & Personal</h1>
-        <p className="text-sm text-gray-600 mt-1">Wavult Group — 5 anställda · Skattetabell 33 · Arbetsgivaravgift 31.42%</p>
+        <p className="text-sm text-gray-600 mt-1">{activeEntity.shortName} — 5 anställda · Skattetabell 33 · Arbetsgivaravgift 31.42%</p>
 
         {/* Tab bar */}
         <div className="flex gap-1 mt-4 border-b border-surface-border overflow-x-auto">

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { ModuleHeader } from '../../shared/maturity/ModuleHeader'
 import { PipelineView } from './PipelineView'
 import { ProspectList } from './ProspectList'
@@ -67,6 +68,7 @@ function QuickStats() {
 
 export function CRMHub() {
   const [activeTab, setActiveTab] = useState<Tab>('pipeline')
+  const { activeEntity } = useEntityScope()
 
   return (
     <div className="flex flex-col h-full">
@@ -77,7 +79,7 @@ export function CRMHub() {
           <div>
             <h1 className="text-sm font-semibold text-gray-900">CRM</h1>
             <p className="text-sm text-gray-600 mt-0.5">
-              Wavult Sales — quiXzoom · Landvex · Hypbit
+              {activeEntity.shortName} Sales — quiXzoom · Landvex · Hypbit
             </p>
           </div>
           <QuickStats />

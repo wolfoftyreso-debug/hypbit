@@ -2,6 +2,7 @@
 // DISC-profiler, hälsodata och teamöversikt
 
 import { useState } from 'react'
+import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { DISC_PROFILES, HEALTH_DATA } from './pgData'
 import { DISC_DESCRIPTIONS, type DISCType, type DISCProfile } from './pgTypes'
 
@@ -573,6 +574,7 @@ function HalsaTab() {
 
 export function PeopleGovernance() {
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null)
+  const { activeEntity } = useEntityScope()
 
   const selectedDisc = selectedPerson
     ? DISC_PROFILES.find(d => d.personId === selectedPerson.id)
@@ -585,7 +587,7 @@ export function PeopleGovernance() {
       <div>
         <h1 style={{ fontSize: 24, fontWeight: 700, color: '#1C1C1E', margin: 0 }}>People & Governance</h1>
         <p style={{ fontSize: 13, color: '#8E8E93', marginTop: 4 }}>
-          Teamöversikt och hälsodata för Wavult Group core-team. Klicka på en person för fullständig profil.
+          Teamöversikt och hälsodata för {activeEntity.shortName} core-team. Klicka på en person för fullständig profil.
         </p>
       </div>
 

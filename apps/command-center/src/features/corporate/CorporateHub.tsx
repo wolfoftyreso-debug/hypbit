@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { BoardView } from './BoardView'
 import { JurisdictionView } from './JurisdictionView'
 import { DocumentVault } from './DocumentVault'
@@ -50,6 +51,7 @@ function QuickStats() {
 
 export function CorporateHub() {
   const [activeTab, setActiveTab] = useState<Tab>('board')
+  const { activeEntity } = useEntityScope()
 
   return (
     <div className="flex flex-col h-full bg-gray-50 text-gray-900">
@@ -61,7 +63,7 @@ export function CorporateHub() {
             <div>
               <h1 className="text-[16px] font-bold text-gray-900">Bolagsadmin</h1>
               <p className="text-xs text-gray-9000 font-mono">
-                Wavult Group — {COMPANIES.length} entiteter · SE · US-DE · US-TX · LT · AE
+                {activeEntity.shortName} — {COMPANIES.length} entiteter · SE · US-DE · US-TX · LT · AE
               </p>
             </div>
           </div>

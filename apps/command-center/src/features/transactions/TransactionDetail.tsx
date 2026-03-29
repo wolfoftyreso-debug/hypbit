@@ -1,4 +1,5 @@
 import { X, FileText, Download } from 'lucide-react'
+import { PaymentFlowTrace } from './PaymentFlowTrace'
 
 interface TransactionLogEntry {
   id: string
@@ -235,6 +236,17 @@ export function TransactionDetail({ transactionId, onClose }: { transactionId: s
                 </div>
               </div>
             </section>
+          )}
+
+          {/* Payment flow trace */}
+          {tx.amount > 0 && (
+            <PaymentFlowTrace
+              amount={tx.amount}
+              currency={tx.currency}
+              counterparty={tx.counterparty || ''}
+              entity={tx.entity}
+              title={tx.title}
+            />
           )}
 
           {/* Audit log */}

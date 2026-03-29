@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { SuppliersView } from './SuppliersView'
 import { PurchaseOrdersView } from './PurchaseOrdersView'
 import { ProcurementContractsView } from './ProcurementContractsView'
@@ -25,6 +26,7 @@ const TABS: Array<{ id: Tab; label: string; icon: string; badge?: number }> = [
 
 export function ProcurementHub() {
   const [activeTab, setActiveTab] = useState<Tab>('suppliers')
+  const { activeEntity } = useEntityScope()
 
   return (
     <div className="flex flex-col h-full bg-gray-50 text-gray-900">
@@ -34,7 +36,7 @@ export function ProcurementHub() {
           <span className="text-xl">🛒</span>
           <div>
             <h1 className="text-[16px] font-bold text-gray-900">Inköp & Leverantörer</h1>
-            <p className="text-xs text-gray-9000 font-mono">Procurement — Wavult Group</p>
+            <p className="text-xs text-gray-9000 font-mono">Procurement — {activeEntity.shortName}</p>
           </div>
         </div>
       </div>

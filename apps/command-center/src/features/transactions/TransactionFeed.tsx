@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Download, Search, ChevronRight } from 'lucide-react'
+import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { TransactionDetail } from './TransactionDetail'
 
 type TxStatus = 'paid' | 'pending' | 'overdue' | 'cancelled' | 'approved'
@@ -129,6 +130,8 @@ export function TransactionFeed() {
   const [entityFilter, setEntityFilter] = useState('Alla')
   const [categoryFilter, setCategoryFilter] = useState('Alla')
   const [selectedTx, setSelectedTx] = useState<string | null>(null)
+  const { activeEntity } = useEntityScope()
+  const isGroup = activeEntity.layer === 0
 
   const filtered = TRANSACTIONS.filter(tx => {
     const matchSearch = !search ||
@@ -137,7 +140,9 @@ export function TransactionFeed() {
       tx.reference?.toLowerCase().includes(search.toLowerCase())
     const matchEntity = entityFilter === 'Alla' || tx.entity === entityFilter
     const matchCat = categoryFilter === 'Alla' || tx.category === categoryFilter
-    return matchSearch && matchEntity && matchCat
+    // EntityScope filter: if not group, only show transactions for active entity
+    const matchScope = isGroup || tx.entity === activeEntity.shortName || tx.entity === activeEntity.name
+    return matchSearch && matchEntity && matchCat && matchScope
   })
 
   const totalIn = filtered.filter(t => t.amount > 0).reduce((s, t) => s + t.amount, 0)
@@ -156,7 +161,9 @@ export function TransactionFeed() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
           <div>
             <h2 style={{ fontSize: 20, fontWeight: 700, color: '#1C1C1E', margin: 0 }}>Transaktioner</h2>
-            <div style={{ fontSize: 13, color: '#6B7280', marginTop: 2 }}>Koncernredovisning — alla bolag</div>
+            <div style={{ fontSize: 13, color: '#6B7280', marginTop: 2 }}>
+              {isGroup ? 'Koncernredovisning — alla bolag' : `${activeEntity.name} — filtrerat`}
+            </div>
           </div>
           <button style={{
             display: 'flex', alignItems: 'center', gap: 6,
