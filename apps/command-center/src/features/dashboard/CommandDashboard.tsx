@@ -4,6 +4,7 @@ import { TeamStatusWidget } from '../team/TeamStatusWidget'
 import { ProjectProgressWidget } from '../projects/ProjectProgressWidget'
 import { QuickLinksWidget } from '../quicklinks/QuickLinksWidget'
 import { HealthOverviewWidget } from '../entity/HealthOverviewWidget'
+import { RevenueDashboard } from './RevenueDashboard'
 
 // ─── Mock Data ─────────────────────────────────────────────────────────────────
 
@@ -361,6 +362,9 @@ export function CommandDashboard() {
         <h1 className="text-sm font-semibold text-gray-900">Command Center</h1>
         <p className="text-sm text-gray-600 mt-1">Wavult Group — Operationellt kontrollcenter</p>
       </div>
+
+      {/* Live Revenue Dashboard */}
+      <RevenueDashboard />
 
       {/* Thailand Workcamp Countdown */}
       <div className="max-w-sm">

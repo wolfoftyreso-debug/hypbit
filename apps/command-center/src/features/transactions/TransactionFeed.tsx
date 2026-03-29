@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Download, Search, ChevronRight } from 'lucide-react'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { TransactionDetail } from './TransactionDetail'
+import { exportToCSV, generateSIEFile, downloadSIE } from '../exports/ExportService'
 
 type TxStatus = 'paid' | 'pending' | 'overdue' | 'cancelled' | 'approved'
 type TxType = 'invoice' | 'payment' | 'salary' | 'expense' | 'transfer' | 'intercompany'
@@ -130,6 +131,7 @@ export function TransactionFeed() {
   const [entityFilter, setEntityFilter] = useState('Alla')
   const [categoryFilter, setCategoryFilter] = useState('Alla')
   const [selectedTx, setSelectedTx] = useState<string | null>(null)
+  const [exportMenuOpen, setExportMenuOpen] = useState(false)
   const { activeEntity } = useEntityScope()
   const isGroup = activeEntity.layer === 0
 
@@ -148,6 +150,48 @@ export function TransactionFeed() {
   const totalIn = filtered.filter(t => t.amount > 0).reduce((s, t) => s + t.amount, 0)
   const totalOut = filtered.filter(t => t.amount < 0).reduce((s, t) => s + t.amount, 0)
 
+  function handleExportCSV() {
+    exportToCSV(
+      filtered.map(tx => ({
+        datum: tx.date,
+        titel: tx.title,
+        motpart: tx.counterparty,
+        bolag: tx.entity,
+        kategori: tx.category,
+        belopp: tx.amount,
+        valuta: tx.currency,
+        status: tx.status,
+        referens: tx.reference || '',
+      })),
+      [
+        { key: 'datum', label: 'Datum' },
+        { key: 'titel', label: 'Beskrivning' },
+        { key: 'motpart', label: 'Motpart' },
+        { key: 'bolag', label: 'Bolag' },
+        { key: 'kategori', label: 'Kategori' },
+        { key: 'belopp', label: 'Belopp' },
+        { key: 'valuta', label: 'Valuta' },
+        { key: 'status', label: 'Status' },
+        { key: 'referens', label: 'Referens' },
+      ],
+      `transaktioner_${new Date().toISOString().slice(0, 10)}`
+    )
+  }
+
+  function handleExportSIE() {
+    const sieData = filtered
+      .filter(tx => tx.amount !== 0)
+      .map(tx => ({
+        date: tx.date,
+        account: tx.amount > 0 ? '1510' : '2440',
+        amount: tx.amount,
+        description: tx.title,
+        reference: tx.reference,
+      }))
+    const sie = generateSIEFile(sieData, 'Landvex AB', '559141-7042')
+    downloadSIE(sie, `bokforing_${new Date().toISOString().slice(0, 10)}`)
+  }
+
   function formatAmount(amount: number, currency: string): string {
     const abs = Math.abs(amount)
     const formatted = abs >= 1000 ? `${(abs / 1000).toFixed(0)} k` : abs.toString()
@@ -165,14 +209,28 @@ export function TransactionFeed() {
               {isGroup ? 'Koncernredovisning — alla bolag' : `${activeEntity.name} — filtrerat`}
             </div>
           </div>
-          <button style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            padding: '8px 16px', borderRadius: 10, border: '1px solid rgba(0,0,0,0.1)',
-            background: '#F9FAFB', color: '#374151', fontSize: 13, fontWeight: 500, cursor: 'pointer',
-          }}>
-            <Download style={{ width: 14, height: 14 }} />
-            Exportera
-          </button>
+          <div style={{ position: 'relative' }}>
+            <button onClick={() => setExportMenuOpen(!exportMenuOpen)}
+              style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 10, border: '1px solid rgba(0,0,0,0.1)', background: '#F9FAFB', color: '#374151', fontSize: 13, fontWeight: 500, cursor: 'pointer' }}>
+              <Download style={{ width: 14, height: 14 }} />
+              Exportera ▾
+            </button>
+            {exportMenuOpen && (
+              <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: 4, background: '#fff', border: '1px solid #E5E7EB', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,0.1)', zIndex: 50, minWidth: 160, overflow: 'hidden' }}>
+                {[
+                  { label: 'CSV (Excel)', action: handleExportCSV },
+                  { label: 'SIE4 (Ekonomisystem)', action: handleExportSIE },
+                ].map(item => (
+                  <button key={item.label} onClick={() => { item.action(); setExportMenuOpen(false) }}
+                    style={{ display: 'block', width: '100%', padding: '10px 16px', textAlign: 'left', fontSize: 13, color: '#374151', background: 'none', border: 'none', cursor: 'pointer' }}
+                    onMouseEnter={e => (e.currentTarget.style.background = '#F9FAFB')}
+                    onMouseLeave={e => (e.currentTarget.style.background = 'none')}>
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Summary cards */}

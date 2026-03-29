@@ -1,8 +1,11 @@
 import { useState, useEffect, useCallback } from 'react'
-import { MapPin, Camera, Users, Package, RefreshCw, CheckCircle, Clock, TrendingUp } from 'lucide-react'
+import Map, { Marker, Popup } from 'react-map-gl/mapbox'
+import 'mapbox-gl/dist/mapbox-gl.css'
+import { MapPin, Camera, Users, Package, RefreshCw, CheckCircle, Clock, TrendingUp, Map as MapIcon } from 'lucide-react'
 
 // API base — quiXzoom API på ECS via ALB
 const QZ_API = 'https://api.wavult.com'
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || ''
 
 interface Mission {
   id: string
@@ -56,7 +59,7 @@ const STATUS_CONFIG = {
   rejected:    { label: 'Avvisad',     bg: '#FEE2E2', color: '#991B1B' },
 }
 
-type Tab = 'overview' | 'missions' | 'zoomers' | 'create'
+type Tab = 'map' | 'overview' | 'missions' | 'zoomers' | 'create'
 
 export function QuixzoomApp() {
   const [tab, setTab] = useState<Tab>('overview')
@@ -66,6 +69,7 @@ export function QuixzoomApp() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [creating, setCreating] = useState(false)
+  const [selectedMission, setSelectedMission] = useState<Mission | null>(null)
 
   // New mission form state
   const [newMission, setNewMission] = useState({
@@ -149,10 +153,10 @@ export function QuixzoomApp() {
         </div>
 
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: 0, marginTop: 16, borderBottom: '1px solid #E5E7EB' }}>
-          {([['overview', 'Översikt'], ['missions', 'Uppdrag'], ['zoomers', 'Zoomers'], ['create', 'Nytt uppdrag']] as const).map(([id, label]) => (
+        <div style={{ display: 'flex', gap: 0, marginTop: 16, borderBottom: '1px solid #E5E7EB', overflowX: 'auto' }}>
+          {([['map', 'Karta'], ['overview', 'Översikt'], ['missions', 'Uppdrag'], ['zoomers', 'Zoomers'], ['create', 'Nytt uppdrag']] as const).map(([id, label]) => (
             <button key={id} onClick={() => setTab(id)}
-              style={{ padding: '8px 16px', fontSize: 13, fontWeight: tab === id ? 600 : 400, color: tab === id ? '#7C3AED' : '#6B7280', background: 'none', border: 'none', borderBottom: tab === id ? '2px solid #7C3AED' : '2px solid transparent', cursor: 'pointer', marginBottom: -1 }}>
+              style={{ padding: '8px 16px', fontSize: 13, fontWeight: tab === id ? 600 : 400, color: tab === id ? '#7C3AED' : '#6B7280', background: 'none', border: 'none', borderBottom: tab === id ? '2px solid #7C3AED' : '2px solid transparent', cursor: 'pointer', marginBottom: -1, whiteSpace: 'nowrap' }}>
               {label}
             </button>
           ))}
@@ -160,10 +164,97 @@ export function QuixzoomApp() {
       </div>
 
       {/* Content */}
-      <div style={{ flex: 1, overflow: 'auto', padding: 24 }}>
-        {error && (
+      <div style={{ flex: 1, overflow: tab === 'map' ? 'hidden' : 'auto', padding: tab === 'map' ? 0 : 24, position: 'relative' }}>
+        {error && tab !== 'map' && (
           <div style={{ background: '#FEF3C7', border: '1px solid #FDE68A', borderRadius: 8, padding: '10px 14px', marginBottom: 16, fontSize: 13, color: '#92400E' }}>
             ⚠️ {error} — quiXzoom API svarar inte. Kontrollera ECS-tjänsten.
+          </div>
+        )}
+
+        {/* Map tab */}
+        {tab === 'map' && (
+          <div style={{ height: '100%', position: 'relative' }}>
+            {MAPBOX_TOKEN ? (
+              <Map
+                mapboxAccessToken={MAPBOX_TOKEN}
+                initialViewState={{ longitude: 18.0686, latitude: 59.3293, zoom: 6 }}
+                style={{ width: '100%', height: '100%' }}
+                mapStyle="mapbox://styles/mapbox/light-v11"
+              >
+                {missions.filter(m => m.lat && m.lng).map(m => {
+                  const sc = STATUS_CONFIG[m.status] || STATUS_CONFIG.open
+                  return (
+                    <Marker
+                      key={m.id}
+                      longitude={m.lng!}
+                      latitude={m.lat!}
+                      anchor="bottom"
+                      onClick={e => { e.originalEvent.stopPropagation(); setSelectedMission(m) }}
+                    >
+                      <div style={{
+                        width: 28, height: 28, borderRadius: '50%',
+                        background: sc.color,
+                        border: '3px solid white',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.25)',
+                        cursor: 'pointer',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      }}>
+                        <Camera size={11} color="white" />
+                      </div>
+                    </Marker>
+                  )
+                })}
+                {selectedMission && selectedMission.lat && selectedMission.lng && (
+                  <Popup
+                    longitude={selectedMission.lng}
+                    latitude={selectedMission.lat}
+                    anchor="top"
+                    onClose={() => setSelectedMission(null)}
+                    closeButton={true}
+                    style={{ maxWidth: 260 }}
+                  >
+                    <div style={{ padding: '4px 2px', fontFamily: '-apple-system, sans-serif' }}>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: '#1C1C1E', marginBottom: 3 }}>{selectedMission.title}</div>
+                      <div style={{ fontSize: 11, color: '#6B7280', marginBottom: 6 }}>
+                        📍 {selectedMission.location}
+                      </div>
+                      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+                        <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 20, background: STATUS_CONFIG[selectedMission.status]?.bg, color: STATUS_CONFIG[selectedMission.status]?.color, fontWeight: 600 }}>
+                          {STATUS_CONFIG[selectedMission.status]?.label || selectedMission.status}
+                        </span>
+                        <span style={{ fontSize: 11, fontWeight: 600, color: '#374151' }}>
+                          {selectedMission.reward} {selectedMission.currency}
+                        </span>
+                      </div>
+                    </div>
+                  </Popup>
+                )}
+              </Map>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#9CA3AF', gap: 12 }}>
+                <MapIcon size={48} />
+                <div style={{ fontSize: 15, fontWeight: 600 }}>Mapbox token saknas</div>
+                <div style={{ fontSize: 13 }}>Konfigurera VITE_MAPBOX_TOKEN i Cloudflare Pages</div>
+              </div>
+            )}
+
+            {/* Stat overlay */}
+            <div style={{ position: 'absolute', top: 12, right: 12, display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <div style={{ background: 'rgba(255,255,255,0.92)', borderRadius: 8, padding: '6px 12px', fontSize: 12, color: '#374151', backdropFilter: 'blur(8px)', border: '1px solid #E5E7EB', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+                {missions.filter(m => m.lat && m.lng).length} / {missions.length} uppdrag har koordinater
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div style={{ position: 'absolute', bottom: 24, left: 16, background: 'rgba(255,255,255,0.95)', borderRadius: 10, padding: '10px 14px', boxShadow: '0 2px 12px rgba(0,0,0,0.12)', backdropFilter: 'blur(8px)' }}>
+              <div style={{ fontSize: 11, fontWeight: 600, color: '#9CA3AF', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status</div>
+              {Object.entries(STATUS_CONFIG).map(([key, val]) => (
+                <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 4, fontSize: 11 }}>
+                  <div style={{ width: 9, height: 9, borderRadius: '50%', background: val.color, flexShrink: 0 }} />
+                  <span style={{ color: '#4B5563' }}>{val.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
