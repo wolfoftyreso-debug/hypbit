@@ -480,11 +480,166 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
   )
 }
 
+// ─── Swimlane View — activities by company ────────────────────────────────────
+
+function SwimlaneView({ activities }: { activities: CampaignActivity[] }) {
+  const COMPANIES = [
+    { id: 'wavult',      label: 'Wavult Group', flag: '🌐', color: '#7C3AED' },
+    { id: 'quixzoom',    label: 'QuiXzoom EU',  flag: '🇪🇺', color: '#2563EB' },
+    { id: 'quixzoom-us', label: 'QuiXzoom US',  flag: '🇺🇸', color: '#0EA5E9' },
+    { id: 'landvex',     label: 'Landvex SE',   flag: '🇸🇪', color: '#059669' },
+    { id: 'landvex-us',  label: 'Landvex US',   flag: '🇺🇸', color: '#F59E0B' },
+  ]
+
+  // Map brand + region → company column
+  const activityToCompany = (a: CampaignActivity): string => {
+    const region = ENTITY_REGION[a.entity_id]
+    if (a.brand === 'wavult') return 'wavult'
+    if (a.brand === 'quixzoom' || a.brand === 'quixom-ads') {
+      return region === 'US' ? 'quixzoom-us' : 'quixzoom'
+    }
+    if (a.brand === 'landvex') {
+      return region === 'US' ? 'landvex-us' : 'landvex'
+    }
+    return 'wavult'
+  }
+
+  // Group by date
+  const byDate = new Map<string, CampaignActivity[]>()
+  activities.forEach(a => {
+    const d = a.date
+    if (!byDate.has(d)) byDate.set(d, [])
+    byDate.get(d)!.push(a)
+  })
+  const dates = Array.from(byDate.keys()).sort()
+
+  function formatDateLabel(d: string) {
+    const date = new Date(d)
+    return date.toLocaleDateString('sv-SE', { weekday: 'short', day: '2-digit', month: 'short' })
+  }
+
+  const STATUS_COLORS: Record<string, string> = {
+    deployed: '#16A34A',
+    pending: '#D97706',
+    draft: '#6B7280',
+    paused: '#9CA3AF',
+    ready: '#2563EB',
+    failed: '#EF4444',
+  }
+
+  if (dates.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-40">
+        <p className="text-xs text-gray-600">No activities match current filters</p>
+      </div>
+    )
+  }
+
+  return (
+    <div style={{ overflowX: 'auto' }}>
+      <table style={{ borderCollapse: 'collapse', minWidth: '100%', tableLayout: 'fixed' }}>
+        {/* Header */}
+        <thead>
+          <tr>
+            <th style={{
+              width: 110, padding: '10px 12px', textAlign: 'left', fontSize: 11,
+              fontWeight: 700, color: '#8E8E93', textTransform: 'uppercase',
+              letterSpacing: '0.07em', borderBottom: '1px solid #E5E7EB',
+              background: '#FFFFFF', position: 'sticky', left: 0, zIndex: 2,
+            }}>
+              Datum
+            </th>
+            {COMPANIES.map(c => (
+              <th key={c.id} style={{
+                width: 200, padding: '10px 12px', textAlign: 'left', fontSize: 12,
+                fontWeight: 600, color: '#374151', borderBottom: '1px solid #E5E7EB',
+                background: '#FFFFFF', borderLeft: '1px solid #F3F4F6',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <span>{c.flag}</span>
+                  <span style={{ color: c.color }}>{c.label}</span>
+                </div>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {dates.map((date, i) => {
+            const dayActivities = byDate.get(date) || []
+            const rowBg = i % 2 === 0 ? '#FFFFFF' : '#FAFAFA'
+            return (
+              <tr key={date} style={{ background: rowBg }}>
+                <td style={{
+                  padding: '10px 12px', fontSize: 11, color: '#6B7280',
+                  fontFamily: 'monospace', whiteSpace: 'nowrap',
+                  borderBottom: '1px solid #F3F4F6', position: 'sticky',
+                  left: 0, background: rowBg, zIndex: 1, fontWeight: 500,
+                }}>
+                  {formatDateLabel(date)}
+                </td>
+                {COMPANIES.map(c => {
+                  const colActivities = dayActivities.filter(a => activityToCompany(a) === c.id)
+                  return (
+                    <td key={c.id} style={{
+                      padding: '8px', verticalAlign: 'top',
+                      borderBottom: '1px solid #F3F4F6', borderLeft: '1px solid #F3F4F6',
+                      minHeight: 40,
+                    }}>
+                      {colActivities.map(act => (
+                        <div key={act.id} style={{
+                          background: '#FFFFFF',
+                          border: '1px solid #E5E7EB',
+                          borderLeft: `3px solid ${c.color}`,
+                          borderRadius: 6,
+                          padding: '5px 8px',
+                          marginBottom: 4,
+                          fontSize: 11,
+                          cursor: 'pointer',
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 4, marginBottom: 2 }}>
+                            <span style={{
+                              fontSize: 9, padding: '1px 5px', background: '#F3F4F6',
+                              borderRadius: 3, fontWeight: 600, color: '#374151',
+                              textTransform: 'uppercase',
+                            }}>
+                              {CHANNEL_LABEL[act.channel]}
+                            </span>
+                            <span style={{ fontSize: 9, color: '#9CA3AF', fontFamily: 'monospace' }}>{act.time}</span>
+                          </div>
+                          <div style={{
+                            fontSize: 11, fontWeight: 500, color: '#1C1C1E',
+                            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                          }}>
+                            {act.name}
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
+                            <span style={{
+                              width: 5, height: 5, borderRadius: '50%',
+                              background: STATUS_COLORS[act.status] || '#9CA3AF',
+                              display: 'inline-block',
+                            }} />
+                            <span style={{ fontSize: 9, color: '#9CA3AF', textTransform: 'capitalize' }}>{act.status}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </td>
+                  )
+                })}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+
 // ─── Main CampaignOS component ────────────────────────────────────────────────
 
 export function CampaignOS() {
   const { t: _t } = useTranslation() // ready for i18n
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [viewMode, setViewMode] = useState<'list' | 'swimlane'>('swimlane')
   const [filterBrand, setFilterBrand] = useState<string>('all')
   const [filterChannel, setFilterChannel] = useState<string>('all')
   const [filterStatus, setFilterStatus] = useState<string>('all')
@@ -609,12 +764,25 @@ export function CampaignOS() {
         className="flex-shrink-0 flex items-center justify-between px-5 border-b"
         style={{ height: '44px', borderColor: 'rgba(255,255,255,0.06)' }}
       >
-        {/* Left: title + period */}
+        {/* Left: title + period + view toggle */}
         <div className="flex items-center gap-3">
           <span className="text-xs font-bold text-gray-900 tracking-wide">Campaign OS</span>
           <span className="text-[9px] font-mono text-gray-600 px-2 py-0.5 rounded border border-gray-200 bg-gray-50">
             Q2 2026
           </span>
+          <div style={{ display: 'flex', gap: 4 }}>
+            {(['list', 'swimlane'] as const).map(mode => (
+              <button key={mode} onClick={() => setViewMode(mode)}
+                style={{
+                  padding: '4px 10px', borderRadius: 6, border: '1px solid #E5E7EB',
+                  fontSize: 11, fontWeight: 500, cursor: 'pointer',
+                  background: viewMode === mode ? '#7C3AED' : '#F9FAFB',
+                  color: viewMode === mode ? '#fff' : '#374151',
+                }}>
+                {mode === 'list' ? 'Lista' : 'Swimlane'}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Right: filters + summary */}
@@ -668,9 +836,11 @@ export function CampaignOS() {
       {/* ── BODY ────────────────────────────────────────────────────────────── */}
       <div className="flex flex-1 overflow-hidden">
 
-        {/* ── TIMELINE (left) ─────────────────────────────────────────────── */}
+        {/* ── TIMELINE / SWIMLANE (left) ───────────────────────────────────── */}
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-6">
-          {grouped.size === 0 ? (
+          {viewMode === 'swimlane' ? (
+            <SwimlaneView activities={filtered} />
+          ) : grouped.size === 0 ? (
             <div className="flex items-center justify-center h-40">
               <p className="text-xs text-gray-600">No activities match current filters</p>
             </div>
