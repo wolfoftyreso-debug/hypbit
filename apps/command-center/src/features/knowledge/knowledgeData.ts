@@ -3924,6 +3924,28 @@ Efter registrering: skicka 83(b) election till IRS inom **30 dagar**.
 - Skicka via USPS certified mail
 - Behåll bekräftelsekopian (livsviktigt)
 
+### EIN-formulär (IRS via Northwest)
+
+**Alla checkboxar — ALLA omarkerade (NEJ):**
+- W-2 employees next 12 months: NEJ
+- Form 720 (Federal Excise Tax): NEJ
+- Gambling/wagering: NEJ
+- Alcohol, tobacco, firearms: NEJ
+- Highway motor vehicle 55k+ lbs: NEJ
+
+**Company Principal Address:** Välj "Use our address. Keep yours private."
+→ Northwest håller din privata adress borta från publika register
+
+**Company Mailing Address:** Välj "Use our address. Keep yours private."
+→ Samma anledning — ingen synlig svensk adress
+
+**Om du ändå måste ange egen adress:**
+- Line 1: Åvägen 9
+- City: Tyresö
+- State: Stockholm
+- Zip: 135 48
+- Country: Sweden
+
 ### Steg efter registrering
 1. Certificate of Formation mottas (1-2 dagar expedited)
 2. Ansök om EIN (SS-4 form, IRS.gov) — gratis, tar 1-2 veckor
