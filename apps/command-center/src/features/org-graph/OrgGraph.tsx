@@ -332,6 +332,11 @@ function NodeCard({
       {/* Jurisdiction + type */}
       <text x={14} y={64} fontSize={10} fill="#9CA3AF">
         {entity.jurisdiction} · {entity.type.toUpperCase()}
+              {(entity as any).wg_id && (
+                <div style={{ fontFamily: 'monospace', fontSize: 11, color: '#7C3AED', background: '#F5F3FF', padding: '2px 8px', borderRadius: 4, display: 'inline-block', marginTop: 4 }}>
+                  {(entity as any).wg_id}
+                </div>
+              )}
       </text>
 
       {/* Status indicator — pulses when live */}
