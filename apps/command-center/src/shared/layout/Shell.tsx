@@ -8,6 +8,7 @@ import {
   BookOpen, Server, Settings,
   Bell, Inbox, User, LayoutGrid,
   Smartphone, MapPin, Package, ArrowRight,
+  Building2, MessageSquare, FileText, Activity,
 } from 'lucide-react'
 import { useRole, ROLES } from '../auth/RoleContext'
 import { EntitySwitcher } from '../../features/entity-switcher/EntitySwitcher'
@@ -47,6 +48,14 @@ const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
+    labelKey: 'nav.platforms',
+    items: [
+      { to: '/quixzoom-app',   labelKey: 'nav.quixzoom_app',   icon: Smartphone },
+      { to: '/landvex-portal', labelKey: 'nav.landvex_portal', icon: MapPin },
+      { to: '/quixzoom-ads',   labelKey: 'nav.quixzoom_ads',   icon: Package },
+    ],
+  },
+  {
     labelKey: 'nav.money',
     items: [
       { to: '/finance',       labelKey: 'nav.finance',      icon: DollarSign },
@@ -67,20 +76,16 @@ const NAV_GROUPS: NavGroup[] = [
   {
     labelKey: 'nav.operations',
     items: [
-      { to: '/milestones',  labelKey: 'nav.milestones',  icon: Flag },
-      { to: '/campaigns',   labelKey: 'nav.campaigns',   icon: Megaphone },
-      { to: '/submissions', labelKey: 'nav.submissions', icon: Inbox },
-      { to: '/decisions',   labelKey: 'nav.decisions',   icon: Scale },
-      { to: '/projects',    labelKey: 'nav.projects',    icon: Layers },
-      { to: '/finance-flow',    labelKey: 'nav.finance_flow',    icon: ArrowRight },
-    ],
-  },
-  {
-    labelKey: 'nav.platforms',
-    items: [
-      { to: '/quixzoom-app',   labelKey: 'nav.quixzoom_app',   icon: Smartphone },
-      { to: '/landvex-portal', labelKey: 'nav.landvex_portal', icon: MapPin },
-      { to: '/quixzoom-ads',   labelKey: 'nav.quixzoom_ads',   icon: Package },
+      { to: '/milestones',     labelKey: 'nav.milestones',     icon: Flag },
+      { to: '/campaigns',      labelKey: 'nav.campaigns',      icon: Megaphone },
+      { to: '/submissions',    labelKey: 'nav.submissions',    icon: Inbox },
+      { to: '/decisions',      labelKey: 'nav.decisions',      icon: Scale },
+      { to: '/projects',       labelKey: 'nav.projects',       icon: Layers },
+      { to: '/finance-flow',   labelKey: 'nav.finance_flow',   icon: ArrowRight },
+      { to: '/corporate',      labelKey: 'nav.corporate',      icon: Building2 },
+      { to: '/legal',          labelKey: 'nav.legal',          icon: Scale },
+      { to: '/reports',        labelKey: 'nav.reports',        icon: FileText },
+      { to: '/communications', labelKey: 'nav.communications', icon: MessageSquare },
     ],
   },
   {
@@ -89,6 +94,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/knowledge',       labelKey: 'nav.knowledge',      icon: BookOpen },
       { to: '/infrastructure',  labelKey: 'nav.infrastructure', icon: Server },
       { to: '/system-graph',    labelKey: 'nav.systemGraph',    icon: Network },
+      { to: '/system-status',   labelKey: 'nav.systemStatus',   icon: Activity },
       { to: '/settings',        labelKey: 'nav.settings',       icon: Settings },
     ],
   },

@@ -230,6 +230,11 @@
   "nav.landvex_portal": "Landvex Portal",
   "nav.quixzoom_ads": "Quixzoom Ads",
   "nav.finance_flow": "Finance Flow",
+  "nav.corporate": "Bolag",
+  "nav.legal": "Legal",
+  "nav.reports": "Rapporter",
+  "nav.communications": "Kommunikation",
+  "nav.systemStatus": "Systemstatus",
   "nav": {
     "platforms": "Plattformar",
     "quixzoom_app": "quiXzoom",
