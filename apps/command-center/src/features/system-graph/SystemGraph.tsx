@@ -15,7 +15,7 @@ import {
   MarkerType,
   BackgroundVariant,
 } from '@xyflow/react'
-import '@xyflow/react/dist/style.css'
+// CSS loaded via index.css for Cloudflare Pages compatibility
 
 // ─── SEMANTIC COLOR SYSTEM ───────────────────────────────────────────────────
 // Green  = Live/Active service
@@ -477,5 +477,8 @@ export function SystemGraph() {
         </div>
       )}
     </div>
+  )
+}
+
   )
 }
