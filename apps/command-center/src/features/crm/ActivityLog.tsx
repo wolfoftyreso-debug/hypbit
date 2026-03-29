@@ -70,7 +70,7 @@ export function ActivityLog() {
 
       {/* New activity form */}
       {showForm && (
-        <div className="bg-surface-raised border border-surface-border rounded-xl p-4 space-y-4">
+        <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-4">
           <p className="text-sm font-semibold text-gray-900">Ny aktivitet</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div>
@@ -78,7 +78,7 @@ export function ActivityLog() {
               <select
                 value={formType}
                 onChange={e => setFormType(e.target.value as ActivityType)}
-                className="w-full bg-surface-overlay border border-surface-border rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none appearance-none"
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none appearance-none"
               >
                 {ACTIVITY_TYPES.map(t => (
                   <option key={t} value={t}>{ACTIVITY_ICONS[t]} {t}</option>
@@ -90,7 +90,7 @@ export function ActivityLog() {
               <select
                 value={formProspect}
                 onChange={e => setFormProspect(e.target.value)}
-                className="w-full bg-surface-overlay border border-surface-border rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none appearance-none"
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none appearance-none"
               >
                 {PROSPECTS.map(p => (
                   <option key={p.id} value={p.id}>{p.company}</option>
@@ -102,7 +102,7 @@ export function ActivityLog() {
               <select
                 value={formBy}
                 onChange={e => setFormBy(e.target.value as TeamMember)}
-                className="w-full bg-surface-overlay border border-surface-border rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none appearance-none"
+                className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 focus:outline-none appearance-none"
               >
                 {TEAM_MEMBERS.map(m => (
                   <option key={m} value={m}>{m}</option>
@@ -117,7 +117,7 @@ export function ActivityLog() {
               onChange={e => setFormNote(e.target.value)}
               placeholder="Vad hände? Vad bestämdes?"
               rows={3}
-              className="w-full bg-surface-overlay border border-surface-border rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:border-gray-300 resize-none"
+              className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:border-gray-300 resize-none"
             />
           </div>
           <div className="flex gap-3">
@@ -130,7 +130,7 @@ export function ActivityLog() {
             </button>
             <button
               onClick={() => setShowForm(false)}
-              className="text-sm px-4 py-2 rounded-lg bg-surface-overlay border border-surface-border text-gray-500 hover:text-gray-900 transition-colors"
+              className="text-sm px-4 py-2 rounded-lg bg-gray-50 border border-gray-200 text-gray-500 hover:text-gray-900 transition-colors"
             >
               Avbryt
             </button>
@@ -145,7 +145,7 @@ export function ActivityLog() {
           className={`text-xs px-3 py-1.5 rounded-lg transition-colors ${
             filter === 'Alla'
               ? 'bg-purple-50 text-purple-700 font-medium'
-              : 'bg-surface-raised border border-surface-border text-gray-500 hover:text-gray-900'
+              : 'bg-white border border-gray-200 text-gray-500 hover:text-gray-900'
           }`}
         >
           Alla typer
@@ -157,7 +157,7 @@ export function ActivityLog() {
             className={`text-xs px-3 py-1.5 rounded-lg transition-colors ${
               filter === t
                 ? 'bg-purple-50 text-purple-700 font-medium'
-                : 'bg-surface-raised border border-surface-border text-gray-500 hover:text-gray-900'
+                : 'bg-white border border-gray-200 text-gray-500 hover:text-gray-900'
             }`}
           >
             {ACTIVITY_ICONS[t]} {t}
@@ -187,7 +187,7 @@ export function ActivityLog() {
         {filtered.map(a => (
           <div
             key={a.id}
-            className="bg-surface-raised border border-surface-border rounded-xl px-4 py-3 flex gap-3 hover:border-gray-200 transition-colors"
+            className="bg-white border border-gray-200 rounded-xl px-4 py-3 flex gap-3 hover:border-gray-200 transition-colors"
           >
             <div className="text-xl leading-none mt-0.5 flex-shrink-0">{ACTIVITY_ICONS[a.type]}</div>
             <div className="flex-1 min-w-0">

@@ -221,11 +221,11 @@ export function ThailandCalendarView() {
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-xl font-bold text-gray-900">🇹🇭 Thailand Workcamp — April 2026</h1>
-          <p className="text-gray-9000 text-sm mt-1">Fullständigt program: Bangkok → Phuket → Retreat → Launch</p>
+          <p className="text-gray-500 text-sm mt-1">Fullständigt program: Bangkok → Phuket → Retreat → Launch</p>
         </div>
         <div className="text-right">
           <div className="text-2xl font-bold text-signal-amber tabular-nums">{daysToStart}</div>
-          <div className="text-xs text-gray-9000">dagar kvar</div>
+          <div className="text-xs text-gray-500">dagar kvar</div>
         </div>
       </div>
 
@@ -269,8 +269,8 @@ export function ThailandCalendarView() {
                       {day.theme}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-9000 truncate">{day.label}</p>
-                  <p className="text-[9px] text-gray-9000 font-mono mt-0.5">
+                  <p className="text-xs text-gray-500 truncate">{day.label}</p>
+                  <p className="text-[9px] text-gray-500 font-mono mt-0.5">
                     {new Date(day.date).toLocaleDateString('sv-SE', { weekday: 'short', day: 'numeric', month: 'short' })}
                   </p>
                 </div>
@@ -281,9 +281,9 @@ export function ThailandCalendarView() {
 
         {/* Day detail */}
         {selectedDay && (
-          <div className="lg:col-span-2 bg-surface-raised border border-surface-border rounded-xl overflow-hidden">
+          <div className="lg:col-span-2 bg-white border border-gray-200 rounded-xl overflow-hidden">
             {/* Header */}
-            <div className="px-5 py-4 border-b border-surface-border"
+            <div className="px-5 py-4 border-b border-gray-200"
               style={{ background: selectedDay.color + '10' }}>
               <div className="flex items-center gap-3">
                 <span className="text-2xl">{selectedDay.icon}</span>
@@ -295,13 +295,13 @@ export function ThailandCalendarView() {
                       {selectedDay.theme}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-9000 font-mono mt-0.5">
+                  <p className="text-xs text-gray-500 font-mono mt-0.5">
                     {new Date(selectedDay.date).toLocaleDateString('sv-SE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
                   </p>
                 </div>
               </div>
               {selectedDay.notes && (
-                <div className="mt-3 text-xs text-gray-9000 px-3 py-2 rounded-lg"
+                <div className="mt-3 text-xs text-gray-500 px-3 py-2 rounded-lg"
                   style={{ background: selectedDay.color + '08', border: `1px solid ${selectedDay.color}20` }}>
                   {selectedDay.notes}
                 </div>
@@ -313,7 +313,7 @@ export function ThailandCalendarView() {
               {selectedDay.events.map((evt, i) => (
                 <div key={i} className="flex items-start gap-3 px-5 py-3">
                   <div className="flex-shrink-0 w-14 text-right">
-                    <span className="text-xs font-mono text-gray-9000">{evt.time}</span>
+                    <span className="text-xs font-mono text-gray-500">{evt.time}</span>
                   </div>
                   <div
                     className="h-4 w-0.5 rounded-full flex-shrink-0 mt-0.5"
@@ -344,10 +344,10 @@ export function ThailandCalendarView() {
           { label: 'Hälsoaktiviteter', value: PROGRAM.flatMap(d => d.events).filter(e => e.type === 'health').length, color: '#10B981', icon: '🏥' },
           { label: 'Sociala event', value: PROGRAM.flatMap(d => d.events).filter(e => e.type === 'social').length, color: '#F59E0B', icon: '🎉' },
         ].map(s => (
-          <div key={s.label} className="bg-surface-raised border border-surface-border rounded-xl p-4 text-center">
+          <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-4 text-center">
             <div className="text-2xl mb-1">{s.icon}</div>
             <div className="text-2xl font-bold" style={{ color: s.color }}>{s.value}</div>
-            <div className="text-xs text-gray-9000 mt-0.5">{s.label}</div>
+            <div className="text-xs text-gray-500 mt-0.5">{s.label}</div>
           </div>
         ))}
       </div>

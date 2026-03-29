@@ -3,7 +3,7 @@ import { useTranslation } from '../../shared/i18n/useTranslation'
 
 function KpiCard({ label, value, sub, color }: { label: string; value: string; sub?: string; color: string }) {
   return (
-    <div className="bg-surface-raised border border-surface-border rounded-xl px-5 py-4">
+    <div className="bg-white border border-gray-200 rounded-xl px-5 py-4">
       <div className="text-xs text-gray-500 mb-1">{label}</div>
       <div className="text-2xl font-bold tabular-nums" style={{ color }}>{value}</div>
       {sub && <div className="text-xs text-gray-500 mt-1">{sub}</div>}
@@ -64,14 +64,14 @@ export function PayrollOverview() {
       </div>
 
       {/* Employee salary table */}
-      <div className="bg-surface-raised border border-surface-border rounded-xl overflow-hidden">
-        <div className="px-5 py-4 border-b border-surface-border">
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+        <div className="px-5 py-4 border-b border-gray-200">
           <h2 className="text-sm font-semibold text-gray-900">Anställda — löneöversikt</h2>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-surface-border text-xs text-gray-500 uppercase tracking-wider">
+              <tr className="border-b border-gray-200 text-xs text-gray-500 uppercase tracking-wider">
                 <th className="text-left px-5 py-3">Namn</th>
                 <th className="text-left px-5 py-3">Roll</th>
                 <th className="text-right px-5 py-3">Bruttolön</th>
@@ -86,7 +86,7 @@ export function PayrollOverview() {
               {active.map(emp => {
                 const c = calcSalary(emp.gross_salary)
                 return (
-                  <tr key={emp.id} className="border-b border-surface-border/50 hover:bg-surface-overlay/40 transition-colors">
+                  <tr key={emp.id} className="border-b border-gray-200/50 hover:bg-gray-50/40 transition-colors">
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-2">
                         <div
@@ -110,7 +110,7 @@ export function PayrollOverview() {
               })}
             </tbody>
             <tfoot>
-              <tr className="border-t border-surface-border bg-surface-overlay/20">
+              <tr className="border-t border-gray-200 bg-gray-50/20">
                 <td colSpan={2} className="px-5 py-3 text-xs font-semibold text-gray-500">TOTALT</td>
                 <td className="px-5 py-3 text-right text-xs font-bold text-gray-900 tabular-nums">{fmt(totalGross)}</td>
                 <td className="px-5 py-3 text-right text-xs font-bold text-red-700 tabular-nums">

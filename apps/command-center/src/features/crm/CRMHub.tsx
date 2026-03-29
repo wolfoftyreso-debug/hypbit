@@ -33,31 +33,31 @@ function QuickStats() {
 
   return (
     <div className="flex gap-4 flex-wrap text-xs">
-      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay border border-surface-border">
+      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200">
         <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
         <span className="text-gray-500">Aktiva:</span>
         <span className="text-gray-900 font-semibold">{activeProspects}</span>
       </div>
-      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay border border-surface-border">
+      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200">
         <span className="h-1.5 w-1.5 rounded-full bg-yellow-400" />
         <span className="text-gray-500">Pipeline:</span>
         <span className="text-gray-900 font-semibold">
           {new Intl.NumberFormat('sv-SE', { notation: 'compact', maximumFractionDigits: 0 }).format(pipelineValue)} kr
         </span>
       </div>
-      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay border border-surface-border">
+      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200">
         <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
         <span className="text-gray-500">Vunnet:</span>
         <span className="text-gray-900 font-semibold">
           {new Intl.NumberFormat('sv-SE', { notation: 'compact', maximumFractionDigits: 0 }).format(wonValue)} kr
         </span>
       </div>
-      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay border border-surface-border">
+      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200">
         <span className="h-1.5 w-1.5 rounded-full bg-purple-400" />
         <span className="text-gray-500">Aktiviteter (7d):</span>
         <span className="text-gray-900 font-semibold">{pendingActivities}</span>
       </div>
-      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay border border-surface-border">
+      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-200">
         <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
         <span className="text-gray-500">Signerade avtal:</span>
         <span className="text-gray-900 font-semibold">{DEALS.filter(d => d.status === 'Signerad').length}</span>

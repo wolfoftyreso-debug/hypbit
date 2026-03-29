@@ -33,7 +33,7 @@ export function ContactsView() {
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder="Sök namn, företag, roll..."
-          className="bg-surface-raised border border-surface-border rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:border-gray-300 w-72"
+          className="bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:border-gray-300 w-72"
         />
       </div>
 
@@ -44,7 +44,7 @@ export function ContactsView() {
           return (
             <div
               key={c.id}
-              className="bg-surface-raised border border-surface-border rounded-xl p-4 flex flex-col gap-3 hover:border-gray-300 transition-colors"
+              className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col gap-3 hover:border-gray-300 transition-colors"
             >
               {/* Name + company */}
               <div className="flex items-start gap-3">
@@ -82,7 +82,7 @@ export function ContactsView() {
               {/* Linked prospect */}
               {prospect && (
                 <div
-                  className="flex items-center justify-between pt-2 border-t border-surface-border"
+                  className="flex items-center justify-between pt-2 border-t border-gray-200"
                 >
                   <div className="flex items-center gap-2">
                     <span

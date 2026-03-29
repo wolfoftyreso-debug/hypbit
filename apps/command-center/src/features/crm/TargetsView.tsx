@@ -26,7 +26,7 @@ function ProgressBar({ current, goal, color }: { current: number; goal: number; 
   const pct = Math.min(100, Math.round((current / goal) * 100))
   return (
     <div className="flex items-center gap-3">
-      <div className="flex-1 h-2 bg-surface-overlay rounded-full overflow-hidden">
+      <div className="flex-1 h-2 bg-gray-50 rounded-full overflow-hidden">
         <div
           className="h-full rounded-full transition-all duration-700"
           style={{ width: `${pct}%`, background: color }}
@@ -46,7 +46,7 @@ function TargetCard({ member }: { member: PersonTarget }) {
   )
 
   return (
-    <div className="bg-surface-raised border border-surface-border rounded-xl p-5 flex flex-col gap-4">
+    <div className="bg-white border border-gray-200 rounded-xl p-5 flex flex-col gap-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -165,19 +165,19 @@ export function TargetsView() {
 
       {/* Team overview */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <div className="bg-surface-raised border border-surface-border rounded-xl px-5 py-4 text-center">
+        <div className="bg-white border border-gray-200 rounded-xl px-5 py-4 text-center">
           <p className="text-3xl font-bold text-gray-900">{totalSignedCustomers}</p>
           <p className="text-sm text-gray-500 mt-1">Signerade kunder</p>
           <ProgressBar current={totalSignedCustomers} goal={8} color="#10B981" />
           <p className="text-xs text-gray-500 mt-1">Mål: 8</p>
         </div>
-        <div className="bg-surface-raised border border-surface-border rounded-xl px-5 py-4 text-center">
+        <div className="bg-white border border-gray-200 rounded-xl px-5 py-4 text-center">
           <p className="text-2xl font-bold text-gray-900">{formatSEK(totalSignedARR)}</p>
           <p className="text-sm text-gray-500 mt-1">Total signerad ARR</p>
           <ProgressBar current={totalSignedARR} goal={totalGoalARR} color="#3B82F6" />
           <p className="text-xs text-gray-500 mt-1">Mål: {formatSEK(totalGoalARR)}</p>
         </div>
-        <div className="bg-surface-raised border border-surface-border rounded-xl px-5 py-4 text-center">
+        <div className="bg-white border border-gray-200 rounded-xl px-5 py-4 text-center">
           <p className="text-3xl font-bold text-gray-900">{totalDemos}</p>
           <p className="text-sm text-gray-500 mt-1">Demos utförda</p>
           <ProgressBar current={totalDemos} goal={15} color="#8B5CF6" />

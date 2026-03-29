@@ -30,7 +30,7 @@ function DealCard({
   const nextStage = stageIdx < STAGE_ORDER.length - 1 ? STAGE_ORDER[stageIdx + 1] : null
 
   return (
-    <div className="bg-surface-overlay border border-surface-border rounded-xl p-3.5 flex flex-col gap-2.5 group hover:border-gray-300 transition-colors">
+    <div className="bg-gray-50 border border-gray-200 rounded-xl p-3.5 flex flex-col gap-2.5 group hover:border-gray-300 transition-colors">
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
         <div>
@@ -77,7 +77,7 @@ function DealCard({
         {prevStage && (
           <button
             onClick={() => onMove(prospect.id, prevStage)}
-            className="text-xs px-2 py-0.5 rounded bg-surface-base text-gray-500 hover:text-gray-900 transition-colors flex-1 truncate"
+            className="text-xs px-2 py-0.5 rounded bg-gray-50 text-gray-500 hover:text-gray-900 transition-colors flex-1 truncate"
             title={`Flytta till ${prevStage}`}
           >
             ← {prevStage}
@@ -86,7 +86,7 @@ function DealCard({
         {nextStage && (
           <button
             onClick={() => onMove(prospect.id, nextStage)}
-            className="text-xs px-2 py-0.5 rounded bg-surface-base text-gray-500 hover:text-gray-900 transition-colors flex-1 truncate"
+            className="text-xs px-2 py-0.5 rounded bg-gray-50 text-gray-500 hover:text-gray-900 transition-colors flex-1 truncate"
             title={`Flytta till ${nextStage}`}
           >
             {nextStage} →
@@ -142,7 +142,7 @@ export function PipelineView() {
               className={`text-xs px-3 py-1.5 rounded-lg transition-colors ${
                 productFilter === p
                   ? 'text-gray-900'
-                  : 'bg-surface-raised border border-surface-border text-gray-500 hover:text-gray-900'
+                  : 'bg-white border border-gray-200 text-gray-500 hover:text-gray-900'
               }`}
               style={productFilter === p && p !== 'Alla'
                 ? { background: PRODUCT_COLORS[p as CRMProduct] + '22', border: `1px solid ${PRODUCT_COLORS[p as CRMProduct]}40`, color: PRODUCT_COLORS[p as CRMProduct] }
@@ -161,7 +161,7 @@ export function PipelineView() {
               className={`text-xs px-3 py-1.5 rounded-lg transition-colors ${
                 assigneeFilter === a
                   ? 'text-gray-900'
-                  : 'bg-surface-raised border border-surface-border text-gray-500 hover:text-gray-900'
+                  : 'bg-white border border-gray-200 text-gray-500 hover:text-gray-900'
               }`}
               style={assigneeFilter === a && a !== 'Alla'
                 ? { background: TEAM_COLORS[a as TeamMember] + '22', border: `1px solid ${TEAM_COLORS[a as TeamMember]}40`, color: TEAM_COLORS[a as TeamMember] }
@@ -260,7 +260,7 @@ export function PipelineView() {
         })}
       </div>
 
-      <p className="text-xs text-gray-500 pt-1 border-t border-surface-border">
+      <p className="text-xs text-gray-500 pt-1 border-t border-gray-200">
         Hover på ett kort för att flytta det mellan stages →
       </p>
     </div>

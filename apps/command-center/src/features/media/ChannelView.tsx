@@ -55,7 +55,7 @@ function ConnectModal({ channel, onClose }: { channel: MediaChannel; onClose: ()
             <span className="text-xl">{PROVIDER_ICONS[channel.provider]}</span>
             <h2 className="text-gray-900 font-semibold">Koppla {providerName}</h2>
           </div>
-          <button onClick={onClose} className="text-gray-9000 hover:text-gray-900 text-lg leading-none">×</button>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-900 text-lg leading-none">×</button>
         </div>
         <div className="px-6 py-5 space-y-4">
           <div className="rounded-lg bg-yellow-950/40 border border-yellow-500/20 px-4 py-3">
@@ -80,12 +80,12 @@ function ConnectModal({ channel, onClose }: { channel: MediaChannel; onClose: ()
             </div>
           )}
 
-          <div className="text-xs text-gray-9000">
-            Adapter: <code className="font-mono text-gray-9000">{channel.api_adapter}</code>
+          <div className="text-xs text-gray-500">
+            Adapter: <code className="font-mono text-gray-500">{channel.api_adapter}</code>
           </div>
         </div>
         <div className="px-6 py-4 border-t border-gray-200 flex justify-end">
-          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-9000 hover:text-gray-900 transition-colors">Stäng</button>
+          <button onClick={onClose} className="px-4 py-2 text-sm text-gray-500 hover:text-gray-900 transition-colors">Stäng</button>
         </div>
       </div>
     </div>
@@ -99,7 +99,7 @@ export function ChannelView() {
     <div className="space-y-4">
       <div>
         <h2 className="text-gray-900 font-semibold">Kanaler</h2>
-        <p className="text-xs text-gray-9000 mt-0.5">7 kanaler konfigurerade · Inga aktiva ännu</p>
+        <p className="text-xs text-gray-500 mt-0.5">7 kanaler konfigurerade · Inga aktiva ännu</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -110,12 +110,12 @@ export function ChannelView() {
           >
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-surface-overlay flex items-center justify-center text-xl">
+                <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center text-xl">
                   {PROVIDER_ICONS[channel.provider]}
                 </div>
                 <div>
                   <div className="text-sm font-medium text-gray-900">{PROVIDER_LABELS[channel.provider]}</div>
-                  <div className="text-xs text-gray-9000">{TYPE_LABELS[channel.type]}</div>
+                  <div className="text-xs text-gray-500">{TYPE_LABELS[channel.type]}</div>
                 </div>
               </div>
               <span className={`text-xs px-2 py-0.5 rounded-full font-mono ${STATUS_STYLES[channel.status]}`}>
@@ -123,13 +123,13 @@ export function ChannelView() {
               </span>
             </div>
 
-            <div className="text-xs text-gray-9000 font-mono">
+            <div className="text-xs text-gray-500 font-mono">
               {channel.api_adapter}
             </div>
 
             <button
               onClick={() => setConnectingChannel(channel)}
-              className="w-full py-1.5 text-xs text-gray-9000 border border-gray-200 rounded-lg hover:border-gray-300 hover:text-gray-900 transition-colors"
+              className="w-full py-1.5 text-xs text-gray-500 border border-gray-200 rounded-lg hover:border-gray-300 hover:text-gray-900 transition-colors"
             >
               Koppla
             </button>

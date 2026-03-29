@@ -54,7 +54,7 @@ export function ProspectList() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Sök företag eller kontakt..."
-              className="bg-surface-raised border border-surface-border rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:border-gray-300 w-60"
+              className="bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 placeholder-gray-600 focus:outline-none focus:border-gray-300 w-60"
             />
             <span className="text-xs text-gray-500 ml-auto">
               {filtered.length} prospects · {formatSEK(filtered.reduce((s, p) => s + p.valueSEK, 0))} total
@@ -68,7 +68,7 @@ export function ProspectList() {
                 className={`text-xs px-2.5 py-1 rounded-lg transition-colors ${
                   stageFilter === s
                     ? 'bg-purple-50 text-purple-700 font-medium'
-                    : 'bg-surface-raised border border-surface-border text-gray-500 hover:text-gray-900'
+                    : 'bg-white border border-gray-200 text-gray-500 hover:text-gray-900'
                 }`}
               >
                 {s}
@@ -108,10 +108,10 @@ export function ProspectList() {
         </div>
 
         {/* Table */}
-        <div className="overflow-auto rounded-xl border border-surface-border">
+        <div className="overflow-auto rounded-xl border border-gray-200">
           <table className="w-full text-sm min-w-[700px]">
             <thead>
-              <tr className="border-b border-surface-border bg-surface-raised">
+              <tr className="border-b border-gray-200 bg-white">
                 {['Företag', 'Kontakt', 'Produkt', 'Stage', 'Värde/år', 'Senaste aktivitet', 'Ansvarig'].map(h => (
                   <th key={h} className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
                     {h}
@@ -124,7 +124,7 @@ export function ProspectList() {
                 <tr
                   key={p.id}
                   onClick={() => setSelected(prev => prev?.id === p.id ? null : p)}
-                  className={`border-b border-surface-border/50 cursor-pointer transition-colors hover:bg-surface-overlay ${
+                  className={`border-b border-gray-200/50 cursor-pointer transition-colors hover:bg-gray-50 ${
                     selected?.id === p.id ? 'bg-purple-50 border-l-2 border-l-brand-accent' : ''
                   }`}
                 >
@@ -176,9 +176,9 @@ export function ProspectList() {
 
       {/* Side panel */}
       {selected && (
-        <div className="w-80 flex-shrink-0 bg-surface-raised border border-surface-border rounded-xl flex flex-col overflow-hidden">
+        <div className="w-80 flex-shrink-0 bg-white border border-gray-200 rounded-xl flex flex-col overflow-hidden">
           {/* Panel header */}
-          <div className="px-4 py-4 border-b border-surface-border">
+          <div className="px-4 py-4 border-b border-gray-200">
             <div className="flex items-start justify-between gap-2">
               <div>
                 <h3 className="font-bold text-gray-900">{selected.company}</h3>
@@ -214,7 +214,7 @@ export function ProspectList() {
           </div>
 
           {/* Details */}
-          <div className="px-4 py-3 border-b border-surface-border space-y-2">
+          <div className="px-4 py-3 border-b border-gray-200 space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Värde</span>
               <span className="text-gray-900 font-bold">{formatSEK(selected.valueSEK)}/år</span>

@@ -41,7 +41,7 @@ export function DealsView() {
         </div>
         <NavLink
           to="/legal"
-          className="text-xs px-3 py-1.5 rounded-lg bg-surface-raised border border-surface-border text-gray-500 hover:text-gray-900 transition-colors flex items-center gap-1.5"
+          className="text-xs px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-500 hover:text-gray-900 transition-colors flex items-center gap-1.5"
         >
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M12 3v18M3 9h18M5 9l3-6 3 6M13 9l3-6 3 6M5 9c0 2.21 1.34 4 3 4s3-1.79 3-4M13 9c0 2.21 1.34 4 3 4s3-1.79 3-4M5 21h14" />
@@ -59,7 +59,7 @@ export function DealsView() {
             className={`text-xs px-3 py-1.5 rounded-lg transition-colors ${
               statusFilter === s
                 ? 'bg-purple-50 text-purple-700 font-medium'
-                : 'bg-surface-raised border border-surface-border text-gray-500 hover:text-gray-900'
+                : 'bg-white border border-gray-200 text-gray-500 hover:text-gray-900'
             }`}
           >
             {s}
@@ -68,10 +68,10 @@ export function DealsView() {
       </div>
 
       {/* Deals table */}
-      <div className="overflow-auto rounded-xl border border-surface-border">
+      <div className="overflow-auto rounded-xl border border-gray-200">
         <table className="w-full text-sm min-w-[680px]">
           <thead>
-            <tr className="border-b border-surface-border bg-surface-raised">
+            <tr className="border-b border-gray-200 bg-white">
               {['Företag', 'Produkt', 'Status', 'Värde/år', 'Startdatum', 'Löptid', 'Ansvarig', 'Åtgärd'].map(h => (
                 <th key={h} className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">
                   {h}
@@ -81,7 +81,7 @@ export function DealsView() {
           </thead>
           <tbody>
             {filtered.map(d => (
-              <tr key={d.id} className="border-b border-surface-border/50 hover:bg-surface-overlay transition-colors">
+              <tr key={d.id} className="border-b border-gray-200/50 hover:bg-gray-50 transition-colors">
                 <td className="px-4 py-3 font-medium text-gray-900">{d.company}</td>
                 <td className="px-4 py-3">
                   <span
@@ -114,7 +114,7 @@ export function DealsView() {
                   <select
                     value={d.status}
                     onChange={e => updateStatus(d.id, e.target.value as DealStatus)}
-                    className="text-xs bg-surface-base border border-surface-border rounded px-2 py-1 text-gray-600 focus:outline-none appearance-none cursor-pointer"
+                    className="text-xs bg-gray-50 border border-gray-200 rounded px-2 py-1 text-gray-600 focus:outline-none appearance-none cursor-pointer"
                   >
                     {STATUSES.filter(s => s !== 'Alla').map(s => (
                       <option key={s} value={s}>{s}</option>
@@ -142,7 +142,7 @@ export function DealsView() {
           return (
             <div
               key={s}
-              className="bg-surface-raised border border-surface-border rounded-xl px-4 py-3"
+              className="bg-white border border-gray-200 rounded-xl px-4 py-3"
             >
               <div className="flex items-center gap-2 mb-1">
                 <span className="h-1.5 w-1.5 rounded-full" style={{ background: DEAL_STATUS_COLORS[s as DealStatus] }} />

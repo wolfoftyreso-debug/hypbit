@@ -218,21 +218,21 @@ export function BerntWidget() {
             </div>
             <button
               onClick={() => setShowSettings(s => !s)}
-              className="text-gray-9000 hover:text-gray-600 transition-colors text-sm"
+              className="text-gray-500 hover:text-gray-600 transition-colors text-sm"
               title={t('nav.settings')}
             >⚙️</button>
           </div>
 
           {/* Settings panel */}
           {showSettings && (
-            <div className="px-4 py-3 flex-shrink-0 border-b border-surface-border animate-fade-in">
-              <p className="text-xs text-gray-9000 font-mono mb-1.5">{t('bernt.tunnel_url_label')}</p>
+            <div className="px-4 py-3 flex-shrink-0 border-b border-gray-200 animate-fade-in">
+              <p className="text-xs text-gray-500 font-mono mb-1.5">{t('bernt.tunnel_url_label')}</p>
               <div className="flex gap-2">
                 <input
                   type="text"
                   defaultValue={tunnelUrl}
                   placeholder="https://xxx.trycloudflare.com"
-                  className="flex-1 text-xs bg-surface-raised border border-surface-border rounded-lg px-2.5 py-1.5 text-gray-900 placeholder-gray-700 focus:outline-none focus:border-purple-500/50"
+                  className="flex-1 text-xs bg-white border border-gray-200 rounded-lg px-2.5 py-1.5 text-gray-900 placeholder-gray-700 focus:outline-none focus:border-purple-500/50"
                   onKeyDown={e => e.key === 'Enter' && saveTunnel((e.target as HTMLInputElement).value)}
                   id="tunnel-input"
                 />
@@ -301,7 +301,7 @@ export function BerntWidget() {
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && !loading && sendMessage(input)}
               placeholder="Skriv eller tala..."
-              className="flex-1 text-xs bg-surface-raised border border-surface-border rounded-xl px-3 py-2 text-gray-900 placeholder-gray-700 focus:outline-none focus:border-purple-500/40 mt-2"
+              className="flex-1 text-xs bg-white border border-gray-200 rounded-xl px-3 py-2 text-gray-900 placeholder-gray-700 focus:outline-none focus:border-purple-500/40 mt-2"
               disabled={loading}
             />
             <button
