@@ -467,7 +467,7 @@ function getGroupBounds(nodeIds: string[]): { x: number; y: number; w: number; h
   if (!positions.length) return null
   const xs = positions.map(p => p.x)
   const ys = positions.map(p => p.y)
-  const padding = 20
+  const padding = 30
   return {
     x: Math.min(...xs) - padding,
     y: Math.min(...ys) - padding,
