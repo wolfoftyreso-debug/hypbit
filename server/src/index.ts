@@ -1041,3 +1041,22 @@ export default app;
 // Deploy trigger Sat Mar 21 23:55:27 CET 2026
 // Sun Mar 22 01:03:37 CET 2026 - force rebuild
 // rebuild Sun Mar 22 01:16:44 CET 2026
+
+// TEMPORARY: Migration endpoint — trigger Supabase → IC migration
+app.post('/migrate-to-ic', async (req: import('express').Request, res: import('express').Response) => {
+  if (req.headers.authorization !== 'Bearer wavult-migrate-2026') {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  try {
+    const fetch = (await import('node-fetch')).default;
+    const icRes = await fetch('http://10.0.10.126:3005/v1/migrate/from-supabase', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer wavult-migrate-2026', 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(60000),
+    });
+    const data = await icRes.json();
+    return res.json(data);
+  } catch (e) {
+    return res.status(500).json({ error: String(e) });
+  }
+});
