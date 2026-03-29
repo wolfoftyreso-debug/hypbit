@@ -113,6 +113,29 @@ export const KPI_COLOR: Record<KPIResult, string> = {
   pending: '#6B7280',
 }
 
+// ─── Entity display helpers ───────────────────────────────────────────────────
+
+export const ENTITY_FILTER_OPTIONS: Array<{ id: string; label: string; region: 'EU' | 'US' | 'Global' }> = [
+  { id: 'all', label: 'Alla', region: 'Global' },
+  { id: 'wavult-group', label: 'Wavult Group', region: 'Global' },
+  { id: 'quixzoom-uab', label: 'QuiXzoom (EU)', region: 'EU' },
+  { id: 'landvex-inc', label: 'Landvex (US)', region: 'US' },
+]
+
+export const ENTITY_COLOR: Record<string, string> = {
+  'wavult-group': '#8B5CF6',
+  'quixzoom-uab': '#10B981',
+  'landvex-inc': '#F59E0B',
+  'hypbit': '#A78BFA',
+}
+
+export const ENTITY_REGION: Record<string, 'EU' | 'US' | 'Global'> = {
+  'wavult-group': 'Global',
+  'quixzoom-uab': 'EU',
+  'landvex-inc': 'US',
+  'hypbit': 'EU',
+}
+
 // ─── Alert engine ─────────────────────────────────────────────────────────────
 
 export function getActivityAlerts(a: CampaignActivity): CampaignActivity['alerts'] {

@@ -3,6 +3,7 @@ import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { useFinanceLedger, useFinanceEntities } from './hooks/useFinance'
 import type { FinanceLedgerEntry } from '../../lib/supabase'
 import { useTranslation } from '../../shared/i18n/useTranslation'
+import { TransactionDetail } from '../transactions/TransactionDetail'
 
 type Currency = 'SEK' | 'EUR' | 'USD' | 'AED'
 
@@ -37,6 +38,7 @@ export function LedgerView() {
   const [dateFrom, setDateFrom] = useState('')
   const [dateTo, setDateTo] = useState('')
   const [accountFilter, setAccountFilter] = useState('')
+  const [selectedTx, setSelectedTx] = useState<string | null>(null)
 
   const { data: entities = [], isLoading: entitiesLoading } = useFinanceEntities()
   const { data: allEntries = [], isLoading: ledgerLoading, isError } = useFinanceLedger()
@@ -174,7 +176,8 @@ export function LedgerView() {
               return (
                 <div
                   key={entry.id}
-                  className="grid grid-cols-12 px-4 py-2.5 items-center border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors"
+                  onClick={() => setSelectedTx(entry.ref_nr || 'kund-faktura-1042')}
+                  className="grid grid-cols-12 px-4 py-2.5 items-center border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors cursor-pointer"
                 >
                   <span className="col-span-1 text-xs font-mono text-gray-500">{entry.date.slice(5)}</span>
                   <span className="col-span-1 text-[9px] font-mono text-gray-500 truncate">{entry.ref_nr}</span>
@@ -204,6 +207,14 @@ export function LedgerView() {
         </div>
         </div>{/* /overflow-x-auto */}
       </div>
+
+      {/* Transaction detail panel */}
+      {selectedTx && (
+        <TransactionDetail
+          transactionId={selectedTx}
+          onClose={() => setSelectedTx(null)}
+        />
+      )}
     </div>
   )
 }

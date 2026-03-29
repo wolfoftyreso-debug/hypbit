@@ -9,6 +9,9 @@ import {
   CHANNEL_COLOR,
   STATUS_COLOR,
   KPI_COLOR,
+  ENTITY_FILTER_OPTIONS,
+  ENTITY_COLOR,
+  ENTITY_REGION,
   CampaignActivity,
   CampaignChannel,
   ActivityStatus,
@@ -166,8 +169,17 @@ function ActivityCard({ activity, selected, onClick }: {
           <span className="text-[9px] font-mono text-gray-500">{activity.time}</span>
         </div>
 
-        {/* KPI dot + alert dot */}
+        {/* Region + KPI dot + alert dot */}
         <div className="flex items-center gap-1.5">
+          {ENTITY_REGION[activity.entity_id] && (
+            <span style={{
+              fontSize: 7, fontWeight: 700, padding: '1px 4px', borderRadius: 3,
+              background: ENTITY_REGION[activity.entity_id] === 'EU' ? '#3B82F620' : ENTITY_REGION[activity.entity_id] === 'US' ? '#F59E0B20' : '#8B5CF620',
+              color: ENTITY_REGION[activity.entity_id] === 'EU' ? '#3B82F6' : ENTITY_REGION[activity.entity_id] === 'US' ? '#F59E0B' : '#8B5CF6',
+            }}>
+              {ENTITY_REGION[activity.entity_id]}
+            </span>
+          )}
           <div className="h-1.5 w-1.5 rounded-full" style={{ background: kpiColor }} />
           {hasAlerts && (
             <div className="h-1.5 w-1.5 rounded-full bg-red-500" />
@@ -477,6 +489,7 @@ export function CampaignOS() {
   const [filterChannel, setFilterChannel] = useState<string>('all')
   const [filterStatus, setFilterStatus] = useState<string>('all')
   const [filterCountry, setFilterCountry] = useState<string>('all')
+  const [filterEntity, setFilterEntity] = useState<string>('all')
   const { isInScope, activeEntity: scopeEntity } = useEntityScope()
 
   const brands = useMemo(() =>
@@ -499,13 +512,14 @@ export function CampaignOS() {
   const filtered = useMemo(() => {
     return CAMPAIGN_ACTIVITIES.filter(a => {
       if (!isInScope(a.entity_id)) return false
+      if (filterEntity !== 'all' && a.entity_id !== filterEntity) return false
       if (filterBrand !== 'all' && a.brand !== filterBrand) return false
       if (filterChannel !== 'all' && a.channel !== filterChannel) return false
       if (filterStatus !== 'all' && a.status !== filterStatus) return false
       if (filterCountry !== 'all' && a.country !== filterCountry) return false
       return true
     })
-  }, [isInScope, filterBrand, filterChannel, filterStatus, filterCountry])
+  }, [isInScope, filterEntity, filterBrand, filterChannel, filterStatus, filterCountry])
 
   // Summary counts
   const deployedCount = filtered.filter(a => a.status === 'deployed').length
@@ -541,6 +555,55 @@ export function CampaignOS() {
 
   return (
     <div className="flex flex-col h-full" style={{ background: '#F9FAFB' }}>
+      {/* ── ENTITY FILTER BUTTONS ───────────────────────────────────────────── */}
+      <div
+        className="flex-shrink-0 flex items-center gap-2 px-5 py-2 border-b"
+        style={{ borderColor: 'rgba(0,0,0,0.06)', background: '#FFFFFF' }}
+      >
+        <span className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mr-1">Bolag</span>
+        {ENTITY_FILTER_OPTIONS.map(opt => {
+          const active = filterEntity === opt.id
+          const color = opt.id === 'all' ? '#6B7280' : (ENTITY_COLOR[opt.id] ?? '#6B7280')
+          const region = opt.id !== 'all' ? ENTITY_REGION[opt.id] : null
+          return (
+            <button
+              key={opt.id}
+              onClick={() => setFilterEntity(opt.id)}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 5,
+                padding: '4px 12px', borderRadius: 20, fontSize: 11, fontWeight: 600,
+                border: `1px solid ${active ? color : 'rgba(0,0,0,0.1)'}`,
+                background: active ? color + '18' : 'transparent',
+                color: active ? color : '#6B7280',
+                cursor: 'pointer', transition: 'all 0.15s',
+              }}
+            >
+              {opt.label}
+              {region && (
+                <span style={{
+                  fontSize: 8, fontWeight: 700, padding: '1px 4px', borderRadius: 4,
+                  background: region === 'EU' ? '#3B82F620' : '#F59E0B20',
+                  color: region === 'EU' ? '#3B82F6' : '#F59E0B',
+                }}>
+                  {region}
+                </span>
+              )}
+            </button>
+          )
+        })}
+        {/* EU/US separator indicator */}
+        <div className="ml-auto flex items-center gap-3 text-[9px] font-mono">
+          <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#3B82F6', display: 'inline-block' }} />
+            <span style={{ color: '#3B82F6' }}>EU</span>
+          </span>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#F59E0B', display: 'inline-block' }} />
+            <span style={{ color: '#F59E0B' }}>US</span>
+          </span>
+        </div>
+      </div>
+
       {/* ── TOOLBAR ─────────────────────────────────────────────────────────── */}
       <div
         className="flex-shrink-0 flex items-center justify-between px-5 border-b"
@@ -616,6 +679,11 @@ export function CampaignOS() {
               const monthActivities = Array.from(byDay.values()).flat()
               const monthColor = mk === '2026-04' ? '#8B5CF6' : mk === '2026-05' ? '#0EA5E9' : '#10B981'
 
+              // Separate EU and US activities in this month
+              const euActivities = monthActivities.filter(a => ENTITY_REGION[a.entity_id] === 'EU' || ENTITY_REGION[a.entity_id] === 'Global')
+              const usActivities = monthActivities.filter(a => ENTITY_REGION[a.entity_id] === 'US')
+              const hasRegionSplit = euActivities.length > 0 && usActivities.length > 0 && filterEntity === 'all'
+
               return (
                 <div key={mk}>
                   {/* Month header */}
@@ -629,6 +697,16 @@ export function CampaignOS() {
                     <span className="text-[9px] font-mono text-gray-600">
                       {monthActivities.length} activit{monthActivities.length === 1 ? 'y' : 'ies'}
                     </span>
+                    {hasRegionSplit && (
+                      <>
+                        <span className="text-[8px] font-bold px-1.5 py-0.5 rounded" style={{ background: '#3B82F620', color: '#3B82F6' }}>
+                          {euActivities.length} EU
+                        </span>
+                        <span className="text-[8px] font-bold px-1.5 py-0.5 rounded" style={{ background: '#F59E0B20', color: '#F59E0B' }}>
+                          {usActivities.length} US
+                        </span>
+                      </>
+                    )}
                     <div className="flex-1 h-px" style={{ background: monthColor + '20' }} />
                   </div>
 
@@ -637,6 +715,9 @@ export function CampaignOS() {
                     {Array.from(byDay.entries()).map(([dk, activities]) => {
                       const isToday = dk === TODAY
                       const weekLabel_ = weekLabel(dk)
+                      const dayEU = activities.filter(a => ENTITY_REGION[a.entity_id] !== 'US')
+                      const dayUS = activities.filter(a => ENTITY_REGION[a.entity_id] === 'US')
+                      const showSplit = hasRegionSplit && dayEU.length > 0 && dayUS.length > 0
 
                       return (
                         <div key={dk} className="flex items-start gap-3">
@@ -662,23 +743,54 @@ export function CampaignOS() {
                             </div>
                           </div>
 
-                          {/* Activity cards */}
-                          <div className="flex flex-wrap gap-2 flex-1">
-                            {activities.length === 0 ? (
-                              <span className="text-[9px] text-gray-800 pt-1">–</span>
-                            ) : (
-                              activities.map(activity => (
-                                <ActivityCard
-                                  key={activity.id}
-                                  activity={activity}
-                                  selected={selectedId === activity.id}
-                                  onClick={() => setSelectedId(
-                                    selectedId === activity.id ? null : activity.id
-                                  )}
-                                />
-                              ))
-                            )}
-                          </div>
+                          {/* Activity cards — with optional EU/US split */}
+                          {showSplit ? (
+                            <div className="flex flex-col gap-2 flex-1">
+                              {/* EU activities */}
+                              <div className="flex flex-wrap gap-2 items-center">
+                                <span className="text-[8px] font-bold" style={{ color: '#3B82F6', minWidth: 16 }}>EU</span>
+                                {dayEU.map(activity => (
+                                  <ActivityCard
+                                    key={activity.id}
+                                    activity={activity}
+                                    selected={selectedId === activity.id}
+                                    onClick={() => setSelectedId(selectedId === activity.id ? null : activity.id)}
+                                  />
+                                ))}
+                              </div>
+                              {/* Divider */}
+                              <div style={{ height: 1, background: 'rgba(0,0,0,0.06)', marginLeft: 24 }} />
+                              {/* US activities */}
+                              <div className="flex flex-wrap gap-2 items-center">
+                                <span className="text-[8px] font-bold" style={{ color: '#F59E0B', minWidth: 16 }}>US</span>
+                                {dayUS.map(activity => (
+                                  <ActivityCard
+                                    key={activity.id}
+                                    activity={activity}
+                                    selected={selectedId === activity.id}
+                                    onClick={() => setSelectedId(selectedId === activity.id ? null : activity.id)}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="flex flex-wrap gap-2 flex-1">
+                              {activities.length === 0 ? (
+                                <span className="text-[9px] text-gray-800 pt-1">–</span>
+                              ) : (
+                                activities.map(activity => (
+                                  <ActivityCard
+                                    key={activity.id}
+                                    activity={activity}
+                                    selected={selectedId === activity.id}
+                                    onClick={() => setSelectedId(
+                                      selectedId === activity.id ? null : activity.id
+                                    )}
+                                  />
+                                ))
+                              )}
+                            </div>
+                          )}
                         </div>
                       )
                     })}

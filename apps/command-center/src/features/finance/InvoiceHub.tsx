@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { INVOICES, FINANCE_ENTITIES, type Invoice, type EntityId, type Currency } from './mockData'
 import { useTranslation } from '../../shared/i18n/useTranslation'
+import { TransactionDetail } from '../transactions/TransactionDetail'
 
 type InvoiceStatus = Invoice['status']
 
@@ -109,6 +110,7 @@ export function InvoiceHub() {
   const [statusFilter, setStatusFilter] = useState<InvoiceStatus | 'all'>('all')
   const [showNewForm, setShowNewForm] = useState(false)
   const [previewInvoice, setPreviewInvoice] = useState<Invoice | null>(null)
+  const [selectedTx, setSelectedTx] = useState<string | null>(null)
   const [form, setForm] = useState<NewInvoiceForm>(EMPTY_FORM)
 
   const baseInvoices = INVOICES.filter(inv => isRoot || scopedIds.has(inv.entityId))
@@ -264,7 +266,8 @@ export function InvoiceHub() {
           const st = STATUS_CONFIG[inv.status]
           return (
             <div key={inv.id}
-              className="grid grid-cols-12 px-4 py-3 items-center border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors min-w-[560px]">
+              onClick={() => setSelectedTx(inv.id || 'kund-faktura-1042')}
+              className="grid grid-cols-12 px-4 py-3 items-center border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors cursor-pointer min-w-[560px]">
               <span className="col-span-2 text-xs font-mono text-gray-500">{inv.number}</span>
               <div className="col-span-3">
                 <p className="text-xs text-gray-900 truncate">{inv.recipient}</p>
@@ -297,6 +300,14 @@ export function InvoiceHub() {
         })}
         </div>{/* /overflow-x-auto */}
       </div>
+
+      {/* Transaction detail panel */}
+      {selectedTx && (
+        <TransactionDetail
+          transactionId={selectedTx}
+          onClose={() => setSelectedTx(null)}
+        />
+      )}
 
       {/* Invoice preview modal */}
       {previewInvoice && (
