@@ -253,9 +253,10 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 500,
+  max: 2000,  // Increased limit
   standardHeaders: true,
   legacyHeaders: false,
+  skip: (req: Request) => req.path.startsWith('/whoop'),  // Skip rate limit for WHOOP OAuth
   message: (req: Request) => ({
     error: ERROR_MESSAGES[req.locale]?.rateLimit ?? ERROR_MESSAGES.sv.rateLimit,
   }),
