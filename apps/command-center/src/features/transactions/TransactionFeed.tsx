@@ -17,6 +17,8 @@ interface Transaction {
   status: TxStatus
   category: string
   reference?: string
+  receiptUrl?: string
+  receiptStatus?: 'attached' | 'missing' | 'pending'
 }
 
 const TRANSACTIONS: Transaction[] = [
@@ -43,7 +45,7 @@ const TRANSACTIONS: Transaction[] = [
   { id: 'priv-001', date: '2026-03-14', title: 'Lovable Labs — kvitto #2784-4176', counterparty: 'Lovable Labs Inc', entity: 'Wavult Group', type: 'expense', amount: -1050, currency: 'SEK', status: 'pending', category: 'Mjukvara', reference: 'PRIV-KORT-001' },
   { id: 'priv-002', date: '2026-03-15', title: 'Lovable Labs — kvitto #2483-1641', counterparty: 'Lovable Labs Inc', entity: 'Wavult Group', type: 'expense', amount: -525, currency: 'SEK', status: 'pending', category: 'Mjukvara', reference: 'PRIV-KORT-002' },
   { id: 'priv-003', date: '2026-03-17', title: 'Lovable Labs — kvitto #2227-1266', counterparty: 'Lovable Labs Inc', entity: 'Wavult Group', type: 'expense', amount: -525, currency: 'SEK', status: 'pending', category: 'Mjukvara', reference: 'PRIV-KORT-003' },
-  { id: 'priv-004', date: '2026-03-25', title: 'Stripe Atlas — QuiXzoom Inc bildningsavgift', counterparty: 'Stripe Atlas', entity: 'QuiXzoom Inc', type: 'payment', amount: -500, currency: 'USD', status: 'paid', category: 'Juridik', reference: 'STRIPE-ATLAS-1296-9493' },
+  { id: 'priv-004', date: '2026-03-25', title: 'Stripe Atlas — QuiXzoom Inc bildningsavgift', counterparty: 'Stripe Atlas', entity: 'QuiXzoom Inc', type: 'payment', amount: -500, currency: 'USD', status: 'paid', category: 'Juridik', reference: 'STRIPE-ATLAS-1296-9493', receiptUrl: 'https://pay.stripe.com/receipts/acct_18I3iLLcbLlTohbM/rcpt_1296-9493', receiptStatus: 'attached' },
   { id: 'priv-005', date: '2026-03-25', title: 'refurbed — Hårdvara/utrustning', counterparty: 'refurbed GmbH', entity: 'Wavult Group', type: 'expense', amount: -6500, currency: 'SEK', status: 'paid', category: 'Hårdvara', reference: 'REFURBED-17332832' },
   { id: 'priv-006', date: '2026-03-25', title: 'Duix — AI-tjänst kvitto #2077-2547', counterparty: 'Duix', entity: 'Wavult Group', type: 'payment', amount: -59, currency: 'USD', status: 'paid', category: 'Mjukvara', reference: 'DUIX-2077-2547' },
   { id: 'priv-007', date: '2026-03-25', title: 'Northwest — Landvex Inc agent fee', counterparty: 'Northwest Registered Agent LLC', entity: 'Landvex Inc', type: 'payment', amount: -3060, currency: 'USD', status: 'paid', category: 'Juridik', reference: 'NW-LANDVEX-TX' },
@@ -86,11 +88,8 @@ const TRANSACTIONS: Transaction[] = [
   { id: 'gm-034', date: '2026-01-09', title: 'Lovable Labs — kvitto #2072 ($100)', counterparty: 'Lovable Labs Inc.', entity: 'Wavult Group', type: 'expense', amount: -1050, currency: 'SEK', status: 'pending', category: 'Mjukvara', reference: 'LOV-2072' },
   { id: 'gm-035', date: '2026-01-03', title: 'Lovable Labs — kvitto #2732 ($200)', counterparty: 'Lovable Labs Inc.', entity: 'Wavult Group', type: 'expense', amount: -2100, currency: 'SEK', status: 'pending', category: 'Mjukvara', reference: 'LOV-2732' },
   // ── Historiska utgifter (maj 2025 – dec 2025, Gmail scan) ────────────────
-  // Apple — hårdvara och prenumerationer
-  { id: 'hist-001', date: '2025-09-22', title: 'Apple Watch Series 11 / Apple Watch', counterparty: 'Apple Inc.', entity: 'Wavult Group', type: 'expense', amount: -4995, currency: 'SEK', status: 'pending', category: 'Hårdvara', reference: 'APPLE-2025-09-22' },
-  { id: 'hist-002', date: '2025-09-24', title: 'Apple AirPods Pro 3', counterparty: 'Apple Inc.', entity: 'Wavult Group', type: 'expense', amount: -2995, currency: 'SEK', status: 'pending', category: 'Hårdvara', reference: 'APPLE-2025-09-24' },
-  { id: 'hist-003', date: '2025-10-22', title: 'MacBook Pro 14" M4', counterparty: 'Apple Inc.', entity: 'Wavult Group', type: 'expense', amount: -20995, currency: 'SEK', status: 'pending', category: 'Hårdvara', reference: 'APPLE-2025-10-22' },
-  { id: 'hist-004', date: '2026-03-11', title: 'Apple iCloud — prenumeration', counterparty: 'Apple Inc.', entity: 'Wavult Group', type: 'payment', amount: -129, currency: 'SEK', status: 'paid', category: 'Infrastruktur', reference: 'APPLE-ICLOUD-2026-03' },
+  // Apple — prenumerationer (hist-001/002/003 borttagna — marknadsföringsmail, ej köp)
+  { id: 'hist-004', date: '2026-03-11', title: 'Apple iCloud — prenumeration', counterparty: 'Apple Inc.', entity: 'Wavult Group', type: 'payment', amount: -129, currency: 'SEK', status: 'paid', category: 'Infrastruktur', reference: 'APPLE-ICLOUD-2026-03', receiptStatus: 'missing' },
   // Lovable Labs — dec 2025
   { id: 'hist-005', date: '2025-12-13', title: 'Lovable Labs — kvitto #2734 (€100)', counterparty: 'Lovable Labs Inc.', entity: 'Wavult Group', type: 'expense', amount: -1150, currency: 'SEK', status: 'pending', category: 'Mjukvara', reference: 'LOV-2734-DEC' },
   { id: 'hist-006', date: '2025-12-14', title: 'Lovable Labs — kvitto #2083 (€380)', counterparty: 'Lovable Labs Inc.', entity: 'Wavult Group', type: 'expense', amount: -4370, currency: 'SEK', status: 'pending', category: 'Mjukvara', reference: 'LOV-2083-DEC' },
@@ -211,7 +210,7 @@ export function TransactionFeed() {
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
           <thead>
             <tr style={{ background: '#FFFFFF', borderBottom: '1px solid rgba(0,0,0,0.08)', position: 'sticky', top: 0 }}>
-              {['Datum', 'Referens', 'Beskrivning', 'Motpart', 'Bolag', 'Typ', 'Belopp', 'Status', ''].map(h => (
+              {['Datum', 'Referens', 'Beskrivning', 'Motpart', 'Bolag', 'Typ', 'Belopp', 'Status', 'Kvitto', ''].map(h => (
                 <th key={h} style={{ padding: '10px 16px', textAlign: 'left', fontSize: 10, fontWeight: 600, color: '#8E8E93', textTransform: 'uppercase', letterSpacing: '0.07em', whiteSpace: 'nowrap' }}>{h}</th>
               ))}
             </tr>
@@ -240,6 +239,19 @@ export function TransactionFeed() {
                   </td>
                   <td style={{ padding: '12px 16px' }}>
                     <span style={{ fontSize: 11, padding: '3px 10px', borderRadius: 20, fontWeight: 600, background: s.bg, color: s.color }}>{s.label}</span>
+                  </td>
+                  <td style={{ padding: '12px 16px' }}>
+                    {tx.receiptUrl ? (
+                      <a href={tx.receiptUrl} target="_blank" rel="noopener noreferrer"
+                        style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, background: '#DCFCE7', color: '#166534', fontWeight: 600, textDecoration: 'none' }}
+                        onClick={e => e.stopPropagation()}>
+                        PDF
+                      </a>
+                    ) : (
+                      <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 4, background: '#FEF3C7', color: '#92400E', fontWeight: 600 }}>
+                        Saknas
+                      </span>
+                    )}
                   </td>
                   <td style={{ padding: '12px 16px' }}>
                     <ChevronRight style={{ width: 14, height: 14, color: '#D1D5DB' }} />
