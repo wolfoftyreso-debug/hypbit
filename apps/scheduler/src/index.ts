@@ -1,4 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
+import { generateMorningBriefHTML } from './emailTemplate'
+import { execSync } from 'child_process'
 
 const SUPABASE_URL = process.env.SUPABASE_URL!
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY!
@@ -97,6 +99,9 @@ async function executeJob(job: Job) {
         break
       case 'N8N_WEBHOOK':
         result = await callN8nWebhook(job.payload)
+        break
+      case 'MORNING_BRIEF':
+        result = await runMorningBrief(job.payload)
         break
       default:
         throw new Error(`Unknown job type: ${job.type}`)
@@ -213,6 +218,93 @@ async function runEscalation(payload: Record<string, unknown>) {
   })
 
   return { escalated: taskId, to: 'erik-svensson' }
+}
+
+// ─── Morning Brief ────────────────────────────────────────────────────────────
+
+const THAILAND_DATE = new Date('2026-04-11T00:00:00+02:00')
+const PROJECT_START = new Date('2026-03-24T00:00:00+02:00') // Day 1
+
+function getDaysSince(from: Date, to: Date): number {
+  return Math.floor((to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24))
+}
+
+function getSwedishDate(d: Date): string {
+  const days = ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag']
+  const months = [
+    'januari', 'februari', 'mars', 'april', 'maj', 'juni',
+    'juli', 'augusti', 'september', 'oktober', 'november', 'december',
+  ]
+  return `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`
+}
+
+function getRecentCommits(): string[] {
+  try {
+    const log = execSync(
+      'git log --oneline --since="24 hours ago" --format="%h %s" 2>/dev/null | head -8',
+      { cwd: '/mnt/c/Users/erik/Desktop/hypbit', timeout: 5000, encoding: 'utf-8' }
+    )
+    const lines = log.trim().split('\n').filter(Boolean)
+    return lines.length > 0 ? lines : ['Inga nya commits senaste 24h']
+  } catch {
+    return ['git log ej tillgänglig i denna miljö']
+  }
+}
+
+async function runMorningBrief(payload: Record<string, unknown>) {
+  const now = new Date()
+  const date = getSwedishDate(now)
+  const dayNumber = Math.max(1, getDaysSince(PROJECT_START, now) + 1)
+  const totalDays = 30
+  const daysToThailand = Math.max(0, getDaysSince(now, THAILAND_DATE))
+
+  // Fetch top priority BOS tasks
+  const { data: tasks } = await supabase
+    .from('bos_tasks')
+    .select('title, priority, state')
+    .neq('state', 'DONE')
+    .neq('state', 'FAILED')
+    .order('priority', { ascending: false })
+    .limit(3)
+
+  const bosHighlights = (tasks ?? []).map((t: { title: string; priority: number }) =>
+    `[P${t.priority}] ${t.title}`
+  )
+
+  const commits = getRecentCommits()
+
+  const html = generateMorningBriefHTML({
+    date,
+    dayNumber,
+    totalDays,
+    daysToThailand,
+    commits,
+    bosHighlights,
+    systemStatus: {
+      wavultApi: true,
+      quixzoomApi: true,
+      bosScheduler: true,
+    },
+  })
+
+  // Send via n8n webhook (n8n handles SMTP delivery)
+  const webhookUrl = process.env.MORNING_BRIEF_WEBHOOK || `${N8N_WEBHOOK_BASE}/morning-brief`
+  const res = await fetch(webhookUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      html,
+      subject: `Morning Brief · ${date} · Dag ${dayNumber}/${totalDays}`,
+      to: payload.to || process.env.MORNING_BRIEF_TO || 'team@wavult.com',
+    }),
+  })
+
+  if (!res.ok) {
+    throw new Error(`Morning brief webhook failed: ${res.status}`)
+  }
+
+  console.log(`[MorningBrief] Sent for ${date} — ${commits.length} commits, ${bosHighlights.length} BOS tasks`)
+  return { sent: true, date, dayNumber, commits: commits.length }
 }
 
 async function callN8nWebhook(payload: Record<string, unknown>) {

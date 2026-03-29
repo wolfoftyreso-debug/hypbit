@@ -575,16 +575,7 @@ function HalsaTab() {
 
 // ─── Main Component ────────────────────────────────────────────────────────────
 
-type Tab = 'Teamöversikt' | 'OKR' | 'Möten' | 'Profiler' | 'Hälsa'
-
-const TABS: { id: Tab; icon: React.ReactNode }[] = [
-  { id: 'Teamöversikt', icon: <UsersIcon /> },
-  { id: 'Profiler',     icon: <BrainIcon /> },
-  { id: 'Hälsa',        icon: <ActivityIcon /> },
-]
-
 export function PeopleGovernance() {
-  const [activeTab, setActiveTab] = useState<Tab>('Teamöversikt')
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null)
 
   const selectedDisc = selectedPerson
@@ -592,86 +583,60 @@ export function PeopleGovernance() {
     : undefined
 
   return (
-    <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+    <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 40 }}>
+
       {/* Header */}
-      <div style={{ marginBottom: 24 }}>
+      <div>
         <h1 style={{ fontSize: 24, fontWeight: 700, color: '#1C1C1E', margin: 0 }}>People & Governance</h1>
         <p style={{ fontSize: 13, color: '#8E8E93', marginTop: 4 }}>
-          Team, DISC-profiler, OKR:s och hälsodata för Wavult Group core-team.
+          Team, DISC-profiler och hälsodata för Wavult Group core-team.
         </p>
       </div>
 
-      {/* Tab nav */}
-      <div style={{
-        display: 'flex', gap: 4, marginBottom: 24,
-        borderBottom: '1px solid rgba(0,0,0,0.08)', paddingBottom: 0,
-      }}>
-        {TABS.map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 6,
-              padding: '8px 14px',
-              fontSize: 13, fontWeight: activeTab === tab.id ? 600 : 400,
-              color: activeTab === tab.id ? '#007AFF' : '#8E8E93',
-              background: 'none', border: 'none',
-              borderBottom: activeTab === tab.id ? '2px solid #007AFF' : '2px solid transparent',
-              cursor: 'pointer', marginBottom: -1,
-              transition: 'color 0.15s',
-            }}
-          >
-            {tab.icon}
-            {tab.id}
-          </button>
+      {/* Stats */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+        {[
+          { label: 'Teamstorlek', value: String(PEOPLE.length) },
+          { label: 'DISC-profiler', value: String(DISC_PROFILES.length) },
+          { label: 'Hälsosnaps', value: String(HEALTH_DATA.length) },
+        ].map(stat => (
+          <div key={stat.label} style={{
+            background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.08)',
+            borderRadius: 12, padding: '14px 18px',
+          }}>
+            <div style={{ fontSize: 11, color: '#8E8E93', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>{stat.label}</div>
+            <div style={{ fontSize: 28, fontWeight: 700, color: '#1C1C1E', fontVariantNumeric: 'tabular-nums' }}>{stat.value}</div>
+          </div>
         ))}
       </div>
 
-      {/* Content */}
-      {activeTab === 'Teamöversikt' && (
-        <div>
-          <div style={{ marginBottom: 20 }}>
-            <h2 style={{ fontSize: 16, fontWeight: 700, color: '#1C1C1E', margin: 0 }}>Core Team</h2>
-            <p style={{ fontSize: 12, color: '#8E8E93', marginTop: 4 }}>
-              {PEOPLE.length} teammedlemmar — klicka på ett kort för att se all information.
-            </p>
-          </div>
-
-          {/* Stats */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 24 }}>
-            {[
-              { label: 'Teamstorlek', value: String(PEOPLE.length), color: '#007AFF' },
-              { label: 'DISC-profiler', value: String(DISC_PROFILES.length), color: '#34C759' },
-              { label: 'Hälsosnaps', value: String(HEALTH_DATA.length), color: '#FF9500' },
-            ].map(stat => (
-              <div key={stat.label} style={{
-                background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.08)',
-                borderRadius: 12, padding: '14px 18px',
-              }}>
-                <div style={{ fontSize: 11, color: '#8E8E93', marginBottom: 4 }}>{stat.label}</div>
-                <div style={{ fontSize: 28, fontWeight: 700, color: stat.color, fontVariantNumeric: 'tabular-nums' }}>{stat.value}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Person cards */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
-            {PEOPLE.map(person => (
-              <PersonCard
-                key={person.id}
-                person={person}
-                onClick={() => setSelectedPerson(person)}
-              />
-            ))}
-          </div>
+      {/* Section: Core Team */}
+      <section>
+        <h2 style={{ fontSize: 14, fontWeight: 700, color: '#1C1C1E', margin: '0 0 16px', textTransform: 'uppercase', letterSpacing: '0.07em', color: '#374151' }}>Core Team</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 16 }}>
+          {PEOPLE.map(person => (
+            <PersonCard
+              key={person.id}
+              person={person}
+              onClick={() => setSelectedPerson(person)}
+            />
+          ))}
         </div>
-      )}
+      </section>
 
-      {activeTab === 'Profiler' && <ProfilerTab />}
+      {/* Section: DISC-profiler */}
+      <section>
+        <h2 style={{ fontSize: 14, fontWeight: 700, color: '#374151', margin: '0 0 16px', textTransform: 'uppercase', letterSpacing: '0.07em' }}>DISC-profiler</h2>
+        <ProfilerTab />
+      </section>
 
-      {activeTab === 'Hälsa' && <HalsaTab />}
+      {/* Section: Hälsa */}
+      <section>
+        <h2 style={{ fontSize: 14, fontWeight: 700, color: '#374151', margin: '0 0 16px', textTransform: 'uppercase', letterSpacing: '0.07em' }}>Hälsa & Välmående</h2>
+        <HalsaTab />
+      </section>
 
-      {/* Overlay — stänger panelen vid klick utanför */}
+      {/* Person detail overlay */}
       {selectedPerson && (
         <>
           <div
