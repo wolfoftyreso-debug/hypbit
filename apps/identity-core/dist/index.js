@@ -1,43 +1,11 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const crypto_1 = __importDefault(require("crypto"));
+const supabase_js_1 = require("@supabase/supabase-js");
 const config_1 = require("./config");
 const auth_1 = require("./routes/auth");
 const sessions_1 = require("./routes/sessions");
@@ -99,9 +67,7 @@ app.post('/v1/migrate/from-supabase', async (_req, res) => {
         return res.status(401).json({ error: 'UNAUTHORIZED' });
     }
     try {
-        const { createClient } = await Promise.resolve().then(() => __importStar(require('@supabase/supabase-js')));
-        const { db } = await Promise.resolve().then(() => __importStar(require('./db/postgres')));
-        const supabase = createClient(process.env.SUPABASE_URL || '', process.env.SUPABASE_SERVICE_KEY || '');
+        const supabase = (0, supabase_js_1.createClient)(process.env.SUPABASE_URL || '', process.env.SUPABASE_SERVICE_KEY || '');
         const { data, error } = await supabase.auth.admin.listUsers({ perPage: 100 });
         if (error)
             throw error;
@@ -112,7 +78,7 @@ app.post('/v1/migrate/from-supabase', async (_req, res) => {
                 skipped++;
                 continue;
             }
-            await db.query(`INSERT INTO ic_users (id, email, email_verified, full_name, org_id, roles, migrated_from, created_at)
+            await postgres_1.db.query(`INSERT INTO ic_users (id, email, email_verified, full_name, org_id, roles, migrated_from, created_at)
          VALUES ($1, $2, $3, $4, $5, $6, 'supabase', $7)
          ON CONFLICT (email) DO NOTHING`, [user.id, user.email.toLowerCase(), !!user.email_confirmed_at,
                 user.user_metadata?.name || null, 'wavult', [], user.created_at]);

@@ -1,9 +1,10 @@
 import express from 'express'
 import crypto from 'crypto'
+import { createClient } from '@supabase/supabase-js'
 import { config } from './config'
 import { authRouter } from './routes/auth'
 import { sessionsRouter } from './routes/sessions'
-import { testConnection, initSchema } from './db/postgres'
+import { testConnection, initSchema, db } from './db/postgres'
 import { metrics } from './metrics'
 
 // DEPLOY LADDER (never big-bang):
@@ -73,9 +74,6 @@ app.post('/v1/migrate/from-supabase', async (_req, res) => {
   }
   
   try {
-    const { createClient } = await import('@supabase/supabase-js')
-    const { db } = await import('./db/postgres')
-    
     const supabase = createClient(
       process.env.SUPABASE_URL || '',
       process.env.SUPABASE_SERVICE_KEY || ''
