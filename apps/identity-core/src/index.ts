@@ -3,7 +3,7 @@ import crypto from 'crypto'
 import { config } from './config'
 import { authRouter } from './routes/auth'
 import { sessionsRouter } from './routes/sessions'
-import { testConnection } from './db/postgres'
+import { testConnection, initSchema } from './db/postgres'
 import { metrics } from './metrics'
 
 // DEPLOY LADDER (never big-bang):
@@ -50,8 +50,16 @@ app.get('/health', async (_req, res) => {
   })
 })
 
-app.listen(config.port, () => {
-  console.log('[Identity Core] Listening', { port: config.port, authMode: AUTH_MODE, authSource: config.authSource })
+async function main() {
+  await initSchema()
+  app.listen(config.port, () => {
+    console.log('[Identity Core] Listening', { port: config.port, authMode: AUTH_MODE, authSource: config.authSource })
+  })
+}
+
+main().catch((err) => {
+  console.error('[Identity Core] Startup failed:', err)
+  process.exit(1)
 })
 
 export default app
