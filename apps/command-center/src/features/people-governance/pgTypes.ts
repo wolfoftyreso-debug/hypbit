@@ -146,3 +146,96 @@ export interface ConsequenceEvent {
   requiredAction?: string
   resolvedAt?: string
 }
+
+// ─── DISC PROFILE ─────────────────────────────────────────────────────────────
+
+export type DISCType = 'D' | 'I' | 'S' | 'C'
+
+export interface DISCProfile {
+  personId: string
+  primary: DISCType
+  secondary?: DISCType
+  scores: {
+    D: number  // Dominance (0-100)
+    I: number  // Influence (0-100)
+    S: number  // Steadiness (0-100)
+    C: number  // Conscientiousness (0-100)
+  }
+  description: string
+  strengths: string[]
+  challenges: string[]
+  communicationStyle: string
+  teamRole: string
+  completedAt: string
+  source: 'manual' | 'certified-spark' | 'external'
+}
+
+export const DISC_DESCRIPTIONS: Record<DISCType, { label: string; color: string; emoji: string; description: string; strengths: string[]; challenges: string[] }> = {
+  D: {
+    label: 'Dominant',
+    color: '#FF3B30',
+    emoji: '🔴',
+    description: 'Driven, beslutsfokuserad, resultatinriktad. Tar initiativ och gillar utmaningar.',
+    strengths: ['Snabba beslut', 'Resultatfokus', 'Problemlösning', 'Ledarskap under press'],
+    challenges: ['Kan vara otålig', 'Kan missa detaljer', 'Kan uppfattas som aggressiv'],
+  },
+  I: {
+    label: 'Influential',
+    color: '#FF9500',
+    emoji: '🟡',
+    description: 'Entusiastisk, kommunikativ, optimistisk. Bygger relationer och inspirerar andra.',
+    strengths: ['Kommunikation', 'Motivation', 'Kreativitet', 'Nätverksbyggande'],
+    challenges: ['Kan tappa fokus', 'Kan vara oorganiserad', 'Kan undvika konflikter'],
+  },
+  S: {
+    label: 'Steady',
+    color: '#34C759',
+    emoji: '🟢',
+    description: 'Stabil, tålmodig, lagspelande. Fokuserar på harmoni och genomförande.',
+    strengths: ['Pålitlighet', 'Samarbete', 'Tålamod', 'Konsistens'],
+    challenges: ['Kan vara för anpassbar', 'Kan undvika förändringar', 'Kan ha svårt att säga nej'],
+  },
+  C: {
+    label: 'Conscientious',
+    color: '#007AFF',
+    emoji: '🔵',
+    description: 'Analytisk, detaljorienterad, kvalitetsfokuserad. Jobbar systematiskt och noggrant.',
+    strengths: ['Noggrannhet', 'Analytisk förmåga', 'Kvalitetssäkring', 'Systematik'],
+    challenges: ['Kan vara överdrivet kritisk', 'Kan fastna i analys', 'Kan vara svår att läsa'],
+  },
+}
+
+// ─── HEALTH DATA ──────────────────────────────────────────────────────────────
+
+export interface HealthSnapshot {
+  personId: string
+  date: string  // YYYY-MM-DD
+
+  // WHOOP data
+  recoveryScore?: number    // 0-100
+  sleepPerformance?: number // 0-100
+  hrv?: number             // ms
+  strainScore?: number     // 0-21
+
+  // Wellbeing (self-reported, 1-5)
+  energyLevel?: number
+  stressLevel?: number
+  motivationLevel?: number
+
+  // Notes
+  note?: string
+  source: 'whoop' | 'self-report' | 'manual'
+}
+
+// ─── PSYCHOLOGICAL ASSESSMENTS ────────────────────────────────────────────────
+
+export interface Assessment {
+  id: string
+  personId: string
+  type: 'DISC' | 'personality' | 'cognitive' | 'strengths' | 'custom'
+  name: string
+  completedAt: string
+  results: Record<string, unknown>
+  conductedBy?: string
+  notes?: string
+}

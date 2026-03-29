@@ -41,6 +41,7 @@ const MediaHub               = lazy(() => import('./features/media/MediaHub').th
 const SystemStatusView       = lazy(() => import('./features/system-status/SystemStatusView').then(m => ({ default: m.SystemStatusView })))
 const KnowledgeHub           = lazy(() => import('./features/knowledge').then(m => ({ default: m.KnowledgeHub })))
 const PeopleIntelligenceHub  = lazy(() => import('./features/people-intelligence/PeopleIntelligenceHub').then(m => ({ default: m.PeopleIntelligenceHub })))
+const PeopleGovernance       = lazy(() => import('./features/people-governance/PeopleGovernance').then(m => ({ default: m.PeopleGovernance })))
 const SystemIntelligenceHub  = lazy(() => import('./features/system-intelligence/SystemIntelligenceHub').then(m => ({ default: m.SystemIntelligenceHub })))
 const TalentRadar            = lazy(() => import('./features/talent-radar').then(m => ({ default: m.TalentRadar })))
 const StrategicBrief         = lazy(() => import('./features/dashboard/StrategicBrief').then(m => ({ default: m.StrategicBrief })))
@@ -125,7 +126,7 @@ function AuthenticatedApp() {
               <Route path="/org/command" element={<CommandHierarchyView />} />
               <Route path="/incidents" element={<IncidentCenter />} />
               <Route path="/alerts" element={<IncidentCenter />} />
-              <Route path="/people-governance" element={<PeopleView />} />
+              <Route path="/people-governance" element={<PeopleGovernance />} />
               <Route path="/entities" element={<EntityView />} />
               <Route path="/entities/:entityId" element={<EntityView />} />
               <Route path="/markets" element={<MarketMap />} />
