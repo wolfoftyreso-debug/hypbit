@@ -3,6 +3,7 @@ import rateLimit from 'express-rate-limit'
 import { taskRouter } from './routes/tasks'
 import { paymentRouter } from './routes/payments'
 import { payoutRouter } from './routes/payouts'
+import revolutOAuthRouter from './routes/revolut-oauth'
 
 const app = express()
 
@@ -42,6 +43,7 @@ const healthLimiter = rateLimit({
 app.use('/v1/task', taskRouter)
 app.use('/v1/payment', paymentRouter)
 app.use('/v1/payout', payoutRouter)
+app.use('/', revolutOAuthRouter)
 
 // Health — rate limited
 app.get('/health', healthLimiter, (_req, res) => {
