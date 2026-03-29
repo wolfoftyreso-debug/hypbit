@@ -3,7 +3,6 @@ import {
   ReactFlow,
   Background,
   Controls,
-  MiniMap,
   addEdge,
   useNodesState,
   useEdgesState,
@@ -420,7 +419,7 @@ export function SystemGraph() {
           onNodeClick={onNodeClick}
           nodeTypes={nodeTypes}
           fitView
-          fitViewOptions={{ padding: 0.15 }}
+          fitViewOptions={{ padding: 0.2 }} style={{ background: "#F8F9FA" }}
           minZoom={0.2}
           maxZoom={2}
           defaultEdgeOptions={{ type: 'smoothstep' }}
@@ -428,15 +427,7 @@ export function SystemGraph() {
         >
           <Background variant={BackgroundVariant.Dots} gap={24} size={1} color="#E5E7EB" />
           <Controls showInteractive={false} style={{ bottom: 12, right: 12, top: 'auto', boxShadow: '0 1px 4px rgba(0,0,0,0.08)', border: '1px solid rgba(0,0,0,0.1)' }} />
-          <MiniMap
-            style={{ bottom: 12, right: 60, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', border: '1px solid rgba(0,0,0,0.1)' }}
-            nodeColor={(n) => {
-              const d = n.data as unknown as SystemNodeData
-              return d?.status === 'live' ? '#16A34A' : d?.status === 'degraded' ? '#DC2626' : '#D1D5DB'
-            }}
-            maskColor="rgba(255,255,255,0.7)"
-          />
-        </ReactFlow>
+</ReactFlow>
         </div>
       </div>
 
