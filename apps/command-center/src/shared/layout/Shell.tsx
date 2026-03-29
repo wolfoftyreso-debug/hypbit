@@ -10,6 +10,7 @@ import {
   Smartphone, MapPin, Package, ArrowRight,
   Building2, MessageSquare, FileText, Activity,
   Plane,
+  Phone,
 } from 'lucide-react'
 import { useRole, ROLES } from '../auth/RoleContext'
 import { EntitySwitcher } from '../../features/entity-switcher/EntitySwitcher'
@@ -89,6 +90,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/legal',          labelKey: 'nav.legal',          icon: Scale },
       { to: '/reports',        labelKey: 'nav.reports',        icon: FileText },
       { to: '/communications', labelKey: 'nav.communications', icon: MessageSquare },
+      { to: '/phones', labelKey: 'nav.phones', icon: Phone },
     ],
   },
   {

@@ -68,6 +68,7 @@ const LandvexPortal          = lazy(() => import('./features/landvex-portal/Land
 const QuixzoomAds            = lazy(() => import('./features/quixzoom-ads/QuixzoomAds').then(m => ({ default: m.QuixzoomAds })))
 const FinanceFlow            = lazy(() => import('./features/finance-flow/FinanceFlow').then(m => ({ default: m.FinanceFlow })))
 const FlightSearch           = lazy(() => import('./features/travel/FlightSearch').then(m => ({ default: m.FlightSearch })))
+const TeamPhones             = lazy(() => import('./features/communications/TeamPhones').then(m => ({ default: m.TeamPhones })))
 
 // ─── Page loader fallback ───────────────────────────────────────────────────────
 function PageLoader() {
@@ -176,6 +177,7 @@ function AuthenticatedApp() {
               <Route path="/quixzoom-ads" element={<QuixzoomAds />} />
               <Route path="/finance-flow" element={<FinanceFlow />} />
               <Route path="/flights" element={<FlightSearch />} />
+              <Route path="/phones" element={<TeamPhones />} />
             </Routes>
           </Suspense>
         </Shell>

@@ -7,6 +7,7 @@ import revolutOAuthRouter from './routes/revolut-oauth'
 import healthMonitor from './routes/health-monitor'
 import quixzoomRouter from './routes/quixzoom'
 import flightsRouter from './routes/flights'
+import twilioRouter from './routes/twilio'
 
 const app = express()
 
@@ -50,6 +51,7 @@ app.use('/', revolutOAuthRouter)
 app.use('/', healthMonitor)
 app.use('/', quixzoomRouter)
 app.use('/', flightsRouter)
+app.use('/', twilioRouter)
 
 // Health — rate limited
 app.get('/health', healthLimiter, (_req, res) => {
