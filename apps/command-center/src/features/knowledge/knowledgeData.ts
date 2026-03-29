@@ -17,6 +17,58 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
   // WAVULT GROUP
   // ─────────────────────────────────────────────────────────────────────────────
   {
+    id: 'doc-arch-003',
+    title: 'API Core Architecture',
+    category: 'Internt',
+    summary: 'Centraliserat API-orchestreringslager på AWS Lambda + API Gateway. 27 APIs, Financial Core VPC, rate limiting och kostnadsövervakning.',
+    tags: ['arkitektur', 'api', 'infrastruktur', 'lambda', 'aws', 'financial-core'],
+    updatedAt: '2026-03-29',
+    content: `# API Core Architecture
+
+## Overview
+Wavult API Core är ett centraliserat API-orchestreringslager byggt på AWS Lambda och API Gateway.
+Alla externa API-anrop routas via API Core — ingen direktintegration från frontend.
+
+## Endpoints
+
+### General API Core
+- Base URL: https://c49q23a72c.execute-api.eu-north-1.amazonaws.com
+- Auth: X-Api-Key header
+
+| Endpoint | Metod | Beskrivning |
+|----------|-------|-------------|
+| /health | GET | Systemhälsa (publik) |
+| /v1/ai/complete | POST | AI-komplettering (OpenAI/Anthropic/Gemini) |
+| /v1/ai/tts | POST | Text-till-tal (ElevenLabs) |
+| /v1/media/images | GET | Bildsökning (Pexels) |
+| /v1/missions | GET/POST | quiXzoom-uppdrag |
+| /v1/objects | GET | Landvex-objekt |
+| /v1/alerts | GET | Aktiva larm |
+| /v1/flights | POST | Flygbiljetter (Duffel) |
+| /v1/twilio | * | SMS/Telefon |
+
+### Financial Core VPC
+- Isolerad AWS VPC: vpc-06609c6f597a7fd15
+- Lambda: wavult-financial-core
+- Auth: X-Financial-Key header
+- 0 inbound rules — bara utgående HTTPS
+
+## Säkerhet
+- API-nycklar i AWS SSM SecureString
+- Rate limiting: 100 req/min per nyckel
+- CORS: konfigurerat
+- Financial Core: helt isolerad VPC
+
+## Kostnadsövervakning
+- Varje AI-anrop loggas med tokens + kostnad i CloudWatch
+- Cost dashboard: /api-hub → Control Panel
+
+## OpenAPI Dokumentation
+- Spec: https://api.wavult.com/openapi.json
+- Docs: https://developers.wavult.com
+`,
+  },
+  {
     id: 'doc-arch-002',
     title: 'Kanonisk Koncernstruktur — Wavult Group Master Spec',
     category: 'Wavult Group',

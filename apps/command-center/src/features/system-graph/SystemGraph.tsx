@@ -287,6 +287,30 @@ const INITIAL_NODES: Node[] = [
     position: { x: 750, y: 520 },
     data: { label: 'Company Automation', sublabel: 'Playwright · port 3008', status: 'live', colorKey: 'automation', description: 'Browser automation for company registration (Northwest, Stripe Atlas).' },
   },
+  {
+    id: 'api-core', type: 'system',
+    position: { x: 730, y: 460 },
+    data: {
+      label: 'API Core',
+      sublabel: 'AWS Lambda + API Gateway',
+      status: 'live',
+      colorKey: 'automation',
+      owner: 'Johan',
+      description: 'Central API orchestration: AI/Media/Travel + Financial Core VPC. 27 APIs catalogued. Rate limiting + cost tracking.',
+    },
+  },
+  {
+    id: 'financial-core', type: 'system',
+    position: { x: 730, y: 580 },
+    data: {
+      label: 'Financial Core VPC',
+      sublabel: 'vpc-06609c6f597a7fd15 · Isolated',
+      status: 'live',
+      colorKey: 'core',
+      owner: 'Johan',
+      description: 'Isolated VPC for banking APIs. 0 inbound rules. Secrets via VPC Endpoint. Revolut + Stripe + Nordea.',
+    },
+  },
 ]
 
 // ─── EDGE DEFINITIONS ─────────────────────────────────────────────────────────
@@ -336,6 +360,11 @@ const INITIAL_EDGES: Edge[] = [
   // Planned
   makeEdge('e16', 'quixzoom-api', 'optical-insight', 'images', 'async'),
   makeEdge('e17', 'landvex-api', 'optical-insight', 'alerts', 'async'),
+
+  // API Core
+  makeEdge('e-apicore-1', 'wavult-api', 'api-core', 'orchestration', 'async'),
+  makeEdge('e-apicore-2', 'api-core', 'financial-core', 'financial flows', 'sync'),
+  makeEdge('e-apicore-3', 'alb', 'api-core', 'API Gateway', 'sync'),
 ]
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
