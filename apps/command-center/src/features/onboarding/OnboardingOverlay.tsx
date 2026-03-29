@@ -1,208 +1,209 @@
-// ─── Onboarding Overlay — Windows first-run style guided tour ────────────────
+import { useState, useEffect } from 'react'
+import { CheckCircle, ChevronRight, ChevronLeft, X, Clock, BookOpen, Lightbulb, AlertTriangle, Info } from 'lucide-react'
+import { TOURS } from './onboardingData'
 
-import { useState, useEffect, useCallback } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import {
-  TOURS, getOnboardingState, saveOnboardingState,
-  type OnboardingStep,
-} from './onboardingData'
-import { useTranslation } from '../../shared/i18n/useTranslation'
+const STORAGE_KEY = 'wavult_onboarding_v3'
 
-// ─── Spotlight / tooltip card ─────────────────────────────────────────────────
-
-function TourCard({
-  step,
-  stepIndex,
-  totalSteps,
-  tourName,
-  onNext,
-  onPrev,
-  onSkip,
-  isLast,
-}: {
-  step: OnboardingStep
-  stepIndex: number
-  totalSteps: number
-  tourName: string
-  onNext: () => void
-  onPrev: () => void
-  onSkip: () => void
-  isLast: boolean
-}) {
-  return (
-    <>
-      {/* Backdrop */}
-      <div className="fixed inset-0 z-50 bg-black/70 pointer-events-none" />
-
-      {/* Card */}
-      <div className="fixed z-[60] inset-0 flex items-center justify-center pointer-events-none px-4">
-        <div
-          className="pointer-events-auto w-full max-w-sm rounded-2xl border border-white/[0.12] shadow-2xl"
-          style={{ background: '#FFFFFF' }}
-        >
-          {/* Header */}
-          <div className="px-5 pt-5 pb-3 border-b border-gray-200">
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-xs text-gray-500 font-mono uppercase tracking-wider">{tourName}</span>
-              <button
-                onClick={onSkip}
-                className="text-xs text-gray-600 hover:text-gray-500 transition-colors font-mono"
-              >
-                Hoppa över
-              </button>
-            </div>
-            {/* Progress dots */}
-            <div className="flex gap-1 mt-2">
-              {Array.from({ length: totalSteps }).map((_, i) => (
-                <div
-                  key={i}
-                  className="h-1 rounded-full transition-all"
-                  style={{
-                    width: i === stepIndex ? '20px' : '6px',
-                    background: i <= stepIndex ? '#6366F1' : '#F3F4F6',
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Content */}
-          <div className="px-5 py-5">
-            <div className="text-3xl mb-3">{step.icon}</div>
-            <h3 className="text-base font-bold text-gray-900 mb-2">{step.title}</h3>
-            <p className="text-sm text-gray-500 leading-relaxed">{step.description}</p>
-          </div>
-
-          {/* Actions */}
-          <div className="px-5 pb-5 flex items-center justify-between">
-            <button
-              onClick={onPrev}
-              disabled={stepIndex === 0}
-              className="text-xs px-3 py-2 rounded-lg text-gray-500 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-            >
-              ← Tillbaka
-            </button>
-            <span className="text-xs text-gray-600 font-mono">{stepIndex + 1} / {totalSteps}</span>
-            <button
-              onClick={onNext}
-              className="text-xs px-4 py-2 rounded-lg font-semibold transition-colors"
-              style={{ background: '#6366F1', color: 'white' }}
-            >
-              {isLast ? 'Klar ✓' : 'Nästa →'}
-            </button>
-          </div>
-        </div>
-      </div>
-    </>
-  )
+function getCalloutStyle(type: 'info' | 'warning' | 'tip') {
+  return {
+    info:    { bg: '#007AFF10', border: '#007AFF', icon: Info, color: '#007AFF' },
+    warning: { bg: '#FF950010', border: '#FF9500', icon: AlertTriangle, color: '#FF9500' },
+    tip:     { bg: '#5856D610', border: '#5856D6', icon: Lightbulb, color: '#5856D6' },
+  }[type]
 }
 
-// ─── Tour launcher button ─────────────────────────────────────────────────────
-
-function TourLauncherButton({ onClick }: { onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      className="fixed bottom-20 md:bottom-[72px] right-4 md:right-6 z-40 flex items-center gap-2 px-3 py-2 rounded-full shadow-lg transition-all hover:scale-105 active:scale-95"
-      style={{ background: '#6366F1', color: 'white' }}
-      title="Starta guiden"
-    >
-      <span className="text-base">👋</span>
-      <span className="text-xs font-semibold hidden sm:block">Ny här?</span>
-    </button>
-  )
-}
-
-// ─── Main component ───────────────────────────────────────────────────────────
+const STEP_GRADIENTS = [
+  'from-purple-500 to-indigo-600',
+  'from-blue-500 to-cyan-600',
+  'from-emerald-500 to-teal-600',
+  'from-orange-500 to-amber-600',
+  'from-rose-500 to-pink-600',
+  'from-violet-500 to-purple-600',
+  'from-sky-500 to-blue-600',
+  'from-green-500 to-emerald-600',
+  'from-amber-500 to-orange-600',
+  'from-indigo-500 to-violet-600',
+  'from-teal-500 to-green-600',
+]
 
 export function OnboardingOverlay() {
-  const { t: _t } = useTranslation() // ready for i18n
-  const navigate = useNavigate()
-  const { pathname } = useLocation()
-  const [active, setActive] = useState(false)
-  const [tourId, setTourId] = useState('first-run')
-  const [stepIndex, setStepIndex] = useState(0)
-  const [showLauncher, setShowLauncher] = useState(false)
+  const tour = TOURS[0]
+  const [step, setStep] = useState(0)
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    // Show launcher if not completed first-run
-    const state = getOnboardingState()
-    if (!state.completedTours.includes('first-run') && !state.dismissed) {
-      // Auto-start on very first visit
-      const hasVisited = localStorage.getItem('wavult-has-visited')
-      if (!hasVisited) {
-        localStorage.setItem('wavult-has-visited', '1')
-        setTimeout(() => { setActive(true); setTourId('first-run'); setStepIndex(0) }, 800)
-      } else {
-        setShowLauncher(true)
-      }
-    } else {
-      setShowLauncher(true)
-    }
+    const done = localStorage.getItem(STORAGE_KEY)
+    if (!done) setVisible(true)
   }, [])
 
-  const tour = TOURS.find(t => t.id === tourId)
-  const step = tour?.steps[stepIndex]
+  function dismiss() {
+    localStorage.setItem(STORAGE_KEY, 'done')
+    setVisible(false)
+  }
 
-  // Navigate when step route changes
-  useEffect(() => {
-    if (active && step && step.route !== pathname) {
-      navigate(step.route)
-    }
-  }, [active, step, stepIndex])
+  function next() {
+    if (step < tour.steps.length - 1) setStep(s => s + 1)
+    else dismiss()
+  }
 
-  const handleNext = useCallback(() => {
-    if (!tour) return
-    if (stepIndex < tour.steps.length - 1) {
-      setStepIndex(s => s + 1)
-    } else {
-      // Tour complete
-      const state = getOnboardingState()
-      state.completedTours = [...new Set([...state.completedTours, tourId])]
-      saveOnboardingState(state)
-      setActive(false)
-      setShowLauncher(true)
-    }
-  }, [tour, stepIndex, tourId])
+  function prev() {
+    if (step > 0) setStep(s => s - 1)
+  }
 
-  const handlePrev = useCallback(() => {
-    if (stepIndex > 0) setStepIndex(s => s - 1)
-  }, [stepIndex])
+  if (!visible) return null
 
-  const handleSkip = useCallback(() => {
-    const state = getOnboardingState()
-    state.dismissed = true
-    saveOnboardingState(state)
-    setActive(false)
-    setShowLauncher(true)
-  }, [])
-
-  const handleLaunch = useCallback(() => {
-    setTourId('first-run')
-    setStepIndex(0)
-    setActive(true)
-    setShowLauncher(false)
-  }, [])
-
-  if (!active && !showLauncher) return null
+  const current = tour.steps[step]
+  const gradient = STEP_GRADIENTS[step % STEP_GRADIENTS.length]
+  const progress = ((step + 1) / tour.steps.length) * 100
+  const minutesLeft = Math.ceil(((tour.steps.length - step) / tour.steps.length) * tour.estimatedMinutes)
+  const calloutStyle = current.callout ? getCalloutStyle(current.callout.type) : null
 
   return (
-    <>
-      {active && step && tour && (
-        <TourCard
-          step={step}
-          stepIndex={stepIndex}
-          totalSteps={tour.steps.length}
-          tourName={tour.name}
-          onNext={handleNext}
-          onPrev={handlePrev}
-          onSkip={handleSkip}
-          isLast={stepIndex === tour.steps.length - 1}
-        />
-      )}
-      {!active && showLauncher && (
-        <TourLauncherButton onClick={handleLaunch} />
-      )}
-    </>
+    // Backdrop
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(8px)' }}
+    >
+      {/* Modal */}
+      <div
+        className="w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl"
+        style={{ background: '#FFFFFF', maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}
+      >
+        {/* Colored header */}
+        <div className={`bg-gradient-to-br ${gradient} p-6 relative`}>
+          <button
+            onClick={dismiss}
+            className="absolute top-4 right-4 text-white opacity-70 hover:opacity-100 transition-opacity"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          <div className="flex items-start gap-4">
+            <div
+              className="flex items-center justify-center text-3xl rounded-xl flex-shrink-0"
+              style={{ width: 64, height: 64, background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(4px)' }}
+            >
+              {current.icon}
+            </div>
+            <div>
+              <p className="text-white opacity-75 text-xs font-semibold uppercase tracking-widest mb-1">
+                {tour.name}
+              </p>
+              <h2 className="text-white text-xl font-bold leading-tight">
+                {current.title}
+              </h2>
+            </div>
+          </div>
+
+          {/* Progress bar */}
+          <div className="mt-5">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-white opacity-70 text-xs">
+                Steg {step + 1} av {tour.steps.length}
+              </span>
+              <span className="text-white opacity-70 text-xs flex items-center gap-1">
+                <Clock className="w-3 h-3" />
+                ~{minutesLeft} min kvar
+              </span>
+            </div>
+            <div className="h-1.5 rounded-full" style={{ background: 'rgba(255,255,255,0.3)' }}>
+              <div
+                className="h-full rounded-full transition-all duration-500"
+                style={{ width: `${progress}%`, background: 'rgba(255,255,255,0.9)' }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-5">
+          {/* Description */}
+          <p className="text-gray-700 text-sm leading-relaxed">
+            {current.description}
+          </p>
+
+          {/* Bullets */}
+          {current.bullets && current.bullets.length > 0 && (
+            <div className="space-y-2.5">
+              {current.bullets.map((bullet, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm text-gray-700">{bullet}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Example */}
+          {current.example && (
+            <div
+              className="rounded-xl p-4"
+              style={{ background: '#007AFF0A', border: '1px solid #007AFF30' }}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <BookOpen className="w-3.5 h-3.5" style={{ color: '#007AFF' }} />
+                <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: '#007AFF' }}>
+                  Prova detta
+                </span>
+              </div>
+              <p className="text-sm text-gray-700 font-mono leading-relaxed" style={{ fontSize: 12 }}>
+                {current.example}
+              </p>
+            </div>
+          )}
+
+          {/* Callout */}
+          {current.callout && calloutStyle && (
+            <div
+              className="rounded-xl p-4 flex items-start gap-3"
+              style={{
+                background: calloutStyle.bg,
+                borderLeft: `3px solid ${calloutStyle.border}`,
+              }}
+            >
+              <calloutStyle.icon className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: calloutStyle.color }} />
+              <p className="text-sm" style={{ color: '#1C1C1E' }}>
+                {current.callout.text}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div
+          className="flex items-center justify-between px-6 py-4"
+          style={{ borderTop: '1px solid rgba(0,0,0,0.08)', background: '#F2F2F7' }}
+        >
+          <button
+            onClick={prev}
+            disabled={step === 0}
+            className="flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-gray-800 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Tillbaka
+          </button>
+
+          <button
+            onClick={dismiss}
+            className="text-xs text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            Hoppa över
+          </button>
+
+          <button
+            onClick={next}
+            className="flex items-center gap-1.5 text-sm font-semibold text-white px-5 py-2 rounded-xl transition-opacity hover:opacity-90"
+            style={{ background: '#5856D6' }}
+          >
+            {step === tour.steps.length - 1 ? 'Klar!' : 'Nästa'}
+            {step < tour.steps.length - 1 && <ChevronRight className="w-4 h-4" />}
+          </button>
+        </div>
+      </div>
+    </div>
   )
+}
+
+export function resetOnboarding() {
+  localStorage.removeItem(STORAGE_KEY)
 }

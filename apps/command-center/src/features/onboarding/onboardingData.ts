@@ -1,20 +1,25 @@
-// ─── Onboarding / First-run tooltip system ───────────────────────────────────
-// Windows-style guided tour: points to elements, explains what things are.
-
 export interface OnboardingStep {
   id: string
   route: string
   title: string
   description: string
+  bullets?: string[]
+  example?: string
+  callout?: {
+    type: 'info' | 'warning' | 'tip'
+    text: string
+  }
   position: 'top' | 'bottom' | 'left' | 'right' | 'center'
-  targetSelector?: string  // CSS selector for element to highlight
+  targetSelector?: string
   icon: string
+  visual?: 'entity-switcher' | 'finance' | 'mission-control' | 'system-graph' | 'knowledge'
 }
 
 export interface OnboardingTour {
   id: string
   name: string
   description: string
+  estimatedMinutes: number
   steps: OnboardingStep[]
 }
 
@@ -22,238 +27,188 @@ export const TOURS: OnboardingTour[] = [
   {
     id: 'first-run',
     name: 'Välkommen till Wavult OS',
-    description: 'En snabb genomgång av systemet — tar 2 minuter.',
+    description: 'Ditt operativsystem för hela Wavult Group. En genomgång av allt du behöver veta — ta 3 minuter.',
+    estimatedMinutes: 3,
     steps: [
       {
         id: 'welcome',
-        route: '/dashboard',
+        route: '/',
         title: 'Välkommen till Wavult OS',
-        description: 'Det här är ert operativsystem. Allt om koncernen — ekonomi, juridik, personal, projekt — lever här. Vi guidar dig igenom det viktigaste.',
+        description: 'Wavult OS är koncernens operativa nervsystem. Här lever allt: legal struktur, ekonomi, uppgifter, systemövervakning och kunskapsbank. Det är inte ett adminsystem — det är platsen där bolaget styrs från.',
+        bullets: [
+          'Wavult Group äger 6 juridiska entiteter i 4 jurisdiktioner',
+          'Alla system och data är kopplade till rätt bolag',
+          'Din roll avgör vad du ser och vad du kan göra',
+          'Systemet kör live — ändringar slår igenom direkt',
+        ],
+        callout: { type: 'tip', text: 'Tryck Hoppa över om du redan känner systemet.' },
         position: 'center',
-        icon: '👋',
+        icon: '🏛️',
       },
       {
         id: 'entity-switcher',
-        route: '/dashboard',
-        title: 'Bolagsväxlaren',
-        description: 'Uppe i vänstra hörnet väljer du vilket bolag du tittar på. "Group" = hela koncernen samlat. Klicka för att byta vy per bolag.',
+        route: '/',
+        title: 'Bolagsväxlaren — välj entitet',
+        description: 'Uppe till vänster i menyn hittar du bolagsväxlaren. Den styr vilket bolag all data visas för. "Wavult Group" visar konsoliderad data för hela koncernen. Väljer du t.ex. "Landvex AB" ser du bara det bolagets data.',
+        bullets: [
+          '"Wavult Group" = konsoliderad vy (alla 6 bolag)',
+          '"Landvex AB" = svensk B2G-verksamhet, org.nr 559141-7042',
+          '"QuiXzoom Inc" = US-bolaget (Delaware)',
+          'Alla finance- och legal-vyer filtreras automatiskt',
+        ],
+        example: 'Prova: Klicka på bolagsnamnet uppe till vänster och byt till "Landvex AB". Finansöversikten visar nu bara Landvex-data.',
         position: 'right',
         targetSelector: '[data-tour="entity-switcher"]',
         icon: '🏢',
+        visual: 'entity-switcher',
       },
       {
-        id: 'nav-operations',
-        route: '/dashboard',
-        title: 'OPERATIONS — det dagliga',
-        description: 'Dashboard, CRM, Milestones, Kampanjer, Submissions. Det du arbetar med varje dag.',
+        id: 'mission-control',
+        route: '/',
+        title: 'Mission Control — systemets hjärna',
+        description: 'Startsidan är Mission Control: en deterministisk lista över vad som måste göras, sorterat efter kritikalitet. Systemet beräknar automatiskt vad som är blockerat, vad som brinner och vad som kan vänta. Du behöver aldrig undra vad du ska göra härnäst.',
+        bullets: [
+          'CRITICAL (röd) = måste göras nu, blockerar annat',
+          'HIGH (amber) = viktigt denna vecka',
+          'Blockerade tasks visas nedtonade — kan inte göras förrän dependency är klar',
+          'Påbörja → markerar task som IN_PROGRESS',
+          'Systemet uppdateras i realtid via Supabase',
+        ],
+        callout: { type: 'warning', text: 'Just nu är 4 kritiska tasks aktiva — bl.a. Bilda FZCO Dubai och Välj bokföringsbyrå.' },
+        position: 'center',
+        icon: '🎯',
+        visual: 'mission-control',
+      },
+      {
+        id: 'navigation',
+        route: '/',
+        title: 'Navigation — fem sektioner',
+        description: 'Wavult OS är strukturerat i fem tydliga sektioner. Varje sektion har ett tydligt ansvar och en tydlig ägare. Navigera aldrig aimlessly — systemet är uppbyggt för att du alltid vet var du är.',
+        bullets: [
+          'COMMAND: Mission Control, Operations Center, Min vy, Alerts',
+          'MONEY: Finance, Transaktioner, Simulering (Causal OS), Inköp, Lön',
+          'PEOPLE: People & Governance, Organisation, CRM',
+          'OPERATIONS: Milestones, Kampanjer, Submissions, Beslut, Projekt',
+          'KNOWLEDGE: Knowledge Hub, Infrastruktur, Inställningar',
+        ],
+        callout: { type: 'tip', text: 'Tangentbordsgenväg: Cmd+K öppnar global sökning i hela systemet.' },
         position: 'right',
-        icon: '⚡',
+        icon: '🧭',
       },
       {
-        id: 'nav-finance',
+        id: 'bos-tasks',
+        route: '/',
+        title: 'BOS — Behavioral Operating System',
+        description: 'Bakom Mission Control finns BOS: ett deterministic state machine som hanterar alla tasks, beroenden och state-transitions. Varje task har exakt ett state, exakt en ägare och exakt ett validerade nästa steg. Systemet blockerar automatiskt ogiltiga övergångar.',
+        bullets: [
+          'REQUIRED → kan startas (inga blockers)',
+          'BLOCKED → dependency måste slutföras först',
+          'IN_PROGRESS → någon arbetar på detta',
+          'DONE → slutfört och verifierat',
+          'FAILED → deadline passerad, kräver åtgärd',
+        ],
+        example: 'Varje uppgift visar varför den är blockerad: "Blockerad av: Wavult Group FZCO måste bildas först"',
+        position: 'center',
+        icon: '⚙️',
+      },
+      {
+        id: 'finance',
         route: '/finance',
-        title: 'Finance — ekonomin',
-        description: 'Här bor allt om pengar: kontoplan, transaktioner, fakturor, kassaflöde, moms och intercompany-flöden mellan bolagen.',
+        title: 'Finance — ekonomisk kontroll',
+        description: 'Finance-modulen ger dig full ekonomisk kontroll per bolag och på koncernnivå. Här hittar du likviditetsöversikten, transaktionsflöden, intercompany-fakturering och skatteplanering. Allt är kopplat till rätt bolag via bolagsväxlaren.',
+        bullets: [
+          'Kassan idag: ~500 000 SEK (estimerat)',
+          'Burn rate: ~45 000 SEK/mån',
+          'Runway: ~333 dagar',
+          'Intercompany: IP-licens (5-15%) + management fees (8-15%) till Dubai',
+          'Revisor: ännu inte vald — KRITISK uppgift',
+        ],
+        callout: { type: 'warning', text: 'Landvex AB har noll bokföring. Personligt straffansvar. Välj revisor denna vecka.' },
         position: 'center',
         icon: '💰',
+        visual: 'finance',
       },
       {
-        id: 'finance-overview',
-        route: '/finance',
-        title: 'Ekonomiöversikten',
-        description: 'En siffra att alltid kolla: "Kassaflöde". Grön = OK. Gul = bevaka. Röd = agera. Alla belopp är per bolag och kan konsolideras på Group-nivå.',
+        id: 'causal-os',
+        route: '/causal-os',
+        title: 'Causal OS — finansiell simulering',
+        description: 'Causal OS är systemets finansiella hjärna. Drag i reglage och se direkt hur beslut påverkar kassan, runway och intäkterna. Alla variabler är kausalt kopplade — ändrar du zoomer-count ser du automatiskt effekten på intäkter och runway.',
+        bullets: [
+          'Scenarioengine: Basfall, Optimistiskt, Pessimistiskt',
+          'Dag-för-dag cashflow 365 dagar framåt',
+          'Decision Impact Calculator: "Vad händer om vi anställer en säljare?"',
+          'Systemvarningar: "Kassa går under 0 om X dagar"',
+        ],
+        example: 'Prova: Drag i "Landvex-kunder" till 5 → se hur runway ökar med ~180 dagar.',
         position: 'center',
-        icon: '📊',
+        icon: '🧠',
       },
       {
-        id: 'legal-hub',
-        route: '/legal',
-        title: 'Legal Hub — alla avtal',
-        description: 'Samtliga juridiska dokument för koncernen. Orange badge = dokument som väntar på din åtgärd. Klicka på ett dokument för att se status och signeringsflöde.',
+        id: 'system-graph',
+        route: '/system-graph',
+        title: 'System Graph — levande infrastrukturkarta',
+        description: 'System Graph är en realtids-karta över hela Wavult Groups tekniska infrastruktur. Klicka på valfri nod för att se detaljer, beroenden och ägare. I Operator Mode kan du initiera actions — restart, scale, reroute — via Command Layer.',
+        bullets: [
+          '17 noder: ECS-services, databaser, S3, Cloudflare, GitHub, Identity Core',
+          'Live health check: kritiska tjänster uppdateras var 10s',
+          'Grupperat i: Customer Experience, Core Services, Data Layer, Automation',
+          'Operator Mode: initiera commands via Command & Control Layer',
+          'Klicka en nod → "Vad är det här?" på vanligt språk',
+        ],
+        callout: { type: 'info', text: 'Identity Core visas som "parallel build" — redo för migration när Erik ger order.' },
         position: 'center',
-        icon: '⚖️',
+        icon: '🌐',
+        visual: 'system-graph',
       },
       {
-        id: 'incidents',
-        route: '/incidents',
-        title: 'Alerts — larmet',
-        description: 'Om något är kritiskt dyker det upp här med rött. Det röda numret i menyn = antal aktiva kritiska incidenter. Alltid hålla det på noll.',
+        id: 'knowledge-hub',
+        route: '/knowledge',
+        title: 'Knowledge Hub — allt teamet behöver veta',
+        description: 'Knowledge Hub är Wavult Groups samlade kunskapsbank. Här hittar du bolagsstruktur, GTM-strategi, juridik, policydokument och utbildningar. Alla 21 kurser i Academy är obligatoriska för Thailand Workcamp.',
+        bullets: [
+          '37 dokument: juridik, finans, GTM, policyer, teknisk arkitektur',
+          '21 kurser i Academy: från "Dag 1" till "Code of Conduct"',
+          'ZoomerCert: certifiering för QuiXzoom-fältpersonal',
+          'Kunskapsgraf: visuell karta över hur entiteter hänger ihop',
+          'Alla policydokument: CoC, GDPR, Travel & Expense, AUP',
+        ],
+        example: 'Börja med kursen "Ny teammedlem — Dag 1" (12 min) för snabbast möjlig orientering.',
         position: 'center',
-        icon: '🚨',
+        icon: '📚',
+        visual: 'knowledge',
       },
       {
-        id: 'entities',
-        route: '/entities',
-        title: 'Entities — bolagsöversikt',
-        description: 'Varje bolag i koncernen har en egen sida. Klicka på ett bolag för att se juridisk status, ekonomi, system och team kopplat till just det bolaget.',
-        position: 'center',
-        icon: '🏗',
-      },
-      {
-        id: 'whoop-connect',
-        route: '/whoop',
-        title: '⌚ Koppla ditt WHOOP',
-        description: 'Wavult Group har WHOOP-armband till hela teamet. Koppla ditt konto här så kan vi följa recovery, sömn och belastning — och se till att ingen körs i botten. Klicka "Koppla WHOOP" för att starta.',
-        position: 'center',
-        icon: '⌚',
-      },
-      {
-        id: 'maturity-badge',
-        route: '/dashboard',
-        title: 'Mognadsmärken',
-        description: 'Varje modul har ett märke: SKELETON = bara skal, ALPHA = mockdata, BETA = används av teamet, PRODUCTION = live data. Det talar om hur pålitlig datan är.',
-        position: 'center',
-        icon: '🔬',
-      },
-      {
-        id: 'done',
-        route: '/dashboard',
-        title: 'Du är redo!',
-        description: 'Börja med Dashboard för en daglig överblick. Starta guiden igen när som helst via Inställningar → Onboarding.',
-        position: 'center',
-        icon: '✅',
-      },
-    ],
-  },
-  {
-    id: 'whoop-setup',
-    name: 'Sätt upp ditt WHOOP',
-    description: 'Från kartong till kopplat — följ stegen.',
-    steps: [
-      {
-        id: 'whoop-unbox',
-        route: '/whoop',
-        title: 'Steg 1 — Ta ut armbandet',
-        description: 'I kartongen finns: WHOOP 4.0-armbandet, ett laddningspaket (batteripaketet som glider på armbandet) och en USB-C-kabel. Ta ut allt och lägg det framför dig.',
-        position: 'center',
-        icon: '📦',
-      },
-      {
-        id: 'whoop-wear',
-        route: '/whoop',
-        title: 'Steg 2 — Sätt på armbandet',
-        description: 'Armbandet bärs på handleden — gärna 2–3 cm ovanför handlovsknutan (inte på pulsen). Sensorn ska ligga mot huden. Spännet stängs som ett vanligt klockspänne. Inte för hårt, inte för löst — du ska kunna sticka in ett finger.',
-        position: 'center',
-        icon: '⌚',
-      },
-      {
-        id: 'whoop-charge',
-        route: '/whoop',
-        title: 'Steg 3 — Ladda utan att ta av',
-        description: 'WHOOP laddas med batteripaketet — det glider på utsidan av armbandet medan du har det på. Koppla USB-C till laddpaketet och låt det ladda till minst 50% innan du pararihop det. LED-lampan på paketet visar status.',
-        position: 'center',
-        icon: '🔋',
-      },
-      {
-        id: 'whoop-app',
-        route: '/whoop',
-        title: 'Steg 4 — Installera WHOOP-appen',
-        description: 'Ladda ner den officiella WHOOP-appen (App Store / Google Play). Skapa ett konto eller logga in. Appen guidar dig igenom parkopplingen via Bluetooth — håll armbandet nära telefonen.',
-        position: 'center',
-        icon: '📱',
-      },
-      {
-        id: 'whoop-pair',
-        route: '/whoop',
-        title: 'Steg 5 — Para ihop med telefonen',
-        description: 'I WHOOP-appen: tryck på "+" → "Add a device" → välj ditt armband i listan. Bluetooth måste vara aktivt. Parkopplingen tar 1–2 minuter. Armbandet vibrerar när det är klart.',
-        position: 'center',
-        icon: '🔗',
-      },
-      {
-        id: 'whoop-sleep',
-        route: '/whoop',
-        title: 'Steg 6 — Bär det dygnet runt',
-        description: 'WHOOP mäter sömnkvalitet, hjärtfrekvensvariabilitet (HRV) och återhämtning. För att data ska bli pålitlig behöver du bära det minst 3 nätter i rad. Ha det på även när du sover — det är vattentätt.',
-        position: 'center',
-        icon: '😴',
-      },
-      {
-        id: 'whoop-connect-wavult',
-        route: '/whoop',
-        title: 'Steg 7 — Koppla till Wavult OS',
-        description: 'Nu kopplar vi ditt WHOOP till Wavult OS så att teamets recovery visas samlat. Klicka på "Koppla WHOOP" nedan och logga in med ditt WHOOP-konto. Det tar 30 sekunder.',
-        position: 'center',
-        icon: '🏢',
-      },
-      {
-        id: 'whoop-team',
-        route: '/whoop',
-        title: 'Steg 8 — Teamöversikten',
-        description: 'När alla är kopplade ser du hela teamets recovery-status här. Lägst recovery visas överst — de som behöver vila syns direkt. Vi anpassar workload efter faktisk kapacitet, inte antaganden.',
+        id: 'people-governance',
+        route: '/people-governance',
+        title: 'People & Governance — performance och möten',
+        description: 'People & Governance är inte ett HR-system — det är ett performance control system. Varje person är en prestationsenhet med OKR, delivery rate och en automatisk consequence engine. Låg performance triggar automatiskt uppföljningsmöten.',
+        bullets: [
+          'Performance Engine: delivery rate (45%) + deadline accuracy (30%) + OKR score (25%)',
+          '5 nivåer: CRITICAL / LOW / MEETING / EXCEEDING / EXCEPTIONAL',
+          'Q2 2026 OKR för alla 5 teammedlemmar inlagda',
+          'Styrelsemöten, ledningsgruppsmöten, medarbetarsamtal — allt loggat',
+          'Mandatory structure: 1:1 kan inte markeras klar utan alla 4 fält',
+        ],
+        callout: { type: 'info', text: 'Alla teammedlemmar ska vara certifierade i Academy senast Thailand Workcamp (11 april).' },
         position: 'center',
         icon: '👥',
       },
       {
-        id: 'whoop-done',
-        route: '/whoop',
-        title: 'Klar! 🎉',
-        description: 'WHOOP sitter på handleden, är ihopparrat och kopplat till Wavult OS. Data synkas automatiskt varje timme. Välkommen till teamet — vi kör på fakta nu.',
+        id: 'thailand',
+        route: '/',
+        title: 'Thailand Workcamp — 11 april 2026',
+        description: 'Om 14 dagar samlas hela teamet i Bangkok för Wavult Groups officiella projektstart. Vecka 1: utbildning och certifiering. Vecka 2+: intensiv build-sprint för QuiXzoom MVP och Landvex beta.',
+        bullets: [
+          'Plats: Nysa Hotel, Bangkok — Sukhumvit 13',
+          'Leon förhandlar: 3 rum + ev lokal (Arthur är kontakt)',
+          'Mål: QuiXzoom redo för Sverige-lansering juni 2026',
+          'Krav: Alla Academy-kurser klara + ZoomerCert tagen',
+          'Du är nu inloggad och redo. Börja med Mission Control.',
+        ],
+        callout: { type: 'tip', text: 'Klicka på Mission Control i navigationen för att se dina kritiska uppgifter.' },
         position: 'center',
-        icon: '✅',
-      },
-    ],
-  },
-  {
-    id: 'finance-deep',
-    name: 'Finance-modulen på djupet',
-    description: 'Förstå ekonomimodulen fullständigt.',
-    steps: [
-      {
-        id: 'finance-tabs',
-        route: '/finance',
-        title: 'Finance — 9 flikar',
-        description: 'Översikt → Kontoplan → Transaktioner → Fakturor → Kassaflöde → Moms/Skatt → Intercompany → Betalningar → Optimering. Börja alltid med Översikt.',
-        position: 'bottom',
-        icon: '📋',
-      },
-      {
-        id: 'intercompany',
-        route: '/finance',
-        title: 'Intercompany-flöden',
-        description: 'Här ser du licensavgifter och betalningar MELLAN bolagen. Wavult AB betalar till Dubai holding. Dotterbolagen betalar licensavgifter uppåt. Allt ska balansera.',
-        position: 'center',
-        icon: '↔️',
-      },
-      {
-        id: 'cashflow-optimizer',
-        route: '/finance',
-        title: 'Kassaflödesoptimering',
-        description: 'AI-driven rekommendation om när och hur ni ska flytta pengar mellan bolagen för att minimera skatt och maximera likviditet.',
-        position: 'center',
-        icon: '⚡',
+        icon: '🇹🇭',
       },
     ],
   },
 ]
-
-export const STORAGE_KEY = 'wavult-onboarding-v1'
-
-export interface OnboardingState {
-  completedTours: string[]
-  currentTour: string | null
-  currentStep: number
-  dismissed: boolean
-}
-
-export function getOnboardingState(): OnboardingState {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (raw) return JSON.parse(raw)
-  } catch {}
-  return {
-    completedTours: [],
-    currentTour: null,
-    currentStep: 0,
-    dismissed: false,
-  }
-}
-
-export function saveOnboardingState(state: OnboardingState) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
-}
-
-export function isFirstRun(): boolean {
-  const state = getOnboardingState()
-  return !state.completedTours.includes('first-run') && !state.dismissed
-}

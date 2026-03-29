@@ -1,2 +1,1 @@
-export { OnboardingOverlay } from './OnboardingOverlay'
-export { isFirstRun } from './onboardingData'
+export { OnboardingOverlay, resetOnboarding } from './OnboardingOverlay'
