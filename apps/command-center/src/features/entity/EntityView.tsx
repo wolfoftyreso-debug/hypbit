@@ -9,6 +9,7 @@ import {
   getEntityFinance, getEntityLegal, getEntitySystems,
   getEntityOps, getEntityPeople, getEntityRelationships,
 } from './entityData'
+import { getFlowsByEntity, Flow } from './flowEngine'
 import { useRole } from '../../shared/auth/RoleContext'
 import { ROLE_PERMISSIONS } from '../org-graph/permissions'
 import { computeHealthScore } from './healthScore'
@@ -16,7 +17,7 @@ import { HealthScorePanel, HealthBadge, HealthBar, LEVEL_COLOR } from './HealthS
 
 // ─── Tab definitions ──────────────────────────────────────────────────────────
 
-type TabId = 'overview' | 'health' | 'finance' | 'legal' | 'people' | 'ops' | 'systems' | 'relations'
+type TabId = 'overview' | 'health' | 'finance' | 'legal' | 'people' | 'ops' | 'systems' | 'relations' | 'flows'
 
 interface Tab { id: TabId; label: string; icon: string; requiresScope?: string }
 
@@ -29,6 +30,7 @@ const ALL_TABS: Tab[] = [
   { id: 'ops',        label: 'Operations',      icon: '⚙️' },
   { id: 'systems',    label: 'Systems',         icon: '🖥', requiresScope: 'tech' },
   { id: 'relations',  label: 'Relationships',   icon: '🔗' },
+  { id: 'flows',      label: 'Flows',           icon: '🔀' },
 ]
 
 // ─── Risk helpers ─────────────────────────────────────────────────────────────
@@ -494,6 +496,89 @@ function RelationsTab({ entityId }: { entityId: string }) {
   )
 }
 
+// ─── Flows tab ────────────────────────────────────────────────────────────────
+
+const FLOW_TYPE_COLOR: Record<string, string> = {
+  data: '#007AFF',
+  money: '#34C759',
+  user: '#AF52DE',
+  tech: '#FF9500',
+  ownership: '#5856D6',
+}
+
+const FLOW_STATUS_COLOR: Record<string, string> = {
+  active: '#10B981',
+  building: '#F59E0B',
+  planned: '#6B7280',
+}
+
+function FlowCard({ flow }: { flow: Flow }) {
+  const typeColor = FLOW_TYPE_COLOR[flow.type] ?? '#6B7280'
+  const statusColor = FLOW_STATUS_COLOR[flow.status] ?? '#6B7280'
+  return (
+    <div className="rounded-xl border border-gray-200 bg-white/[0.02] p-4 space-y-3">
+      {/* Header */}
+      <div className="flex items-start justify-between gap-3 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span
+            className="text-xs px-2 py-0.5 rounded font-mono font-semibold"
+            style={{ background: typeColor + '18', color: typeColor, border: `1px solid ${typeColor}30` }}
+          >
+            {flow.type}
+          </span>
+          <span className="text-sm font-semibold text-gray-900">{flow.name}</span>
+        </div>
+        <span
+          className="text-xs px-2 py-0.5 rounded font-mono flex-shrink-0"
+          style={{ background: statusColor + '18', color: statusColor, border: `1px solid ${statusColor}30` }}
+        >
+          {flow.status}
+        </span>
+      </div>
+      {/* Description */}
+      <p className="text-xs text-gray-500 leading-relaxed">{flow.description}</p>
+      {/* Value */}
+      {flow.value && (
+        <div className="text-xs font-mono px-3 py-1.5 rounded-lg bg-white/[0.04] text-gray-400">
+          💰 {flow.value}
+        </div>
+      )}
+      {/* Steps */}
+      <ol className="space-y-1">
+        {flow.steps.map((step, i) => (
+          <li key={i} className="flex items-start gap-2 text-xs text-gray-600">
+            <span className="flex-shrink-0 w-5 h-5 rounded-full bg-white/[0.06] flex items-center justify-center text-gray-500 font-mono font-semibold mt-0.5">
+              {i + 1}
+            </span>
+            <span className="leading-relaxed pt-0.5">{step}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  )
+}
+
+function FlowsTab({ entityId }: { entityId: string }) {
+  const flows = getFlowsByEntity(entityId)
+  if (!flows.length) {
+    return (
+      <div className="text-sm text-gray-500 p-4">
+        No explicit flows registered for this entity.
+      </div>
+    )
+  }
+  return (
+    <div className="space-y-4">
+      <p className="text-xs text-gray-500">
+        {flows.length} flow{flows.length !== 1 ? 's' : ''} involving this entity
+      </p>
+      {flows.map(flow => (
+        <FlowCard key={flow.id} flow={flow} />
+      ))}
+    </div>
+  )
+}
+
 // ─── Health score tab ─────────────────────────────────────────────────────────
 
 function HealthTab({ entityId }: { entityId: string }) {
@@ -667,6 +752,7 @@ export function EntityView() {
             {activeTab === 'ops'       && <OpsTab       entityId={resolvedId} />}
             {activeTab === 'systems'   && <SystemsTab   entityId={resolvedId} />}
             {activeTab === 'relations' && <RelationsTab entityId={resolvedId} />}
+            {activeTab === 'flows'     && <FlowsTab     entityId={resolvedId} />}
           </Suspense>
         </div>
       </div>

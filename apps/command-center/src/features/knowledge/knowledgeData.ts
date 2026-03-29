@@ -17,6 +17,111 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
   // WAVULT GROUP
   // ─────────────────────────────────────────────────────────────────────────────
   {
+    id: 'doc-arch-002',
+    title: 'Kanonisk Koncernstruktur — Wavult Group Master Spec',
+    category: 'Wavult Group',
+    summary: '7 juridiska entiteter, 4 jurisdiktioner, fullständig pengar- och dataflödesmodell. Maskinläsbar, juridiskt tydlig.',
+    tags: ['struktur', 'entiteter', 'financeeco', 'flöden', 'juridik', 'dubai', 'kanonisk'],
+    updatedAt: '2026-03-29',
+    content: `## Kanonisk Koncernstruktur — Wavult Group
+
+### Global Princip
+
+Wavult Group är en multi-entity, multi-country, event-driven enterprise. Alla relationer är explicita — inget är implicit.
+
+Varje enhet i systemet vet:
+- Juridisk enhet
+- Land och jurisdiktion
+- Roll i värdekedjan
+- Vem som betalar vem
+- Vem som äger vad
+- Hur data flödar
+
+---
+
+### Entity Registry (7 entiteter)
+
+**Holding**
+- Wavult Group — Dubai, UAE — Ownership + IP + Capital Control
+
+**Execution**
+- DevOps Company — Dubai, UAE — System Development + Infrastructure + AI
+
+**Financial Core**
+- FinanceCo — Dubai, UAE — Payment Processing · Treasury · Payouts · Internal Settlement · Revenue Routing
+
+**Data Platform (Supply Side)**
+- Quixzoom UAB — Vilnius, Lithuania — Operational Data Entity EU
+- Quixzoom Inc — Delaware, USA — Operational Data Entity US
+
+**Product / Revenue**
+- Landvex AB — Stockholm, Sweden — Revenue Entity EU (org.nr 559141-7042, ACTIVE)
+- Landvex Inc — Houston, Texas, USA — Revenue Entity US
+
+---
+
+### Ownership Structure
+
+Wavult Group (Dubai) äger 100% av alla övriga entiteter.
+
+---
+
+### Money Rule (ABSOLUT)
+
+Alla pengar går via FinanceCo.
+
+External:
+- Customer → FinanceCo
+- Ads Buyer → FinanceCo
+
+Internal distribution:
+- FinanceCo → Landvex (revenue share)
+- FinanceCo → Quixzoom (data cost)
+- FinanceCo → DevOps (tech fee)
+- FinanceCo → Wavult Group (profit extraction)
+- FinanceCo → Zoomers (payouts)
+
+---
+
+### Core Flows
+
+**Flow 1 — Data Generation**
+Zoomer accepterar uppdrag → utför fotouppdrag → data laddas upp → data lagras → tillgänglig för Landvex och Quixzoom Ads
+
+**Flow 2 — Landvex Revenue**
+Kund använder Landvex → data analyseras → beslutsstöd genereras → kund betalar → FinanceCo
+
+**Flow 3 — Quixzoom Ads**
+Data finns → Creator bygger package → listat i Ads → Företag köper leads → FinanceCo
+
+**Flow 4 — Payouts (KRITISK)**
+Zoomer utför uppdrag → verifieras → payment trigger → FinanceCo betalar Zoomer
+
+---
+
+### Internal Billing Model
+
+Landvex betalar:
+- Quixzoom → för data
+- DevOps → för system/licens
+
+Quixzoom betalar:
+- DevOps → för plattform
+
+Alla betalar:
+- Wavult Group → via IP-licens / utdelning
+
+---
+
+### Designprinciper (Icke förhandlingsbara)
+
+- Finance är CENTRALISERAD (alltid via FinanceCo)
+- Data och Revenue är SEPARERADE
+- DevOps är ENDA tech-leverantören
+- Inget bolag har "dubbel roll"
+- Alla flöden är EXPLICITA`,
+  },
+  {
     id: 'doc-wg-001',
     title: 'Bolagsstruktur — Komplett Koncernkarta',
     category: 'Wavult Group',

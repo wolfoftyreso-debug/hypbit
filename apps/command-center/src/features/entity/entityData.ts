@@ -1,9 +1,143 @@
 // ─── Entity-centric data layer ─────────────────────────────────────────────────
-// ZERO duplication — all entity/relationship/role data imported from existing modules.
-// This file only adds entity-specific finance, legal, ops, and systems records.
+// Canonical Entity Registry — 7 legal entities, 4 jurisdictions.
+// Relationship and role data imported from existing org-graph module.
 
-import { ENTITIES, RELATIONSHIPS, ROLE_MAPPINGS, getRoleMappings, getRelationships } from '../org-graph/data'
-export { ENTITIES, RELATIONSHIPS, ROLE_MAPPINGS, getRoleMappings, getRelationships }
+import { RELATIONSHIPS, ROLE_MAPPINGS, getRoleMappings, getRelationships } from '../org-graph/data'
+export { RELATIONSHIPS, ROLE_MAPPINGS, getRoleMappings, getRelationships }
+
+// ─── Canonical Entity Registry ────────────────────────────────────────────────
+
+export interface Entity {
+  id: string
+  name: string
+  shortName: string
+  country: string
+  city: string
+  type: 'holding' | 'operations' | 'finance' | 'data-platform' | 'revenue'
+  role: string
+  currency: string
+  color: string
+  ownedBy?: string        // entity id of parent
+  billsTo: string[]       // entity ids this entity bills
+  receivesFrom: string[]  // entity ids that bill this entity
+  jurisdiction: string
+  status: 'active' | 'forming' | 'pending'
+}
+
+export const ENTITIES: Entity[] = [
+  {
+    id: 'wavult-group',
+    name: 'Wavult Group',
+    shortName: 'WG',
+    country: 'United Arab Emirates',
+    city: 'Dubai',
+    type: 'holding',
+    role: 'Ownership + IP + Capital Control',
+    currency: 'AED',
+    color: '#5856D6',
+    ownedBy: undefined,
+    billsTo: [],
+    receivesFrom: ['devops-co', 'finance-co', 'quixzoom-uab', 'quixzoom-inc', 'landvex-ab', 'landvex-inc'],
+    jurisdiction: 'DMCC Free Zone, UAE',
+    status: 'forming',
+  },
+  {
+    id: 'devops-co',
+    name: 'DevOps Company',
+    shortName: 'DEV',
+    country: 'United Arab Emirates',
+    city: 'Dubai',
+    type: 'operations',
+    role: 'System Development + Infrastructure + AI',
+    currency: 'AED',
+    color: '#007AFF',
+    ownedBy: 'wavult-group',
+    billsTo: ['quixzoom-uab', 'quixzoom-inc', 'landvex-ab', 'landvex-inc', 'finance-co'],
+    receivesFrom: [],
+    jurisdiction: 'DMCC Free Zone, UAE',
+    status: 'forming',
+  },
+  {
+    id: 'finance-co',
+    name: 'FinanceCo',
+    shortName: 'FIN',
+    country: 'United Arab Emirates',
+    city: 'Dubai',
+    type: 'finance',
+    role: 'Payment Processing · Treasury · Payouts · Internal Settlement · Revenue Routing',
+    currency: 'AED',
+    color: '#34C759',
+    ownedBy: 'wavult-group',
+    billsTo: ['wavult-group', 'landvex-ab', 'landvex-inc', 'quixzoom-uab', 'quixzoom-inc', 'devops-co'],
+    receivesFrom: [],
+    jurisdiction: 'DMCC Free Zone, UAE',
+    status: 'forming',
+  },
+  {
+    id: 'quixzoom-uab',
+    name: 'Quixzoom UAB',
+    shortName: 'QXZ-EU',
+    country: 'Lithuania',
+    city: 'Vilnius',
+    type: 'data-platform',
+    role: 'Operational Data Entity — EU',
+    currency: 'EUR',
+    color: '#FF9500',
+    ownedBy: 'wavult-group',
+    billsTo: ['wavult-group', 'devops-co'],
+    receivesFrom: ['finance-co'],
+    jurisdiction: 'Vilnius, Republic of Lithuania',
+    status: 'forming',
+  },
+  {
+    id: 'quixzoom-inc',
+    name: 'Quixzoom Inc',
+    shortName: 'QXZ-US',
+    country: 'United States',
+    city: 'Delaware',
+    type: 'data-platform',
+    role: 'Operational Data Entity — US',
+    currency: 'USD',
+    color: '#FF9500',
+    ownedBy: 'wavult-group',
+    billsTo: ['wavult-group', 'devops-co'],
+    receivesFrom: ['finance-co'],
+    jurisdiction: 'State of Delaware, USA',
+    status: 'forming',
+  },
+  {
+    id: 'landvex-ab',
+    name: 'Landvex AB',
+    shortName: 'LDX-SE',
+    country: 'Sweden',
+    city: 'Stockholm',
+    type: 'revenue',
+    role: 'Revenue Entity — EU / B2G',
+    currency: 'SEK',
+    color: '#FF3B30',
+    ownedBy: 'wavult-group',
+    billsTo: ['wavult-group', 'devops-co', 'quixzoom-uab'],
+    receivesFrom: ['finance-co'],
+    jurisdiction: 'Sweden (org.nr 559141-7042)',
+    status: 'active',
+  },
+  {
+    id: 'landvex-inc',
+    name: 'Landvex Inc',
+    shortName: 'LDX-US',
+    country: 'United States',
+    city: 'Houston, Texas',
+    type: 'revenue',
+    role: 'Revenue Entity — US / B2G',
+    currency: 'USD',
+    color: '#FF3B30',
+    ownedBy: 'wavult-group',
+    billsTo: ['wavult-group', 'devops-co', 'quixzoom-inc'],
+    receivesFrom: ['finance-co'],
+    jurisdiction: 'State of Texas, USA',
+    status: 'forming',
+  },
+]
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
