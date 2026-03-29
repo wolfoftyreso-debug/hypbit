@@ -117,8 +117,36 @@ const PROJECTS = [
       { done: false, text: 'Pilot med annonsör' },
     ],
   },
+  {
+    id: 'dissg',
+    name: 'DISSG',
+    tagline: 'Digital Intelligence & Signal System for Governance',
+    color: '#374151',
+    icon: '🌐',
+    status: 'in-dev',
+    statusLabel: 'Under Byggnad',
+    entity_id: 'devops-fzco',
+    kpis: [
+      { label: 'Registrerade användare', value: '0', note: 'Pre-launch' },
+      { label: 'Pro-prenumeranter', value: '0', note: 'Pre-launch' },
+      { label: 'MRR', value: 'SEK 0', note: 'Pre-launch' },
+      { label: 'Länder täckta', value: '190+', note: 'Live data' },
+    ],
+    links: [
+      { label: 'GitHub', url: 'https://github.com/wolfoftyreso-debug/dissg' },
+      { label: 'Live', url: 'https://dissg.pages.dev' },
+    ],
+    milestones: [
+      { done: true, text: 'Prototyp klar (Lovable)' },
+      { done: true, text: 'Domäner registrerade (.de, .org, .net, .io)' },
+      { done: true, text: 'Cloudflare Pages deploy' },
+      { done: false, text: 'Auth via Identity Core' },
+      { done: false, text: 'Revolut Pro-betalning' },
+      { done: false, text: 'Live datakällor (WorldBank, OECD, UN)' },
+      { done: false, text: 'Offentlig lansering' },
+    ],
+  },
 ]
-
 const STATUS_STYLE: Record<string, { bg: string; color: string }> = {
   'in-dev':  { bg: 'rgba(59,130,246,0.12)',   color: '#3B82F6' },
   planning:  { bg: 'rgba(6,182,212,0.12)',    color: '#06B6D4' },
