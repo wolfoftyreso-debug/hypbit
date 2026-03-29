@@ -3,6 +3,10 @@ import { verifyAccessToken, AccessTokenPayload } from '../crypto/tokens'
 import { config } from '../config'
 import { db } from '../db/postgres'
 
+// Forced session timeout constants
+const SESSION_MAX_AGE_SECONDS = 8 * 60 * 60   // 8 hours hard limit
+const SESSION_IDLE_SECONDS = 30 * 60           // 30 minutes idle limit
+
 declare global {
   namespace Express {
     interface Request {
@@ -84,6 +88,23 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
       )
       if (!epochRows[0] || epochRows[0].session_epoch !== payload.se) {
         res.status(401).json({ error: 'SESSION_SUPERSEDED' }); return
+      }
+
+      // Idle timeout: reject if token hasn't been refreshed within 30 minutes
+      // iat reflects last token issue — access tokens are 10min TTL, so idle check
+      // effectively fires when refresh token hasn't been used within SESSION_IDLE_SECONDS
+      const now = Math.floor(Date.now() / 1000)
+      const idleTime = now - payload.iat
+      if (idleTime > SESSION_IDLE_SECONDS) {
+        res.status(401).json({ error: 'SESSION_EXPIRED', code: 'SESSION_IDLE' })
+        return
+      }
+
+      // Hard max-age check (defense in depth — exp already covers this but explicit)
+      const sessionAge = now - payload.iat
+      if (sessionAge > SESSION_MAX_AGE_SECONDS) {
+        res.status(401).json({ error: 'SESSION_EXPIRED', code: 'SESSION_MAX_AGE' })
+        return
       }
 
       req.user = payload

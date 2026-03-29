@@ -51,13 +51,13 @@ export function SystemStatusView() {
       <div className="flex-shrink-0 mx-6 mt-5 mb-3">
         <button
           onClick={() => navigate('/infrastructure')}
-          className="w-full flex items-center justify-between gap-3 px-5 py-4 rounded-xl border border-blue-500/30 bg-blue-950/40 hover:bg-blue-900/40 transition-colors text-left"
+          className="w-full flex items-center justify-between gap-3 px-5 py-4 rounded-xl border border-blue-200 bg-blue-50 hover:bg-blue-100 transition-colors text-left"
         >
           <div className="flex items-center gap-3">
             <Server size={20} className="text-blue-700" />
             <div>
               <div className="text-sm font-semibold text-gray-900">Infrastructure Operations Center</div>
-              <div className="text-xs text-blue-700/70 font-mono mt-0.5">
+              <div className="text-xs text-blue-600 font-mono mt-0.5">
                 Live health checks · Larm · Fakturering · Failover
               </div>
             </div>
@@ -71,7 +71,7 @@ export function SystemStatusView() {
         <div className="flex items-start justify-between">
           <div>
             <h1 className="text-lg font-bold text-gray-900 tracking-wide">WAVULT OS — SYSTEMSTATUS</h1>
-            <p className="text-xs text-gray-9000 font-mono mt-1">
+            <p className="text-xs text-gray-500 font-mono mt-1">
               {total} moduler
               {(['enterprise', 'production', 'beta', 'alpha', 'skeleton'] as MaturityLevel[]).map(level => {
                 const count = countByLevel(level)
@@ -90,7 +90,7 @@ export function SystemStatusView() {
 
           {/* Health bar */}
           <div className="hidden sm:flex flex-col items-end gap-1">
-            <span className="text-[9px] font-mono text-gray-9000 uppercase tracking-wider">Systemhälsa</span>
+            <span className="text-[9px] font-mono text-gray-500 uppercase tracking-wider">Systemhälsa</span>
             <div className="flex gap-0.5 items-center">
               {sortedModules.map(m => (
                 <div
@@ -121,7 +121,7 @@ export function SystemStatusView() {
                 key={mod.id}
                 onClick={() => navigate(mod.path)}
                 className="flex flex-col gap-2 p-4 rounded-xl border transition-all text-left hover:scale-[1.02] active:scale-[0.99] cursor-pointer"
-                style={{ background: `${bg}BB`, borderColor: `${color}33` }}
+                style={{ background: "#FFFFFF", borderColor: `${color}40`, borderWidth: 1 }}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2">
@@ -133,15 +133,15 @@ export function SystemStatusView() {
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1">
                     <span className="rounded-full" style={{ width: 5, height: 5, background: '#22C55E', flexShrink: 0 }} />
-                    <span className="text-xs text-gray-9000 font-mono">{mod.liveFeatures.length} live</span>
+                    <span className="text-xs text-gray-500 font-mono">{mod.liveFeatures.length} live</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <span className="rounded-full" style={{ width: 5, height: 5, background: '#F59E0B', flexShrink: 0 }} />
-                    <span className="text-xs text-gray-9000 font-mono">{mod.mockFeatures.length} mock</span>
+                    <span className="text-xs text-gray-500 font-mono">{mod.mockFeatures.length} mock</span>
                   </div>
                   <span className="text-[9px] font-mono text-gray-600 ml-auto">Fas {mod.phase}</span>
                 </div>
-                <p className="text-xs text-gray-9000 font-mono leading-relaxed">
+                <p className="text-xs text-gray-500 font-mono leading-relaxed">
                   {MATURITY_DESCRIPTION[mod.level]}
                 </p>
                 <div className="flex items-center gap-1 mt-auto">
@@ -165,7 +165,7 @@ export function SystemStatusView() {
       {/* ── Legend ──────────────────────────────────────────────────────────── */}
       <div className="flex-shrink-0 px-6 py-4 border-t border-gray-100">
         <div className="flex items-center gap-1.5 mb-2">
-          <span className="text-[9px] font-mono text-gray-9000 uppercase tracking-wider">LEGEND</span>
+          <span className="text-[9px] font-mono text-gray-500 uppercase tracking-wider">LEGEND</span>
           <div className="flex-1 border-t border-gray-100" />
         </div>
         <div className="flex flex-wrap gap-4">
