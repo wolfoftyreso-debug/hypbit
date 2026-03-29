@@ -18,6 +18,7 @@ import { NotificationCenter } from '../../features/communications/NotificationCe
 import { GuidanceProvider } from '../guidance/GuidanceSystem'
 import { GuidanceToast } from '../guidance/GuidanceToast'
 import { useTranslation } from '../i18n/useTranslation'
+import { useAuth } from '../auth/AuthContext'
 import { LanguageToggle } from '../i18n/LanguageToggle'
 
 // ─── Nav item/group types ──────────────────────────────────────────────────────
@@ -321,10 +322,10 @@ export function Shell({ children }: ShellProps) {
                   </span>
                 )}
                 <button
-                  onClick={() => { setRole(null); setViewAs(null) }}
-                  className="text-xs text-gray-500 hover:text-gray-600 transition-colors font-medium"
+                  onClick={() => signOut()}
+                  className="flex items-center gap-1 text-xs text-gray-500 hover:text-red-600 transition-colors font-medium"
                 >
-                  {t('auth.exit')}
+                  Logga ut
                 </button>
               </>
             )}
