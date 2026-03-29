@@ -75,9 +75,9 @@ export const ENTITY_FINANCIALS: EntityFinancials[] = [
     monthlySalaryCost: 110_000,
   },
   {
-    id: 'hypbit',
-    name: 'Hypbit AB',
-    shortName: 'Hypbit',
+    id: 'wavult',
+    name: 'Wavult Group',
+    shortName: 'Wavult',
     color: '#4CAF50',
     country: 'SE',
     arr: 1_800_000,
@@ -181,7 +181,7 @@ export interface CriticalItem {
 export const CRITICAL_ITEMS: CriticalItem[] = [
   { id: 'C001', type: 'legal', severity: 'critical', title: 'Texas LLC — Registered Agent förnyelse', description: 'Annual registered agent fee due. Non-payment = dissolution.', deadline: '2026-04-15', owner: 'Dennis Bjarnemark' },
   { id: 'C002', type: 'compliance', severity: 'high', title: 'GDPR DPA — Optical Insight', description: 'Data Processing Agreement saknas för kommunkontrakt.', deadline: '2026-04-30', owner: 'Dennis Bjarnemark' },
-  { id: 'C003', type: 'financial', severity: 'high', title: 'Bolagsverket årsredovisning', description: 'Hypbit AB — årsredovisning ska lämnas in.', deadline: '2026-06-30', owner: 'Winston Bjarnemark' },
+  { id: 'C003', type: 'financial', severity: 'high', title: 'Bolagsverket årsredovisning', description: 'Wavult Group — årsredovisning ska lämnas in.', deadline: '2026-06-30', owner: 'Winston Bjarnemark' },
   { id: 'C004', type: 'operational', severity: 'medium', title: 'Thailand Workcamp förberedelser', description: 'Hotellbokningar, reseförsäkringar och agenda klar senast 1 april.', deadline: '2026-04-01', owner: 'Erik Svensson' },
   { id: 'C005', type: 'compliance', severity: 'medium', title: 'ISO 27001 gap-analys', description: 'Krävs för enterprise-kundavtal med kommuner.', deadline: '2026-05-15', owner: 'Johan Berglund' },
 ]

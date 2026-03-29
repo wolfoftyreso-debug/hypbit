@@ -36,9 +36,9 @@ const SYSTEM_INFO: InfoRow[] = [
   { label: 'Commit',        value: 'a3f8c2d — feat: payroll module',      mono: true },
   { label: 'Databas',       value: 'Supabase (hypbit)',                   mono: false },
   { label: 'Migrationer',   value: '47 applied',                          mono: true },
-  { label: 'GitHub repo',   value: 'wolfoftyreso-debug/hypbit',           mono: true },
+  { label: 'GitHub repo',   value: 'wolfoftyreso-debug/wavult-os',           mono: true },
   { label: 'AWS Region',    value: 'eu-north-1',                          mono: true },
-  { label: 'ECS Cluster',   value: 'hypbit / hypbit-api',                 mono: true },
+  { label: 'ECS Cluster',   value: 'hypbit / wavult-api',                 mono: true },
 ]
 
 export function SystemView() {
@@ -152,7 +152,7 @@ export function SystemView() {
             {deploying
               ? 'GitHub Actions workflow aktiverad…'
               : deployDone
-              ? 'Workflow körs på wolfoftyreso-debug/hypbit'
+              ? 'Workflow körs på wolfoftyreso-debug/wavult-os'
               : 'Triggar GitHub Actions deploy pipeline'}
           </p>
           {deploying && (
@@ -198,7 +198,7 @@ export function SystemView() {
 
       {/* Footer note */}
       <div className="rounded-xl border border-gray-100 bg-white/[0.01] px-4 py-3 text-xs text-gray-600 font-mono">
-        ⚙️ Wavult OS — all system data är live från ECS, Supabase & GitHub Actions. Force deploy triggar wolfoftyreso-debug/hypbit CI/CD pipeline.
+        ⚙️ Wavult OS — all system data är live från ECS, Supabase & GitHub Actions. Force deploy triggar wolfoftyreso-debug/wavult-os CI/CD pipeline.
       </div>
     </div>
   )

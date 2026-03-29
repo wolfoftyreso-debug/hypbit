@@ -15,7 +15,7 @@ interface SystemNotification {
 const BASE_NOTIFICATIONS: SystemNotification[] = [
   {
     id: 'notif-001',
-    title: 'hypbit-api v1.4.2 — deploy lyckades',
+    title: 'wavult-api v1.4.2 — deploy lyckades',
     body: 'ECS deployment klar. Alla tasks healthy. 0 failed containers.',
     level: 'info',
     source: 'AWS ECS',
@@ -70,7 +70,7 @@ const BASE_NOTIFICATIONS: SystemNotification[] = [
   {
     id: 'notif-007',
     title: 'Cloudflare DDoS — skyddsläge aktiverat',
-    body: 'Onormal trafik mot hypbit.com — Cloudflare Under Attack Mode aktiverat automatiskt.',
+    body: 'Onormal trafik mot wavult.com — Cloudflare Under Attack Mode aktiverat automatiskt.',
     level: 'critical',
     source: 'Cloudflare',
     timestamp: '2026-03-24T22:15:00Z',

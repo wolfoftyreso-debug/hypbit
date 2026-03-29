@@ -128,7 +128,7 @@ const ROLE_SUBORDINATES: Partial<Record<RoleId, SubNode[]>> = {
       id: 'sub-cfo-budget', type: 'team', label: 'Budget Control',
       sublabel: 'AWS · Supabase · Cloudflare · Stripe', color: '#3B82F6', flag: '📊',
       status: 'active', expandable: false,
-      metadata: { 'AWS ECS': 'eu-north-1 — hypbit-api, quixzoom-api', 'Supabase': '2 projects — EU West', 'CF Pages': '10/10 slots (limit reached)' },
+      metadata: { 'AWS ECS': 'eu-north-1 — wavult-api, quixzoom-api', 'Supabase': '2 projects — EU West', 'CF Pages': '10/10 slots (limit reached)' },
     },
   ],
 
@@ -138,7 +138,7 @@ const ROLE_SUBORDINATES: Partial<Record<RoleId, SubNode[]>> = {
       sublabel: 'AWS · ECS · S3 · CloudFront', color: '#06B6D4', flag: '☁️',
       status: 'active', expandable: true,
       children: [
-        { id: 'sub-cto-i1', type: 'system', label: 'wavult-api', sublabel: 'ECS eu-north-1 · api.hypbit.com', color: '#06B6D4', flag: '🟢', status: 'live', expandable: false },
+        { id: 'sub-cto-i1', type: 'system', label: 'wavult-api', sublabel: 'ECS eu-north-1 · api.wavult.com', color: '#06B6D4', flag: '🟢', status: 'live', expandable: false },
         { id: 'sub-cto-i2', type: 'system', label: 'quixzoom-api', sublabel: 'ECS cluster hypbit · task :2', color: '#06B6D4', flag: '🟢', status: 'live', expandable: false },
         { id: 'sub-cto-i3', type: 'system', label: 'S3 multi-region', sublabel: 'EU + US primary + backup · CRR', color: '#06B6D4', flag: '🪣', status: 'live', expandable: false },
         { id: 'sub-cto-i4', type: 'system', label: 'CloudFront', sublabel: 'dewrtqzc20flx · quiXzoom frontend', color: '#06B6D4', flag: '🌐', status: 'live', expandable: false },
@@ -150,7 +150,7 @@ const ROLE_SUBORDINATES: Partial<Record<RoleId, SubNode[]>> = {
       status: 'active', expandable: true,
       children: [
         { id: 'sub-cto-db1', type: 'system', label: 'quixzoom-v2', sublabel: 'lpeipzdm · EU West · 13 migrations', color: '#3ECF8E', flag: '🟢', status: 'live', expandable: false },
-        { id: 'sub-cto-db2', type: 'system', label: 'hypbit', sublabel: 'znmxtnxx · EU West · internal OS', color: '#3ECF8E', flag: '🟢', status: 'live', expandable: false },
+        { id: 'sub-cto-db2', type: 'system', label: 'wavult', sublabel: 'znmxtnxx · EU West · internal OS', color: '#3ECF8E', flag: '🟢', status: 'live', expandable: false },
         { id: 'sub-cto-db3', type: 'system', label: 'Supabase US East', sublabel: 'Not created — Pro plan needed', color: '#6B7280', flag: '⚪', status: 'planned', expandable: false },
       ],
     },

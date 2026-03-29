@@ -42,32 +42,32 @@ export const TEAM: Record<string, TeamMember> = {
   erik: {
     name: 'Erik Svensson',
     role: 'Chairman & Group CEO',
-    email: 'erik@hypbit.com',
+    email: 'erik@wavult.com',
     phone: '+46709123223',
     telegram: '@eriksvensson',
   },
   leon: {
     name: 'Leon Maurizio Russo De Cerame',
     role: 'CEO Wavult Operations',
-    email: 'leon@hypbit.com',
+    email: 'leon@wavult.com',
     phone: '+46738968949',
   },
   dennis: {
     name: 'Dennis Bjarnemark',
     role: 'Chief Legal & Operations',
-    email: 'dennis@hypbit.com',
+    email: 'dennis@wavult.com',
     phone: '+46761474243',   // 0761474243 → E.164
   },
   winston: {
     name: 'Winston Bjarnemark',
     role: 'CFO',
-    email: 'winston@hypbit.com',
+    email: 'winston@wavult.com',
     phone: '+46768123548',
   },
   johan: {
     name: 'Johan Berglund',
     role: 'Group CTO',
-    email: 'johan@hypbit.com',
+    email: 'johan@wavult.com',
     phone: '+46736977576',
   },
 }
@@ -370,7 +370,7 @@ export const SMTP_CONFIG = {
   host: 'outgoing.loopia.se',
   port: 587,
   security: 'STARTTLS',
-  user: 'erik@hypbit.com',
+  user: 'erik@wavult.com',
   status: 'verified',      // Tested & working
-  domains: ['hypbit.com'],
+  domains: ['wavult.com'],
 }

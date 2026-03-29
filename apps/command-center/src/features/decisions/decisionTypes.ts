@@ -3,7 +3,7 @@
 
 export type MeetingLevel = 'annual' | 'qbr' | 'monthly' | 'weekly' | 'daily' | 'management-review' | 'capa-review' | 'risk-assessment' | 'customer-satisfaction' | 'internal-audit' | 'supplier-review' | 'kpi-review' | 'compliance-review'
 
-export type EntityId = 'wavult-group' | 'landvex-ab' | 'landvex-inc' | 'quixzoom-uab' | 'quixzoom-inc' | 'hypbit'
+export type EntityId = 'wavult-group' | 'landvex-ab' | 'landvex-inc' | 'quixzoom-uab' | 'quixzoom-inc' | 'wavult'
 export type DecisionStatus = 'draft' | 'pending_approval' | 'active' | 'decided' | 'archived'
 export type VoteChoice = 'A' | 'B' | 'C' | 'abstain'
 export type RiskLevel = 'low' | 'medium' | 'high' | 'critical'
@@ -124,7 +124,7 @@ export const ENTITY_LABELS: Record<EntityId, string> = {
   'landvex-inc': 'Landvex Inc (US)',
   'quixzoom-uab': 'QuiXzoom UAB (EU)',
   'quixzoom-inc': 'QuiXzoom Inc (US)',
-  'hypbit': 'Hypbit',
+  'wavult': 'Wavult',
 }
 
 export const ENTITY_COLORS: Record<EntityId, string> = {
@@ -133,7 +133,7 @@ export const ENTITY_COLORS: Record<EntityId, string> = {
   'landvex-inc': '#D97706',
   'quixzoom-uab': '#10B981',
   'quixzoom-inc': '#059669',
-  'hypbit': '#A78BFA',
+  'wavult': '#A78BFA',
 }
 
 export const RISK_LEVEL_LABELS: Record<RiskLevel, string> = {

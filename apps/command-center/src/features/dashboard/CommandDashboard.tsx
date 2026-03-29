@@ -8,10 +8,10 @@ import { HealthOverviewWidget } from '../entity/HealthOverviewWidget'
 // ─── Mock Data ─────────────────────────────────────────────────────────────────
 
 const SYSTEM_STATUS = [
-  { name: 'hypbit-api', service: 'ECS', env: 'eu-north-1', status: 'healthy', uptime: 99.8, latency: 42, lastCheck: '30s ago' },
+  { name: 'wavult-api', service: 'ECS', env: 'eu-north-1', status: 'healthy', uptime: 99.8, latency: 42, lastCheck: '30s ago' },
   { name: 'quixzoom-frontend', service: 'CloudFront', env: 'Global', status: 'healthy', uptime: 100, latency: 18, lastCheck: '1m ago' },
   { name: 'optical-insight-eu', service: 'CF Pages', env: 'Edge', status: 'degraded', uptime: 0, latency: 0, lastCheck: 'pending deploy' },
-  { name: 'hypbit-db', service: 'Supabase', env: 'eu-north-1', status: 'healthy', uptime: 99.7, latency: 11, lastCheck: '45s ago' },
+  { name: 'wavult-db', service: 'Supabase', env: 'eu-north-1', status: 'healthy', uptime: 99.7, latency: 11, lastCheck: '45s ago' },
   { name: 'cf-workers', service: 'Cloudflare', env: 'Global', status: 'degraded', uptime: 97.2, latency: 89, lastCheck: '2m ago' },
 ]
 
@@ -29,15 +29,15 @@ const QUICK_LINKS = [
   { name: 'GitHub', url: 'https://github.com/wolfoftyreso-debug', icon: '🐙', color: '#888', sub: 'wolfoftyreso-debug' },
   { name: 'Stripe', url: 'https://dashboard.stripe.com', icon: '💳', color: '#635BFF', sub: 'Payments' },
   { name: 'Cloudflare', url: 'https://dash.cloudflare.com', icon: '🔥', color: '#F6821F', sub: '2 zones active' },
-  { name: 'Loopia Mail', url: 'https://webmail.loopia.se', icon: '✉️', color: '#007AFF', sub: 'erik@hypbit.com' },
+  { name: 'Loopia Mail', url: 'https://webmail.loopia.se', icon: '✉️', color: '#007AFF', sub: 'erik@wavult.com' },
 ]
 
 const GITHUB_RUNS = [
-  { repo: 'hypbit', workflow: 'Deploy API to ECS', status: 'success', branch: 'main', actor: 'winston', time: '14 min ago', duration: '3m 22s' },
-  { repo: 'hypbit', workflow: 'TypeScript Check', status: 'success', branch: 'feat/crm-views', actor: 'johan', time: '1h ago', duration: '1m 8s' },
-  { repo: 'hypbit', workflow: 'Deploy API to ECS', status: 'failure', branch: 'main', actor: 'erik', time: '3h ago', duration: '2m 51s' },
+  { repo: 'wavult', workflow: 'Deploy API to ECS', status: 'success', branch: 'main', actor: 'winston', time: '14 min ago', duration: '3m 22s' },
+  { repo: 'wavult', workflow: 'TypeScript Check', status: 'success', branch: 'feat/crm-views', actor: 'johan', time: '1h ago', duration: '1m 8s' },
+  { repo: 'wavult', workflow: 'Deploy API to ECS', status: 'failure', branch: 'main', actor: 'erik', time: '3h ago', duration: '2m 51s' },
   { repo: 'quixzoom-landing', workflow: 'CF Pages Deploy', status: 'success', branch: 'main', actor: 'johan', time: '5h ago', duration: '52s' },
-  { repo: 'hypbit', workflow: 'Lint + Test', status: 'success', branch: 'feat/sales-dash', actor: 'johan', time: '6h ago', duration: '48s' },
+  { repo: 'wavult', workflow: 'Lint + Test', status: 'success', branch: 'feat/sales-dash', actor: 'johan', time: '6h ago', duration: '48s' },
 ]
 
 // ─── Mock uptime data (24h, one point per hour) ────────────────────────────────

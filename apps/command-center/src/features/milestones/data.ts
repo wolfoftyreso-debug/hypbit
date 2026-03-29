@@ -1,7 +1,7 @@
 // milestones/data.ts — Wavult Group Milestones & Thailand Prep data
 
 export type MilestoneStatus = 'done' | 'in-progress' | 'pending' | 'delayed'
-export type ProjectKey = 'quixzoom' | 'landvex' | 'hypbit' | 'bolagsstruktur' | 'thailand'
+export type ProjectKey = 'quixzoom' | 'landvex' | 'wavult' | 'bolagsstruktur' | 'thailand'
 
 export interface Milestone {
   id: string
@@ -317,8 +317,8 @@ export const ROADMAP_ITEMS: RoadmapItem[] = [
   // Q2 2026
   { id: 'rm-1', project: 'quixzoom', title: 'Beta-test med 20 zoomers', quarter: 'Q2-2026', status: 'pending', month: 'Maj', owner: 'Leon Russo' },
   { id: 'rm-2', project: 'quixzoom', title: 'Public launch quiXzoom Sverige', quarter: 'Q2-2026', status: 'pending', month: 'Jun', owner: 'Erik Svensson' },
-  { id: 'rm-3', project: 'hypbit', title: 'Milestones-modul live', quarter: 'Q2-2026', status: 'done', month: 'Mar', owner: 'Johan Berglund' },
-  { id: 'rm-4', project: 'hypbit', title: 'Finance-modul live', quarter: 'Q2-2026', status: 'in-progress', month: 'Apr', owner: 'Johan Berglund' },
+  { id: 'rm-3', project: 'wavult', title: 'Milestones-modul live', quarter: 'Q2-2026', status: 'done', month: 'Mar', owner: 'Johan Berglund' },
+  { id: 'rm-4', project: 'wavult', title: 'Finance-modul live', quarter: 'Q2-2026', status: 'in-progress', month: 'Apr', owner: 'Johan Berglund' },
   { id: 'rm-5', project: 'bolagsstruktur', title: 'Alla 6 bolag registrerade', quarter: 'Q2-2026', status: 'in-progress', month: 'Apr', owner: 'Dennis Bjarnemark' },
   { id: 'rm-6', project: 'landvex', title: 'Optical Insight — demo & konceptvalidering', quarter: 'Q2-2026', status: 'pending', month: 'Jun', owner: 'Leon Russo' },
   { id: 'rm-7', project: 'thailand', title: 'Thailand Workcamp — alla system live', quarter: 'Q2-2026', status: 'pending', month: 'Apr', owner: 'Erik Svensson' },
@@ -329,13 +329,13 @@ export const ROADMAP_ITEMS: RoadmapItem[] = [
   { id: 'rm-10', project: 'quixzoom', title: 'Quixom Ads beta', quarter: 'Q3-2026', status: 'pending', month: 'Sep', owner: 'Johan Berglund' },
   { id: 'rm-11', project: 'landvex', title: 'Pilot-förhandlingar inleds', quarter: 'Q3-2026', status: 'pending', month: 'Jul', owner: 'Leon Russo' },
   { id: 'rm-12', project: 'landvex', title: 'Första kommunavtal signerat', quarter: 'Q3-2026', status: 'pending', month: 'Sep', owner: 'Leon Russo' },
-  { id: 'rm-13', project: 'hypbit', title: 'WHOOP kopplat — hela teamet', quarter: 'Q3-2026', status: 'pending', month: 'Aug', owner: 'Johan Berglund' },
+  { id: 'rm-13', project: 'wavult', title: 'WHOOP kopplat — hela teamet', quarter: 'Q3-2026', status: 'pending', month: 'Aug', owner: 'Johan Berglund' },
 
   // Q4 2026
   { id: 'rm-14', project: 'landvex', title: 'Trafikverket — pilot-start', quarter: 'Q4-2026', status: 'pending', month: 'Okt', owner: 'Leon Russo' },
   { id: 'rm-15', project: 'quixzoom', title: 'Nederländerna — marknadsberedning', quarter: 'Q4-2026', status: 'pending', month: 'Nov', owner: 'Leon Russo' },
   { id: 'rm-16', project: 'quixzoom', title: 'Serie A-förberedelser', quarter: 'Q4-2026', status: 'pending', month: 'Dec', owner: 'Erik Svensson' },
-  { id: 'rm-17', project: 'hypbit', title: 'Wavult OS — extern kund onboardad', quarter: 'Q4-2026', status: 'pending', month: 'Dec', owner: 'Johan Berglund' },
+  { id: 'rm-17', project: 'wavult', title: 'Wavult OS — extern kund onboardad', quarter: 'Q4-2026', status: 'pending', month: 'Dec', owner: 'Johan Berglund' },
 ]
 
 // ─── Helper functions ─────────────────────────────────────────────────────────

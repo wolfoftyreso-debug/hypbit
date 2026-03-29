@@ -7,7 +7,7 @@
  * 3. Se teamets data live
  *
  * OAuth-flöde (cookie-fritt, localStorage-baserat):
- * - Klick på "Koppla WHOOP" → redirect till https://api.hypbit.com/whoop/auth
+ * - Klick på "Koppla WHOOP" → redirect till https://api.wavult.com/whoop/auth
  * - Backend redirectar till WHOOP OAuth
  * - WHOOP redirectar tillbaka till /whoop/callback på backend
  * - Backend redirectar till https://wavult-os.pages.dev/whoop?connected=true&connect_code=...
@@ -57,11 +57,11 @@ type ActiveTab = 'team' | 'setup'
 // ─── Email → Titel-mappning ────────────────────────────────────────────────────
 
 const EMAIL_TITLES: Record<string, string> = {
-  'winston@hypbit.com': 'CFO',
-  'dennis@hypbit.com': 'Chief Legal & Operations',
-  'leon@hypbit.com': 'CEO Wavult Operations',
-  'erik@hypbit.com': 'Chairman & Group CEO',
-  'johan@hypbit.com': 'Group CTO',
+  'winston@wavult.com': 'CFO',
+  'dennis@wavult.com': 'Chief Legal & Operations',
+  'leon@wavult.com': 'CEO Wavult Operations',
+  'erik@wavult.com': 'Chairman & Group CEO',
+  'johan@wavult.com': 'Group CTO',
 }
 
 function getTitleForEmail(email: string | null): string | null {

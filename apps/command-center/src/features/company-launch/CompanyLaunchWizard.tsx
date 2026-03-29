@@ -101,7 +101,7 @@ const JURISDICTIONS: Jurisdiction[] = [
 const WAVULT_PREFILL: Record<string, Record<string, string>> = {
   organizer_name: { default: 'Erik Svensson' },
   organizer_phone: { default: '+46709123223' },
-  organizer_email: { default: 'erik@hypbit.com' },
+  organizer_email: { default: 'erik@wavult.com' },
   registered_agent: { 'texas-llc': 'Northwest Registered Agent, 5900 Balcones Drive STE 100, Austin TX 78731' },
   company_purpose_landvex: { default: 'To provide B2G infrastructure monitoring and optical insight services to municipalities, government agencies, and infrastructure owners' },
   company_purpose_quixzoom: { default: 'To operate a crowdsourced visual data platform connecting field operators with data buyers' },
@@ -134,7 +134,7 @@ export function CompanyLaunchWizard() {
     useRegisteredAgent: true,
     personalAddress: 'Åvägen 9, 135 48 Tyresö, Sweden',
     ownerName: 'Erik Svensson',
-    ownerEmail: 'erik@hypbit.com',
+    ownerEmail: 'erik@wavult.com',
     ownerPhone: '+46709123223',
     paymentMethod: 'revolut-business',
     entityRelationship: '',
@@ -160,7 +160,7 @@ export function CompanyLaunchWizard() {
   async function launchAutomation() {
     setLaunching(true)
     try {
-      const res = await fetch('https://api.hypbit.com/v1/company/create', {
+      const res = await fetch('https://api.wavult.com/v1/company/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -104,7 +104,7 @@ const MOCK_WEBHOOKS: WebhookEntry[] = [
     duration_ms: 45,
     payload: {
       ref: 'refs/heads/main',
-      repository: { name: 'hypbit', full_name: 'wolfoftyreso-debug/hypbit' },
+      repository: { name: 'wavult', full_name: 'wolfoftyreso-debug/wavult-os' },
       pusher: { name: 'erik-wavult' },
       commits: [{ id: 'a4f7c2b', message: 'fix: payment webhook timeout handler' }],
     },

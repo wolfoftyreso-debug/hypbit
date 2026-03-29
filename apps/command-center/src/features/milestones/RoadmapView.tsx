@@ -8,7 +8,7 @@ const QUARTERS: { id: Quarter; label: string; months: string; color: string }[] 
   { id: 'Q4-2026', label: 'Q4 2026', months: 'Okt – Dec', color: '#F59E0B' },
 ]
 
-const PROJECTS: ProjectKey[] = ['quixzoom', 'landvex', 'hypbit']
+const PROJECTS: ProjectKey[] = ['quixzoom', 'landvex', 'wavult']
 
 function MilestoneChip({ item }: { item: typeof ROADMAP_ITEMS[0] }) {
   const color = getStatusColor(item.status)

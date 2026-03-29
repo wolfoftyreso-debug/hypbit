@@ -40,8 +40,8 @@ const ENTITIES: EntityConfig[] = [
     bankAccount: '',
     invoiceLogoUrl: '',
     contacts: [
-      { name: 'Erik Svensson', role: 'Chairman / Group CEO', email: 'erik@hypbit.com', phone: '+46709123223' },
-      { name: 'Winston Bjarnemark', role: 'CFO', email: 'winston@hypbit.com', phone: '0768123548' },
+      { name: 'Erik Svensson', role: 'Chairman / Group CEO', email: 'erik@wavult.com', phone: '+46709123223' },
+      { name: 'Winston Bjarnemark', role: 'CFO', email: 'winston@wavult.com', phone: '0768123548' },
     ],
   },
   {
@@ -59,7 +59,7 @@ const ENTITIES: EntityConfig[] = [
     bankAccount: '',
     invoiceLogoUrl: '',
     contacts: [
-      { name: 'Leon Russo De Cerame', role: 'CEO Operations', email: 'leon@hypbit.com', phone: '+46738968949' },
+      { name: 'Leon Russo De Cerame', role: 'CEO Operations', email: 'leon@wavult.com', phone: '+46738968949' },
     ],
   },
   {
@@ -77,7 +77,7 @@ const ENTITIES: EntityConfig[] = [
     bankAccount: '',
     invoiceLogoUrl: '',
     contacts: [
-      { name: 'Johan Berglund', role: 'CTO', email: 'johan@hypbit.com', phone: '+46736977576' },
+      { name: 'Johan Berglund', role: 'CTO', email: 'johan@wavult.com', phone: '+46736977576' },
     ],
   },
   {
@@ -95,7 +95,7 @@ const ENTITIES: EntityConfig[] = [
     bankAccount: '',
     invoiceLogoUrl: '',
     contacts: [
-      { name: 'Dennis Bjarnemark', role: 'CLO', email: 'dennis@hypbit.com', phone: '0761474243' },
+      { name: 'Dennis Bjarnemark', role: 'CLO', email: 'dennis@wavult.com', phone: '0761474243' },
     ],
   },
 ]

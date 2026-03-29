@@ -119,7 +119,7 @@ export const LIVE_INTEGRATIONS: APIIntegration[] = [
     status: 'live',
     price: 'usage-based',
     icon: '🐙',
-    wavultUsage: 'CI/CD pipelines, all repos (hypbit, quixzoom-v2, evasvensson)',
+    wavultUsage: 'CI/CD pipelines, all repos (wavult-os, quixzoom-v2, evasvensson)',
     docsUrl: 'https://docs.github.com/actions',
   },
   {
@@ -158,7 +158,7 @@ export const LIVE_INTEGRATIONS: APIIntegration[] = [
     status: 'live',
     price: 'usage-based',
     icon: '📧',
-    wavultUsage: 'Transaktionsmejl från erik@hypbit.com (port 587 STARTTLS)',
+    wavultUsage: 'Transaktionsmejl från erik@wavult.com (port 587 STARTTLS)',
     docsUrl: 'https://www.loopia.se/loopiamail/',
   },
 ]
@@ -306,7 +306,7 @@ export const API_INTEGRATIONS: APIIntegration[] = [
   { id: 'mailchimp', name: 'Mailchimp', provider: 'Intuit', category: 'Email & Marketing', categoryId: 'email-marketing', description: 'Easiest for marketing beginners', status: 'available', price: 'paid', icon: '🐒' },
   { id: 'postmark', name: 'Postmark', provider: 'Wildbit', category: 'Email & Marketing', categoryId: 'email-marketing', description: 'Highest deliverability for transactional emails', status: 'available', price: 'paid', icon: '✉️' },
   { id: 'resend', name: 'Resend', provider: 'Resend', category: 'Email & Marketing', categoryId: 'email-marketing', description: 'Best DX for modern email', status: 'available', price: 'paid', icon: '🔄' },
-  { id: 'loopia-smtp', name: 'Loopia SMTP', provider: 'Loopia', category: 'Email & Marketing', categoryId: 'email-marketing', description: 'Swedish email hosting — mailout.loopia.se', status: 'live', price: 'paid', icon: '📧', wavultUsage: 'Transaktionsmejl från erik@hypbit.com' },
+  { id: 'loopia-smtp', name: 'Loopia SMTP', provider: 'Loopia', category: 'Email & Marketing', categoryId: 'email-marketing', description: 'Swedish email hosting — mailout.loopia.se', status: 'live', price: 'paid', icon: '📧', wavultUsage: 'Transaktionsmejl från erik@wavult.com' },
 
   // ── PAID: Analytics ─────────────────────────────────────────────
   { id: 'google-analytics', name: 'Google Analytics', provider: 'Google', category: 'Analytics & Data', categoryId: 'analytics', description: 'Free and most widely used analytics', status: 'available', price: 'free', icon: '📈' },

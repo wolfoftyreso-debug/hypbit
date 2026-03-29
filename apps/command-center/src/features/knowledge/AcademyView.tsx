@@ -105,10 +105,10 @@ Dubai-bolagen är inte bildade ännu (business plan klar). Texas LLC halvklar. S
 **Alla i teamet:**
 • Telegram — primär kommunikationskanal (privat grupp)
 • Wavult OS — admin-inbjudan (detta system)
-• E-postkonto (namn@hypbit.com) — be Leon
+• E-postkonto (namn@wavult.com) — be Leon
 
 **Tech-teamet (Johan-sidan):**
-• GitHub — wolfoftyreso-debug/hypbit (repo-access)
+• GitHub — wolfoftyreso-debug/wavult-os (repo-access)
 • Supabase — wavult-os + quixzoom-v2 projekt
 • AWS Console — account 155407238699 (begränsat read-only för start)
 • Cloudflare — pages.dev-access
@@ -1082,32 +1082,32 @@ AI-agent och automation-hub. Kör analyser, skickar nyhetsbrev, hanterar workflo
         duration: 7,
         content: `AWS Account: 155407238699, Region: eu-north-1 (Stockholm).
 
-**ECS Cluster: hypbit**
+**ECS Cluster: wavult**
 (Ska byta namn till "wavult" i nästa infrastruktur-sprint)
 
 Aktiva services:
-• wavult-os-api (task def: hypbit-api:14) — Wavult OS backend API
+• wavult-os-api (task def: wavult-api:14) — Wavult OS backend API
 • quixzoom-api (task def: quixzoom-api:6) — QuiXzoom platform API
 • n8n (task def: n8n-task:latest) — Automation hub
 • team-pulse (task def: team-pulse:latest) — Intern teamverktyg
 
-**Application Load Balancer: hypbit-api-alb**
+**Application Load Balancer: wavult-api-alb**
 En ALB hanterar all inkommande trafik och routar till rätt target group:
 
 Priority 10: /n8n* → n8n-tg (port 5678)
 Priority 20: host api.quixzoom.com → quixzoom-api-tg
-Priority 30: host api.hypbit.com → hypbit-api-tg
-Default: hypbit-api-tg (port 3001)
+Priority 30: host api.wavult.com → wavult-api-tg
+Default: wavult-api-tg (port 3001)
 
 **ACM Certifikat (ISSUED):**
 • eu-north-1: api.quixzoom.com + app + root + wildcard
-• eu-north-1: api/app/www/hypbit.com
+• eu-north-1: api/app/www/wavult.com
 • us-east-1: app/api/www/quixzoom.com (för CloudFront)
 
 **CloudFront Distributions:**
 E2QUO7HIHWWP18 → dewrtqzc20flx.cloudfront.net → app.quixzoom.com ✅
 EE30B9WM5ZYM7 → d3nf5qp2za1hod.cloudfront.net → quixzoom.com, www
-E2JOYHG1LYOXGM → d14gf6x22fx96q.cloudfront.net → hypbit.com, www
+E2JOYHG1LYOXGM → d14gf6x22fx96q.cloudfront.net → wavult.com, www
 
 **S3 Buckets:**
 wavult-images-eu-primary (eu-north-1) — EU primär
@@ -1212,7 +1212,7 @@ Deploy via: wrangler pages deploy dist --project-name=[projekt]
 **Cloudflare DNS Zones:**
 wavult.com (Zone: 5bed27e91d719b3f9d82c234d191ad99) — PENDING (NS ej bytt på Loopia)
 quixzoom.com (Zone: e9a9520b64cd67eca1d8d926ca9daa79) — ACTIVE ✅
-hypbit.com (Zone: 128f872b669d059d1dfca3c9474098f1) — ACTIVE ✅
+wavult.com (Zone: 128f872b669d059d1dfca3c9474098f1) — ACTIVE ✅
 
 NS för wavult.com (ska sättas på Loopia):
 arch.ns.cloudflare.com
@@ -1233,7 +1233,7 @@ Scoped token (cfut_...): Begränsad access, ej för zone:create.`,
         duration: 5,
         content: `Wavult Groups deploy-pipeline är fullständigt automatiserad via GitHub Actions.
 
-**Repo:** wolfoftyreso-debug/hypbit (ska byta till wavult-os)
+**Repo:** wolfoftyreso-debug/wavult-os (ska byta till wavult-os)
 
 **Workflow 1: deploy-api.yml**
 Trigger: Push till main, path-filter apps/api/**
@@ -2046,7 +2046,7 @@ Trigger: Cron
 1. Hämtar nyheter (RSS, web scraping)
 2. Frågar Claude (via OpenClaw API) om sammanfattning
 3. Formaterar nyhetsbrev (HTML-template)
-4. Skickar via AWS SES till teamet (5 mottagare + BCC till erik@hypbit.com)
+4. Skickar via AWS SES till teamet (5 mottagare + BCC till erik@wavult.com)
 Output: 08:00 varje dag i inkorgen.
 
 Supabase → Notifikation (webhook-trigger)
@@ -2114,7 +2114,7 @@ Användning: Webhook handlers, schemalagda jobs, tung bildanalys.`,
         content: `GitHub Actions är Wavults automatiserade deploy-pipeline. Varje push till main kan resultera i ett nytt deployment på minuter.
 
 **Repo-struktur:**
-wolfoftyreso-debug/hypbit (monorepo)
+wolfoftyreso-debug/wavult-os (monorepo)
 apps/
   api/ — Wavult OS API
   quixzoom-api/ — QuiXzoom backend
@@ -2263,7 +2263,7 @@ Logg finns i AWS CloudWatch Logs.
 
 Bernt Morning/Evening Check
 Bernt kör dagliga statusrapporter kl 08:00 och 20:00.
-Kontrollerar: URL-status (api.quixzoom.com, api.hypbit.com), ECS tasks räkning, GitHub Actions senaste status.
+Kontrollerar: URL-status (api.quixzoom.com, api.wavult.com), ECS tasks räkning, GitHub Actions senaste status.
 Mail skickas om något är rött.
 
 Cloudflare Analytics
@@ -2858,7 +2858,7 @@ Bernt (AI-agent) → n8n (automation) → AWS SES (e-postleverans) → Din inkor
 • **Citat** — Ett inspirerande citat för dagen
 
 **BCC-regel**
-Alla Morning Briefs skickas alltid med BCC till erik@hypbit.com. Erik har alltid en kopia av vad som kommuniceras.
+Alla Morning Briefs skickas alltid med BCC till erik@wavult.com. Erik har alltid en kopia av vad som kommuniceras.
 
 **Anpassa din brief**
 Gå till Communications → Morning Brief Settings för att justera vilka sektioner du vill ha och eventuella extra nyhetsflöden.`,
@@ -2897,7 +2897,7 @@ Förväntan: svar inom 2 timmar på vardagar. Urgent = ring direkt.`,
 Bara Erik. Ingen annan i teamet uttalar sig till media om Wavult Group, QuiXzoom eller Landvex utan Eriks explicita godkännande.
 
 **Om du kontaktas av media**
-Standardsvar: "Tack för ditt intresse. Vänligen kontakta vår CEO Erik Svensson på erik@hypbit.com."
+Standardsvar: "Tack för ditt intresse. Vänligen kontakta vår CEO Erik Svensson på erik@wavult.com."
 Säg ingenting mer. Inga kommentarer, inga spekulationer.
 
 **Social media-policy för teamet**

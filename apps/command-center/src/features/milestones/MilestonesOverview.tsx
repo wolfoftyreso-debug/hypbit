@@ -181,7 +181,7 @@ export function MilestonesOverview() {
     .slice(0, 5)
 
   // Project progress
-  const projectKeys = ['quixzoom', 'landvex', 'hypbit', 'bolagsstruktur', 'thailand'] as const
+  const projectKeys = ['quixzoom', 'landvex', 'wavult', 'bolagsstruktur', 'thailand'] as const
   const projectProgress = projectKeys.map(key => {
     const items = allMilestones.filter(m => m.project === key)
     if (items.length === 0) return null

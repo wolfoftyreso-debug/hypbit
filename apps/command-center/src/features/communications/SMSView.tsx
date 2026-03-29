@@ -37,7 +37,7 @@ const MOCK_SMS_LOG: SMSLog[] = [
     id: 'sms-003',
     to: '+46736977576',
     toName: 'Johan Berglund',
-    message: 'ECS healthcheck — kör diagnostik på hypbit-api nu.',
+    message: 'ECS healthcheck — kör diagnostik på wavult-api nu.',
     status: 'sent',
     timestamp: '2026-03-25T22:10:00Z',
     provider: '46elks',

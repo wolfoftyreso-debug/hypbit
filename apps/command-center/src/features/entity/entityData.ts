@@ -274,7 +274,7 @@ export const ENTITY_FINANCE: EntityFinance[] = [
     ],
   },
   {
-    entity_id: 'hypbit-system',
+    entity_id: "wavult-system",
     currency: 'SEK',
     revenue_model: 'Internkostnad — drivs av Wavult Operations',
     estimated_mrr: 'AWS ~$150/mån · Supabase free · CF free',
@@ -384,7 +384,7 @@ export const ENTITY_LEGAL: EntityLegal[] = [
     ],
   },
   {
-    entity_id: 'hypbit-system',
+    entity_id: "wavult-system",
     legal_form: 'N/A — internprodukt',
     jurisdiction_detail: 'Ägs av Wavult Operations',
     incorporation_status: 'complete',
@@ -412,7 +412,7 @@ export const ENTITY_SYSTEMS: EntitySystem[] = [
   {
     entity_id: 'wavult-operations',
     systems: [
-      { name: 'Hypbit API', type: 'api', url: 'https://api.bc.pixdrift.com', status: 'live', note: 'ECS eu-north-1 · hypbit cluster' },
+      { name: 'Hypbit API', type: 'api', url: 'https://api.bc.pixdrift.com', status: 'live', note: 'ECS eu-north-1 · wavult cluster' },
       { name: 'Hypbit DB', type: 'database', status: 'live', note: 'Supabase znmxtnxx · EU West' },
       { name: 'Hypbit Command Center', type: 'frontend', url: 'http://localhost:5175', status: 'live', note: 'This app — local dev' },
     ],
@@ -425,7 +425,7 @@ export const ENTITY_SYSTEMS: EntitySystem[] = [
   {
     entity_id: 'quixzoom-uab',
     systems: [
-      { name: 'quiXzoom API', type: 'api', status: 'live', note: 'ECS cluster hypbit · quixzoom-api · task :2' },
+      { name: 'quiXzoom API', type: 'api', status: 'live', note: 'ECS cluster wavult · quixzoom-api · task :2' },
       { name: 'quiXzoom Frontend', type: 'frontend', url: 'https://dewrtqzc20flx.cloudfront.net', status: 'live', note: 'S3 + CloudFront · quixzoom-app-prod' },
       { name: 'quiXzoom DB', type: 'database', status: 'live', note: 'Supabase lpeipzdm · EU West · 13 migrationer' },
       { name: 'quiXzoom Landing', type: 'frontend', status: 'building', note: 'wolfoftyreso-debug/quixzoom-landing → CF Pages' },
@@ -465,7 +465,7 @@ export const ENTITY_SYSTEMS: EntitySystem[] = [
     entity_id: 'landvex-ab',
     systems: [
       { name: 'OI Cloud EU', type: 'frontend', url: 'https://optical-insight-eu.pages.dev', status: 'building', note: 'wolfoftyreso-debug/optic-insights-web → CF Pages' },
-      { name: 'OI API (ECS eu-north-1)', type: 'api', status: 'planned', note: 'Shares hypbit cluster' },
+      { name: 'OI API (ECS eu-north-1)', type: 'api', status: 'planned', note: 'Shares wavult cluster' },
     ],
     pipelines: [
       { name: 'optic-insights-web / CF Pages', status: 'pending', last_run: 'Token pending' },
@@ -476,17 +476,17 @@ export const ENTITY_SYSTEMS: EntitySystem[] = [
     ],
   },
   {
-    entity_id: 'hypbit-system',
+    entity_id: "wavult-system",
     systems: [
-      { name: 'hypbit-api', type: 'api', url: 'https://api.bc.pixdrift.com', status: 'live', note: 'ECS eu-north-1' },
-      { name: 'Supabase hypbit', type: 'database', status: 'live', note: 'znmxtnxx · 13 tables' },
+      { name: 'wavult-api', type: 'api', url: 'https://api.bc.pixdrift.com', status: 'live', note: 'ECS eu-north-1' },
+      { name: 'Supabase wavult-os', type: 'database', status: 'live', note: 'znmxtnxx · 13 tables' },
       { name: 'S3 EU Primary', type: 'infra', status: 'live', note: 'wavult-images-eu-primary · CRR → eu-backup' },
       { name: 'CloudFront', type: 'infra', status: 'live', note: 'E2QUO7HIHWWP18 · quiXzoom' },
       { name: 'CF Pages (10 slots)', type: 'frontend', status: 'building', note: '10/10 used — cleanup needed' },
     ],
     pipelines: [
-      { name: 'hypbit / Deploy API to ECS', status: 'passing', last_run: '14 min ago' },
-      { name: 'hypbit / TypeScript Check', status: 'passing', last_run: '1h ago' },
+      { name: 'wavult-os / Deploy API to ECS', status: 'passing', last_run: '14 min ago' },
+      { name: 'wavult-os / TypeScript Check', status: 'passing', last_run: '1h ago' },
     ],
     open_items: [
       { label: 'CF Pages slot cleanup (remove unused country variants)', status: 'risk' },
@@ -592,7 +592,7 @@ export const ENTITY_OPS: EntityOps[] = [
     ],
   },
   {
-    entity_id: 'hypbit-system',
+    entity_id: "wavult-system",
     active_work: [
       { label: 'Command Center v2 — live build', owner: 'Erik', status: 'active' },
       { label: 'ECS multi-service setup', owner: 'Johan', status: 'active' },

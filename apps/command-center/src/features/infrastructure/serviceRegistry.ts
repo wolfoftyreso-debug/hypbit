@@ -19,12 +19,12 @@ import type { ServiceDefinition, InfraHealthCheck } from './infraTypes'
 export const SERVICE_REGISTRY: ServiceDefinition[] = [
   // ─── COMPUTE ─────────────────────────────────────────────────────────────
   {
-    id: 'hypbit-api',
-    // ECS service name: hypbit-api (deployed as hypbit-api in cluster hypbit)
-    name: 'Wavult API (hypbit-api)',
+    id: 'wavult-api',
+    // ECS service name: wavult-api (deployed as wavult-api in cluster hypbit)
+    name: 'Wavult API (wavult-api)',
     category: 'compute',
     provider: 'aws',
-    endpoint: 'https://api.hypbit.com/health',
+    endpoint: 'https://api.wavult.com/health',
     region: 'eu-north-1',
     criticalityLevel: 1,
     owner: 'group-cto',
@@ -36,24 +36,24 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
       provider: 'aws',
       accountId: '155407238699',
       monthlyEstimate: 800,
-      billingEmail: 'erik@hypbit.com',
+      billingEmail: 'erik@wavult.com',
       status: 'active',
     },
     failover: {
-      primary: 'hypbit-api',
+      primary: 'wavult-api',
       autoFailover: true,
       rto: '5 min',
       rpo: '0 min',
     },
     alerts: [],
     settings: {
-      'ecs.service': 'hypbit-api',
+      'ecs.service': 'wavult-api',
       'ecs.desired_count': 1,
       'ecs.min_count': 1,
       'ecs.max_count': 3,
       'ecs.cpu': 256,
       'ecs.memory': 512,
-      'ecs.cluster': 'hypbit',
+      'ecs.cluster': 'wavult',
       'ecs.region': 'eu-north-1',
     },
   },
@@ -72,20 +72,20 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
       provider: 'aws',
       accountId: '155407238699',
       monthlyEstimate: 400,
-      billingEmail: 'erik@hypbit.com',
+      billingEmail: 'erik@wavult.com',
       status: 'active',
     },
     alerts: [],
     settings: {
-      'ecs.cluster': 'hypbit',
+      'ecs.cluster': 'wavult',
       'ecs.service': 'quixzoom-api',
     },
   },
 
   // ─── DATABASER ────────────────────────────────────────────────────────────
   {
-    id: 'supabase-hypbit',
-    name: 'Supabase — Wavult OS (hypbit)',
+    id: 'supabase-wavult',
+    name: 'Supabase — Wavult OS',
     category: 'database',
     provider: 'supabase',
     region: 'eu-west-1',
@@ -97,13 +97,13 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
     billing: {
       provider: 'supabase',
       monthlyEstimate: 250,
-      billingEmail: 'erik@hypbit.com',
+      billingEmail: 'erik@wavult.com',
       status: 'active',
     },
     alerts: [],
     settings: {
       'project.id': 'znmxtnxxjpmgtycmsqjv',
-      'project.name': 'hypbit',
+      'project.name': 'wavult',
       'plan': 'free',
     },
   },
@@ -121,7 +121,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
     billing: {
       provider: 'supabase',
       monthlyEstimate: 250,
-      billingEmail: 'erik@hypbit.com',
+      billingEmail: 'erik@wavult.com',
       status: 'active',
     },
     alerts: [],
@@ -155,7 +155,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
       provider: 'aws',
       accountId: '155407238699',
       monthlyEstimate: 50,
-      billingEmail: 'erik@hypbit.com',
+      billingEmail: 'erik@wavult.com',
       status: 'active',
     },
     alerts: [],
@@ -181,7 +181,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
       provider: 'aws',
       accountId: '155407238699',
       monthlyEstimate: 20,
-      billingEmail: 'erik@hypbit.com',
+      billingEmail: 'erik@wavult.com',
       status: 'active',
     },
     settings: {
@@ -205,7 +205,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
       provider: 'aws',
       accountId: '155407238699',
       monthlyEstimate: 50,
-      billingEmail: 'erik@hypbit.com',
+      billingEmail: 'erik@wavult.com',
       status: 'active',
     },
     settings: {
@@ -228,7 +228,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
       provider: 'aws',
       accountId: '155407238699',
       monthlyEstimate: 20,
-      billingEmail: 'erik@hypbit.com',
+      billingEmail: 'erik@wavult.com',
       status: 'active',
     },
     settings: {
@@ -252,7 +252,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
     billing: {
       provider: 'cloudflare',
       monthlyEstimate: 0,
-      billingEmail: 'erik@hypbit.com',
+      billingEmail: 'erik@wavult.com',
       status: 'active',
     },
     alerts: [],
@@ -275,7 +275,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
     billing: {
       provider: 'cloudflare',
       monthlyEstimate: 0,
-      billingEmail: 'erik@hypbit.com',
+      billingEmail: 'erik@wavult.com',
       status: 'active',
     },
     alerts: [],
@@ -295,7 +295,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
     billing: {
       provider: 'cloudflare',
       monthlyEstimate: 0,
-      billingEmail: 'erik@hypbit.com',
+      billingEmail: 'erik@wavult.com',
       status: 'active',
     },
     alerts: [],
@@ -318,12 +318,12 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
     billing: {
       provider: 'other',
       monthlyEstimate: 0,
-      billingEmail: 'erik@hypbit.com',
+      billingEmail: 'erik@wavult.com',
       status: 'active',
     },
     settings: {
       'client_id': 'se credentials.env',
-      'redirect_uri': 'https://api.hypbit.com/whoop/callback',
+      'redirect_uri': 'https://api.wavult.com/whoop/callback',
       'mode': 'development',
       'production_access': 'pending',
     },
@@ -342,7 +342,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
     billing: {
       provider: 'mapbox',
       monthlyEstimate: 50,
-      billingEmail: 'erik@hypbit.com',
+      billingEmail: 'erik@wavult.com',
       status: 'active',
     },
     settings: {
@@ -373,7 +373,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
     billing: {
       provider: 'stripe',
       monthlyEstimate: 0,
-      billingEmail: 'erik@hypbit.com',
+      billingEmail: 'erik@wavult.com',
       status: 'trial',
     },
     settings: {
@@ -397,11 +397,11 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
     billing: {
       provider: 'github',
       monthlyEstimate: 0,
-      billingEmail: 'erik@hypbit.com',
+      billingEmail: 'erik@wavult.com',
       status: 'active',
     },
     settings: {
-      'repo': 'wolfoftyreso-debug/hypbit',
+      'repo': 'wolfoftyreso-debug/wavult-os',
       'branch': 'main',
     },
   },
@@ -409,8 +409,8 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
 
 export const HEALTH_CHECKS: InfraHealthCheck[] = [
   {
-    serviceId: 'hypbit-api',
-    url: 'https://api.hypbit.com/health',
+    serviceId: 'wavult-api',
+    url: 'https://api.wavult.com/health',
     method: 'GET',
     expectedStatus: 200,
     timeout: 5000,

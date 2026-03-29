@@ -57,7 +57,7 @@ const PROJECTS = [
       { label: 'Plattform ETA', value: 'Q3 2026', note: 'Post-Thailand' },
     ],
     links: [
-      { label: 'GitHub', url: 'https://github.com/wolfoftyreso-debug/hypbit' },
+      { label: 'GitHub', url: 'https://github.com/wolfoftyreso-debug/wavult-os' },
       { label: 'AWS ECS', url: 'https://console.aws.amazon.com/ecs/home?region=eu-north-1' },
     ],
     milestones: [

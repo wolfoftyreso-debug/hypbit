@@ -66,7 +66,7 @@ const INITIAL_SERVICES: APIService[] = [
     latency_ms: 67,
     configured: true,
     endpoint: 'ecs.eu-north-1.amazonaws.com',
-    description: 'Container orchestration — hypbit cluster',
+    description: 'Container orchestration — wavult cluster',
   },
   {
     id: 'github-actions',
@@ -77,7 +77,7 @@ const INITIAL_SERVICES: APIService[] = [
     latency_ms: 201,
     configured: true,
     endpoint: 'api.github.com',
-    description: 'CI/CD pipelines — wolfoftyreso-debug/hypbit',
+    description: 'CI/CD pipelines — wolfoftyreso-debug/wavult-os',
   },
   {
     id: 'cloudflare',

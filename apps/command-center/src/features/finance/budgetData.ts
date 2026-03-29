@@ -158,7 +158,7 @@ export const BUDGET_LINES_2026: BudgetLine[] = [
     id: 'i-infra-aws-ecs-s3',
     category: 'infrastruktur',
     title: 'AWS ECS + S3 + SSM — WG-TECH-2026-001/007/009',
-    description: 'ECS: hypbit-api (800 SEK) + quixzoom-api (400 SEK) + S3 EU/US primary/backup (120 SEK) = ~1 320 SEK/mån',
+    description: 'ECS: wavult-api (800 SEK) + quixzoom-api (400 SEK) + S3 EU/US primary/backup (120 SEK) = ~1 320 SEK/mån',
     amountSEK: 15840,   // 1 320 × 12
     quarter: 'Q1',
     owner: 'Johan Berglund',
@@ -169,7 +169,7 @@ export const BUDGET_LINES_2026: BudgetLine[] = [
     id: 'i-infra-supabase',
     category: 'infrastruktur',
     title: 'Supabase — Wavult OS + quiXzoom — WG-TECH-2026-005/006',
-    description: 'Supabase hypbit (250 SEK) + quixzoom-v2 (250 SEK) = 500 SEK/mån',
+    description: 'Supabase wavult-os (250 SEK) + quixzoom-v2 (250 SEK) = 500 SEK/mån',
     amountSEK: 6000,    // 500 × 12
     quarter: 'Q1',
     owner: 'Johan Berglund',

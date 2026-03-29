@@ -24,7 +24,7 @@ const PRODUCT_ABBR: Record<MarketSite['product_type'], string> = {
   'quixzoom':   'QZ',
   'quixom-ads': 'QA',
   'landvex':    'LV',
-  'hypbit':     'HB',
+  'wavult':     'HB',
 }
 
 // ─── KPI bar ─────────────────────────────────────────────────────────────────
@@ -590,7 +590,7 @@ export function MarketMap() {
             <option value="quixzoom">QuixZoom</option>
             <option value="quixom-ads">Quixom Ads</option>
             <option value="landvex">Landvex</option>
-            <option value="hypbit">Hypbit</option>
+            <option value="wavult">Hypbit</option>
           </select>
 
           <input

@@ -20,7 +20,7 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
     end_date: '2026-06-30',
     status: 'draft',
     entity_id: 'entity-landvex',
-    created_by: 'erik@hypbit.com',
+    created_by: 'erik@wavult.com',
     created_at: '2026-03-27T00:00:00Z',
   },
   {
@@ -34,7 +34,7 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
     end_date: '2026-12-31',
     status: 'draft',
     entity_id: 'entity-wavult-group',
-    created_by: 'erik@hypbit.com',
+    created_by: 'erik@wavult.com',
     created_at: '2026-03-27T00:00:00Z',
   },
   {
@@ -48,7 +48,7 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
     end_date: '2026-04-30',
     status: 'active',
     entity_id: 'entity-wavult-ops',
-    created_by: 'leon@hypbit.com',
+    created_by: 'leon@wavult.com',
     created_at: '2026-03-25T00:00:00Z',
   },
 ]

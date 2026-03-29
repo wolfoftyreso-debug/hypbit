@@ -585,7 +585,7 @@ QuiXzoom är en crowdsourcad kamerainfrastruktur där zoomers tar geo-taggade up
 
 ### Microservices-Arkitektur
 
-Alla services körs som ECS Fargate tasks i cluster "hypbit" (eu-north-1):
+Alla services körs som ECS Fargate tasks i cluster "wavult" (eu-north-1):
 
 **mission-service** (primär)
 - Skapar och hanterar uppdrag (missions)
@@ -655,7 +655,7 @@ Alla services körs som ECS Fargate tasks i cluster "hypbit" (eu-north-1):
 
 **ECS Cluster:** hypbit (eu-north-1, AWS account 155407238699)  
 **Task definition:** quixzoom-api:6 (senaste, fixades 2026-03-27 — SUPABASE_SERVICE_KEY saknades)  
-**ALB:** hypbit-api-alb, priority 20, host api.quixzoom.com → quixzoom-api-tg  
+**ALB:** wavult-api-alb, priority 20, host api.quixzoom.com → quixzoom-api-tg  
 **ACM cert:** api.quixzoom.com + app.quixzoom.com + quixzoom.com (eu-north-1, ISSUED)  
 **CloudFront:** dewrtqzc20flx.cloudfront.net → app.quixzoom.com (alias aktiv)
 
@@ -1239,16 +1239,16 @@ Wavult Groups infrastruktur bygger på fyra grundprinciper:
 
 | Service | Task Definition | Status | URL |
 |---|---|---|---|
-| wavult-os-api | hypbit-api:14 | ✅ Live | api.hypbit.com |
+| wavult-os-api | wavult-api:14 | ✅ Live | api.wavult.com |
 | quixzoom-api | quixzoom-api:6 | ✅ Live | api.quixzoom.com |
 | n8n | n8n-task:latest | ✅ Live | /n8n path via ALB |
 | team-pulse | team-pulse:latest | ✅ Live | intern |
 
-**ALB: hypbit-api-alb**
-- Default → hypbit-api-tg (port 3001)
+**ALB: wavult-api-alb**
+- Default → wavult-api-tg (port 3001)
 - Priority 10: /n8n* → n8n-tg (port 5678)
 - Priority 20: host api.quixzoom.com → quixzoom-api-tg
-- Priority 30: host api.hypbit.com → hypbit-api-tg
+- Priority 30: host api.wavult.com → wavult-api-tg
 
 **S3 Buckets:**
 - wavult-images-eu-primary (eu-north-1) — EU primär bildlagring
@@ -1263,7 +1263,7 @@ Wavult Groups infrastruktur bygger på fyra grundprinciper:
 |---|---|
 | E2QUO7HIHWWP18 | app.quixzoom.com ✅ |
 | EE30B9WM5ZYM7 | quixzoom.com, www.quixzoom.com |
-| E2JOYHG1LYOXGM | hypbit.com, www.hypbit.com |
+| E2JOYHG1LYOXGM | wavult.com, www.wavult.com |
 
 ---
 
@@ -1276,7 +1276,7 @@ Wavult Groups infrastruktur bygger på fyra grundprinciper:
 |---|---|---|
 | wavult.com | 5bed27e91d719b3f9d82c234d191ad99 | Pending (NS ej satt på Loopia) |
 | quixzoom.com | e9a9520b64cd67eca1d8d926ca9daa79 | ✅ Active |
-| hypbit.com | 128f872b669d059d1dfca3c9474098f1 | ✅ Active |
+| wavult.com | 128f872b669d059d1dfca3c9474098f1 | ✅ Active |
 
 **wavult.com NS (för Loopia):**
 - arch.ns.cloudflare.com
@@ -1298,7 +1298,7 @@ Wavult Groups infrastruktur bygger på fyra grundprinciper:
 
 ### GitHub Actions CI/CD
 
-**Repo:** wolfoftyreso-debug/hypbit (→ ska byta namn till wavult-os)
+**Repo:** wolfoftyreso-debug/wavult-os (→ ska byta namn till wavult-os)
 
 **Workflows:**
 - 'deploy-api.yml' — deploy wavult-os-api (path-filter: apps/api/**)
@@ -1359,7 +1359,7 @@ n8n körs som ECS-service (n8n-task). Används för:
 
 ### Erik Svensson — Chairman & Group CEO
 
-**E-post:** erik@hypbit.com | wolfoftyreso@gmail.com  
+**E-post:** erik@wavult.com | wolfoftyreso@gmail.com  
 **Telefon:** +46 709 123 223  
 **Roll:** Grundare, yttersta beslutsfattaren, visionär  
 **Ansvar:**
@@ -1376,7 +1376,7 @@ n8n körs som ECS-service (n8n-task). Används för:
 
 ### Leon Maurizio Russo De Cerame — CEO Wavult Operations
 
-**E-post:** leon@hypbit.com  
+**E-post:** leon@wavult.com  
 **Telefon:** +46 738 968 949  
 **Roll:** Operationell CEO — gör att saker faktiskt händer  
 **Ansvar:**
@@ -1393,7 +1393,7 @@ n8n körs som ECS-service (n8n-task). Används för:
 
 ### Dennis Bjarnemark — Board Member / Chief Legal & Operations (Interim)
 
-**E-post:** dennis@hypbit.com  
+**E-post:** dennis@wavult.com  
 **Telefon:** +46 761 474 243  
 **Roll:** Juridisk ansvarig och operationsövervakare  
 **Ansvar:**
@@ -1410,7 +1410,7 @@ n8n körs som ECS-service (n8n-task). Används för:
 
 ### Winston Gustav Bjarnemark — CFO
 
-**E-post:** winston@hypbit.com  
+**E-post:** winston@wavult.com  
 **Telefon:** +46 768 123 548  
 **Roll:** Finanschef  
 **Ansvar:**
@@ -1428,7 +1428,7 @@ n8n körs som ECS-service (n8n-task). Används för:
 
 ### Johan Putte Berglund — Group CTO
 
-**E-post:** johan@hypbit.com  
+**E-post:** johan@wavult.com  
 **Telefon:** +46 736 977 576  
 **Roll:** Teknisk chef, arkitekt, lead developer  
 **Ansvar:**
@@ -1464,7 +1464,7 @@ Bernt (AI-agent) — rapporterar till Erik, assisterar hela teamet
 **Nyhetsbrev:** Morning Brief via e-post, kl 08:00 dagligen  
 **Kodfrågor:** GitHub Issues + Discussions  
 **Dokumentation:** Wavult OS Knowledge Hub (detta system)  
-**Juridik:** DocuSign för signaturer, dennis@hypbit.com för utkast
+**Juridik:** DocuSign för signaturer, dennis@wavult.com för utkast
 
 ---
 
@@ -1759,7 +1759,7 @@ Tidpunkt: När Wavult DevOps FZCO är bildat och bankkonto öppnat
 
 **Bolagsverket:** bolagsverket.se, 0771-670 670  
 **Revisor:** TBD (väntar på offert)  
-**Jurist:** Dennis Bjarnemark (dennis@hypbit.com)  
+**Jurist:** Dennis Bjarnemark (dennis@wavult.com)  
 **Ansvarig:** Dennis Bjarnemark (daglig kontakt med Bolagsverket)`
   },
 
@@ -1826,7 +1826,7 @@ Du behöver inte kunna alla detaljer nu — läs doc-wg-001 (Bolagsstruktur) nä
 
 Be din manager (Leon/Erik) om access till:
 - [ ] Telegram-gruppen (primär kommunikation)
-- [ ] GitHub (wolfoftyreso-debug/hypbit) — om du är tech
+- [ ] GitHub (wolfoftyreso-debug/wavult-os) — om du är tech
 - [ ] Wavult OS (detta system) — admin-inbjudan
 - [ ] Supabase (wavult-os + quixzoom-v2) — om du är tech
 - [ ] AWS Console (account 155407238699) — om du är tech
@@ -2007,7 +2007,7 @@ Händelsebaserade larm och analysabonnemang till kommuner och Trafikverket.
 
 Wavult Group är en infrastructure-play dold i en gig-economy applikation. QuiXzoom ser ut som "Uber för fotografer" men är i grunden en sensor-as-a-service-plattform som säljer analyserad data till offentlig sektor via Landvex. Marginalerna är SaaS-liknande (65–75%) men data-nätverkseffekter gör moaten djupare än typisk SaaS.
 
-**Kontakt för investering:** erik@hypbit.com (Erik Svensson, Chairman & Group CEO)`
+**Kontakt för investering:** erik@wavult.com (Erik Svensson, Chairman & Group CEO)`
   },
   {
     id: 'doc-qx-004',
@@ -2205,7 +2205,7 @@ Genom att bli zoomer godkände du att:
 ### Kontakt för juridiska frågor
 
 **Zoomer-support:** support@quixzoom.com  
-**Legal-ansvarig:** Dennis Bjarnemark — dennis@hypbit.com  
+**Legal-ansvarig:** Dennis Bjarnemark — dennis@wavult.com  
 **Dataskyddsombud (planerat):** dpo@quixzoom.com`
   },
 
@@ -2232,7 +2232,7 @@ n8n (uttalas "n-eight-n") är Wavult Groups automation-plattform. Det är ett vi
 - Kör direkt på vår ECS-infrastruktur
 
 **Var körs n8n?**
-- ECS Fargate, cluster "hypbit", eu-north-1
+- ECS Fargate, cluster "wavult", eu-north-1
 - Task: n8n-task:latest
 - Port: 5678
 - Access: Via ALB-path /n8n (intern URL — ej publik)
@@ -2248,7 +2248,7 @@ Flöde:
 2. Web-scraping av utvalda källor (biljonärnyheter, finansnyheter)
 3. HTTP-request till Claude (via OpenClaw API) för sammanfattning
 4. HTML-template rendering (inline styles för e-postklienter)
-5. AWS SES → skicka till 5 teammedlemmar + BCC till erik@hypbit.com
+5. AWS SES → skicka till 5 teammedlemmar + BCC till erik@wavult.com
 
 Output: Nyhetsbrevet landar i inkorgen senast kl 08:05 varje dag.
 
@@ -2617,7 +2617,7 @@ Hashtags: #quixzoom #zoomers #lastmileintelligence #skärgården #gig`
 **Access att konfigurera:**
 - [ ] Telegram-inbjudan till teamgruppen
 - [ ] Wavult OS admin-inbjudan (skicka invite-link)
-- [ ] E-postkonto: namn@hypbit.com (Loopia, Leon sköter)
+- [ ] E-postkonto: namn@wavult.com (Loopia, Leon sköter)
 - [ ] GitHub-access (wolfoftyreso-debug org) — om tech-roll
 - [ ] Supabase-access (wavult-os, quixzoom-v2) — om tech-roll
 - [ ] Revolut Business-access — om finance-roll
@@ -2645,7 +2645,7 @@ Hashtags: #quixzoom #zoomers #lastmileintelligence #skärgården #gig`
 **Onsdag–Torsdag:**
 - [ ] Academy relevant för din roll (se nedan)
 - [ ] Sätt upp lokala dev-verktyg om tech-roll (Node 22, Docker, VS Code)
-- [ ] Git clone: wolfoftyreso-debug/hypbit
+- [ ] Git clone: wolfoftyreso-debug/wavult-os
 
 **Fredag:**
 - [ ] Första 1:1-möte med Erik eller Leon
@@ -2808,7 +2808,7 @@ Alltid Erik. Aldrig någon annan utan Eriks uttryckliga OK.`
 ### Repository-struktur
 
 **Org:** wolfoftyreso-debug (ska byta till wavult-group)
-**Monorepo:** wolfoftyreso-debug/hypbit
+**Monorepo:** wolfoftyreso-debug/wavult-os
 
 Allt finns i ett repo. Fördelar: Delad konfiguration, en CI/CD-pipeline, konsekvent tooling.
 
@@ -2895,7 +2895,7 @@ Ingenting mer. Principle of least privilege.
 
 ### Vanliga kommandon
 
-git clone git@github.com:wolfoftyreso-debug/hypbit.git
+git clone git@github.com:wolfoftyreso-debug/wavult-os.git
 cd hypbit
 git checkout -b feature/mitt-feature
 
@@ -3060,9 +3060,9 @@ Följande beteenden tolereras inte under några omständigheter:
 
 Om du upplever eller bevittnar ett brott mot denna policy:
 
-1. **Direkt till Dennis Bjarnemark** (Chief Legal & Operations): dennis@hypbit.com
-2. **Direkt till Erik Svensson** (CEO): erik@hypbit.com
-3. **Anonymt (planerat):** conduct@hypbit.com — kanalen byggs under Q2 2026
+1. **Direkt till Dennis Bjarnemark** (Chief Legal & Operations): dennis@wavult.com
+2. **Direkt till Erik Svensson** (CEO): erik@wavult.com
+3. **Anonymt (planerat):** conduct@wavult.com — kanalen byggs under Q2 2026
 
 Du kan alltid rapportera anonymt utan att ange ditt namn. Det är aldrig fel att rapportera om du har rimliga skäl att tro att något är fel.
 
@@ -3634,9 +3634,9 @@ Whistleblower-kanalen är till för allvarliga oegentligheter — inte för vard
 
 ### Hur man Rapporterar
 
-**Alternativ 1:** Direkt till Dennis Bjarnemark (CLO) — dennis@hypbit.com  
-**Alternativ 2:** Direkt till Erik Svensson (CEO) — erik@hypbit.com  
-**Alternativ 3:** Anonymt via conduct@hypbit.com — vidarebefordras automatiskt till Dennis (CLO) och Erik (CEO)  
+**Alternativ 1:** Direkt till Dennis Bjarnemark (CLO) — dennis@wavult.com  
+**Alternativ 2:** Direkt till Erik Svensson (CEO) — erik@wavult.com  
+**Alternativ 3:** Anonymt via conduct@wavult.com — vidarebefordras automatiskt till Dennis (CLO) och Erik (CEO)  
 **Alternativ 4 (externt):** Integritetsskyddsmyndigheten (IMY) för GDPR-relaterade brott — imy.se
 
 Om din rapport rör Erik eller Dennis direkt, kontakta det styrelsemedlem du känner mest förtroende för.
@@ -3890,7 +3890,7 @@ https://www.northwestregisteredagent.com/
 - **First Name:** Erik
 - **Last Name:** Svensson
 - **Phone Number:** 0709123223
-- **Email:** erik@hypbit.com
+- **Email:** erik@wavult.com
 
 ### Bolagsinfo
 - **State:** Texas

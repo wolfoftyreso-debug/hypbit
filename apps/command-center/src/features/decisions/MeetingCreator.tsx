@@ -297,7 +297,7 @@ function Step2Details({
           style={textareaStyle}
           value={draft.participants}
           onChange={e => onChange({ participants: e.target.value })}
-          placeholder="erik@hypbit.com, winston@hypbit.com, leon@hypbit.com"
+          placeholder="erik@wavult.com, winston@wavult.com, leon@wavult.com"
         />
       </Field>
     </div>
@@ -763,7 +763,7 @@ export function MeetingCreator() {
     level: '',
     title: '',
     scheduledAt: '',
-    participants: 'erik@hypbit.com',
+    participants: 'erik@wavult.com',
     agenda: [],
   })
   const [error, setError] = useState<string | null>(null)

@@ -2,7 +2,7 @@
 
 export type SiteStatus = 'planned' | 'setup' | 'active' | 'scaling' | 'failing'
 export type RolloutStage = 'planned' | 'setup' | 'launch' | 'scale' | 'mature'
-export type ProductType = 'quixzoom' | 'quixom-ads' | 'landvex' | 'hypbit'
+export type ProductType = 'quixzoom' | 'quixom-ads' | 'landvex' | 'wavult'
 
 export interface MarketSite {
   id: string
@@ -93,7 +93,7 @@ export const PRODUCT_COLOR: Record<ProductType, string> = {
   'quixzoom':   '#8B5CF6',
   'quixom-ads': '#0EA5E9',
   'landvex':    '#10B981',
-  'hypbit':     '#F59E0B',
+  'wavult':     '#F59E0B',
 }
 
 // ─── Alert engine ─────────────────────────────────────────────────────────────
@@ -568,7 +568,7 @@ export const MARKET_SITES: MarketSite[] = [
     region: 'EU',
     status: 'active',
     entity_id: 'quixzoom-uab',
-    product_type: 'hypbit',
+    product_type: 'wavult',
     responsible_role_id: 'ceo-ops',
     stage: 'scale',
     strategy: {

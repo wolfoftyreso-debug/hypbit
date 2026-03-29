@@ -83,7 +83,7 @@ const NODES: SystemNode[] = ([
     type: 'service',
     status: 'healthy',
     region: 'eu-north-1',
-    connects: ['hypbit-api', 'quixzoom-api', 'n8n', 'bos-scheduler'],
+    connects: ['wavult-api', 'quixzoom-api', 'n8n', 'bos-scheduler'],
     domainGroup: 'core',
     businessContext: {
       domain: 'Core Services',
@@ -95,7 +95,7 @@ const NODES: SystemNode[] = ([
     },
   },
   {
-    id: 'hypbit-api',
+    id: 'wavult-api',
     label: 'Wavult OS API',
     type: 'service',
     status: 'healthy',
@@ -103,7 +103,7 @@ const NODES: SystemNode[] = ([
     latencyMs: 42,
     uptimePct: 99.2,
     connects: ['supabase-wavult', 'dynamo'],
-    details: { 'Task': 'hypbit-api:34', 'Port': 3001 },
+    details: { 'Task': 'wavult-api:34', 'Port': 3001 },
     domainGroup: 'core',
     businessContext: {
       domain: 'Core Services',
@@ -207,7 +207,7 @@ const NODES: SystemNode[] = ([
       ownerTeam: 'Johan (CTO)',
       whatIsThis: 'Stores all Wavult OS data: tasks, team, sessions, audit logs.',
       whyItExists: 'Without this, no data can be saved or retrieved in Wavult OS.',
-      dependedOnBy: ['hypbit-api', 'bos-scheduler'],
+      dependedOnBy: ['wavult-api', 'bos-scheduler'],
     },
   },
   {
@@ -261,7 +261,7 @@ const NODES: SystemNode[] = ([
       ownerTeam: 'Johan (CTO)',
       whatIsThis: 'DynamoDB tables for storing active user sessions and refresh tokens at high speed.',
       whyItExists: 'Without this, Identity Core cannot track logged-in users and all sessions expire immediately.',
-      dependedOnBy: ['identity-core', 'hypbit-api'],
+      dependedOnBy: ['identity-core', 'wavult-api'],
     },
   },
 
@@ -343,7 +343,7 @@ const NODES: SystemNode[] = ([
     type: 'external',
     status: 'healthy',
     connects: ['alb'],
-    details: { 'Repo': 'wolfoftyreso-debug/hypbit', 'Branch': 'main' },
+    details: { 'Repo': 'wolfoftyreso-debug/wavult-os', 'Branch': 'main' },
     domainGroup: 'infra',
     businessContext: {
       domain: 'Infrastructure',
@@ -433,7 +433,7 @@ const POSITIONS: Record<string, { x: number; y: number }> = {
   'cloudflare':         { x: 300, y: 20 },
   'cf-pages':           { x: 120, y: 120 },
   'alb':                { x: 480, y: 120 },
-  'hypbit-api':         { x: 280, y: 240 },
+  'wavult-api':         { x: 280, y: 240 },
   'quixzoom-api':       { x: 480, y: 240 },
   'n8n':                { x: 680, y: 240 },
   'bos-scheduler':      { x: 680, y: 360 },
@@ -456,7 +456,7 @@ const POSITIONS: Record<string, { x: number; y: number }> = {
 
 const DOMAIN_GROUPS = [
   { id: 'customer',   label: 'CUSTOMER EXPERIENCE', color: '#007AFF', nodes: ['cloudflare', 'cf-pages'] },
-  { id: 'core',       label: 'CORE SERVICES',        color: '#5856D6', nodes: ['alb', 'hypbit-api', 'quixzoom-api', 'identity-core'] },
+  { id: 'core',       label: 'CORE SERVICES',        color: '#5856D6', nodes: ['alb', 'wavult-api', 'quixzoom-api', 'identity-core'] },
   { id: 'automation', label: 'AUTOMATION',            color: '#FF9500', nodes: ['n8n', 'bos-scheduler'] },
   { id: 'data',       label: 'DATA LAYER',            color: '#34C759', nodes: ['supabase-wavult', 'supabase-quixzoom', 'rds', 'dynamo'] },
   { id: 'infra',      label: 'INFRASTRUCTURE',        color: '#FF3B30', nodes: ['s3-eu', 's3-eu-backup', 'ses', 'kms', 'github-actions'] },
@@ -579,13 +579,13 @@ function SystemGraphInner() {
   useEffect(() => {
     const check = async () => {
       try {
-        const res = await fetch('https://api.hypbit.com/health', { signal: AbortSignal.timeout(5000) })
+        const res = await fetch('https://api.wavult.com/health', { signal: AbortSignal.timeout(5000) })
         setNodes(prev => prev.map(n =>
-          n.id === 'hypbit-api' ? { ...n, status: res.ok ? 'healthy' : 'degraded' } : n
+          n.id === 'wavult-api' ? { ...n, status: res.ok ? 'healthy' : 'degraded' } : n
         ))
       } catch {
         setNodes(prev => prev.map(n =>
-          n.id === 'hypbit-api' ? { ...n, status: 'degraded' } : n
+          n.id === 'wavult-api' ? { ...n, status: 'degraded' } : n
         ))
       }
       setLastUpdated(new Date())

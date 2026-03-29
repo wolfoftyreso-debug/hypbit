@@ -169,9 +169,9 @@ function CfoDashboard() {
         </Section>
         <Section title="Infrastrukturkostnader (aktiva)">
           {[
-            { text: 'AWS ECS eu-north-1 — hypbit-api + quixzoom-api', status: 'active' },
+            { text: 'AWS ECS eu-north-1 — wavult-api + quixzoom-api', status: 'active' },
             { text: 'S3: 4 buckets (EU + US primär + backup)', status: 'active' },
-            { text: 'Supabase West EU — quixzoom-v2 + hypbit projekt', status: 'active' },
+            { text: 'Supabase West EU — quixzoom-v2 + wavult-os projekt', status: 'active' },
             { text: 'Cloudflare — 2 zoner, CF Pages (10/10 slots)', status: 'active' },
             { text: 'CF Pages — quiXzoom landing, Wavult, OI portals', status: 'active' },
           ]}
@@ -192,8 +192,8 @@ function CtoDashboard() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'API Services', value: '2', delta: 'hypbit-api + quixzoom-api live', color: '#06B6D4' },
-          { label: 'Supabase', value: '2', delta: 'quixzoom-v2 + hypbit (EU West)', color: '#3ECF8E' },
+          { label: 'API Services', value: '2', delta: 'wavult-api + quixzoom-api live', color: '#06B6D4' },
+          { label: 'Supabase', value: '2', delta: 'quixzoom-v2 + wavult-os (EU West)', color: '#3ECF8E' },
           { label: 'S3 Buckets', value: '4', delta: 'EU + US, CRR aktiv', color: '#FF9500' },
           { label: 'CF Pages', value: '10/10', delta: 'Max — behöver frigöra slots', color: '#FF3B30' },
         ].map(s => (
@@ -208,8 +208,8 @@ function CtoDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Section title="Infrastruktur — live">
           {[
-            { text: 'wavult-api — ECS eu-north-1, api.hypbit.com', status: 'active' },
-            { text: 'quixzoom-api — ECS cluster hypbit, task def :2', status: 'active' },
+            { text: 'wavult-api — ECS eu-north-1, api.wavult.com', status: 'active' },
+            { text: 'quixzoom-api — ECS cluster wavult, task def :2', status: 'active' },
             { text: 'quiXzoom frontend — S3 + CloudFront (dewrtqzc20flx)', status: 'active' },
             { text: 'Supabase lpeipzdm — 13 migrationer live', status: 'active' },
             { text: 'S3 multi-region — CRR eu→eu + us→us', status: 'active' },

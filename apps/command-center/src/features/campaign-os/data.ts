@@ -43,7 +43,7 @@ export interface CampaignKPI {
 export interface CampaignActivity {
   id: string
   name: string
-  brand: 'quixzoom' | 'quixom-ads' | 'landvex' | 'hypbit' | 'wavult'
+  brand: 'quixzoom' | 'quixom-ads' | 'landvex' | 'wavult' | 'wavult'
   country: string
   entity_id: string
   site_id: string       // links to MARKET_SITES
@@ -126,14 +126,14 @@ export const ENTITY_COLOR: Record<string, string> = {
   'wavult-group': '#8B5CF6',
   'quixzoom-uab': '#10B981',
   'landvex-inc': '#F59E0B',
-  'hypbit': '#A78BFA',
+  'wavult': '#A78BFA',
 }
 
 export const ENTITY_REGION: Record<string, 'EU' | 'US' | 'Global'> = {
   'wavult-group': 'Global',
   'quixzoom-uab': 'EU',
   'landvex-inc': 'US',
-  'hypbit': 'EU',
+  'wavult': 'EU',
 }
 
 // ─── Alert engine ─────────────────────────────────────────────────────────────
@@ -268,7 +268,7 @@ export const CAMPAIGN_ACTIVITIES: CampaignActivity[] = [
       type: 'email-template',
       name: 'NL market intro sequence (5 emails)',
       ready: true,
-      url: 'https://hypbit.com/assets/nl-email-v2',
+      url: 'https://wavult.com/assets/nl-email-v2',
     },
     budget: {
       id: 'bud-003',
@@ -314,7 +314,7 @@ export const CAMPAIGN_ACTIVITIES: CampaignActivity[] = [
       type: 'copy',
       name: 'Dubai Smart City press release + media kit',
       ready: true,
-      url: 'https://hypbit.com/assets/landvex-dubai-pr',
+      url: 'https://wavult.com/assets/landvex-dubai-pr',
     },
     budget: {
       id: 'bud-004',
@@ -366,7 +366,7 @@ export const CAMPAIGN_ACTIVITIES: CampaignActivity[] = [
       type: 'copy',
       name: 'SE municipality cold outreach sequence',
       ready: true,
-      url: 'https://hypbit.com/assets/landvex-se-outbound',
+      url: 'https://wavult.com/assets/landvex-se-outbound',
     },
     budget: {
       id: 'bud-005',
@@ -441,7 +441,7 @@ export const CAMPAIGN_ACTIVITIES: CampaignActivity[] = [
   {
     id: 'cos-007',
     name: 'Hypbit LT Tech Meetup',
-    brand: 'hypbit',
+    brand: 'wavult',
     country: 'Lithuania',
     entity_id: 'quixzoom-uab',
     site_id: 'site-lt',
@@ -483,7 +483,7 @@ export const CAMPAIGN_ACTIVITIES: CampaignActivity[] = [
   {
     id: 'cos-008',
     name: 'Hypbit SE Email Onboarding Pilot',
-    brand: 'hypbit',
+    brand: 'wavult',
     country: 'Sweden',
     entity_id: 'quixzoom-uab',
     site_id: 'site-se',
@@ -496,7 +496,7 @@ export const CAMPAIGN_ACTIVITIES: CampaignActivity[] = [
       type: 'email-template',
       name: 'Hypbit onboarding welcome series (3 emails)',
       ready: true,
-      url: 'https://hypbit.com/assets/hypbit-onboarding-se',
+      url: 'https://wavult.com/assets/hypbit-onboarding-se',
     },
     budget: {
       id: 'bud-008',
@@ -583,7 +583,7 @@ export const CAMPAIGN_ACTIVITIES: CampaignActivity[] = [
       type: 'image',
       name: 'Employer brand creative Q2 (6 posts)',
       ready: true,
-      url: 'https://hypbit.com/assets/wavult-employer-brand',
+      url: 'https://wavult.com/assets/wavult-employer-brand',
     },
     budget: {
       id: 'bud-010',
@@ -637,7 +637,7 @@ export const CAMPAIGN_ACTIVITIES: CampaignActivity[] = [
       type: 'video',
       name: 'Quixom Ads explainer video (60s)',
       ready: true,
-      url: 'https://hypbit.com/assets/quixom-ads-explainer',
+      url: 'https://wavult.com/assets/quixom-ads-explainer',
     },
     budget: {
       id: 'bud-011',
