@@ -447,6 +447,10 @@ const POSITIONS: Record<string, { x: number; y: number }> = {
   's3-eu-backup':       { x: 720, y: 540 },
   'ses':                { x: 820, y: 240 },
   'kms':                { x: 60, y: 460 },
+  'landvex-api':        { x: 550, y: 560 },
+  'landvex-portal':     { x: 400, y: 630 },
+  'optical-insight':    { x: 700, y: 560 },
+  'quixzoom-mobile':    { x: 220, y: 630 },
 }
 
 // ─── DOMAIN GROUPS ───────────────────────────────────────────────────────────
