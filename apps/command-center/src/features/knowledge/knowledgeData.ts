@@ -3874,6 +3874,63 @@ Mer värdefullt: vi äger infrastrukturen. Ingen vendor kan höja priset, ändra
 7. Inget API litar på x-user-id eller x-role headers från client
 8. Alla auth-beslut gör own validation — aldrig lita på föregående beslut`
   },
+  {
+    id: 'doc-jur-004',
+    title: 'Landvex Inc — Northwest Registered Agent Formulärdata',
+    category: 'Juridik',
+    summary: 'Komplett formulärdata för Texas LLC-registrering via Northwest Registered Agent. Redo att fylla i direkt.',
+    tags: ['landvex-inc', 'texas', 'llc', 'northwest', 'formulär', 'registrering'],
+    updatedAt: '2026-03-29',
+    content: `## Landvex Inc — Formulärdata Texas LLC (Northwest Registered Agent)
+
+### URL
+https://www.northwestregisteredagent.com/
+
+### Personuppgifter (Organizer/Agent)
+- **First Name:** Erik
+- **Last Name:** Svensson
+- **Phone Number:** 0709123223
+- **Email:** erik@hypbit.com
+
+### Bolagsinfo
+- **State:** Texas
+- **Company Name:** Landvex Inc
+- **Company Purpose:** To provide B2G infrastructure monitoring and optical insight services to municipalities, government agencies, and infrastructure owners in the United States
+
+### Datum och Räkenskapsår
+- **Start Date:** 2026-04-01 (eller närmaste möjliga datum)
+- **Fiscal Year End:** December 31
+
+### Anställda
+- **W-2 employees next 12 months:** Nej (lämna omarkerad)
+
+### Adress (via Northwest som registered agent)
+- **Registered Agent:** Northwest Registered Agent
+- **Address:** 5900 Balcones Drive STE 100, Austin TX 78731
+- **Registered Agent Phone:** (512) 501-2162
+
+### Kostnader
+- **State Filing Fee:** $300
+- **Expedited (24h):** +$25 = **$325 totalt**
+- **Northwest Agent Fee:** ~$125/år
+
+### Betalning
+- Betala med Revolut Business-kort
+- Spara kvitto till Winston (CFO) för bokföring
+
+### 83(b) Election — KRITISK DEADLINE
+Efter registrering: skicka 83(b) election till IRS inom **30 dagar**.
+- Formulär: IRS Form 83(b)
+- Skicka via USPS certified mail
+- Behåll bekräftelsekopian (livsviktigt)
+
+### Steg efter registrering
+1. Certificate of Formation mottas (1-2 dagar expedited)
+2. Ansök om EIN (SS-4 form, IRS.gov) — gratis, tar 1-2 veckor
+3. Öppna Mercury Bank-konto (mercuryhq.com, remote onboarding)
+4. Informera Dennis (CLO) och Winston (CFO)
+5. Koppla Wavult DevOps FZCO som ägare när Dubai-bolagen bildas`,
+  },
 ]
 
 // ─── Knowledge Graph Nodes ────────────────────────────────────────────────────
