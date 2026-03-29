@@ -505,7 +505,7 @@ function SetupAndConnectTab({ onConnected }: { onConnected: () => void }) {
             }
 
             return (
-              <div className="w-full rounded-xl border border-gray-200 bg-black/20 p-4 grid grid-cols-3 gap-3 text-center">
+              <div className="w-full rounded-xl border border-gray-200 bg-gray-100 p-4 grid grid-cols-3 gap-3 text-center">
                 <div>
                   <div
                     className="text-2xl font-bold"
@@ -707,7 +707,7 @@ export function WHOOPTeamDashboard() {
   ]
 
   return (
-    <div className="h-full flex flex-col bg-[#0D1117] text-gray-900 overflow-hidden">
+    <div className="h-full flex flex-col bg-gray-50 text-gray-900 overflow-hidden">
       {/* Header */}
       <div className="flex-shrink-0 px-4 md:px-6 pt-5 pb-0 border-b border-gray-200">
         <div className="flex items-center gap-3 mb-4">
