@@ -76,7 +76,7 @@ export const MODULE_REGISTRY: ModuleMaturity[] = [
     phase: 1,
     liveFeatures: ['Pipeline-vy', 'Prospect-lista', 'Kontakter', 'Aktivitetslogg'],
     mockFeatures: ['Alla prospects och deals (mockdata)', 'Thailand targets'],
-    plannedFeatures: ['Live Supabase-koppling', 'Email-integration', 'Deal-automation'],
+    plannedFeatures: ['Live data-integration', 'Email-integration', 'Deal-automation'],
     dataSource: 'mock',
     lastUpdated: '2026-03-26',
   },

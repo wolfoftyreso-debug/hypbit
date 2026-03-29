@@ -67,7 +67,7 @@ const ROUTE_GUIDANCE: Record<string, GuidanceEntry> = {
       'Dashboarden samlar realtidssignaler från alla moduler. Klicka på en incident eller modul för att dyka djupare.',
   },
   '/crm': {
-    short: 'CRM visar din säljpipeline — prospects, deals och aktivitetslogg. All data är mockdata tills Supabase-koppling är klar.',
+    short: 'CRM visar din säljpipeline — prospects, deals och aktivitetslogg. Live data via Identity Core.',
     extended:
       'Prospects läggs till manuellt i nuläget. Deal-stages (Prospect → Qualified → Proposal → Closed) spåras i Pipeline-vyn.',
   },

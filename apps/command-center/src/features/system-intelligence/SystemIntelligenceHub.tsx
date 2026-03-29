@@ -224,7 +224,7 @@ const RISK_MATRIX: RiskItem[] = [
     id: 'r6',
     category: 'Tekniskt',
     title: 'Supabase single-point-of-failure',
-    description: 'All produktionsdata för Wavult OS ligger i ett enda Supabase-projekt utan backup-plan.',
+    description: 'All produktionsdata för Wavult OS ligger i ett enda Supabase-projekt — dokumentera disaster recovery plan.',
     probability: 3,
     impact: 8,
     riskScore: 24,

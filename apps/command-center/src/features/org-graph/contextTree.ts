@@ -151,7 +151,7 @@ const ROLE_SUBORDINATES: Partial<Record<RoleId, SubNode[]>> = {
       children: [
         { id: 'sub-cto-db1', type: 'system', label: 'quixzoom-v2', sublabel: 'lpeipzdm · EU West · 13 migrations', color: '#3ECF8E', flag: '🟢', status: 'live', expandable: false },
         { id: 'sub-cto-db2', type: 'system', label: 'wavult', sublabel: 'znmxtnxx · EU West · internal OS', color: '#3ECF8E', flag: '🟢', status: 'live', expandable: false },
-        { id: 'sub-cto-db3', type: 'system', label: 'Supabase US East', sublabel: 'Not created — Pro plan needed', color: '#6B7280', flag: '⚪', status: 'planned', expandable: false },
+        { id: 'sub-cto-db3', type: 'system', label: 'Supabase US East', sublabel: 'Planerat — OI US expansion', color: '#6B7280', flag: '⚪', status: 'planned', expandable: false },
       ],
     },
     {
