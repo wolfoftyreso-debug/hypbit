@@ -369,7 +369,7 @@ export function Shell({ children }: ShellProps) {
         </header>
 
         {/* Content */}
-        <div className="flex-1 overflow-auto" style={{ background: 'var(--color-bg-secondary)' }}>
+        <div className="content-scroll-area flex-1 overflow-auto" style={{ background: 'var(--color-bg-secondary)' }}>
           <div className="p-6 pb-[calc(env(safe-area-inset-bottom)+1.5rem)] md:pb-6">
             {children}
           </div>
