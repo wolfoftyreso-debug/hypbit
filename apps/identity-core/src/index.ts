@@ -1,5 +1,6 @@
 import express from 'express'
 import crypto from 'crypto'
+import rateLimit from 'express-rate-limit'
 import { createClient } from '@supabase/supabase-js'
 import { config } from './config'
 import { authRouter } from './routes/auth'
@@ -17,6 +18,7 @@ const AUTH_MODE = config.authMode
 const app = express()
 
 app.use(express.json({ limit: '1mb' }))
+app.use(express.urlencoded({ extended: false, limit: '1mb' }))
 
 // Request tracing — requestId injected before any route/middleware sees request
 app.use((req, _res, next) => {
@@ -24,20 +26,34 @@ app.use((req, _res, next) => {
   next()
 })
 
-// Security headers
+// Security headers — ALL responses
 app.use((_req, res, next) => {
-  res.setHeader('X-Content-Type-Options', 'nosniff')
   res.setHeader('X-Frame-Options', 'DENY')
-  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains')
+  res.setHeader('X-Content-Type-Options', 'nosniff')
+  res.setHeader('X-XSS-Protection', '1; mode=block')
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
+  res.setHeader('Content-Security-Policy', "default-src 'none'; frame-ancestors 'none'")
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
+  res.setHeader('Referrer-Policy', 'no-referrer')
+  res.removeHeader('X-Powered-By')
   next()
+})
+
+// Health endpoint rate limiter — prevents uptime detection / DDoS amplification
+const healthLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many health check requests' },
 })
 
 // Routes
 app.use('/v1/auth', authRouter)
 app.use('/v1/sessions', sessionsRouter)
 
-// Health
-app.get('/health', async (_req, res) => {
+// Health — rate limited
+app.get('/health', healthLimiter, async (_req, res) => {
   const dbOk = await testConnection()
   res.status(dbOk ? 200 : 503).json({
     status: dbOk ? 'ok' : 'degraded',
@@ -63,7 +79,6 @@ main().catch((err) => {
   process.exit(1)
 })
 
-export default app
 // rds-ready Sun Mar 29 00:27:24 UTC 2026
 
 // ─── MIGRATION ENDPOINT (one-time use) ───────────────────────────────────────
@@ -100,3 +115,8 @@ app.post('/v1/migrate/from-supabase', async (_req, res) => {
     res.status(500).json({ error: String(err) })
   }
 })
+
+// Catch-all: return 404 for unknown paths — do NOT leak endpoint existence
+app.use((_req, res) => res.status(404).json({ error: 'NOT_FOUND' }))
+
+export default app

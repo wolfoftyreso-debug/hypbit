@@ -142,9 +142,18 @@ const PORT = Number(process.env.PORT) || 3001;
 // Middleware
 // ---------------------------------------------------------------------------
 app.use(helmet());
+
+// Security headers — applied to ALL responses before any routing
 app.use((_req, res, next) => {
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  res.setHeader('Content-Security-Policy', "default-src 'none'; frame-ancestors 'none'");
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
+  res.setHeader('Referrer-Policy', 'no-referrer');
   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  res.removeHeader('X-Powered-By');
   next();
 });
 // CORS — support both legacy pixdrift.com origins and the live *.bc.pixdrift.com subdomains.
@@ -187,7 +196,8 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json({ limit: "10mb" }));
+app.use(express.json({ limit: "1mb" }));
+app.use(express.urlencoded({ extended: false, limit: "1mb" }));
 app.use(cookieParser());
 
 // ---------------------------------------------------------------------------
@@ -262,6 +272,15 @@ const limiter = rateLimit({
   }),
 });
 app.use(limiter);
+
+// Dedicated health check rate limiter — prevents uptime detection / DDoS amplification
+const healthLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30, // Max 30 health checks per minute per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many health check requests' },
+});
 
 // Eva bot (public — no auth required for Telegram webhook)
 app.use('/api/eva-bot', evaBotRouter);
@@ -342,7 +361,7 @@ app.post("/api/subscribe", (req: Request, res: Response) => {
   } catch { res.json({ ok: true }); } // fail silently
 });
 
-app.get("/health", async (_req: Request, res: Response) => {
+app.get("/health", healthLimiter, async (_req: Request, res: Response) => {
   const start = Date.now();
 
   interface ServiceStatus { name: string; status: string; error?: string }
