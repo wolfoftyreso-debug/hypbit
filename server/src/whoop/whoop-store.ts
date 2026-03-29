@@ -56,10 +56,15 @@ export async function saveWhoopTokens(
 }
 
 export async function getWhoopTokens(userId: string): Promise<WhoopTokenRecord | null> {
+  // userId is auth.users.id — resolve to public.users.id first
+  const { data: userRow } = await supabase
+    .from('users').select('id').eq('auth_id', userId).maybeSingle();
+  const publicUserId = userRow?.id ?? userId;
+
   const { data, error } = await supabase
     .from('whoop_connections')
     .select('access_token, refresh_token, expires_at, whoop_user_id, connected_at')
-    .eq('user_id', userId)
+    .eq('user_id', publicUserId)
     .maybeSingle();
 
   if (error) {
