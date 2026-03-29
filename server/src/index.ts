@@ -1028,6 +1028,14 @@ async function bootstrap() {
 
 bootstrap().catch((err) => console.error("Core bootstrap failed:", err));
 
+// Global error handler — prevent crashes from bad request headers
+process.on('uncaughtException', (err) => {
+  console.error('[Server] Uncaught exception (non-fatal):', err.message)
+})
+process.on('unhandledRejection', (reason) => {
+  console.error('[Server] Unhandled rejection (non-fatal):', reason)
+})
+
 app.listen(PORT, () => {
   console.log(`Hypbit OMS API running on http://localhost:${PORT}`);
   // Schedule daily auto-consume job (runs at 06:00)

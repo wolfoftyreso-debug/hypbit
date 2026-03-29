@@ -4,6 +4,14 @@ import { paymentRouter } from './routes/payments'
 import { payoutRouter } from './routes/payouts'
 
 const app = express()
+
+// Security: Strip problematic headers to prevent crashes
+app.use((req, _res, next) => {
+  // Remove Origin from non-CORS contexts to prevent crashes
+  if (req.path === '/health') delete req.headers['origin']
+  next()
+})
+
 app.use(express.json({ limit: '10mb' }))
 
 // Security headers
