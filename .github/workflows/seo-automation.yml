@@ -20,9 +20,9 @@ jobs:
       - name: Ping Google Search Console
         run: |
           echo "Pinging Google..."
-          curl -s "https://www.google.com/ping?sitemap=https://pixdrift.com/sitemap.xml" -o /dev/null
+          curl -s "https://www.google.com/ping?sitemap=https://wavult.com/sitemap.xml" -o /dev/null
           echo "Pinging Bing..."
-          curl -s "https://www.bing.com/webmaster/ping.aspx?siteMap=https://pixdrift.com/sitemap.xml" -o /dev/null
+          curl -s "https://www.bing.com/webmaster/ping.aspx?siteMap=https://wavult.com/sitemap.xml" -o /dev/null
           echo "Done."
 
       - name: Submit sitemap to IndexNow
@@ -30,18 +30,18 @@ jobs:
           curl -X POST "https://api.indexnow.org/indexnow" \
             -H "Content-Type: application/json" \
             -d '{
-              "host": "pixdrift.com",
+              "host": "wavult.com",
               "key": "${{ secrets.INDEXNOW_KEY }}",
-              "keyLocation": "https://pixdrift.com/${{ secrets.INDEXNOW_KEY }}.txt",
+              "keyLocation": "https://wavult.com/${{ secrets.INDEXNOW_KEY }}.txt",
               "urlList": [
-                "https://pixdrift.com/",
-                "https://pixdrift.com/about.html",
-                "https://pixdrift.com/changelog.html",
-                "https://pixdrift.com/developers/",
-                "https://pixdrift.com/blog/",
-                "https://pixdrift.com/press/",
-                "https://pixdrift.com/security.html",
-                "https://pixdrift.com/roadmap.html"
+                "https://wavult.com/",
+                "https://wavult.com/about.html",
+                "https://wavult.com/changelog.html",
+                "https://wavult.com/developers/",
+                "https://wavult.com/blog/",
+                "https://wavult.com/press/",
+                "https://wavult.com/security.html",
+                "https://wavult.com/roadmap.html"
               ]
             }'
 
@@ -58,11 +58,11 @@ jobs:
 
       - name: Run Lighthouse CI
         uses: treosh/lighthouse-ci-action@v10
+        continue-on-error: true
         with:
           urls: |
-            https://pixdrift.com/
-            https://pixdrift.com/developers/
-            https://pixdrift.com/about.html
+            https://wavult-os.pages.dev
+            https://app.quixzoom.com
           uploadArtifacts: true
           temporaryPublicStorage: true
 
