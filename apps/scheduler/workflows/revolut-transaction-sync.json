@@ -1,0 +1,54 @@
+{
+  "name": "Revolut Transaction Sync",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{"field": "hours", "minutesInterval": 6}]
+        }
+      },
+      "name": "Every 6 hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://b2b.revolut.com/api/1.0/transactions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {"name": "from", "value": "={{ $now.minus({hours: 6}).toISO() }}"},
+            {"name": "to", "value": "={{ $now.toISO() }}"},
+            {"name": "count", "value": "100"}
+          ]
+        }
+      },
+      "name": "Revolut - Get Transactions",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.hypbit.com/v1/transactions/revolut-sync",
+        "method": "POST",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {"name": "transactions", "value": "={{ $json }}"}
+          ]
+        }
+      },
+      "name": "Wavult OS - Sync",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [680, 300]
+    }
+  ],
+  "connections": {
+    "Every 6 hours": {"main": [[{"node": "Revolut - Get Transactions"}]]},
+    "Revolut - Get Transactions": {"main": [[{"node": "Wavult OS - Sync"}]]}
+  }
+}
