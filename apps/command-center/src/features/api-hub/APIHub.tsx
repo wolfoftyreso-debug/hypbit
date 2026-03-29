@@ -11,6 +11,7 @@ import {
   type ProviderNews,
 } from './data'
 import { useTranslation } from '../../shared/i18n/useTranslation'
+import { APIControlPanel } from './APIControlPanel'
 
 // ─── Status badge ─────────────────────────────────────────────────────────────
 function StatusBadge({ status }: { status: APIIntegration['status'] }) {
@@ -199,7 +200,7 @@ function NewsCard({ news }: { news: ProviderNews }) {
 // ─── Main Component ───────────────────────────────────────────────────────────
 export function APIHub() {
   const { t: _t } = useTranslation() // ready for i18n
-  const [activeTab, setActiveTab] = useState<'catalog' | 'active' | 'news'>('catalog')
+  const [activeTab, setActiveTab] = useState<'catalog' | 'active' | 'news' | 'control'>('catalog')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedIntegration, setSelectedIntegration] = useState<APIIntegration | null>(null)
@@ -234,6 +235,7 @@ export function APIHub() {
     { id: 'catalog', label: 'Integrationer', icon: '🔌', count: totalCount },
     { id: 'active', label: 'Aktiva', icon: '🟢', count: LIVE_INTEGRATIONS.length },
     { id: 'news', label: 'Nyheter', icon: '📰', count: STATIC_PROVIDER_NEWS.length },
+    { id: 'control', label: 'Control Panel', icon: '⚙️', count: 12 },
   ] as const
 
   return (
@@ -410,6 +412,11 @@ export function APIHub() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* ── TAB 4: CONTROL PANEL ─────────────────────────────────────── */}
+        {activeTab === 'control' && (
+          <APIControlPanel />
         )}
       </div>
 

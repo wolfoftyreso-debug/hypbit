@@ -8,6 +8,8 @@ import healthMonitor from './routes/health-monitor'
 import quixzoomRouter from './routes/quixzoom'
 import flightsRouter from './routes/flights'
 import twilioRouter from './routes/twilio'
+import aiApiRouter from './routes/ai-api'
+import mediaApiRouter from './routes/media-api'
 
 const app = express()
 
@@ -52,6 +54,8 @@ app.use('/', healthMonitor)
 app.use('/', quixzoomRouter)
 app.use('/', flightsRouter)
 app.use('/', twilioRouter)
+app.use('/', aiApiRouter)
+app.use('/', mediaApiRouter)
 
 // Health — rate limited
 app.get('/health', healthLimiter, (_req, res) => {

@@ -3,7 +3,7 @@
   "info": {
     "title": "Wavult Group Public API",
     "version": "1.0.0",
-    "description": "Public API for quiXzoom missions, Landvex infrastructure intelligence, and system health.",
+    "description": "Public API for quiXzoom missions, Landvex infrastructure intelligence, AI wrappers, and system health.",
     "contact": { "name": "Wavult Group", "email": "api@wavult.com", "url": "https://wavult.com" }
   },
   "servers": [{ "url": "https://api.wavult.com", "description": "Production" }],
@@ -15,7 +15,28 @@
     "schemas": {
       "Mission": { "type": "object", "properties": { "id": {"type":"string"}, "title": {"type":"string"}, "location": {"type":"string"}, "reward": {"type":"integer"}, "status": {"type":"string"}, "created_at": {"type":"string"} } },
       "LandvexObject": { "type": "object", "properties": { "id": {"type":"string"}, "name": {"type":"string"}, "type": {"type":"string"}, "municipality": {"type":"string"}, "status": {"type":"string"} } },
-      "Error": { "type": "object", "properties": { "error": {"type":"string"}, "code": {"type":"string"} } }
+      "Error": { "type": "object", "properties": { "error": {"type":"string"}, "code": {"type":"string"} } },
+      "AICompletionRequest": {
+        "type": "object",
+        "properties": {
+          "provider": { "type": "string", "enum": ["openai", "anthropic", "gpt"], "default": "anthropic" },
+          "model": { "type": "string", "description": "Model ID override (e.g. gpt-4o-mini, claude-haiku-20240307)" },
+          "messages": { "type": "array", "items": { "type": "object", "properties": { "role": {"type":"string","enum":["user","assistant","system"]}, "content": {"type":"string"} }, "required": ["role","content"] } },
+          "max_tokens": { "type": "integer", "default": 1000 }
+        },
+        "required": ["messages"]
+      },
+      "AICompletionResponse": {
+        "type": "object",
+        "properties": {
+          "provider": {"type":"string"},
+          "model": {"type":"string"},
+          "content": {"type":"string"},
+          "tokens": {"type":"integer"},
+          "cost_estimate": {"type":"number", "description": "Estimated cost in USD"},
+          "latency_ms": {"type":"integer"}
+        }
+      }
     }
   },
   "paths": {
@@ -26,6 +47,105 @@
     },
     "/v1/missions/{id}/approve": { "post": { "summary": "Approve mission", "tags": ["quiXzoom"], "parameters": [{"name":"id","in":"path","required":true,"schema":{"type":"string"}}], "responses": {"200":{"description":"Approved"}} } },
     "/v1/objects": { "get": { "summary": "Infrastructure objects", "tags": ["Landvex"], "responses": {"200":{"description":"Objects list","content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/LandvexObject"}}}}}} } },
-    "/v1/alerts": { "get": { "summary": "Active alerts", "tags": ["Landvex"], "responses": {"200":{"description":"Alerts"}} } }
+    "/v1/alerts": { "get": { "summary": "Active alerts", "tags": ["Landvex"], "responses": {"200":{"description":"Alerts"}} } },
+    "/v1/ai/complete": {
+      "post": {
+        "summary": "Unified AI completion",
+        "description": "Route AI requests to OpenAI, Anthropic or other providers with automatic fallback and cost tracking.",
+        "tags": ["AI"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AICompletionRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "AI response with cost tracking", "content": {"application/json": {"schema": {"$ref":"#/components/schemas/AICompletionResponse"}}} },
+          "400": { "description": "Bad request (missing messages)" },
+          "502": { "description": "AI provider error" }
+        }
+      }
+    },
+    "/v1/ai/tts": {
+      "post": {
+        "summary": "Text-to-speech via ElevenLabs",
+        "description": "Convert text to speech audio using ElevenLabs eleven_multilingual_v2.",
+        "tags": ["AI"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["text"],
+                "properties": {
+                  "text": {"type":"string"},
+                  "voice_id": {"type":"string", "default": "21m00Tcm4TlvDq8ikWAM"},
+                  "provider": {"type":"string", "default": "elevenlabs"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "MP3 audio stream", "content": {"audio/mpeg": {}} },
+          "400": { "description": "Missing text" },
+          "502": { "description": "TTS provider error" }
+        }
+      }
+    },
+    "/v1/ai/cost": {
+      "get": {
+        "summary": "AI cost summary",
+        "description": "Returns cost-per-1k-token rates per provider. Full cost aggregation via CloudWatch + /finance.",
+        "tags": ["AI"],
+        "responses": {
+          "200": { "description": "Cost summary" }
+        }
+      }
+    },
+    "/v1/media/images": {
+      "get": {
+        "summary": "Image search via Pexels",
+        "description": "Search stock images using the Pexels API.",
+        "tags": ["Media"],
+        "parameters": [
+          { "name": "query", "in": "query", "required": true, "schema": {"type":"string"} },
+          { "name": "per_page", "in": "query", "schema": {"type":"integer","default":10} }
+        ],
+        "responses": {
+          "200": { "description": "Pexels search results" },
+          "400": { "description": "Missing query" },
+          "502": { "description": "Pexels API error" }
+        }
+      }
+    },
+    "/v1/media/video/render": {
+      "post": {
+        "summary": "Video render via Shotstack",
+        "description": "Render a video using the Shotstack rendering engine.",
+        "tags": ["Media"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "timeline": {"type":"object", "description": "Shotstack timeline object"},
+                  "output": {"type":"object", "description": "Output format config (defaults to mp4/hd)"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Shotstack render response" },
+          "502": { "description": "Render error" }
+        }
+      }
+    }
   }
 }
