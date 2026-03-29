@@ -9,6 +9,7 @@ import {
   Bell, Inbox, User, LayoutGrid,
   Smartphone, MapPin, Package, ArrowRight,
   Building2, MessageSquare, FileText, Activity,
+  Plane,
 } from 'lucide-react'
 import { useRole, ROLES } from '../auth/RoleContext'
 import { EntitySwitcher } from '../../features/entity-switcher/EntitySwitcher'
@@ -82,6 +83,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/decisions',      labelKey: 'nav.decisions',      icon: Scale },
       { to: '/projects',       labelKey: 'nav.projects',       icon: Layers },
       { to: '/finance-flow',   labelKey: 'nav.finance_flow',   icon: ArrowRight },
+      { to: '/flights',        labelKey: 'nav.flights',        icon: Plane },
       { to: '/corporate',      labelKey: 'nav.corporate',      icon: Building2 },
       { to: '/legal',          labelKey: 'nav.legal',          icon: Scale },
       { to: '/reports',        labelKey: 'nav.reports',        icon: FileText },
