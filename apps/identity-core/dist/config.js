@@ -1,0 +1,77 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.sesClient = exports.kmsClient = exports.dynamoClient = exports.config = void 0;
+const client_dynamodb_1 = require("@aws-sdk/client-dynamodb");
+const client_kms_1 = require("@aws-sdk/client-kms");
+const client_ses_1 = require("@aws-sdk/client-ses");
+const REGION = process.env.AWS_REGION || 'eu-north-1';
+exports.config = {
+    port: parseInt(process.env.PORT || '3005'),
+    nodeEnv: process.env.NODE_ENV || 'development',
+    // DEPLOY LADDER — never big-bang:
+    // Step 1: AUTH_MODE=logging-only (observe, never block)
+    // Step 2: AUTH_MODE=soft (log failures, don't block)
+    // Step 3: AUTH_MODE=hard (full enforcement)
+    // Step 4: AUTH_MODE=identity-core-only (Supabase disabled)
+    authMode: (process.env.AUTH_MODE || 'logging-only'),
+    // AUTH_SOURCE: read from env, future: AWS Parameter Store
+    authSource: (process.env.AUTH_SOURCE || 'supabase'),
+    // Kill switch: FORCE_LOGOUT_ALL=true → 401 SYSTEM_LOCKDOWN for all auth requests
+    forceLogoutAll: process.env.FORCE_LOGOUT_ALL === 'true',
+    // Audience for this specific service — service isolation
+    // e.g. 'wavult-os' | 'quixzoom' | 'landvex'
+    serviceAudience: process.env.SERVICE_AUDIENCE || 'wavult-os',
+    // PostgreSQL (RDS-ready)
+    db: {
+        host: process.env.DB_HOST || 'localhost',
+        port: parseInt(process.env.DB_PORT || '5432'),
+        database: process.env.DB_NAME || 'wavult_identity',
+        user: process.env.DB_USER || 'postgres',
+        password: process.env.DB_PASSWORD || '',
+        ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+        max: 20,
+        idleTimeoutMillis: 30000,
+    },
+    // DynamoDB tables
+    dynamo: {
+        sessionsTable: process.env.DYNAMO_SESSIONS_TABLE || 'ic-sessions',
+        tokensTable: process.env.DYNAMO_TOKENS_TABLE || 'ic-refresh-tokens',
+        eventsTable: process.env.DYNAMO_EVENTS_TABLE || 'ic-auth-events',
+        // TTL: expires_at must be enabled as DynamoDB TTL field via AWS CLI:
+        // aws dynamodb update-time-to-live --table-name ic-sessions \
+        //   --time-to-live-specification "Enabled=true,AttributeName=expires_at_ttl"
+        // NOTE: expires_at is ISO string for app logic; store expires_at_ttl as Unix epoch for DynamoDB TTL
+    },
+    // KMS
+    kms: {
+        keyId: process.env.KMS_KEY_ID || '',
+        keyAlgorithm: 'RSASSA_PKCS1_V1_5_SHA_256',
+    },
+    // JWT
+    jwt: {
+        accessTokenTtl: 10 * 60, // 10 minutes
+        refreshTokenTtl: 30 * 24 * 60 * 60, // 30 days
+        issuer: 'identity.wavult.com',
+        audience: ['wavult-os', 'quixzoom', 'landvex'],
+    },
+    // Rate limiting
+    rateLimit: {
+        loginMaxAttempts: 5,
+        loginWindowMs: 15 * 60 * 1000,
+        ipMaxAttempts: 20,
+        ipWindowMs: 60 * 1000,
+        apiMaxRequests: 100,
+        apiWindowMs: 60 * 1000,
+    },
+    // Service-to-service auth
+    // NOTE: Internal service tokens use issuer 'identity-core-internal'.
+    // NEVER reuse user JWTs for service-to-service calls.
+    serviceAuth: {
+        internalSecret: process.env.INTERNAL_SERVICE_SECRET || '',
+        issuer: 'identity-core-internal',
+    },
+};
+// AWS Clients
+exports.dynamoClient = new client_dynamodb_1.DynamoDBClient({ region: REGION });
+exports.kmsClient = new client_kms_1.KMSClient({ region: REGION });
+exports.sesClient = new client_ses_1.SESClient({ region: REGION });
