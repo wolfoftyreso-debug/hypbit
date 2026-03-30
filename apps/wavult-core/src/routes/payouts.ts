@@ -3,9 +3,13 @@ import { v4 as uuid } from 'uuid'
 import { assertPayoutTransition, type PayoutState } from '../engines/stateEngine'
 import { emitEvent } from '../engines/eventEngine'
 import { createClient } from '@supabase/supabase-js'
+import { requireAuth, requireRole } from '../middleware/requireAuth'
 
 const router = Router()
 const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!)
+
+// Payout execution requires auth + finance role
+router.use(requireAuth, requireRole('finance', 'admin'))
 
 // POST /v1/payout/execute
 router.post('/execute', async (req: Request, res: Response) => {

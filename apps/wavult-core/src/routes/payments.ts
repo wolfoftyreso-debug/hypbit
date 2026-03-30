@@ -5,9 +5,13 @@ import { assertPaymentTransition, type PaymentState } from '../engines/stateEngi
 import { computeSplits, assertCurrencySupported } from '../engines/financialEngine'
 import { emitEvent } from '../engines/eventEngine'
 import { createClient } from '@supabase/supabase-js'
+import { requireAuth, requireRole } from '../middleware/requireAuth'
 
 const router = Router()
 const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!)
+
+// Payment routes require auth; split requires elevated role
+router.use(requireAuth)
 
 const InitiateSchema = z.object({
   reference_type: z.enum(['task', 'invoice', 'ads_purchase']),
@@ -51,7 +55,7 @@ router.post('/initiate', async (req: Request, res: Response) => {
     res.json({ transaction_id: txId, status: 'initiated' })
   } catch (err) {
     if (err instanceof z.ZodError) return res.status(400).json({ error: 'VALIDATION_ERROR', details: err.errors })
-    res.status(500).json({ error: String(err) })
+    res.status(500).json({ error: "INTERNAL_ERROR" })
   }
 })
 

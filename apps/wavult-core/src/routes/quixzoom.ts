@@ -1,7 +1,11 @@
 import { Router, Request, Response } from 'express'
 import { getRDSPool } from '../db/rds'
+import { requireAuth } from '../middleware/requireAuth'
 
 const router = Router()
+
+// All quiXzoom routes require a valid JWT
+router.use(requireAuth)
 
 // GET /v1/missions
 router.get('/v1/missions', async (req: Request, res: Response) => {
@@ -18,7 +22,7 @@ router.get('/v1/missions', async (req: Request, res: Response) => {
     return res.json(result.rows)
   } catch (err) {
     console.error('[quixzoom] GET /v1/missions error:', err)
-    return res.status(500).json({ error: String(err) })
+    return res.status(500).json({ error: "INTERNAL_ERROR" })
   }
 })
 
@@ -30,7 +34,7 @@ router.get('/v1/missions/:id', async (req: Request, res: Response) => {
     if (result.rows.length === 0) return res.status(404).json({ error: 'Mission not found' })
     return res.json(result.rows[0])
   } catch (err) {
-    return res.status(500).json({ error: String(err) })
+    return res.status(500).json({ error: "INTERNAL_ERROR" })
   }
 })
 
@@ -49,7 +53,7 @@ router.post('/v1/missions', async (req: Request, res: Response) => {
     return res.status(201).json(result.rows[0])
   } catch (err) {
     console.error('[quixzoom] POST /v1/missions error:', err)
-    return res.status(500).json({ error: String(err) })
+    return res.status(500).json({ error: "INTERNAL_ERROR" })
   }
 })
 
@@ -64,7 +68,7 @@ router.post('/v1/missions/:id/approve', async (req: Request, res: Response) => {
     if (result.rows.length === 0) return res.status(404).json({ error: 'Mission not found' })
     return res.json(result.rows[0])
   } catch (err) {
-    return res.status(400).json({ error: String(err) })
+    return res.status(400).json({ error: "BAD_REQUEST" })
   }
 })
 
@@ -80,7 +84,7 @@ router.post('/v1/missions/:id/reject', async (req: Request, res: Response) => {
     if (result.rows.length === 0) return res.status(404).json({ error: 'Mission not found' })
     return res.json(result.rows[0])
   } catch (err) {
-    return res.status(400).json({ error: String(err) })
+    return res.status(400).json({ error: "BAD_REQUEST" })
   }
 })
 
@@ -97,7 +101,7 @@ router.get('/v1/zoomers', async (req: Request, res: Response) => {
     const result = await pool.query(query, params)
     return res.json(result.rows)
   } catch (err) {
-    return res.status(500).json({ error: String(err) })
+    return res.status(500).json({ error: "INTERNAL_ERROR" })
   }
 })
 
@@ -115,7 +119,7 @@ router.post('/v1/zoomers', async (req: Request, res: Response) => {
     )
     return res.status(201).json(result.rows[0] || { email, status: 'already_exists' })
   } catch (err) {
-    return res.status(500).json({ error: String(err) })
+    return res.status(500).json({ error: "INTERNAL_ERROR" })
   }
 })
 
@@ -139,7 +143,7 @@ router.patch('/v1/zoomers/:id', async (req: Request, res: Response) => {
     if (result.rows.length === 0) return res.status(404).json({ error: 'Zoomer not found' })
     return res.json(result.rows[0])
   } catch (err) {
-    return res.status(400).json({ error: String(err) })
+    return res.status(400).json({ error: "BAD_REQUEST" })
   }
 })
 

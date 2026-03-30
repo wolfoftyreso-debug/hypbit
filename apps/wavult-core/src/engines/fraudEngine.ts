@@ -14,8 +14,18 @@ export interface FraudCheckResult {
   duplicate_hash?: string
 }
 
-// In-memory hash store (replace with Redis/DB in prod)
+/**
+ * Duplicate hash store.
+ * In-memory for development only — nollställs vid varje restart.
+ * Production: inject a persistent store (Redis SET with TTL, or DB table).
+ * Replace by setting FRAUD_HASH_STORE=redis and providing REDIS_URL.
+ *
+ * TODO: swap to Redis when infrastructure is ready.
+ */
 const knownHashes = new Set<string>()
+if (process.env.NODE_ENV === 'production' && !process.env.REDIS_URL) {
+  console.warn('[FraudEngine] WARNING: Using in-memory hash store in production. Duplicate detection will not survive restarts. Set REDIS_URL to enable persistent dedup.')
+}
 
 export function computeFileHash(buffer: Buffer): string {
   return crypto.createHash('sha256').update(buffer).digest('hex')

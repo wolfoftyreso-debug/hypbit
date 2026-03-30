@@ -5,9 +5,13 @@ import { assertTaskTransition, type TaskState } from '../engines/stateEngine'
 import { emitEvent } from '../engines/eventEngine'
 import { checkFraud } from '../engines/fraudEngine'
 import { createClient } from '@supabase/supabase-js'
+import { requireAuth } from '../middleware/requireAuth'
 
 const router = Router()
 const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!)
+
+// All task routes require a valid JWT
+router.use(requireAuth)
 
 const AcceptSchema = z.object({
   task_id: z.string().uuid(),
