@@ -1,504 +1,521 @@
-import React, { useCallback, useState } from 'react'
+// ─── System Graph — Wavult Infrastructure Map ────────────────────────────────
+// Enterprise-grade, dark theme, readable nodes, layer filters.
+
+import React, { useCallback, useState, useMemo } from 'react'
 import {
   ReactFlow,
   Background,
   Controls,
-  addEdge,
   useNodesState,
   useEdgesState,
   type Node,
   type Edge,
-  type Connection,
   Position,
   Handle,
   MarkerType,
   BackgroundVariant,
 } from '@xyflow/react'
-// CSS loaded via index.css for Cloudflare Pages compatibility
 
-// ─── SEMANTIC COLOR SYSTEM ───────────────────────────────────────────────────
-// Green  = Live/Active service
-// Orange = Data/Storage
-// Blue   = Core Logic/API
-// Purple = Automation/Orchestration
-// Gray   = Inactive/Not yet deployed
-// Red    = Degraded/Critical
+// ─── Types ────────────────────────────────────────────────────────────────────
 
-const COLORS = {
-  live:        { bg: '#FFFFFF', border: '#16A34A', text: '#15803D', badge: '#DCFCE7', badgeText: '#166534' },
-  data:        { bg: '#FFFFFF', border: '#EA580C', text: '#C2410C', badge: '#FFEDD5', badgeText: '#9A3412' },
-  core:        { bg: '#FFFFFF', border: '#2563EB', text: '#1D4ED8', badge: '#DBEAFE', badgeText: '#1E40AF' },
-  automation:  { bg: '#FFFFFF', border: '#7C3AED', text: '#6D28D9', badge: '#EDE9FE', badgeText: '#5B21B6' },
-  inactive:    { bg: '#F9FAFB', border: '#D1D5DB', text: '#6B7280', badge: '#F3F4F6', badgeText: '#9CA3AF' },
-  degraded:    { bg: '#FFF7F7', border: '#DC2626', text: '#B91C1C', badge: '#FEE2E2', badgeText: '#991B1B' },
-  external:    { bg: '#FFFFFF', border: '#0891B2', text: '#0E7490', badge: '#CFFAFE', badgeText: '#155E75' },
-}
-
-type NodeColorKey = keyof typeof COLORS
-
-// ─── CUSTOM NODE ─────────────────────────────────────────────────────────────
+type ServiceStatus = 'live' | 'degraded' | 'inactive' | 'pending'
+type ServiceKind = 'api' | 'data' | 'edge' | 'automation' | 'event' | 'planned'
+type LayerFilter = 'all' | ServiceKind
 
 interface SystemNodeData {
   label: string
   sublabel?: string
-  status: 'live' | 'degraded' | 'inactive' | 'pending'
-  colorKey: NodeColorKey
+  status: ServiceStatus
+  kind: ServiceKind
   owner?: string
   latency?: string
   uptime?: string
   description?: string
 }
 
-const STATUS_DOT: Record<string, string> = {
-  live:     '#16A34A',
-  degraded: '#DC2626',
-  inactive: '#9CA3AF',
-  pending:  '#D97706',
+// ─── Color tokens ─────────────────────────────────────────────────────────────
+
+const KIND_COLOR: Record<ServiceKind, { border: string; label: string; dot: string }> = {
+  api:        { border: '#3B82F6', label: 'API',        dot: '#3B82F6' },
+  data:       { border: '#F97316', label: 'Data',       dot: '#F97316' },
+  edge:       { border: '#06B6D4', label: 'Edge',       dot: '#06B6D4' },
+  automation: { border: '#A855F7', label: 'Automation', dot: '#A855F7' },
+  event:      { border: '#10B981', label: 'Event',      dot: '#10B981' },
+  planned:    { border: '#52525B', label: 'Planned',    dot: '#52525B' },
 }
 
+const STATUS_COLOR: Record<ServiceStatus, string> = {
+  live:     '#10B981',
+  degraded: '#EF4444',
+  inactive: '#52525B',
+  pending:  '#F59E0B',
+}
+
+// ─── System Node ─────────────────────────────────────────────────────────────
+
 function SystemNode({ data, selected }: { data: SystemNodeData; selected?: boolean }) {
-  const c = COLORS[data.colorKey]
-  const dotColor = STATUS_DOT[data.status]
-  
+  const kind = KIND_COLOR[data.kind]
+  const statusColor = STATUS_COLOR[data.status]
+
   return (
     <div style={{
-      background: c.bg,
-      border: `1.5px solid ${selected ? '#111827' : c.border}`,
-      borderRadius: 8,
+      background: selected ? '#1C1C1E' : '#141414',
+      border: `1px solid ${selected ? kind.border : '#2A2A2A'}`,
+      borderLeft: `3px solid ${kind.border}`,
+      borderRadius: 6,
       padding: '10px 14px',
-      minWidth: 160,
-      maxWidth: 220,
-      boxShadow: selected ? '0 0 0 2px #111827' : '0 1px 4px rgba(0,0,0,0.08)',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif',
+      minWidth: 200,
+      maxWidth: 260,
+      boxShadow: selected ? `0 0 0 1px ${kind.border}40, 0 4px 20px rgba(0,0,0,0.4)` : '0 2px 8px rgba(0,0,0,0.3)',
+      fontFamily: 'ui-monospace, "SF Mono", monospace',
       cursor: 'pointer',
-      transition: 'box-shadow 0.15s',
+      transition: 'border 0.15s, box-shadow 0.15s',
     }}>
-      <Handle type="target" position={Position.Left} style={{ background: c.border, width: 6, height: 6, border: 'none' }} />
-      <Handle type="source" position={Position.Right} style={{ background: c.border, width: 6, height: 6, border: 'none' }} />
-      
+      <Handle type="target" position={Position.Left}
+        style={{ background: kind.border, width: 7, height: 7, border: '2px solid #141414', left: -5 }} />
+      <Handle type="source" position={Position.Right}
+        style={{ background: kind.border, width: 7, height: 7, border: '2px solid #141414', right: -5 }} />
+
+      {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 12, fontWeight: 600, color: '#111827', lineHeight: 1.3, marginBottom: 2 }}>
+          <div style={{ fontSize: 12, fontWeight: 600, color: '#F4F4F5', lineHeight: 1.3, letterSpacing: '-0.01em' }}>
             {data.label}
           </div>
           {data.sublabel && (
-            <div style={{ fontSize: 10, color: '#6B7280', lineHeight: 1.3 }}>{data.sublabel}</div>
+            <div style={{ fontSize: 10, color: '#71717A', marginTop: 2, lineHeight: 1.4, fontFamily: 'ui-monospace, monospace' }}>
+              {data.sublabel}
+            </div>
           )}
         </div>
+        {/* Status dot */}
         <div style={{
           width: 7, height: 7, borderRadius: '50%',
-          background: dotColor, flexShrink: 0, marginTop: 3,
-          boxShadow: data.status === 'live' ? `0 0 0 2px ${dotColor}33` : 'none',
+          background: statusColor, flexShrink: 0, marginTop: 3,
+          boxShadow: data.status === 'live' ? `0 0 6px ${statusColor}80` : 'none',
         }} />
       </div>
-      
-      {(data.latency || data.uptime || data.owner) && (
-        <div style={{ marginTop: 8, paddingTop: 7, borderTop: '1px solid rgba(0,0,0,0.06)', display: 'flex', flexWrap: 'wrap', gap: '3px 8px' }}>
-          {data.owner && <span style={{ fontSize: 9, color: '#9CA3AF' }}>{data.owner}</span>}
-          {data.latency && <span style={{ fontSize: 9, color: '#9CA3AF', fontFamily: 'monospace' }}>{data.latency}</span>}
-          {data.uptime && <span style={{ fontSize: 9, color: '#9CA3AF', fontFamily: 'monospace' }}>{data.uptime}</span>}
+
+      {/* Metrics */}
+      {(data.latency || data.uptime) && (
+        <div style={{ display: 'flex', gap: 10, marginTop: 8, borderTop: '1px solid #2A2A2A', paddingTop: 6 }}>
+          {data.latency && (
+            <span style={{ fontSize: 9, color: '#52525B' }}>
+              <span style={{ color: '#71717A' }}>p50 </span>
+              <span style={{ color: '#A1A1AA' }}>{data.latency}</span>
+            </span>
+          )}
+          {data.uptime && (
+            <span style={{ fontSize: 9, color: '#52525B' }}>
+              <span style={{ color: '#71717A' }}>up </span>
+              <span style={{ color: '#A1A1AA' }}>{data.uptime}</span>
+            </span>
+          )}
         </div>
       )}
-      
+
+      {/* Kind badge */}
       <div style={{
-        marginTop: 6,
+        marginTop: 7,
         display: 'inline-block',
         padding: '1px 6px',
-        borderRadius: 4,
-        background: c.badge,
+        borderRadius: 3,
+        background: `${kind.border}18`,
+        border: `1px solid ${kind.border}40`,
         fontSize: 9,
-        fontWeight: 600,
-        color: c.badgeText,
-        letterSpacing: '0.04em',
+        fontWeight: 700,
+        color: kind.border,
+        letterSpacing: '0.06em',
         textTransform: 'uppercase',
       }}>
-        {data.colorKey === 'live' ? 'Service' :
-         data.colorKey === 'data' ? 'Data' :
-         data.colorKey === 'core' ? 'API' :
-         data.colorKey === 'automation' ? 'Automation' :
-         data.colorKey === 'external' ? 'External' :
-         data.colorKey === 'degraded' ? 'Degraded' : 'Inactive'}
+        {kind.label}
       </div>
     </div>
   )
 }
 
-// ─── LAYER GROUP NODE ─────────────────────────────────────────────────────────
+// ─── Layer Label Node ─────────────────────────────────────────────────────────
 
-interface LayerNodeData {
-  label: string
-  sublabel?: string
-}
-
-function LayerNode({ data }: { data: LayerNodeData }) {
+function LayerNode({ data }: { data: { label: string; sublabel?: string } }) {
   return (
     <div style={{
-      background: 'rgba(0,0,0,0.02)',
-      border: '1px solid rgba(0,0,0,0.08)',
-      borderRadius: 12,
-      padding: '10px 16px 8px',
-      fontFamily: '-apple-system, sans-serif',
+      background: 'transparent',
+      border: '1px solid #1E1E1E',
+      borderTop: '2px solid #2A2A2A',
+      borderRadius: 8,
+      padding: '8px 14px 6px',
       pointerEvents: 'none',
     }}>
-      <div style={{ fontSize: 10, fontWeight: 700, color: '#9CA3AF', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+      <div style={{ fontSize: 9, fontWeight: 700, color: '#3F3F46', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
         {data.label}
       </div>
-      {data.sublabel && <div style={{ fontSize: 9, color: '#D1D5DB', marginTop: 1 }}>{data.sublabel}</div>}
+      {data.sublabel && (
+        <div style={{ fontSize: 9, color: '#27272A', marginTop: 1 }}>{data.sublabel}</div>
+      )}
     </div>
   )
 }
 
-// ─── NODE DEFINITIONS ─────────────────────────────────────────────────────────
-// Layout: Left-to-right flow, top-to-bottom layers
-// X position = layer (0 = leftmost = external, 900 = rightmost)
-// Y position = vertical placement within layer
+// ─── Node Definitions ─────────────────────────────────────────────────────────
+// Layout: left → right, 280px between layers, 120px between nodes vertically
 
-const INITIAL_NODES: Node[] = [
-  // ── LAYER GROUPS (background containers) ──────────────────────────────────
-  {
-    id: 'layer-edge', type: 'layer',
-    position: { x: -20, y: -40 }, data: { label: 'Edge Layer', sublabel: 'CDN · DNS · WAF' },
-    style: { width: 220, height: 460, zIndex: -1 }, draggable: false, selectable: false,
-  },
-  {
-    id: 'layer-compute', type: 'layer',
-    position: { x: 230, y: -40 }, data: { label: 'Compute Layer', sublabel: 'AWS ECS Fargate · eu-north-1' },
-    style: { width: 220, height: 700, zIndex: -1 }, draggable: false, selectable: false,
-  },
-  {
-    id: 'layer-identity', type: 'layer',
-    position: { x: 480, y: -40 }, data: { label: 'Identity & Auth', sublabel: 'RDS · DynamoDB · KMS' },
-    style: { width: 220, height: 220, zIndex: -1 }, draggable: false, selectable: false,
-  },
-  {
-    id: 'layer-data', type: 'layer',
-    position: { x: 480, y: 210 }, data: { label: 'Data Layer', sublabel: 'Supabase · S3 · PostgreSQL' },
-    style: { width: 220, height: 460, zIndex: -1 }, draggable: false, selectable: false,
-  },
-  {
-    id: 'layer-automation', type: 'layer',
-    position: { x: 730, y: -40 }, data: { label: 'Automation', sublabel: 'n8n · BOS Scheduler' },
-    style: { width: 220, height: 220, zIndex: -1 }, draggable: false, selectable: false,
-  },
-  {
-    id: 'layer-planned', type: 'layer',
-    position: { x: 730, y: 210 }, data: { label: 'Planned', sublabel: 'Not yet deployed' },
-    style: { width: 220, height: 460, zIndex: -1 }, draggable: false, selectable: false,
-  },
+const ALL_NODES: Node[] = [
+  // ── Layer backgrounds ──────────────────────────────────────────────────────
+  { id: 'l-edge', type: 'layer', position: { x: -20, y: -50 },
+    data: { label: 'Edge', sublabel: 'CDN · DNS · WAF' },
+    style: { width: 240, height: 380, zIndex: -1 }, draggable: false, selectable: false },
+  { id: 'l-compute', type: 'layer', position: { x: 260, y: -50 },
+    data: { label: 'Compute', sublabel: 'ECS Fargate · eu-north-1' },
+    style: { width: 240, height: 640, zIndex: -1 }, draggable: false, selectable: false },
+  { id: 'l-event', type: 'layer', position: { x: 540, y: -50 },
+    data: { label: 'Event Backbone', sublabel: 'Kafka · async' },
+    style: { width: 240, height: 140, zIndex: -1 }, draggable: false, selectable: false },
+  { id: 'l-data', type: 'layer', position: { x: 540, y: 130 },
+    data: { label: 'Data', sublabel: 'Supabase · RDS · S3 · DynamoDB' },
+    style: { width: 240, height: 520, zIndex: -1 }, draggable: false, selectable: false },
+  { id: 'l-automation', type: 'layer', position: { x: 820, y: -50 },
+    data: { label: 'Automation', sublabel: 'n8n · Scheduler' },
+    style: { width: 240, height: 260, zIndex: -1 }, draggable: false, selectable: false },
+  { id: 'l-planned', type: 'layer', position: { x: 820, y: 250 },
+    data: { label: 'Planned', sublabel: 'Thailand sprint' },
+    style: { width: 240, height: 380, zIndex: -1 }, draggable: false, selectable: false },
 
-  // ── EDGE LAYER ────────────────────────────────────────────────────────────
-  {
-    id: 'cloudflare', type: 'system',
-    position: { x: 20, y: 20 },
-    data: { label: 'Cloudflare', sublabel: 'DNS · WAF · CDN', status: 'live', colorKey: 'external', owner: 'Johan (CTO)', description: 'DNS, WAF, CDN for quixzoom.com + wavult.com' },
-  },
-  {
-    id: 'cf-pages', type: 'system',
-    position: { x: 20, y: 150 },
-    data: { label: 'Cloudflare Pages', sublabel: 'wavult-os · landvex-eu · optical-insight', status: 'live', colorKey: 'external', owner: 'Johan', description: 'Static frontends, CDN-distributed globally' },
-  },
-  {
-    id: 'alb', type: 'system',
-    position: { x: 20, y: 280 },
-    data: { label: 'ALB', sublabel: 'wavult-api-alb · eu-north-1', status: 'live', colorKey: 'core', owner: 'Johan', latency: '42ms', description: 'Application Load Balancer routing API traffic' },
-  },
+  // ── Edge layer ─────────────────────────────────────────────────────────────
+  { id: 'cloudflare', type: 'system', position: { x: 20, y: 20 },
+    data: { label: 'Cloudflare', sublabel: 'DNS · WAF · CDN', status: 'live', kind: 'edge',
+      owner: 'Johan', description: 'DNS, WAF, CDN for quixzoom.com + wavult.com + evasvensson.se' }},
+  { id: 'cf-pages', type: 'system', position: { x: 20, y: 150 },
+    data: { label: 'Cloudflare Pages', sublabel: 'wavult-os · landvex · optical-insight', status: 'live', kind: 'edge',
+      owner: 'Johan', description: 'Static frontends — CF Pages CDN globally distributed' }},
+  { id: 'alb', type: 'system', position: { x: 20, y: 280 },
+    data: { label: 'ALB', sublabel: 'hypbit-api-alb · eu-north-1', status: 'live', kind: 'edge',
+      owner: 'Johan', latency: '42ms', description: 'Application Load Balancer routing all API traffic' }},
 
-  // ── COMPUTE LAYER ─────────────────────────────────────────────────────────
-  {
-    id: 'wavult-api', type: 'system',
-    position: { x: 250, y: 20 },
-    data: { label: 'Wavult OS API', sublabel: 'wavult-api · Node.js · port 3001', status: 'live', colorKey: 'core', owner: 'Johan', latency: '42ms', uptime: '99.8%', description: 'Main Wavult OS backend. BOS tasks, auth, WHOOP.' },
-  },
-  {
-    id: 'quixzoom-api', type: 'system',
-    position: { x: 250, y: 160 },
-    data: { label: 'QuiXzoom API', sublabel: 'quixzoom-api · Node.js', status: 'live', colorKey: 'core', owner: 'Johan', latency: '38ms', uptime: '99.1%', description: 'QuiXzoom platform: missions, zoomers, submissions' },
-  },
-  {
-    id: 'wavult-core', type: 'system',
-    position: { x: 250, y: 300 },
-    data: { label: 'Wavult Core', sublabel: 'Financial Engine · port 3007', status: 'live', colorKey: 'core', owner: 'Johan', description: 'Split engine, fraud detection, event bus, state machine' },
-  },
-  {
-    id: 'landvex-api', type: 'system',
-    position: { x: 250, y: 440 },
-    data: { label: 'Landvex API', sublabel: 'port 3006 · B2G platform', status: 'live', colorKey: 'core', owner: 'Johan', description: 'B2G API: /v1/objects, /v1/alerts, BOS webhooks' },
-  },
-  {
-    id: 'identity-core', type: 'system',
-    position: { x: 250, y: 580 },
-    data: { label: 'Identity Core', sublabel: 'port 3005 · hybrid mode', status: 'live', colorKey: 'core', owner: 'Johan', description: 'Sovereign auth: Argon2id, JWT/KMS, session epochs' },
-  },
+  // ── Compute layer ──────────────────────────────────────────────────────────
+  { id: 'wavult-api', type: 'system', position: { x: 280, y: 20 },
+    data: { label: 'Wavult OS API', sublabel: 'hypbit-api · port 3001', status: 'live', kind: 'api',
+      owner: 'Johan', latency: '42ms', uptime: '99.8%', description: 'Main Wavult OS backend. BOS tasks, auth, WHOOP, comms.' }},
+  { id: 'quixzoom-api', type: 'system', position: { x: 280, y: 160 },
+    data: { label: 'quiXzoom API', sublabel: 'quixzoom-api · Node.js', status: 'live', kind: 'api',
+      owner: 'Johan', latency: '38ms', uptime: '99.1%', description: 'quiXzoom: missions, zoomers, submissions, payouts' }},
+  { id: 'wavult-core', type: 'system', position: { x: 280, y: 300 },
+    data: { label: 'Wavult Core', sublabel: 'Financial Engine · port 3007', status: 'live', kind: 'api',
+      owner: 'Johan', description: 'Split engine, fraud detection, event bus, state machine' }},
+  { id: 'landvex-api', type: 'system', position: { x: 280, y: 420 },
+    data: { label: 'LandveX API', sublabel: 'port 3006 · B2G', status: 'live', kind: 'api',
+      owner: 'Johan', description: 'B2G API: /v1/objects, /v1/alerts, BOS webhooks' }},
+  { id: 'identity-core', type: 'system', position: { x: 280, y: 540 },
+    data: { label: 'Identity Core', sublabel: 'port 3005 · JWT/KMS', status: 'live', kind: 'api',
+      owner: 'Johan', description: 'Sovereign auth: Argon2id, JWT/KMS, session epochs' }},
 
-  // ── IDENTITY & AUTH LAYER ─────────────────────────────────────────────────
-  {
-    id: 'rds', type: 'system',
-    position: { x: 500, y: 20 },
-    data: { label: 'RDS PostgreSQL', sublabel: 'wavult-identity-ecs · eu-north-1', status: 'live', colorKey: 'data', owner: 'Johan', description: 'Identity Core database: ic_users, ic_auth_events' },
-  },
-  {
-    id: 'dynamo', type: 'system',
-    position: { x: 500, y: 130 },
-    data: { label: 'DynamoDB', sublabel: 'ic-sessions · ic-refresh-tokens', status: 'live', colorKey: 'data', owner: 'Johan', description: 'Session store with TTL. Strong consistent reads.' },
-  },
+  // ── Event backbone ─────────────────────────────────────────────────────────
+  { id: 'kafka', type: 'system', position: { x: 560, y: 20 },
+    data: { label: 'Kafka', sublabel: '172.31.25.69:9092 · ECS · EFS', status: 'live', kind: 'event',
+      owner: 'Johan', description: '16 topics — wavult.missions.* · wavult.alerts.* · wavult.comms.send · wavult.system.audit' }},
 
-  // ── DATA LAYER ────────────────────────────────────────────────────────────
-  {
-    id: 'supabase-wavult', type: 'system',
-    position: { x: 500, y: 240 },
-    data: { label: 'Supabase (Wavult OS)', sublabel: 'znmxtnxx · eu-west-1', status: 'live', colorKey: 'data', description: 'BOS tasks, events, audit log, team_locations.' },
-  },
-  {
-    id: 'supabase-quixzoom', type: 'system',
-    position: { x: 500, y: 380 },
-    data: { label: 'Supabase (QuiXzoom)', sublabel: 'lpeipzdm · eu-west-1', status: 'live', colorKey: 'data', description: 'Missions, assignments, submissions, payouts.' },
-  },
-  {
-    id: 's3-eu', type: 'system',
-    position: { x: 500, y: 520 },
-    data: { label: 'S3 EU', sublabel: 'wavult-images-eu-primary · eu-north-1', status: 'live', colorKey: 'data', description: 'EU primary image storage. CRR to eu-backup.' },
-  },
+  // ── Data layer ─────────────────────────────────────────────────────────────
+  { id: 'supabase-wavult', type: 'system', position: { x: 560, y: 160 },
+    data: { label: 'Supabase — Wavult OS', sublabel: 'znmxtnxx · eu-west-1', status: 'live', kind: 'data',
+      description: 'BOS tasks, events, audit log, team_locations' }},
+  { id: 'supabase-quixzoom', type: 'system', position: { x: 560, y: 290 },
+    data: { label: 'Supabase — quiXzoom', sublabel: 'lpeipzdm · eu-west-1', status: 'live', kind: 'data',
+      description: 'Missions, assignments, submissions, payouts' }},
+  { id: 'rds', type: 'system', position: { x: 560, y: 420 },
+    data: { label: 'RDS PostgreSQL', sublabel: 'wavult-identity · eu-north-1', status: 'live', kind: 'data',
+      description: 'Identity Core DB: ic_users, ic_auth_events' }},
+  { id: 'dynamo', type: 'system', position: { x: 560, y: 500 },
+    data: { label: 'DynamoDB', sublabel: 'ic-sessions · ic-refresh-tokens', status: 'live', kind: 'data',
+      description: 'Session store with TTL, strong consistent reads' }},
+  { id: 's3-eu', type: 'system', position: { x: 560, y: 580 },
+    data: { label: 'S3 EU', sublabel: 'wavult-images-eu-primary + backup', status: 'live', kind: 'data',
+      description: 'EU image storage. CRR → eu-backup (STANDARD_IA). GDPR: never replicates to US.' }},
 
-  // ── AUTOMATION LAYER ──────────────────────────────────────────────────────
-  {
-    id: 'n8n', type: 'system',
-    position: { x: 750, y: 20 },
-    data: { label: 'n8n', sublabel: 'Automation · port 5678 · EFS', status: 'live', colorKey: 'automation', owner: 'Johan', description: 'Morning Brief, BOS webhooks, WHOOP sync, email via SES' },
-  },
-  {
-    id: 'bos-scheduler', type: 'system',
-    position: { x: 750, y: 140 },
-    data: { label: 'BOS Scheduler', sublabel: '500ms loop · watchdog · audit', status: 'live', colorKey: 'automation', owner: 'Johan', description: 'Job queue: DEADLINE_CHECK (5m), RECONCILE (10m), FLOW (15m)' },
-  },
+  // ── Automation layer ───────────────────────────────────────────────────────
+  { id: 'n8n', type: 'system', position: { x: 840, y: 20 },
+    data: { label: 'n8n', sublabel: 'port 5678 · EFS · Morning Brief', status: 'live', kind: 'automation',
+      owner: 'Johan', description: 'Morning Brief, BOS webhooks, WHOOP sync, email via SES' }},
+  { id: 'bos-scheduler', type: 'system', position: { x: 840, y: 150 },
+    data: { label: 'BOS Scheduler', sublabel: '500ms loop · watchdog', status: 'live', kind: 'automation',
+      owner: 'Johan', description: 'Job queue: DEADLINE_CHECK (5m), RECONCILE (10m), FLOW (15m)' }},
 
-  // ── PLANNED ───────────────────────────────────────────────────────────────
-  {
-    id: 'optical-insight', type: 'system',
-    position: { x: 750, y: 240 },
-    data: { label: 'Optical Insight', sublabel: 'NOT BUILT — Thailand Sprint', status: 'inactive', colorKey: 'inactive', description: 'AI image analysis engine for Landvex. Blocks B2G value chain.' },
-  },
-  {
-    id: 'quixzoom-mobile', type: 'system',
-    position: { x: 750, y: 380 },
-    data: { label: 'QuiXzoom Mobile', sublabel: 'Expo RN · awaiting TestFlight', status: 'inactive', colorKey: 'inactive', description: 'Zoomer field app. Code ready, needs Apple Dev Account + EAS build.' },
-  },
-  {
-    id: 'company-automation', type: 'system',
-    position: { x: 750, y: 520 },
-    data: { label: 'Company Automation', sublabel: 'Playwright · port 3008', status: 'live', colorKey: 'automation', description: 'Browser automation for company registration (Northwest, Stripe Atlas).' },
-  },
-  {
-    id: 'api-core', type: 'system',
-    position: { x: 730, y: 460 },
-    data: {
-      label: 'API Core',
-      sublabel: 'AWS Lambda + API Gateway',
-      status: 'live',
-      colorKey: 'automation',
-      owner: 'Johan',
-      description: 'Central API orchestration: AI/Media/Travel + Financial Core VPC. 27 APIs catalogued. Rate limiting + cost tracking.',
-    },
-  },
-  {
-    id: 'financial-core', type: 'system',
-    position: { x: 730, y: 580 },
-    data: {
-      label: 'Financial Core VPC',
-      sublabel: 'vpc-06609c6f597a7fd15 · Isolated',
-      status: 'live',
-      colorKey: 'core',
-      owner: 'Johan',
-      description: 'Isolated VPC for banking APIs. 0 inbound rules. Secrets via VPC Endpoint. Revolut + Stripe + Nordea.',
-    },
-  },
+  // ── Planned layer ──────────────────────────────────────────────────────────
+  { id: 'optical-insight', type: 'system', position: { x: 840, y: 290 },
+    data: { label: 'Optical Insight', sublabel: 'Thailand sprint — not built', status: 'inactive', kind: 'planned',
+      description: 'AI/optical analysis engine for LandveX. Triggers alerts from quiXzoom imagery.' }},
+  { id: 'quixzoom-mobile', type: 'system', position: { x: 840, y: 420 },
+    data: { label: 'quiXzoom Mobile', sublabel: 'Expo RN · TestFlight pending', status: 'pending', kind: 'planned',
+      description: 'Zoomer field app. Code ready — needs Apple Dev Account + EAS build.' }},
+  { id: 'wavult-mobile', type: 'system', position: { x: 840, y: 550 },
+    data: { label: 'Wavult Mobile', sublabel: 'Expo RN · Bernt voice', status: 'pending', kind: 'planned',
+      description: 'Internal team app. VoiceButton → Bernt. Wavult ID KYC. Siri shortcut.' }},
 ]
 
-// ─── EDGE DEFINITIONS ─────────────────────────────────────────────────────────
-// Solid = sync/HTTP
-// Dashed = async/event-driven
+// ─── Edge Definitions ─────────────────────────────────────────────────────────
 
-const makeEdge = (id: string, source: string, target: string, label: string, type: 'sync' | 'async' | 'data' = 'sync'): Edge => ({
-  id,
-  source,
-  target,
-  label,
-  labelStyle: { fontSize: 9, fill: '#9CA3AF', fontFamily: 'monospace' },
-  labelBgStyle: { fill: '#FFFFFF', fillOpacity: 0.9 },
-  labelBgPadding: [3, 5] as [number, number],
+const edgeStyle = (type: 'sync' | 'async' | 'event'): Partial<Edge> => ({
   style: {
-    stroke: type === 'async' ? '#A855F7' : type === 'data' ? '#EA580C' : '#94A3B8',
+    stroke: type === 'event' ? '#10B981' : type === 'async' ? '#A855F7' : '#3F3F46',
     strokeWidth: 1.5,
-    strokeDasharray: type === 'async' ? '5,3' : undefined,
+    strokeDasharray: type === 'async' ? '5,3' : type === 'event' ? '3,3' : undefined,
   },
-  markerEnd: { type: MarkerType.ArrowClosed, width: 12, height: 12, color: type === 'async' ? '#A855F7' : type === 'data' ? '#EA580C' : '#94A3B8' },
+  markerEnd: {
+    type: MarkerType.ArrowClosed, width: 10, height: 10,
+    color: type === 'event' ? '#10B981' : type === 'async' ? '#A855F7' : '#3F3F46',
+  },
+  animated: type === 'event',
   type: 'smoothstep',
-  animated: type === 'async',
+  labelStyle: { fontSize: 9, fill: '#52525B', fontFamily: 'ui-monospace, monospace' },
+  labelBgStyle: { fill: '#0D0D0D', fillOpacity: 0.9 },
+  labelBgPadding: [3, 5] as [number, number],
 })
 
-const INITIAL_EDGES: Edge[] = [
+const ALL_EDGES: Edge[] = [
   // Edge → Compute
-  makeEdge('e1', 'cloudflare', 'cf-pages', 'DNS', 'sync'),
-  makeEdge('e2', 'cloudflare', 'alb', 'Route', 'sync'),
-  makeEdge('e3', 'alb', 'wavult-api', 'api.wavult.com', 'sync'),
-  makeEdge('e4', 'alb', 'quixzoom-api', 'api.quixzoom.com', 'sync'),
-  makeEdge('e5', 'alb', 'identity-core', '/v1/auth/*', 'sync'),
-  makeEdge('e6', 'alb', 'n8n', '/n8n/*', 'sync'),
+  { id: 'e1', source: 'cloudflare', target: 'cf-pages', label: 'DNS', ...edgeStyle('sync') },
+  { id: 'e2', source: 'cloudflare', target: 'alb', label: 'route', ...edgeStyle('sync') },
+  { id: 'e3', source: 'alb', target: 'wavult-api', label: 'api.*', ...edgeStyle('sync') },
+  { id: 'e4', source: 'alb', target: 'quixzoom-api', label: 'api.quixzoom', ...edgeStyle('sync') },
+  { id: 'e5', source: 'alb', target: 'identity-core', label: '/v1/auth', ...edgeStyle('sync') },
+  { id: 'e6', source: 'alb', target: 'n8n', label: '/n8n/*', ...edgeStyle('sync') },
+
+  // Compute → Kafka
+  { id: 'ek1', source: 'wavult-api', target: 'kafka', label: 'publish', ...edgeStyle('event') },
+  { id: 'ek2', source: 'quixzoom-api', target: 'kafka', label: 'publish', ...edgeStyle('event') },
+  { id: 'ek3', source: 'landvex-api', target: 'kafka', label: 'publish', ...edgeStyle('event') },
 
   // Compute → Data
-  makeEdge('e7', 'wavult-api', 'supabase-wavult', 'bos_tasks', 'data'),
-  makeEdge('e8', 'quixzoom-api', 'supabase-quixzoom', 'missions', 'data'),
-  makeEdge('e9', 'quixzoom-api', 's3-eu', 'media upload', 'data'),
-  makeEdge('e10', 'identity-core', 'rds', 'ic_users', 'data'),
-  makeEdge('e11', 'identity-core', 'dynamo', 'sessions', 'data'),
-  makeEdge('e12', 'wavult-core', 'supabase-wavult', 'financial_events', 'async'),
+  { id: 'ed1', source: 'wavult-api', target: 'supabase-wavult', label: 'bos_tasks', ...edgeStyle('async') },
+  { id: 'ed2', source: 'quixzoom-api', target: 'supabase-quixzoom', label: 'missions', ...edgeStyle('async') },
+  { id: 'ed3', source: 'quixzoom-api', target: 's3-eu', label: 'images', ...edgeStyle('async') },
+  { id: 'ed4', source: 'identity-core', target: 'rds', label: 'ic_users', ...edgeStyle('async') },
+  { id: 'ed5', source: 'identity-core', target: 'dynamo', label: 'sessions', ...edgeStyle('async') },
 
   // Automation
-  makeEdge('e13', 'bos-scheduler', 'supabase-wavult', 'bos_jobs poll', 'async'),
-  makeEdge('e14', 'bos-scheduler', 'n8n', 'webhooks', 'async'),
-  makeEdge('e15', 'n8n', 'wavult-api', 'triggers', 'async'),
+  { id: 'ea1', source: 'bos-scheduler', target: 'supabase-wavult', label: 'poll', ...edgeStyle('async') },
+  { id: 'ea2', source: 'n8n', target: 'wavult-api', label: 'webhooks', ...edgeStyle('async') },
 
   // Planned
-  makeEdge('e16', 'quixzoom-api', 'optical-insight', 'images', 'async'),
-  makeEdge('e17', 'landvex-api', 'optical-insight', 'alerts', 'async'),
-
-  // API Core
-  makeEdge('e-apicore-1', 'wavult-api', 'api-core', 'orchestration', 'async'),
-  makeEdge('e-apicore-2', 'api-core', 'financial-core', 'financial flows', 'sync'),
-  makeEdge('e-apicore-3', 'alb', 'api-core', 'API Gateway', 'sync'),
+  { id: 'ep1', source: 'quixzoom-api', target: 'optical-insight', label: 'images', ...edgeStyle('async') },
+  { id: 'ep2', source: 'landvex-api', target: 'optical-insight', label: 'alerts', ...edgeStyle('async') },
 ]
 
-// ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
+// ─── Filter bar ───────────────────────────────────────────────────────────────
+
+const FILTERS: { key: LayerFilter; label: string }[] = [
+  { key: 'all',        label: 'All' },
+  { key: 'edge',       label: 'Edge' },
+  { key: 'api',        label: 'API' },
+  { key: 'event',      label: 'Events' },
+  { key: 'data',       label: 'Data' },
+  { key: 'automation', label: 'Automation' },
+  { key: 'planned',    label: 'Planned' },
+]
+
+// ─── Main Component ───────────────────────────────────────────────────────────
 
 const nodeTypes = { system: SystemNode, layer: LayerNode }
 
 export function SystemGraph() {
-  const [nodes, , onNodesChange] = useNodesState(INITIAL_NODES)
-  const [edges, setEdges, onEdgesChange] = useEdgesState(INITIAL_EDGES)
+  const [filter, setFilter] = useState<LayerFilter>('all')
   const [selectedNode, setSelectedNode] = useState<Node | null>(null)
 
-  const onConnect = useCallback(
-    (connection: Connection) => setEdges(eds => addEdge(connection, eds)),
-    [setEdges]
-  )
+  const visibleNodes = useMemo(() => {
+    if (filter === 'all') return ALL_NODES
+    return ALL_NODES.filter(n =>
+      n.type === 'layer' ||
+      (n.data as SystemNodeData).kind === filter
+    )
+  }, [filter])
 
-  const onNodeClick = useCallback((_event: React.MouseEvent, node: Node) => {
+  const visibleEdges = useMemo(() => {
+    const ids = new Set(visibleNodes.map(n => n.id))
+    return ALL_EDGES.filter(e => ids.has(e.source) && ids.has(e.target))
+  }, [visibleNodes])
+
+  const [nodes, , onNodesChange] = useNodesState(visibleNodes)
+  const [edges, , onEdgesChange] = useEdgesState(visibleEdges)
+
+  const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
     if (node.type === 'layer') return
     setSelectedNode(prev => prev?.id === node.id ? null : node)
   }, [])
 
+  const liveCount = ALL_NODES.filter(n => n.type === 'system' && (n.data as SystemNodeData).status === 'live').length
+  const degradedCount = ALL_NODES.filter(n => n.type === 'system' && (n.data as SystemNodeData).status === 'degraded').length
+  const pendingCount = ALL_NODES.filter(n => n.type === 'system' && ['inactive', 'pending'].includes((n.data as SystemNodeData).status)).length
   const selectedData = selectedNode?.data as unknown as SystemNodeData | undefined
 
-  const liveCount = nodes.filter(n => n.type === 'system' && (n.data as unknown as SystemNodeData).status === 'live').length
-  const degradedCount = nodes.filter(n => n.type === 'system' && (n.data as unknown as SystemNodeData).status === 'degraded').length
-  const inactiveCount = nodes.filter(n => n.type === 'system' && (n.data as unknown as SystemNodeData).status === 'inactive').length
-
   return (
-    <div style={{ height: '100%', display: 'flex', fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}>
-      {/* Graph */}
+    <div style={{ height: '100%', display: 'flex', background: '#0A0A0A', fontFamily: 'ui-monospace, "SF Mono", monospace' }}>
+      {/* Graph canvas */}
       <div style={{ flex: 1, position: 'relative' }}>
-        {/* Status bar */}
+
+        {/* Top bar */}
         <div style={{
-          position: 'absolute', top: 12, left: 12, zIndex: 10,
-          background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(8px)',
-          border: '1px solid rgba(0,0,0,0.1)', borderRadius: 8,
-          padding: '8px 12px', display: 'flex', gap: 16, alignItems: 'center',
-          boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+          position: 'absolute', top: 12, left: 12, right: 12, zIndex: 20,
+          display: 'flex', alignItems: 'center', gap: 12,
         }}>
-          <span style={{ fontSize: 11, fontWeight: 700, color: '#111827', letterSpacing: '0.05em' }}>WAVULT SYSTEM</span>
-          <div style={{ width: 1, height: 14, background: '#E5E7EB' }} />
-          {[
-            { color: '#16A34A', label: `${liveCount} Live` },
-            { color: '#DC2626', label: `${degradedCount} Degraded` },
-            { color: '#9CA3AF', label: `${inactiveCount} Planned` },
-          ].map(({ color, label }) => (
-            <span key={label} style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: '#374151' }}>
-              <span style={{ width: 7, height: 7, borderRadius: '50%', background: color }} />
-              {label}
-            </span>
-          ))}
+          {/* Status */}
+          <div style={{
+            background: '#141414', border: '1px solid #2A2A2A', borderRadius: 6,
+            padding: '7px 14px', display: 'flex', gap: 16, alignItems: 'center',
+          }}>
+            <span style={{ fontSize: 10, fontWeight: 700, color: '#A1A1AA', letterSpacing: '0.1em' }}>WAVULT SYSTEM</span>
+            <div style={{ width: 1, height: 12, background: '#2A2A2A' }} />
+            {[
+              { color: '#10B981', label: `${liveCount} Live` },
+              { color: '#EF4444', label: `${degradedCount} Degraded` },
+              { color: '#52525B', label: `${pendingCount} Planned` },
+            ].map(({ color, label }) => (
+              <span key={label} style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 10, color: '#71717A' }}>
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: color, boxShadow: color === '#10B981' ? `0 0 5px ${color}80` : 'none' }} />
+                {label}
+              </span>
+            ))}
+          </div>
+
+          {/* Layer filters */}
+          <div style={{
+            display: 'flex', gap: 4, background: '#141414',
+            border: '1px solid #2A2A2A', borderRadius: 6, padding: 4,
+          }}>
+            {FILTERS.map(f => (
+              <button key={f.key} onClick={() => { setFilter(f.key); setSelectedNode(null) }}
+                style={{
+                  padding: '4px 10px', borderRadius: 4, border: 'none', cursor: 'pointer',
+                  fontSize: 10, fontWeight: 600, letterSpacing: '0.04em',
+                  background: filter === f.key ? '#2A2A2A' : 'transparent',
+                  color: filter === f.key ? '#F4F4F5' : '#52525B',
+                  transition: 'all 0.15s',
+                }}>
+                {f.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Legend */}
         <div style={{
-          position: 'absolute', bottom: 12, left: 12, zIndex: 10,
-          background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(8px)',
-          border: '1px solid rgba(0,0,0,0.1)', borderRadius: 8,
-          padding: '10px 12px', boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+          position: 'absolute', bottom: 52, left: 12, zIndex: 20,
+          background: '#141414', border: '1px solid #2A2A2A', borderRadius: 6,
+          padding: '10px 12px',
         }}>
-          <div style={{ fontSize: 9, fontWeight: 700, color: '#9CA3AF', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 7 }}>Edge types</div>
+          <div style={{ fontSize: 8, fontWeight: 700, color: '#3F3F46', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 7 }}>Edges</div>
           {[
-            { style: '1.5px solid #94A3B8', label: 'Sync (HTTP)' },
-            { style: '1.5px dashed #A855F7', label: 'Async (Event)' },
-            { style: '1.5px solid #EA580C', label: 'Data flow' },
-          ].map(({ style, label }) => (
-            <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5 }}>
-              <div style={{ width: 28, borderTop: style }} />
-              <span style={{ fontSize: 10, color: '#6B7280' }}>{label}</span>
+            { color: '#3F3F46', dash: undefined, label: 'Sync (HTTP)' },
+            { color: '#A855F7', dash: '5,3', label: 'Async (Event)' },
+            { color: '#10B981', dash: '3,3', label: 'Kafka stream' },
+          ].map(({ color, dash, label }) => (
+            <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+              <svg width="24" height="10">
+                <line x1="0" y1="5" x2="24" y2="5"
+                  stroke={color} strokeWidth="1.5"
+                  strokeDasharray={dash}
+                />
+              </svg>
+              <span style={{ fontSize: 9, color: '#52525B' }}>{label}</span>
             </div>
           ))}
         </div>
 
-        <div style={{ width: '100%', height: '100%', minHeight: 600 }}>
         <ReactFlow
-          nodes={nodes}
-          edges={edges}
+          nodes={filter === 'all' ? nodes : visibleNodes}
+          edges={filter === 'all' ? edges : visibleEdges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
           onNodeClick={onNodeClick}
           nodeTypes={nodeTypes}
           fitView
-          fitViewOptions={{ padding: 0.2 }} style={{ background: "#F8F9FA" }}
-          minZoom={0.2}
-          maxZoom={2}
-          defaultEdgeOptions={{ type: 'smoothstep' }}
+          fitViewOptions={{ padding: 0.15 }}
+          style={{ background: '#0A0A0A' }}
+          minZoom={0.15}
+          maxZoom={2.5}
           proOptions={{ hideAttribution: true }}
         >
-          <Background variant={BackgroundVariant.Dots} gap={24} size={1} color="#E5E7EB" />
-          <Controls showInteractive={false} style={{ bottom: 12, right: 12, top: 'auto', boxShadow: '0 1px 4px rgba(0,0,0,0.08)', border: '1px solid rgba(0,0,0,0.1)' }} />
-</ReactFlow>
-        </div>
+          <Background variant={BackgroundVariant.Dots} gap={28} size={1} color="#1A1A1A" />
+          <Controls
+            showInteractive={false}
+            style={{
+              bottom: 12, right: selectedNode ? 312 : 12, top: 'auto',
+              background: '#141414', border: '1px solid #2A2A2A', borderRadius: 6,
+            }}
+          />
+        </ReactFlow>
       </div>
 
       {/* Detail panel */}
       {selectedNode && selectedData && (
         <div style={{
-          width: 300, borderLeft: '1px solid rgba(0,0,0,0.08)',
-          background: '#FFFFFF', padding: '20px 20px', overflowY: 'auto',
+          width: 300, borderLeft: '1px solid #1E1E1E',
+          background: '#0D0D0D', padding: '20px', overflowY: 'auto',
           display: 'flex', flexDirection: 'column', gap: 16,
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          {/* Header */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: '#111827' }}>{selectedData.label}</div>
-              <div style={{ fontSize: 11, color: '#6B7280', marginTop: 2 }}>{selectedData.sublabel}</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#F4F4F5', letterSpacing: '-0.01em' }}>
+                {selectedData.label}
+              </div>
+              <div style={{ fontSize: 10, color: '#52525B', marginTop: 3, fontFamily: 'ui-monospace' }}>
+                {selectedData.sublabel}
+              </div>
             </div>
-            <button onClick={() => setSelectedNode(null)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#9CA3AF', fontSize: 18, lineHeight: 1, padding: 2 }}>×</button>
+            <button onClick={() => setSelectedNode(null)}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#3F3F46', fontSize: 16, padding: 2, lineHeight: 1 }}>
+              ✕
+            </button>
           </div>
 
-          <div style={{ padding: '10px 12px', background: '#F9FAFB', borderRadius: 8, fontSize: 12, color: '#374151', lineHeight: 1.6 }}>
-            {selectedData.description || 'No description available.'}
+          {/* Status badge */}
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 5,
+              padding: '4px 10px', borderRadius: 4,
+              background: `${STATUS_COLOR[selectedData.status]}18`,
+              border: `1px solid ${STATUS_COLOR[selectedData.status]}30`,
+            }}>
+              <span style={{ width: 5, height: 5, borderRadius: '50%', background: STATUS_COLOR[selectedData.status] }} />
+              <span style={{ fontSize: 10, fontWeight: 700, color: STATUS_COLOR[selectedData.status], letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                {selectedData.status}
+              </span>
+            </div>
+            <div style={{
+              padding: '4px 10px', borderRadius: 4,
+              background: `${KIND_COLOR[selectedData.kind].border}18`,
+              border: `1px solid ${KIND_COLOR[selectedData.kind].border}30`,
+              fontSize: 10, fontWeight: 700, color: KIND_COLOR[selectedData.kind].border,
+              letterSpacing: '0.08em', textTransform: 'uppercase',
+            }}>
+              {KIND_COLOR[selectedData.kind].label}
+            </div>
           </div>
 
+          {/* Description */}
+          <div style={{
+            padding: '12px', background: '#141414', borderRadius: 6,
+            fontSize: 11, color: '#A1A1AA', lineHeight: 1.7,
+            border: '1px solid #1E1E1E',
+          }}>
+            {selectedData.description || 'No description.'}
+          </div>
+
+          {/* Metrics */}
           {(selectedData.owner || selectedData.latency || selectedData.uptime) && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {selectedData.owner && <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}><span style={{ color: '#9CA3AF' }}>Owner</span><span style={{ color: '#374151', fontWeight: 500 }}>{selectedData.owner}</span></div>}
-              {selectedData.latency && <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}><span style={{ color: '#9CA3AF' }}>Latency</span><span style={{ color: '#374151', fontFamily: 'monospace' }}>{selectedData.latency}</span></div>}
-              {selectedData.uptime && <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}><span style={{ color: '#9CA3AF' }}>Uptime 30d</span><span style={{ color: '#374151', fontFamily: 'monospace' }}>{selectedData.uptime}</span></div>}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+              {[
+                selectedData.owner   && ['Owner',   selectedData.owner],
+                selectedData.latency && ['p50',     selectedData.latency],
+                selectedData.uptime  && ['Uptime',  selectedData.uptime],
+              ].filter(Boolean).map(([k, v]) => (
+                <div key={String(k)} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #1A1A1A', fontSize: 11 }}>
+                  <span style={{ color: '#3F3F46' }}>{String(k)}</span>
+                  <span style={{ color: '#A1A1AA', fontFamily: 'ui-monospace' }}>{String(v)}</span>
+                </div>
+              ))}
             </div>
           )}
-
-          <div style={{ display: 'flex', gap: 6 }}>
-            <span style={{
-              padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600,
-              background: selectedData.status === 'live' ? '#DCFCE7' : selectedData.status === 'degraded' ? '#FEE2E2' : '#F3F4F6',
-              color: selectedData.status === 'live' ? '#166534' : selectedData.status === 'degraded' ? '#991B1B' : '#6B7280',
-            }}>
-              {selectedData.status.toUpperCase()}
-            </span>
-          </div>
         </div>
       )}
     </div>
   )
 }
-
