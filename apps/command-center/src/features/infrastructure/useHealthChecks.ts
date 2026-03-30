@@ -1,34 +1,99 @@
-// ─── Wavult OS — Live Health Check Hook ──────────────────────────────────────
-// Hämtar live infrastruktur-status från API var 60s
+// ─── Wavult OS — Live Infrastructure Health Hook ─────────────────────────────
+// Hämtar live status från /v1/infrastructure/health var 30s
+// Returnerar: results, loading, lastRun, refresh, error
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import type { HealthCheckResult, ServiceStatus } from './infraTypes'
 
-export interface ServiceHealth {
+const API_BASE =
+  (import.meta as Record<string, unknown> & { env?: Record<string, string> }).env
+    ?.VITE_API_URL ?? 'https://api.hypbit.com'
+
+const ENDPOINT = `${API_BASE}/v1/infrastructure/health`
+const POLL_INTERVAL_MS = 30_000
+
+// ─── Raw API shape ────────────────────────────────────────────────────────────
+
+interface RawService {
   id: string
-  name: string
-  status: 'operational' | 'degraded' | 'down' | 'unknown'
-  running: number
-  desired: number
-  lastChecked: string
+  status: ServiceStatus
+  latency: number | null
+  runningCount?: number
+  desiredCount?: number
+  pendingCount?: number
+  lastEvent?: string
+  region?: string
 }
 
-export function useHealthChecks() {
-  const [services, setServices] = useState<ServiceHealth[]>([])
-  const [loading, setLoading] = useState(true)
-  const [lastChecked, setLastChecked] = useState<Date | null>(null)
-  const [error, setError] = useState<string | null>(null)
+interface RawResponse {
+  timestamp: string
+  services: RawService[]
+  summary: {
+    total: number
+    operational: number
+    degraded: number
+    down: number
+    unknown: number
+  }
+  errors?: {
+    ecs: string | null
+    cloudfront: string | null
+  }
+}
+
+// ─── Hook ─────────────────────────────────────────────────────────────────────
+
+export interface UseHealthChecksResult {
+  results: Record<string, HealthCheckResult>
+  loading: boolean
+  lastRun: string | null
+  refresh: () => void
+  error: string | null
+}
+
+export function useHealthChecks(): UseHealthChecksResult {
+  const [results, setResults]   = useState<Record<string, HealthCheckResult>>({})
+  const [loading, setLoading]   = useState(true)
+  const [lastRun, setLastRun]   = useState<string | null>(null)
+  const [error, setError]       = useState<string | null>(null)
+  const intervalRef             = useRef<ReturnType<typeof setInterval> | null>(null)
 
   const fetchHealth = useCallback(async () => {
     try {
-      const res = await fetch('https://api.wavult.com/v1/infrastructure/health')
+      const startMs = Date.now()
+      const res = await fetch(ENDPOINT, {
+        headers: { Accept: 'application/json' },
+        signal: AbortSignal.timeout(10_000),
+      })
+
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const data = await res.json()
-      setServices(data.services)
-      setLastChecked(new Date())
-      setError(null)
+
+      const data: RawResponse = await res.json()
+      const now = new Date().toISOString()
+
+      const mapped: Record<string, HealthCheckResult> = {}
+      for (const svc of data.services) {
+        mapped[svc.id] = {
+          serviceId:   svc.id,
+          status:      svc.status,
+          latency:     svc.latency ?? (Date.now() - startMs),
+          lastChecked: now,
+          httpStatus:  res.status,
+          error:       undefined,
+        }
+      }
+
+      setResults(mapped)
+      setLastRun(data.timestamp)
+      setError(
+        data.errors?.ecs || data.errors?.cloudfront
+          ? [data.errors.ecs, data.errors.cloudfront].filter(Boolean).join(' | ')
+          : null
+      )
     } catch (err) {
-      setError(String(err))
-      // Fallback to last known state, don't clear services
+      const msg = err instanceof Error ? err.message : String(err)
+      setError(msg)
+      // Don't clear results — keep last known state
     } finally {
       setLoading(false)
     }
@@ -36,28 +101,34 @@ export function useHealthChecks() {
 
   useEffect(() => {
     fetchHealth()
-    const interval = setInterval(fetchHealth, 60_000) // Check every 60s
-    return () => clearInterval(interval)
+    intervalRef.current = setInterval(fetchHealth, POLL_INTERVAL_MS)
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current)
+    }
   }, [fetchHealth])
 
-  return { services, loading, lastChecked, error, refetch: fetchHealth }
+  return { results, loading, lastRun, refresh: fetchHealth, error }
 }
 
-// ─── Status-etikett ───────────────────────────────────────────────────────────
+// ─── Helpers (re-exported for InfrastructureDashboard) ───────────────────────
 
-export function statusLabel(status: ServiceHealth['status']): string {
-  const labels: Record<ServiceHealth['status'], string> = {
+export function statusLabel(status: ServiceStatus): string {
+  const labels: Record<ServiceStatus, string> = {
     operational: 'Operational',
-    degraded: 'Degraded',
-    down: 'Down',
-    unknown: 'Unknown',
+    degraded:    'Degraded',
+    down:        'Down',
+    unknown:     'Unknown',
+    maintenance: 'Underhåll',
   }
-  return labels[status]
+  return labels[status] ?? status
 }
 
-export function mergeStatus(a: string, b: string): string {
-  if (a === 'down' || b === 'down') return 'down'
-  if (a === 'degraded' || b === 'degraded') return 'degraded'
-  if (a === 'unknown' || b === 'unknown') return 'unknown'
+export function mergeStatus(a: ServiceStatus | string, b: HealthCheckResult): ServiceStatus {
+  const checkStatus = b.status
+  const combined = [a as ServiceStatus, checkStatus]
+  if (combined.includes('down'))        return 'down'
+  if (combined.includes('degraded'))    return 'degraded'
+  if (combined.includes('maintenance')) return 'maintenance'
+  if (combined.includes('unknown'))     return 'unknown'
   return 'operational'
 }

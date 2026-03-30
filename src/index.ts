@@ -50,6 +50,7 @@ import voiceAiEngineRouter from "./voice-ai-engine";
 // Certified Core imports
 // ---------------------------------------------------------------------------
 import { eventsRouter } from "./events";
+import infrastructureHealthRouter from "./infrastructure-health";
 import stateMachineRouter from "./state-machine";
 import { stateMachine } from "./state-machine";
 import { registerSubscribers } from "./subscribers";
@@ -247,6 +248,11 @@ app.use(telephonyEngineRouter);
 // Voice AI — Autonomous customer interaction (ASR + LLM + TTS)
 // ---------------------------------------------------------------------------
 app.use(voiceAiEngineRouter);
+
+// ---------------------------------------------------------------------------
+// Infrastructure Health — Live AWS ECS + CloudFront status
+// ---------------------------------------------------------------------------
+app.use(infrastructureHealthRouter);
 
 // ---------------------------------------------------------------------------
 // Auth helper for inline routes
