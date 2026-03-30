@@ -1,7 +1,7 @@
 // ─── Wavult Network Map — Full System Topology ───────────────────────────────
 // All domains, subdomains, APIs, CDN, tunnels, services — live status.
 
-import { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Globe, Server, Cloud, Zap, ExternalLink, RefreshCw, Shield, Terminal } from 'lucide-react'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
