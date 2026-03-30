@@ -2,6 +2,8 @@ import "dotenv/config";
 import { validateEnv } from "./config/env";
 validateEnv();
 
+import { connectProducer, disconnectProducer, ensureTopics } from "./kafka";
+
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
@@ -648,12 +650,33 @@ async function bootstrap() {
   await stateMachine.loadConfigs();
   registerSubscribers();
   console.log("Certified Core initialized: StateMachine + EventBus + Subscribers");
+
+  // ── Kafka ──────────────────────────────────────────────────────────────────
+  if (process.env.KAFKA_BROKERS) {
+    try {
+      await ensureTopics();
+      await connectProducer();
+      console.log('[kafka] Event backbone ready');
+    } catch (err) {
+      console.error('[kafka] Startup failed (non-fatal):', err);
+      // Non-fatal: API runs without Kafka if broker unavailable
+    }
+  } else {
+    console.warn('[kafka] KAFKA_BROKERS not set — event publishing disabled');
+  }
 }
 
 bootstrap().catch((err) => console.error("Core bootstrap failed:", err));
 
 app.listen(PORT, () => {
-  console.log(`Hypbit OMS API running on http://localhost:${PORT}`);
+  console.log(`Wavult API running on http://localhost:${PORT}`);
+});
+
+// ── Graceful shutdown ─────────────────────────────────────────────────────────
+process.on('SIGTERM', async () => {
+  console.log('[shutdown] SIGTERM received');
+  await disconnectProducer();
+  process.exit(0);
 });
 
 export default app;

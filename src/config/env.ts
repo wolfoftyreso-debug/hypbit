@@ -7,6 +7,8 @@ const OPTIONAL_VARS = [
   "STRIPE_SECRET_KEY",
   "STRIPE_WEBHOOK_SECRET",
   "TRIGGER_API_KEY",
+  "KAFKA_BROKERS",        // e.g. "10.0.0.1:9092,10.0.0.2:9092"
+  "KAFKA_CLIENT_ID",      // default: wavult-api-core
 ];
 
 export function validateEnv() {
