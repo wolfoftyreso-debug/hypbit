@@ -11,6 +11,7 @@ import {
   Building2, MessageSquare, FileText, Activity,
   Plane,
   Phone,
+  Terminal,
 } from 'lucide-react'
 import { useRole, ROLES } from '../auth/RoleContext'
 import { EntitySwitcher } from '../../features/entity-switcher/EntitySwitcher'
@@ -101,6 +102,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/wavult-id',       labelKey: 'nav.wavultId',       icon: ShieldCheck },
       { to: '/system-graph',    labelKey: 'nav.systemGraph',    icon: Network },
       { to: '/system-status',   labelKey: 'nav.systemStatus',   icon: Activity },
+      { to: '/openclaw',        labelKey: 'nav.openclaw',        icon: Terminal },
       { to: '/settings',        labelKey: 'nav.settings',       icon: Settings },
     ],
   },
