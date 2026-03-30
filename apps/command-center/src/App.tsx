@@ -4,6 +4,7 @@
 import React, { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { AuthProvider, useAuth } from './shared/auth/AuthContext'
+import { ThemeProvider } from './shared/theme/ThemeContext'
 import { LoginPage } from './shared/auth/LoginPage'
 import { RoleProvider, useRole, ROLES } from './shared/auth/RoleContext'
 import { EntityScopeProvider } from './shared/scope/EntityScopeContext'
@@ -213,12 +214,14 @@ function AuthenticatedApp() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <RoleProvider>
-        <EntityScopeProvider>
-          <AuthenticatedApp />
-        </EntityScopeProvider>
-      </RoleProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <RoleProvider>
+          <EntityScopeProvider>
+            <AuthenticatedApp />
+          </EntityScopeProvider>
+        </RoleProvider>
+      </AuthProvider>
+    </ThemeProvider>
   )
 }

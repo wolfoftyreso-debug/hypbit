@@ -1,5 +1,11 @@
 /* ─── Wavult OS — Enterprise Design System Tokens ───────────────────────────── */
-/* Replaces dark startup/gaming theme with strict enterprise light theme        */
+
+/* ── Shell layout ─────────────────────────────────────────────────────────── */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
 
 :root {
   /* ── Base ──────────────────────────────────────────────────────────────── */
@@ -70,4 +76,52 @@
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
   --shadow-md: 0 2px 8px rgba(0,0,0,0.08);
   --shadow-lg: 0 4px 16px rgba(0,0,0,0.10);
+}
+
+/* ── Alias tokens (used by Shell + components) ───────────────────────────── */
+:root {
+  --color-bg-primary: var(--color-bg);
+  --color-bg-secondary: var(--color-bg-subtle);
+  --color-accent: var(--color-brand);
+  --color-accent-light: var(--color-brand-light);
+}
+
+/* ── Dark mode ──────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --color-bg:              #0A0A0A;
+  --color-bg-subtle:       #111111;
+  --color-bg-muted:        #161616;
+  --color-surface:         #111111;
+  --color-surface-raised:  #1A1A1A;
+  --color-border:          #222222;
+  --color-border-strong:   #2A2A2A;
+
+  --color-text-primary:    #F4F4F5;
+  --color-text-secondary:  #A1A1AA;
+  --color-text-muted:      #52525B;
+  --color-text-inverse:    #0A0A0A;
+
+  --color-brand:           #3B82F6;
+  --color-brand-hover:     #60A5FA;
+  --color-brand-light:     #1E3A5F;
+
+  --color-success:         #10B981;
+  --color-success-bg:      #052e16;
+  --color-warning:         #F59E0B;
+  --color-warning-bg:      #1C1107;
+  --color-danger:          #EF4444;
+  --color-danger-bg:       #1C0606;
+  --color-neutral:         #71717A;
+  --color-neutral-bg:      #161616;
+  --color-info:            #3B82F6;
+  --color-info-bg:         #0D1B3E;
+
+  --color-bg-primary:      #0A0A0A;
+  --color-bg-secondary:    #111111;
+  --color-accent:          #3B82F6;
+  --color-accent-light:    #1E3A5F;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.5);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.6);
 }
