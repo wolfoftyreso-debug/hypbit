@@ -183,10 +183,10 @@ const EDGES: SystemEdge[] = [
 // ─── Zone config ──────────────────────────────────────────────────────────────
 
 const ZONE_CONFIG: Record<Zone, { label: string; color: string; glow: string }> = {
-  edge:      { label: 'EDGE',      color: '#06B6D4', glow: '#06B6D420' },
-  execution: { label: 'EXECUTION', color: '#3B82F6', glow: '#3B82F620' },
-  data:      { label: 'DATA',      color: '#F97316', glow: '#F9731620' },
-  control:   { label: 'CONTROL',   color: '#A855F7', glow: '#A855F720' },
+  edge:      { label: 'EDGE',      color: '#06B6D4', glow: 'transparent' },
+  execution: { label: 'EXECUTION', color: '#3B82F6', glow: 'transparent' },
+  data:      { label: 'DATA',      color: '#F97316', glow: 'transparent' },
+  control:   { label: 'CONTROL',   color: '#A855F7', glow: 'transparent' },
 }
 
 const STATUS_CONFIG: Record<NodeStatus, { color: string; label: string; pulse: boolean }> = {
@@ -623,21 +623,15 @@ export function SystemGraph() {
                   top: 0,
                   width: ZONE_WIDTH,
                   height: Math.max(canvasHeight, h),
-                  borderRight: '1px solid #0F0F0F',
-                  background: `${cfg.glow}`,
+                  borderRight: '1px solid #111111',
                 }}>
                   <div style={{
                     position: 'absolute', top: 16, left: ZONE_PAD.left,
-                    fontSize: 8, fontWeight: 800, color: cfg.color,
-                    letterSpacing: '0.16em', opacity: 0.7,
+                    fontSize: 8, fontWeight: 800, color: '#2A2A2A',
+                    letterSpacing: '0.16em',
                   }}>
                     {cfg.label}
                   </div>
-                  <div style={{
-                    position: 'absolute', top: 0, left: 0,
-                    width: 3, height: '100%',
-                    background: cfg.color, opacity: 0.15,
-                  }} />
                 </div>
               )
             })}
