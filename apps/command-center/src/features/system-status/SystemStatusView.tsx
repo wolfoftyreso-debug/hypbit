@@ -115,7 +115,7 @@ export function SystemStatusView() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
           {sortedModules.map(mod => {
             const color = MATURITY_COLORS[mod.level]
-            const bg    = MATURITY_BG[mod.level]
+            const _bg    = MATURITY_BG[mod.level]
             return (
               <button
                 key={mod.id}

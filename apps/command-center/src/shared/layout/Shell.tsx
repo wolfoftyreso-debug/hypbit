@@ -193,7 +193,7 @@ function SidebarNav({ criticalAlertCount, onNavigate }: {
 }
 
 export function Shell({ children }: ShellProps) {
-  const { role, setRole, isAdmin, viewAs, setViewAs, effectiveRole } = useRole()
+  const { role, setRole: _setRole, isAdmin, viewAs, setViewAs, effectiveRole } = useRole()
   const { signOut } = useAuth()
   const { activeEntity: scopeEntity } = useEntityScope()
   const { pathname } = useLocation()

@@ -83,7 +83,6 @@ export async function createOrder(params: {
 }, sandbox = false): Promise<RevolutOrder> {
   const base = sandbox ? REVOLUT_MERCHANT_SANDBOX : REVOLUT_MERCHANT_BASE
   const apiKey = import.meta.env.VITE_REVOLUT_MERCHANT_API_KEY || ''
-  
   const res = await fetch(`${base}/orders`, {
     method: 'POST',
     headers: {
@@ -108,8 +107,6 @@ export async function createOrder(params: {
 }
 
 export async function getOrder(orderId: string, sandbox = false): Promise<RevolutOrder> {
-  const base = sandbox ? REVOLUT_MERCHANT_SANDBOX : REVOLUT_MERCHANT_BASE
-  const apiKey = import.meta.env.VITE_REVOLUT_MERCHANT_API_KEY || ''
   const res = await fetch(`${base}/orders/${orderId}`, {
     headers: { 'Authorization': `Bearer ${apiKey}` },
   })
@@ -200,8 +197,6 @@ export async function createPaymentLink(params: {
   customer_email?: string
   expiry_date?: string  // ISO date
 }, sandbox = false): Promise<RevolutPaymentLink> {
-  const base = sandbox ? REVOLUT_MERCHANT_SANDBOX : REVOLUT_MERCHANT_BASE
-  const apiKey = import.meta.env.VITE_REVOLUT_MERCHANT_API_KEY || ''
   
   // Create order first
   const order = await createOrder({
@@ -227,9 +222,9 @@ export async function createPaymentLink(params: {
 // ── Webhook verification ───────────────────────────────────────────────────────
 
 export function verifyRevolutWebhookSignature(
-  payload: string,
-  signature: string,
-  secret: string
+  _payload: string,
+  _signature: string,
+  _secret: string
 ): boolean {
   // Revolut uses HMAC-SHA256
   // In Node.js backend: use crypto.createHmac('sha256', secret).update(payload).digest('hex')

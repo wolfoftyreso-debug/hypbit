@@ -550,7 +550,6 @@ export function SystemGraph() {
   // Global stats
   const liveCount = nodes.filter(n => n.status === 'live').length
   const degradedCount = nodes.filter(n => n.status === 'degraded').length
-  const deadCount = nodes.filter(n => n.status === 'dead').length
   const totalRps = nodes.reduce((sum, n) => sum + n.metrics.rps, 0)
   const avgLatency = Math.round(nodes.reduce((sum, n) => sum + n.metrics.latency, 0) / nodes.length)
   const criticalAlerts = nodes.filter(n => n.status !== 'live' && n.critical).length
