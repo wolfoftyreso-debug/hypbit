@@ -18,10 +18,14 @@ const AWS_REGION = process.env.AWS_REGION || 'eu-north-1'
 const ECS_CLUSTER = process.env.ECS_CLUSTER || 'hypbit'
 
 const ECS_SERVICES = [
-  { id: 'wavult-os-api',  name: 'Wavult OS API',  serviceName: 'wavult-os-api'  },
-  { id: 'quixzoom-api',   name: 'quiXzoom API',   serviceName: 'quixzoom-api'   },
-  { id: 'n8n',            name: 'n8n',             serviceName: 'n8n'            },
-  { id: 'team-pulse',     name: 'Team Pulse',      serviceName: 'team-pulse'     },
+  { id: 'hypbit-api',    name: 'Wavult OS API',  serviceName: 'hypbit-api'    },
+  { id: 'wavult-core',   name: 'Wavult Core',    serviceName: 'wavult-core'   },
+  { id: 'identity-core', name: 'Identity Core',  serviceName: 'identity-core' },
+  { id: 'quixzoom-api',  name: 'quiXzoom API',   serviceName: 'quixzoom-api'  },
+  { id: 'landvex-api',   name: 'LandveX API',    serviceName: 'landvex-api'   },
+  { id: 'bos-scheduler', name: 'BOS Scheduler',  serviceName: 'bos-scheduler' },
+  { id: 'n8n',           name: 'n8n',            serviceName: 'n8n'           },
+  { id: 'team-pulse',    name: 'Team Pulse',      serviceName: 'team-pulse'    },
 ]
 
 // CloudFront distributions — status via HTTP probe (no SDK needed)
