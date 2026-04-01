@@ -3205,7 +3205,7 @@ Wavult Group har tre distinkta varumärken som aldrig ska blandas eller förväx
 
 ### Färgpaletter
 
-**Wavult Group:** #8B5CF6 (lila) — primär identitetsfärg  
+**Wavult Group:** #2563EB (lila) — primär identitetsfärg  
 **QuiXzoom:** #F59E0B (amber/gul) — energi, rörelse, ungdom  
 **Landvex:** #10B981 (grön) — trygghet, natur, offentlig sektor  
 
@@ -4069,7 +4069,7 @@ export const GRAPH_NODES: GraphNode[] = [
     id: 'wavult-group',
     name: 'Wavult Group FZCO',
     type: 'holding',
-    color: '#8B5CF6',
+    color: '#2563EB',
     description: 'Ultimate parent. Äger all IP, varumärken och kod. Dubai Free Zone (DMCC). 0% bolagsskatt.',
     layer: 0,
     links: ['wavult-devops']
@@ -4081,7 +4081,7 @@ export const GRAPH_NODES: GraphNode[] = [
     color: '#6366F1',
     description: 'Central driftsenhet. Bygger systemen, licensierar IP till driftsbolagen. Dubai.',
     layer: 1,
-    links: ['quixzoom-uab', 'quixzoom-inc', 'landvex-ab', 'landvex-inc']
+    links: ['quixzoom-uab', 'quixzoom-inc', 'landvex-ab', 'landvex-inc', 'eos-engine']
   },
   {
     id: 'quixzoom-inc',
@@ -4149,9 +4149,9 @@ export const GRAPH_NODES: GraphNode[] = [
     name: 'Wavult OS',
     type: 'system',
     color: '#3B82F6',
-    description: 'Internt enterprise OS. React + TypeScript, Cloudflare Pages. Hjärnan.',
+    description: 'Enterprise OS för hela Wavult Group. React + TypeScript, AWS ECS, Cloudflare Pages. Kör all intern verksamhetsstyrning.',
     layer: 3,
-    links: ['bernt']
+    links: ['bernt', 'eos-engine']
   },
   {
     id: 'bernt',
@@ -4159,7 +4159,67 @@ export const GRAPH_NODES: GraphNode[] = [
     type: 'person',
     color: '#EC4899',
     description: 'Wavult Groups AI-agent. OpenClaw-instans i Wavult OS. Hjälper hela teamet.',
+    layer: 4,
+    links: ['eos-engine', 'kafka-backbone']
+  },
+  {
+    id: 'eos-engine',
+    name: 'EOS Engine',
+    type: 'system',
+    color: '#8B5CF6',
+    description: 'Enterprise Operating System — autonom styrmotor. Sovereign Engine, Dynasty Engine, Legal Intelligence, Compliance Automation. State persistent i RDS.',
+    layer: 3,
+    links: ['rds-postgres', 'kafka-backbone']
+  },
+  {
+    id: 'kafka-backbone',
+    name: 'Kafka Backbone',
+    type: 'system',
+    color: '#F97316',
+    description: 'Event backbone för hela Wavult. wavult.* event-schema. Kafka + Zookeeper på ECS eu-north-1. Topics: legal.events, eos.action.execute, eos.financial.event.',
+    layer: 4,
+    links: ['n8n-automation']
+  },
+  {
+    id: 'rds-postgres',
+    name: 'RDS PostgreSQL',
+    type: 'system',
+    color: '#06B6D4',
+    description: 'AWS RDS PostgreSQL eu-north-1. Persistent state för EOS, identity-core, compliance. Aldrig Supabase för känslig data.',
     layer: 4
+  },
+  {
+    id: 'redis-cache',
+    name: 'Redis',
+    type: 'system',
+    color: '#EF4444',
+    description: 'Redis 7 på ECS. Distributed locking, execution queue, rate limiting. redis.wavult.local:6379 via Cloud Map.',
+    layer: 4,
+    links: ['kafka-backbone']
+  },
+  {
+    id: 'n8n-automation',
+    name: 'n8n Workflows',
+    type: 'system',
+    color: '#10B981',
+    description: 'All automationslogik i n8n. Morning brief, notifikationer, EOS execution-pipeline. Kör på ECS eu-north-1.',
+    layer: 4
+  },
+  {
+    id: 'identity-core',
+    name: 'Identity Core',
+    type: 'system',
+    color: '#6366F1',
+    description: 'KYC/passhantering på ECS. AWS Textract MRZ-läsning. All PII går via identity-core — aldrig direkt till Supabase.',
+    layer: 4
+  },
+  {
+    id: 'thailand-launch',
+    name: 'Bangkok Launch',
+    type: 'market',
+    color: '#F59E0B',
+    description: 'Thailand workcamp 11 april 2026. Officiell projektstart för quiXzoom och LandveX. Nysa Hotel Bangkok.',
+    layer: 5
   },
   {
     id: 'dubai',

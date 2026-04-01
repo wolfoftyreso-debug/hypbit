@@ -19,17 +19,17 @@ export function KnowledgeHub() {
   const [activeTab, setActiveTab] = useState<Tab>('kunskapsbas')
 
   return (
-    <div className="flex flex-col h-full bg-gray-50 overflow-hidden">
+    <div className="flex flex-col h-full bg-muted/30 overflow-hidden">
       {/* Header */}
-      <div className="flex-shrink-0 border-b border-gray-200 px-4 md:px-6 pt-4 md:pt-5 pb-0">
+      <div className="flex-shrink-0 border-b border-surface-border px-4 md:px-6 pt-4 md:pt-5 pb-0">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-xl font-semibold text-gray-900">Knowledge Hub</h1>
+            <h1 className="text-xl font-semibold text-text-primary">Knowledge Hub</h1>
             <p className="text-sm text-gray-9000 mt-0.5">
               Wavult Groups samlade kunskap, strukturer och utbildningsmaterial —{' '}
               <button
                 onClick={() => setActiveTab('utbildning')}
-                className="text-[#8B5CF6] hover:underline"
+                className="text-[#2563EB] hover:underline"
               >
                 Ny i teamet? Börja med Utbildning
               </button>
@@ -45,8 +45,8 @@ export function KnowledgeHub() {
               onClick={() => setActiveTab(tab.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors flex-shrink-0 ${
                 activeTab === tab.id
-                  ? 'bg-[#8B5CF6]/15 text-[#8B5CF6] border border-[#8B5CF6]/30'
-                  : 'text-gray-9000 hover:text-gray-600 hover:bg-gray-50'
+                  ? 'bg-[#2563EB]/15 text-[#2563EB] border border-[#2563EB]/30'
+                  : 'text-gray-9000 hover:text-gray-600 hover:bg-muted/30'
               }`}
             >
               {tab.label}
@@ -56,7 +56,7 @@ export function KnowledgeHub() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-hidden p-6">
+      <div className="flex-1 overflow-hidden p-4 md:p-6" style={{ minHeight: 0 }}>
         {activeTab === 'kunskapsbas' && <KnowledgeBase />}
         {activeTab === 'kunskapsgraf' && <KnowledgeGraph />}
         {activeTab === 'utbildning' && <AcademyView />}

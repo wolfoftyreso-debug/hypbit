@@ -172,17 +172,31 @@ export function KnowledgeGraph() {
       node.attr('transform', d => `translate(${d.x ?? 0},${d.y ?? 0})`)
     })
 
-    return () => { simulation.stop() }
+    const resizeObserver = new ResizeObserver(() => {
+      if (!svgRef.current || !containerRef.current) return
+      const newWidth = containerRef.current.clientWidth
+      const newHeight = containerRef.current.clientHeight
+      d3.select(svgRef.current)
+        .attr('width', newWidth)
+        .attr('height', newHeight)
+      simulation
+        .force('center', d3.forceCenter(newWidth / 2, newHeight / 2))
+        .force('y', d3.forceY<SimNode>(d => (d.layer * newHeight) / 5).strength(0.15))
+        .alpha(0.3).restart()
+    })
+    resizeObserver.observe(container)
+
+    return () => { simulation.stop(); resizeObserver.disconnect() }
   }, [])
 
   return (
-    <div className="h-full flex gap-4">
+    <div className="flex gap-4" style={{ height: 'calc(100vh - 220px)' }}>
       {/* Graph */}
-      <div ref={containerRef} className="flex-1 relative bg-gray-50 rounded-xl border border-surface-border overflow-hidden">
+      <div ref={containerRef} className="flex-1 relative bg-muted/30 rounded-xl border border-surface-border overflow-hidden min-h-[600px]" style={{ height: '100%' }}>
         <div className="absolute top-3 left-3 z-10 flex flex-wrap gap-2">
           {(['holding', 'operations', 'product', 'system', 'person', 'market'] as NodeType[]).map(type => {
             const colorMap: Record<NodeType, string> = {
-              holding: '#8B5CF6', operations: '#6366F1', product: '#F59E0B',
+              holding: '#2563EB', operations: '#6366F1', product: '#F59E0B',
               system: '#3B82F6', person: '#EC4899', market: '#0EA5E9'
             }
             return (
@@ -198,7 +212,7 @@ export function KnowledgeGraph() {
           Scroll: zoom · Drag: pan/move · Klick: info
         </div>
 
-        <svg ref={svgRef} className="w-full h-full" />
+        <svg ref={svgRef} width="100%" height="100%" />
       </div>
 
       {/* Info panel */}
@@ -226,7 +240,7 @@ export function KnowledgeGraph() {
           <div className="bg-white border rounded-xl p-4 flex-1" style={{ borderColor: selectedNode.color + '40' }}>
             <div className="flex items-center gap-2 mb-3">
               <div className="h-3 w-3 rounded-full flex-shrink-0" style={{ background: selectedNode.color }} />
-              <h3 className="text-sm font-semibold text-gray-900">{selectedNode.name}</h3>
+              <h3 className="text-sm font-semibold text-text-primary">{selectedNode.name}</h3>
             </div>
 
             <div
