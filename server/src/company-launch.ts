@@ -72,6 +72,15 @@ companyLaunchRouter.post('/', async (req: Request, res: Response) => {
       .single()
 
     if (error) return res.status(500).json({ error: error.message })
+
+    // ── Knowledge Engine: trigga AI-artikel för det nya bolaget ──
+    const PORT = process.env.PORT ?? 3001
+    fetch(`http://localhost:${PORT}/api/knowledge/event`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event_type: 'company.added', entity: data }),
+    }).catch((err: unknown) => console.error('[knowledge-engine] Trigger misslyckades:', err))
+
     return res.status(201).json(data)
   } catch (err: any) {
     return res.status(500).json({ error: err.message })

@@ -1,6 +1,36 @@
 import { useState, useEffect } from 'react'
 import { CURRICULUM, type Lesson } from './curriculumData'
 
+// ── Knowledge Article typ ──────────────────────────────────
+interface KnowledgeArticle {
+  id: string
+  slug: string
+  title: string
+  category: string
+  content_markdown: string
+  last_updated: string
+}
+
+// ── Matchar lektions-system mot knowledge_articles ─────────
+function matchArticles(lesson: Lesson, articles: KnowledgeArticle[]): KnowledgeArticle[] {
+  const systemLower = lesson.system.toLowerCase()
+  return articles.filter(a => {
+    const titleLower = a.title.toLowerCase()
+    const contentLower = a.content_markdown.toLowerCase().slice(0, 200)
+    return (
+      titleLower.includes(systemLower) ||
+      contentLower.includes(systemLower) ||
+      (systemLower === 'aws' && a.category === 'infrastructure') ||
+      (systemLower === 'supabase' && a.category === 'infrastructure') ||
+      (systemLower === 'github' && titleLower.includes('github')) ||
+      (systemLower === 'cloudflare' && (a.category === 'infrastructure' || titleLower.includes('cloudflare'))) ||
+      (systemLower === 'stripe' && titleLower.includes('stripe')) ||
+      (systemLower === 'revolut' && titleLower.includes('revolut')) ||
+      (systemLower === 'openclaw' && titleLower.includes('openclaw'))
+    )
+  }).slice(0, 3)
+}
+
 // ── Dag-beräkning ──────────────────────────────────────────
 const THAILAND_START = new Date('2026-04-11')
 
@@ -44,13 +74,24 @@ export function AcademyView() {
   const currentDay = getCurrentDay()
 
   const [selectedDay, setSelectedDay] = useState<number>(currentDay)
+  const [knowledgeArticles, setKnowledgeArticles] = useState<KnowledgeArticle[]>([])
+  const [expandedArticle, setExpandedArticle] = useState<string | null>(null)
 
   // Uppdatera selectedDay om currentDay ändras (vid midnatt)
   useEffect(() => {
     setSelectedDay(currentDay)
   }, [currentDay])
 
+  // Hämta knowledge articles för länkning
+  useEffect(() => {
+    fetch('/api/knowledge/articles')
+      .then(r => r.json())
+      .then((data: KnowledgeArticle[]) => setKnowledgeArticles(Array.isArray(data) ? data : []))
+      .catch(() => {}) // Tyst fel — artiklar är bonus
+  }, [])
+
   const lesson: Lesson = CURRICULUM[selectedDay - 1]
+  const relatedArticles = matchArticles(lesson, knowledgeArticles)
 
   return (
     <div className="flex flex-col gap-4 h-full overflow-y-auto pb-6">
@@ -140,6 +181,36 @@ export function AcademyView() {
                 <span className="text-gray-400">➡️ Imorgon:</span>{' '}
                 <span className="text-gray-300">{lesson.tomorrow}</span>
               </p>
+            </div>
+          )}
+
+          {/* Relaterade Knowledge-artiklar */}
+          {relatedArticles.length > 0 && (
+            <div className="px-5 py-4 border-t border-surface-border">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-sm">📚</span>
+                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                  Djupdyk i kunskapsbasen
+                </span>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                {relatedArticles.map(article => (
+                  <div key={article.id} className="rounded-lg border border-surface-border overflow-hidden">
+                    <button
+                      onClick={() => setExpandedArticle(expandedArticle === article.id ? null : article.id)}
+                      className="w-full flex items-center justify-between px-3 py-2 text-left hover:bg-surface-primary/50"
+                    >
+                      <span className="text-xs text-blue-400 font-medium">✨ {article.title}</span>
+                      <span className="text-gray-500 text-xs">{expandedArticle === article.id ? '▲' : '▼'}</span>
+                    </button>
+                    {expandedArticle === article.id && (
+                      <div className="px-3 pb-3 text-xs text-gray-400 leading-relaxed border-t border-surface-border pt-2">
+                        {article.content_markdown.slice(0, 400)}…
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>

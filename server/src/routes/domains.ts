@@ -87,4 +87,52 @@ router.get('/api/domains/status', async (_req: Request, res: Response) => {
   }
 })
 
+// ─── POST /api/domains — lägg till ny Cloudflare-zon ─────────────────────────
+
+router.post('/api/domains', async (req: Request, res: Response) => {
+  try {
+    const { name, account_id, jump_start } = req.body as { name: string; account_id?: string; jump_start?: boolean }
+
+    if (!name) {
+      return res.status(400).json({ error: 'name krävs' })
+    }
+
+    const payload = {
+      name,
+      account: { id: account_id ?? process.env.CF_ACCOUNT_ID ?? 'b65ff6fbc9b5a7a7da71bb0d3f1beb28' },
+      jump_start: jump_start ?? true,
+    }
+
+    const createRes = await fetch(`${CF_API}/zones`, {
+      method: 'POST',
+      headers: cfHeaders(),
+      body: JSON.stringify(payload),
+    })
+
+    const createData = await createRes.json() as { success: boolean; result?: { id: string; name: string; status: string; name_servers: string[] }; errors?: Array<{ message: string }> }
+
+    if (!createData.success) {
+      const msg = createData.errors?.[0]?.message ?? 'Cloudflare API error'
+      return res.status(400).json({ error: msg })
+    }
+
+    const zone = createData.result!
+
+    // ── Knowledge Engine: trigga AI-artikel för den nya domänen ──
+    const PORT = process.env.PORT ?? 3001
+    fetch(`http://localhost:${PORT}/api/knowledge/event`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        event_type: 'domain.added',
+        entity: { name: zone.name, zoneId: zone.id, status: zone.status, nameservers: zone.name_servers },
+      }),
+    }).catch((err: unknown) => console.error('[knowledge-engine] Domain trigger misslyckades:', err))
+
+    return res.status(201).json({ zone })
+  } catch (err: unknown) {
+    return res.status(500).json({ error: err instanceof Error ? err.message : 'Serverfel' })
+  }
+})
+
 export default router
