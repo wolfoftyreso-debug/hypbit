@@ -12,6 +12,8 @@ import aiApiRouter from './routes/ai-api'
 import mediaApiRouter from './routes/media-api'
 import berntRouter from './routes/bernt'
 import voiceRouter from './routes/voice'
+import { testEmbedding } from './engines/embeddingEngine'
+import { testVision } from './engines/visionEngine'
 
 const app = express()
 
@@ -61,6 +63,22 @@ app.use('/', twilioRouter)
 app.use('/', aiApiRouter)
 app.use('/', mediaApiRouter)
 
+// NVIDIA NIM — status endpoint
+app.get('/api/nvidia/status', async (_req, res) => {
+  const [embed, vision] = await Promise.allSettled([testEmbedding(), testVision()])
+  res.json({
+    nvidia_key: !!process.env.NVIDIA_API_KEY,
+    embedding: embed.status === 'fulfilled' ? embed.value : { ok: false },
+    vision: vision.status === 'fulfilled' ? vision.value : { ok: false },
+    models: {
+      reasoning: 'nvidia/llama-3.3-nemotron-super-49b-v1',
+      embedding: 'nvidia/nv-embedqa-e5-v5',
+      vision: 'meta/llama-3.2-11b-vision-instruct',
+      safety: 'nvidia/llama-3.1-nemotron-safety-guard-8b-v3',
+    },
+  })
+})
+
 // Health — rate limited
 app.get('/health', healthLimiter, (_req, res) => {
   res.json({
@@ -68,7 +86,7 @@ app.get('/health', healthLimiter, (_req, res) => {
     service: 'wavult-core',
     version: '2.0.0',
     engines: ['state', 'financial', 'fraud', 'event'],
-    integrations: ['identity-core', 'revolut', 's3', 'rekognition', 'bernt', 'voice'],
+    integrations: ['identity-core', 'revolut', 's3', 'rekognition', 'bernt', 'voice', 'nvidia-nim'],
   })
 })
 

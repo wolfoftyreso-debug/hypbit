@@ -103,11 +103,49 @@ async function berntReply(
         return d.reply
       }
     } catch {
-      // Fallthrough till Claude
+      // Fallthrough till NVIDIA
     }
   }
 
-  // Fallback: direkt Claude Haiku
+  // NVIDIA Nemotron — bättre reasoning, snabbare för röst
+  const NVIDIA_KEY = process.env.NVIDIA_API_KEY
+  if (NVIDIA_KEY) {
+    try {
+      const res = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${NVIDIA_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'nvidia/llama-3.3-nemotron-super-49b-v1',
+          messages: [
+            {
+              role: 'system',
+              content: `Du är Bernt, Wavult Groups AI-agent. Du pratar i telefon.
+Var kortfattad (max 2-3 meningar), naturlig och professionell.
+Prata alltid svenska om inte den som ringer pratar engelska.
+Du representerar Wavult Group — ett enterprise-teknikbolag med quiXzoom och LandveX som produkter.`,
+            },
+            ...history.map((h) => ({ role: h.role, content: h.content })),
+            { role: 'user', content: message },
+          ],
+          max_tokens: 200,
+          temperature: 0.6,
+          stream: false,
+        }),
+      })
+      const d = (await res.json()) as { choices?: Array<{ message: { content: string } }> }
+      if (d.choices?.[0]?.message?.content) {
+        return d.choices[0].message.content
+      }
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e)
+      console.warn('[voice] NVIDIA fallback:', msg)
+    }
+  }
+
+  // Fallback: Claude Haiku
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -117,11 +155,8 @@ async function berntReply(
     },
     body: JSON.stringify({
       model: 'claude-haiku-4-5-20251001',
-      max_tokens: 300,
-      system: `Du är Bernt, Wavult Groups AI-agent. Du pratar i telefon.
-Var kortfattad (max 2–3 meningar), naturlig och professionell.
-Prata alltid svenska om inte den som ringer pratar engelska.
-Avsluta aldrig ett samtal utan att fråga om det är något mer du kan hjälpa till med.`,
+      max_tokens: 200,
+      system: 'Du är Bernt, Wavult Groups AI-agent i telefon. Kort, naturlig, professionell. Svenska.',
       messages: [
         ...history.map((h) => ({ role: h.role, content: h.content })),
         { role: 'user', content: message },
@@ -133,7 +168,7 @@ Avsluta aldrig ett samtal utan att fråga om det är något mer du kan hjälpa t
     throw new Error(`Claude API error ${res.status}`)
   }
   const d = (await res.json()) as { content?: Array<{ text: string }> }
-  return d.content?.[0]?.text || 'Förlåt, jag hörde inte det. Kan du upprepa?'
+  return d.content?.[0]?.text || 'Förlåt, ett tekniskt fel uppstod.'
 }
 
 async function serveAudio(text: string, callId: string): Promise<string> {
