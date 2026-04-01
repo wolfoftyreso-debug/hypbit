@@ -437,10 +437,10 @@ app.get("/health", healthLimiter, async (_req: Request, res: Response) => {
 // org_id and role from the public.users table so downstream handlers
 // always have req.user.org_id available.
 // ---------------------------------------------------------------------------
-app.use(async (req: Request, _res: Response, next: NextFunction) => {
-  // Internal API key bypass — for Wavult OS frontend and Bernt
-  const apiKey = req.headers['x-api-key'];
-  if (apiKey === 'wavult-openclaw-2026' || apiKey === process.env.WAVULT_API_KEY) {
+// Sync API key bypass middleware — runs BEFORE async auth
+app.use((req: Request, _res: Response, next: NextFunction) => {
+  const apiKey = (req.headers['x-api-key'] || req.headers['X-Api-Key']) as string;
+  if (apiKey && (apiKey === 'wavult-openclaw-2026' || apiKey === process.env.WAVULT_API_KEY)) {
     (req as any).user = {
       id: '00000000-0000-0000-0000-000000000001',
       org_id: '00020001-0000-0000-0000-000000000001',
@@ -448,8 +448,13 @@ app.use(async (req: Request, _res: Response, next: NextFunction) => {
       email: 'bernt@wavult.com',
       full_name: 'Bernt (System)',
     };
-    return next();
   }
+  next();
+});
+
+app.use(async (req: Request, _res: Response, next: NextFunction) => {
+  // Skip if already authenticated via API key
+  if ((req as any).user) return next();
 
   const authHeader = req.headers.authorization;
 
