@@ -717,6 +717,8 @@ app.use('/api/governance', auth, governanceRouter);
 // ---------------------------------------------------------------------------
 import ventureEngineRouter from './venture-engine';
 app.use('/api', ventureEngineRouter); // /api/venture-engine/*
+import { ventureEngineRouter as veRouter } from './routes/venture-engine';
+app.use('/api/venture-engine', auth, veRouter);
 
 // ============================================================
 // CERTIFIED OMS: Task Catalog API
