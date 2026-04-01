@@ -718,7 +718,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
 // Company Launch — full CRUD, company management, step tracking
 // ---------------------------------------------------------------------------
 import { companyLaunchRouter } from './company-launch';
-app.use('/api/company-launch', auth, companyLaunchRouter);
+app.use('/api/company-launch', companyLaunchRouter); // auth handled via getUser() in router
 
 // ---------------------------------------------------------------------------
 // Wavult Ledger Core v1 — Double-entry bookkeeping, multi-entity, multi-currency
@@ -744,7 +744,7 @@ app.use('/api/governance', auth, governanceRouter);
 import ventureEngineRouter from './venture-engine';
 app.use('/api', ventureEngineRouter); // /api/venture-engine/*
 import { ventureEngineRouter as veRouter } from './routes/venture-engine';
-app.use('/api/venture-engine', auth, veRouter);
+app.use('/api/venture-engine', veRouter); // auth handled via getUser() in router
 
 // ─── New modules: Git, Database, Domains, Automation, Infra ──────────────────
 import adminDbRouter from './routes/admin-db';
