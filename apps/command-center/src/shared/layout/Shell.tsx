@@ -12,6 +12,7 @@ import {
   Plane,
   Phone,
   Terminal,
+  Globe,
 } from 'lucide-react'
 import { useRole, ROLES } from '../auth/RoleContext'
 import { useTheme } from '../theme/ThemeContext'
@@ -86,7 +87,10 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/decisions',      labelKey: 'nav.decisions',      icon: Scale },
       { to: '/projects',       labelKey: 'nav.projects',       icon: Layers },
       { to: '/finance-flow',   labelKey: 'nav.finance_flow',   icon: ArrowRight },
+      { to: '/visa',           labelKey: 'nav.visa',           icon: Globe },
       { to: '/flights',        labelKey: 'nav.flights',        icon: Plane },
+      { to: '/uber',           labelKey: 'nav.uber',           icon: Activity },
+      { to: '/insurance',      labelKey: 'nav.insurance',      icon: ShieldCheck },
       { to: '/company-launch',  labelKey: 'nav.company_launch', icon: Building2 },
       { to: '/corporate',      labelKey: 'nav.corporate',      icon: Building2 },
       { to: '/legal',          labelKey: 'nav.legal',          icon: Scale },
@@ -100,11 +104,12 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { to: '/knowledge',       labelKey: 'nav.knowledge',      icon: BookOpen },
       { to: '/infrastructure',  labelKey: 'nav.infrastructure', icon: Server },
+      { to: '/terraform',       labelKey: 'nav.terraform',       icon: Server },
       { to: '/wavult-id',       labelKey: 'nav.wavultId',       icon: ShieldCheck },
       { to: '/system-graph',    labelKey: 'nav.systemGraph',    icon: Network },
       { to: '/system-status',   labelKey: 'nav.systemStatus',   icon: Activity },
       { to: '/openclaw',        labelKey: 'nav.openclaw',        icon: Terminal },
-      { to: '/network-map',    labelKey: 'nav.networkMap',      icon: Globe },
+      
       { to: '/settings',        labelKey: 'nav.settings',       icon: Settings },
     ],
   },

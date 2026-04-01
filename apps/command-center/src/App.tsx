@@ -1,8 +1,9 @@
 // ─── Wavult OS v2 — Application Root ───────────────────────────────────────────
 // Provider hierarchy: Auth → Role → EntityScope → Operator → Events → Shell
 
-import React, { lazy, Suspense } from 'react'
+import React, { lazy, Suspense, useState, useCallback } from 'react'
 import { Routes, Route } from 'react-router-dom'
+import { BootSequence } from './shared/boot/BootSequence'
 import { AuthProvider, useAuth } from './shared/auth/AuthContext'
 import { ThemeProvider } from './shared/theme/ThemeContext'
 import { LoginPage } from './shared/auth/LoginPage'
@@ -58,6 +59,7 @@ const MeetingView            = lazy(() => import('./features/decisions/MeetingVi
 const LiveMeetingRoom        = lazy(() => import('./features/decisions/LiveMeetingRoom').then(m => ({ default: m.LiveMeetingRoom })))
 const GovernanceDashboard    = lazy(() => import('./features/governance/GovernanceDashboard').then(m => ({ default: m.GovernanceDashboard })))
 const InfrastructureDashboard = lazy(() => import('./features/infrastructure/InfrastructureDashboard').then(m => ({ default: m.InfrastructureDashboard })))
+const TerraformMapView = lazy(() => import('./features/infrastructure/TerraformMapView').then(m => ({ default: m.TerraformMapView })))
 const WavultIDView           = lazy(() => import('./features/identity/WavultIDView').then(m => ({ default: m.WavultIDView })))
 const CausalOS               = lazy(() => import('./features/causal-os/CausalOS').then(m => ({ default: m.CausalOS })))
 const CommandView            = lazy(() => import('./features/command-view/CommandView').then(m => ({ default: m.CommandView })))
@@ -70,6 +72,9 @@ const LandvexPortal          = lazy(() => import('./features/landvex-portal/Land
 const QuixzoomAds            = lazy(() => import('./features/quixzoom-ads/QuixzoomAds').then(m => ({ default: m.QuixzoomAds })))
 const FinanceFlow            = lazy(() => import('./features/finance-flow/FinanceFlow').then(m => ({ default: m.FinanceFlow })))
 const FlightSearch           = lazy(() => import('./features/travel/FlightSearch').then(m => ({ default: m.FlightSearch })))
+const VisaHub                = lazy(() => import('./features/visa/VisaHub').then(m => ({ default: m.VisaHub })))
+const TravelAutomationHub    = lazy(() => import('./features/travel/TravelAutomationHub').then(m => ({ default: m.TravelAutomationHub })))
+const UberHub                = lazy(() => import('./features/travel/UberHub').then(m => ({ default: m.UberHub })))
 const OpenClawHub            = lazy(() => import('./features/openclaw/OpenClawHub').then(m => ({ default: m.OpenClawHub })))
 const NetworkMap             = lazy(() => import('./features/network-map/NetworkMap').then(m => ({ default: m.NetworkMap })))
 const TeamPhones             = lazy(() => import('./features/communications/TeamPhones').then(m => ({ default: m.TeamPhones })))
@@ -124,16 +129,8 @@ function AuthenticatedApp() {
     return roleId ? (ROLES.find(r => r.id === roleId) ?? null) : null
   }, [user, role])
 
-  // Vänta på att session-check är klar
-  if (loading) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center bg-gray-50">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-purple-600" />
-      </div>
-    )
-  }
-
-  // Ej inloggad → visa login
+  // Om ej inloggad och inte laddar → visa login direkt
+  // Om laddar men ingen session ännu → visa login (reaktiv auth uppdaterar när klar)
   if (!session) return <LoginPage />
 
   // Inloggad men okänd email → visa rollval som fallback
@@ -194,6 +191,7 @@ function AuthenticatedApp() {
               <Route path="/decisions/:meetingId" element={<MeetingView />} />
               <Route path="/governance" element={<GovernanceDashboard />} />
               <Route path="/infrastructure" element={<InfrastructureDashboard />} />
+              <Route path="/terraform" element={<TerraformMapView />} />
               <Route path="/wavult-id" element={<WavultIDView />} />
               <Route path="/causal-os" element={<CausalOS />} />
               <Route path="/ops" element={<OperationsCenter />} />
@@ -203,6 +201,9 @@ function AuthenticatedApp() {
               <Route path="/quixzoom-ads" element={<QuixzoomAds />} />
               <Route path="/finance-flow" element={<FinanceFlow />} />
               <Route path="/flights" element={<FlightSearch />} />
+              <Route path="/visa" element={<VisaHub />} />
+              <Route path="/travel" element={<TravelAutomationHub />} />
+              <Route path="/uber" element={<UberHub />} />
               <Route path="/phones" element={<TeamPhones />} />
               <Route path="/openclaw" element={<OpenClawHub />} />
               <Route path="/network-map" element={<NetworkMap />} />

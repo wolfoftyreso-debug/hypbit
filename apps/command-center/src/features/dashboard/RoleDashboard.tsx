@@ -3,26 +3,52 @@ import { useRole } from '../../shared/auth/RoleContext'
 import { CommandDashboard } from './CommandDashboard'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { useTranslation } from '../../shared/i18n/useTranslation'
+import { useVisaAlerts } from '../visa/useVisaAlerts'
 
 // ─── Help banner for first-time users ────────────────────────────────────────
 function WelcomeBanner() {
   const [dismissed, setDismissed] = useState(() => !!localStorage.getItem('wavult-banner-dismissed'))
   if (dismissed) return null
   return (
-    <div className="mb-6 rounded-xl border border-indigo-500/30 bg-indigo-500/8 p-4 flex items-start gap-3">
+    <div className="mb-6 rounded-xl p-4 flex items-start gap-3" style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderLeft: "3px solid var(--color-accent)" }}>
       <span className="text-xl flex-shrink-0">👋</span>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold text-gray-900 mb-1">Välkommen till Wavult OS</p>
-        <p className="text-xs text-gray-500 leading-relaxed">
-          Det här är ert operativsystem. Alla moduler i vänstermenyn har ett <strong className="text-gray-600">?</strong>-märke — klicka på det för att förstå vad en flik eller funktion gör. Byt bolag med <strong className="text-gray-600">väljaren uppe till vänster</strong>.
+        <p style={{ fontSize: 14, fontWeight: 600, color: "var(--color-text-primary)", marginBottom: 4 }}>Välkommen till Wavult OS</p>
+        <p style={{ fontSize: 12, color: "var(--color-text-secondary)", lineHeight: 1.6 }}>
+          Det här är ert operativsystem. Alla moduler i vänstermenyn har ett <strong style={{ color: "var(--color-text-primary)" }}>?</strong>-märke — klicka på det för att förstå vad en flik eller funktion gör. Byt bolag med <strong style={{ color: "var(--color-text-primary)" }}>väljaren uppe till vänster</strong>.
         </p>
       </div>
       <button
         onClick={() => { localStorage.setItem('wavult-banner-dismissed', '1'); setDismissed(true) }}
-        className="text-gray-500 hover:text-gray-500 transition-colors flex-shrink-0 text-lg leading-none"
+        style={{ color: "var(--color-text-tertiary)", flexShrink: 0, fontSize: 18, lineHeight: 1, background: "none", border: "none", cursor: "pointer" }}
       >
         ×
       </button>
+    </div>
+  )
+}
+
+// ─── Visa Alert Banner ─────────────────────────────────────────────────────────
+function VisaAlertBanner() {
+  const alerts = useVisaAlerts()
+  const critical = alerts.filter(a => a.severity === 'critical')
+  const warning  = alerts.filter(a => a.severity === 'warning')
+  if (alerts.length === 0) return null
+  const top = critical[0] ?? warning[0] ?? alerts[0]
+  return (
+    <div
+      className="flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-medium mb-1"
+      style={{
+        background: top.severity === 'critical' ? '#7f1d1d22' : '#78350f22',
+        border: `1px solid ${top.severity === 'critical' ? '#ef444430' : '#f59e0b30'}`,
+      }}
+    >
+      <span style={{ fontSize: 15 }}>🛂</span>
+      <span style={{ color: top.severity === 'critical' ? '#fca5a5' : '#fcd34d' }}>
+        {top.person}: {top.message}
+        {alerts.length > 1 && ` (+${alerts.length - 1} till)`}
+      </span>
+      <a href="/visa" className="ml-auto text-blue-400 hover:text-blue-300 transition-colors">Visa detaljer →</a>
     </div>
   )
 }
@@ -31,23 +57,24 @@ function WelcomeBanner() {
 function CeoDashboard() {
   return (
     <div className="space-y-8 max-w-6xl">
+      <VisaAlertBanner />
       <WelcomeBanner />
       <div>
-        <h1 className="text-sm font-semibold text-gray-900">Group CEO</h1>
-        <p className="text-gray-500 mt-1">Strategisk överblick — Wavult Ecosystem</p>
+        <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Group CEO</h1>
+        <p style={{ color: "var(--color-text-secondary)", marginTop: 4, fontSize: 14 }}>Strategisk överblick — Wavult Ecosystem</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Aktiva bolag', value: '6', delta: 'WGH, WOP, QZ UAB, QZ Inc, LVX AB, LVX Inc', color: '#8B5CF6' },
+          { label: 'Aktiva bolag', value: '6', delta: 'WGH, WOP, QZ UAB, QZ Inc, LVX AB, LVX Inc', color: '#2563EB' },
           { label: 'Team online', value: '5', delta: 'Alla kärnroller bemannade', color: '#10B981' },
           { label: 'Kapital allokerat', value: 'Q2', delta: 'Thailand workcamp — 11 april', color: '#F59E0B' },
           { label: 'Marknadsfas', value: 'SE', delta: 'Sverige, mitten juni 2026', color: '#3B82F6' },
         ].map(s => (
-          <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-5">
-            <div className="text-xs text-gray-500 mb-2 uppercase tracking-wider">{s.label}</div>
+          <div key={s.label} style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-xl)", padding: 20 }}>
+            <div style={{ fontSize: 11, color: "var(--color-text-muted)", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
             <div className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
-            <div className="text-xs text-gray-500 mt-2">{s.delta}</div>
+            <div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 8 }}>{s.delta}</div>
           </div>
         ))}
       </div>
@@ -90,8 +117,8 @@ function Opsdashboard() {
   return (
     <div className="space-y-8 max-w-6xl">
       <div>
-        <h1 className="text-sm font-semibold text-gray-900">CEO Operations</h1>
-        <p className="text-gray-500 mt-1">Daglig drift & execution — Wavult Operations</p>
+        <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>CEO Operations</h1>
+        <p style={{ color: "var(--color-text-secondary)", marginTop: 4, fontSize: 14 }}>Daglig drift & execution — Wavult Operations</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -99,12 +126,12 @@ function Opsdashboard() {
           { label: 'Aktiva initiativ', value: '8', delta: '3 blockerade', color: '#10B981' },
           { label: 'Team kapacitet', value: '5/5', delta: 'Alla roller bemannade', color: '#3B82F6' },
           { label: 'Thailand nedräkning', value: '17d', delta: '11 april 2026', color: '#F59E0B' },
-          { label: 'Delivery pace', value: 'Hög', delta: 'Q1 sprint aktiv', color: '#8B5CF6' },
+          { label: 'Delivery pace', value: 'Hög', delta: 'Q1 sprint aktiv', color: '#2563EB' },
         ].map(s => (
-          <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-5">
-            <div className="text-xs text-gray-500 mb-2 uppercase tracking-wider">{s.label}</div>
+          <div key={s.label} style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-xl)", padding: 20 }}>
+            <div style={{ fontSize: 11, color: "var(--color-text-muted)", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
             <div className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
-            <div className="text-xs text-gray-500 mt-2">{s.delta}</div>
+            <div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 8 }}>{s.delta}</div>
           </div>
         ))}
       </div>
@@ -138,8 +165,8 @@ function CfoDashboard() {
   return (
     <div className="space-y-8 max-w-6xl">
       <div>
-        <h1 className="text-sm font-semibold text-gray-900">CFO</h1>
-        <p className="text-gray-500 mt-1">Finansiell kontroll — Wavult Ecosystem</p>
+        <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>CFO</h1>
+        <p style={{ color: "var(--color-text-secondary)", marginTop: 4, fontSize: 14 }}>Finansiell kontroll — Wavult Ecosystem</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -147,12 +174,12 @@ function CfoDashboard() {
           { label: 'Bolag med ekonomi', value: '6', delta: 'WGH, WOP, QZ UAB, QZ Inc, LVX AB, LVX Inc', color: '#3B82F6' },
           { label: 'Infrastruktur (AWS)', value: 'Live', delta: 'eu-north-1 · ECS · S3 multi-region', color: '#10B981' },
           { label: 'Transfer pricing', value: 'Ej satt', delta: 'Kräver CLO + extern rådgivare', color: '#FF9500' },
-          { label: 'Dubai holding', value: 'Planerat', delta: 'Väntar på bolagsbildning', color: '#8B5CF6' },
+          { label: 'Dubai holding', value: 'Planerat', delta: 'Väntar på bolagsbildning', color: '#2563EB' },
         ].map(s => (
-          <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-5">
-            <div className="text-xs text-gray-500 mb-2 uppercase tracking-wider">{s.label}</div>
+          <div key={s.label} style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-xl)", padding: 20 }}>
+            <div style={{ fontSize: 11, color: "var(--color-text-muted)", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
             <div className="text-2xl font-bold" style={{ color: s.color }}>{s.value}</div>
-            <div className="text-xs text-gray-500 mt-2">{s.delta}</div>
+            <div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 8 }}>{s.delta}</div>
           </div>
         ))}
       </div>
@@ -186,8 +213,8 @@ function CtoDashboard() {
   return (
     <div className="space-y-8 max-w-6xl">
       <div>
-        <h1 className="text-sm font-semibold text-gray-900">Group CTO</h1>
-        <p className="text-gray-500 mt-1">Teknisk arkitektur & infrastruktur — Wavult Ecosystem</p>
+        <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Group CTO</h1>
+        <p style={{ color: "var(--color-text-secondary)", marginTop: 4, fontSize: 14 }}>Teknisk arkitektur & infrastruktur — Wavult Ecosystem</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -197,10 +224,10 @@ function CtoDashboard() {
           { label: 'S3 Buckets', value: '4', delta: 'EU + US, CRR aktiv', color: '#FF9500' },
           { label: 'CF Pages', value: '10/10', delta: 'Max — behöver frigöra slots', color: '#FF3B30' },
         ].map(s => (
-          <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-5">
-            <div className="text-xs text-gray-500 mb-2 uppercase tracking-wider">{s.label}</div>
+          <div key={s.label} style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-xl)", padding: 20 }}>
+            <div style={{ fontSize: 11, color: "var(--color-text-muted)", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
             <div className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
-            <div className="text-xs text-gray-500 mt-2">{s.delta}</div>
+            <div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 8 }}>{s.delta}</div>
           </div>
         ))}
       </div>
@@ -243,8 +270,8 @@ function CloDashboard() {
   return (
     <div className="space-y-8 max-w-6xl">
       <div>
-        <h1 className="text-sm font-semibold text-gray-900">Chief Legal & Compliance</h1>
-        <p className="text-gray-500 mt-1">Bolagsstruktur, avtal & risk — Wavult Ecosystem</p>
+        <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Chief Legal & Compliance</h1>
+        <p style={{ color: "var(--color-text-secondary)", marginTop: 4, fontSize: 14 }}>Bolagsstruktur, avtal & risk — Wavult Ecosystem</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -254,10 +281,10 @@ function CloDashboard() {
           { label: 'Under bildning', value: '5', delta: 'Dubai, Delaware, Texas, Litauen', color: '#FF9500' },
           { label: 'IP-skydd', value: 'Ej satt', delta: 'Ska ligga i Wavult Group Dubai', color: '#FF3B30' },
         ].map(s => (
-          <div key={s.label} className="bg-white border border-gray-200 rounded-xl p-5">
-            <div className="text-xs text-gray-500 mb-2 uppercase tracking-wider">{s.label}</div>
+          <div key={s.label} style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-xl)", padding: 20 }}>
+            <div style={{ fontSize: 11, color: "var(--color-text-muted)", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
             <div className="text-2xl font-bold" style={{ color: s.color }}>{s.value}</div>
-            <div className="text-xs text-gray-500 mt-2">{s.delta}</div>
+            <div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 8 }}>{s.delta}</div>
           </div>
         ))}
       </div>
@@ -292,15 +319,15 @@ function CpoDashboard() {
   return (
     <div className="space-y-8 max-w-6xl">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Chief Product Officer</h1>
-        <p className="text-gray-500 mt-1">Produktstrategi & roadmap — Vakant (interim: Erik)</p>
+        <h1 style={{ fontSize: 22, fontWeight: 700, color: "var(--color-text-primary)" }}>Chief Product Officer</h1>
+        <p style={{ color: "var(--color-text-secondary)", marginTop: 4, fontSize: 14 }}>Produktstrategi & roadmap — Vakant (interim: Erik)</p>
       </div>
 
-      <div className="bg-white border border-pink-500/20 rounded-2xl p-6 text-center">
+      <div style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderLeft: "3px solid #EC4899", borderRadius: "var(--radius-xl)", padding: 24, textAlign: "center" }}>
         <div className="text-4xl mb-3">🧩</div>
-        <div className="text-gray-900 font-semibold mb-1">Rollen är vakant</div>
-        <div className="text-gray-500 text-sm">Erik Svensson håller CPO-ansvar interim tills rekrytering är klar</div>
-        <div className="mt-4 text-xs text-gray-500">Nästa rekrytering — CPO är prioritet 1</div>
+        <div style={{ color: "var(--color-text-primary)", fontWeight: 600, marginBottom: 4 }}>Rollen är vakant</div>
+        <div style={{ color: "var(--color-text-secondary)", fontSize: 13 }}>Erik Svensson håller CPO-ansvar interim tills rekrytering är klar</div>
+        <div className="mt-4 text-xs text-text-muted">Nästa rekrytering — CPO är prioritet 1</div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -344,19 +371,19 @@ const STATUS_LABELS: Record<string, string> = {
 function Section({ title, children }: { title: string; children: { text: string; status: string }[] }) {
   return (
     <div>
-      <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">{title}</h2>
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <h2 style={{ fontSize: 11, fontWeight: 600, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>{title}</h2>
+      <div style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
         {children.map((item, i) => (
           <div
             key={i}
             className="flex items-start gap-3 px-5 py-3.5"
-            style={{ borderBottom: i < children.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
+            style={{ borderBottom: i < children.length - 1 ? '1px solid var(--color-border)' : 'none' }}
           >
             <span
               className="mt-1 h-2 w-2 rounded-full flex-shrink-0"
               style={{ background: STATUS_COLORS[item.status] ?? '#6B7280' }}
             />
-            <span className="text-sm text-gray-600 flex-1">{item.text}</span>
+            <span style={{ fontSize: 13, color: "var(--color-text-secondary)", flex: 1 }}>{item.text}</span>
             <span
               className="text-xs px-1.5 py-0.5 rounded flex-shrink-0"
               style={{
@@ -394,7 +421,7 @@ function ScopeBanner() {
         {isRoot ? 'Viewing: Wavult Group (All entities)' : `Viewing: ${activeEntity.name}`}
       </span>
       {!isRoot && (
-        <span className="text-gray-500 ml-1">— scoped view</span>
+        <span className="text-text-muted ml-1">— scoped view</span>
       )}
     </div>
   )
@@ -426,6 +453,22 @@ export function RoleDashboard() {
 
   return (
     <>
+      {/* Semantic H1 for accessibility — visually hidden */}
+      <h1
+        style={{
+          position: 'absolute',
+          width: 1,
+          height: 1,
+          padding: 0,
+          margin: -1,
+          overflow: 'hidden',
+          clip: 'rect(0,0,0,0)',
+          whiteSpace: 'nowrap',
+          border: 0,
+        }}
+      >
+        {effectiveRole.title} — Wavult OS Dashboard
+      </h1>
       <ScopeBanner />
       {dashboard}
     </>
