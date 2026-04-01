@@ -1,17 +1,24 @@
 /**
  * bernt.ts — Riktig Bernt-koppling via OpenClaw webhook
  *
- * Flöde: Wavult Mobile → OpenClaw Gateway → Bernt (AI) → svar tillbaka
+ * Flöde: Wavult Mobile → API Core (wavult-core) → externa APIs (Whisper, NVIDIA, ElevenLabs)
+ *
+ * ARKITEKTUR: Mobilen anropar ALDRIG externa AI-APIs direkt.
+ * Alla AI-anrop proxyas via wavult-core/hypbit-api.
+ * Inga API-nycklar i klientkod eller EXPO_PUBLIC_*.
  *
  * Konfiguration:
  *   EXPO_PUBLIC_BERNT_URL    — OpenClaw gateway URL (ex: https://bernt.wavult.com/chat)
  *   EXPO_PUBLIC_BERNT_TOKEN  — Gateway auth-token
- *   EXPO_PUBLIC_OPENAI_KEY   — OpenAI key för Whisper (rösttranskription)
+ *   EXPO_PUBLIC_API_BASE     — Wavult API Core base URL (ex: https://api.wavult.com)
  */
 
 const BERNT_URL = process.env.EXPO_PUBLIC_BERNT_URL || 'http://localhost:18789/api/chat'
 const BERNT_TOKEN = process.env.EXPO_PUBLIC_BERNT_TOKEN || 'cf2f3fb2ffe266a0e68edcdf5abfe978117aee50cc01bfa9'
-const OPENAI_KEY = process.env.EXPO_PUBLIC_OPENAI_KEY || ''
+const API_BASE = process.env.EXPO_PUBLIC_API_BASE || 'https://api.wavult.com'
+
+// BORTTAGET: EXPO_PUBLIC_OPENAI_KEY — API-nycklar exponeras ALDRIG i klientkod
+// Whisper transkriberas via API Core: POST /api/voice/transcribe
 
 export type BerntMessage = {
   role: 'user' | 'assistant'
@@ -124,28 +131,26 @@ async function logToWavultOS(event: {
 }
 
 /**
- * Transkribera en ljudfil med OpenAI Whisper
+ * Transkribera en ljudfil via API Core — aldrig direkt mot OpenAI från klienten.
+ * Arkitektur: Mobile → POST /api/voice/transcribe (wavult-core) → Whisper → text
+ *
  * audioUri: local file URI från expo-av recording
  */
-/**
- * Transkribera en ljudfil med OpenAI Whisper
- */
 export async function transcribeAudio(audioUri: string): Promise<string> {
-  if (!OPENAI_KEY) throw new Error('OPENAI_KEY saknas för Whisper')
-
   const formData = new FormData()
   formData.append('file', {
     uri: audioUri,
     type: 'audio/m4a',
     name: 'voice.m4a',
   } as any)
-  formData.append('model', 'whisper-1')
   formData.append('language', 'sv')
 
-  const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+  // Proxyas via wavult-core — API-nyckeln ligger serverside i SSM
+  const response = await fetch(`${API_BASE}/api/voice/transcribe`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${OPENAI_KEY}`,
+      'Authorization': `Bearer ${BERNT_TOKEN}`,
+      'X-Source': 'wavult-mobile',
     },
     body: formData,
   })

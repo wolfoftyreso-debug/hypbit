@@ -397,4 +397,52 @@ router.get('/status', (_req: Request, res: Response) => {
   })
 })
 
+// ── TRANSCRIBE (proxy för mobil) ─────────────────────────────────────────────
+// POST /api/voice/transcribe
+// Arkitektur: Wavult Mobile → här → Whisper (serverside) → text
+// Mobilklienten skickar ALDRIG direkt mot OpenAI — API-nyckeln är serverside i SSM.
+import multer from 'multer'
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 25 * 1024 * 1024 } })
+
+router.post('/transcribe', upload.single('file'), async (req: Request, res: Response) => {
+  try {
+    if (!req.file) {
+      res.status(400).json({ error: 'Ingen ljudfil bifogad (field: file)' })
+      return
+    }
+    if (!OPENAI_KEY) {
+      res.status(503).json({ error: 'Whisper ej konfigurerad (OPENAI_API_KEY saknas i SSM)' })
+      return
+    }
+
+    const language = (req.body?.language as string) || 'sv'
+
+    // Bygg multipart för Whisper — serverside
+    const form = new FormData()
+    const blob = new Blob([new Uint8Array(req.file.buffer)], { type: req.file.mimetype || 'audio/m4a' })
+    form.append('file', blob, req.file.originalname || 'voice.m4a')
+    form.append('model', 'whisper-1')
+    form.append('language', language)
+
+    const whisperRes = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${OPENAI_KEY}` },
+      body: form,
+    })
+
+    if (!whisperRes.ok) {
+      const errText = await whisperRes.text().catch(() => '')
+      console.error(`[voice/transcribe] Whisper error ${whisperRes.status}: ${errText}`)
+      res.status(502).json({ error: 'Whisper-fel', details: errText })
+      return
+    }
+
+    const data = await whisperRes.json() as { text: string }
+    res.json({ text: data.text || '' })
+  } catch (err) {
+    console.error('[voice/transcribe] Oväntat fel:', err)
+    res.status(500).json({ error: 'Internt fel vid transkription' })
+  }
+})
+
 export default router
