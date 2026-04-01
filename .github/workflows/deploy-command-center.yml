@@ -9,9 +9,25 @@ on:
   workflow_dispatch:
 
 jobs:
+  build-check:
+    runs-on: ubuntu-latest
+    name: TypeScript & Build Check
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: TypeCheck
+        run: cd apps/command-center && npx tsc --noEmit
+      - name: Build
+        run: npm run build --workspace=apps/command-center
+
   deploy:
     runs-on: ubuntu-latest
     name: Build & Deploy to Cloudflare Pages
+    needs: build-check  # BLOCKERAR deploy om build-check failar
 
     steps:
       - name: Checkout
