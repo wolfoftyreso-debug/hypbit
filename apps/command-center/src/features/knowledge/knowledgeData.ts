@@ -4048,6 +4048,96 @@ Efter registrering: skicka 83(b) election till IRS inom **30 dagar**.
 4. Informera Dennis (CLO) och Winston (CFO)
 5. Koppla Wavult DevOps FZCO som ägare när Dubai-bolagen bildas`,
   },
+
+  // ─── LANDVEX INC. JURIDISKA DOKUMENT (Texas, USA) ────────────────────────
+  {
+    id: 'doc-legal-landvex-inc-001',
+    title: 'Landvex Inc. — Certificate of Formation (Texas)',
+    category: 'Juridik',
+    summary: 'Officiellt bildningsdokument för Landvex Inc., Texas For-Profit Corporation. Registrerat 31 mars 2026 via Northwest Registered Agent. SOS-filnummer och statlig stämpel inkluderad.',
+    tags: ['landvex', 'texas', 'formation', 'usa', 'juridik', 'bolagsregistrering', 'northwest'],
+    updatedAt: '2026-03-31',
+    content: `# Certificate of Formation — Landvex Inc. (Texas)
+
+## Bolagsinformation
+- **Bolagsnamn:** Landvex Inc.
+- **Bolagsform:** Texas For-Profit Corporation
+- **Stat:** Texas, USA
+- **Registreringsdatum:** 31 mars 2026
+- **Registered Agent:** Northwest Registered Agent LLC, 522 W Riverside Ave Suite N, Spokane WA 99201
+- **Texas Taxpayer Number:** 32105142718
+
+## Status
+- ✅ Certificate of Formation godkänd av Texas Secretary of State
+- ⏳ EIN (Federal Tax ID) — ansökan pågår via Northwest (väntar på signatur)
+- ⏳ Webfile Number (TX Comptroller) — skickas brevledes till registered agent
+
+## Nästa steg
+1. Signera EIN-ansökan på northwestregisteredagent.com
+2. Invänta Webfile Number från TX Comptroller (brev till Northwest)
+3. Öppna Mercury Bank-konto när EIN är klart
+4. Registrera för Texas Franchise Tax via Webfile
+
+## Dokument
+- Formation Document: \`legal/landvex-inc/formation-document-tx-2026-03-31.pdf\`
+- Initial Resolutions: \`legal/landvex-inc/initial-resolutions.pdf\`
+- Bylaws: \`legal/landvex-inc/bylaws.pdf\`
+
+## Roller
+- **Sole Director & Officer:** Erik Svensson
+- **Incorporator:** Northwest Registered Agent LLC`,
+  },
+  {
+    id: 'doc-legal-landvex-inc-002',
+    title: 'Landvex Inc. — Initial Resolutions',
+    category: 'Juridik',
+    summary: 'Styrelsens initiala resolutioner för Landvex Inc. Fastställer bolagsordning, utser officers och godkänner grundläggande bolagsåtgärder.',
+    tags: ['landvex', 'texas', 'resolutions', 'styrelse', 'juridik', 'usa'],
+    updatedAt: '2026-03-31',
+    content: `# Initial Resolutions — Landvex Inc.
+
+## Dokument
+Styrelsens initiala resolutioner för Landvex Inc., Texas For-Profit Corporation.
+Daterat i samband med bolagsregistreringen 31 mars 2026.
+
+## Innehåll
+- Godkännande av Certificate of Formation
+- Adoption av bolagsordning (Bylaws)
+- Utnämning av officers
+- Godkännande av registered agent (Northwest Registered Agent LLC)
+- Initiala bolagsåtgärder
+
+## Fil
+\`legal/landvex-inc/initial-resolutions.pdf\``,
+  },
+  {
+    id: 'doc-legal-landvex-inc-003',
+    title: 'Landvex Inc. — Bylaws (Bolagsordning)',
+    category: 'Juridik',
+    summary: 'Grundläggande bolagsordning för Landvex Inc. Reglerar styrelsemöten, aktieägarrättigheter, officers och bolagsstyrning enligt Texas lag.',
+    tags: ['landvex', 'texas', 'bylaws', 'bolagsordning', 'juridik', 'usa', 'governance'],
+    updatedAt: '2026-03-31',
+    content: `# Bylaws — Landvex Inc. (Texas For-Profit Corporation)
+
+## Dokument
+Free Basic Bylaws för Landvex Inc., upprättade av Northwest Registered Agent LLC
+i samband med bolagsregistreringen.
+
+## Täcker
+- Aktieägarrättigheter och möten
+- Styrelsens sammansättning och befogenheter
+- Officers (President, Secretary, Treasurer)
+- Aktier och överlåtelser
+- Räkenskapsår
+- Ändringsförfarande
+
+## Viktig notering
+Dessa är "basic bylaws" — standardmallar från Northwest. För extern finansiering
+eller investerare rekommenderas anpassade bylaws upprättade av advokat.
+
+## Fil
+\`legal/landvex-inc/bylaws.pdf\``,
+  },
 ]
 
 // ─── Knowledge Graph Nodes ────────────────────────────────────────────────────
