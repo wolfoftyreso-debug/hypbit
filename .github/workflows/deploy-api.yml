@@ -18,8 +18,8 @@ permissions:
 
 env:
   AWS_REGION: eu-north-1
-  ECS_CLUSTER: hypbit
-  ECS_SERVICE: hypbit-api
+  ECS_CLUSTER: wavult
+  ECS_SERVICE: wavult-os-api
 
 jobs:
   deploy:
@@ -50,8 +50,8 @@ jobs:
 
       - name: Ensure ECR repository exists
         run: |
-          aws ecr describe-repositories --repository-names hypbit/api --region ${{ env.AWS_REGION }} 2>/dev/null || \
-            aws ecr create-repository --repository-name hypbit/api --region ${{ env.AWS_REGION }} --image-scanning-configuration scanOnPush=true
+          aws ecr describe-repositories --repository-names wavult-os-api --region ${{ env.AWS_REGION }} 2>/dev/null || \
+            aws ecr create-repository --repository-name wavult-os-api --region ${{ env.AWS_REGION }} --image-scanning-configuration scanOnPush=true
 
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
@@ -64,8 +64,8 @@ jobs:
         run: |
           ECR="${{ steps.account.outputs.ecr }}"
           TAG="${{ github.sha }}"
-          IMAGE="${ECR}/hypbit/api:${TAG}"
-          LATEST="${ECR}/hypbit/api:latest"
+          IMAGE="${ECR}/wavult-os-api:${TAG}"
+          LATEST="${ECR}/wavult-os-api:latest"
           docker build -f Dockerfile -t "$IMAGE" -t "$LATEST" .
           docker push "$IMAGE"
           docker push "$LATEST"
@@ -87,7 +87,7 @@ jobs:
         run: |
           ECR="${{ steps.account.outputs.ecr }}"
           TAG="${{ github.sha }}"
-          NEW_IMAGE="${ECR}/hypbit/api:${TAG}"
+          NEW_IMAGE="${ECR}/wavult-os-api:${TAG}"
 
           TASK_DEF=$(aws ecs describe-services \
             --cluster ${{ env.ECS_CLUSTER }} \

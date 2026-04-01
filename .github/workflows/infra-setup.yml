@@ -63,8 +63,8 @@ jobs:
 
       - name: Create ECR repository
         run: |
-          aws ecr describe-repositories --repository-names hypbit/api --region eu-north-1 2>/dev/null || \
-            aws ecr create-repository --repository-name hypbit/api --region eu-north-1 --image-scanning-configuration scanOnPush=true 2>&1
+          aws ecr describe-repositories --repository-names wavult-os-api --region eu-north-1 2>/dev/null || \
+            aws ecr create-repository --repository-name wavult-os-api --region eu-north-1 --image-scanning-configuration scanOnPush=true 2>&1
 
       - name: Summary
         if: always()
