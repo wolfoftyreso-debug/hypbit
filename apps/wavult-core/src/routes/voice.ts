@@ -67,7 +67,7 @@ async function tts(text: string): Promise<Buffer> {
 }
 
 async function stt(audioBuffer: Buffer, filename = 'audio.wav'): Promise<string> {
-  const blob = new Blob([audioBuffer], { type: 'audio/wav' })
+  const blob = new Blob([new Uint8Array(audioBuffer)], { type: 'audio/wav' })
   const form = new FormData()
   form.append('file', blob, filename)
   form.append('model', 'whisper-1')
