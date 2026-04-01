@@ -5,9 +5,10 @@ import { JurisdictionView } from './JurisdictionView'
 import { DocumentVault } from './DocumentVault'
 import { ComplianceTracker } from './ComplianceTracker'
 import { OwnershipView } from './OwnershipView'
+import { CompendiumView } from './CompendiumView'
 import { BOARD_MEETINGS, COMPLIANCE_ITEMS, COMPANIES } from './data'
 
-type Tab = 'board' | 'jurisdictions' | 'documents' | 'compliance' | 'ownership'
+type Tab = 'board' | 'jurisdictions' | 'documents' | 'compliance' | 'ownership' | 'compendium'
 
 const TABS: Array<{ id: Tab; label: string; icon: string }> = [
   { id: 'board',         label: 'Styrelse & Beslut',  icon: '🏛️' },
@@ -15,6 +16,7 @@ const TABS: Array<{ id: Tab; label: string; icon: string }> = [
   { id: 'documents',     label: 'Bolagsdokument',     icon: '📁' },
   { id: 'compliance',    label: 'Compliance',         icon: '✅' },
   { id: 'ownership',     label: 'Ägarstruktur',       icon: '🔗' },
+  { id: 'compendium',    label: 'Kompendium',         icon: '📋' },
 ]
 
 function daysUntil(date: string) {
@@ -96,6 +98,7 @@ export function CorporateHub() {
         {activeTab === 'documents'     && <DocumentVault />}
         {activeTab === 'compliance'    && <ComplianceTracker />}
         {activeTab === 'ownership'     && <OwnershipView />}
+        {activeTab === 'compendium'    && <CompendiumView />}
       </div>
     </div>
   )
