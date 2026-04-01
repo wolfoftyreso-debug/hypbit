@@ -419,7 +419,10 @@ app.get("/health", healthLimiter, async (_req: Request, res: Response) => {
 
   const allOk = services.every((s) => s.status === 'ok');
 
-  res.status(allOk ? 200 : 503).json({
+  // ECS health check: alltid 200 så länge processen lever.
+  // 503 används bara av ALB-health och load balancer routing, inte container liveness.
+  // Om downstream-tjänster (Supabase) är nere vid uppstart ska ECS INTE döda containern.
+  res.status(200).json({
     status: allOk ? 'ok' : 'degraded',
     version: process.env.npm_package_version ?? '1.0.0',
     timestamp: new Date().toISOString(),
