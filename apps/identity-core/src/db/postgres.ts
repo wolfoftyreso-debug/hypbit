@@ -1,7 +1,8 @@
 import { Pool } from 'pg'
 import { config } from '../config'
 
-export const db = new Pool(config.db)
+const connectionString = process.env.EOS_DATABASE_URL || process.env.DATABASE_URL
+export const db = connectionString ? new Pool({ connectionString, ssl: { rejectUnauthorized: false } }) : new Pool(config.db)
 
 /** Alias for route-level access — returns the shared pool */
 export function getDb() { return db }

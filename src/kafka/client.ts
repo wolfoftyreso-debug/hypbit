@@ -3,7 +3,7 @@
 
 import { Kafka, logLevel } from 'kafkajs'
 
-const KAFKA_BROKERS = (process.env.KAFKA_BROKERS || 'localhost:9092').split(',')
+const KAFKA_BROKERS = (process.env.KAFKA_BROKERS || 'kafka.wavult.local:9092').split(',')
 const CLIENT_ID = process.env.KAFKA_CLIENT_ID || 'wavult-api-core'
 
 export const kafka = new Kafka({
