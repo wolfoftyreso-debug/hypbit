@@ -11,6 +11,7 @@ import twilioRouter from './routes/twilio'
 import aiApiRouter from './routes/ai-api'
 import mediaApiRouter from './routes/media-api'
 import berntRouter from './routes/bernt'
+import voiceRouter from './routes/voice'
 
 const app = express()
 
@@ -51,6 +52,7 @@ app.use('/v1/task', taskRouter)
 app.use('/v1/payment', paymentRouter)
 app.use('/v1/payout', payoutRouter)
 app.use('/v1/bernt', berntRouter)       // OpenClaw/Bernt integration
+app.use('/voice', voiceRouter)          // Bernt röst-agent (46elks + Whisper + ElevenLabs)
 app.use('/', revolutOAuthRouter)
 app.use('/', healthMonitor)
 app.use('/', quixzoomRouter)
@@ -66,7 +68,7 @@ app.get('/health', healthLimiter, (_req, res) => {
     service: 'wavult-core',
     version: '2.0.0',
     engines: ['state', 'financial', 'fraud', 'event'],
-    integrations: ['identity-core', 'revolut', 's3', 'rekognition', 'bernt'],
+    integrations: ['identity-core', 'revolut', 's3', 'rekognition', 'bernt', 'voice'],
   })
 })
 

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
+import { VoiceCallButton } from '../voice/VoiceCallButton'
 
 // ─── Inline icons (no lucide-react) ──────────────────────────────────────────
 function ChevronDown({ size = 13 }: { size?: number }) {
@@ -23,6 +24,7 @@ const TEAM: {
   entity: string
   entity_id: string
   status: 'active' | 'idle' | 'away'
+  phone?: string
   purpose: string        // Why this role exists
   mandates: string[]     // Core mandates (4–5 bullets)
   kpis: string[]         // What success looks like
@@ -35,7 +37,7 @@ const TEAM: {
     role: 'Chairman & Group CEO',
     title: 'Chairman of the Board & Group CEO',
     domain: 'Strategy, Capital & Governance',
-    color: '#8B5CF6',
+    color: '#2563EB',
     location: '🇸🇪 Stockholm',
     focus: ['Thailand workcamp', 'Bolagsstruktur (Dubai/EU/US)', 'GTM-strategi'],
     entity: 'WGH',
@@ -61,6 +63,7 @@ const TEAM: {
     domain: 'Daglig drift, execution & koordinering',
     color: '#10B981',
     location: '🇸🇪 Sverige',
+    phone: '+46738968949',
     focus: ['Drift av hela organisationen', 'Leverans & execution', 'Resursprioritering'],
     entity: 'WOP',
     entity_id: 'wavult-operations',
@@ -85,6 +88,7 @@ const TEAM: {
     domain: 'Global ekonomi, budget & kassaflöde',
     color: '#3B82F6',
     location: '🇸🇪 Sverige',
+    phone: '+46768123548',
     focus: ['Budget & prognoser', 'Betalningar & kassaflöde', 'Finansiell struktur mellan bolag'],
     entity: 'WOP',
     entity_id: 'wavult-operations',
@@ -109,6 +113,7 @@ const TEAM: {
     domain: 'Juridik, bolagsstruktur & compliance',
     color: '#F59E0B',
     location: '🇸🇪 Sverige',
+    phone: '+46761474243',
     focus: ['Bolagsstruktur (Dubai/EU/US)', 'Avtal & compliance', 'Logistik (tillfälligt)'],
     entity: 'WGH',
     entity_id: 'wavult-group',
@@ -133,6 +138,7 @@ const TEAM: {
     domain: 'Teknik, infrastruktur & systemarkitektur',
     color: '#06B6D4',
     location: '🇸🇪 Sverige',
+    phone: '+46736977576',
     focus: ['Hypbit + produkter', 'Infrastruktur & säkerhet', 'Teknisk roadmap'],
     entity: 'WOP',
     entity_id: 'wavult-operations',
@@ -159,11 +165,11 @@ const TUCKMAN: Record<TuckmanPhase, { label: string; color: string; emoji: strin
   storming:   { label: 'Storming',   color: '#F59E0B', emoji: '⚡', desc: 'Spänningar och konflikter — nödvändigt för att växa.' },
   norming:    { label: 'Norming',    color: '#3B82F6', emoji: '🔵', desc: 'Strukturer sätter sig. Samarbetet flödar.' },
   performing: { label: 'Performing', color: '#10B981', emoji: '🚀', desc: 'Fullt leveransläge. Teamet fungerar självständigt.' },
-  adjourning: { label: 'Adjourning', color: '#8B5CF6', emoji: '🏁', desc: 'Projektet/fasen avslutas.' },
+  adjourning: { label: 'Adjourning', color: '#2563EB', emoji: '🏁', desc: 'Projektet/fasen avslutas.' },
 }
 
 const ENTITY_LABELS: Record<string, { label: string; color: string }> = {
-  WGH: { label: 'Wavult Group (Holding / Governance)', color: '#8B5CF6' },
+  WGH: { label: 'Wavult Group (Holding / Governance)', color: '#2563EB' },
   WOP: { label: 'Wavult Operations (Dubai)', color: '#3B82F6' },
 }
 
@@ -181,7 +187,7 @@ const STATUS_LABEL: Record<string, string> = {
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+    <h2 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">
       {children}
     </h2>
   )
@@ -192,7 +198,7 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl flex flex-col overflow-hidden">
+    <div className="bg-white border border-surface-border rounded-xl flex flex-col overflow-hidden">
       <div className="p-5 flex flex-col gap-4">
         {/* Top */}
         <div className="flex items-start gap-3">
@@ -204,7 +210,7 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-bold text-gray-900">{person.name}</span>
+              <span className="text-sm font-bold text-text-primary">{person.name}</span>
               <span
                 className="h-2 w-2 rounded-full flex-shrink-0"
                 style={{
@@ -214,13 +220,13 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
               />
             </div>
             <div className="text-xs font-semibold mt-0.5" style={{ color: person.color }}>{person.role}</div>
-            <div className="text-xs text-gray-500">{person.domain}</div>
+            <div className="text-xs text-text-muted">{person.domain}</div>
           </div>
         </div>
 
         {/* Meta badges */}
         <div className="flex flex-wrap gap-2">
-          <span className="text-xs px-2 py-0.5 rounded-full bg-gray-50 text-gray-500">
+          <span className="text-xs px-2 py-0.5 rounded-full bg-muted/30 text-text-muted">
             {person.location}
           </span>
           <span
@@ -251,10 +257,10 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
 
         {/* Focus */}
         <div>
-          <p className="text-xs text-gray-500 mb-1.5 font-medium uppercase tracking-wider">Nuvarande fokus</p>
+          <p className="text-xs text-text-muted mb-1.5 font-medium uppercase tracking-wider">Nuvarande fokus</p>
           <ul className="space-y-1">
             {person.focus.map((f, i) => (
-              <li key={i} className="flex items-center gap-1.5 text-xs text-gray-500">
+              <li key={i} className="flex items-center gap-1.5 text-xs text-text-muted">
                 <span className="h-1 w-1 rounded-full flex-shrink-0" style={{ background: person.color }} />
                 {f}
               </li>
@@ -262,20 +268,28 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
           </ul>
         </div>
 
-        {/* Toggle befattningsbeskrivning */}
-        <button
-          onClick={() => setExpanded(s => !s)}
-          className="flex items-center gap-1.5 text-xs font-medium transition-colors mt-1"
-          style={{ color: expanded ? person.color : '#6B7280' }}
-        >
-          {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
-          {expanded ? 'Dölj befattningsbeskrivning' : 'Visa befattningsbeskrivning'}
-        </button>
+        {/* Åtgärder */}
+        <div className="flex items-center gap-2 flex-wrap">
+          {person.phone && (
+            <VoiceCallButton
+              to={person.phone}
+              label={person.name.split(' ')[0]}
+            />
+          )}
+          <button
+            onClick={() => setExpanded(s => !s)}
+            className="flex items-center gap-1.5 text-xs font-medium transition-colors"
+            style={{ color: expanded ? person.color : '#6B7280' }}
+          >
+            {expanded ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+            {expanded ? 'Dölj befattningsbeskrivning' : 'Visa befattningsbeskrivning'}
+          </button>
+        </div>
       </div>
 
       {/* Expanderbar befattningsbeskrivning */}
       {expanded && (
-        <div className="border-t border-gray-200 bg-white p-5 flex flex-col gap-4">
+        <div className="border-t border-surface-border bg-white p-5 flex flex-col gap-4">
           {/* Syfte */}
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider mb-1.5" style={{ color: person.color }}>
@@ -315,12 +329,12 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
 
           {/* NOT this role */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider mb-1.5 text-gray-500">
+            <p className="text-xs font-semibold uppercase tracking-wider mb-1.5 text-text-muted">
               🚫 Ej denna rolls ansvar
             </p>
             <div className="flex flex-wrap gap-1.5">
               {person.notThisRole.map((n, i) => (
-                <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-gray-50 text-gray-500 line-through">
+                <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-muted/30 text-text-muted line-through">
                   {n}
                 </span>
               ))}
@@ -345,8 +359,8 @@ export function PeopleView() {
     <div className="space-y-8 max-w-6xl">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Teamroster</h1>
-        <p className="text-gray-500 mt-1">
+        <h1 className="text-2xl font-bold text-text-primary">Teamroster</h1>
+        <p className="text-text-muted mt-1">
           {isRoot
             ? `Wavult Group — ${visibleTeam.length} core members`
             : `Showing people in ${activeEntity.name} — ${visibleTeam.length} members`}
@@ -372,18 +386,18 @@ export function PeopleView() {
         {[
           { label: 'Totalt team', value: String(visibleTeam.length), color: '#3B82F6' },
           { label: 'Aktiva nu', value: String(visibleTeam.filter(t => t.status === 'active').length), color: '#10B981' },
-          { label: 'Enheter', value: String(new Set(visibleTeam.map(t => t.entity)).size), color: '#8B5CF6' },
+          { label: 'Enheter', value: String(new Set(visibleTeam.map(t => t.entity)).size), color: '#2563EB' },
         ].map(s => (
-          <div key={s.label} className="bg-white border border-gray-200 rounded-xl px-5 py-4">
-            <div className="text-xs text-gray-500 mb-1">{s.label}</div>
+          <div key={s.label} className="bg-white border border-surface-border rounded-xl px-5 py-4">
+            <div className="text-xs text-text-muted mb-1">{s.label}</div>
             <div className="text-3xl font-bold tabular-nums" style={{ color: s.color }}>{s.value}</div>
           </div>
         ))}
       </div>
 
       {/* Tuckman Team Phase Overview */}
-      <div className="bg-white border border-gray-200 rounded-xl px-5 py-4">
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Team Development Phases (Tuckman)</p>
+      <div className="bg-white border border-surface-border rounded-xl px-5 py-4">
+        <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Team Development Phases (Tuckman)</p>
         <div className="flex gap-1 mb-4">
           {(['forming','storming','norming','performing','adjourning'] as TuckmanPhase[]).map((phase) => {
             const t = TUCKMAN[phase]
@@ -425,7 +439,7 @@ export function PeopleView() {
       <div>
         <SectionHeading>Core Team</SectionHeading>
         {visibleTeam.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12 text-text-muted">
             <p className="text-3xl mb-3">👤</p>
             <p className="text-sm">No team members in {activeEntity.name}</p>
           </div>
@@ -445,7 +459,7 @@ export function PeopleView() {
           {Object.entries(ENTITY_LABELS).map(([code, info]) => {
             const members = visibleTeam.filter(t => t.entity === code)
             return (
-              <div key={code} className="bg-white border border-gray-200 rounded-xl px-5 py-4">
+              <div key={code} className="bg-white border border-surface-border rounded-xl px-5 py-4">
                 <div className="flex items-center gap-2 mb-2">
                   <div
                     className="h-6 w-6 rounded-md flex items-center justify-center text-xs font-bold"
@@ -455,20 +469,20 @@ export function PeopleView() {
                   </div>
                   <span className="text-xs font-semibold" style={{ color: info.color }}>{code}</span>
                 </div>
-                <p className="text-xs text-gray-500 mb-3">{info.label}</p>
+                <p className="text-xs text-text-muted mb-3">{info.label}</p>
                 <div className="flex -space-x-1.5">
                   {members.map(m => (
                     <div
                       key={m.name}
                       title={m.name}
-                      className="h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold text-gray-900 border border-surface-base"
+                      className="h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold text-text-primary border border-surface-base"
                       style={{ background: m.color }}
                     >
                       {m.initials[0]}
                     </div>
                   ))}
                   {members.length === 0 && (
-                    <span className="text-xs text-gray-500">Inga tilldelade</span>
+                    <span className="text-xs text-text-muted">Inga tilldelade</span>
                   )}
                 </div>
               </div>
