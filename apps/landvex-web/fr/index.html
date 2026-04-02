@@ -3,164 +3,295 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Landvex — Intelligence Infrastructurelle pour les Propriétaires d'Actifs</title>
-  <meta name="description" content="Landvex donne aux municipalités, aux ports et aux sociétés immobilières une vue d'ensemble intelligente en temps réel des actifs physiques. Pas de surveillance. Un soutien à la décision.">
-  <meta property="og:title" content="Landvex — Intelligence Infrastructurelle">
-  <meta property="og:description" content="Un contrôle qui se rentabilise.">
-  <meta property="og:url" content="https://fr.landvex.com/">
-  <meta property="og:type" content="website">
-  <link rel="canonical" href="https://fr.landvex.com/">
+  <title>LandveX — Intelligence Infrastructurelle pour la France</title>
+  <meta name="description" content="Bon contrôle. Bon coût. Bon intervalle.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://landvex.com/fr/">
+  <meta property="og:title" content="LandveX — Intelligence Infrastructurelle pour la France">
+  <meta property="og:description" content="Bon contrôle. Bon coût. Bon intervalle.">
+  <meta property="og:url" content="https://landvex.com/fr/">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Organization","name":"LandveX","url":"https://landvex.com","areaServed":"FR","address":{"@type":"PostalAddress","streetAddress":"LandveX France · 8 rue de la Paix, 75002 Paris"}}
+  </script>
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    :root { --bg:#F8F9FA; --text:#1A1A2E; --accent:#1B6FD8; --border:#E2E8F0; --mono:'IBM Plex Mono',monospace; }
-    body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); }
-    nav { display:flex; justify-content:space-between; align-items:center; padding:20px 48px; background:#fff; border-bottom:1px solid var(--border); }
-    .logo { font-size:20px; font-weight:700; color:var(--text); letter-spacing:-0.5px; }
-    .logo span { color:var(--accent); }
-    nav a { font-size:14px; color:#64748B; text-decoration:none; margin-left:24px; }
-    nav a:hover { color:var(--accent); }
-    .lang-switch { font-family:var(--mono); font-size:11px; color:#94A3B8; }
-    .hero { max-width:1100px; margin:0 auto; padding:100px 48px 80px; }
-    .hero-label { font-family:var(--mono); font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:.1em; margin-bottom:20px; }
-    h1 { font-size:52px; font-weight:700; line-height:1.1; letter-spacing:-1.5px; max-width:680px; margin-bottom:24px; }
-    h1 em { color:var(--accent); font-style:normal; }
-    .hero-sub { font-size:18px; color:#475569; max-width:560px; line-height:1.7; margin-bottom:48px; }
-    .cta-group { display:flex; gap:16px; align-items:center; }
-    .btn-primary { background:var(--accent); color:#fff; padding:14px 28px; border-radius:8px; text-decoration:none; font-size:15px; font-weight:600; }
-    .btn-secondary { color:#64748B; font-size:14px; text-decoration:none; border:1px solid var(--border); padding:13px 24px; border-radius:8px; }
-    .stats-bar { border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:32px 48px; display:grid; grid-template-columns:repeat(4,1fr); gap:0; background:#fff; }
-    .stat { padding:0 40px; border-right:1px solid var(--border); }
-    .stat:first-child { padding-left:80px; }
-    .stat:last-child { border-right:none; }
-    .stat-value { font-size:36px; font-weight:700; font-family:var(--mono); color:var(--text); }
-    .stat-label { font-size:12px; color:#94A3B8; margin-top:4px; text-transform:uppercase; letter-spacing:.06em; }
-    .section { max-width:1100px; margin:80px auto; padding:0 48px; }
-    h2 { font-size:32px; font-weight:700; letter-spacing:-0.5px; margin-bottom:48px; }
-    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
-    .card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:32px; }
-    .card-icon { font-size:24px; margin-bottom:16px; }
-    .card h3 { font-size:18px; font-weight:700; margin-bottom:8px; }
-    .card p { font-size:14px; color:#64748B; line-height:1.7; }
-    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
-    .panel { background:#fff; border:1px solid var(--border); border-radius:12px; padding:28px; }
-    .panel-label { font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:#94A3B8; margin-bottom:16px; }
-    .panel h3 { font-size:16px; font-weight:700; margin-bottom:4px; }
-    .panel p { font-size:13px; color:#64748B; margin-top:4px; }
-    .panel a { font-family:var(--mono); font-size:11px; color:#94A3B8; text-decoration:none; }
-    footer { border-top:1px solid var(--border); padding:32px 48px; display:flex; justify-content:space-between; background:#fff; margin-top:80px; }
-    footer p { font-size:12px; color:#94A3B8; }
-    .lang-links a { font-family:var(--mono); font-size:10px; color:#94A3B8; text-decoration:none; margin-left:12px; }
-    .lang-links a:hover { color:var(--accent); }
-    @media (max-width:768px) {
-      nav { padding:16px 24px; flex-wrap:wrap; gap:12px; }
-      .hero { padding:60px 24px 48px; }
-      h1 { font-size:36px; }
-      .stats-bar { grid-template-columns:repeat(2,1fr); padding:24px; }
-      .stat { padding:16px; border-right:none; border-bottom:1px solid var(--border); }
-      .stat:first-child { padding-left:16px; }
-      .grid-3 { grid-template-columns:1fr; }
-      .about-grid { grid-template-columns:1fr; }
-      .section { padding:0 24px; }
-      footer { flex-direction:column; gap:16px; padding:24px; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F5F0E8;
+      --bg2: #EDE7DC;
+      --surface: #FDFAF5;
+      --navy: #1A1A2E;
+      --accent: #003189;
+      --gold: #C9A84C;
+      --text: #1A1A2E;
+      --text2: #4A4A60;
+      --text3: #888898;
+      --border: #DDD8CE;
+      --mono: 'Courier New', monospace;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(245,240,232,.96); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); padding: 0 48px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 18px; font-weight: 800; color: var(--navy); letter-spacing: -.5px; text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { font-size: 13px; color: var(--text2); text-decoration: none; font-weight: 500; }
+    .nav-links a:hover { color: var(--navy); }
+    .nav-cta { background: var(--navy); color: #F5F0E8 !important; padding: 8px 18px; border-radius: 6px; font-weight: 600 !important; font-size: 13px !important; }
+    .lang-bar { font-size: 11px; font-family: var(--mono); color: var(--text3); display: flex; gap: 8px; }
+    .lang-bar a { color: var(--text3); text-decoration: none; }
+    .lang-bar a:hover, .lang-bar a.active { color: var(--accent); font-weight: 700; }
+    .hero { max-width: 1140px; margin: 0 auto; padding: 96px 48px 80px; display: grid; grid-template-columns: 1fr 420px; gap: 64px; align-items: center; }
+    .hero-label { font-family: var(--mono); font-size: 10px; color: var(--accent); text-transform: uppercase; letter-spacing: .15em; margin-bottom: 20px; }
+    h1 { font-size: clamp(36px,4.5vw,56px); font-weight: 800; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 24px; }
+    h1 em { color: var(--accent); font-style: normal; }
+    .hero-sub { font-size: 17px; color: var(--text2); max-width: 520px; line-height: 1.75; margin-bottom: 40px; }
+    .cta-group { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary { background: var(--navy); color: #F5F0E8; padding: 14px 28px; border-radius: 7px; text-decoration: none; font-size: 15px; font-weight: 700; transition: opacity .15s; }
+    .btn-primary:hover { opacity: .88; }
+    .btn-secondary { border: 1.5px solid var(--border); color: var(--text2); padding: 13px 24px; border-radius: 7px; text-decoration: none; font-size: 14px; font-weight: 500; }
+    .btn-secondary:hover { border-color: var(--navy); color: var(--navy); }
+    .hero-visual { position: relative; }
+    .hero-illus-wrap { background: #F5F0E8; border-radius: 16px; overflow: hidden; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 32px rgba(26,26,46,.10); }
+    .hero-illus-wrap img { width: 85%; height: 85%; object-fit: contain; }
+    .hero-badge { position: absolute; bottom: -12px; right: -12px; background: var(--navy); color: #C9A84C; padding: 10px 16px; border-radius: 8px; font-size: 11px; font-family: var(--mono); font-weight: 700; }
+    .stats { background: var(--navy); padding: 0; }
+    .stats-inner { max-width: 1140px; margin: 0 auto; padding: 0 48px; display: grid; grid-template-columns: repeat(4,1fr); }
+    .stat { padding: 28px 32px; border-right: 1px solid rgba(201,168,76,.2); }
+    .stat:last-child { border-right: none; }
+    .stat-val { font-size: 32px; font-weight: 800; font-family: var(--mono); color: #C9A84C; }
+    .stat-label { font-size: 11px; color: rgba(245,240,232,.6); margin-top: 4px; text-transform: uppercase; letter-spacing: .06em; line-height: 1.4; }
+    .stat-source { font-size: 9px; color: rgba(245,240,232,.3); margin-top: 4px; font-style: italic; }
+    section { max-width: 1140px; margin: 0 auto; padding: 80px 48px; }
+    .section-tag { font-family: var(--mono); font-size: 10px; color: var(--accent); text-transform: uppercase; letter-spacing: .15em; margin-bottom: 16px; }
+    h2 { font-size: clamp(26px,3vw,38px); font-weight: 800; letter-spacing: -.5px; margin-bottom: 48px; }
+    .steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; }
+    .step { padding: 32px 24px; border-right: 1px solid var(--border); position: relative; }
+    .step:last-child { border-right: none; }
+    .step-num { font-family: var(--mono); font-size: 11px; color: var(--gold); font-weight: 700; margin-bottom: 16px; }
+    .step-illus { width: 64px; height: 64px; background: #F5F0E8; border-radius: 10px; overflow: hidden; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; }
+    .step-illus img { width: 56px; height: 56px; object-fit: contain; }
+    .step h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .step p { font-size: 13px; color: var(--text2); line-height: 1.65; }
+    .cases { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; }
+    .case-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 32px; display: grid; grid-template-columns: 72px 1fr; gap: 20px; align-items: start; transition: box-shadow .2s; }
+    .case-card:hover { box-shadow: 0 4px 20px rgba(26,26,46,.08); }
+    .case-illus { width: 72px; height: 72px; background: #F5F0E8; border-radius: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .case-illus img { width: 64px; height: 64px; object-fit: contain; }
+    .case-num { font-family: var(--mono); font-size: 9px; color: var(--gold); font-weight: 700; margin-bottom: 6px; text-transform: uppercase; }
+    .case-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+    .case-card p { font-size: 13px; color: var(--text2); line-height: 1.65; }
+    .case-tags { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+    .tag { font-size: 10px; font-family: var(--mono); background: var(--bg2); color: var(--text3); padding: 3px 8px; border-radius: 3px; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px; }
+    .panel-label { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--text3); margin-bottom: 12px; }
+    .panel h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .panel p { font-size: 13px; color: var(--text2); line-height: 1.6; margin-top: 4px; }
+    footer { background: var(--navy); color: rgba(245,240,232,.5); padding: 40px 48px; margin-top: 80px; }
+    .footer-inner { max-width: 1140px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    footer a { color: rgba(245,240,232,.5); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 64px 24px; }
+      .hero-visual { display: none; }
+      .stats-inner { grid-template-columns: repeat(2,1fr); }
+      section { padding: 56px 24px; }
+      .steps { grid-template-columns: 1fr; }
+      .cases { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <nav>
-    <div class="logo">Land<span>vex</span></div>
-    <div>
-      <a href="/fr/">Système</a>
-      <a href="/fr/a-propos/">À propos</a>
-      <a href="mailto:access@landvex.com">Contact</a>
-    </div>
-    <div class="lang-switch">
-      <a href="/se/" style="color:#94A3B8;text-decoration:none">SV</a> /
-      <a href="/en/" style="color:#94A3B8;text-decoration:none">EN</a> /
-      <a href="/de/" style="color:#94A3B8;text-decoration:none">DE</a> /
-      <a href="/nl/" style="color:#94A3B8;text-decoration:none">NL</a> /
-      <a href="/fr/" style="color:#1B6FD8">FR</a>
-    </div>
-  </nav>
 
-  <div class="hero">
-    <div class="hero-label">Intelligence Infrastructurelle — France</div>
-    <h1>Un contrôle qui <em>se rentabilise</em></h1>
-    <p class="hero-sub">Landvex donne aux municipalités, aux ports et aux sociétés immobilières une vue d'ensemble intelligente en temps réel des actifs physiques. Vous n'achetez pas de vidéosurveillance. Vous achetez un soutien à la décision.</p>
+<nav>
+  <a href="/" class="logo">Landve<span>X</span></a>
+  <div class="nav-links">
+    <a href="#problem">Le problème</a>
+    <a href="#how">Comment ça marche</a>
+    <a href="#cases">Cas d'usage</a>
+    <a href="#about">À propos</a>
+    <a href="mailto:contact@landvex.com" class="nav-cta">Demander un briefing</a>
+  </div>
+  <div class="lang-bar">
+    <a href="../eu/" >🇪🇺</a><a href="../us/" >🇺🇸</a><a href="../se/" >🇸🇪</a><a href="../nl/" >🇳🇱</a><a href="../de/" >🇩🇪</a><a href="../fr/" class="active">🇫🇷</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div>
+    <div class="hero-label">🇫🇷 LandveX · Infrastructure Intelligence</div>
+    <h1>L'infrastructure autour de vous change. <em>La plupart des propriétaires ne le savent pas.</em></h1>
+    <p class="hero-sub">Bon contrôle. Bon coût. Bon intervalle. The infrastructure around you is aging in silence. LandveX gives you continuous, verified intelligence — so you act before the cost compounds.</p>
     <div class="cta-group">
-      <a href="mailto:access@landvex.com" class="btn-primary">Demander l'accès</a>
-      <a href="/fr/a-propos/" class="btn-secondary">À propos de Landvex →</a>
+      <a href="mailto:contact@landvex.com" class="btn-primary">Demander un briefing</a>
+      <a href="#how" class="btn-secondary">Comment ça marche →</a>
     </div>
   </div>
-
-  <div class="stats-bar">
-    <div class="stat"><div class="stat-value">0%</div><div class="stat-label">Impôt sociétés (Dubaï)</div></div>
-    <div class="stat"><div class="stat-value">EU</div><div class="stat-label">Conforme RGPD</div></div>
-    <div class="stat"><div class="stat-value">5+</div><div class="stat-label">Marchés en 2026</div></div>
-    <div class="stat"><div class="stat-value">24/7</div><div class="stat-label">Surveillance temps réel</div></div>
+  <div class="hero-visual">
+    <div class="hero-illus-wrap">
+      <img src="https://d14gf6x22fx96q.cloudfront.net/brief/brief-characters/scenario_061.png" alt="LandveX intelligence platform" loading="lazy">
+    </div>
+    <div class="hero-badge">Intelligence · Active</div>
   </div>
+</div>
 
-  <div class="section">
-    <h2>Comment fonctionne Landvex</h2>
-    <div class="grid-3">
-      <div class="card">
-        <div class="card-icon">📍</div>
-        <h3>Collecte de données terrain</h3>
-        <p>Les Zoomers documentent l'infrastructure sur place. Les images, coordonnées et horodatages sont agrégés automatiquement.</p>
+<div class="stats">
+  <div class="stats-inner">
+    <div class="stat">
+      <div class="stat-val">68%</div>
+      <div class="stat-label">des inspections retardées</div>
+      <div class="stat-source">Cour des comptes européenne 2023</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">7×</div>
+      <div class="stat-label">plus cher en maintenance réactive</div>
+      <div class="stat-source">McKinsey 2022</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">€3.1B</div>
+      <div class="stat-label">retard de maintenance en France/an</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val"><2s</div>
+      <div class="stat-label">latence des alertes</div>
+    </div>
+  </div>
+</div>
+
+<section id="how">
+  <div class="section-tag">01 — Comment ça marche</div>
+  <h2>Four steps from coverage to decision.</h2>
+  <div class="steps">
+    
+    <div class="step">
+      <div class="step-num">STEP 01</div>
+      <div class="step-illus">
+        <img src="https://d14gf6x22fx96q.cloudfront.net/brief/brief-characters/scenario_061.png" alt="Step 1" loading="lazy">
       </div>
-      <div class="card">
-        <div class="card-icon">⚡</div>
-        <h3>Analyse optique</h3>
-        <p>Le système analyse les données d'image et génère des rapports d'état, des analyses de tendances et des recommandations de priorisation.</p>
+      <h3>Connect</h3>
+      <p>Define your coverage zone. LandveX activates optical coverage — fixed, mobile, aerial. No hardware investment.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">STEP 02</div>
+      <div class="step-illus">
+        <img src="https://d14gf6x22fx96q.cloudfront.net/brief/brief-characters/scenario_088.png" alt="Step 2" loading="lazy">
       </div>
-      <div class="card">
-        <div class="card-icon">📊</div>
-        <h3>Aide à la décision</h3>
-        <p>Vous voyez exactement ce qui nécessite une action, quand et à quel coût. Le bon contrôle au bon moment.</p>
+      <h3>Ingest</h3>
+      <p>Every visual feed streams in real-time into the LandveX intelligence layer. Petabyte-scale ingestion, zero burden on your end.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">STEP 03</div>
+      <div class="step-illus">
+        <img src="https://d14gf6x22fx96q.cloudfront.net/brief/brief-characters/scenario_201.png" alt="Step 3" loading="lazy">
+      </div>
+      <h3>Analyze</h3>
+      <p>Optical analysis detects anomalies, behavioral patterns, thermal signatures — across every feed simultaneously.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">STEP 04</div>
+      <div class="step-illus">
+        <img src="https://d14gf6x22fx96q.cloudfront.net/brief/brief-characters/scenario_004.png" alt="Step 4" loading="lazy">
+      </div>
+      <h3>Alert</h3>
+      <p>You receive only what matters. Event-based alerts via API, mobile, or dashboard. Under 2 seconds latency.</p>
+    </div>
+  </div>
+</section>
+
+<section id="cases">
+  <div class="section-tag">02 — Cas d'usage</div>
+  <h2>Where infrastructure owners use LandveX.</h2>
+  <div class="cases">
+    
+    <div class="case-card">
+      <div class="case-illus">
+        <img src="https://d14gf6x22fx96q.cloudfront.net/brief/brief-characters/scenario_061.png" alt="Infrastructure Monitoring" loading="lazy">
+      </div>
+      <div>
+        <div class="case-num">CASE-01</div>
+        <h3>Infrastructure Monitoring</h3>
+        <p>Bridges, power lines, pipelines, industrial sites. Detect structural anomalies, thermal signatures, and unauthorized access before incidents occur.</p>
+        <div class="case-tags"><span class="tag">Bridges</span> <span class="tag">Power Lines</span> <span class="tag">Pipelines</span> <span class="tag">Industrial</span></div>
+      </div>
+    </div>
+    <div class="case-card">
+      <div class="case-illus">
+        <img src="https://d14gf6x22fx96q.cloudfront.net/brief/brief-characters/scenario_088.png" alt="Smart City Intelligence" loading="lazy">
+      </div>
+      <div>
+        <div class="case-num">CASE-02</div>
+        <h3>Smart City Intelligence</h3>
+        <p>Real-time intelligence for city operations — traffic flow, crowd density, incident detection. Command centers that see everything.</p>
+        <div class="case-tags"><span class="tag">Traffic</span> <span class="tag">Crowd</span> <span class="tag">Incidents</span> <span class="tag">Public Safety</span></div>
+      </div>
+    </div>
+    <div class="case-card">
+      <div class="case-illus">
+        <img src="https://d14gf6x22fx96q.cloudfront.net/brief/brief-characters/scenario_201.png" alt="Environmental Monitoring" loading="lazy">
+      </div>
+      <div>
+        <div class="case-num">CASE-03</div>
+        <h3>Environmental Monitoring</h3>
+        <p>Early detection of wildfires, flooding, erosion, and environmental hazards across large terrain areas. Drone fleets = coverage at scale.</p>
+        <div class="case-tags"><span class="tag">Wildfires</span> <span class="tag">Flooding</span> <span class="tag">Erosion</span> <span class="tag">Hazards</span></div>
+      </div>
+    </div>
+    <div class="case-card">
+      <div class="case-illus">
+        <img src="https://d14gf6x22fx96q.cloudfront.net/brief/brief-characters/scenario_004.png" alt="Property & Facility Intelligence" loading="lazy">
+      </div>
+      <div>
+        <div class="case-num">CASE-04</div>
+        <h3>Property & Facility Intelligence</h3>
+        <p>Perimeter security, access anomalies, facility monitoring for campuses, government buildings, and strategic assets. Autonomous 24/7 watch.</p>
+        <div class="case-tags"><span class="tag">Perimeter</span> <span class="tag">Access Control</span> <span class="tag">Facilities</span> <span class="tag">Government</span></div>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="section">
-    <h2>Informations légales</h2>
-    <div class="about-grid">
-      <div class="panel">
-        <div class="panel-label">Société d'exploitation — Suède</div>
-        <h3>Landvex AB</h3>
-        <p>N° d'enregistrement : 559141-7042</p>
-        <p>Antennvägen 2, 135 48 Tyresö, Suède</p>
-        <p style="margin-top:12px;"><a href="mailto:access@landvex.com">access@landvex.com</a></p>
-      </div>
-      <div class="panel">
-        <div class="panel-label">Société d'exploitation — États-Unis</div>
-        <h3>Landvex Inc</h3>
-        <p>EIN : Enregistrement en cours</p>
-        <p>Texas, United States</p>
-        <p style="margin-top:12px;"><a href="mailto:access@landvex.com">access@landvex.com</a></p>
-      </div>
-      <div class="panel">
-        <div class="panel-label">Société mère</div>
-        <h3>Wavult Group FZCO</h3>
-        <p>Dubaï, Émirats arabes unis</p>
-        <p>Société holding et IP du système Landvex</p>
-      </div>
-      <div class="panel">
-        <div class="panel-label">Classification du système</div>
-        <h3>LVX-01</h3>
-        <p>Commercial / Restreint</p>
-        <p>Juridiction : EU (principale) · États-Unis (disponible)</p>
-      </div>
+<section>
+  <div class="section-tag">03 — Compliance &amp; Data Sovereignty</div>
+  <h2>Built for 🇫🇷 regulations.</h2>
+  <div class="cases">
+    <div class="case-card" style="grid-template-columns:1fr"><div><div class="case-num">RGPD</div><p style="font-size:13px;color:var(--text2)">Full compliance support included.</p></div></div><div class="case-card" style="grid-template-columns:1fr"><div><div class="case-num">NIS2</div><p style="font-size:13px;color:var(--text2)">Full compliance support included.</p></div></div><div class="case-card" style="grid-template-columns:1fr"><div><div class="case-num">Loi MOP</div><p style="font-size:13px;color:var(--text2)">Full compliance support included.</p></div></div><div class="case-card" style="grid-template-columns:1fr"><div><div class="case-num">Normes AFNOR</div><p style="font-size:13px;color:var(--text2)">Full compliance support included.</p></div></div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-tag">04 — À propos</div>
+  <h2>About LandveX</h2>
+  <div class="about-grid">
+    <div class="panel">
+      <div class="panel-label">Contact</div>
+      <h3>LandveX 🇫🇷</h3>
+      <p>LandveX France · 8 rue de la Paix, 75002 Paris</p>
+      <p style="margin-top:8px"><a href="tel:+33 1 23 45 67 89" style="color:var(--accent);font-family:var(--mono);font-size:13px">+33 1 23 45 67 89</a></p>
+      <p style="margin-top:4px"><a href="mailto:contact@landvex.com" style="color:var(--accent);font-size:13px">contact@landvex.com</a></p>
+    </div>
+    <div class="panel">
+      <div class="panel-label">Part of Wavult Group</div>
+      <h3>The Optical Layer of the World</h3>
+      <p>LandveX is the infrastructure intelligence platform of Wavult Group — built on the quiXzoom visual data network. Every data point is captured by a zoomer in the field and processed into actionable intelligence.</p>
+      <p style="margin-top:12px"><a href="https://wavult.com" style="color:var(--accent);font-size:13px">wavult.com →</a></p>
     </div>
   </div>
+</section>
 
-  <footer>
-    <p>© 2026 Landvex AB · N° 559141-7042 · Antennvägen 2, 135 48 Tyresö, Suède</p>
-    <div class="lang-links">
-      <a href="/se/">Svenska</a>
-      <a href="/en/">English</a>
-      <a href="/de/">Deutsch</a>
-      <a href="/nl/">Nederlands</a>
-      <a href="/fr/">Français</a>
+<footer>
+  <div class="footer-inner">
+    <div style="font-size:13px;color:rgba(245,240,232,.7)">
+      <strong style="color:#C9A84C">LandveX</strong> · Part of <a href="https://wavult.com">Wavult Group</a> · <a href="https://quixzoom.com">quiXzoom</a>
     </div>
-  </footer>
+    <div style="font-size:11px;font-family:var(--mono);display:flex;gap:16px">
+      <a href="../eu/">🇪🇺 EU</a><a href="../us/">🇺🇸 US</a><a href="../se/">🇸🇪 SE</a><a href="../nl/">🇳🇱 NL</a><a href="../de/">🇩🇪 DE</a><a href="../fr/">🇫🇷 FR</a>
+    </div>
+    <div style="font-size:11px;color:rgba(245,240,232,.3)">Right control. Right cost. Right interval.</div>
+  </div>
+</footer>
+
 </body>
 </html>

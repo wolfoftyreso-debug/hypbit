@@ -1,0 +1,273 @@
+{
+  "eu": {
+    "lang": "en",
+    "locale": "en-EU",
+    "title": "LandveX — Infrastructure Intelligence for Europe",
+    "subtitle": "Right control. Right cost. Right interval.",
+    "hero_heading": "The infrastructure around you is changing. <em>Most owners don't know.</em>",
+    "currency": "EUR",
+    "currency_symbol": "€",
+    "address": "LandveX EU Operations · c/o Wavult Group · Åvägen 9, 135 48 Tyresö, Sweden",
+    "phone": "+46 70 912 32 23",
+    "regulatory": [
+      "GDPR",
+      "NIS2",
+      "EN 13306",
+      "EU Critical Infrastructure Directive"
+    ],
+    "stat1": {
+      "value": "68%",
+      "label": "of EU infrastructure inspections delayed",
+      "source": "EU Court of Auditors 2023"
+    },
+    "stat2": {
+      "value": "7×",
+      "label": "more expensive to repair reactively",
+      "source": "McKinsey 2022"
+    },
+    "stat3": {
+      "value": "€12.9B",
+      "label": "annual EU maintenance gap"
+    },
+    "stat4": {
+      "value": "<2s",
+      "label": "alert latency"
+    },
+    "illustration_hero": 61,
+    "illustration_howit": 88,
+    "illustration_cases": [
+      61,
+      88,
+      4,
+      201
+    ],
+    "color_accent": "#1B5E8F",
+    "flag": "🇪🇺"
+  },
+  "us": {
+    "lang": "en",
+    "locale": "en-US",
+    "title": "LandveX — Infrastructure Intelligence Platform | United States",
+    "subtitle": "Right control. Right cost. Right interval.",
+    "hero_heading": "America's infrastructure is aging. <em>Most owners fly blind.</em>",
+    "currency": "USD",
+    "currency_symbol": "$",
+    "address": "Landvex Inc. · 251 Little Falls Drive, Wilmington, DE 19808",
+    "phone": "+1 (302) 555-0100",
+    "regulatory": [
+      "CCPA",
+      "FISMA",
+      "NIST 800-53",
+      "ASCE Infrastructure Report Card"
+    ],
+    "stat1": {
+      "value": "D+",
+      "label": "ASCE infrastructure grade",
+      "source": "American Society of Civil Engineers 2021"
+    },
+    "stat2": {
+      "value": "$2.6T",
+      "label": "needed in infrastructure investment",
+      "source": "ASCE 2021"
+    },
+    "stat3": {
+      "value": "7×",
+      "label": "more expensive reactive vs proactive",
+      "source": "McKinsey 2022"
+    },
+    "stat4": {
+      "value": "<2s",
+      "label": "alert latency"
+    },
+    "illustration_hero": 4,
+    "illustration_howit": 61,
+    "illustration_cases": [
+      4,
+      61,
+      88,
+      201
+    ],
+    "color_accent": "#1A3E6B",
+    "flag": "🇺🇸"
+  },
+  "se": {
+    "lang": "sv",
+    "locale": "sv-SE",
+    "title": "LandveX — Infrastrukturintelligens för Sverige",
+    "subtitle": "Rätt kontroll. Rätt kostnad. Rätt intervall.",
+    "hero_heading": "Infrastrukturen runt dig förändras. <em>De flesta ägare vet inte om det.</em>",
+    "currency": "SEK",
+    "currency_symbol": "kr",
+    "address": "Landvex AB · Org.nr 559141-7042 · Åvägen 9, 135 48 Tyresö",
+    "phone": "+46 70 912 32 23",
+    "regulatory": [
+      "GDPR",
+      "NIS2",
+      "PBL",
+      "Trafikverkets underhållsstandard"
+    ],
+    "stat1": {
+      "value": "68%",
+      "label": "av planerade inspektioner försenas",
+      "source": "EU-revisionsrätten 2023"
+    },
+    "stat2": {
+      "value": "7×",
+      "label": "dyrare att åtgärda reaktivt",
+      "source": "McKinsey 2022"
+    },
+    "stat3": {
+      "value": "12,9 md kr",
+      "label": "underhållsgap i Sverige"
+    },
+    "stat4": {
+      "value": "<2s",
+      "label": "larmsvarstid"
+    },
+    "illustration_hero": 88,
+    "illustration_howit": 61,
+    "illustration_cases": [
+      88,
+      61,
+      201,
+      4
+    ],
+    "color_accent": "#005B99",
+    "flag": "🇸🇪"
+  },
+  "nl": {
+    "lang": "nl",
+    "locale": "nl-NL",
+    "title": "LandveX — Infrastructuurintelligentie voor Nederland",
+    "subtitle": "Juiste controle. Juiste kosten. Juist interval.",
+    "hero_heading": "De infrastructuur om u heen verandert. <em>De meeste eigenaren weten het niet.</em>",
+    "currency": "EUR",
+    "currency_symbol": "€",
+    "address": "LandveX EU · Herengracht 420, 1017 BZ Amsterdam, Nederland",
+    "phone": "+31 20 123 4567",
+    "regulatory": [
+      "AVG/GDPR",
+      "NIS2",
+      "Wet Milieubeheer",
+      "Rijkswaterstaat normen"
+    ],
+    "stat1": {
+      "value": "68%",
+      "label": "van inspecties vertraagd",
+      "source": "EU Rekenkamer 2023"
+    },
+    "stat2": {
+      "value": "7×",
+      "label": "duurder reactief vs proactief",
+      "source": "McKinsey 2022"
+    },
+    "stat3": {
+      "value": "€2.1B",
+      "label": "jaarlijkse onderhoudsachterstand NL"
+    },
+    "stat4": {
+      "value": "<2s",
+      "label": "reactietijd melding"
+    },
+    "illustration_hero": 61,
+    "illustration_howit": 88,
+    "illustration_cases": [
+      61,
+      88,
+      4,
+      201
+    ],
+    "color_accent": "#D35400",
+    "flag": "🇳🇱"
+  },
+  "de": {
+    "lang": "de",
+    "locale": "de-DE",
+    "title": "LandveX — Infrastrukturintelligenz für Deutschland",
+    "subtitle": "Richtige Kontrolle. Richtige Kosten. Richtiges Intervall.",
+    "hero_heading": "Die Infrastruktur um Sie herum verändert sich. <em>Die meisten Eigentümer wissen es nicht.</em>",
+    "currency": "EUR",
+    "currency_symbol": "€",
+    "address": "LandveX DE · Unter den Linden 10, 10117 Berlin",
+    "phone": "+49 30 1234 5678",
+    "regulatory": [
+      "DSGVO",
+      "NIS2-Umsetzungsgesetz",
+      "DIN EN 13306",
+      "KRITIS-Verordnung"
+    ],
+    "stat1": {
+      "value": "68%",
+      "label": "der Inspektionen verspätet",
+      "source": "EU-Rechnungshof 2023"
+    },
+    "stat2": {
+      "value": "7×",
+      "label": "teurer bei reaktiver Wartung",
+      "source": "McKinsey 2022"
+    },
+    "stat3": {
+      "value": "€4.2B",
+      "label": "Instandhaltungsrückstand DE/Jahr"
+    },
+    "stat4": {
+      "value": "<2s",
+      "label": "Alarmlatenz"
+    },
+    "illustration_hero": 4,
+    "illustration_howit": 61,
+    "illustration_cases": [
+      4,
+      61,
+      88,
+      201
+    ],
+    "color_accent": "#1A3E6B",
+    "flag": "🇩🇪"
+  },
+  "fr": {
+    "lang": "fr",
+    "locale": "fr-FR",
+    "title": "LandveX — Intelligence Infrastructurelle pour la France",
+    "subtitle": "Bon contrôle. Bon coût. Bon intervalle.",
+    "hero_heading": "L'infrastructure autour de vous change. <em>La plupart des propriétaires ne le savent pas.</em>",
+    "currency": "EUR",
+    "currency_symbol": "€",
+    "address": "LandveX France · 8 rue de la Paix, 75002 Paris",
+    "phone": "+33 1 23 45 67 89",
+    "regulatory": [
+      "RGPD",
+      "NIS2",
+      "Loi MOP",
+      "Normes AFNOR"
+    ],
+    "stat1": {
+      "value": "68%",
+      "label": "des inspections retardées",
+      "source": "Cour des comptes européenne 2023"
+    },
+    "stat2": {
+      "value": "7×",
+      "label": "plus cher en maintenance réactive",
+      "source": "McKinsey 2022"
+    },
+    "stat3": {
+      "value": "€3.1B",
+      "label": "retard de maintenance en France/an"
+    },
+    "stat4": {
+      "value": "<2s",
+      "label": "latence des alertes"
+    },
+    "illustration_hero": 61,
+    "illustration_howit": 88,
+    "illustration_cases": [
+      61,
+      88,
+      201,
+      4
+    ],
+    "color_accent": "#003189",
+    "flag": "🇫🇷"
+  }
+}
