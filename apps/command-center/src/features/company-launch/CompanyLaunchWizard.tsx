@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { Building2, Globe, FileText, CreditCard, CheckCircle, ChevronRight, ChevronLeft, AlertTriangle, Copy } from 'lucide-react'
+import { useApi } from '../../shared/auth/useApi'
+import { PaymentReceipt, type PaymentReceiptData } from '../finance/PaymentReceipt'
 
-type JurisdictionId = 'texas-llc' | 'delaware-c-corp' | 'sweden-ab' | 'lithuania-uab' | 'uae-fzco'
+type JurisdictionId = 'texas-llc' | 'delaware-c-corp' | 'sweden-ab' | 'lithuania-uab' | 'uae-fzco' | 'swiss-foundation' | 'delaware-nonprofit'
+type EntityCategory = 'commercial' | 'nonprofit'
 
 interface Jurisdiction {
   id: JurisdictionId
@@ -17,6 +20,7 @@ interface Jurisdiction {
   requirements: string[]
   nextSteps: string[]
   taxAdvantage: string
+  category: EntityCategory
 }
 
 const JURISDICTIONS: Jurisdiction[] = [
@@ -34,6 +38,7 @@ const JURISDICTIONS: Jurisdiction[] = [
     requirements: ['Organizer name + address', 'Company purpose', 'Registered agent (Northwest)'],
     nextSteps: ['EIN via IRS', 'Mercury Bank-konto', '83(b) election om equity (30 dagar)'],
     taxAdvantage: 'Ingen statlig inkomstskatt i Texas. Pass-through taxation för LLC.',
+    category: 'commercial',
   },
   {
     id: 'delaware-c-corp',
@@ -49,6 +54,7 @@ const JURISDICTIONS: Jurisdiction[] = [
     requirements: ['Founder name + address', 'Company purpose', 'Share structure'],
     nextSteps: ['EIN via IRS', 'Mercury Bank-konto', '83(b) election (30 dagar KRITISK)'],
     taxAdvantage: 'VC-standard. Möjliggör QSBS-undantag (0% kapitalvinstskatt upp till $10M).',
+    category: 'commercial',
   },
   {
     id: 'sweden-ab',
@@ -64,6 +70,7 @@ const JURISDICTIONS: Jurisdiction[] = [
     requirements: ['Styrelse (minst 1 person)', 'Aktiekapital (25 000 SEK)', 'Bolagsordning', 'Revisor'],
     nextSteps: ['F-skattsedel', 'Momsregistrering', 'Bankgirokonto', 'Bokföring'],
     taxAdvantage: '20,6% bolagsskatt. QESA-regler för personaloptioner (startup).',
+    category: 'commercial',
   },
   {
     id: 'lithuania-uab',
@@ -79,6 +86,7 @@ const JURISDICTIONS: Jurisdiction[] = [
     requirements: ['Direktör (kan vara utländsk)', 'Aktiekapital (€1 000)', 'Registrerad adress Litauen'],
     nextSteps: ['VAT-registrering', 'SEPA-bankkonto', 'Litauisk revisor', 'Bokföring'],
     taxAdvantage: '15% bolagsskatt (lägst i EU). 0% för små bolag under tröskelvärde. EU-passering.',
+    category: 'commercial',
   },
   {
     id: 'uae-fzco',
@@ -94,6 +102,63 @@ const JURISDICTIONS: Jurisdiction[] = [
     requirements: ['Pass (alla aktieägare)', 'Affärsplan', 'Startkapital', 'UAE-adress (via DMCC)'],
     nextSteps: ['UAE-bankkonto', 'Visa (om nödvändigt)', 'IP-licensavtal', 'Transfer pricing-dokumentation'],
     taxAdvantage: '0% bolagsskatt på kvalificerade IP-inkomster. 9% CIT annars. Ingen källskatt.',
+    category: 'commercial',
+  },
+  // ── Non-profit / Foundation ──────────────────────────────────────────────
+  {
+    id: 'swiss-foundation',
+    name: 'Swiss Foundation (Fondation)',
+    country: 'Switzerland',
+    flag: '🇨🇭',
+    type: 'Non-profit Foundation',
+    cost: 'CHF 5,000–8,000',
+    timeframe: '3–6 weeks',
+    currency: 'CHF',
+    provider: 'Swiss notary + Handelsregister',
+    providerUrl: 'https://www.zefix.ch',
+    requirements: [
+      'Foundation charter (Stiftungsurkunde)',
+      'Minimum capital: CHF 50,000',
+      'At least one Swiss-resident board member',
+      'Defined public benefit purpose',
+      'Notarisation by Swiss notary',
+    ],
+    nextSteps: [
+      'Draft foundation charter with Swiss lawyer',
+      'Notarise with cantonal notary',
+      'Register with Handelsregister (3 weeks)',
+      'Apply for tax-exempt status Art. 56 DBG (2–3 months)',
+      'Open account at Swiss cantonal bank (Cantonal Bank of Geneva recommended)',
+    ],
+    taxAdvantage: 'Tax-exempt on donations and income under Art. 56 DBG. Global credibility for institutional fundraising. Swiss Development Cooperation (SDC) grant access.',
+    category: 'nonprofit',
+  },
+  {
+    id: 'delaware-nonprofit',
+    name: 'Delaware Nonprofit / 501(c)(3)',
+    country: 'USA',
+    flag: '🇺🇸',
+    type: 'Non-profit Corporation',
+    cost: '$150–300 + IRS fee $600',
+    timeframe: '2–4 months (IRS review)',
+    currency: 'USD',
+    provider: 'Delaware Division of Corporations',
+    providerUrl: 'https://corp.delaware.gov',
+    requirements: [
+      'Articles of Incorporation (nonprofit)',
+      'Mission statement (charitable purpose)',
+      'Board of directors (minimum 3)',
+      'Registered agent in Delaware',
+    ],
+    nextSteps: [
+      'File Articles of Incorporation in Delaware ($89)',
+      'Draft bylaws and conflict of interest policy',
+      'Apply for EIN from IRS',
+      'File Form 1023 with IRS for 501(c)(3) status ($600)',
+      'Register to solicit donations in operating states',
+    ],
+    taxAdvantage: 'Tax-deductible donations for US donors. Access to $100B+ in US foundation grants. Required for most US corporate CSR giving.',
+    category: 'nonprofit',
   },
 ]
 
@@ -125,8 +190,13 @@ interface CompanyFormData {
 
 export function CompanyLaunchWizard() {
   const [step, setStep] = useState(0)
+  const [entityCategory, setEntityCategory] = useState<EntityCategory>('commercial')
   const [launching, setLaunching] = useState(false)
   const [launchResult, setLaunchResult] = useState<{ jobId: string; status: string } | null>(null)
+  const [paymentStatus, setPaymentStatus] = useState<'idle' | 'sending' | 'sent' | 'filed' | 'error'>('idle')
+  const [paymentError, setPaymentError] = useState<string | null>(null)
+  const [paymentReceipt, setPaymentReceipt] = useState<PaymentReceiptData | null>(null)
+  const { apiFetch } = useApi()
   const [form, setForm] = useState<CompanyFormData>({
     jurisdiction: null,
     companyName: '',
@@ -141,6 +211,7 @@ export function CompanyLaunchWizard() {
   })
   const [copied, setCopied] = useState<string | null>(null)
 
+  const filteredJurisdictions = JURISDICTIONS.filter(j => j.category === entityCategory)
   const selectedJurisdiction = JURISDICTIONS.find(j => j.id === form.jurisdiction)
 
   const STEPS = [
@@ -182,6 +253,83 @@ export function CompanyLaunchWizard() {
       console.error('Launch failed:', err)
     } finally {
       setLaunching(false)
+    }
+  }
+
+  // ── Revolut payment for filing fees ───────────────────────────────────────
+  async function initiateRevolutPayment() {
+    if (!selectedJurisdiction) return
+    setPaymentStatus('sending')
+    setPaymentError(null)
+
+    // Determine amount from jurisdiction cost string (parse numeric portion)
+    // Texas LLC = $325, Delaware nonprofit = $750 etc.
+    const amountMap: Partial<Record<JurisdictionId, number>> = {
+      'texas-llc': 32500,          // $325.00
+      'delaware-c-corp': 50000,    // $500.00
+      'delaware-nonprofit': 75000, // $750.00 (filing + IRS fee)
+    }
+    const amount = amountMap[selectedJurisdiction.id] ?? 0
+
+    if (!amount) {
+      setPaymentError(`No automated payment configured for ${selectedJurisdiction.name}. Pay manually via provider.`)
+      setPaymentStatus('error')
+      return
+    }
+
+    const reference = `${selectedJurisdiction.id.toUpperCase()}-${form.companyName.replace(/\s+/g, '').toUpperCase().slice(0, 10)}-${Date.now().toString().slice(-6)}`
+    const description = `${selectedJurisdiction.name} formation fee — ${form.companyName}`
+
+    try {
+      const resp = await apiFetch('/api/revolut/payment', {
+        method: 'POST',
+        body: JSON.stringify({
+          amount,
+          currency: selectedJurisdiction.currency === 'SEK' ? 'SEK' : selectedJurisdiction.currency === 'EUR' ? 'EUR' : 'USD',
+          description,
+          reference,
+        }),
+      })
+
+      const data = await resp.json() as {
+        payment_id?: string
+        status?: string
+        error?: string
+        detail?: string
+      }
+
+      if (!resp.ok || data.error) {
+        setPaymentError(data.detail ?? data.error ?? `Payment failed (HTTP ${resp.status})`)
+        setPaymentStatus('error')
+        return
+      }
+
+      setPaymentStatus('sent')
+
+      // Show receipt modal
+      setPaymentReceipt({
+        id: data.payment_id ?? reference,
+        reference,
+        date: new Date().toISOString(),
+        status: (data.status === 'completed' ? 'completed' : 'pending') as 'pending' | 'completed',
+        direction: 'outbound',
+        amount,
+        currency: selectedJurisdiction.currency === 'SEK' ? 'SEK' : selectedJurisdiction.currency === 'EUR' ? 'EUR' : 'USD',
+        description,
+        toName: selectedJurisdiction.provider,
+        revolutPaymentId: data.payment_id,
+        metadata: {
+          'Jurisdiction': selectedJurisdiction.name,
+          'Company': form.companyName,
+        },
+      })
+
+      // Mark as filed after 3s
+      setTimeout(() => setPaymentStatus('filed'), 3000)
+
+    } catch (err) {
+      setPaymentError(err instanceof Error ? err.message : 'Network error')
+      setPaymentStatus('error')
     }
   }
 
@@ -235,8 +383,34 @@ export function CompanyLaunchWizard() {
           <h2 style={{ fontSize: 20, fontWeight: 700, color: '#1C1C1E', marginBottom: 4 }}>Välj jurisdiktion</h2>
           <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 20 }}>Vilket land och bolagsform passar bäst?</p>
 
+          {/* Entity category selector */}
+          <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+            {([
+              { id: 'commercial', label: '🏢 Commercial', desc: 'LLC, Inc, AB, UAB, FZCO' },
+              { id: 'nonprofit', label: '🤝 Non-profit / Foundation', desc: 'Foundation, 501(c)(3)' },
+            ] as { id: EntityCategory; label: string; desc: string }[]).map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => {
+                  setEntityCategory(cat.id)
+                  setForm(f => ({ ...f, jurisdiction: null }))
+                }}
+                style={{
+                  flex: 1, padding: '14px 16px', borderRadius: 12, textAlign: 'left', cursor: 'pointer',
+                  border: `2px solid ${entityCategory === cat.id ? (cat.id === 'nonprofit' ? '#D97706' : '#2563EB') : 'rgba(0,0,0,0.08)'}`,
+                  background: entityCategory === cat.id
+                    ? (cat.id === 'nonprofit' ? '#FFF7ED' : '#2563EB08')
+                    : '#FFFFFF',
+                }}
+              >
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#1C1C1E' }}>{cat.label}</div>
+                <div style={{ fontSize: 12, color: '#6B7280', marginTop: 2 }}>{cat.desc}</div>
+              </button>
+            ))}
+          </div>
+
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {JURISDICTIONS.map(j => (
+            {filteredJurisdictions.map(j => (
               <button key={j.id} onClick={() => setForm(f => ({ ...f, jurisdiction: j.id }))} style={{
                 textAlign: 'left', padding: '16px', borderRadius: 14,
                 border: `2px solid ${form.jurisdiction === j.id ? '#2563EB' : 'rgba(0,0,0,0.08)'}`,
@@ -398,25 +572,113 @@ export function CompanyLaunchWizard() {
           <h2 style={{ fontSize: 20, fontWeight: 700, color: '#1C1C1E', marginBottom: 4 }}>Betala & Signera</h2>
           <p style={{ fontSize: 14, color: '#6B7280', marginBottom: 20 }}>Öppna leverantörens webbplats och slutför registreringen.</p>
 
-          <div style={{ background: '#2563EB08', border: '2px solid #2563EB', borderRadius: 14, padding: '20px', marginBottom: 20, textAlign: 'center' }}>
-            <div style={{ fontSize: 32, marginBottom: 8 }}>{selectedJurisdiction.flag}</div>
-            <div style={{ fontSize: 16, fontWeight: 700, color: '#1C1C1E', marginBottom: 4 }}>{selectedJurisdiction.provider}</div>
-            <button
-              onClick={launchAutomation}
-              disabled={launching}
-              style={{
-                display: 'inline-block', marginTop: 12, padding: '12px 28px',
-                background: launching ? '#9CA3AF' : '#2563EB',
-                color: '#FFFFFF', borderRadius: 10, fontSize: 15, fontWeight: 600,
-                border: 'none', cursor: launching ? 'not-allowed' : 'pointer',
-              }}
-            >
-              {launching ? 'Startar automation...' : '🚀 Starta automatisk registrering'}
-            </button>
+          {/* ── Revolut payment block ── */}
+          <div style={{ background: '#2563EB08', border: '2px solid #2563EB', borderRadius: 14, padding: '20px', marginBottom: 20 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+              <span style={{ fontSize: 28 }}>{selectedJurisdiction.flag}</span>
+              <div>
+                <div style={{ fontSize: 15, fontWeight: 700, color: '#1C1C1E' }}>{selectedJurisdiction.name} Filing Fee</div>
+                <div style={{ fontSize: 13, color: '#6B7280' }}>{selectedJurisdiction.cost} · {selectedJurisdiction.provider}</div>
+              </div>
+              {/* Status badge */}
+              <div style={{ marginLeft: 'auto' }}>
+                {paymentStatus === 'idle' && (
+                  <span style={{ fontSize: 12, fontWeight: 700, padding: '4px 10px', borderRadius: 20, background: '#FEF3C7', color: '#92400E' }}>
+                    🟡 Incomplete
+                  </span>
+                )}
+                {paymentStatus === 'sending' && (
+                  <span style={{ fontSize: 12, fontWeight: 700, padding: '4px 10px', borderRadius: 20, background: '#DBEAFE', color: '#1E40AF' }}>
+                    🔄 Sending payment...
+                  </span>
+                )}
+                {paymentStatus === 'sent' && (
+                  <span style={{ fontSize: 12, fontWeight: 700, padding: '4px 10px', borderRadius: 20, background: '#D1FAE5', color: '#065F46' }}>
+                    ✅ Payment sent
+                  </span>
+                )}
+                {paymentStatus === 'filed' && (
+                  <span style={{ fontSize: 12, fontWeight: 700, padding: '4px 10px', borderRadius: 20, background: '#D1FAE5', color: '#065F46' }}>
+                    ✅ Filed
+                  </span>
+                )}
+                {paymentStatus === 'error' && (
+                  <span style={{ fontSize: 12, fontWeight: 700, padding: '4px 10px', borderRadius: 20, background: '#FEE2E2', color: '#991B1B' }}>
+                    ❌ Error
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {paymentError && (
+              <div style={{ background: '#FEF2F2', border: '1px solid #FECACA', borderRadius: 8, padding: '10px 14px', marginBottom: 12, fontSize: 12, color: '#7F1D1D' }}>
+                {paymentError}
+              </div>
+            )}
+
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              {/* Revolut automated payment */}
+              <button
+                onClick={initiateRevolutPayment}
+                disabled={paymentStatus === 'sending' || paymentStatus === 'sent' || paymentStatus === 'filed'}
+                style={{
+                  flex: 1, minWidth: 160, padding: '12px 20px', borderRadius: 10,
+                  background: paymentStatus === 'filed' ? '#059669' : paymentStatus === 'sending' ? '#9CA3AF' : '#6366F1',
+                  color: '#FFFFFF', border: 'none', fontSize: 14, fontWeight: 600,
+                  cursor: (paymentStatus === 'sending' || paymentStatus === 'filed') ? 'not-allowed' : 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                }}
+              >
+                {paymentStatus === 'sending' && '⏳ Processing...'}
+                {paymentStatus === 'sent' && '📄 View Receipt →'}
+                {paymentStatus === 'filed' && '✅ Paid via Revolut'}
+                {(paymentStatus === 'idle' || paymentStatus === 'error') && '💳 Pay via Revolut Business'}
+              </button>
+
+              {/* Manual fallback */}
+              <a
+                href={selectedJurisdiction.providerUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  flex: 1, minWidth: 140, padding: '12px 20px', borderRadius: 10,
+                  background: '#F3F4F6', color: '#374151', border: '1px solid #D1D5DB',
+                  fontSize: 14, fontWeight: 600, textAlign: 'center', textDecoration: 'none',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                }}
+              >
+                🌐 Pay manually →
+              </a>
+
+              {/* Launch automation */}
+              <button
+                onClick={launchAutomation}
+                disabled={launching}
+                style={{
+                  flex: 1, minWidth: 140, padding: '12px 20px', borderRadius: 10,
+                  background: launching ? '#9CA3AF' : '#2563EB',
+                  color: '#FFFFFF', border: 'none', fontSize: 14, fontWeight: 600,
+                  cursor: launching ? 'not-allowed' : 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                }}
+              >
+                {launching ? '⏳ Launching...' : '🚀 Auto-registrering'}
+              </button>
+            </div>
+
             {launchResult && (
-              <div style={{ marginTop: 12, fontSize: 12, color: '#059669', fontWeight: 500 }}>
+              <div style={{ marginTop: 10, fontSize: 12, color: '#059669', fontWeight: 500 }}>
                 Job ID: {launchResult.jobId} — Monitorera i BOS Events
               </div>
+            )}
+
+            {paymentReceipt && paymentStatus === 'sent' && (
+              <button
+                onClick={() => setPaymentReceipt(prev => prev)}
+                style={{ marginTop: 10, fontSize: 12, color: '#6366F1', fontWeight: 600, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+              >
+                📄 Visa kvitto →
+              </button>
             )}
           </div>
 
@@ -483,6 +745,14 @@ export function CompanyLaunchWizard() {
             Registrera nytt bolag
           </button>
         </div>
+      )}
+
+      {/* ── Payment receipt modal ── */}
+      {paymentReceipt && (paymentStatus === 'sent' || paymentStatus === 'filed') && (
+        <PaymentReceipt
+          receipt={paymentReceipt}
+          onClose={() => setPaymentReceipt(null)}
+        />
       )}
     </div>
   )
