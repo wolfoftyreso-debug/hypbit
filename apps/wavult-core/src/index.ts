@@ -69,6 +69,7 @@ app.use('/whoop', whoopRouter)          // WHOOP integration — recovery, sleep
 app.use('/api/procurement', procurementRouter)       // Procurement — suppliers, POs, contracts, approvals
 app.use('/api/venture-engine', ventureEngineRouter)  // Venture Engine — capital allocation & tracking
 app.use('/api/revolut', revolutPaymentRouter)   // Payment initiation + webhook
+app.use('/api/intelligence', intelligenceRouter)
 app.use('/', accountsRouter)                    // Customer account ledger + invoice spool file
 app.use('/', revolutOAuthRouter)
 app.use('/', healthMonitor)

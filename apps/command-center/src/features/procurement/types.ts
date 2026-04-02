@@ -1,6 +1,17 @@
 export type SupplierCategory = 'Tech/SaaS' | 'Juridik' | 'Redovisning' | 'Infrastruktur' | 'Marknadsföring'
 export type SupplierStatus = 'aktiv' | 'inaktiv'
 
+export interface SupplierCost {
+  /** Månadsavgift i SEK (0 = ingen fast kostnad, t.ex. usage-based) */
+  monthlyFixedSEK?: number
+  /** Faktisk genomsnittlig kostnad per månad i SEK (används för visning) */
+  avgMonthlySEK: number
+  /** Föregående år total i SEK */
+  prevYearTotalSEK?: number
+  /** Notering om hur kostnaden beräknas */
+  note?: string
+}
+
 export interface Supplier {
   id: string
   name: string
@@ -9,6 +20,7 @@ export interface Supplier {
   contact: string
   email: string
   status: SupplierStatus
+  cost?: SupplierCost
 }
 
 export type POStatus = 'utkast' | 'skickad' | 'godkänd' | 'betald'

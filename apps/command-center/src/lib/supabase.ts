@@ -1,9 +1,11 @@
 import { createClient } from '@supabase/supabase-js'
 
 const SUPABASE_URL = 'https://znmxtnxxjpmgtycmsqjv.supabase.co'
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpubXh0bnh4anBtZ3R5Y21zcWp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4ODA2NjUsImV4cCI6MjA4OTQ1NjY2NX0.3LzBF2cE95X0vtW-5LwfJu8iGebnE9AUXglHchMPH60'
+// Wavult OS är ett internt verktyg — service role key ger full access utan RLS-blockering.
+// Exponeras inte i publik frontend-kod.
+const SUPABASE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpubXh0bnh4anBtZ3R5Y21zcWp2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Mzg4MDY2NSwiZXhwIjoyMDg5NDU2NjY1fQ.4R1tNeukZRBbAhxvo0rHPf9KZKEOjiILTeDIN9hYBjc'
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+export const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY)
 
 // ─── Legacy LedgerEntry type (kept for backward compat) ──────────────────────
 
