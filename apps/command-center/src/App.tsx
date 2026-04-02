@@ -14,6 +14,7 @@ import { EventProvider } from './core/events/EventContext'
 import { RoleLogin } from './shared/auth/RoleLogin'
 import { ShellWithGuidance as Shell } from './shared/layout/Shell'
 import { RoleDashboard } from './features/dashboard/RoleDashboard'
+import { CockpitPanel, useCockpit } from './features/cockpit/CockpitPanel'
 
 // ─── Lazy-loaded feature routes ────────────────────────────────────────────────
 const TransactionFeed        = lazy(() => import('./features/transactions/TransactionFeed').then(m => ({ default: m.TransactionFeed })))
@@ -233,6 +234,34 @@ function AuthenticatedApp() {
   )
 }
 
+function CockpitTrigger() {
+  const { open, setOpen, activeSite } = useCockpit()
+  return (
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        style={{
+          position: 'fixed', bottom: 20, right: 20, zIndex: 9000,
+          background: '#0A0A1A', border: '1px solid rgba(201,168,76,.4)',
+          color: '#C9A84C', padding: '8px 16px', borderRadius: 8,
+          cursor: 'pointer', fontFamily: 'monospace', fontSize: 12, fontWeight: 700,
+          boxShadow: '0 4px 20px rgba(0,0,0,.5)',
+        }}
+      >
+        ⬡ COCKPIT
+      </button>
+      {open && (
+        <CockpitPanel
+          siteUrl={activeSite.url}
+          siteLabel={activeSite.label}
+          isLive={activeSite.isLive}
+          mode="full"
+        />
+      )}
+    </>
+  )
+}
+
 export default function App() {
   return (
     <ThemeProvider>
@@ -240,6 +269,7 @@ export default function App() {
         <RoleProvider>
           <EntityScopeProvider>
             <AuthenticatedApp />
+            <CockpitTrigger />
           </EntityScopeProvider>
         </RoleProvider>
       </AuthProvider>
