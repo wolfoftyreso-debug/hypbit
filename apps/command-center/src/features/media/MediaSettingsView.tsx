@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MOCK_CHANNELS } from './mockData'
+import { useChannels } from './hooks/useMedia'
 import type { MediaChannel } from './types'
 
 const PROVIDER_LABELS: Record<MediaChannel['provider'], string> = {
@@ -29,6 +29,7 @@ const STATUS_DOT: Record<MediaChannel['status'], string> = {
 }
 
 export function MediaSettingsView() {
+  const { channels } = useChannels()
   const [apiKeys, setApiKeys] = useState<Record<string, string>>(
     Object.fromEntries(MOCK_CHANNELS.map(ch => [ch.id, '']))
   )

@@ -4,7 +4,8 @@ import { SuppliersView } from './SuppliersView'
 import { PurchaseOrdersView } from './PurchaseOrdersView'
 import { ProcurementContractsView } from './ProcurementContractsView'
 import { ApprovalView } from './ApprovalView'
-import { APPROVAL_REQUESTS, CONTRACTS } from './mockData'
+import { useApprovals } from './hooks/useProcurement'
+import { useContracts } from './hooks/useProcurement'
 
 type Tab = 'suppliers' | 'orders' | 'contracts' | 'approvals'
 

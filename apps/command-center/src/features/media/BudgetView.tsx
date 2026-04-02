@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MOCK_CAMPAIGNS, MOCK_BUDGET_ALLOCATIONS, MOCK_CHANNELS } from './mockData'
+import { useCampaigns } from './hooks/useMedia'
 import type { Campaign } from './types'
 import { useTranslation } from '../../shared/i18n/useTranslation'
 
@@ -80,6 +80,7 @@ function CampaignBudgetPanel({ campaign }: { campaign: Campaign }) {
 }
 
 export function BudgetView() {
+  const { campaigns } = useCampaigns()
   const { t: _t } = useTranslation() // ready for i18n
   return (
     <div className="space-y-4">

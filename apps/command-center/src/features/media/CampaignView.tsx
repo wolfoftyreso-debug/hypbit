@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Campaign } from './types'
-import { MOCK_CAMPAIGNS, MOCK_BUDGET_ALLOCATIONS, MOCK_CHANNELS } from './mockData'
+import { useCampaigns } from './hooks/useMedia'
 
 const OBJECTIVE_LABELS: Record<Campaign['objective'], string> = {
   awareness: 'Awareness',
@@ -209,6 +209,7 @@ function CampaignDetail({ campaign, onBack }: { campaign: Campaign; onBack: () =
 }
 
 export function CampaignView() {
+  const { campaigns } = useCampaigns()
   const [showModal, setShowModal] = useState(false)
   const [selected, setSelected] = useState<Campaign | null>(null)
 

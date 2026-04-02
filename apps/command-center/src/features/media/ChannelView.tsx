@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { MediaChannel } from './types'
-import { MOCK_CHANNELS } from './mockData'
+import { useChannels } from './hooks/useMedia'
 
 const PROVIDER_LABELS: Record<MediaChannel['provider'], string> = {
   spotify: 'Spotify',
@@ -93,6 +93,7 @@ function ConnectModal({ channel, onClose }: { channel: MediaChannel; onClose: ()
 }
 
 export function ChannelView() {
+  const { channels } = useChannels()
   const [connectingChannel, setConnectingChannel] = useState<MediaChannel | null>(null)
 
   return (

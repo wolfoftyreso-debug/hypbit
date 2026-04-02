@@ -10,7 +10,7 @@ import {
 } from 'lucide-react'
 import { HumanFigure } from '../../shared/design-system/HumanFigure'
 import { DecisionBlockCard } from './DecisionBlockCard'
-import { mockMeetings } from './mockDecisions'
+import { useMeetings } from './useMeetings'
 import type { Meeting, DecisionBlock, VoteChoice } from './decisionTypes'
 import { MEETING_LEVEL_LABELS, STATUS_LABELS } from './decisionTypes'
 import { generateMinutes } from './decisionEngine'
@@ -67,7 +67,8 @@ export function MeetingView({ meeting: propMeeting }: MeetingViewProps) {
   const { meetingId } = useParams<{ meetingId: string }>()
   const navigate = useNavigate()
 
-  const meeting = propMeeting ?? mockMeetings.find(m => m.id === meetingId)
+  const { meetings } = useMeetings()
+  const meeting = propMeeting ?? meetings.find(m => m.id === meetingId)
 
   const [agenda, setAgenda] = useState<DecisionBlock[]>(meeting?.agenda ?? [])
   const [minutesText, setMinutesText] = useState<string | null>(null)

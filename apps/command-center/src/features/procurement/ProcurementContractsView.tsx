@@ -1,4 +1,4 @@
-import { CONTRACTS } from './mockData'
+import { useContracts } from './hooks/useProcurement'
 import { Currency } from './types'
 
 function formatAmount(amount: number, currency: Currency) {
@@ -42,6 +42,7 @@ function ExpiryBadge({ days }: { days: number }) {
 }
 
 export function ProcurementContractsView() {
+  const { contracts: CONTRACTS } = useContracts()
   const sorted = [...CONTRACTS].sort((a, b) => daysUntil(a.endDate) - daysUntil(b.endDate))
   const expiringSoon = sorted.filter(c => daysUntil(c.endDate) <= 90)
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { APPROVAL_REQUESTS } from './mockData'
+import { useApprovals } from './hooks/useProcurement'
 import { ApprovalRequest, ApprovalStatus, Currency } from './types'
 import { useTranslation } from '../../shared/i18n/useTranslation'
 
@@ -14,6 +14,7 @@ const STATUS_META: Record<ApprovalStatus, { label: string; color: string; bg: st
 }
 
 export function ApprovalView() {
+  const { approvals: APPROVAL_REQUESTS } = useApprovals()
   const { t: _t } = useTranslation() // ready for i18n
   const [requests, setRequests] = useState<ApprovalRequest[]>(APPROVAL_REQUESTS)
   const [comment, setComment] = useState<Record<string, string>>({})

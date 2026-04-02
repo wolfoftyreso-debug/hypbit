@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Creative } from './types'
-import { MOCK_CREATIVES, MOCK_CAMPAIGNS } from './mockData'
+import { useCampaigns } from './hooks/useMedia'
 import { useTranslation } from '../../shared/i18n/useTranslation'
 
 const STATUS_COLORS: Record<Creative['status'], string> = {
@@ -29,6 +29,7 @@ function NewCreativeModal({ onClose }: { onClose: () => void }) {
   const [variants, setVariants] = useState<{ label: string }[]>([{ label: 'Version A' }])
 
   const addVariant = () => {
+  const { campaigns } = useCampaigns()
     setVariants([...variants, { label: `Version ${String.fromCharCode(65 + variants.length)}` }])
   }
 

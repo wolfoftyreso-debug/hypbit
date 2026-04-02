@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { SUPPLIERS } from './mockData'
+import { useSuppliers } from './hooks/useProcurement'
 import { SupplierCategory, SupplierStatus } from './types'
 import { useTranslation } from '../../shared/i18n/useTranslation'
 
@@ -44,6 +44,7 @@ function calcCosts(avgMonthly: number) {
 }
 
 export function SuppliersView() {
+  const { suppliers: SUPPLIERS } = useSuppliers()
   const { t: _t } = useTranslation()
   const [filterCategory, setFilterCategory] = useState<SupplierCategory | 'Alla'>('Alla')
   const [filterStatus, setFilterStatus] = useState<SupplierStatus | 'Alla'>('Alla')

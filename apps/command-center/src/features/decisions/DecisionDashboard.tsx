@@ -14,7 +14,7 @@ import {
   Shield,
 } from 'lucide-react'
 import { HumanFigure } from '../../shared/design-system/HumanFigure'
-import { mockMeetings } from './mockDecisions'
+import { useMeetings } from './useMeetings'
 import type { Meeting, DecisionBlock } from './decisionTypes'
 import { MEETING_LEVEL_LABELS, MEETING_ISO_REF, ENTITY_LABELS, ENTITY_COLORS } from './decisionTypes'
 import { useTranslation } from '../../shared/i18n/useTranslation'
@@ -295,7 +295,7 @@ function Section({
 export function DecisionDashboard() {
   const { t: _t } = useTranslation() // ready for i18n
   const navigate = useNavigate()
-  const [meetings] = useState<Meeting[]>(mockMeetings)
+  const { meetings } = useMeetings()
 
   // Sortera möten på datum
   const upcomingMeetings = [...meetings]

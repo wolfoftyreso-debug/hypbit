@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { PURCHASE_ORDERS, SUPPLIERS } from './mockData'
+import { usePurchaseOrders } from './hooks/useProcurement'
 import { PurchaseOrder, POStatus, Currency } from './types'
 import { useTranslation } from '../../shared/i18n/useTranslation'
 
@@ -17,6 +17,7 @@ function formatAmount(amount: number, currency: Currency) {
 const EMPTY_PO = { supplierId: '', description: '', amount: '', currency: 'SEK' as Currency }
 
 export function PurchaseOrdersView() {
+  const { orders: PURCHASE_ORDERS } = usePurchaseOrders()
   const { t: _t } = useTranslation() // ready for i18n
   const [orders, setOrders] = useState<PurchaseOrder[]>(PURCHASE_ORDERS)
   const [showForm, setShowForm] = useState(false)
