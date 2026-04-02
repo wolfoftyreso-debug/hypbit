@@ -555,7 +555,7 @@ function HalsaTab() {
       <div style={{ marginBottom: 20 }}>
         <h2 style={{ fontSize: 16, fontWeight: 700, color: '#1C1C1E', margin: 0 }}>Hälsodata & välmående</h2>
         <p style={{ fontSize: 12, color: '#8E8E93', marginTop: 4 }}>
-          WHOOP-data och självrapporterade välmåendemätningar.
+          WHOOP-data — recovery, sömn och strain.
         </p>
       </div>
 
@@ -585,56 +585,7 @@ function HalsaTab() {
         </a>
       </div>
 
-      {/* Self-reported data */}
-      <div>
-        <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#8E8E93', marginBottom: 12 }}>
-          Självrapporterad data
-        </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 12 }}>
-          {HEALTH_DATA.map(snap => {
-            const person = PEOPLE.find(p => p.id === snap.personId)
-            return (
-              <div key={snap.personId + snap.date} style={{
-                background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.08)',
-                borderRadius: 12, padding: 16,
-              }}>
-                <div style={{ fontSize: 13, fontWeight: 600, color: '#1C1C1E', marginBottom: 4 }}>
-                  {person?.name || snap.personId}
-                </div>
-                <div style={{ fontSize: 10, color: '#8E8E93', marginBottom: 12 }}>{snap.date}</div>
 
-                {snap.energyLevel !== undefined && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                    <span style={{ fontSize: 11, color: '#3C3C43CC' }}>⚡ Energi</span>
-                    <span style={{ fontSize: 11, fontWeight: 600, color: '#FF9500' }}>{snap.energyLevel}/5</span>
-                  </div>
-                )}
-                {snap.stressLevel !== undefined && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                    <span style={{ fontSize: 11, color: '#3C3C43CC' }}>🔥 Stress</span>
-                    <span style={{ fontSize: 11, fontWeight: 600, color: '#FF3B30' }}>{snap.stressLevel}/5</span>
-                  </div>
-                )}
-                {snap.motivationLevel !== undefined && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                    <span style={{ fontSize: 11, color: '#3C3C43CC' }}>🎯 Motivation</span>
-                    <span style={{ fontSize: 11, fontWeight: 600, color: '#34C759' }}>{snap.motivationLevel}/5</span>
-                  </div>
-                )}
-
-                {snap.note && (
-                  <div style={{
-                    marginTop: 10, fontSize: 10, color: '#8E8E93', fontStyle: 'italic',
-                    borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: 8,
-                  }}>
-                    {snap.note}
-                  </div>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      </div>
     </div>
   )
 }
