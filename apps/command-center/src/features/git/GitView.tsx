@@ -85,7 +85,7 @@ function CockpitOverlay({ url, label, isLive, onClose, allPages = [] }: { url: s
       <div style={{ flex:1, display:'grid', gridTemplateColumns:'1fr 320px', overflow:'hidden' }}>
         <div style={{ position:'relative', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center', background:'#080818' }}>
           <div style={{ width:vp.width, height:vp.height, border:viewport!=='desktop'?'2px solid rgba(255,255,255,.1)':'none', borderRadius:viewport==='mobile'?'20px':viewport==='ipad'?'12px':'0', overflow:'hidden', transition:'all .3s', position:'relative', flexShrink:0 }}>
-          {currentUrl
+          {currentUrl ? (
             <iframe src={url} style={{ width:'100%', height:'100%', border:'none' }} sandbox={isLive?'allow-scripts allow-same-origin allow-forms':'allow-scripts'} />
           ) : (
             <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100%', flexDirection:'column', gap:12 }}>
