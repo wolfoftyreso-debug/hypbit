@@ -39,7 +39,11 @@ const LockIcon = () => (
 )
 
 // ── Cockpit overlay ───────────────────────────────────────────────────────────
-function CockpitOverlay({ url, label, isLive, onClose }: { url: string; label: string; isLive: boolean; onClose: () => void }) {
+function CockpitOverlay({ url, label, isLive, onClose, allPages = [] }: { url: string; label: string; isLive: boolean; onClose: () => void; allPages?: {label:string;url:string}[] }) {
+  const [viewport, setViewport] = useState('desktop')
+  const [currentUrl, setCurrentUrl] = useState(url)
+  const [showPages, setShowPages] = useState(false)
+  const vp = VIEWPORTS.find(v=>v.id===viewport) || VIEWPORTS[0]
   return (
     <div style={{ position:'fixed', inset:0, zIndex:9999, background:'#050510', display:'flex', flexDirection:'column', fontFamily:'system-ui,sans-serif' }}>
       <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'10px 20px', background:'#0A0A1A', borderBottom:'1px solid rgba(232,184,75,.2)' }}>
@@ -48,11 +52,40 @@ function CockpitOverlay({ url, label, isLive, onClose }: { url: string; label: s
           <span style={{ color:'#E8B84B', fontFamily:'monospace', fontSize:12, fontWeight:700 }}>COCKPIT — {label.toUpperCase()}</span>
           {!isLive && <span style={{ background:'#332200', color:'#FFB800', padding:'2px 8px', borderRadius:3, fontSize:9, fontFamily:'monospace', fontWeight:700 }}>SANDBOX</span>}
         </div>
-        <button onClick={onClose} style={{ background:'#E8B84B', border:'none', color:'#050510', padding:'5px 14px', borderRadius:4, cursor:'pointer', fontSize:12, fontWeight:700 }}>✕ CLOSE</button>
+        <div style={{display:'flex',gap:6,alignItems:'center'}}>
+          {/* Viewport switcher */}
+          {VIEWPORTS.map(v=>(
+            <button key={v.id} onClick={()=>setViewport(v.id)} style={{ background:viewport===v.id?'rgba(232,184,75,.2)':'rgba(255,255,255,.06)', border:`1px solid ${viewport===v.id?'#E8B84B':'rgba(255,255,255,.1)'}`, color:viewport===v.id?'#E8B84B':'rgba(255,255,255,.5)', padding:'4px 10px', borderRadius:4, cursor:'pointer', fontSize:12, transition:'all .15s' }}>
+              {v.label}
+            </button>
+          ))}
+          {/* Page dropdown */}
+          {allPages.length > 0 && (
+            <div style={{position:'relative'}}>
+              <button onClick={()=>setShowPages(s=>!s)} style={{ background:'rgba(255,255,255,.06)', border:'1px solid rgba(255,255,255,.1)', color:'rgba(255,255,255,.6)', padding:'4px 12px', borderRadius:4, cursor:'pointer', fontSize:11, fontFamily:'monospace' }}>
+                Pages ▾
+              </button>
+              {showPages && (
+                <div style={{ position:'absolute', top:'100%', right:0, marginTop:4, background:'#0A0A1A', border:'1px solid rgba(232,184,75,.2)', borderRadius:6, minWidth:220, zIndex:1 }}>
+                  {allPages.map(p=>(
+                    <div key={p.url} onClick={()=>{setCurrentUrl(p.url);setShowPages(false)}} style={{ padding:'8px 14px', cursor:'pointer', fontSize:12, color:'rgba(245,240,232,.7)', borderBottom:'1px solid rgba(255,255,255,.05)', fontFamily:'monospace' }}
+                      onMouseEnter={e=>(e.currentTarget as HTMLElement).style.background='rgba(232,184,75,.08)'}
+                      onMouseLeave={e=>(e.currentTarget as HTMLElement).style.background=''}
+                    >
+                      {p.label}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+          <button onClick={onClose} style={{ background:'#E8B84B', border:'none', color:'#050510', padding:'5px 14px', borderRadius:4, cursor:'pointer', fontSize:12, fontWeight:700 }}>✕</button>
+        </div>
       </div>
       <div style={{ flex:1, display:'grid', gridTemplateColumns:'1fr 320px', overflow:'hidden' }}>
-        <div style={{ position:'relative', overflow:'hidden' }}>
-          {url ? (
+        <div style={{ position:'relative', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center', background:'#080818' }}>
+          <div style={{ width:vp.width, height:vp.height, border:viewport!=='desktop'?'2px solid rgba(255,255,255,.1)':'none', borderRadius:viewport==='mobile'?'20px':viewport==='ipad'?'12px':'0', overflow:'hidden', transition:'all .3s', position:'relative', flexShrink:0 }}>
+          {currentUrl
             <iframe src={url} style={{ width:'100%', height:'100%', border:'none' }} sandbox={isLive?'allow-scripts allow-same-origin allow-forms':'allow-scripts'} />
           ) : (
             <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100%', flexDirection:'column', gap:12 }}>
