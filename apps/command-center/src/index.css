@@ -447,3 +447,39 @@
 /* Hide scrollbar but keep scroll functionality */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ═══════════════════════════════════════════════════════════
+   WAVULT COLOR DOCTRINE — enforced globally
+   RED = critical failure only. Never for UI labels/badges.
+═══════════════════════════════════════════════════════════ */
+
+/* Destructive actions — subtle, not alarming */
+.btn-destructive {
+  background: var(--color-destructive-bg, #FAF0ED);
+  color: var(--color-destructive, #8B3A2A);
+  border: 1px solid var(--color-destructive, #8B3A2A);
+}
+.btn-destructive:hover {
+  background: var(--color-destructive, #8B3A2A);
+  color: white;
+}
+
+/* Critical alerts — the ONLY place for full red */
+.alert-critical {
+  background: var(--color-danger-bg, #FDECEA);
+  color: var(--color-danger, #C0392B);
+  border: 1.5px solid var(--color-danger, #C0392B);
+  border-left: 4px solid var(--color-danger, #C0392B);
+}
+
+/* Warning — amber, for attention (not red) */
+.alert-warning {
+  background: var(--color-warning-bg, #FDF3E0);
+  color: var(--color-warning-strong, #D97706);
+  border: 1.5px solid var(--color-warning, #B8760A);
+  border-left: 4px solid var(--color-warning-strong, #D97706);
+}
+
+/* Negative financial — warm brown, not alarming */
+.value-negative { color: var(--color-negative, #A0522D); }
+.value-positive { color: var(--color-success, #2D7A4F); }

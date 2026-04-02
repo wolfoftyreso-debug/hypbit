@@ -46,17 +46,25 @@ html, body, #root {
   --color-interactive-hover: #1A2E5A;
   --color-interactive-light: #E0E6F5;
 
-  /* ── Status ──────────────────────────────────────────────── */
-  --color-success:         #2D7A4F;
-  --color-success-bg:      #E8F5ED;
+  /* ── Danger — RED: ONLY for critical failures, system down, security breach ─ */
+  /* Never use red for: badges, tags, labels, notifications, counts, deletions   */
+  /* For warnings/attention: use --color-warning (amber) instead                 */
+  --color-danger:          #C0392B;   /* CRITICAL ONLY */
+  --color-danger-bg:       #FDECEA;
+  --color-danger-text:     #FFFFFF;
+
+  /* ── Warning — AMBER: delays, pending, attention needed ─────────────────── */
   --color-warning:         #B8760A;
   --color-warning-bg:      #FDF3E0;
-  --color-danger:          #C0392B;
-  --color-danger-bg:       #FDECEA;
-  --color-neutral:         #6B6B7B;
-  --color-neutral-bg:      #F2EDE4;
-  --color-info:            #2C6EA6;
-  --color-info-bg:         #E3EFF8;
+  --color-warning-strong:  #D97706;
+
+  /* ── Negative — for financial loss, decline ─────────────────────────────── */
+  --color-negative:        #A0522D;   /* Warm burnt red-brown, not alarming */
+  --color-negative-bg:     #FDF0E8;
+
+  /* ── Delete/Destructive — subtle, not alarming ──────────────────────────── */
+  --color-destructive:     #8B3A2A;
+  --color-destructive-bg:  #FAF0ED;
 
   /* ── Spacing (4px grid) ──────────────────────────────────── */
   --space-1: 4px;
