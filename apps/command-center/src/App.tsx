@@ -83,6 +83,7 @@ const NetworkMap             = lazy(() => import('./features/network-map/Network
 const VentureEngine          = lazy(() => import('./features/venture-engine').then(m => ({ default: m.VentureEngine })))
 const TeamPhones             = lazy(() => import('./features/communications/TeamPhones').then(m => ({ default: m.TeamPhones })))
 const GitHubView             = lazy(() => import('./features/git/GitHub').then(m => ({ default: m.GitHub })))
+const GitViewComponent       = lazy(() => import('./features/git/GitView').then(m => ({ default: m.GitView })))
 const DatabaseManager        = lazy(() => import('./features/database/DatabaseManager').then(m => ({ default: m.DatabaseManager })))
 const DomainManager          = lazy(() => import('./features/domains/DomainManager').then(m => ({ default: m.DomainManager })))
 const N8NManager             = lazy(() => import('./features/automation/N8NManager').then(m => ({ default: m.N8NManager })))
@@ -221,7 +222,7 @@ function AuthenticatedApp() {
               <Route path="/deployments" element={<DeploymentPipeline />} />
               <Route path="/network-map" element={<NetworkMap />} />
               <Route path="/venture-engine" element={<VentureEngine />} />
-              <Route path="/git" element={<GitHubView />} />
+              <Route path="/git" element={<GitViewComponent />} />
               <Route path="/database" element={<DatabaseManager />} />
               <Route path="/domains" element={<DomainManager />} />
               <Route path="/automation" element={<N8NManager />} />
@@ -237,34 +238,6 @@ function AuthenticatedApp() {
   )
 }
 
-function CockpitTrigger() {
-  const { open, setOpen, activeSite } = useCockpit()
-  return (
-    <>
-      <button
-        onClick={() => setOpen(true)}
-        style={{
-          position: 'fixed', bottom: 20, right: 20, zIndex: 9000,
-          background: '#0A0A1A', border: '1px solid rgba(201,168,76,.4)',
-          color: '#C9A84C', padding: '8px 16px', borderRadius: 8,
-          cursor: 'pointer', fontFamily: 'monospace', fontSize: 12, fontWeight: 700,
-          boxShadow: '0 4px 20px rgba(0,0,0,.5)',
-        }}
-      >
-        ⬡ COCKPIT
-      </button>
-      {open && (
-        <CockpitPanel
-          siteUrl={activeSite.url}
-          siteLabel={activeSite.label}
-          isLive={activeSite.isLive}
-          mode="full"
-        />
-      )}
-    </>
-  )
-}
-
 export default function App() {
   useGlobalScrollReveal()
   return (
@@ -273,7 +246,6 @@ export default function App() {
         <RoleProvider>
           <EntityScopeProvider>
             <AuthenticatedApp />
-            <CockpitTrigger />
           </EntityScopeProvider>
         </RoleProvider>
       </AuthProvider>
