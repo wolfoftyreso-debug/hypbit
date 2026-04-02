@@ -243,14 +243,14 @@ function BrandHierarchy() {
         </div>
       </div>
 
-      {/* Channel name warning */}
+      {/* Channel name confirmed */}
       <div className="app-card mt-2 flex items-start gap-2"
-        style={{ background: '#C4961A08', border: '1px solid #C4961A40' }}>
-        <span className="text-base flex-shrink-0">⚠️</span>
+        style={{ background: '#4A7A5B08', border: '1px solid #4A7A5B30' }}>
+        <span className="text-base flex-shrink-0">✅</span>
         <div>
-          <p className="text-xs font-semibold text-signal-amber">Channel Name — Decision Needed</p>
+          <p className="text-xs font-semibold text-tx-primary">Channel Name: <span style={{ color: '#C4961A' }}>Pixel Camera</span></p>
           <p className="text-[9px] text-tx-secondary leading-relaxed mt-1">
-            "Wavult — Building in the Open" exposes the hidden layer. The public channel must be named under <strong className="text-tx-primary">quiXzoom</strong> or <strong className="text-tx-primary">LandveX</strong> — or a neutral brand TBD.
+            Neutral media brand. No Wavult, no holdings, no structure exposed. Owned silently by the group — the audience just sees a documentary channel.
           </p>
         </div>
       </div>
@@ -451,7 +451,7 @@ function ChannelOverview() {
             🎬
           </div>
           <div className="flex-1">
-            <p className="text-sm font-bold text-tx-primary">[Channel name — TBD]</p>
+            <p className="text-sm font-bold text-tx-primary">Pixel Camera</p>
             <p className="text-[10px] text-tx-muted font-mono mt-0.5">
               quiXzoom · LandveX · Real business, no gurus.
             </p>
@@ -774,7 +774,7 @@ export function MediaView() {
           </div>
         </div>
         <p className="text-[10px] text-tx-muted font-mono mt-1">
-          quiXzoom · LandveX · Field Doc · 3-Year Series · 6-Month Delay
+          Pixel Camera · quiXzoom · LandveX · 3-Year Series · 6-Month Delay
         </p>
       </div>
 
