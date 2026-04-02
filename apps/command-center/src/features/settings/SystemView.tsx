@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 interface ServiceStatus {
   name: string
@@ -7,13 +7,13 @@ interface ServiceStatus {
   latency: string
 }
 
-const SERVICES: ServiceStatus[] = [
-  { name: 'API Server (ECS)',        uptime: '99.98%', status: 'running',  latency: '42ms' },
-  { name: 'Supabase (hypbit)',       uptime: '99.95%', status: 'running',  latency: '8ms'  },
-  { name: 'Command Center (Vercel)', uptime: '100%',   status: 'running',  latency: '31ms' },
-  { name: 'GitHub Actions CI/CD',    uptime: '99.9%',  status: 'running',  latency: '—'    },
-  { name: 'Cloudflare CDN',          uptime: '97.2%',  status: 'degraded', latency: '120ms' },
-  { name: 'Gandi DNS',               uptime: '89.1%',  status: 'down',     latency: 'timeout' },
+const SERVICES_DEFAULT: ServiceStatus[] = [
+  { name: 'API Server (ECS)',             uptime: '99.98%', status: 'running',  latency: '42ms'  },
+  { name: 'PostgreSQL (self-hosted)',      uptime: '99.95%', status: 'running',  latency: '8ms'   },
+  { name: 'Wavult OS (Cloudflare Pages)', uptime: '100%',   status: 'running',  latency: '31ms'  },
+  { name: 'Wavult CI/CD (Gitea)',         uptime: '99.9%',  status: 'running',  latency: '—'     },
+  { name: 'Cloudflare CDN',               uptime: '99.8%',  status: 'running',  latency: '22ms'  },
+  { name: 'Cloudflare DNS',               uptime: '100%',   status: 'running',  latency: '1ms'   },
 ]
 
 const SERVICE_STATUS = {
@@ -27,25 +27,48 @@ interface InfoRow {
   value: string
   mono?: boolean
   highlight?: string
+  liveKey?: string
 }
 
-const SYSTEM_INFO: InfoRow[] = [
-  { label: 'Version',       value: 'Wavult OS v2.4.1',                  highlight: '#2563EB' },
-  { label: 'Environment',   value: 'production',                         mono: true },
-  { label: 'Senaste deploy',value: '2026-03-26 06:15 UTC',               mono: true },
-  { label: 'Commit',        value: 'a3f8c2d — feat: payroll module',      mono: true },
-  { label: 'Databas',       value: 'Supabase (hypbit)',                   mono: false },
-  { label: 'Migrationer',   value: '47 applied',                          mono: true },
-  { label: 'GitHub repo',   value: 'wolfoftyreso-debug/wavult-os',           mono: true },
-  { label: 'AWS Region',    value: 'eu-north-1',                          mono: true },
-  { label: 'ECS Cluster',   value: 'hypbit / wavult-api',                 mono: true },
+const SYSTEM_INFO_BASE: InfoRow[] = [
+  { label: 'Version',        value: 'Wavult OS v2.4.1',                       highlight: '#2563EB' },
+  { label: 'Environment',    value: 'production',                              mono: true },
+  { label: 'Senaste deploy', value: '—',                                       mono: true, liveKey: 'last_deploy' },
+  { label: 'Commit',         value: '—',                                       mono: true, liveKey: 'commit' },
+  { label: 'Databas',        value: 'PostgreSQL (self-hosted, eu-north-1)',    mono: false },
+  { label: 'Migrationer',    value: '—',                                       mono: true, liveKey: 'migrations' },
+  { label: 'Git repo',       value: 'git.wavult.com/wavult/wavult-os',         mono: true },
+  { label: 'AWS Region',     value: 'eu-north-1',                              mono: true },
+  { label: 'ECS Cluster',    value: 'wavult / wavult-os-api',                  mono: true },
 ]
+
+interface LiveMetrics {
+  last_deploy?: string
+  commit?: string
+  migrations?: string
+  services?: Array<{ name: string; uptime: string; status: string; latency: string }>
+  ecs_cluster?: string
+}
 
 export function SystemView() {
   const [deploying, setDeploying] = useState(false)
   const [deployDone, setDeployDone] = useState(false)
   const [clearing, setClearing] = useState(false)
   const [clearDone, setClearDone] = useState(false)
+  const [liveMetrics, setLiveMetrics] = useState<LiveMetrics | null>(null)
+
+  const fetchMetrics = useCallback(() => {
+    fetch('/api/cockpit/metrics', { credentials: 'include' })
+      .then(r => (r.ok ? r.json() : null))
+      .then(data => { if (data) setLiveMetrics(data) })
+      .catch(() => null)
+  }, [])
+
+  useEffect(() => {
+    fetchMetrics()
+    const interval = setInterval(fetchMetrics, 30000)
+    return () => clearInterval(interval)
+  }, [fetchMetrics])
 
   function handleDeploy() {
     setDeploying(true)
@@ -67,17 +90,32 @@ export function SystemView() {
     }, 1200)
   }
 
-  const runningCount = SERVICES.filter(s => s.status === 'running').length
-  const degradedCount = SERVICES.filter(s => s.status === 'degraded').length
-  const downCount = SERVICES.filter(s => s.status === 'down').length
+  // Merge live metrics into SYSTEM_INFO rows
+  const systemInfo = SYSTEM_INFO_BASE.map(row => {
+    if (!row.liveKey || !liveMetrics) return row
+    const liveVal = liveMetrics[row.liveKey as keyof LiveMetrics]
+    return typeof liveVal === 'string' ? { ...row, value: liveVal } : row
+  })
+
+  // Merge live service statuses if available
+  const services = (liveMetrics?.services as ServiceStatus[] | undefined) ?? SERVICES_DEFAULT
+
+  const runningCount = services.filter(s => s.status === 'running').length
+  const degradedCount = services.filter(s => s.status === 'degraded').length
+  const downCount = services.filter(s => s.status === 'down').length
 
   return (
     <div className="space-y-5">
       {/* System overview card */}
       <div className="rounded-xl border border-surface-border bg-white px-5 py-4 space-y-3">
-        <div className="text-[9px] text-gray-600 font-mono uppercase">System Info</div>
+        <div className="flex items-center justify-between">
+          <div className="text-[9px] text-gray-600 font-mono uppercase">System Info</div>
+          {liveMetrics && (
+            <span className="text-[9px] font-mono text-green-500">● live</span>
+          )}
+        </div>
         <div className="grid grid-cols-1 gap-2">
-          {SYSTEM_INFO.map(row => (
+          {systemInfo.map(row => (
             <div key={row.label} className="flex items-center gap-3">
               <span className="text-xs text-gray-9000 w-36 flex-shrink-0">{row.label}</span>
               <span
@@ -102,8 +140,8 @@ export function SystemView() {
           </div>
         </div>
         <div className="divide-y divide-gray-100">
-          {SERVICES.map(svc => {
-            const cfg = SERVICE_STATUS[svc.status]
+          {services.map(svc => {
+            const cfg = SERVICE_STATUS[svc.status as keyof typeof SERVICE_STATUS] ?? SERVICE_STATUS.down
             return (
               <div key={svc.name} className="flex items-center gap-4 px-5 py-3">
                 <div
@@ -127,7 +165,7 @@ export function SystemView() {
 
       {/* Action buttons */}
       <div className="grid grid-cols-2 gap-3">
-        {/* Force deploy */}
+        {/* Request Deploy */}
         <button
           onClick={handleDeploy}
           disabled={deploying}
@@ -145,15 +183,15 @@ export function SystemView() {
               className="text-sm font-bold"
               style={{ color: deployDone ? '#10B981' : '#EF4444' }}
             >
-              {deploying ? 'Deploying…' : deployDone ? 'Deploy triggered!' : 'Force Deploy'}
+              {deploying ? 'Skickar…' : deployDone ? 'Deploy begärd!' : 'Request Deploy'}
             </span>
           </div>
           <p className="text-xs text-gray-9000">
             {deploying
-              ? 'GitHub Actions workflow aktiverad…'
+              ? 'Wavult CI pipeline aktiverad…'
               : deployDone
-              ? 'Workflow körs på wolfoftyreso-debug/wavult-os'
-              : 'Triggar GitHub Actions deploy pipeline'}
+              ? 'Workflow körs på git.wavult.com/wavult/wavult-os'
+              : 'Triggar Wavult deployment gate (kräver godkännande)'}
           </p>
           {deploying && (
             <div className="mt-2 h-1 rounded-full bg-muted/30 overflow-hidden">
@@ -198,7 +236,7 @@ export function SystemView() {
 
       {/* Footer note */}
       <div className="rounded-xl border border-surface-border/50 bg-white/[0.01] px-4 py-3 text-xs text-gray-600 font-mono">
-        ⚙️ Wavult OS — all system data är live från ECS, Supabase & GitHub Actions. Force deploy triggar wolfoftyreso-debug/wavult-os CI/CD pipeline.
+        ⚙️ Wavult OS — system data från ECS (eu-north-1), PostgreSQL & Gitea CI. Live-metrics via /api/cockpit/metrics (30s intervall).
       </div>
     </div>
   )

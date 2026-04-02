@@ -258,7 +258,7 @@ function CtoDashboard() {
         {[
           { text: 'TypeScript · Node.js/Express · React/Next.js', status: 'active' },
           { text: 'Supabase (PostgreSQL) · Docker · AWS ECS', status: 'active' },
-          { text: 'Cloudflare · GitHub Actions · CF Pages · Stripe · Revolut', status: 'active' },
+          { text: 'Cloudflare · Wavult CI (Gitea) · CF Pages · Stripe · Revolut', status: 'active' },
           { text: 'Trigger.dev · ECR: 155407238699.dkr.ecr.eu-north-1', status: 'active' },
         ]}
       </Section>

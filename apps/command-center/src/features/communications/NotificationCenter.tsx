@@ -33,10 +33,10 @@ const BASE_NOTIFICATIONS: SystemNotification[] = [
   },
   {
     id: 'notif-003',
-    title: 'Supabase DB — 87% lagringsutnyttjande',
-    body: 'Supabase-projektet wavult-prod använder 87% av tilldelad lagring. Överväg uppgradering.',
+    title: 'PostgreSQL — 87% disk utilisation',
+    body: 'PostgreSQL (eu-north-1) använder 87% av tilldelad disk. Överväg uppgradering.',
     level: 'warning',
-    source: 'Supabase',
+    source: 'PostgreSQL',
     timestamp: '2026-03-26T07:30:00Z',
     read: false,
   },
@@ -51,10 +51,10 @@ const BASE_NOTIFICATIONS: SystemNotification[] = [
   },
   {
     id: 'notif-005',
-    title: 'GitHub Actions — CI-pipeline misslyckades',
+    title: 'Wavult CI — pipeline misslyckades',
     body: 'Branch: feature/payment-webhook — test suite failade. 3 unit tests röda.',
     level: 'warning',
-    source: 'GitHub Actions',
+    source: 'Wavult CI',
     timestamp: '2026-03-25T14:20:00Z',
     read: true,
   },
@@ -78,10 +78,10 @@ const BASE_NOTIFICATIONS: SystemNotification[] = [
   },
   {
     id: 'notif-008',
-    title: 'Backup klar — Supabase snapshot',
+    title: 'Backup klar — PostgreSQL snapshot',
     body: 'Daglig backup av wavult-prod klar. Snapshot lagrat 30 dagar framåt.',
     level: 'info',
-    source: 'Supabase',
+    source: 'PostgreSQL',
     timestamp: '2026-03-24T03:00:00Z',
     read: true,
   },
@@ -112,12 +112,12 @@ export function NotificationCenter() {
     // Simulate a new notification arriving
     const synthetic: SystemNotification = {
       id: `notif-live-${tick}`,
-      title: tick % 3 === 0 ? 'GitHub Actions — deploy klar' : 'ECS health check ✓',
+      title: tick % 3 === 0 ? 'Wavult CI — deploy klar' : 'ECS health check ✓',
       body: tick % 3 === 0
         ? 'main branch deployas till ECS. Estimated 2 min.'
         : 'Alla ECS tasks svarar på healthchecks.',
       level: 'info',
-      source: tick % 3 === 0 ? 'GitHub Actions' : 'AWS ECS',
+      source: tick % 3 === 0 ? 'Wavult CI' : 'AWS ECS',
       timestamp: new Date().toISOString(),
       read: false,
     }

@@ -337,8 +337,8 @@ function VenturesCard() {
 
 const QUICK_LINKS = [
   { name: 'AWS Console', url: 'https://console.aws.amazon.com', icon: '☁️', sub: 'eu-north-1 · ECS' },
-  { name: 'Supabase', url: 'https://supabase.com/dashboard', icon: '🗄️', sub: 'hypbit project' },
-  { name: 'GitHub', url: 'https://github.com/wolfoftyreso-debug', icon: '🐙', sub: 'wolfoftyreso-debug' },
+  { name: 'PostgreSQL', url: 'https://db.wavult.com', icon: '🗄️', sub: 'self-hosted eu-north-1' },
+  { name: 'Gitea', url: 'https://git.wavult.com/wavult', icon: '🐙', sub: 'git.wavult.com/wavult' },
   { name: 'Cloudflare', url: 'https://dash.cloudflare.com', icon: '🔥', sub: '6 zoner' },
   { name: 'Loopia Mail', url: 'https://webmail.loopia.se', icon: '✉️', sub: 'erik@hypbit.com' },
   { name: 'n8n', url: 'https://n8n.wavult.com', icon: '⚡', sub: 'Workflows' },
