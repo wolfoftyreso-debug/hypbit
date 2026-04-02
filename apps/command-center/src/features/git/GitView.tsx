@@ -96,6 +96,7 @@ function CockpitOverlay({ url, label, isLive, onClose, allPages = [] }: { url: s
           {!isLive && <div style={{ position:'absolute', bottom:16, left:0, right:0, textAlign:'center', pointerEvents:'none' }}>
             <span style={{ background:'rgba(51,34,0,.9)', color:'#FFB800', padding:'6px 16px', borderRadius:6, fontFamily:'monospace', fontSize:11, fontWeight:700 }}>⚠ SANDBOX</span>
           </div>}
+          </div>
         </div>
         <div style={{ background:'#080818', borderLeft:'1px solid rgba(232,184,75,.12)', padding:16, overflow:'auto' }}>
           <div style={{ fontSize:9, color:'rgba(255,255,255,.3)', letterSpacing:'.15em', textTransform:'uppercase', marginBottom:8 }}>Site</div>
