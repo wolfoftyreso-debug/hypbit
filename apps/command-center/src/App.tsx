@@ -1,3 +1,4 @@
+import { useGlobalScrollReveal } from './shared/hooks/useScrollReveal'
 // ─── Wavult OS v2 — Application Root ───────────────────────────────────────────
 // Provider hierarchy: Auth → Role → EntityScope → Operator → Events → Shell
 
@@ -263,6 +264,7 @@ function CockpitTrigger() {
 }
 
 export default function App() {
+  useGlobalScrollReveal()
   return (
     <ThemeProvider>
       <AuthProvider>

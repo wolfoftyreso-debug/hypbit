@@ -136,7 +136,7 @@ function ActivityCard({ activity, selected, onClick }: {
   return (
     <div
       onClick={onClick}
-      className="relative flex-shrink-0 cursor-pointer rounded-lg border px-3 py-2 transition-all"
+      className="relative flex-shrink-0 cursor-pointer rounded-lg border px-3 py-2 transition-all reveal"
       style={{
         width: '180px',
         background: selected ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)',
@@ -271,7 +271,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
               {alerts.map(alert => (
                 <div
                   key={alert.id}
-                  className="rounded-lg px-3 py-2 space-y-1"
+                  className="rounded-lg px-3 py-2 space-y-1 reveal"
                   style={{
                     background: (alert.severity === 'critical' ? '#EF4444' : '#F59E0B') + '12',
                     border: `1px solid ${alert.severity === 'critical' ? '#EF4444' : '#F59E0B'}30`,
@@ -289,7 +289,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
               ))}
             </div>
           ) : valid && activity.status === 'ready' ? (
-            <div className="rounded-lg px-3 py-2 bg-muted/30 border border-surface-border">
+            <div className="rounded-lg px-3 py-2 bg-muted/30 border border-surface-border reveal">
               <p className="text-xs" style={{ color: '#10B981' }}>✓ Ready to deploy</p>
               <p className="text-[9px] text-gray-9000 mt-0.5">All requirements met</p>
             </div>
@@ -317,7 +317,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
 
         {/* 4. ASSET */}
         <PanelSection label="Asset">
-          <div className="rounded-lg px-3 py-2 bg-muted/30 border border-surface-border/50 space-y-1.5">
+          <div className="rounded-lg px-3 py-2 bg-muted/30 border border-surface-border/50 space-y-1.5 reveal">
             <div className="flex items-center justify-between gap-2">
               <span className="text-[9px] font-mono text-gray-9000 uppercase">{activity.asset.type.replace('-', ' ')}</span>
               <span className="text-[8px] font-bold uppercase tracking-widest px-1 rounded"

@@ -339,7 +339,7 @@ function LaunchCompanyModal({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
       onClick={e => { if (e.target === e.currentTarget) onClose() }}
     >
-      <div className="w-full max-w-md rounded-xl border border-white/10 bg-[#1a1a2e] shadow-2xl p-6">
+      <div className="w-full max-w-md rounded-xl border border-white/10 bg-[#1a1a2e] shadow-2xl p-6 reveal">
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-sm font-bold text-text-primary">🚀 Launch New Company</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-white transition-colors text-lg leading-none">×</button>
@@ -354,7 +354,7 @@ function LaunchCompanyModal({
               value={name}
               onChange={e => setName(e.target.value)}
               placeholder="e.g. Landvex AB"
-              className="w-full px-3 py-2 rounded-lg bg-muted/50 border border-white/10 text-sm text-text-primary placeholder-gray-600 focus:outline-none focus:border-blue-500 transition-colors"
+              className="w-full px-3 py-2 rounded-lg bg-muted/50 border border-white/10 text-sm text-text-primary placeholder-gray-600 focus:outline-none focus:border-blue-500 transition-colors reveal"
               autoFocus
             />
           </div>
@@ -366,7 +366,7 @@ function LaunchCompanyModal({
               <select
                 value={type}
                 onChange={e => setType(e.target.value as any)}
-                className="w-full px-3 py-2 rounded-lg bg-muted/50 border border-white/10 text-sm text-text-primary focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full px-3 py-2 rounded-lg bg-muted/50 border border-white/10 text-sm text-text-primary focus:outline-none focus:border-blue-500 transition-colors reveal"
               >
                 <option value="AB">AB</option>
                 <option value="Inc">Inc</option>
@@ -380,7 +380,7 @@ function LaunchCompanyModal({
               <select
                 value={jurisdiction}
                 onChange={e => setJurisdiction(e.target.value as any)}
-                className="w-full px-3 py-2 rounded-lg bg-muted/50 border border-white/10 text-sm text-text-primary focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full px-3 py-2 rounded-lg bg-muted/50 border border-white/10 text-sm text-text-primary focus:outline-none focus:border-blue-500 transition-colors reveal"
               >
                 <option value="SE">🇸🇪 SE</option>
                 <option value="US-TX">🇺🇸 US-TX</option>
@@ -395,7 +395,7 @@ function LaunchCompanyModal({
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="block text-xs text-gray-400 mb-1">Flag (auto)</label>
-              <div className="px-3 py-2 rounded-lg bg-muted/30 border border-white/5 text-sm text-text-primary">
+              <div className="px-3 py-2 rounded-lg bg-muted/30 border border-white/5 text-sm text-text-primary reveal">
                 {flag} <span className="text-gray-500 text-xs ml-1">auto-filled</span>
               </div>
             </div>

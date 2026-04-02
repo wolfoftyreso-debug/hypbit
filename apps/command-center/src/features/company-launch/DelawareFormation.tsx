@@ -524,7 +524,7 @@ function FilingOptionCard({ option }: { option: FilingOption }) {
         href={option.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="block w-full text-center py-2 rounded-lg text-xs font-semibold transition-opacity hover:opacity-80"
+        className="block w-full text-center py-2 rounded-lg text-xs font-semibold transition-opacity hover:opacity-80 reveal"
         style={{
           background: option.recommended ? '#1d4ed8' : '#374151',
           color: '#fff',
@@ -655,7 +655,7 @@ export function DelawareFormation() {
                 value={form.companyName}
                 onChange={e => setField('companyName', e.target.value)}
                 placeholder="e.g. Wavult Ventures Inc."
-                className="w-full px-3 py-2 text-sm rounded-lg border border-white/12 bg-muted/40 text-text-primary placeholder-gray-600 focus:outline-none focus:border-blue-500/60"
+                className="w-full px-3 py-2 text-sm rounded-lg border border-white/12 bg-muted/40 text-text-primary placeholder-gray-600 focus:outline-none focus:border-blue-500/60 reveal"
               />
               <p className="text-[10px] text-gray-500">Must end with Inc., Corp., Corporation, Incorporated, or Ltd.</p>
             </div>
@@ -686,7 +686,7 @@ export function DelawareFormation() {
                   )
                 })}
               </div>
-              <div className="mt-2 p-3 rounded-lg border border-white/8 bg-muted/20 text-xs text-gray-400 space-y-0.5">
+              <div className="mt-2 p-3 rounded-lg border border-white/8 bg-muted/20 text-xs text-gray-400 space-y-0.5 reveal">
                 <div><span className="text-gray-500">Name:</span> {agent.name}</div>
                 <div><span className="text-gray-500">Address:</span> {agent.address}, {agent.city}, {agent.state} {agent.zip}</div>
                 <div><span className="text-gray-500">County:</span> {agent.county}</div>
@@ -701,7 +701,7 @@ export function DelawareFormation() {
                   type="number"
                   value={form.authorizedShares}
                   onChange={e => setField('authorizedShares', parseInt(e.target.value) || 10_000_000)}
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-white/12 bg-muted/40 text-text-primary focus:outline-none focus:border-blue-500/60"
+                  className="w-full px-3 py-2 text-sm rounded-lg border border-white/12 bg-muted/40 text-text-primary focus:outline-none focus:border-blue-500/60 reveal"
                 />
                 <p className="text-[10px] text-gray-500">Standard: 10,000,000 shares</p>
               </div>
@@ -713,7 +713,7 @@ export function DelawareFormation() {
                     type="text"
                     value={form.parValue}
                     onChange={e => setField('parValue', e.target.value)}
-                    className="w-full pl-7 pr-3 py-2 text-sm rounded-lg border border-white/12 bg-muted/40 text-text-primary focus:outline-none focus:border-blue-500/60"
+                    className="w-full pl-7 pr-3 py-2 text-sm rounded-lg border border-white/12 bg-muted/40 text-text-primary focus:outline-none focus:border-blue-500/60 reveal"
                   />
                 </div>
                 <p className="text-[10px] text-gray-500">Standard: $0.0001</p>
