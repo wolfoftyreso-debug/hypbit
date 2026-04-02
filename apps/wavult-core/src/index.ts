@@ -22,6 +22,8 @@ import orgGraphRouter from './routes/org-graph'
 import revolutPaymentRouter from './routes/revolut-payment'
 import accountsRouter from './routes/accounts'
 import procurementRouter from './routes/procurement'
+import decisionsRouter from './routes/decisions'
+import mediaRouter from './routes/media'
 
 const app = express()
 
@@ -68,6 +70,8 @@ app.use('/voice', voiceRouter)          // Bernt röst-agent (46elks + Whisper +
 app.use('/whoop', whoopRouter)          // WHOOP integration — recovery, sleep, strain
 app.use('/api/procurement', procurementRouter)       // Procurement — suppliers, POs, contracts, approvals
 app.use('/api/venture-engine', ventureEngineRouter)  // Venture Engine — capital allocation & tracking
+app.use('/api/decisions', decisionsRouter)           // Decisions — meetings + decision blocks
+app.use('/api/media', mediaRouter)                   // Media — campaigns, channels, audiences
 app.use('/api/revolut', revolutPaymentRouter)   // Payment initiation + webhook
 app.use('/api/intelligence', intelligenceRouter)
 app.use('/', accountsRouter)                    // Customer account ledger + invoice spool file
