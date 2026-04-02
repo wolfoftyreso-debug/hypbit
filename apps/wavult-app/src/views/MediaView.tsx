@@ -757,6 +757,148 @@ function FieldDocumentarianRole() {
   )
 }
 
+// ─── Raw Archive ──────────────────────────────────────────────────────────────
+
+function RawArchive() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="px-5 mt-6">
+      <button
+        className="w-full flex items-center justify-between mb-3"
+        onClick={() => setOpen(o => !o)}
+      >
+        <div className="flex items-center gap-2">
+          <h2 className="text-label text-tx-tertiary font-mono uppercase">💾 Raw Archive</h2>
+          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full"
+            style={{ background: '#4A7A5B15', color: '#4A7A5B', border: '1px solid #4A7A5B30' }}>
+            AWS S3
+          </span>
+        </div>
+        <span className="text-[9px] font-mono text-tx-muted">{open ? '▲' : '▼'}</span>
+      </button>
+
+      {/* Always-visible summary card */}
+      <div className="app-card mb-2">
+        <div className="flex items-start gap-3">
+          <span className="text-xl flex-shrink-0">🗄️</span>
+          <div className="flex-1">
+            <p className="text-xs font-bold text-tx-primary">quixzoom-media-prod</p>
+            <p className="text-[9px] font-mono text-signal-amber mt-0.5">s3://quixzoom-media-prod/media/YYYY/MM/wWW/raw/</p>
+            <p className="text-[9px] text-tx-secondary mt-1.5 leading-relaxed">
+              All raw footage goes here. Same day. No exceptions. If it is not uploaded — it does not exist.
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-w-border">
+          {[
+            { v: 'Same day', label: 'UPLOAD RULE' },
+            { v: 'Auto', label: 'INDEXED' },
+            { v: 'AI-ready', label: 'PIPELINE' },
+          ].map(k => (
+            <div key={k.label} className="text-center">
+              <p className="text-stat font-bold" style={{ color: '#4A7A5B' }}>{k.v}</p>
+              <p className="text-[8px] text-tx-muted font-mono">{k.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {open && (
+        <div className="space-y-2 animate-fade-in">
+
+          {/* Folder structure */}
+          <div className="app-card" style={{ background: '#0F1220', border: '1px solid #2A3044' }}>
+            <p className="text-[8px] font-mono text-tx-tertiary uppercase mb-2">Folder Structure</p>
+            <pre className="text-[10px] font-mono text-signal-amber leading-relaxed">{`/media/
+  /2026/
+    /04/
+      /w14/
+        /raw/
+      /w15/
+        /raw/`}</pre>
+          </div>
+
+          {/* Naming convention */}
+          <div className="app-card" style={{ background: '#0F1220', border: '1px solid #2A3044' }}>
+            <p className="text-[8px] font-mono text-tx-tertiary uppercase mb-2">Naming Convention</p>
+            <p className="text-[10px] font-mono text-signal-amber break-all">
+              YYYY-MM-DD_TYPE_LOCATION_PERSON_TOPIC.mp4
+            </p>
+            <p className="text-[9px] text-tx-muted mt-2 font-mono break-all">
+              2026-04-11_TEAM_SESSION_BANGKOK_LEON-WINSTON_DAY-ONE.mp4
+            </p>
+          </div>
+
+          {/* Required metadata */}
+          <div className="app-card">
+            <p className="text-[8px] font-mono text-tx-tertiary uppercase mb-2">Required Metadata (every file)</p>
+            <div className="grid grid-cols-2 gap-1">
+              {[
+                { field: 'filmed_at', type: 'date' },
+                { field: 'location', type: 'text' },
+                { field: 'people', type: 'array' },
+                { field: 'topic', type: 'text' },
+                { field: 'tags', type: 'array' },
+                { field: 'footage_type', type: 'enum' },
+                { field: 'brand', type: 'enum' },
+                { field: 'captured_by', type: 'text' },
+              ].map(f => (
+                <div key={f.field} className="flex items-center gap-1.5">
+                  <span className="text-[9px] font-mono text-tx-primary">{f.field}</span>
+                  <span className="text-[8px] font-mono text-tx-muted ml-auto">{f.type}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Footage types */}
+          <div className="app-card">
+            <p className="text-[8px] font-mono text-tx-tertiary uppercase mb-2">Footage Types</p>
+            <div className="flex flex-wrap gap-1.5">
+              {['INTERVIEW', 'TEAM_SESSION', 'DECISION_MOMENT', 'TRAVEL', 'PRODUCT_DEMO', 'SALES_CALL', 'FINANCIAL_REVIEW', 'SPONTANEOUS', 'MEETUP'].map(t => (
+                <span key={t} className="text-[8px] font-mono px-1.5 py-0.5 rounded-full"
+                  style={{ background: '#4A7A9B15', color: '#4A7A9B', border: '1px solid #4A7A9B25' }}>
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* OS integration */}
+          <div className="app-card">
+            <p className="text-[8px] font-mono text-tx-tertiary uppercase mb-2">OS Integration</p>
+            <div className="space-y-1.5">
+              {[
+                { icon: '🔍', label: 'Full-text search', sub: 'Search by topic, person, tag, date' },
+                { icon: '🤖', label: 'AI processing queue', sub: 'Flagged for future processing' },
+                { icon: '🎞', label: 'Episode candidate flagging', sub: 'Mark clips for content pipeline' },
+                { icon: '📊', label: 'Weekly compliance tracker', sub: 'Min. 1 filming day / week enforced' },
+              ].map(item => (
+                <div key={item.label} className="flex items-center gap-3">
+                  <span className="text-base flex-shrink-0">{item.icon}</span>
+                  <div>
+                    <p className="text-xs font-semibold text-tx-primary">{item.label}</p>
+                    <p className="text-[9px] text-tx-muted">{item.sub}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* The rule */}
+          <div className="app-card" style={{ background: '#0F1220', border: '1px solid #D9404030' }}>
+            <p className="text-xs font-semibold" style={{ color: '#D94040' }}>
+              If it is not uploaded → it does not exist.
+            </p>
+          </div>
+
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 export function MediaView() {
@@ -782,6 +924,7 @@ export function MediaView() {
       <DualNarrative />
       <ChannelOverview />
       <ContentPipeline />
+      <RawArchive />
       <ContentRules />
       <FieldDocumentarianRole />
     </div>
