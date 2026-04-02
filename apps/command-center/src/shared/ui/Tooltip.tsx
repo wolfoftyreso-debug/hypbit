@@ -67,13 +67,17 @@ export function Tooltip({ content, title, children, position = 'top', asIcon = f
       {visible && (
         <div
           className={`absolute z-50 w-56 rounded-xl shadow-xl pointer-events-none ${positionClasses[position]}`}
-          style={{ background: '#0D0F1A', border: '1px solid rgba(255,255,255,0.1)' }}
+          style={{
+            background: '#0A3D62',
+            border: '1px solid rgba(232,184,75,0.25)',
+            boxShadow: '0 8px 24px rgba(10,61,98,0.18)',
+          }}
         >
           <div className="p-3">
             {title && (
-              <p className="text-xs font-semibold text-gray-900 mb-1">{title}</p>
+              <p style={{ fontSize: 10, fontWeight: 700, color: '#E8B84B', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '.08em' }}>{title}</p>
             )}
-            <p className="text-xs text-gray-9000 leading-relaxed">{content}</p>
+            <p style={{ fontSize: 11, color: 'rgba(245,240,232,0.85)', lineHeight: 1.6 }}>{content}</p>
           </div>
         </div>
       )}
