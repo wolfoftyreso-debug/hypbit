@@ -12,6 +12,7 @@ import aiApiRouter from './routes/ai-api'
 import mediaApiRouter from './routes/media-api'
 import berntRouter from './routes/bernt'
 import intelligenceRouter from './routes/intelligence'
+import apolloRouter from './routes/apollo'
 import voiceRouter from './routes/voice'
 import { testEmbedding } from './engines/embeddingEngine'
 import { testVision } from './engines/visionEngine'
@@ -56,6 +57,7 @@ app.use('/v1/payment', paymentRouter)
 app.use('/v1/payout', payoutRouter)
 app.use('/v1/bernt', berntRouter)       // OpenClaw/Bernt integration
 app.use(intelligenceRouter)             // Intelligence Dashboard (Semrush + signals)
+app.use(apolloRouter)                   // Apollo B2B account intelligence
 app.use('/voice', voiceRouter)          // Bernt röst-agent (46elks + Whisper + ElevenLabs)
 app.use('/', revolutOAuthRouter)
 app.use('/', healthMonitor)
