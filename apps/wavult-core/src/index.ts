@@ -17,6 +17,7 @@ import voiceRouter from './routes/voice'
 import { testEmbedding } from './engines/embeddingEngine'
 import { testVision } from './engines/visionEngine'
 import ventureEngineRouter from './routes/venture-engine'
+import whoopRouter from './routes/whoop'
 
 const app = express()
 
@@ -60,6 +61,7 @@ app.use('/v1/bernt', berntRouter)       // OpenClaw/Bernt integration
 app.use(intelligenceRouter)             // Intelligence Dashboard (Semrush + signals)
 app.use(apolloRouter)                   // Apollo B2B account intelligence
 app.use('/voice', voiceRouter)          // Bernt röst-agent (46elks + Whisper + ElevenLabs)
+app.use('/whoop', whoopRouter)          // WHOOP integration — recovery, sleep, strain
 app.use('/api/venture-engine', ventureEngineRouter)  // Venture Engine — capital allocation & tracking
 app.use('/', revolutOAuthRouter)
 app.use('/', healthMonitor)
