@@ -26,6 +26,7 @@ import decisionsRouter from './routes/decisions'
 import mediaRouter from './routes/media'
 import accountingRouter from './routes/accounting'
 import auditRouter from './routes/audit'
+import taxRouter from './routes/tax-integration'
 
 const app = express()
 
@@ -78,6 +79,7 @@ app.use('/api/revolut', revolutPaymentRouter)   // Payment initiation + webhook
 app.use('/api/intelligence', intelligenceRouter)
 app.use('/api/accounting', accountingRouter)
 app.use('/api/audit-log', auditRouter)
+app.use('/api/tax', taxRouter)             // Tax Integration — SE moms/AGD, UAE VAT, LT VMI, deadline calendar
 app.use('/', accountsRouter)                    // Customer account ledger + invoice spool file
 app.use('/', revolutOAuthRouter)
 app.use('/', healthMonitor)
