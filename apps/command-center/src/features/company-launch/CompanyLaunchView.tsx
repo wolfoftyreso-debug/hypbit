@@ -836,6 +836,27 @@ export function CompanyLaunchView() {
                   <span>⏱ 2–5 arbetsdagar</span>
                   <a href="https://stripe.legalinc.com/certificate-of-good-standing" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:text-blue-400 underline">stripe.legalinc.com</a>
                 </div>
+
+                {/* ── Next Actions — Landvex Inc (Texas LLC) ── */}
+                <div style={{ background: '#FFFBEB', border: '1px solid #FCD34D', borderRadius: 10, padding: '16px 20px', marginTop: 16 }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: '#92400E', letterSpacing: 1, textTransform: 'uppercase', marginBottom: 12 }}>
+                    ⚡ Next Actions — Landvex Inc (Texas LLC)
+                  </div>
+                  {[
+                    { step: '1', label: 'Pay $325 formation fee', url: 'https://www.sos.state.tx.us/corp/forms/205_boc.pdf', cta: 'Open SOSDirect →' },
+                    { step: '2', label: 'Apply for EIN (free, online, 10 min)', url: 'https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online', cta: 'IRS EIN Application →' },
+                    { step: '3', label: 'Open Mercury Bank account', url: 'https://mercury.com', cta: 'Mercury →' },
+                    { step: '4', label: '83(b) election — 30-day deadline from formation', url: 'https://www.irs.gov/forms-pubs/about-form-8300', cta: 'IRS Form →', urgent: true },
+                  ].map(({ step, label, url, cta, urgent }) => (
+                    <div key={step} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #FEF3C7' }}>
+                      <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+                        <span style={{ width: 22, height: 22, borderRadius: '50%', background: urgent ? '#EF4444' : '#1a1a2e', color: '#fff', fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{step}</span>
+                        <span style={{ fontSize: 13, color: '#1a1a2e', fontWeight: urgent ? 700 : 400 }}>{label}{urgent && <span style={{ marginLeft: 6, color: '#EF4444', fontSize: 11, fontWeight: 700 }}>⚠️ CRITICAL</span>}</span>
+                      </div>
+                      <a href={url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: '#C9A84C', fontWeight: 700, textDecoration: 'none' }}>{cta}</a>
+                    </div>
+                  ))}
+                </div>
               </div>
 
             </div>
