@@ -47,7 +47,7 @@ export function requireAuth(req: Request, res: Response, next: NextFunction): vo
     // Legacy Supabase token path — only active during hybrid migration phase.
     // DISABLED by default. Enable via AUTH_MODE=hybrid ONLY for temporary migration windows.
     // NEVER enable in identity-core-only mode.
-    if (config.authMode !== 'hybrid') {
+    if (config.authMode === 'logging-only' || config.authMode === 'soft') {
       console.warn('[Auth] Legacy Supabase token rejected — not in hybrid mode', { requestId: req.requestId })
       res.status(401).json({ error: 'LEGACY_TOKEN_NOT_ACCEPTED' })
       return
