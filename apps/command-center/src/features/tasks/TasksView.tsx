@@ -1,3 +1,4 @@
+import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
 import { useState, useEffect } from 'react'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { useTranslation } from '../../shared/i18n/useTranslation'
@@ -290,7 +291,7 @@ export function TasksView() {
   }
 
   return (
-    <div className="space-y-6 max-w-full">
+    <div className="wv-module-enter space-y-6 max-w-full">
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
 
 interface MLCSMetric { id: string; name: string; value: number; unit: string; trend: 'up' | 'down' | 'stable'; status: 'healthy' | 'warning' | 'critical' }
 
@@ -20,24 +21,13 @@ export default function MLCSView() {
 
   return (
     <div>
-      <div style={{ background: 'var(--color-brand)', borderRadius: 12, padding: '24px 28px', marginBottom: 24, color: 'var(--color-text-inverse)' }}>
-        <div style={{ fontSize: 9, fontFamily: 'monospace', color: 'var(--color-accent)', letterSpacing: '.15em', textTransform: 'uppercase', marginBottom: 8 }}>MLCS Platform</div>
-        <h2 style={{ fontSize: 22, fontWeight: 800, margin: '0 0 6px' }}>Machine Learning Control System</h2>
-        <p style={{ fontSize: 13, color: 'rgba(245,240,232,.6)', margin: 0 }}>Modell-prestanda och systemmått i realtid</p>
-      </div>
-
-      {loading && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px,1fr))', gap: 12 }}>
-          {[1,2,3,4].map(i => <div key={i} style={{ background: 'var(--color-bg-muted)', borderRadius: 10, height: 90, animation: 'pulse 1.5s ease-in-out infinite' }} />)}
-        </div>
-      )}
-
-      {error && (
-        <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '48px 24px', textAlign: 'center' }}>
-          <div style={{ fontSize: 32, marginBottom: 12 }}>⚠️</div>
-          <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8 }}>MLCS-data ej tillgänglig</div>
-          <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>{error}</div>
-        </div>
+      <ModuleHeader
+        route="/mlcs-platform"
+        label="MLCS Platform"
+        title="Machine Learning Control"
+        description="Modell-prestanda och systemmått i realtid"
+        illustrationSize="md"
+      />
       )}
 
       {!loading && !error && metrics.length === 0 && (

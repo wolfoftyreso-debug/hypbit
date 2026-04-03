@@ -1,5 +1,6 @@
 // ─── Talent Radar — OpenClaw Elite Recruitment ───────────────────────────────
 
+import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
 import { useState, useEffect } from 'react'
 import {
   TALENT_TARGETS, STATUS_LABELS, STATUS_COLORS, SOURCE_ICONS,

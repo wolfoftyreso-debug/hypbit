@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
 
 const TARGET = new Date('2026-04-11T00:00:00+07:00')
 
@@ -15,14 +16,37 @@ function getTimeLeft() {
   }
 }
 
-const unit: React.CSSProperties = {
-  background: 'var(--color-surface)',
-  border: '1px solid var(--color-border)',
-  borderRadius: 12,
-  padding: '20px 16px',
-  textAlign: 'center',
-  minWidth: 80,
-  flex: 1,
+function DigitBlock({ value, label }: { value: number; label: string }) {
+  const [prev, setPrev] = useState(value)
+  const [flip, setFlip] = useState(false)
+
+  useEffect(() => {
+    if (value !== prev) {
+      setFlip(true)
+      setTimeout(() => { setPrev(value); setFlip(false) }, 300)
+    }
+  }, [value, prev])
+
+  return (
+    <div style={{
+      background: 'var(--color-surface)',
+      border: '1px solid var(--color-border)',
+      borderRadius: 12,
+      padding: '20px 16px',
+      textAlign: 'center',
+      flex: 1,
+    }}>
+      <div
+        className={flip ? 'wv-digit-change' : ''}
+        style={{ fontSize: 42, fontWeight: 800, color: 'var(--color-brand)', lineHeight: 1 }}
+      >
+        {String(value).padStart(2, '0')}
+      </div>
+      <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginTop: 6, letterSpacing: '.12em', textTransform: 'uppercase' }}>
+        {label}
+      </div>
+    </div>
+  )
 }
 
 export function ThailandCountdown() {
@@ -37,46 +61,60 @@ export function ThailandCountdown() {
 
   if (!loaded) {
     return (
-      <div style={{ padding: 24 }}>
-        <div style={{ background: 'var(--color-bg-muted)', borderRadius: 12, height: 140, animation: 'pulse 1.5s ease-in-out infinite' }} />
+      <div style={{ padding: 0 }}>
+        <div className="wv-skeleton" style={{ height: 120, borderRadius: 12, marginBottom: 16 }} />
+        <div style={{ display: 'flex', gap: 12 }}>
+          {[1,2,3,4].map(i => <div key={i} className="wv-skeleton" style={{ flex: 1, height: 90, borderRadius: 12 }} />)}
+        </div>
       </div>
     )
   }
 
   if (time.done) {
     return (
-      <div style={{ background: 'var(--color-brand)', borderRadius: 12, padding: '32px 24px', textAlign: 'center', color: 'var(--color-text-inverse)' }}>
-        <div style={{ fontSize: 40, marginBottom: 12 }}>🇹🇭</div>
-        <div style={{ fontSize: 24, fontWeight: 800 }}>Vi är i Bangkok!</div>
-        <div style={{ fontSize: 13, color: 'rgba(245,240,232,.6)', marginTop: 8 }}>Workcamp pågår — bygg hårt, bygg rätt.</div>
+      <div className="wv-module-enter">
+        <ModuleHeader
+          route="/thailand"
+          label="Thailand Workcamp"
+          title="Vi är i Bangkok!"
+          description="Workcamp pågår — bygg hårt, bygg rätt."
+          illustrationSize="lg"
+        />
       </div>
     )
   }
 
   return (
-    <div>
-      <div style={{ background: 'var(--color-brand)', borderRadius: 12, padding: '24px 28px', marginBottom: 20, color: 'var(--color-text-inverse)' }}>
-        <div style={{ fontSize: 9, fontFamily: 'monospace', color: 'var(--color-accent)', letterSpacing: '.15em', textTransform: 'uppercase', marginBottom: 8 }}>Thailand Workcamp</div>
-        <h2 style={{ fontSize: 22, fontWeight: 800, margin: '0 0 4px' }}>Bangkok · 11 april 2026</h2>
-        <p style={{ fontSize: 13, color: 'rgba(245,240,232,.6)', margin: 0 }}>Nysa Hotel · Sukhumvit · Hela teamet</p>
-      </div>
+    <div className="wv-module-enter">
+      <ModuleHeader
+        route="/thailand"
+        label="Thailand Workcamp"
+        title="Bangkok · 11 april 2026"
+        description="Nysa Hotel · Sukhumvit · Hela teamet"
+        illustrationSize="lg"
+      />
 
       <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
-        {[
-          { label: 'Dagar', value: time.days },
-          { label: 'Timmar', value: time.hours },
-          { label: 'Minuter', value: time.minutes },
-          { label: 'Sekunder', value: time.seconds },
-        ].map(({ label, value }) => (
-          <div key={label} style={unit}>
-            <div style={{ fontSize: 36, fontWeight: 800, color: 'var(--color-brand)', lineHeight: 1 }}>{String(value).padStart(2, '0')}</div>
-            <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginTop: 6, letterSpacing: '.1em', textTransform: 'uppercase' }}>{label}</div>
-          </div>
-        ))}
+        <DigitBlock value={time.days}    label="Dagar" />
+        <DigitBlock value={time.hours}   label="Timmar" />
+        <DigitBlock value={time.minutes} label="Minuter" />
+        <DigitBlock value={time.seconds} label="Sekunder" />
       </div>
 
-      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 10, padding: '14px 18px', fontSize: 13, color: 'var(--color-text-muted)' }}>
-        📍 Nysa Hotel Bangkok · 73/7-8 Soi Sukhumvit 13 · <strong style={{ color: 'var(--color-text-primary)' }}>{time.days} dagar kvar</strong>
+      <div
+        className="wv-card-enter wv-stagger-2"
+        style={{
+          background: 'var(--color-surface)',
+          border: '1px solid var(--color-border)',
+          borderLeft: '4px solid var(--color-accent)',
+          borderRadius: 10,
+          padding: '14px 18px',
+          fontSize: 13,
+          color: 'var(--color-text-muted)',
+        }}
+      >
+        📍 Nysa Hotel Bangkok · 73/7-8 Soi Sukhumvit 13 ·{' '}
+        <strong style={{ color: 'var(--color-text-primary)' }}>{time.days} dagar kvar</strong>
       </div>
     </div>
   )

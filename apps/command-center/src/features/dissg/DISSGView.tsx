@@ -1,4 +1,5 @@
 export default function DISSGView() {
+import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
   return (
     <div>
       <div style={{ background: 'linear-gradient(135deg,#3B2C7A,#2a1f5a)', borderRadius: 12, padding: '24px 28px', marginBottom: 24, color: '#F5F0E8' }}>

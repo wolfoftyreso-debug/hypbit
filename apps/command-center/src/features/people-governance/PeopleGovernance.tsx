@@ -1,6 +1,7 @@
 // ─── People & Governance ─────────────────────────────────────────────────────
 // DISC-profiler, hälsodata och teamöversikt
 
+import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
 import { useState, useEffect } from 'react'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { DISC_PROFILES, HEALTH_DATA } from './pgData'

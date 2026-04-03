@@ -1,3 +1,4 @@
+import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -41,7 +42,7 @@ function KpiBar({ label, current, target, unit = '' }: {
   const displayCurrent = unit === '$' ? `$${current.toLocaleString()}` : `${current}${unit}`
 
   return (
-    <div className="space-y-1">
+    <div className="wv-module-enter space-y-1">
       <div className="flex justify-between items-center">
         <span className="text-xs text-gray-9000">{label}</span>
         <span className="text-xs font-mono" style={{ color }}>

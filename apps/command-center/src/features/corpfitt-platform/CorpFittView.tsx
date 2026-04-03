@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
 
 interface FitnessChallenge { id: string; title: string; participants: number; daysLeft: number; category: string; status: 'active' | 'upcoming' | 'completed' }
 interface TeamFitnessScore { memberId: string; name: string; score: number; rank: number; streak: number }
@@ -26,24 +27,13 @@ export default function CorpFittView() {
 
   return (
     <div>
-      <div style={{ background: 'var(--color-brand)', borderRadius: 12, padding: '24px 28px', marginBottom: 24, color: 'var(--color-text-inverse)' }}>
-        <div style={{ fontSize: 9, fontFamily: 'monospace', color: 'var(--color-accent)', letterSpacing: '.15em', textTransform: 'uppercase', marginBottom: 8 }}>CorpFitt</div>
-        <h2 style={{ fontSize: 22, fontWeight: 800, margin: '0 0 6px' }}>Team Fitness</h2>
-        <p style={{ fontSize: 13, color: 'rgba(245,240,232,.6)', margin: 0 }}>Hälsoutmaningar och teamprestation</p>
-      </div>
-
-      {loading && (
-        <div>
-          {[1,2,3].map(i => <div key={i} style={{ background: 'var(--color-bg-muted)', borderRadius: 10, height: 70, marginBottom: 10, animation: 'pulse 1.5s ease-in-out infinite' }} />)}
-        </div>
-      )}
-
-      {error && (
-        <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '48px 24px', textAlign: 'center' }}>
-          <div style={{ fontSize: 32, marginBottom: 12 }}>⚠️</div>
-          <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8 }}>Fitness-data ej tillgänglig</div>
-          <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>{error}</div>
-        </div>
+      <ModuleHeader
+        route="/corpfitt-platform"
+        label="CorpFitt"
+        title="Team Fitness"
+        description="Hälsoutmaningar och teamprestation"
+        illustrationSize="md"
+      />
       )}
 
       {!loading && !error && challenges.length === 0 && (

@@ -134,6 +134,8 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/wavult-id',       labelKey: 'nav.wavultId',       icon: ShieldCheck },
       { to: '/system-graph',    labelKey: 'nav.systemGraph',    icon: Network },
       { to: '/system-status',   labelKey: 'nav.systemStatus',   icon: Activity },
+      { to: '/system/audit',    labelKey: 'nav.systemAudit',    icon: Activity },
+      { to: '/ux-quality',      labelKey: 'nav.uxQuality',      icon: Activity },
       { to: '/openclaw',        labelKey: 'nav.openclaw',        icon: Terminal },
       
       { to: '/settings',        labelKey: 'nav.settings',       icon: Settings },

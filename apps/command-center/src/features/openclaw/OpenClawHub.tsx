@@ -1,6 +1,7 @@
 // ─── OpenClaw Hub — Utbildningsmodul ─────────────────────────────────────────
 // Full dokumentation och utbildning för OpenClaw & Bernt-infrastrukturen.
 
+import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
 import { useState } from 'react'
 import {
   Terminal, Cpu, Brain, MessageSquare, Clock, Database,
@@ -421,7 +422,7 @@ const CHAPTERS: Chapter[] = [
 
 export function OpenClawHub() {
   return (
-    <div className="min-h-full bg-[#F5F0E8] text-[#6B7280]">
+    <div className="wv-module-enter min-h-full bg-[#F5F0E8] text-[#6B7280]">
       <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
 
         {/* ── Hero ── */}

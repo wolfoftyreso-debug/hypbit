@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import App from './App'
 import './index.css'
 import './shared/design-system/tokens.css'
+import './shared/animations/index.css'
 
 class GlobalErrorBoundary extends Component<
   { children: ReactNode },

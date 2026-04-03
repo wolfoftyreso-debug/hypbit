@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
 
 interface ApiRoute { method: string; path: string; description: string; status: 'live' | 'draft' }
 
@@ -26,26 +27,13 @@ export default function ApiflyView() {
 
   return (
     <div>
-      <div style={{ background: 'var(--color-brand)', borderRadius: 12, padding: '24px 28px', marginBottom: 24, color: 'var(--color-text-inverse)' }}>
-        <div style={{ fontSize: 9, fontFamily: 'monospace', color: 'var(--color-accent)', letterSpacing: '.15em', textTransform: 'uppercase', marginBottom: 8 }}>Apifly</div>
-        <h2 style={{ fontSize: 22, fontWeight: 800, margin: '0 0 6px' }}>API Gateway</h2>
-        <p style={{ fontSize: 13, color: 'rgba(245,240,232,.6)', margin: 0 }}>Hantera och övervaka alla API-rutter</p>
-      </div>
-
-      {loading && (
-        <div style={{ padding: 0 }}>
-          {[1, 2, 3, 4].map(i => (
-            <div key={i} style={{ background: 'var(--color-bg-muted)', borderRadius: 8, height: 52, marginBottom: 10, animation: 'pulse 1.5s ease-in-out infinite' }} />
-          ))}
-        </div>
-      )}
-
-      {error && (
-        <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '48px 24px', textAlign: 'center' }}>
-          <div style={{ fontSize: 32, marginBottom: 12 }}>⚠️</div>
-          <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8 }}>Kunde inte hämta API-rutter</div>
-          <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>{error}</div>
-        </div>
+      <ModuleHeader
+        route="/apifly"
+        label="Apifly"
+        title="API Gateway"
+        description="Hantera och övervaka alla API-rutter"
+        illustrationSize="md"
+      />
       )}
 
       {!loading && !error && routes.length === 0 && (

@@ -1,3 +1,4 @@
+import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
 import { useState, useEffect } from 'react'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { VoiceCallButton } from '../voice/VoiceCallButton'
@@ -401,7 +402,7 @@ export function PeopleView() {
   }
 
   return (
-    <div className="space-y-8 max-w-6xl">
+    <div className="wv-module-enter space-y-8 max-w-6xl">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-text-primary">Teamroster</h1>

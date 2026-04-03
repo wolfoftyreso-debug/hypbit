@@ -1,8 +1,8 @@
-// ─── Theme Context — Light / Dark ────────────────────────────────────────────
+// ─── Theme Context — Light only (cream theme, locked) ────────────────────────
 
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useContext, useEffect } from 'react'
 
-type Theme = 'light' | 'dark'
+type Theme = 'light'
 
 interface ThemeContextValue {
   theme: Theme
@@ -17,29 +17,13 @@ const ThemeContext = createContext<ThemeContextValue>({
 })
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    try {
-      return (localStorage.getItem('wavult_theme') as Theme) || 'dark'
-    } catch {
-      return 'dark'
-    }
-  })
-
   useEffect(() => {
-    // Set both data-theme (for CSS vars in tokens.css) and .dark class (for Tailwind)
-    document.documentElement.setAttribute('data-theme', theme)
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark')
-    } else {
-      document.documentElement.classList.remove('dark')
-    }
-    try { localStorage.setItem('wavult_theme', theme) } catch {}
-  }, [theme])
-
-  const toggleTheme = () => setTheme(t => t === 'light' ? 'dark' : 'light')
+    document.documentElement.setAttribute('data-theme', 'light')
+    document.documentElement.classList.remove('dark')
+  }, [])
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, isDark: theme === 'dark' }}>
+    <ThemeContext.Provider value={{ theme: 'light', toggleTheme: () => {}, isDark: false }}>
       {children}
     </ThemeContext.Provider>
   )

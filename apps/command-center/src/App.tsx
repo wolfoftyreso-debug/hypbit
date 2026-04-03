@@ -98,6 +98,8 @@ const UAPIXView              = lazy(() => import('./features/uapix/UAPIXView'))
 const DISSGView              = lazy(() => import('./features/dissg/DISSGView'))
 const ApiflyView             = lazy(() => import('./features/apifly/ApiflyView'))
 const MLCSPlatform           = lazy(() => import('./features/mlcs-platform/MLCSView'))
+const SystemAuditDashboard   = lazy(() => import('./features/system-audit/SystemAuditDashboard').then(m => ({ default: m.SystemAuditDashboard })))
+const UXQualityDashboard     = lazy(() => import('./features/ux-quality/UXQualityDashboard').then(m => ({ default: m.UXQualityDashboard })))
 
 // ─── Page loader fallback ───────────────────────────────────────────────────────
 function PageLoader() {
@@ -243,6 +245,8 @@ function AuthenticatedApp() {
               <Route path="/media-pipeline" element={<MediaPipelineView />} />
               <Route path="/bernt" element={<BerntWidget />} />
               <Route path="/agent" element={<AgentCommandPanel />} />
+              <Route path="/system/audit" element={<SystemAuditDashboard />} />
+              <Route path="/ux-quality" element={<UXQualityDashboard />} />
             </Routes>
           </Suspense>
         </Shell>
