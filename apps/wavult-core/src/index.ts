@@ -30,6 +30,7 @@ import mediaRouter from './routes/media'
 import accountingRouter from './routes/accounting'
 import auditRouter from './routes/audit'
 import taxRouter from './routes/tax-integration'
+import visaRouter from './routes/visa'
 import taxAutomationRouter from './routes/tax-automation'
 import deploymentsRouter from './routes/deployments'
 import cockpitRouter from './routes/cockpit'
@@ -88,6 +89,7 @@ app.use('/api/intelligence', intelligenceRouter)
 app.use('/api/accounting', accountingRouter)
 app.use('/api/audit-log', auditRouter)
 app.use('/api/tax', taxRouter)             // Tax Integration — SE moms/AGD, UAE VAT, LT VMI, deadline calendar
+app.use('/', visaRouter)                   // Visa & Travel Documents — applications, members, deadlines
 app.use('/api/tax-automation', taxAutomationRouter)
 app.use('/api/deployments', deploymentsRouter)   // Deployment gate — two-step approval, version history, rollback
 app.use('/api/cockpit', cockpitRouter)           // Cockpit — live metrics: latency, Gitea, DB, Cloudflare
