@@ -6,7 +6,7 @@ import {
   DollarSign, Receipt, ShoppingCart, CreditCard,
   Scale, Flag, Layers,
   BookOpen, Server, Settings, ShieldCheck,
-  Bell, Inbox, User, LayoutGrid, Moon, Sun,
+  Bell, Inbox, User, LayoutGrid,
   Smartphone, MapPin, Package, ArrowRight,
   Building2, MessageSquare, FileText, Activity,
   Plane,
@@ -233,7 +233,6 @@ export function Shell({ children }: ShellProps) {
   const { t } = useTranslation()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [notifOpen, setNotifOpen] = useState(false)
-  const { isDark, toggleTheme } = useTheme()
 
   useEffect(() => {
     setSidebarOpen(false)
@@ -395,28 +394,6 @@ export function Shell({ children }: ShellProps) {
                 </button>
               </>
             )}
-
-            {/* Theme toggle */}
-            <button
-              onClick={toggleTheme}
-              title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-              style={{
-                padding: '6px', borderRadius: 6, border: 'none', cursor: 'pointer',
-                background: 'transparent', color: 'var(--color-text-secondary)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                transition: 'background 0.15s, color 0.15s',
-              }}
-              onMouseEnter={e => {
-                (e.currentTarget as HTMLButtonElement).style.background = 'var(--color-bg-muted)'
-                ;(e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-primary)'
-              }}
-              onMouseLeave={e => {
-                (e.currentTarget as HTMLButtonElement).style.background = 'transparent'
-                ;(e.currentTarget as HTMLButtonElement).style.color = 'var(--color-text-secondary)'
-              }}
-            >
-              {isDark ? <Sun size={15} /> : <Moon size={15} />}
-            </button>
 
             {/* Notification bell */}
             <div className="relative">

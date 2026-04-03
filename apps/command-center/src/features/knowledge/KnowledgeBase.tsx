@@ -48,10 +48,10 @@ function InlineMarkdown({ text }: { text: string }) {
     <>
       {parts.map((part, i) => {
         if (part.startsWith('**') && part.endsWith('**')) {
-          return <strong key={i} className="font-semibold text-text-primary dark:text-white">{part.slice(2, -2)}</strong>
+          return <strong key={i} className="font-semibold text-text-primary">{part.slice(2, -2)}</strong>
         }
         if (part.startsWith('`') && part.endsWith('`')) {
-          return <code key={i} className="px-1 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-xs font-mono text-rose-600 dark:text-rose-400">{part.slice(1, -1)}</code>
+          return <code key={i} className="px-1 py-0.5 rounded bg-gray-100 text-xs font-mono text-rose-600">{part.slice(1, -1)}</code>
         }
         if (part.startsWith('*') && part.endsWith('*')) {
           return <em key={i} className="italic">{part.slice(1, -1)}</em>
@@ -70,34 +70,34 @@ function MarkdownContent({ content }: { content: string }) {
       {lines.map((line, i) => {
         if (line.startsWith('# ')) {
           return (
-            <h1 key={i} className="text-lg font-bold text-text-primary dark:text-white mt-2 mb-2">
+            <h1 key={i} className="text-lg font-bold text-text-primary mt-2 mb-2">
               {line.replace(/^# /, '')}
             </h1>
           )
         }
         if (line.startsWith('## ')) {
           return (
-            <h2 key={i} className="text-base font-bold text-text-primary dark:text-white mt-4 mb-1 pb-1 border-b border-surface-border dark:border-gray-700">
+            <h2 key={i} className="text-base font-bold text-text-primary mt-4 mb-1 pb-1 border-b border-surface-border">
               {line.replace(/^## /, '')}
             </h2>
           )
         }
         if (line.startsWith('### ')) {
           return (
-            <h3 key={i} className="text-sm font-semibold text-gray-800 dark:text-gray-200 mt-3 mb-1">
+            <h3 key={i} className="text-sm font-semibold text-gray-800 mt-3 mb-1">
               {line.replace(/^### /, '')}
             </h3>
           )
         }
         if (line.trim() === '---') {
-          return <hr key={i} className="border-surface-border dark:border-gray-700 my-3" />
+          return <hr key={i} className="border-surface-border my-3" />
         }
         // Bullet list
         if (line.trimStart().startsWith('- ') || line.trimStart().startsWith('* ')) {
           const indent = (line.length - line.trimStart().length) / 2
           return (
-            <div key={i} className={`flex gap-2 text-gray-700 dark:text-gray-300`} style={{ paddingLeft: `${indent * 12}px` }}>
-              <span className="text-gray-400 mt-0.5 shrink-0">•</span>
+            <div key={i} className={`flex gap-2 text-gray-700 style={{ paddingLeft: `${indent * 12}px` }}>
+              <span className="text-[#8A8A9A] mt-0.5 shrink-0">•</span>
               <span><InlineMarkdown text={line.replace(/^\s*[-*] /, '')} /></span>
             </div>
           )
@@ -107,8 +107,8 @@ function MarkdownContent({ content }: { content: string }) {
         if (numMatch) {
           const num = line.match(/(\d+)\./)?.[1]
           return (
-            <div key={i} className="flex gap-2 text-gray-700 dark:text-gray-300">
-              <span className="text-gray-400 shrink-0 font-mono text-xs mt-0.5">{num}.</span>
+            <div key={i} className="flex gap-2 text-gray-700">
+              <span className="text-[#8A8A9A] shrink-0 font-mono text-xs mt-0.5">{num}.</span>
               <span><InlineMarkdown text={numMatch[2]} /></span>
             </div>
           )
@@ -123,7 +123,7 @@ function MarkdownContent({ content }: { content: string }) {
         }
         // Normal paragraph
         return (
-          <p key={i} className="text-gray-700 dark:text-gray-300 leading-relaxed">
+          <p key={i} className="text-gray-700 leading-relaxed">
             <InlineMarkdown text={line} />
           </p>
         )
@@ -275,7 +275,7 @@ export function KnowledgeBase() {
       {/* Toasts */}
       <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none">
         {toasts.map(t => (
-          <div key={t.id} className="bg-gray-900 dark:bg-gray-800 text-white text-sm px-4 py-2.5 rounded-lg shadow-lg border border-gray-700 animate-fade-in">
+          <div key={t.id} className="bg-white text-[#0A3D62] text-sm px-4 py-2.5 rounded-lg shadow-lg border border-[#DDD5C5] animate-fade-in">
             {t.message}
           </div>
         ))}
@@ -284,14 +284,14 @@ export function KnowledgeBase() {
       {/* Generate Modal */}
       {showGenerateModal && (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
-          <div className="bg-white dark:bg-gray-900 rounded-xl border border-surface-border p-6 w-full max-w-md shadow-xl">
-            <h3 className="text-base font-semibold text-text-primary dark:text-white mb-4">Generera ny artikel</h3>
+          <div className="bg-white rounded-xl border border-surface-border p-6 w-full max-w-md shadow-xl">
+            <h3 className="text-base font-semibold text-text-primary mb-4">Generera ny artikel</h3>
 
             <div className="flex flex-col gap-3">
               <div>
-                <label className="text-xs text-gray-500 mb-1 block">Event-typ</label>
+                <label className="text-xs text-[#8A8A9A] mb-1 block">Event-typ</label>
                 <select
-                  className="w-full px-3 py-2 rounded-lg border border-surface-border bg-white dark:bg-gray-800 text-sm text-text-primary dark:text-white"
+                  className="w-full px-3 py-2 rounded-lg border border-surface-border bg-white text-sm text-text-primary"
                   value={generateForm.event_type}
                   onChange={e => setGenerateForm(f => ({ ...f, event_type: e.target.value }))}
                 >
@@ -303,9 +303,9 @@ export function KnowledgeBase() {
               </div>
 
               <div>
-                <label className="text-xs text-gray-500 mb-1 block">Namn *</label>
+                <label className="text-xs text-[#8A8A9A] mb-1 block">Namn *</label>
                 <input
-                  className="w-full px-3 py-2 rounded-lg border border-surface-border bg-white dark:bg-gray-800 text-sm text-text-primary dark:text-white"
+                  className="w-full px-3 py-2 rounded-lg border border-surface-border bg-white text-sm text-text-primary"
                   placeholder="t.ex. QuiXzoom Inc"
                   value={generateForm.name}
                   onChange={e => setGenerateForm(f => ({ ...f, name: e.target.value }))}
@@ -315,18 +315,18 @@ export function KnowledgeBase() {
               {generateForm.event_type === 'company.added' && (
                 <>
                   <div>
-                    <label className="text-xs text-gray-500 mb-1 block">Bolagsform</label>
+                    <label className="text-xs text-[#8A8A9A] mb-1 block">Bolagsform</label>
                     <input
-                      className="w-full px-3 py-2 rounded-lg border border-surface-border bg-white dark:bg-gray-800 text-sm text-text-primary dark:text-white"
+                      className="w-full px-3 py-2 rounded-lg border border-surface-border bg-white text-sm text-text-primary"
                       placeholder="t.ex. Delaware C Corporation"
                       value={generateForm.type}
                       onChange={e => setGenerateForm(f => ({ ...f, type: e.target.value }))}
                     />
                   </div>
                   <div>
-                    <label className="text-xs text-gray-500 mb-1 block">Jurisdiktion</label>
+                    <label className="text-xs text-[#8A8A9A] mb-1 block">Jurisdiktion</label>
                     <input
-                      className="w-full px-3 py-2 rounded-lg border border-surface-border bg-white dark:bg-gray-800 text-sm text-text-primary dark:text-white"
+                      className="w-full px-3 py-2 rounded-lg border border-surface-border bg-white text-sm text-text-primary"
                       placeholder="t.ex. US-DE"
                       value={generateForm.jurisdiction}
                       onChange={e => setGenerateForm(f => ({ ...f, jurisdiction: e.target.value }))}
@@ -345,7 +345,7 @@ export function KnowledgeBase() {
                 {generating ? 'Genererar…' : '✨ Generera'}
               </button>
               <button
-                className="px-4 py-2 rounded-lg border border-surface-border text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
+                className="px-4 py-2 rounded-lg border border-surface-border text-sm text-[#6B7280] hover:bg-gray-50"
                 onClick={() => setShowGenerateModal(false)}
               >
                 Avbryt
@@ -359,9 +359,9 @@ export function KnowledgeBase() {
       <div className="flex items-center justify-between px-4 py-3 border-b border-surface-border shrink-0">
         <div className="flex items-center gap-2">
           <span className="text-lg">📚</span>
-          <h2 className="text-base font-semibold text-text-primary dark:text-white">Kunskapsbas</h2>
+          <h2 className="text-base font-semibold text-text-primary">Kunskapsbas</h2>
           {articles.length > 0 && (
-            <span className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full">
+            <span className="text-xs text-[#8A8A9A] bg-gray-100 px-2 py-0.5 rounded-full">
               {articles.length} artiklar
             </span>
           )}
@@ -369,11 +369,11 @@ export function KnowledgeBase() {
 
         <div className="flex items-center gap-3">
           {/* Live indicator */}
-          <div className="flex items-center gap-1.5 text-xs text-gray-400">
+          <div className="flex items-center gap-1.5 text-xs text-[#8A8A9A]">
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
             <span>LIVE</span>
             {lastUpdated && (
-              <span className="text-gray-500">· {lastUpdated.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}</span>
+              <span className="text-[#8A8A9A]">· {lastUpdated.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })}</span>
             )}
           </div>
 
@@ -392,16 +392,16 @@ export function KnowledgeBase() {
         {/* Sidebar — kategorier */}
         <div className="w-44 shrink-0 border-r border-surface-border flex flex-col overflow-y-auto py-2">
           <div className="px-3 py-1 mb-1">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Kategorier</p>
+            <p className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-widest">Kategorier</p>
           </div>
 
           {/* Alla */}
           <button
             onClick={() => { setSelectedCategory('all'); setSelectedArticle(null) }}
-            className={`flex items-center justify-between px-3 py-2 text-sm mx-1 rounded-lg ${selectedCategory === 'all' ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-medium' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+            className={`flex items-center justify-between px-3 py-2 text-sm mx-1 rounded-lg ${selectedCategory === 'all' ? 'bg-blue-50 text-blue-600 font-medium' : 'text-[#6B7280] hover:bg-gray-50'}`}
           >
             <span>🗂️ Alla</span>
-            <span className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded-full">{articles.length}</span>
+            <span className="text-xs text-[#8A8A9A] bg-gray-100 px-1.5 py-0.5 rounded-full">{articles.length}</span>
           </button>
 
           {/* Per kategori */}
@@ -413,17 +413,17 @@ export function KnowledgeBase() {
               <button
                 key={cat}
                 onClick={() => { setSelectedCategory(cat); setSelectedArticle(null) }}
-                className={`flex items-center justify-between px-3 py-2 text-sm mx-1 rounded-lg ${selectedCategory === cat ? 'bg-blue-50 dark:bg-blue-900/30 font-medium' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                className={`flex items-center justify-between px-3 py-2 text-sm mx-1 rounded-lg ${selectedCategory === cat ? 'bg-blue-50 font-medium' : 'text-[#6B7280] hover:bg-gray-50'}`}
                 style={{ color: selectedCategory === cat ? cfg.color : undefined }}
               >
                 <span>{cfg.emoji} {cfg.label}</span>
-                <span className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded-full">{count}</span>
+                <span className="text-xs text-[#8A8A9A] bg-gray-100 px-1.5 py-0.5 rounded-full">{count}</span>
               </button>
             )
           })}
 
           <div className="mt-auto px-3 pb-3 pt-4 border-t border-surface-border">
-            <div className="flex items-center gap-1.5 text-xs text-gray-400">
+            <div className="flex items-center gap-1.5 text-xs text-[#8A8A9A]">
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
               <span>Auto-refresh 30s</span>
             </div>
@@ -439,14 +439,14 @@ export function KnowledgeBase() {
         {/* Artikellista */}
         <div className={`flex-1 overflow-y-auto ${selectedArticle ? 'hidden lg:flex lg:flex-col' : 'flex flex-col'}`}>
           {loading ? (
-            <div className="flex items-center justify-center h-32 text-gray-400">
+            <div className="flex items-center justify-center h-32 text-[#8A8A9A]">
               <span className="animate-pulse">Laddar artiklar…</span>
             </div>
           ) : filtered.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-32 text-gray-400 gap-2">
+            <div className="flex flex-col items-center justify-center h-32 text-[#8A8A9A] gap-2">
               <span className="text-2xl">📭</span>
               <p className="text-sm">Inga artiklar ännu</p>
-              <p className="text-xs text-gray-500">Kör seed-scriptet eller lägg till ett systemevent</p>
+              <p className="text-xs text-[#8A8A9A]">Kör seed-scriptet eller lägg till ett systemevent</p>
             </div>
           ) : (
             <div className="divide-y divide-surface-border">
@@ -457,7 +457,7 @@ export function KnowledgeBase() {
                   <button
                     key={article.id}
                     onClick={() => setSelectedArticle(isSelected ? null : article)}
-                    className={`w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${isSelected ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
+                    className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors ${isSelected ? 'bg-blue-50' : ''}`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1 min-w-0">
@@ -469,13 +469,13 @@ export function KnowledgeBase() {
                             {cfg.emoji} {cfg.label}
                           </span>
                           {article.auto_generated && (
-                            <span className="text-xs text-gray-400">✨ AI</span>
+                            <span className="text-xs text-[#8A8A9A]">✨ AI</span>
                           )}
                         </div>
-                        <h3 className="text-sm font-medium text-text-primary dark:text-white leading-snug">{article.title}</h3>
-                        <p className="text-xs text-gray-400 mt-1">Uppdaterad {timeAgo(article.last_updated)}</p>
+                        <h3 className="text-sm font-medium text-text-primary leading-snug">{article.title}</h3>
+                        <p className="text-xs text-[#8A8A9A] mt-1">Uppdaterad {timeAgo(article.last_updated)}</p>
                       </div>
-                      <span className="text-gray-300 dark:text-gray-600 shrink-0 mt-1">›</span>
+                      <span className="text-[#6B7280] shrink-0 mt-1">›</span>
                     </div>
                   </button>
                 )
@@ -504,7 +504,7 @@ export function KnowledgeBase() {
                       )
                     })()}
                     {selectedArticle.auto_generated && (
-                      <span className="text-xs text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full">
+                      <span className="text-xs text-[#8A8A9A] bg-gray-100 px-2 py-0.5 rounded-full">
                         ✨ AI-genererad · {timeAgo(selectedArticle.last_updated)}
                       </span>
                     )}
@@ -514,13 +514,13 @@ export function KnowledgeBase() {
                   <button
                     onClick={() => handleRefreshArticle(selectedArticle)}
                     disabled={generating === selectedArticle.slug}
-                    className="text-xs px-3 py-1.5 rounded-lg border border-surface-border text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50"
+                    className="text-xs px-3 py-1.5 rounded-lg border border-surface-border text-[#6B7280] hover:bg-gray-50 disabled:opacity-50"
                   >
                     {generating === selectedArticle.slug ? '⏳ Uppdaterar…' : '🔄 Uppdatera'}
                   </button>
                   <button
                     onClick={() => setSelectedArticle(null)}
-                    className="text-xs px-2 py-1.5 rounded-lg border border-surface-border text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 lg:hidden"
+                    className="text-xs px-2 py-1.5 rounded-lg border border-surface-border text-[#8A8A9A] hover:bg-gray-50 lg:hidden"
                   >
                     ✕
                   </button>
@@ -534,10 +534,10 @@ export function KnowledgeBase() {
 
               {/* Metadata */}
               <div className="mt-6 pt-4 border-t border-surface-border">
-                <p className="text-xs text-gray-400">
-                  Slug: <code className="font-mono text-xs bg-gray-100 dark:bg-gray-800 px-1 rounded">{selectedArticle.slug}</code>
+                <p className="text-xs text-[#8A8A9A]">
+                  Slug: <code className="font-mono text-xs bg-gray-100 px-1 rounded">{selectedArticle.slug}</code>
                   {selectedArticle.source_type && (
-                    <> · Källa: <code className="font-mono text-xs bg-gray-100 dark:bg-gray-800 px-1 rounded">{selectedArticle.source_type}</code></>
+                    <> · Källa: <code className="font-mono text-xs bg-gray-100 px-1 rounded">{selectedArticle.source_type}</code></>
                   )}
                 </p>
               </div>

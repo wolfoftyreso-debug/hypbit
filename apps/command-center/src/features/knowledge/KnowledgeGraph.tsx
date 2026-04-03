@@ -85,7 +85,7 @@ export function KnowledgeGraph() {
       .selectAll('line')
       .data(links)
       .enter().append('line')
-      .attr('stroke', '#ffffff12')
+      .attr('stroke', '#DDD5C5')
       .attr('stroke-width', 1)
 
     // Node groups
@@ -154,7 +154,7 @@ export function KnowledgeGraph() {
       .attr('text-anchor', 'middle')
       .attr('dy', d => nodeRadius[d.type] + 14)
       .attr('font-size', '9px')
-      .attr('fill', '#9CA3AF')
+      .attr('fill', '#8A8A9A')
       .attr('font-family', 'monospace')
       .text(d => d.name.length > 14 ? d.name.substring(0, 13) + '…' : d.name)
 
@@ -192,7 +192,7 @@ export function KnowledgeGraph() {
   return (
     <div className="flex gap-4" style={{ height: 'calc(100vh - 220px)' }}>
       {/* Graph */}
-      <div ref={containerRef} className="flex-1 relative bg-muted/30 rounded-xl border border-surface-border overflow-hidden min-h-[600px]" style={{ height: '100%' }}>
+      <div ref={containerRef} className="flex-1 relative bg-[#F0EBE1] rounded-xl border border-surface-border overflow-hidden min-h-[600px]" style={{ height: '100%' }}>
         <div className="absolute top-3 left-3 z-10 flex flex-wrap gap-2">
           {(['holding', 'operations', 'product', 'system', 'person', 'market'] as NodeType[]).map(type => {
             const colorMap: Record<NodeType, string> = {
@@ -200,15 +200,15 @@ export function KnowledgeGraph() {
               system: '#3B82F6', person: '#EC4899', market: '#0EA5E9'
             }
             return (
-              <div key={type} className="flex items-center gap-1.5 bg-white/40 dark:bg-gray-800/60 px-2 py-1 rounded-lg">
+              <div key={type} className="flex items-center gap-1.5 bg-white/40 px-2 py-1 rounded-lg">
                 <div className="h-2 w-2 rounded-full" style={{ background: colorMap[type] }} />
-                <span className="text-[9px] text-gray-900 dark:text-gray-100 font-mono">{TYPE_LABELS[type]}</span>
+                <span className="text-[9px] text-gray-900 font-mono">{TYPE_LABELS[type]}</span>
               </div>
             )
           })}
         </div>
 
-        <div className="absolute bottom-3 left-3 z-10 text-[9px] text-gray-600 dark:text-gray-400 font-mono">
+        <div className="absolute bottom-3 left-3 z-10 text-[9px] text-[#6B7280] font-mono">
           Scroll: zoom · Drag: pan/move · Klick: info
         </div>
 
@@ -217,19 +217,19 @@ export function KnowledgeGraph() {
 
       {/* Info panel */}
       <div className="w-72 flex-shrink-0 flex flex-col gap-3">
-        <div className="bg-white dark:bg-gray-900 border border-surface-border dark:border-gray-700 rounded-xl p-4 flex-shrink-0">
-          <h3 className="text-xs font-mono text-gray-900 dark:text-gray-100 mb-3">KUNSKAPSGRAF</h3>
-          <p className="text-xs text-gray-900 dark:text-gray-100 leading-relaxed">
+        <div className="bg-white border border-surface-border rounded-xl p-4 flex-shrink-0">
+          <h3 className="text-xs font-mono text-gray-900 mb-3">KUNSKAPSGRAF</h3>
+          <p className="text-xs text-gray-900 leading-relaxed">
             Interaktiv karta över Wavult Groups bolag, system och relationer.
             Klicka på en nod för att se detaljer.
           </p>
-          <div className="mt-3 pt-3 border-t border-surface-border dark:border-gray-700">
-            <div className="flex justify-between text-xs font-mono text-gray-900 dark:text-gray-100">
-              <span>Noder</span><span className="text-gray-900 dark:text-gray-100">{GRAPH_NODES.length}</span>
+          <div className="mt-3 pt-3 border-t border-surface-border">
+            <div className="flex justify-between text-xs font-mono text-gray-900">
+              <span>Noder</span><span className="text-gray-900">{GRAPH_NODES.length}</span>
             </div>
-            <div className="flex justify-between text-xs font-mono text-gray-900 dark:text-gray-100 mt-1">
+            <div className="flex justify-between text-xs font-mono text-gray-900 mt-1">
               <span>Kopplingar</span>
-              <span className="text-gray-900 dark:text-gray-100">
+              <span className="text-gray-900">
                 {GRAPH_NODES.reduce((sum, n) => sum + (n.links?.length ?? 0), 0)}
               </span>
             </div>
@@ -237,7 +237,7 @@ export function KnowledgeGraph() {
         </div>
 
         {selectedNode ? (
-          <div className="bg-white dark:bg-gray-900 border rounded-xl p-4 flex-1" style={{ borderColor: selectedNode.color + '40' }}>
+          <div className="bg-white border rounded-xl p-4 flex-1" style={{ borderColor: selectedNode.color + '40' }}>
             <div className="flex items-center gap-2 mb-3">
               <div className="h-3 w-3 rounded-full flex-shrink-0" style={{ background: selectedNode.color }} />
               <h3 className="text-sm font-semibold text-text-primary">{selectedNode.name}</h3>
@@ -250,11 +250,11 @@ export function KnowledgeGraph() {
               {TYPE_LABELS[selectedNode.type]}
             </div>
 
-            <p className="text-xs text-gray-900 dark:text-gray-100 leading-relaxed mb-4">{selectedNode.description}</p>
+            <p className="text-xs text-gray-900 leading-relaxed mb-4">{selectedNode.description}</p>
 
             {selectedNode.links && selectedNode.links.length > 0 && (
               <div>
-                <p className="text-xs text-gray-900 dark:text-gray-100 font-mono mb-2">KOPPLINGAR ({selectedNode.links.length})</p>
+                <p className="text-xs text-gray-900 font-mono mb-2">KOPPLINGAR ({selectedNode.links.length})</p>
                 <div className="flex flex-col gap-1">
                   {selectedNode.links.map(linkId => {
                     const linked = GRAPH_NODES.find(n => n.id === linkId)
@@ -262,7 +262,7 @@ export function KnowledgeGraph() {
                     return (
                       <div key={linkId} className="flex items-center gap-2">
                         <div className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: linked.color }} />
-                        <span className="text-xs text-gray-900 dark:text-gray-100">{linked.name}</span>
+                        <span className="text-xs text-gray-900">{linked.name}</span>
                       </div>
                     )
                   })}
@@ -270,14 +270,14 @@ export function KnowledgeGraph() {
               </div>
             )}
 
-            <div className="mt-3 pt-3 border-t border-surface-border dark:border-gray-700">
-              <span className="text-xs text-gray-600 dark:text-gray-400 font-mono">Layer {selectedNode.layer}</span>
+            <div className="mt-3 pt-3 border-t border-surface-border">
+              <span className="text-xs text-[#6B7280] font-mono">Layer {selectedNode.layer}</span>
             </div>
           </div>
         ) : (
-          <div className="bg-white dark:bg-gray-900 border border-surface-border dark:border-gray-700 rounded-xl p-4 flex-1 flex flex-col items-center justify-center text-center">
+          <div className="bg-white border border-surface-border rounded-xl p-4 flex-1 flex flex-col items-center justify-center text-center">
             <span className="text-3xl mb-2">🔬</span>
-            <p className="text-xs text-gray-900 dark:text-gray-100">Klicka på en nod i grafen för att se detaljer</p>
+            <p className="text-xs text-gray-900">Klicka på en nod i grafen för att se detaljer</p>
           </div>
         )}
       </div>

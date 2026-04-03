@@ -167,46 +167,6 @@
   .bg-muted\/10 { background: color-mix(in srgb, var(--color-border) 10%, transparent) !important; }
   .text-gray-9000 { color: var(--color-text-secondary) !important; }
 
-  /* ── Dark mode ─────────────────────────────────────────────────────────── */
-  [data-theme="dark"] {
-    --color-bg-base:       #0A0F1E;
-    --color-bg-primary:    #111929;
-    --color-bg-secondary:  #0D1526;
-    --color-bg-elevated:   #162035;
-    --color-bg-grouped:    #0D1526;
-
-    --color-border:        #1E2D45;
-    --color-border-strong: #2A3F5F;
-
-    --color-text-primary:    #E2E8F0;
-    --color-text-secondary:  #94A3B8;
-    --color-text-tertiary:   #475569;
-    --color-text-quaternary: #2A3F5F;
-
-    --color-success:    #22C55E;
-    --color-success-bg: #052E16;
-    --color-warning:    #F59E0B;
-    --color-warning-bg: #1C1107;
-    --color-danger:     #EF4444;
-    --color-danger-bg:  #1C0606;
-    --color-info:       #38BDF8;
-    --color-info-bg:    #0C1A2E;
-
-    --color-accent:       #C9A84C;
-    --color-accent-hover: #E8C96C;
-    --color-accent-light: #2A2010;
-    --color-accent-text:  #0F172A;
-    --color-brand:        #C9A84C;
-    --color-brand-hover:  #E8C96C;
-
-    --color-topbar-bg: rgba(10,15,30,0.92);
-
-    --shadow-xs: 0 1px 2px rgba(0,0,0,.4);
-    --shadow-sm: 0 1px 2px rgba(0,0,0,.4), 0 1px 3px rgba(0,0,0,.3);
-    --shadow-md: 0 2px 8px rgba(0,0,0,.5);
-    --shadow-lg: 0 4px 16px rgba(0,0,0,.6);
-  }
-
   /* Bridge: legacy Tailwind classes → new tokens */
   .bg-white    { background: var(--color-bg-primary) !important; }
   .bg-gray-50  { background: var(--color-bg-secondary) !important; }
