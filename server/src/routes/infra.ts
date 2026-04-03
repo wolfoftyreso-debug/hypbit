@@ -8,7 +8,7 @@ import { Router, Request, Response } from 'express'
 const router = Router()
 
 const AWS_REGION = process.env.AWS_REGION ?? 'eu-north-1'
-const ECS_CLUSTER = process.env.ECS_CLUSTER ?? 'hypbit'
+const ECS_CLUSTER = process.env.ECS_CLUSTER ?? 'wavult'
 
 // ─── AWS SDK helpers ─────────────────────────────────────────────────────────
 // Using fetch against AWS APIs (avoid heavy SDK imports)

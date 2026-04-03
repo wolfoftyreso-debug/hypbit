@@ -11,7 +11,7 @@ const pool = new Pool({
 const router = Router();
 
 // ─── Encryption helpers ────────────────────────────────────────────────────────
-const ENCRYPTION_KEY = process.env.DEV_SECRETS_KEY || "pixdrift-dev-secrets-key-32-bytes!"; // 32 chars
+const ENCRYPTION_KEY = process.env.DEV_SECRETS_KEY || "wavult-dev-secrets-key-32-bytes!"; // 32 chars
 const ALGORITHM = "aes-256-gcm";
 
 function encrypt(text: string): string {
@@ -757,7 +757,7 @@ async function verifyIntegration(service: string, credentials: Record<string, st
 
     if (service === "github") {
       const res = await fetch(catalog.verify_endpoint, {
-        headers: { Authorization: `Bearer ${credentials.personal_access_token}`, "User-Agent": "pixdrift" },
+        headers: { Authorization: `Bearer ${credentials.personal_access_token}`, "User-Agent": "wavult" },
       });
       return res.ok ? { ok: true } : { ok: false, error: `HTTP ${res.status}` };
     }
@@ -1009,7 +1009,7 @@ router.get("/dev-integrations/dotenv", async (req: Request, res: Response) => {
       [orgId, userId, JSON.stringify({ services: services.length > 0 ? services : "all" })]
     ).catch(() => {}); // Don't fail if audit_log doesn't exist
 
-    let envContent = `# pixdrift Developer Infrastructure — .env export\n# Generated: ${new Date().toISOString()}\n# ⚠️  Keep this file SECRET — never commit to git!\n\n`;
+    let envContent = `# wavult Developer Infrastructure — .env export\n# Generated: ${new Date().toISOString()}\n# ⚠️  Keep this file SECRET — never commit to git!\n\n`;
 
     for (const row of result.rows) {
       const catalog = SERVICE_CATALOG[row.service];
@@ -1025,7 +1025,7 @@ router.get("/dev-integrations/dotenv", async (req: Request, res: Response) => {
     }
 
     res.setHeader("Content-Type", "text/plain");
-    res.setHeader("Content-Disposition", `attachment; filename=".env.pixdrift"`);
+    res.setHeader("Content-Disposition", `attachment; filename=".env.wavult"`);
     res.send(envContent);
   } catch (e: any) {
     res.status(500).json({ error: e.message });

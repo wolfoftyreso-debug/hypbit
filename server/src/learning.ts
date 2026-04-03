@@ -586,7 +586,7 @@ router.post("/certificates/generate", async (req: Request, res: Response) => {
     : null;
 
   // Generate placeholder certificate URL
-  const certUrl = `https://api.bc.pixdrift.com/certificates/${targetUserId}/${course_id}/cert.pdf`;
+  const certUrl = `https://api.wavult.com/certificates/${targetUserId}/${course_id}/cert.pdf`;
 
   const { data, error } = await supabase
     .from("learning_certificates")

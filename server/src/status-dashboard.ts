@@ -1,11 +1,11 @@
 // ============================================================
 // status-dashboard.ts
 // Serves the live ops dashboard at /status
-// Accessible at status.pixdrift.com (via Cloudflare CNAME)
+// Accessible at status.wavult.com (via Cloudflare CNAME)
 // ============================================================
 
 export function getStatusDashboardHTML(req: any): string {
-  const host = req.headers['x-forwarded-host'] || req.headers.host || 'api.bc.pixdrift.com';
+  const host = req.headers['x-forwarded-host'] || req.headers.host || 'api.wavult.com';
   const apiBase = `https://${host}`;
 
   return `<!DOCTYPE html>
@@ -124,7 +124,7 @@ export function getStatusDashboardHTML(req: any): string {
     <div class="topbar-logo">🏗️</div>
     <div>
       <div class="topbar-title">Hypbit · Driftstatus</div>
-      <div class="topbar-sub">pixdrift.com · hypbit.com · Wavult Group</div>
+      <div class="topbar-sub">wavult.com · wavult.com · Wavult Group</div>
     </div>
   </div>
   <div class="topbar-right">
@@ -181,25 +181,25 @@ export function getStatusDashboardHTML(req: any): string {
       <div class="svc">
         <div class="svc-icon">🌐</div>
         <div class="svc-info">
-          <div class="svc-name">pixdrift.com</div>
+          <div class="svc-name">wavult.com</div>
           <div class="svc-detail">Marketing + App-portal</div>
         </div>
-        <div class="svc-status"><span class="tag tag-load" id="svc-pixdrift">Kollar...</span></div>
+        <div class="svc-status"><span class="tag tag-load" id="svc-wavult">Kollar...</span></div>
       </div>
 
       <div class="svc">
         <div class="svc-icon">🌐</div>
         <div class="svc-info">
-          <div class="svc-name">hypbit.com</div>
+          <div class="svc-name">wavult.com</div>
           <div class="svc-detail">Hypbit Group site</div>
         </div>
-        <div class="svc-status"><span class="tag tag-load" id="svc-hypbit">Kollar...</span></div>
+        <div class="svc-status"><span class="tag tag-load" id="svc-wavult">Kollar...</span></div>
       </div>
 
       <div class="svc">
         <div class="svc-icon">⚙️</div>
         <div class="svc-info">
-          <div class="svc-name">API · api.bc.pixdrift.com</div>
+          <div class="svc-name">API · api.wavult.com</div>
           <div class="svc-detail">Express · AWS ECS · eu-north-1</div>
         </div>
         <div class="svc-status"><span class="tag tag-load" id="svc-api">Kollar...</span></div>
@@ -240,8 +240,8 @@ export function getStatusDashboardHTML(req: any): string {
       <div class="svc">
         <div class="svc-icon">📦</div>
         <div class="svc-info">
-          <div class="svc-name">AWS ECS · hypbit-api</div>
-          <div class="svc-detail">Cluster: hypbit · Task def: hypbit-api</div>
+          <div class="svc-name">AWS ECS · wavult-api</div>
+          <div class="svc-detail">Cluster: wavult · Task def: wavult-api</div>
         </div>
         <div class="svc-status"><span class="tag tag-ok">Running</span></div>
       </div>
@@ -268,7 +268,7 @@ export function getStatusDashboardHTML(req: any): string {
         <div class="svc-icon">🐙</div>
         <div class="svc-info">
           <div class="svc-name">GitHub Actions · CI/CD</div>
-          <div class="svc-detail">wolfoftyreso-debug/hypbit · deploy-api.yml</div>
+          <div class="svc-detail">wolfoftyreso-debug/wavult · deploy-api.yml</div>
         </div>
         <div class="svc-status"><span class="tag tag-ok">✓ Senaste deploy OK</span></div>
       </div>
@@ -332,7 +332,7 @@ export function getStatusDashboardHTML(req: any): string {
       <path d="M 700 60 Q 580 40 460 80" stroke="#fbbf24" stroke-width="1.5" fill="none" stroke-dasharray="5,3" opacity="0.6"/>
       <polygon points="463,76 458,80 463,84" fill="#fbbf24" opacity="0.6"/>
 
-      <!-- CLIENT: pixdrift -->
+      <!-- CLIENT: wavult -->
       <g transform="translate(15,48)">
         <rect width="88" height="64" rx="7" fill="#0d1a10" stroke="#4ade80" stroke-width="1.5"/>
         <rect x="26" y="6" width="36" height="44" rx="4" fill="#0a1a0d" stroke="#4ade80" stroke-width="1"/>
@@ -345,7 +345,7 @@ export function getStatusDashboardHTML(req: any): string {
         <text x="44" y="67" text-anchor="middle" fill="#4ade80" font-size="6" opacity="0.5">Workstation App</text>
       </g>
 
-      <!-- CLIENT: hypbit -->
+      <!-- CLIENT: wavult -->
       <g transform="translate(15,128)">
         <rect width="88" height="64" rx="7" fill="#0a0d1a" stroke="#60a5fa" stroke-width="1.5"/>
         <rect x="26" y="6" width="36" height="44" rx="4" fill="#080d18" stroke="#60a5fa" stroke-width="1"/>
@@ -377,11 +377,11 @@ export function getStatusDashboardHTML(req: any): string {
         <text x="50" y="57" text-anchor="middle" fill="#f97316" font-size="6" opacity="0.5">DNS · WAF · CDN</text>
       </g>
 
-      <!-- CF hypbit -->
+      <!-- CF wavult -->
       <g transform="translate(163,138)">
         <rect width="100" height="42" rx="7" fill="#1a1200" stroke="#f97316" stroke-width="1" stroke-dasharray="3,2"/>
         <text x="50" y="18" text-anchor="middle" fill="#f97316" font-size="7" font-weight="700">CLOUDFLARE</text>
-        <text x="50" y="30" text-anchor="middle" fill="#f97316" font-size="6" opacity="0.5">hypbit.com DNS</text>
+        <text x="50" y="30" text-anchor="middle" fill="#f97316" font-size="6" opacity="0.5">wavult.com DNS</text>
         <text x="50" y="40" text-anchor="middle" fill="#f97316" font-size="6" opacity="0.4">→ Vercel</text>
       </g>
 
@@ -409,7 +409,7 @@ export function getStatusDashboardHTML(req: any): string {
         <circle cx="140" cy="17" r="3" fill="#4ade80"><animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/></circle>
         <circle cx="140" cy="34" r="3" fill="#4ade80"><animate attributeName="opacity" values="1;0.3;1" dur="2.5s" repeatCount="indefinite"/></circle>
         <circle cx="140" cy="51" r="3" fill="#fbbf24"/>
-        <text x="72" y="20" fill="#f97316" font-size="6" font-weight="700" text-anchor="middle">hypbit-api · ECS Task</text>
+        <text x="72" y="20" fill="#f97316" font-size="6" font-weight="700" text-anchor="middle">wavult-api · ECS Task</text>
         <text x="72" y="37" fill="#f97316" font-size="6" text-anchor="middle" opacity="0.8">Express API · Port 3001</text>
         <text x="72" y="54" fill="#fbbf24" font-size="6" text-anchor="middle" opacity="0.7">Lighthouse CI (⚠️)</text>
         <circle cx="150" cy="12" r="4" fill="#4ade80"/>
@@ -421,7 +421,7 @@ export function getStatusDashboardHTML(req: any): string {
       <g transform="translate(283,255)">
         <rect width="110" height="48" rx="7" fill="#001428" stroke="#22d3ee" stroke-width="1.5"/>
         <rect x="10" y="10" width="90" height="16" rx="2" fill="#0a1e38"/>
-        <text x="55" y="21" text-anchor="middle" fill="#22d3ee" font-size="6" font-weight="700">hypbit/api · latest</text>
+        <text x="55" y="21" text-anchor="middle" fill="#22d3ee" font-size="6" font-weight="700">wavult/api · latest</text>
         <circle cx="100" cy="12" r="4" fill="#4ade80"/>
         <text x="55" y="38" text-anchor="middle" fill="#22d3ee" font-size="8" font-weight="700">AWS ECR</text>
         <text x="55" y="48" text-anchor="middle" fill="#22d3ee" font-size="6" opacity="0.5">Container Registry</text>
@@ -448,7 +448,7 @@ export function getStatusDashboardHTML(req: any): string {
         <polygon points="55,10 68,28 42,28" fill="#ffffff" opacity="0.8"/>
         <circle cx="100" cy="12" r="4" fill="#4ade80"/>
         <text x="55" y="40" text-anchor="middle" fill="#ffffff" font-size="8" font-weight="700">VERCEL</text>
-        <text x="55" y="48" text-anchor="middle" fill="#aaa" font-size="6" opacity="0.6">hypbit.com · evasvensson.se</text>
+        <text x="55" y="48" text-anchor="middle" fill="#aaa" font-size="6" opacity="0.6">wavult.com · evasvensson.se</text>
       </g>
 
       <!-- STRIPE -->
@@ -523,7 +523,7 @@ export function getStatusDashboardHTML(req: any): string {
       <div id="activity-log">
         <div class="log-row"><div class="log-t" id="log-t1">—</div><div class="log-msg"><strong>API health check</strong> — svarar 200 OK</div></div>
         <div class="log-row"><div class="log-t">—</div><div class="log-msg"><strong>GitHub Actions</strong> — deploy-api.yml passerade</div></div>
-        <div class="log-row"><div class="log-t">—</div><div class="log-msg"><strong>Cloudflare</strong> — www.pixdrift.com → 301 aktiv</div></div>
+        <div class="log-row"><div class="log-t">—</div><div class="log-msg"><strong>Cloudflare</strong> — www.wavult.com → 301 aktiv</div></div>
         <div class="log-row"><div class="log-t">—</div><div class="log-msg"><strong>ECS</strong> — ny container-version live efter zod-fix</div></div>
         <div class="log-row"><div class="log-t">—</div><div class="log-msg"><strong>Supabase</strong> — 0 query-errors senaste timmen</div></div>
       </div>
@@ -574,28 +574,28 @@ export function getStatusDashboardHTML(req: any): string {
         <div style="width:32px;height:32px;background:#0d2a1a;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;">👨‍💻</div>
         <div>
           <div style="font-size:13px;font-weight:700;color:#e8e8f0;">Dennis</div>
-          <div style="font-size:10px;color:#4ade80;margin-top:1px;">dennis@hypbit.com · Inviterad av Erik</div>
+          <div style="font-size:10px;color:#4ade80;margin-top:1px;">dennis@wavult.com · Inviterad av Erik</div>
         </div>
       </div>
       <div style="background:#0a0a1e;border:1px solid #1a1a3a;border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:10px;">
         <div style="width:32px;height:32px;background:#0d2a1a;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;">👨‍💻</div>
         <div>
           <div style="font-size:13px;font-weight:700;color:#e8e8f0;">Leon</div>
-          <div style="font-size:10px;color:#4ade80;margin-top:1px;">leon@hypbit.com · Inviterad av Erik</div>
+          <div style="font-size:10px;color:#4ade80;margin-top:1px;">leon@wavult.com · Inviterad av Erik</div>
         </div>
       </div>
       <div style="background:#0a0a1e;border:1px solid #1a1a3a;border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:10px;">
         <div style="width:32px;height:32px;background:#0d2a1a;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;">👨‍💻</div>
         <div>
           <div style="font-size:13px;font-weight:700;color:#e8e8f0;">Winston</div>
-          <div style="font-size:10px;color:#4ade80;margin-top:1px;">winston@hypbit.com · Inviterad av Erik</div>
+          <div style="font-size:10px;color:#4ade80;margin-top:1px;">winston@wavult.com · Inviterad av Erik</div>
         </div>
       </div>
       <div style="background:#0a0a1e;border:1px solid #1a1a3a;border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:10px;">
         <div style="width:32px;height:32px;background:#0d2a1a;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;">👨‍💻</div>
         <div>
           <div style="font-size:13px;font-weight:700;color:#e8e8f0;">Johan</div>
-          <div style="font-size:10px;color:#4ade80;margin-top:1px;">johan@hypbit.com · Inviterad av Erik</div>
+          <div style="font-size:10px;color:#4ade80;margin-top:1px;">johan@wavult.com · Inviterad av Erik</div>
         </div>
       </div>
       <!-- New subscribers rendered here by JS -->
@@ -610,7 +610,7 @@ export function getStatusDashboardHTML(req: any): string {
 </div>
 
 <footer>
-  Hypbit · Driftstatus · status.pixdrift.com<br>
+  Hypbit · Driftstatus · status.wavult.com<br>
   Erik Svensson · Founder · Wavult Group<br>
   <span id="footer-updated">—</span>
 </footer>
@@ -699,8 +699,8 @@ async function checkHealth(){
 // ── URL CHECKS (via API proxy) ─────────────────────────────────────────────
 async function checkUrls(){
   const urls = [
-    { id: 'svc-pixdrift', url: 'https://pixdrift.com' },
-    { id: 'svc-hypbit',   url: 'https://hypbit.com' },
+    { id: 'svc-wavult', url: 'https://wavult.com' },
+    { id: 'svc-wavult',   url: 'https://wavult.com' },
     { id: 'svc-eva',      url: 'https://evasvensson.se' },
   ];
   for(const u of urls){
@@ -723,7 +723,7 @@ async function checkUrls(){
 // ── SUBSCRIBER WALL ────────────────────────────────────────────────────────
 function renderSubscriberWall(){
   try {
-    const subs = JSON.parse(localStorage.getItem('hypbit_status_subs') || '[]');
+    const subs = JSON.parse(localStorage.getItem('wavult_status_subs') || '[]');
     const container = document.getElementById('new-subscriber-cards');
     if(!container) return;
     container.innerHTML = '';
@@ -756,11 +756,11 @@ async function handleSub(e){
 
   // Save to localStorage so wall updates immediately
   try {
-    const subs = JSON.parse(localStorage.getItem('hypbit_status_subs') || '[]');
+    const subs = JSON.parse(localStorage.getItem('wavult_status_subs') || '[]');
     // Prevent duplicates
     if(!subs.find((s:any) => s.email === email)){
       subs.push({ name, email, ts: new Date().toISOString() });
-      localStorage.setItem('hypbit_status_subs', JSON.stringify(subs));
+      localStorage.setItem('wavult_status_subs', JSON.stringify(subs));
     }
   } catch {}
 

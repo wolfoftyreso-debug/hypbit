@@ -82,7 +82,7 @@ router.post("/create-checkout-session", async (req: Request, res: Response) => {
   if (!stripeKey) {
     console.log(`[Stripe DEV] Mock checkout session for ${email}, plan=${plan}, org=${org_name}`);
     return res.json({
-      url: `${process.env.APP_URL || "https://pixdrift.com"}/success.html?plan=${plan}&org=${encodeURIComponent(org_name)}&email=${encodeURIComponent(email)}&mock=1`,
+      url: `${process.env.APP_URL || "https://wavult.com"}/success.html?plan=${plan}&org=${encodeURIComponent(org_name)}&email=${encodeURIComponent(email)}&mock=1`,
     });
   }
 
@@ -101,8 +101,8 @@ router.post("/create-checkout-session", async (req: Request, res: Response) => {
         org_name,
         plan,
       },
-      success_url: `${process.env.APP_URL || "https://pixdrift.com"}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.APP_URL || "https://pixdrift.com"}/checkout.html?cancelled=1`,
+      success_url: `${process.env.APP_URL || "https://wavult.com"}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.APP_URL || "https://wavult.com"}/checkout.html?cancelled=1`,
     });
 
     res.json({ url: session.url });
@@ -197,7 +197,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
   // TODO: Send welcome email via SendGrid / Resend / etc.
   // For now, log the welcome message
-  console.log(`[Stripe Webhook] 📧 Välkomstmail till ${email}: "Välkommen till pixdrift! Ditt konto för ${orgName} är redo. Logga in på https://app.bc.pixdrift.com"`);
+  console.log(`[Stripe Webhook] 📧 Välkomstmail till ${email}: "Välkommen till wavult! Ditt konto för ${orgName} är redo. Logga in på https://app.wavult.com"`);
 }
 
 // ---------------------------------------------------------------------------

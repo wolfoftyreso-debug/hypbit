@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Generalized State Machine — Hypbit OMS Certified Core
+// Generalized State Machine — Wavult OS Certified Core
 // ---------------------------------------------------------------------------
 // ONE engine for ALL workflows. Config-driven — transitions defined in JSON,
 // not hardcoded per table. Configs are loaded from the state_machine_configs

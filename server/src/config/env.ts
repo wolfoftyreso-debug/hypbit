@@ -1,5 +1,5 @@
 /**
- * Environment configuration — pixdrift enterprise standard
+ * Environment configuration — wavult enterprise standard
  *
  * Validates ALL environment variables at startup using Zod.
  * Application will refuse to start if required variables are missing.

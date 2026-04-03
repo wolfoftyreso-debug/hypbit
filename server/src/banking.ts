@@ -27,7 +27,7 @@ const TINK_BASE_URL = 'https://link.tink.com';
 const TINK_API_BASE = 'https://api.tink.com';
 const TINK_CLIENT_ID = process.env.TINK_CLIENT_ID || '';
 const TINK_CLIENT_SECRET = process.env.TINK_CLIENT_SECRET || '';
-const TINK_REDIRECT_URI = process.env.TINK_REDIRECT_URI || 'https://api.bc.pixdrift.com/api/banking/callback';
+const TINK_REDIRECT_URI = process.env.TINK_REDIRECT_URI || 'https://api.wavult.com/api/banking/callback';
 
 
 
@@ -36,7 +36,7 @@ const SWISH_API = process.env.NODE_ENV === 'production'
   : 'https://mss.cpc.getswish.net/swish-cpcapi/api/v2';
 const SWISH_PAYEE_ALIAS = process.env.SWISH_PAYEE_ALIAS || '';
 
-const APP_REDIRECT = 'https://app.bc.pixdrift.com/settings/banking';
+const APP_REDIRECT = 'https://app.wavult.com/settings/banking';
 
 // ─── Utility: get org_id from authenticated request ──────────────────────────
 
@@ -236,7 +236,7 @@ router.get('/api/banking/accounts', async (req: Request, res: Response) => {
 
 /**
  * GET /api/banking/transactions
- * Fetches bank transactions with optional matching against pixdrift ledger
+ * Fetches bank transactions with optional matching against wavult ledger
  */
 router.get('/api/banking/transactions', async (req: Request, res: Response) => {
   try {
@@ -356,7 +356,7 @@ async function syncTinkAccount(
     const amount = parseFloat(tx.amount?.value ?? '0');
     const date = tx.dates?.booked ?? tx.dates?.value;
 
-    // Fuzzy match against pixdrift ledger (amount + date within 2 days)
+    // Fuzzy match against wavult ledger (amount + date within 2 days)
     const matchDate = new Date(date);
     const matchFrom = new Date(matchDate);
     matchFrom.setDate(matchFrom.getDate() - 2);
@@ -812,7 +812,7 @@ router.post('/api/banking/swish/payment-request', async (req: Request, res: Resp
     // Requires SWISH_CERT_PATH + SWISH_KEY_PATH environment variables
     const swishPayload = {
       payeePaymentReference: token,
-      callbackUrl: 'https://api.bc.pixdrift.com/api/banking/swish/callback',
+      callbackUrl: 'https://api.wavult.com/api/banking/swish/callback',
       payeeAlias: SWISH_PAYEE_ALIAS,
       currency,
       payerAlias: phone,

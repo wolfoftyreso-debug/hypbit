@@ -135,7 +135,7 @@ function generateSAGA2Xml(claim: WarrantyClaim): string {
   </FinancialSummary>
   <AuditInfo>
     <ExportedAt>${new Date().toISOString()}</ExportedAt>
-    <ExportedBy>pixdrift</ExportedBy>
+    <ExportedBy>wavult</ExportedBy>
     <ImmutableHash>${Buffer.from(JSON.stringify(claim)).toString('base64').slice(0, 32)}</ImmutableHash>
   </AuditInfo>
 </WarrantyClaim>`;

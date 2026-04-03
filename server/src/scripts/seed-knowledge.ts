@@ -73,7 +73,7 @@ async function seedCompanies() {
 async function seedEcsServices() {
   console.log('\n🖥️  ECS-tjänst-artiklar...')
 
-  // Kända tjänster i Wavult ECS (eu-north-1, cluster: hypbit)
+  // Kända tjänster i Wavult ECS (eu-north-1, cluster: wavult)
   const services = [
     { name: 'wavult-os-api', description: 'Wavult OS Core API — autentisering, bolag, missioner, domäner, röst-agent Bernt' },
     { name: 'quixzoom-api', description: 'QuiXzoom API — fotografer, uppdrag, bildleverans, betalningar' },
@@ -85,7 +85,7 @@ async function seedEcsServices() {
     await triggerKnowledgeEvent('ecs.deployed', {
       name: svc.name,
       description: svc.description,
-      cluster: 'hypbit',
+      cluster: 'wavult',
       region: 'eu-north-1',
       account: '155407238699',
     })

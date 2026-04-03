@@ -138,7 +138,7 @@ router.post("/create-intent", async (req: Request, res: Response) => {
       metadata: {
         approval_id,
         org_id,
-        pixdrift: "true",
+        wavult: "true",
       },
       receipt_email: customer_email,
     };

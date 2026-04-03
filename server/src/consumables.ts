@@ -1,5 +1,5 @@
 // consumables.ts — Consumables Management System
-// Operational Cost Control Engine for pixdrift
+// Operational Cost Control Engine for wavult
 // "No item without owner. No stock without location. No usage without trace."
 
 import { Router, Request, Response } from "express";

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-const BASE = 'https://api.bc.pixdrift.com';
+const BASE = 'https://api.wavult.com';
 
 /**
  * Helper: accept 429 (rate-limited) as a valid response alongside expected codes.
@@ -10,7 +10,7 @@ function expectStatus(actual: number, allowed: number[]) {
   expect([...allowed, 429]).toContain(actual);
 }
 
-describe('pixdrift API Health', () => {
+describe('wavult API Health', () => {
   it('GET /health returns 200', async () => {
     const res = await fetch(`${BASE}/health`);
     expectStatus(res.status, [200]);
