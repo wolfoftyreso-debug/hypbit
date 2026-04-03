@@ -87,7 +87,7 @@ import { knowledgeEngineRouter } from "./routes/knowledge-engine";
 import authRouter from "./auth";
 
 // ---------------------------------------------------------------------------
-// DMS — Dealer Management System (pixdrift automotive)
+// DMS — Dealer Management System (wavult automotive)
 // [ARCHIVED 2026-03-26] — Bilverkstads-vertikal skrotad (beslut 2026-03-23)
 // Alla filer nedan är flyttade till archive/server-routes/
 // ---------------------------------------------------------------------------
@@ -161,9 +161,8 @@ app.use((_req, res, next) => {
   res.setHeader('X-Supported-Versions', '1.0, 2.0-preview');
   next();
 });
-// CORS — support both legacy pixdrift.com origins and the live *.bc.pixdrift.com subdomains.
+// CORS — allowed origins for wavult.com and active platforms.
 // CORS_ORIGIN env can be a comma-separated list of allowed origins.
-// Fix 2026-03-21: Added *.bc.pixdrift.com which hosts the actual production frontends.
 const corsOrigins: string[] = (process.env.CORS_ORIGIN || "")
   .split(",")
   .map((o) => o.trim())
@@ -171,15 +170,6 @@ const corsOrigins: string[] = (process.env.CORS_ORIGIN || "")
 
 // Always include the known production app origins as fallback
 const DEFAULT_ORIGINS = [
-  "https://pixdrift.com",
-  "https://app.bc.pixdrift.com",
-  "https://admin.bc.pixdrift.com",
-  "https://crm.bc.pixdrift.com",
-  "https://sales.bc.pixdrift.com",
-  "https://workstation.pixdrift.com",
-  "https://admin.pixdrift.com",
-  "https://crm.pixdrift.com",
-  "https://sales.pixdrift.com",
   // Wavult OS frontend — Cloudflare Pages
   "https://wavult-os.pages.dev",
   "https://wavult.com",
@@ -421,7 +411,7 @@ app.post("/api/subscribe", (req: Request, res: Response) => {
   const { name, email, source } = req.body || {};
   if (!email) return res.status(400).json({ error: 'email required' });
   try {
-    const file = path.join('/tmp', 'hypbit-subscribers.json');
+    const file = path.join('/tmp', 'wavult-subscribers.json');
     const existing = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : [];
     existing.push({ name, email, source, ts: new Date().toISOString() });
     fs.writeFileSync(file, JSON.stringify(existing, null, 2));
@@ -656,7 +646,7 @@ app.use('/api/revolut', revolutRouter);               // GET /api/revolut/accoun
 // (whoopRouter already mounted above executionRouter — see line ~460)
 
 // ---------------------------------------------------------------------------
-// DMS — Dealer Management System (pixdrift automotive)
+// DMS — Dealer Management System (wavult automotive)
 // [ARCHIVED 2026-03-26] — Bilverkstads-vertikal skrotad (beslut 2026-03-23)
 // Alla routes nedan är kommenterade ut. Filer finns i archive/server-routes/
 // ---------------------------------------------------------------------------
@@ -1198,20 +1188,6 @@ process.on('unhandledRejection', (reason) => {
   console.error('[Server] Unhandled rejection (non-fatal):', reason)
 })
 
-app.listen(PORT, () => {
-  console.log(`Hypbit OMS API running on http://localhost:${PORT}`);
-  // Schedule daily auto-consume job (runs at 06:00)
-  scheduleAutoConsume();
-  // Start SLA Escalation Engine — checks every 5 minutes
-  startSLAChecker();
-});
-
-export default app;
-// Deploy trigger Sat Mar 21 18:49:08 CET 2026
-// Deploy trigger Sat Mar 21 23:55:27 CET 2026
-// Sun Mar 22 01:03:37 CET 2026 - force rebuild
-// rebuild Sun Mar 22 01:16:44 CET 2026
-
 // TEMPORARY: Migration endpoint — trigger Supabase → IC migration
 app.post('/migrate-to-ic', async (req: import('express').Request, res: import('express').Response) => {
   if (req.headers.authorization !== 'Bearer wavult-migrate-2026') {
@@ -1230,6 +1206,20 @@ app.post('/migrate-to-ic', async (req: import('express').Request, res: import('e
     return res.status(500).json({ error: String(e) });
   }
 });
+
+app.listen(PORT, () => {
+  console.log(`Wavult OS API running on http://localhost:${PORT}`);
+  // Schedule daily auto-consume job (runs at 06:00)
+  scheduleAutoConsume();
+  // Start SLA Escalation Engine — checks every 5 minutes
+  startSLAChecker();
+});
+
+export default app;
+// Deploy trigger Sat Mar 21 18:49:08 CET 2026
+// Deploy trigger Sat Mar 21 23:55:27 CET 2026
+// Sun Mar 22 01:03:37 CET 2026 - force rebuild
+// rebuild Sun Mar 22 01:16:44 CET 2026
 
 // ─── Perplexity AI Research endpoint ─────────────────────────────────────────
 app.post('/api/research', auth, async (req, res) => {

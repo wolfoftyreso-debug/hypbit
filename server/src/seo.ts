@@ -14,19 +14,19 @@ const CACHE_TTL = 3600 * 1000; // 1 hour
 // Static pages with SEO priority
 // ---------------------------------------------------------------------------
 const STATIC_PAGES = [
-  { url: 'https://pixdrift.com/', priority: '1.0', changefreq: 'weekly' },
-  { url: 'https://pixdrift.com/about.html', priority: '0.9', changefreq: 'monthly' },
-  { url: 'https://pixdrift.com/security.html', priority: '0.8', changefreq: 'monthly' },
-  { url: 'https://pixdrift.com/changelog.html', priority: '0.8', changefreq: 'weekly' },
-  { url: 'https://pixdrift.com/roadmap.html', priority: '0.7', changefreq: 'monthly' },
-  { url: 'https://pixdrift.com/sie4.html', priority: '0.8', changefreq: 'monthly' },
-  { url: 'https://pixdrift.com/blog/', priority: '0.9', changefreq: 'weekly' },
-  { url: 'https://pixdrift.com/press/', priority: '0.7', changefreq: 'weekly' },
-  { url: 'https://pixdrift.com/developers/', priority: '0.8', changefreq: 'weekly' },
-  { url: 'https://pixdrift.com/developers/api-reference.html', priority: '0.8', changefreq: 'weekly' },
-  { url: 'https://pixdrift.com/developers/authentication.html', priority: '0.6', changefreq: 'monthly' },
-  { url: 'https://pixdrift.com/developers/webhooks.html', priority: '0.6', changefreq: 'monthly' },
-  { url: 'https://pixdrift.com/developers/guides/quickstart.html', priority: '0.7', changefreq: 'monthly' },
+  { url: 'https://wavult.com/', priority: '1.0', changefreq: 'weekly' },
+  { url: 'https://wavult.com/about.html', priority: '0.9', changefreq: 'monthly' },
+  { url: 'https://wavult.com/security.html', priority: '0.8', changefreq: 'monthly' },
+  { url: 'https://wavult.com/changelog.html', priority: '0.8', changefreq: 'weekly' },
+  { url: 'https://wavult.com/roadmap.html', priority: '0.7', changefreq: 'monthly' },
+  { url: 'https://wavult.com/sie4.html', priority: '0.8', changefreq: 'monthly' },
+  { url: 'https://wavult.com/blog/', priority: '0.9', changefreq: 'weekly' },
+  { url: 'https://wavult.com/press/', priority: '0.7', changefreq: 'weekly' },
+  { url: 'https://wavult.com/developers/', priority: '0.8', changefreq: 'weekly' },
+  { url: 'https://wavult.com/developers/api-reference.html', priority: '0.8', changefreq: 'weekly' },
+  { url: 'https://wavult.com/developers/authentication.html', priority: '0.6', changefreq: 'monthly' },
+  { url: 'https://wavult.com/developers/webhooks.html', priority: '0.6', changefreq: 'monthly' },
+  { url: 'https://wavult.com/developers/guides/quickstart.html', priority: '0.7', changefreq: 'monthly' },
 ];
 
 function formatDate(date: Date | string): string {
@@ -75,7 +75,7 @@ router.get('/sitemap.xml', async (req: Request, res: Response) => {
 
       if (articles && articles.length > 0) {
         articleEntries = articles.map((a: any) => `  <url>
-    <loc>https://pixdrift.com/blog/${a.slug || a.id}.html</loc>
+    <loc>https://wavult.com/blog/${a.slug || a.id}.html</loc>
     <lastmod>${formatDate(a.updated_at)}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -94,7 +94,7 @@ router.get('/sitemap.xml', async (req: Request, res: Response) => {
 
       if (press && press.length > 0) {
         pressEntries = press.map((p: any) => `  <url>
-    <loc>https://pixdrift.com/press/${p.slug || p.id}.html</loc>
+    <loc>https://wavult.com/press/${p.slug || p.id}.html</loc>
     <lastmod>${formatDate(p.updated_at)}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -140,7 +140,7 @@ Disallow: /*.json$
 
 Crawl-delay: 10
 
-Sitemap: https://pixdrift.com/sitemap.xml
+Sitemap: https://wavult.com/sitemap.xml
 
 User-agent: Googlebot
 Allow: /
@@ -152,7 +152,7 @@ Crawl-delay: 0`);
 // ---------------------------------------------------------------------------
 router.get('/og-image.svg', (req: Request, res: Response) => {
   const title = escapeXml(String(req.query.title || 'Business Operating System').slice(0, 60));
-  const description = escapeXml(String(req.query.description || 'Your Business, Running on pixdrift.').slice(0, 100));
+  const description = escapeXml(String(req.query.description || 'Your Business, Running on wavult.').slice(0, 100));
   const type = String(req.query.type || 'default');
 
   // Accent color varies by type
@@ -177,7 +177,7 @@ router.get('/og-image.svg', (req: Request, res: Response) => {
   <line x1="0" y1="540" x2="1200" y2="540" stroke="${accentColor}" stroke-opacity="0.1" stroke-width="1"/>
   <line x1="80" y1="0" x2="80" y2="630" stroke="${accentColor}" stroke-opacity="0.1" stroke-width="1"/>
   <!-- Logo -->
-  <text x="80" y="100" font-family="Inter, system-ui, sans-serif" font-size="32" font-weight="800" fill="${accentColor}">pixdrift</text>
+  <text x="80" y="100" font-family="Inter, system-ui, sans-serif" font-size="32" font-weight="800" fill="${accentColor}">wavult</text>
   <!-- Type label -->
   <rect x="80" y="120" width="${typeLabel.length * 10 + 20}" height="28" rx="4" fill="${accentColor}" fill-opacity="0.15"/>
   <text x="90" y="139" font-family="Inter, system-ui, sans-serif" font-size="12" font-weight="700" fill="${accentColor}" letter-spacing="2">${typeLabel}</text>
@@ -187,7 +187,7 @@ router.get('/og-image.svg', (req: Request, res: Response) => {
   <text x="80" y="340" font-family="Inter, system-ui, sans-serif" font-size="24" fill="#94a3b8">${description}</text>
   <!-- Bottom bar -->
   <rect x="0" y="590" width="1200" height="2" fill="${accentColor}" fill-opacity="0.4"/>
-  <text x="80" y="615" font-family="Inter, system-ui, sans-serif" font-size="18" fill="${accentColor}">pixdrift.com</text>
+  <text x="80" y="615" font-family="Inter, system-ui, sans-serif" font-size="18" fill="${accentColor}">wavult.com</text>
   <text x="1120" y="615" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#4b5563" text-anchor="end">Business Operating System</text>
 </svg>`;
 
@@ -201,20 +201,20 @@ router.get('/og-image.svg', (req: Request, res: Response) => {
 // ---------------------------------------------------------------------------
 router.get('/schema/:page(*)', async (req: Request, res: Response) => {
   const page = req.params.page;
-  const baseUrl = 'https://pixdrift.com';
+  const baseUrl = 'https://wavult.com';
 
   const org = {
     '@type': 'Organization',
     '@id': `${baseUrl}/#organization`,
-    name: 'pixdrift',
+    name: 'wavult',
     url: baseUrl,
     logo: {
       '@type': 'ImageObject',
-      url: `${baseUrl}/pixdrift-design.css`, // swap for real logo URL
+      url: `${baseUrl}/wavult-design.css`, // swap for real logo URL
     },
     sameAs: [
-      'https://twitter.com/pixdrift',
-      'https://linkedin.com/company/pixdrift',
+      'https://twitter.com/wavult',
+      'https://linkedin.com/company/wavult',
     ],
   };
 
@@ -228,7 +228,7 @@ router.get('/schema/:page(*)', async (req: Request, res: Response) => {
           '@type': 'WebSite',
           '@id': `${baseUrl}/#website`,
           url: baseUrl,
-          name: 'pixdrift',
+          name: 'wavult',
           description: 'Business Operating System for Modern Teams',
           publisher: { '@id': `${baseUrl}/#organization` },
           potentialAction: {
@@ -240,7 +240,7 @@ router.get('/schema/:page(*)', async (req: Request, res: Response) => {
         org,
         {
           '@type': 'SoftwareApplication',
-          name: 'pixdrift',
+          name: 'wavult',
           applicationCategory: 'BusinessApplication',
           operatingSystem: 'Web',
           url: baseUrl,
@@ -268,8 +268,8 @@ router.get('/schema/:page(*)', async (req: Request, res: Response) => {
         {
           '@type': 'AboutPage',
           url: `${baseUrl}/about.html`,
-          name: 'Om pixdrift — Grundarberättelse & Team',
-          description: 'Lär känna teamet bakom pixdrift.',
+          name: 'Om wavult — Grundarberättelse & Team',
+          description: 'Lär känna teamet bakom wavult.',
           publisher: { '@id': `${baseUrl}/#organization` },
         },
       ],
@@ -279,8 +279,8 @@ router.get('/schema/:page(*)', async (req: Request, res: Response) => {
       '@context': 'https://schema.org',
       '@type': 'WebPage',
       url: `${baseUrl}/security.html`,
-      name: 'Säkerhet & Compliance — GDPR, ISO 27001 | pixdrift',
-      description: 'pixdrift är byggt för enterprise-säkerhet. GDPR-compliant, krypterat.',
+      name: 'Säkerhet & Compliance — GDPR, ISO 27001 | wavult',
+      description: 'wavult är byggt för enterprise-säkerhet. GDPR-compliant, krypterat.',
       publisher: { '@id': `${baseUrl}/#organization` },
     };
   } else if (page.startsWith('blog/')) {
@@ -306,7 +306,7 @@ router.get('/schema/:page(*)', async (req: Request, res: Response) => {
       dateModified: articleData?.updated_at ? formatDate(articleData.updated_at) : undefined,
       author: {
         '@type': 'Organization',
-        name: articleData?.author || 'pixdrift',
+        name: articleData?.author || 'wavult',
       },
       publisher: { '@id': `${baseUrl}/#organization` },
     };

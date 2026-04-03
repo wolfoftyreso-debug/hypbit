@@ -1,5 +1,5 @@
 /**
- * Cabas Integration — pixdrift
+ * Cabas Integration — wavult
  *
  * Cabas är det dominerande nordiska systemet för skadeberäkning (karosseri/lack).
  * API: XML/SOAP (äldre) + REST-endpoint (nyare)

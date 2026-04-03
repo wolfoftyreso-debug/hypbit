@@ -1,5 +1,5 @@
 /**
- * Centralized error handling — pixdrift enterprise standard
+ * Centralized error handling — wavult enterprise standard
  *
  * ALL errors must be instances of AppError or subclasses.
  * Unknown errors are logged server-side, never exposed to client.

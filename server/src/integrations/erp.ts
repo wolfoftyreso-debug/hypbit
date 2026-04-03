@@ -1,5 +1,5 @@
 /**
- * pixdrift — Enterprise ERP Integration Router
+ * wavult — Enterprise ERP Integration Router
  *
  * Covers:
  *   SAP S/4HANA, SAP Business One, SAP SuccessFactors, SAP IDoc/BAPI
@@ -22,7 +22,7 @@
  *   Infor      → OAuth2 (Infor OS)
  *
  * Conflict resolution:
- *   pixdrift wins for operational/process data (tasks, NCs, capabilities)
+ *   wavult wins for operational/process data (tasks, NCs, capabilities)
  *   ERP system wins for financial master data (GL accounts, cost centres)
  */
 
@@ -100,7 +100,7 @@ function applyTransform(value: any, transform?: string): any {
   }
 }
 
-/** Map an external payload to pixdrift fields using stored mapping config */
+/** Map an external payload to wavult fields using stored mapping config */
 function applyFieldMappings(payload: Record<string, any>, mappings: any[]): Record<string, any> {
   const result: Record<string, any> = {};
   for (const m of mappings) {
@@ -174,7 +174,7 @@ router.post('/api/integrations/sap/callback', async (req: Request, res: Response
   }
 });
 
-/** GET /api/integrations/sap/customers — pull SAP customers → pixdrift contacts */
+/** GET /api/integrations/sap/customers — pull SAP customers → wavult contacts */
 router.get('/api/integrations/sap/customers', async (req: Request, res: Response) => {
   const cfg = await requireIntegrationConfig('sap')(req);
   if (cfg.error) return res.status(400).json({ error: cfg.error });
@@ -256,7 +256,7 @@ router.get('/api/integrations/sap/invoices', async (req: Request, res: Response)
   }
 });
 
-/** POST /api/integrations/sap/push-invoice — send pixdrift invoice to SAP */
+/** POST /api/integrations/sap/push-invoice — send wavult invoice to SAP */
 router.post('/api/integrations/sap/push-invoice', async (req: Request, res: Response) => {
   const cfg = await requireIntegrationConfig('sap')(req);
   if (cfg.error) return res.status(400).json({ error: cfg.error });
@@ -265,7 +265,7 @@ router.post('/api/integrations/sap/push-invoice', async (req: Request, res: Resp
   if (!invoice_id) return res.status(400).json({ error: 'invoice_id required' });
 
   try {
-    // Fetch pixdrift invoice
+    // Fetch wavult invoice
     const { data: inv } = await supabase.from('transactions').select('*').eq('id', invoice_id).single();
     if (!inv) return res.status(404).json({ error: 'Invoice not found' });
 
@@ -445,14 +445,14 @@ router.post('/api/integrations/sap/sync', async (req: Request, res: Response) =>
   try {
     const headers = await sapHeaders(cfg.data);
 
-    // 1. Pull customers → pixdrift companies (operational: pixdrift wins)
+    // 1. Pull customers → wavult companies (operational: wavult wins)
     try {
       const r = await fetch(`${cfg.data.base_url}/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartner?$filter=BusinessPartnerCategory eq '1'&$top=500&$format=json`, { headers });
       const json = await r.json() as any;
       for (const bp of (json?.d?.results ?? [])) {
         const { data: existing } = await supabase.from('companies').select('id,updated_at').eq('external_id', bp.BusinessPartner).maybeSingle();
         if (existing) {
-          // Financial data from SAP wins; keep pixdrift operational data
+          // Financial data from SAP wins; keep wavult operational data
           await supabase.from('companies').update({ vat_number: bp.TaxNumber1, updated_at: new Date().toISOString() }).eq('id', existing.id);
           updated++;
         } else {
@@ -462,7 +462,7 @@ router.post('/api/integrations/sap/sync', async (req: Request, res: Response) =>
       }
     } catch (e: any) { errors.push({ step: 'customers', error: e.message }); failed++; }
 
-    // 2. Pull GL accounts → pixdrift account_plan (SAP wins for financial data)
+    // 2. Pull GL accounts → wavult account_plan (SAP wins for financial data)
     try {
       const r = await fetch(`${cfg.data.base_url}/sap/opu/odata/sap/API_GL_ACCOUNT_SRV/A_GLAccountInChartOfAccounts?$top=1000&$format=json`, { headers });
       const json = await r.json() as any;
@@ -888,7 +888,7 @@ router.get('/api/integrations/dynamics/crm/opportunities', async (req: Request, 
     const json = await r.json() as any;
     const opportunities = (json?.value ?? []).map((o: any) => ({
       id: o.opportunityid, title: o.name, value: o.estimatedvalue, close_date: o.closedate,
-      pixdrift_deal: { title: o.name, value: o.estimatedvalue, currency: 'SEK', source: 'dynamics_crm' },
+      wavult_deal: { title: o.name, value: o.estimatedvalue, currency: 'SEK', source: 'dynamics_crm' },
     }));
     res.json({ opportunities });
   } catch (e: any) { res.status(502).json({ error: e.message }); }
@@ -921,7 +921,7 @@ router.post('/api/integrations/dynamics/webhook', async (req: Request, res: Resp
   }
 
   const { trigger_type, payload } = req.body;
-  // Route trigger_type to pixdrift actions
+  // Route trigger_type to wavult actions
   await supabase.from('integration_sync_log').insert({
     integration_id: cfg.data?.id ?? null,
     status: 'success',
@@ -1073,7 +1073,7 @@ router.post('/api/integrations/webhook/:integration_id', async (req: Request, re
     const targetTable = cfg.settings?.default_target_table ?? 'integration_sync_log';
     const objectType = payload?.object_type ?? payload?.type ?? 'unknown';
 
-    // Route to correct pixdrift entity
+    // Route to correct wavult entity
     let upsertResult: any = null;
     switch (objectType) {
       case 'customer':

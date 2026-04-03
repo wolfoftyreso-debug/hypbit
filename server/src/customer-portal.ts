@@ -166,7 +166,7 @@ router.get("/:token", async (req: Request, res: Response) => {
     welcome_message: welcomeMessage,
     pending_approvals: (pendingApprovals || []).map((a: any) => ({
       ...a,
-      approval_url: a.approval_url || `https://approve.bc.pixdrift.com/?id=${a.id}&t=${token}`,
+      approval_url: a.approval_url || `https://approve.wavult.com/?id=${a.id}&t=${token}`,
     })),
     current_job: currentJob,
     timeline,
@@ -243,8 +243,8 @@ router.get("/:token/api-info", async (req: Request, res: Response) => {
     .single();
 
   return res.json({
-    api_endpoint: "https://api.bc.pixdrift.com",
-    developer_portal: "https://docs.pixdrift.com",
+    api_endpoint: "https://api.wavult.com",
+    developer_portal: "https://docs.wavult.com",
     api_key: apiKey ? {
       id: apiKey.id,
       masked: `${apiKey.key_prefix}****${apiKey.key_suffix || ""}`,
@@ -254,9 +254,9 @@ router.get("/:token/api-info", async (req: Request, res: Response) => {
       last_used_at: apiKey.last_used_at,
     } : null,
     code_examples: {
-      curl: `curl -H "Authorization: Bearer YOUR_API_KEY" https://api.bc.pixdrift.com/api/data`,
-      node: `const res = await fetch('https://api.bc.pixdrift.com/api/data', {\n  headers: { Authorization: 'Bearer YOUR_API_KEY' }\n});`,
-      python: `import requests\nr = requests.get('https://api.bc.pixdrift.com/api/data',\n  headers={'Authorization': 'Bearer YOUR_API_KEY'})`,
+      curl: `curl -H "Authorization: Bearer YOUR_API_KEY" https://api.wavult.com/api/data`,
+      node: `const res = await fetch('https://api.wavult.com/api/data', {\n  headers: { Authorization: 'Bearer YOUR_API_KEY' }\n});`,
+      python: `import requests\nr = requests.get('https://api.wavult.com/api/data',\n  headers={'Authorization': 'Bearer YOUR_API_KEY'})`,
     },
   });
 });
@@ -288,7 +288,7 @@ router.get("/:token/documents", async (req: Request, res: Response) => {
       title: "Personuppgiftsbiträdesavtal (DPA)",
       description: "GDPR-avtal för behandling av personuppgifter",
       icon: "🔒",
-      download_url: "https://pixdrift.com/legal/dpa.pdf",
+      download_url: "https://wavult.com/legal/dpa.pdf",
       signed: !!signedMap["dpa"],
       signed_at: signedMap["dpa"]?.signed_at || null,
     },
@@ -296,9 +296,9 @@ router.get("/:token/documents", async (req: Request, res: Response) => {
       id: "terms",
       type: "terms",
       title: "Allmänna villkor",
-      description: "Användarvillkor för pixdrift Business",
+      description: "Användarvillkor för wavult Business",
       icon: "📄",
-      download_url: "https://pixdrift.com/legal/terms.pdf",
+      download_url: "https://wavult.com/legal/terms.pdf",
       signed: !!signedMap["terms"],
       signed_at: signedMap["terms"]?.signed_at || null,
     },
@@ -308,7 +308,7 @@ router.get("/:token/documents", async (req: Request, res: Response) => {
       title: "SLA — Servicenivåavtal",
       description: "Garanterad tillgänglighet och support-SLA",
       icon: "⚡",
-      download_url: "https://pixdrift.com/legal/sla.pdf",
+      download_url: "https://wavult.com/legal/sla.pdf",
       signed: !!signedMap["sla"],
       signed_at: signedMap["sla"]?.signed_at || null,
     },
@@ -316,9 +316,9 @@ router.get("/:token/documents", async (req: Request, res: Response) => {
       id: "implementation",
       type: "implementation",
       title: "Implementationsdokumentation",
-      description: "Teknisk guide för integration med pixdrift",
+      description: "Teknisk guide för integration med wavult",
       icon: "🛠️",
-      download_url: "https://docs.pixdrift.com/implementation",
+      download_url: "https://docs.wavult.com/implementation",
       signed: false,
       signed_at: null,
       sign_required: false,

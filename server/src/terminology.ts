@@ -2,7 +2,7 @@
  * terminology.ts — Mirror Mode: Konfigurerbar terminologi per källsystem
  *
  * Verkstäder som byter från Automaster, Winbas eller Keyloop ser EXAKT
- * samma ord som de är vana vid. pixdrift anpassar sig — inte tvärtom.
+ * samma ord som de är vana vid. wavult anpassar sig — inte tvärtom.
  *
  * GET  /api/config/terminology  → returnerar aktuell terminologi för org
  * POST /api/config/terminology  → sätt preset eller custom mapping

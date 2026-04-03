@@ -1,5 +1,5 @@
 /**
- * Zod validation middleware — pixdrift enterprise standard
+ * Zod validation middleware — wavult enterprise standard
  *
  * Usage:
  *   import { validate } from '../shared/validation/middleware';

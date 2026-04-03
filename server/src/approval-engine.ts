@@ -8,7 +8,7 @@ import { sendApprovalSMS } from './sms-service';
 
 // ============================================================
 // Real-time Customer Approval Engine
-// pixdrift — Automotive Workshop Platform
+// wavult — Automotive Workshop Platform
 // ============================================================
 
 // Initialize DB pool (uses DATABASE_URL or Supabase connection string)
@@ -25,8 +25,8 @@ const router = Router();
 
 // S3 config
 const s3 = new S3Client({ region: process.env.AWS_REGION || 'eu-north-1' });
-const BUCKET = process.env.S3_APPROVALS_BUCKET || 'pixdrift-approvals-prod';
-const CDN_BASE = process.env.CLOUDFRONT_CDN || 'https://cdn.pixdrift.com';
+const BUCKET = process.env.S3_APPROVALS_BUCKET || 'wavult-approvals-prod';
+const CDN_BASE = process.env.CLOUDFRONT_CDN || 'https://cdn.wavult.com';
 
 // ============================================================
 // TYPES
@@ -347,7 +347,7 @@ router.post('/capture', async (req: Request, res: Response) => {
   );
 
   const approval = insertResult.rows[0];
-  const customerLink = `https://pixdrift.com/approve?t=${approval.customer_token}`;
+  const customerLink = `https://wavult.com/approve?t=${approval.customer_token}`;
 
   // Log creation event
   await logEvent(db, approval.id, 'created', {

@@ -1,12 +1,12 @@
 # =============================================
-# Hypbit OMS — Dockerfile
+# Wavult OS — Dockerfile
 # Node 20 Alpine, kör via tsx (TypeScript direct)
 # =============================================
 
 FROM node:20-alpine AS base
 
 # Säkerhet: kör inte som root
-RUN addgroup -g 1001 -S nodejs && adduser -S hypbit -u 1001
+RUN addgroup -g 1001 -S nodejs && adduser -S wavult -u 1001
 
 WORKDIR /app
 
@@ -22,9 +22,9 @@ COPY src/ ./src/
 COPY trigger/ ./trigger/
 
 # Äg filerna av rätt användare
-RUN chown -R hypbit:nodejs /app
+RUN chown -R wavult:nodejs /app
 
-USER hypbit
+USER wavult
 
 # Exponera port
 EXPOSE 3001

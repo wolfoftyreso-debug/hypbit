@@ -2,7 +2,7 @@
  * KASSAREGISTER — Kassasystem enligt SFL 39 kap. 4-14§§ + SKVFS 2014:9
  *
  * VIKTIGT LAGKRAV:
- *  pixdrift är kassasystem (mjukvara) men ERSÄTTER INTE en certifierad
+ *  wavult är kassasystem (mjukvara) men ERSÄTTER INTE en certifierad
  *  kontrollenhet (CE). CE krävs separat och måste vara godkänd av
  *  Skatteverket. Se TAX_COMPLIANCE.md för detaljer.
  *

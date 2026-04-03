@@ -1,9 +1,9 @@
 /**
  * shadow-sync.ts — Mirror Mode: Shadow Sync
  *
- * Kör pixdrift och legacy-systemet parallellt under övergångsperioden.
- * Varje ny arbetsorder i pixdrift speglas automatiskt in i legacy-systemet.
- * Personal märker ingenting — de jobbar i pixdrift, legacy uppdateras i bakgrunden.
+ * Kör wavult och legacy-systemet parallellt under övergångsperioden.
+ * Varje ny arbetsorder i wavult speglas automatiskt in i legacy-systemet.
+ * Personal märker ingenting — de jobbar i wavult, legacy uppdateras i bakgrunden.
  *
  * POST /api/shadow-sync/configure → konfigurera sync för en org
  * GET  /api/shadow-sync/status    → visa synk-status och senaste events
@@ -16,7 +16,7 @@ import { randomUUID } from 'crypto';
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
-export type SyncDirection = 'pixdrift_to_legacy' | 'legacy_to_pixdrift' | 'bidirectional';
+export type SyncDirection = 'wavult_to_legacy' | 'legacy_to_wavult' | 'bidirectional';
 export type SyncTrigger =
   | 'work_order.created'
   | 'work_order.updated'
@@ -31,7 +31,7 @@ export interface ShadowSyncConfig {
   source_system: string;
   sync_direction: SyncDirection;
   triggers: SyncTrigger[];
-  field_mapping: Record<string, string>; // pixdrift_field → legacy_field
+  field_mapping: Record<string, string>; // wavult_field → legacy_field
   legacy_endpoint?: string;              // HTTP endpoint to POST to
   legacy_api_key?: string;               // Auth for legacy system API
   active: boolean;
@@ -93,16 +93,16 @@ const DEFAULT_FIELD_MAPPINGS: Record<string, Record<string, string>> = {
 // ─── Sync engine ───────────────────────────────────────────────────────────────
 
 /**
- * Transform a pixdrift record into legacy system format using field mapping.
+ * Transform a wavult record into legacy system format using field mapping.
  */
 function transformRecord(
   record: Record<string, any>,
   fieldMapping: Record<string, string>
 ): Record<string, any> {
   const transformed: Record<string, any> = {};
-  for (const [pixdriftField, legacyField] of Object.entries(fieldMapping)) {
-    if (record[pixdriftField] !== undefined) {
-      transformed[legacyField] = record[pixdriftField];
+  for (const [wavultField, legacyField] of Object.entries(fieldMapping)) {
+    if (record[wavultField] !== undefined) {
+      transformed[legacyField] = record[wavultField];
     }
   }
   return transformed;
@@ -216,7 +216,7 @@ shadowSyncRouter.post('/configure', (req: Request, res: Response) => {
   const orgId = (req as any).orgId ?? 'demo';
   const {
     source_system,
-    sync_direction = 'pixdrift_to_legacy',
+    sync_direction = 'wavult_to_legacy',
     triggers = ['work_order.created', 'work_order.updated'],
     fields,
     legacy_endpoint,
@@ -270,7 +270,7 @@ shadowSyncRouter.post('/configure', (req: Request, res: Response) => {
     triggers,
     field_mapping: fieldMapping,
     active: true,
-    message: `Shadow sync configured: pixdrift → ${source_system}. Workers are standing by.`,
+    message: `Shadow sync configured: wavult → ${source_system}. Workers are standing by.`,
   });
 });
 

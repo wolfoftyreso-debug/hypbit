@@ -1,5 +1,5 @@
 /**
- * pixdrift — Automatiserade notiser
+ * wavult — Automatiserade notiser
  * Webhook-system för deploy-events, nya kunder, incidenter och milstolpar.
  *
  * Endpoints:
@@ -73,7 +73,7 @@ async function sendSlackNotification(payload: NotificationPayload): Promise<void
           elements: [
             {
               type: 'mrkdwn',
-              text: `pixdrift · ${new Date(payload.timestamp).toLocaleString('sv-SE')}`,
+              text: `wavult · ${new Date(payload.timestamp).toLocaleString('sv-SE')}`,
             },
           ],
         },
@@ -403,7 +403,7 @@ const STATIC_CHANGELOG: ChangelogEntry[] = [
     version: '1.0.0',
     date: '2026-01-10',
     category: 'feature',
-    title: 'Initial release — pixdrift OMS-plattformen',
+    title: 'Initial release — wavult OS-plattformen',
     description: 'Lansering med fem kärnmoduler: Execution, Capability, Process, Currency, Reports.',
   },
 ];

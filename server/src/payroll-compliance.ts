@@ -269,7 +269,7 @@ router.get('/ku-report', async (req: Request, res: Response) => {
               skapad="${new Date().toISOString()}">
   <Avsandare>
     <Organisationsnummer>${(req as any).orgNumber || ''}</Organisationsnummer>
-    <Programnamn>pixdrift OMS</Programnamn>
+    <Programnamn>wavult OS</Programnamn>
     <Programversion>1.0</Programversion>
   </Avsandare>
 ${employees.map(emp => `  <KU10>

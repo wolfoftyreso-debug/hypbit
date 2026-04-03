@@ -16,7 +16,7 @@ const PORTAL_URL = process.env.UAPIX_PORTAL_URL || 'https://uapix.com'
 
 async function sendEmail(to: string[], subject: string, html: string, bcc?: string[]) {
   const body: Record<string, unknown> = {
-    from: 'UAPIX <noreply@hypbit.com>',
+    from: 'UAPIX <noreply@wavult.com>',
     to,
     subject,
     html,
@@ -242,7 +242,7 @@ uapixOrdersRouter.post('/api/uapix/orders', async (req: Request, res: Response) 
 
   // ─── Intern notis till Erik ────────────────────────────────────────────────
   try {
-    await sendEmail(['erik@hypbit.com'], `🔔 New UAPIX Order: ${companyName} — $${serverTotal}/mo`, `
+    await sendEmail(['erik@wavult.com'], `🔔 New UAPIX Order: ${companyName} — $${serverTotal}/mo`, `
         <div style="font-family:monospace;padding:24px;background:#0a0a0a;color:#e8e9eb">
           <h2 style="color:#c4961a">New UAPIX Order</h2>
           <p><strong>Ref:</strong> ${orderRef}</p>
@@ -254,7 +254,7 @@ uapixOrdersRouter.post('/api/uapix/orders', async (req: Request, res: Response) 
           <hr style="border-color:#2a2f3a"/>
           <p style="color:#c4961a;font-weight:700">Activate with:</p>
           <code style="background:#14181e;padding:8px;display:block;margin:8px 0">
-            curl -X POST https://api.hypbit.com/api/uapix/orders/${orderRef}/activate -H "x-admin-key: YOUR_ADMIN_KEY"
+            curl -X POST https://api.wavult.com/api/uapix/orders/${orderRef}/activate -H "x-admin-key: YOUR_ADMIN_KEY"
           </code>
           <p style="font-size:12px;color:#5a6170">Skicka faktura till ${email} och aktivera access.</p>
         </div>
@@ -356,9 +356,9 @@ uapixOrdersRouter.post('/api/uapix/orders/:ref/activate', async (req: Request, r
         method: 'POST',
         headers: { 'Authorization': `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          from: 'UAPIX <noreply@hypbit.com>',
+          from: 'UAPIX <noreply@wavult.com>',
           to: [order.email],
-          bcc: ['erik@hypbit.com'],
+          bcc: ['erik@wavult.com'],
           subject: `Your UAPIX Access is Now Active — ${order.order_ref}`,
           html: `<div style="font-family:monospace;background:#0a0a0a;color:#e8e9eb;padding:32px;max-width:600px">
             <div style="font-size:22px;font-weight:700;letter-spacing:2px;margin-bottom:24px">UAPIX</div>

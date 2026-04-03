@@ -7,7 +7,7 @@ const router = Router();
 // S3 upload helper using AWS SDK v2 style via raw HTTPS
 // Falls back gracefully if AWS env vars are not configured
 // ---------------------------------------------------------------------------
-const BUCKET = process.env.S3_BRAND_BUCKET || "pixdrift-landing-prod";
+const BUCKET = process.env.S3_BRAND_BUCKET || "wavult-landing-prod";
 const AWS_REGION = process.env.AWS_REGION || "eu-north-1";
 
 // ---------------------------------------------------------------------------

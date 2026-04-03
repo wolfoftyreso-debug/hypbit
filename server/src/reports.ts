@@ -173,7 +173,7 @@ router.get("/reports/sie4", async (req: Request, res: Response) => {
     lines.push("#FLAGGA 0");
     lines.push("#FORMAT PC8");
     lines.push("#SIETYP 4");
-    lines.push("#PROGRAM \"Hypbit OMS\" \"1.0\"");
+    lines.push("#PROGRAM \"Wavult OS\" \"1.0\"");
     lines.push(`#GEN ${new Date().toISOString().slice(0, 10).replace(/-/g, "")}`);
     lines.push(`#RAR 0 ${startDate.replace(/-/g, "")} ${endDate.replace(/-/g, "")}`);
     lines.push('#FNAMN "Hypbit AB"');

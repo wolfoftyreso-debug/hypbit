@@ -248,7 +248,7 @@ router.post('/api/checkin/start', async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Failed to create check-in session' });
   }
 
-  const checkinUrl = `https://checkin.pixdrift.com?token=${session.session_token}`;
+  const checkinUrl = `https://checkin.wavult.com?token=${session.session_token}`;
 
   // Attempt SMS via 46elks (non-blocking)
   if (customer_phone) {

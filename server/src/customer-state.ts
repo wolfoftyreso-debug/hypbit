@@ -222,7 +222,7 @@ router.post("/:contact_id/generate-token", auth, async (req: Request, res: Respo
   res.json({
     contact_id,
     guest_token: token,
-    portal_url: `https://portal.bc.pixdrift.com/?t=${token}`,
+    portal_url: `https://portal.wavult.com/?t=${token}`,
   });
 });
 

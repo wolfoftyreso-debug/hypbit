@@ -1,6 +1,6 @@
 // ─── UAPIX Portal API ─────────────────────────────────────────────────────────
 // Handles customer portal auth and key management.
-// Routes through our API (api.hypbit.com) rather than direct Supabase calls.
+// Routes through our API (api.wavult.com) rather than direct Supabase calls.
 //
 // POST   /api/uapix/portal/magic-link   → sends magic link to existing customer
 // GET    /api/uapix/portal/me           → returns customer's order + keys (requires Bearer)
@@ -29,7 +29,7 @@ async function sendEmail(to: string[], subject: string, html: string) {
       'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ from: 'UAPIX <noreply@hypbit.com>', to, subject, html }),
+    body: JSON.stringify({ from: 'UAPIX <noreply@wavult.com>', to, subject, html }),
   })
   return res.json()
 }
