@@ -57,7 +57,7 @@ export interface CFResponse<T = unknown> {
   result_info?: { page: number; per_page: number; count: number; total_count: number };
 }
 
-interface RequestLog {
+export interface RequestLog {
   timestamp: string;
   method: string;
   path: string;
