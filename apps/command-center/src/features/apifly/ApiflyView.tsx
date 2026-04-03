@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
+import { ModuleHeader, SectionIllustration } from '../../shared/illustrations/ModuleIllustration'
 
 interface ApiRoute { method: string; path: string; description: string; status: 'live' | 'draft' }
 
@@ -34,14 +34,9 @@ export default function ApiflyView() {
         description="Hantera och övervaka alla API-rutter"
         illustrationSize="md"
       />
-      )}
 
       {!loading && !error && routes.length === 0 && (
-        <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '48px 24px', textAlign: 'center' }}>
-          <div style={{ fontSize: 32, marginBottom: 12 }}>🔌</div>
-          <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8 }}>Inga rutter konfigurerade</div>
-          <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>Lägg till din första API-rutt för att komma igång</div>
-        </div>
+        <SectionIllustration route="/apifly" title="Inga rutter konfigurerade" description="Lägg till din första API-rutt för att komma igång" />
       )}
 
       {!loading && !error && routes.length > 0 && (

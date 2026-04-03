@@ -10,7 +10,7 @@ const ecs = new ECSClient({ region: 'eu-north-1' })
 const elb = new ElasticLoadBalancingV2Client({ region: 'eu-north-1' })
 
 const SERVICES = [
-  { id: 'wavult-api', ecsName: 'hypbit-api', tgName: 'hypbit-api-tg', tgArn: 'arn:aws:elasticloadbalancing:eu-north-1:155407238699:targetgroup/hypbit-api-tg/PLACEHOLDER' },
+  { id: 'wavult-api', ecsName: 'wavult-os-api', tgName: 'wavult-os-api-tg', tgArn: 'arn:aws:elasticloadbalancing:eu-north-1:155407238699:targetgroup/wavult-os-api-tg/PLACEHOLDER' },
   { id: 'quixzoom-api', ecsName: 'quixzoom-api', tgName: 'quixzoom-api-tg', tgArn: 'arn:aws:elasticloadbalancing:eu-north-1:155407238699:targetgroup/quixzoom-api-tg/PLACEHOLDER' },
   { id: 'identity-core', ecsName: 'identity-core', tgName: 'identity-core-tg', tgArn: 'arn:aws:elasticloadbalancing:eu-north-1:155407238699:targetgroup/identity-core-tg/PLACEHOLDER' },
   { id: 'n8n', ecsName: 'n8n', tgName: 'n8n-tg', tgArn: '' },
@@ -22,7 +22,7 @@ const SERVICES = [
 router.get('/v1/infrastructure/health', async (_req, res) => {
   try {
     const { services } = await ecs.send(new DescribeServicesCommand({
-      cluster: 'hypbit',
+      cluster: 'wavult',
       services: SERVICES.map(s => s.ecsName),
     }))
 

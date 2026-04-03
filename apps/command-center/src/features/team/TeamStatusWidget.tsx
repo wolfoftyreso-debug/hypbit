@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
+import { ModuleHeader, SectionIllustration } from '../../shared/illustrations/ModuleIllustration'
 
 interface TeamMember { id: string; name: string; role: string; status: 'online' | 'away' | 'offline'; location?: string; currentTask?: string; avatar?: string }
 
@@ -19,7 +19,7 @@ function useTeamStatus() {
 const statusColor = { online: '#16a34a', away: '#d97706', offline: '#9ca3af' }
 const statusLabel = { online: 'Online', away: 'Borta', offline: 'Offline' }
 
-export default function TeamStatusWidget() {
+export function TeamStatusWidget() {
   const { members, loading, error } = useTeamStatus()
 
   const online = members.filter(m => m.status === 'online').length
@@ -33,7 +33,6 @@ export default function TeamStatusWidget() {
         description="Teamets aktivitetsstatus i realtid"
         illustrationSize="md"
       />
-      ))}
 
       {error && (
         <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '48px 24px', textAlign: 'center' }}>
@@ -44,11 +43,7 @@ export default function TeamStatusWidget() {
       )}
 
       {!loading && !error && members.length === 0 && (
-        <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '48px 24px', textAlign: 'center' }}>
-          <div style={{ fontSize: 32, marginBottom: 12 }}>👥</div>
-          <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8 }}>Inga teammedlemmar</div>
-          <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>Bjud in teamet för att se status här</div>
-        </div>
+        <SectionIllustration route="/team" title="Inga teammedlemmar" description="Bjud in teamet för att se status här" />
       )}
 
       {!loading && !error && members.length > 0 && (

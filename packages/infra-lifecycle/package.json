@@ -1,0 +1,17 @@
+{
+  "name": "@wavult/infra-lifecycle",
+  "version": "1.0.0",
+  "description": "Wavult OS Infrastructure Execution Lifecycle engine — domain-agnostic 18-phase framework",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@wavult/wavult-iam": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

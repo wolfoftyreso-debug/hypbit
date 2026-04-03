@@ -248,6 +248,7 @@
   "nav.communications": "Communications",
   "nav.phones": "US Numbers",
   "nav.systemStatus": "System Status",
+  "nav.systemAudit": "System Audit",
   "nav": {
     "platforms": "Platforms",
     "quixzoom_app": "quiXzoom",
@@ -278,5 +279,6 @@
   "nav.automation": "Automation",
   "nav.infraMonitor": "Infra Monitor",
   "nav.terraform": "Terraform",
-  "nav.mediaPipeline": "Media Pipeline"
+  "nav.mediaPipeline": "Media Pipeline",
+  "nav.uxQuality": "UX Quality"
 }

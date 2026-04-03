@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
+import { ModuleHeader, SectionIllustration } from '../../shared/illustrations/ModuleIllustration'
 
 interface Signal { id: string; title: string; summary: string; category: string; confidence: number; timestamp: string; source: string }
 
@@ -47,13 +47,7 @@ export default function IntelligenceView() {
       )}
 
       {!loading && !error && signals.length === 0 && (
-        <div className="wv-card-enter" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '64px 24px', textAlign: 'center' }}>
-          <div style={{ fontSize: 40, marginBottom: 16 }}>🔭</div>
-          <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8, fontSize: 16 }}>Inga signaler detekterade</div>
-          <div style={{ fontSize: 13, color: 'var(--color-text-muted)', maxWidth: 320, margin: '0 auto' }}>
-            Systemet analyserar kontinuerligt och rapporterar insikter här när de uppstår
-          </div>
-        </div>
+        <SectionIllustration route="/intelligence" title="Inga signaler detekterade" description="Systemet analyserar kontinuerligt och rapporterar insikter här när de uppstår" />
       )}
 
       {!loading && !error && signals.length > 0 && (

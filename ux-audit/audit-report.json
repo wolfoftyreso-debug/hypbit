@@ -1,0 +1,2734 @@
+{
+  "generatedAt": "2026-04-03T09:32:24.189Z",
+  "totalModules": 75,
+  "modules": [
+    {
+      "id": "agent",
+      "name": "agent",
+      "path": "/agent",
+      "score": 15,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {},
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 0
+      },
+      "scoring": {
+        "eventScore": 0,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration",
+        "Inga interaktiva events identifierade",
+        "Inga React state hooks (useState/useEffect)"
+      ],
+      "strengths": [
+        "Empty state implementerat"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "api-hub",
+      "name": "API Hub",
+      "path": "/api-hub",
+      "score": 66,
+      "level": "ACCEPTABEL",
+      "maturityLevel": "beta",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 8,
+        "onChange": 1
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": true,
+        "stateCount": 5
+      },
+      "scoring": {
+        "eventScore": 21,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar loading state"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Error handling implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (9 st)",
+        "Rikt state-hantering (5 hooks)"
+      ],
+      "filesAnalyzed": 2
+    },
+    {
+      "id": "apifly",
+      "name": "apifly",
+      "path": "/apifly",
+      "score": 0,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {},
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 0
+      },
+      "scoring": {
+        "eventScore": 0,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration",
+        "Inga interaktiva events identifierade",
+        "Inga React state hooks (useState/useEffect)"
+      ],
+      "strengths": [],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "automation",
+      "name": "automation",
+      "path": "/automation",
+      "score": 89,
+      "level": "BRA",
+      "maturityLevel": "skeleton",
+      "dataSource": "live",
+      "events": {
+        "onClick": 2
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 7
+      },
+      "scoring": {
+        "eventScore": 14,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 30
+      },
+      "issues": [],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Live data-integration aktiv",
+        "Rikt state-hantering (7 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "bernt",
+      "name": "bernt",
+      "path": "/bernt",
+      "score": 54,
+      "level": "SVAG",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 6,
+        "onChange": 1,
+        "onKeyDown": 2
+      },
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": true,
+        "stateCount": 8
+      },
+      "scoring": {
+        "eventScore": 24,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state"
+      ],
+      "strengths": [
+        "Error handling implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (9 st)",
+        "Rikt state-hantering (8 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "campaign-os",
+      "name": "campaign-os",
+      "path": "/campaign-os",
+      "score": 52,
+      "level": "SVAG",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 9,
+        "onChange": 3
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 7
+      },
+      "scoring": {
+        "eventScore": 22,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (12 st)",
+        "Rikt state-hantering (7 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "causal-os",
+      "name": "causal-os",
+      "path": "/causal-os",
+      "score": 51,
+      "level": "SVAG",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 9,
+        "onChange": 1
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 8
+      },
+      "scoring": {
+        "eventScore": 21,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (10 st)",
+        "Rikt state-hantering (8 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "cockpit",
+      "name": "cockpit",
+      "path": "/cockpit",
+      "score": 46,
+      "level": "SVAG",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 5
+      },
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": true,
+        "stateCount": 7
+      },
+      "scoring": {
+        "eventScore": 16,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state"
+      ],
+      "strengths": [
+        "Error handling implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (5 st)",
+        "Rikt state-hantering (7 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "command-view",
+      "name": "command-view",
+      "path": "/command-view",
+      "score": 0,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {},
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 0
+      },
+      "scoring": {
+        "eventScore": 0,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration",
+        "Inga interaktiva events identifierade",
+        "Inga React state hooks (useState/useEffect)"
+      ],
+      "strengths": [],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "communications",
+      "name": "Kommunikation",
+      "path": "/communications",
+      "score": 70,
+      "level": "ACCEPTABEL",
+      "maturityLevel": "alpha",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 22,
+        "onChange": 6
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 37
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 0
+      },
+      "issues": [
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Events väl täckta (28 st)",
+        "Rikt state-hantering (37 hooks)"
+      ],
+      "filesAnalyzed": 9
+    },
+    {
+      "id": "company-launch",
+      "name": "company-launch",
+      "path": "/company-launch",
+      "score": 100,
+      "level": "LOCKED",
+      "maturityLevel": "skeleton",
+      "dataSource": "live",
+      "events": {
+        "onClick": 85,
+        "onChange": 28,
+        "onSubmit": 2,
+        "onKeyDown": 2
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 59
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 30
+      },
+      "issues": [],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Live data-integration aktiv",
+        "Events väl täckta (117 st)",
+        "Rikt state-hantering (59 hooks)"
+      ],
+      "filesAnalyzed": 9
+    },
+    {
+      "id": "corpfitt-platform",
+      "name": "corpfitt-platform",
+      "path": "/corpfitt-platform",
+      "score": 30,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {},
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": true,
+        "stateCount": 2
+      },
+      "scoring": {
+        "eventScore": 0,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state",
+        "Inga interaktiva events identifierade"
+      ],
+      "strengths": [
+        "Error handling implementerat",
+        "Delvis live data-integration"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "corporate",
+      "name": "Bolagsadmin",
+      "path": "/corporate",
+      "score": 40,
+      "level": "SVAG",
+      "maturityLevel": "alpha",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 17,
+        "onChange": 8
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 12
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Events väl täckta (25 st)",
+        "Rikt state-hantering (12 hooks)"
+      ],
+      "filesAnalyzed": 7
+    },
+    {
+      "id": "crm",
+      "name": "CRM",
+      "path": "/crm",
+      "score": 70,
+      "level": "ACCEPTABEL",
+      "maturityLevel": "alpha",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 30,
+        "onChange": 12,
+        "onKeyDown": 3
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 35
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 0
+      },
+      "issues": [
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Events väl täckta (45 st)",
+        "Rikt state-hantering (35 hooks)"
+      ],
+      "filesAnalyzed": 8
+    },
+    {
+      "id": "dashboard",
+      "name": "Dashboard",
+      "path": "/dashboard",
+      "score": 63,
+      "level": "ACCEPTABEL",
+      "maturityLevel": "beta",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 9
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 28
+      },
+      "scoring": {
+        "eventScore": 18,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 0
+      },
+      "issues": [
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Events väl täckta (9 st)",
+        "Rikt state-hantering (28 hooks)"
+      ],
+      "filesAnalyzed": 4
+    },
+    {
+      "id": "database",
+      "name": "database",
+      "path": "/database",
+      "score": 70,
+      "level": "ACCEPTABEL",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 6,
+        "onChange": 2,
+        "onKeyDown": 3
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": true,
+        "stateCount": 11
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar loading state"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Error handling implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (11 st)",
+        "Rikt state-hantering (11 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "decisions",
+      "name": "decisions",
+      "path": "/decisions",
+      "score": 55,
+      "level": "SVAG",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 34,
+        "onChange": 23,
+        "onHover": 6
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": true,
+        "stateCount": 17
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 15,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Error handling implementerat",
+        "Events väl täckta (63 st)",
+        "Rikt state-hantering (17 hooks)"
+      ],
+      "filesAnalyzed": 5
+    },
+    {
+      "id": "deployments",
+      "name": "deployments",
+      "path": "/deployments",
+      "score": 60,
+      "level": "ACCEPTABEL",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 4
+      },
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 4
+      },
+      "scoring": {
+        "eventScore": 15,
+        "emptyScore": 0,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar empty state-hantering"
+      ],
+      "strengths": [
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Delvis live data-integration"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "dissg",
+      "name": "dissg",
+      "path": "/dissg",
+      "score": 0,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {},
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 0
+      },
+      "scoring": {
+        "eventScore": 0,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration",
+        "Inga interaktiva events identifierade",
+        "Inga React state hooks (useState/useEffect)"
+      ],
+      "strengths": [],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "domains",
+      "name": "domains",
+      "path": "/domains",
+      "score": 63,
+      "level": "ACCEPTABEL",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 3,
+        "onChange": 1
+      },
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 8
+      },
+      "scoring": {
+        "eventScore": 18,
+        "emptyScore": 0,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar empty state-hantering"
+      ],
+      "strengths": [
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Delvis live data-integration",
+        "Rikt state-hantering (8 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "entity",
+      "name": "entity",
+      "path": "/entity",
+      "score": 48,
+      "level": "SVAG",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 10
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": false,
+        "stateCount": 3
+      },
+      "scoring": {
+        "eventScore": 18,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Events väl täckta (10 st)"
+      ],
+      "filesAnalyzed": 3
+    },
+    {
+      "id": "entity-switcher",
+      "name": "entity-switcher",
+      "path": "/entity-switcher",
+      "score": 14,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 2
+      },
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 1
+      },
+      "scoring": {
+        "eventScore": 14,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "exports",
+      "name": "exports",
+      "path": "/exports",
+      "score": 0,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {},
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 0
+      },
+      "issues": [
+        "Inga TSX-filer hittade — modul är ett skeleton"
+      ],
+      "strengths": [],
+      "filesAnalyzed": 0
+    },
+    {
+      "id": "finance",
+      "name": "Finance",
+      "path": "/finance",
+      "score": 70,
+      "level": "ACCEPTABEL",
+      "maturityLevel": "alpha",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 36,
+        "onChange": 16
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 38
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 0
+      },
+      "issues": [
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Events väl täckta (52 st)",
+        "Rikt state-hantering (38 hooks)"
+      ],
+      "filesAnalyzed": 13
+    },
+    {
+      "id": "finance-flow",
+      "name": "finance-flow",
+      "path": "/finance-flow",
+      "score": 0,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {},
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 0
+      },
+      "scoring": {
+        "eventScore": 0,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration",
+        "Inga interaktiva events identifierade",
+        "Inga React state hooks (useState/useEffect)"
+      ],
+      "strengths": [],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "git",
+      "name": "git",
+      "path": "/git",
+      "score": 85,
+      "level": "BRA",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 15,
+        "onChange": 1,
+        "onHover": 8
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 20
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (24 st)",
+        "Rikt state-hantering (20 hooks)"
+      ],
+      "filesAnalyzed": 2
+    },
+    {
+      "id": "governance",
+      "name": "governance",
+      "path": "/governance",
+      "score": 81,
+      "level": "BRA",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 6,
+        "onChange": 4
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 6
+      },
+      "scoring": {
+        "eventScore": 21,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (10 st)",
+        "Rikt state-hantering (6 hooks)"
+      ],
+      "filesAnalyzed": 2
+    },
+    {
+      "id": "identity",
+      "name": "identity",
+      "path": "/identity",
+      "score": 85,
+      "level": "BRA",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 12,
+        "onChange": 2,
+        "onSubmit": 1
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 12
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (15 st)",
+        "Rikt state-hantering (12 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "incidents",
+      "name": "incidents",
+      "path": "/incidents",
+      "score": 16,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 5
+      },
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 4
+      },
+      "scoring": {
+        "eventScore": 16,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Events väl täckta (5 st)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "infrastructure",
+      "name": "infrastructure",
+      "path": "/infrastructure",
+      "score": 100,
+      "level": "LOCKED",
+      "maturityLevel": "skeleton",
+      "dataSource": "live",
+      "events": {
+        "onClick": 16,
+        "onChange": 2
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 21
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 30
+      },
+      "issues": [],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Live data-integration aktiv",
+        "Events väl täckta (18 st)",
+        "Rikt state-hantering (21 hooks)"
+      ],
+      "filesAnalyzed": 3
+    },
+    {
+      "id": "insurance",
+      "name": "Insurance Hub",
+      "path": "/insurance",
+      "score": 14,
+      "level": "KRITISK",
+      "maturityLevel": "beta",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 1
+      },
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 1
+      },
+      "scoring": {
+        "eventScore": 14,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "intelligence",
+      "name": "intelligence",
+      "path": "/intelligence",
+      "score": 0,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {},
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 0
+      },
+      "issues": [
+        "Inga TSX-filer hittade — modul är ett skeleton"
+      ],
+      "strengths": [],
+      "filesAnalyzed": 0
+    },
+    {
+      "id": "knowledge",
+      "name": "Knowledge Hub",
+      "path": "/knowledge",
+      "score": 70,
+      "level": "ACCEPTABEL",
+      "maturityLevel": "alpha",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 27,
+        "onChange": 6,
+        "onKeyDown": 3
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 27
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 0
+      },
+      "issues": [
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Events väl täckta (36 st)",
+        "Rikt state-hantering (27 hooks)"
+      ],
+      "filesAnalyzed": 7
+    },
+    {
+      "id": "landvex-portal",
+      "name": "landvex-portal",
+      "path": "/landvex-portal",
+      "score": 100,
+      "level": "LOCKED",
+      "maturityLevel": "skeleton",
+      "dataSource": "live",
+      "events": {
+        "onClick": 8,
+        "onChange": 8,
+        "onSubmit": 2
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 13
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 30
+      },
+      "issues": [],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Live data-integration aktiv",
+        "Events väl täckta (18 st)",
+        "Rikt state-hantering (13 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "legal",
+      "name": "Legal Hub",
+      "path": "/legal",
+      "score": 53,
+      "level": "SVAG",
+      "maturityLevel": "beta",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 9,
+        "onChange": 5
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 13
+      },
+      "scoring": {
+        "eventScore": 23,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (14 st)",
+        "Rikt state-hantering (13 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "llm-hub",
+      "name": "LLM Hub",
+      "path": "/llm-hub",
+      "score": 98,
+      "level": "LOCKED",
+      "maturityLevel": "beta",
+      "dataSource": "live",
+      "events": {
+        "onClick": 4,
+        "onChange": 3,
+        "onKeyDown": 1
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 13
+      },
+      "scoring": {
+        "eventScore": 23,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 30
+      },
+      "issues": [],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Live data-integration aktiv",
+        "Events väl täckta (8 st)",
+        "Rikt state-hantering (13 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "market-sites",
+      "name": "market-sites",
+      "path": "/market-sites",
+      "score": 36,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 5,
+        "onChange": 4
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 5
+      },
+      "scoring": {
+        "eventScore": 21,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Events väl täckta (9 st)",
+        "Rikt state-hantering (5 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "media",
+      "name": "Media & Ads",
+      "path": "/media",
+      "score": 40,
+      "level": "SVAG",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 21,
+        "onChange": 21
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 13
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Events väl täckta (42 st)",
+        "Rikt state-hantering (13 hooks)"
+      ],
+      "filesAnalyzed": 8
+    },
+    {
+      "id": "media-pipeline",
+      "name": "media-pipeline",
+      "path": "/media-pipeline",
+      "score": 89,
+      "level": "BRA",
+      "maturityLevel": "skeleton",
+      "dataSource": "live",
+      "events": {
+        "onClick": 2
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 6
+      },
+      "scoring": {
+        "eventScore": 14,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 30
+      },
+      "issues": [],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Live data-integration aktiv",
+        "Rikt state-hantering (6 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "milestones",
+      "name": "Milestones",
+      "path": "/milestones",
+      "score": 46,
+      "level": "SVAG",
+      "maturityLevel": "beta",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 5
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 4
+      },
+      "scoring": {
+        "eventScore": 16,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (5 st)"
+      ],
+      "filesAnalyzed": 8
+    },
+    {
+      "id": "mission-control",
+      "name": "mission-control",
+      "path": "/mission-control",
+      "score": 44,
+      "level": "SVAG",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {
+        "onChange": 1
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": true,
+        "stateCount": 1
+      },
+      "scoring": {
+        "eventScore": 14,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 15,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Error handling implementerat"
+      ],
+      "filesAnalyzed": 2
+    },
+    {
+      "id": "mlcs-platform",
+      "name": "mlcs-platform",
+      "path": "/mlcs-platform",
+      "score": 15,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {},
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 0
+      },
+      "scoring": {
+        "eventScore": 0,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state",
+        "Saknar error handling",
+        "Inga interaktiva events identifierade",
+        "Inga React state hooks (useState/useEffect)"
+      ],
+      "strengths": [
+        "Delvis live data-integration"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "network-map",
+      "name": "network-map",
+      "path": "/network-map",
+      "score": 61,
+      "level": "ACCEPTABEL",
+      "maturityLevel": "skeleton",
+      "dataSource": "live",
+      "events": {
+        "onClick": 5
+      },
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": true,
+        "stateCount": 6
+      },
+      "scoring": {
+        "eventScore": 16,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 15,
+        "dataScore": 30
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state"
+      ],
+      "strengths": [
+        "Error handling implementerat",
+        "Live data-integration aktiv",
+        "Events väl täckta (5 st)",
+        "Rikt state-hantering (6 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "onboarding",
+      "name": "onboarding",
+      "path": "/onboarding",
+      "score": 70,
+      "level": "ACCEPTABEL",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 16,
+        "onChange": 22
+      },
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 15
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 0,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar empty state-hantering"
+      ],
+      "strengths": [
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (38 st)",
+        "Rikt state-hantering (15 hooks)"
+      ],
+      "filesAnalyzed": 3
+    },
+    {
+      "id": "openclaw",
+      "name": "openclaw",
+      "path": "/openclaw",
+      "score": 29,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 1
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 1
+      },
+      "scoring": {
+        "eventScore": 14,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "operations-center",
+      "name": "operations-center",
+      "path": "/operations-center",
+      "score": 44,
+      "level": "SVAG",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 2
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 3
+      },
+      "scoring": {
+        "eventScore": 14,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Delvis live data-integration"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "org-graph",
+      "name": "org-graph",
+      "path": "/org-graph",
+      "score": 67,
+      "level": "ACCEPTABEL",
+      "maturityLevel": "skeleton",
+      "dataSource": "live",
+      "events": {
+        "onClick": 23
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 9
+      },
+      "scoring": {
+        "eventScore": 22,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 30
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Live data-integration aktiv",
+        "Events väl täckta (23 st)",
+        "Rikt state-hantering (9 hooks)"
+      ],
+      "filesAnalyzed": 3
+    },
+    {
+      "id": "payroll",
+      "name": "Lön & Personal",
+      "path": "/payroll",
+      "score": 68,
+      "level": "ACCEPTABEL",
+      "maturityLevel": "alpha",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 12,
+        "onChange": 1
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 7
+      },
+      "scoring": {
+        "eventScore": 23,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 0
+      },
+      "issues": [
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Events väl täckta (13 st)",
+        "Rikt state-hantering (7 hooks)"
+      ],
+      "filesAnalyzed": 7
+    },
+    {
+      "id": "people",
+      "name": "people",
+      "path": "/people",
+      "score": 29,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 1
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 1
+      },
+      "scoring": {
+        "eventScore": 14,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "people-governance",
+      "name": "people-governance",
+      "path": "/people-governance",
+      "score": 36,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 8,
+        "onHover": 2
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 2
+      },
+      "scoring": {
+        "eventScore": 21,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Events väl täckta (10 st)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "people-intelligence",
+      "name": "People Intelligence",
+      "path": "/people-intelligence",
+      "score": 47,
+      "level": "SVAG",
+      "maturityLevel": "alpha",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 8
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": true,
+        "stateCount": 7
+      },
+      "scoring": {
+        "eventScore": 17,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 15,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Error handling implementerat",
+        "Events väl täckta (8 st)",
+        "Rikt state-hantering (7 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "procurement",
+      "name": "Inköp",
+      "path": "/procurement",
+      "score": 54,
+      "level": "SVAG",
+      "maturityLevel": "alpha",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 9,
+        "onChange": 6
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": false,
+        "stateCount": 10
+      },
+      "scoring": {
+        "eventScore": 24,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Events väl täckta (15 st)",
+        "Rikt state-hantering (10 hooks)"
+      ],
+      "filesAnalyzed": 5
+    },
+    {
+      "id": "projects",
+      "name": "projects",
+      "path": "/projects",
+      "score": 30,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {},
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 2
+      },
+      "scoring": {
+        "eventScore": 0,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling",
+        "Inga interaktiva events identifierade"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Delvis live data-integration"
+      ],
+      "filesAnalyzed": 2
+    },
+    {
+      "id": "quicklinks",
+      "name": "quicklinks",
+      "path": "/quicklinks",
+      "score": 15,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {},
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 0
+      },
+      "scoring": {
+        "eventScore": 0,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state",
+        "Saknar error handling",
+        "Inga interaktiva events identifierade",
+        "Inga React state hooks (useState/useEffect)"
+      ],
+      "strengths": [
+        "Delvis live data-integration"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "quixzoom-ads",
+      "name": "quixzoom-ads",
+      "path": "/quixzoom-ads",
+      "score": 14,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 2
+      },
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 2
+      },
+      "scoring": {
+        "eventScore": 14,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "quixzoom-app",
+      "name": "quixzoom-app",
+      "path": "/quixzoom-app",
+      "score": 96,
+      "level": "LOCKED",
+      "maturityLevel": "skeleton",
+      "dataSource": "live",
+      "events": {
+        "onClick": 6,
+        "onChange": 3
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 10
+      },
+      "scoring": {
+        "eventScore": 21,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 30
+      },
+      "issues": [],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Live data-integration aktiv",
+        "Events väl täckta (9 st)",
+        "Rikt state-hantering (10 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "reports",
+      "name": "Rapporter",
+      "path": "/reports",
+      "score": 52,
+      "level": "SVAG",
+      "maturityLevel": "alpha",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 9,
+        "onChange": 3
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": true,
+        "stateCount": 12
+      },
+      "scoring": {
+        "eventScore": 22,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 15,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Error handling implementerat",
+        "Events väl täckta (12 st)",
+        "Rikt state-hantering (12 hooks)"
+      ],
+      "filesAnalyzed": 6
+    },
+    {
+      "id": "settings",
+      "name": "Inställningar",
+      "path": "/settings",
+      "score": 54,
+      "level": "SVAG",
+      "maturityLevel": "beta",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 13,
+        "onChange": 3
+      },
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": true,
+        "stateCount": 19
+      },
+      "scoring": {
+        "eventScore": 24,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state"
+      ],
+      "strengths": [
+        "Error handling implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (16 st)",
+        "Rikt state-hantering (19 hooks)"
+      ],
+      "filesAnalyzed": 7
+    },
+    {
+      "id": "submissions",
+      "name": "submissions",
+      "path": "/submissions",
+      "score": 79,
+      "level": "ACCEPTABEL",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 4,
+        "onChange": 1
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 8
+      },
+      "scoring": {
+        "eventScore": 19,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (5 st)",
+        "Rikt state-hantering (8 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "system-audit",
+      "name": "system-audit",
+      "path": "/system-audit",
+      "score": 59,
+      "level": "SVAG",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 1
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 7
+      },
+      "scoring": {
+        "eventScore": 14,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 0
+      },
+      "issues": [
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Rikt state-hantering (7 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "system-graph",
+      "name": "system-graph",
+      "path": "/system-graph",
+      "score": 30,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 3
+      },
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": true,
+        "stateCount": 4
+      },
+      "scoring": {
+        "eventScore": 15,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 15,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Error handling implementerat"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "system-intelligence",
+      "name": "System Intelligence",
+      "path": "/system-intelligence",
+      "score": 29,
+      "level": "KRITISK",
+      "maturityLevel": "alpha",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 2
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 2
+      },
+      "scoring": {
+        "eventScore": 14,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "system-status",
+      "name": "system-status",
+      "path": "/system-status",
+      "score": 33,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 1,
+        "onHover": 2
+      },
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": true,
+        "hasErrorState": false,
+        "stateCount": 0
+      },
+      "scoring": {
+        "eventScore": 18,
+        "emptyScore": 0,
+        "loadingScore": 15,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration",
+        "Inga React state hooks (useState/useEffect)"
+      ],
+      "strengths": [
+        "Loading state implementerat"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "talent-radar",
+      "name": "Talent Radar",
+      "path": "/talent-radar",
+      "score": 30,
+      "level": "KRITISK",
+      "maturityLevel": "alpha",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 4
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 3
+      },
+      "scoring": {
+        "eventScore": 15,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "tasks",
+      "name": "tasks",
+      "path": "/tasks",
+      "score": 30,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 3
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 2
+      },
+      "scoring": {
+        "eventScore": 15,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "team",
+      "name": "team",
+      "path": "/team",
+      "score": 15,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {},
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 0
+      },
+      "scoring": {
+        "eventScore": 0,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration",
+        "Inga interaktiva events identifierade",
+        "Inga React state hooks (useState/useEffect)"
+      ],
+      "strengths": [
+        "Empty state implementerat"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "team-map",
+      "name": "Team Map",
+      "path": "/team-map",
+      "score": 45,
+      "level": "SVAG",
+      "maturityLevel": "beta",
+      "dataSource": "mock",
+      "events": {
+        "onClick": 4
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": true,
+        "stateCount": 14
+      },
+      "scoring": {
+        "eventScore": 15,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 15,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar loading state",
+        "Enbart mockdata — ingen live-integration"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Error handling implementerat",
+        "Rikt state-hantering (14 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "thailand",
+      "name": "thailand",
+      "path": "/thailand",
+      "score": 0,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "mock",
+      "events": {},
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 2
+      },
+      "scoring": {
+        "eventScore": 0,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 0
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state",
+        "Saknar error handling",
+        "Enbart mockdata — ingen live-integration",
+        "Inga interaktiva events identifierade"
+      ],
+      "strengths": [],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "transactions",
+      "name": "transactions",
+      "path": "/transactions",
+      "score": 55,
+      "level": "SVAG",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 9,
+        "onChange": 3,
+        "onHover": 4
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 5
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (16 st)",
+        "Rikt state-hantering (5 hooks)"
+      ],
+      "filesAnalyzed": 3
+    },
+    {
+      "id": "travel",
+      "name": "travel",
+      "path": "/travel",
+      "score": 85,
+      "level": "BRA",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 27,
+        "onChange": 21
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 32
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (48 st)",
+        "Rikt state-hantering (32 hooks)"
+      ],
+      "filesAnalyzed": 4
+    },
+    {
+      "id": "uapix",
+      "name": "uapix",
+      "path": "/uapix",
+      "score": 15,
+      "level": "KRITISK",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {},
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 0
+      },
+      "scoring": {
+        "eventScore": 0,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state",
+        "Saknar error handling",
+        "Inga interaktiva events identifierade",
+        "Inga React state hooks (useState/useEffect)"
+      ],
+      "strengths": [
+        "Delvis live data-integration"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "venture-engine",
+      "name": "venture-engine",
+      "path": "/venture-engine",
+      "score": 85,
+      "level": "BRA",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 11,
+        "onChange": 9,
+        "onSubmit": 2
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 10
+      },
+      "scoring": {
+        "eventScore": 25,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (22 st)",
+        "Rikt state-hantering (10 hooks)"
+      ],
+      "filesAnalyzed": 6
+    },
+    {
+      "id": "visa",
+      "name": "visa",
+      "path": "/visa",
+      "score": 47,
+      "level": "SVAG",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 7
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": false,
+        "hasErrorState": false,
+        "stateCount": 5
+      },
+      "scoring": {
+        "eventScore": 17,
+        "emptyScore": 15,
+        "loadingScore": 0,
+        "errorScore": 0,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar loading state",
+        "Saknar error handling"
+      ],
+      "strengths": [
+        "Empty state implementerat",
+        "Delvis live data-integration",
+        "Events väl täckta (7 st)",
+        "Rikt state-hantering (5 hooks)"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "voice",
+      "name": "voice",
+      "path": "/voice",
+      "score": 44,
+      "level": "SVAG",
+      "maturityLevel": "skeleton",
+      "dataSource": "partial",
+      "events": {
+        "onClick": 1
+      },
+      "states": {
+        "hasEmptyState": false,
+        "hasLoadingState": false,
+        "hasErrorState": true,
+        "stateCount": 1
+      },
+      "scoring": {
+        "eventScore": 14,
+        "emptyScore": 0,
+        "loadingScore": 0,
+        "errorScore": 15,
+        "dataScore": 15
+      },
+      "issues": [
+        "Saknar empty state-hantering",
+        "Saknar loading state"
+      ],
+      "strengths": [
+        "Error handling implementerat",
+        "Delvis live data-integration"
+      ],
+      "filesAnalyzed": 1
+    },
+    {
+      "id": "whoop",
+      "name": "WHOOP Team Pulse",
+      "path": "/whoop",
+      "score": 91,
+      "level": "BRA",
+      "maturityLevel": "beta",
+      "dataSource": "live",
+      "events": {
+        "onClick": 6
+      },
+      "states": {
+        "hasEmptyState": true,
+        "hasLoadingState": true,
+        "hasErrorState": true,
+        "stateCount": 16
+      },
+      "scoring": {
+        "eventScore": 16,
+        "emptyScore": 15,
+        "loadingScore": 15,
+        "errorScore": 15,
+        "dataScore": 30
+      },
+      "issues": [],
+      "strengths": [
+        "Empty state implementerat",
+        "Loading state implementerat",
+        "Error handling implementerat",
+        "Live data-integration aktiv",
+        "Events väl täckta (6 st)",
+        "Rikt state-hantering (16 hooks)"
+      ],
+      "filesAnalyzed": 2
+    }
+  ],
+  "summary": {
+    "locked": [
+      "company-launch",
+      "infrastructure",
+      "landvex-portal",
+      "llm-hub",
+      "quixzoom-app"
+    ],
+    "bra": [
+      "automation",
+      "git",
+      "governance",
+      "identity",
+      "media-pipeline",
+      "travel",
+      "venture-engine",
+      "whoop"
+    ],
+    "acceptabel": [
+      "api-hub",
+      "communications",
+      "crm",
+      "dashboard",
+      "database",
+      "deployments",
+      "domains",
+      "finance",
+      "knowledge",
+      "network-map",
+      "onboarding",
+      "org-graph",
+      "payroll",
+      "submissions"
+    ],
+    "svag": [
+      "bernt",
+      "campaign-os",
+      "causal-os",
+      "cockpit",
+      "corporate",
+      "decisions",
+      "entity",
+      "legal",
+      "media",
+      "milestones",
+      "mission-control",
+      "operations-center",
+      "people-intelligence",
+      "procurement",
+      "reports",
+      "settings",
+      "system-audit",
+      "team-map",
+      "transactions",
+      "visa",
+      "voice"
+    ],
+    "critical": [
+      "agent",
+      "apifly",
+      "command-view",
+      "corpfitt-platform",
+      "dissg",
+      "entity-switcher",
+      "exports",
+      "finance-flow",
+      "incidents",
+      "insurance",
+      "intelligence",
+      "market-sites",
+      "mlcs-platform",
+      "openclaw",
+      "people",
+      "people-governance",
+      "projects",
+      "quicklinks",
+      "quixzoom-ads",
+      "system-graph",
+      "system-intelligence",
+      "system-status",
+      "talent-radar",
+      "tasks",
+      "team",
+      "thailand",
+      "uapix"
+    ],
+    "avgScore": 48,
+    "totalFiles": 186,
+    "levelCounts": {
+      "LOCKED": 5,
+      "BRA": 8,
+      "ACCEPTABEL": 14,
+      "SVAG": 21,
+      "KRITISK": 27
+    }
+  }
+}

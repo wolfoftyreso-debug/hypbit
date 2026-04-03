@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
+import { ModuleHeader, SectionIllustration } from '../../shared/illustrations/ModuleIllustration'
 
 interface FlowItem { id: string; description: string; amount: number; currency: string; type: 'in' | 'out'; date: string; status: 'completed' | 'pending' | 'failed' }
 
@@ -50,10 +50,7 @@ export default function FinanceFlow() {
       )}
 
       {!loading && !error && items.length === 0 && (
-        <div className="wv-card-enter" style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '48px 24px', textAlign: 'center' }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8 }}>Inga transaktioner ännu</div>
-          <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>Koppla en betalningsintegration för att se kapitalflödet</div>
-        </div>
+        <SectionIllustration route="/finance-flow" title="Inga transaktioner ännu" description="Koppla en betalningsintegration för att se kapitalflödet" />
       )}
 
       {!loading && !error && items.length > 0 && (

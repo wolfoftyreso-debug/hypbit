@@ -5,8 +5,8 @@ source /home/erikwsl/.openclaw/secrets/credentials.env
 # 1. Add MX record to quixzoom.com
 echo "Adding MX record to quixzoom.com..."
 curl -s -X POST "https://api.cloudflare.com/client/v4/zones/e9a9520b64cd67eca1d8d926ca9daa79/dns_records" \
-  -H "X-Auth-Email: wolfoftyreso@gmail.com" \
-  -H "X-Auth-Key: $CLOUDFLARE_API_TOKEN" \
+  
+  -H "Authorization: Bearer $CF_DNS_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "type": "MX",

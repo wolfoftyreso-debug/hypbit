@@ -1,0 +1,17 @@
+{
+  "name": "@wavult/deploy-engine",
+  "version": "1.0.0",
+  "description": "Blue/Green deployment engine for Wavult OS",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@wavult/cloudflare-adapter": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

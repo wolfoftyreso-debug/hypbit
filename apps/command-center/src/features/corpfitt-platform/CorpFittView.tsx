@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { ModuleHeader } from '../../shared/illustrations/ModuleIllustration'
+import { ModuleHeader, SectionIllustration } from '../../shared/illustrations/ModuleIllustration'
 
 interface FitnessChallenge { id: string; title: string; participants: number; daysLeft: number; category: string; status: 'active' | 'upcoming' | 'completed' }
 interface TeamFitnessScore { memberId: string; name: string; score: number; rank: number; streak: number }
@@ -34,14 +34,9 @@ export default function CorpFittView() {
         description="Hälsoutmaningar och teamprestation"
         illustrationSize="md"
       />
-      )}
 
       {!loading && !error && challenges.length === 0 && (
-        <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '64px 24px', textAlign: 'center' }}>
-          <div style={{ fontSize: 40, marginBottom: 16 }}>💪</div>
-          <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8, fontSize: 16 }}>Inga aktiva utmaningar</div>
-          <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>Skapa en hälsoutmaning för teamet</div>
-        </div>
+        <SectionIllustration route="/corpfitt-platform" title="Inga aktiva utmaningar" description="Skapa en hälsoutmaning för teamet" />
       )}
 
       {!loading && !error && challenges.length > 0 && (

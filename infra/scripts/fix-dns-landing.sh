@@ -9,11 +9,11 @@ set -euo pipefail
 
 ZONE_ID="7fa7c28b0748ded5b4d48f06eae6faec"
 LANDING_CF="d32vz1dqlzn29d.cloudfront.net"
-CF_TOKEN="${CLOUDFLARE_API_TOKEN:-}"
+CF_TOKEN="${CF_DNS_TOKEN:-}"
 
 if [ -z "$CF_TOKEN" ]; then
-  echo "❌ CLOUDFLARE_API_TOKEN saknas"
-  echo "   export CLOUDFLARE_API_TOKEN=your-token-here"
+  echo "❌ CF_DNS_TOKEN saknas"
+  echo "   export CF_DNS_TOKEN=your-scoped-dns-token"
   exit 1
 fi
 
