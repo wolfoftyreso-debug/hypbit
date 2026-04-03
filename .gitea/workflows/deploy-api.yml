@@ -1,0 +1,129 @@
+name: Deploy API
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'server/**'
+      - 'src/**'
+      - 'Dockerfile'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.gitea/workflows/deploy-api.yml'
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: eu-north-1
+  ECS_CLUSTER: wavult
+  ECS_SERVICE: wavult-os-api
+
+jobs:
+  deploy:
+    name: Build & Deploy API
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Get AWS Account ID
+        id: account
+        run: |
+          ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+          echo "id=$ACCOUNT_ID" >> $GITHUB_OUTPUT
+          ECR="${ACCOUNT_ID}.dkr.ecr.eu-north-1.amazonaws.com"
+          echo "ecr=$ECR" >> $GITHUB_OUTPUT
+          echo "AWS Account: $ACCOUNT_ID"
+          echo "ECR Registry: $ECR"
+
+      - name: Ensure ECR repository exists
+        run: |
+          aws ecr describe-repositories --repository-names wavult-os-api --region ${{ env.AWS_REGION }} 2>/dev/null || \
+            aws ecr create-repository --repository-name wavult-os-api --region ${{ env.AWS_REGION }} --image-scanning-configuration scanOnPush=true
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Syntax check (esbuild gate)
+        run: npx esbuild server/src/index.ts --bundle --platform=node --packages=external --outfile=/dev/null --log-level=error
+
+      - name: Build and push Docker image
+        id: build
+        run: |
+          ECR="${{ steps.account.outputs.ecr }}"
+          TAG="${{ github.sha }}"
+          IMAGE="${ECR}/wavult-os-api:${TAG}"
+          LATEST="${ECR}/wavult-os-api:latest"
+          docker build -f Dockerfile -t "$IMAGE" -t "$LATEST" .
+          docker push "$IMAGE"
+          docker push "$LATEST"
+          echo "image=$IMAGE" >> $GITHUB_OUTPUT
+
+      - name: Check ECS cluster
+        id: ecs
+        run: |
+          STATUS=$(aws ecs describe-clusters --clusters ${{ env.ECS_CLUSTER }} --region ${{ env.AWS_REGION }} --query "clusters[0].status" --output text 2>/dev/null || echo "MISSING")
+          if [ "$STATUS" = "ACTIVE" ]; then
+            echo "active=true" >> $GITHUB_OUTPUT
+          else
+            echo "active=false" >> $GITHUB_OUTPUT
+            echo "ECS cluster not found. Run infra-setup workflow first."
+          fi
+
+      - name: Update ECS service
+        if: steps.ecs.outputs.active == 'true'
+        run: |
+          ECR="${{ steps.account.outputs.ecr }}"
+          TAG="${{ github.sha }}"
+          NEW_IMAGE="${ECR}/wavult-os-api:${TAG}"
+
+          TASK_DEF=$(aws ecs describe-services \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services ${{ env.ECS_SERVICE }} \
+            --region ${{ env.AWS_REGION }} \
+            --query "services[0].taskDefinition" \
+            --output text)
+
+          aws ecs describe-task-definition \
+            --task-definition "$TASK_DEF" \
+            --region ${{ env.AWS_REGION }} \
+            --query "taskDefinition" \
+            --output json > /tmp/taskdef.json
+
+          jq --arg img "$NEW_IMAGE" \
+            '.containerDefinitions[0].image = $img | del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)' \
+            /tmp/taskdef.json > /tmp/newtaskdef.json
+
+          NEW_ARN=$(aws ecs register-task-definition \
+            --region ${{ env.AWS_REGION }} \
+            --cli-input-json file:///tmp/newtaskdef.json \
+            --query "taskDefinition.taskDefinitionArn" \
+            --output text)
+
+          aws ecs update-service \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --service ${{ env.ECS_SERVICE }} \
+            --task-definition "$NEW_ARN" \
+            --region ${{ env.AWS_REGION }}
+
+          echo "Updated ECS service with $NEW_ARN"
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "=== Deploy Summary ==="
+          echo "Image: ${{ steps.build.outputs.image }}"
+          echo "ECS active: ${{ steps.ecs.outputs.active }}"
+          echo "SHA: ${{ github.sha }}"

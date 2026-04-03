@@ -1,0 +1,26 @@
+name: Deploy Identity Core
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/identity-core/**'
+      - '.gitea/workflows/deploy-identity-core.yml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1
+      - name: Build and push to ECR
+        run: |
+          aws ecr get-login-password | docker login --username AWS --password-stdin 155407238699.dkr.ecr.eu-north-1.amazonaws.com
+          cd apps/identity-core && npm ci && npm run build
+          docker build -t identity-core .
+          docker tag identity-core:latest 155407238699.dkr.ecr.eu-north-1.amazonaws.com/identity-core:latest
+          docker push 155407238699.dkr.ecr.eu-north-1.amazonaws.com/identity-core:latest
