@@ -18,17 +18,17 @@ const INDUSTRY_TABS: { value: Industry | ''; label: string }[] = [
 ]
 
 const INDUSTRY_COLORS: Record<Industry, { bg: string; text: string; dot: string }> = {
-  Healthcare:  { bg: 'bg-rose-900/50', text: 'text-rose-300', dot: 'bg-rose-400' },
-  Government:  { bg: 'bg-blue-900/50', text: 'text-blue-300', dot: 'bg-blue-400' },
-  Logistics:   { bg: 'bg-amber-900/50', text: 'text-amber-300', dot: 'bg-amber-400' },
-  Finance:     { bg: 'bg-green-900/50', text: 'text-green-300', dot: 'bg-green-400' },
-  Education:   { bg: 'bg-purple-900/50', text: 'text-purple-300', dot: 'bg-purple-400' },
+  Healthcare:  { bg: 'bg-rose-50', text: 'text-rose-600', dot: 'bg-rose-400' },
+  Government:  { bg: 'bg-blue-50', text: 'text-blue-600', dot: 'bg-blue-400' },
+  Logistics:   { bg: 'bg-amber-50', text: 'text-amber-600', dot: 'bg-amber-400' },
+  Finance:     { bg: 'bg-green-50', text: 'text-green-600', dot: 'bg-green-400' },
+  Education:   { bg: 'bg-purple-50', text: 'text-purple-600', dot: 'bg-purple-400' },
 }
 
 const COMPLEXITY_COLORS = (score: number) =>
-  score <= 3 ? 'bg-green-900/50 text-green-300' :
-  score <= 6 ? 'bg-amber-900/50 text-amber-300' :
-               'bg-red-900/50 text-red-300'
+  score <= 3 ? 'bg-green-50 text-green-700' :
+  score <= 6 ? 'bg-amber-50 text-amber-700' :
+               'bg-red-50 text-red-700'
 
 function industryIcon(industry: Industry) {
   const cls = 'w-3.5 h-3.5'
@@ -50,13 +50,13 @@ function ImpactSegmentBar({ score }: { score: number }) {
             key={i}
             className={`w-2 h-2.5 rounded-sm transition-colors ${
               i < score
-                ? score >= 8 ? 'bg-green-500' : score >= 6 ? 'bg-amber-500' : 'bg-gray-500'
-                : 'bg-gray-700'
+                ? score >= 8 ? 'bg-green-500' : score >= 6 ? 'bg-amber-500' : 'bg-gray-400'
+                : 'bg-gray-200'
             }`}
           />
         ))}
       </div>
-      <span className="text-xs font-semibold text-gray-400 tabular-nums">{score}/10</span>
+      <span className="text-xs font-semibold text-[#8A8A9A] tabular-nums">{score}/10</span>
     </div>
   )
 }
@@ -86,8 +86,8 @@ export const OpportunityFeed = forwardRef<{ reload: () => void }, Props>(
       <div className="flex flex-col h-full">
         {/* Header */}
         <div className="mb-3">
-          <h2 className="text-sm font-semibold text-white">Opportunity Feed</h2>
-          <p className="text-xs text-gray-500 mt-0.5">Ranked by impact — highest friction, highest priority</p>
+          <h2 className="text-sm font-semibold text-[#0A3D62]">Opportunity Feed</h2>
+          <p className="text-xs text-[#8A8A9A] mt-0.5">Ranked by impact — highest friction, highest priority</p>
         </div>
 
         {/* Industry filter tabs */}
@@ -99,7 +99,7 @@ export const OpportunityFeed = forwardRef<{ reload: () => void }, Props>(
               className={`px-2.5 py-1 text-xs font-medium rounded-lg transition-colors ${
                 filterIndustry === tab.value
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-800 text-gray-400 hover:text-gray-200 hover:bg-gray-700'
+                  : 'bg-[#EDE8DC] text-[#8A8A9A] hover:text-[#6B7280] hover:bg-[#EDE8DC]'
               }`}
             >
               {tab.label}
@@ -109,14 +109,14 @@ export const OpportunityFeed = forwardRef<{ reload: () => void }, Props>(
 
         {/* Content */}
         {loading && (
-          <div className="flex-1 flex flex-col items-center justify-center gap-3 text-gray-500">
+          <div className="flex-1 flex flex-col items-center justify-center gap-3 text-[#8A8A9A]">
             <Loader2 className="w-5 h-5 animate-spin text-blue-500" />
             <span className="text-sm">Scanning for inefficiencies...</span>
           </div>
         )}
 
         {error && (
-          <div className="flex items-center gap-2 p-3 bg-red-900/30 border border-red-800 rounded-lg text-red-400 text-xs">
+          <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-xs">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             {error}
           </div>
@@ -127,8 +127,8 @@ export const OpportunityFeed = forwardRef<{ reload: () => void }, Props>(
             {opportunities.length === 0 && (
               <div className="flex flex-col items-center justify-center h-32 gap-2">
                 <span className="text-2xl">🔍</span>
-                <p className="text-sm text-gray-500 text-center">Scanning for inefficiencies...</p>
-                <p className="text-xs text-gray-600 text-center">No opportunities match the current filter.</p>
+                <p className="text-sm text-[#8A8A9A] text-center">Scanning for inefficiencies...</p>
+                <p className="text-xs text-[#8A8A9A] text-center">No opportunities match the current filter.</p>
               </div>
             )}
             {opportunities.map(opp => {
@@ -141,7 +141,7 @@ export const OpportunityFeed = forwardRef<{ reload: () => void }, Props>(
               return (
                 <div
                   key={opp.id}
-                  className="border border-gray-700 rounded-xl p-3 bg-gray-800/50 hover:border-gray-600 hover:bg-gray-800 transition-all"
+                  className="border border-[#DDD5C5] rounded-xl p-3 bg-white hover:border-[#C8BCA8] hover:bg-[#F5F0E8] transition-all"
                 >
                   {/* Industry badge + status */}
                   <div className="flex items-center justify-between gap-2 mb-2">
@@ -150,25 +150,25 @@ export const OpportunityFeed = forwardRef<{ reload: () => void }, Props>(
                       {opp.industry}
                     </div>
                     <span className={`px-1.5 py-0.5 rounded text-xs font-medium capitalize ${
-                      opp.status === 'detected'   ? 'bg-gray-700 text-gray-300' :
-                      opp.status === 'validated'  ? 'bg-blue-900/50 text-blue-300' :
-                      opp.status === 'building'   ? 'bg-amber-900/50 text-amber-300' :
-                      opp.status === 'invested'   ? 'bg-purple-900/50 text-purple-300' :
-                                                    'bg-green-900/50 text-green-300'
+                      opp.status === 'detected'   ? 'bg-[#EDE8DC] text-[#6B7280]' :
+                      opp.status === 'validated'  ? 'bg-blue-50 text-blue-700' :
+                      opp.status === 'building'   ? 'bg-amber-50 text-amber-700' :
+                      opp.status === 'invested'   ? 'bg-purple-50 text-purple-700' :
+                                                    'bg-green-50 text-green-700'
                     }`}>
                       {opp.status}
                     </span>
                   </div>
 
-                  <h3 className="text-sm font-semibold text-white mb-1">{opp.title}</h3>
-                  <p className="text-xs text-gray-400 leading-relaxed mb-2 line-clamp-2">
+                  <h3 className="text-sm font-semibold text-[#0A3D62] mb-1">{opp.title}</h3>
+                  <p className="text-xs text-[#8A8A9A] leading-relaxed mb-2 line-clamp-2">
                     {opp.inefficiency_description}
                   </p>
 
                   {/* Impact bar + complexity */}
                   <div className="space-y-1.5 mb-2">
                     <div>
-                      <p className="text-xs text-gray-500 mb-1">Impact score</p>
+                      <p className="text-xs text-[#8A8A9A] mb-1">Impact score</p>
                       <ImpactSegmentBar score={opp.impact_score} />
                     </div>
                     <div className="flex items-center gap-2">

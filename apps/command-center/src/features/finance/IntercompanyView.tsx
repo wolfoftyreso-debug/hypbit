@@ -164,7 +164,7 @@ export function IntercompanyView() {
       </div>
 
       {/* What is intercompany — plain language explanation */}
-      <div className="rounded-xl border border-surface-border bg-muted/30 px-4 py-3">
+      <div className="rounded-xl border border-surface-border bg-[#F0EBE1] px-4 py-3">
         <p className="text-xs text-gray-9000 leading-relaxed">
           <span className="font-semibold text-text-primary">Vad är intercompany?</span>{' '}
           Betalningar <em>inom</em> koncernen — t.ex. när ett dotterbolag betalar en licensavgift till holdingbolaget i Dubai.
@@ -237,8 +237,8 @@ export function IntercompanyView() {
             onClick={() => setSection(tab.id)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap flex-shrink-0 ${
               section === tab.id
-                ? 'bg-muted/30 text-gray-600 border border-gray-200'
-                : 'text-gray-9000 hover:text-gray-600 hover:bg-muted/30'
+                ? 'bg-[#F0EBE1] text-gray-600 border border-gray-200'
+                : 'text-gray-9000 hover:text-gray-600 hover:bg-[#F0EBE1]'
             }`}
           >
             <span className="text-xs">{tab.icon}</span>
@@ -289,7 +289,7 @@ export function IntercompanyView() {
                     <span>Andel av total Dubai-inkomst</span>
                     <span>{((lf.euroEquiv / TOTAL_DUBAI_EUR) * 100).toFixed(1)}%</span>
                   </div>
-                  <div className="h-1 rounded-full bg-muted/30">
+                  <div className="h-1 rounded-full bg-[#F0EBE1]">
                     <div
                       className="h-1 rounded-full bg-emerald-500"
                       style={{ width: `${(lf.euroEquiv / TOTAL_DUBAI_EUR) * 100}%` }}
@@ -305,7 +305,7 @@ export function IntercompanyView() {
       {/* ── Sektion B — Management Fee Dashboard ──────────────────────── */}
       {section === 'mgmt' && (
         <div className="space-y-4">
-          <div className="rounded-xl border border-surface-border bg-muted/30 p-4">
+          <div className="rounded-xl border border-surface-border bg-[#F0EBE1] p-4">
             <p className="text-xs font-semibold text-gray-600 mb-1">🏛️ Management Services</p>
             <p className="text-xs text-gray-9000 leading-relaxed">
               Wavult Group FZCO (Holding) äger IP och varumärken. 
@@ -370,7 +370,7 @@ Alla tre är 100% ägda av Wavult Group (Erik Svensson).
             <div className="rounded-xl border border-surface-border overflow-hidden">
               <div className="divide-y divide-gray-100">
                 {nettingEntries.map((pair, i) => (
-                  <div key={i} className="flex items-center gap-3 px-4 py-3 hover:bg-muted/30 transition-colors">
+                  <div key={i} className="flex items-center gap-3 px-4 py-3 hover:bg-[#F0EBE1] transition-colors">
                     <div className="flex items-center gap-1.5">
                       <span className="h-1.5 w-1.5 rounded-full" style={{ background: entityColor(pair.fromId) }} />
                       <span className="text-xs text-text-primary font-semibold">{entityShortName(pair.fromId)}</span>
@@ -439,7 +439,7 @@ Alla tre är 100% ägda av Wavult Group (Erik Svensson).
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {LICENSE_FEES.map(lf => (
-                    <tr key={lf.fromId} className="hover:bg-muted/30 transition-colors">
+                    <tr key={lf.fromId} className="hover:bg-[#F0EBE1] transition-colors">
                       <td className="px-4 py-3 font-semibold text-text-primary">{lf.from}</td>
                       <td className="px-4 py-3 text-gray-9000">{lf.jurisdiction}</td>
                       <td className="px-4 py-3">
@@ -512,7 +512,7 @@ Alla tre är 100% ägda av Wavult Group (Erik Svensson).
                   {entries.map(ic => {
                     const st = STATUS_CONFIG[ic.status]
                     return (
-                      <div key={ic.id} className="flex items-center gap-3 px-4 py-3 hover:bg-muted/30 transition-colors">
+                      <div key={ic.id} className="flex items-center gap-3 px-4 py-3 hover:bg-[#F0EBE1] transition-colors">
                         <div className="flex items-center gap-2 flex-1 min-w-0">
                           <div className="flex items-center gap-1.5">
                             <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: entityColor(ic.fromEntityId) }} />

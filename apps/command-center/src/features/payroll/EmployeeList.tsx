@@ -191,7 +191,7 @@ export function EmployeeList() {
               {employees.map(emp => (
                 <tr
                   key={emp.id}
-                  className="border-b border-gray-200/50 hover:bg-gray-50/40 transition-colors cursor-pointer"
+                  className="border-b border-[#DDD5C5] hover:bg-[#EDE8DC] transition-colors cursor-pointer"
                   onClick={() => setSelected(emp)}
                 >
                   <td className="px-5 py-3">

@@ -10,11 +10,11 @@ const OBJECTIVE_LABELS: Record<Campaign['objective'], string> = {
 }
 
 const STATUS_COLORS: Record<Campaign['status'], string> = {
-  draft: 'bg-muted/30 text-gray-9000 border border-gray-200',
+  draft: 'bg-[#F0EBE1] text-gray-9000 border border-gray-200',
   active: 'bg-emerald-500/15 text-emerald-700 border border-emerald-500/25',
   paused: 'bg-amber-500/15 text-amber-700 border border-amber-500/25',
   completed: 'bg-blue-500/15 text-blue-700 border border-blue-500/25',
-  archived: 'bg-muted/30 text-gray-9000 border border-gray-200',
+  archived: 'bg-[#F0EBE1] text-gray-9000 border border-gray-200',
 }
 
 const STATUS_DOT: Record<Campaign['status'], string> = {
@@ -187,7 +187,7 @@ function CampaignDetail({ campaign, onBack }: { campaign: Campaign; onBack: () =
             {allocations.map(alloc => {
               const ch = MOCK_CHANNELS.find(c => c.id === alloc.channel_id)
               return (
-                <div key={alloc.id} className="flex items-center justify-between py-2 border-b border-white/5 last:border-0">
+                <div key={alloc.id} className="flex items-center justify-between py-2 border-b border-[#DDD5C5] last:border-0">
                   <span className="text-sm text-gray-600">{ch?.provider ?? alloc.channel_id}</span>
                   <div className="flex items-center gap-4 text-xs text-gray-9000">
                     <span>Budget: 0 {campaign.currency}/dag</span>
@@ -237,7 +237,7 @@ export function CampaignView() {
           <div
             key={campaign.id}
             onClick={() => setSelected(campaign)}
-            className="rounded-xl border border-surface-border bg-[#161B22] p-5 cursor-pointer hover:border-white/[0.16] hover:bg-[#1C2129] transition-all"
+            className="rounded-xl border border-surface-border bg-white p-5 cursor-pointer hover:border-[#DDD5C5] hover:bg-[#EDE8DC] transition-all"
           >
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1 min-w-0">
@@ -251,7 +251,7 @@ export function CampaignView() {
                 </div>
                 {/* Metadata */}
                 <div className="flex items-center gap-2 text-xs text-gray-9000 flex-wrap">
-                  <span className="px-1.5 py-0.5 rounded bg-muted/30 text-gray-9000">{OBJECTIVE_LABELS[campaign.objective]}</span>
+                  <span className="px-1.5 py-0.5 rounded bg-[#F0EBE1] text-gray-9000">{OBJECTIVE_LABELS[campaign.objective]}</span>
                   <span>·</span>
                   <span>{GEO_SCOPE_LABELS[campaign.geo_scope]}</span>
                   <span>·</span>

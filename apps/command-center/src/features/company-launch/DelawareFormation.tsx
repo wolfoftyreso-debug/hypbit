@@ -493,15 +493,15 @@ const FILING_OPTIONS: FilingOption[] = [
 function FilingOptionCard({ option }: { option: FilingOption }) {
   return (
     <div
-      className={`relative rounded-xl border p-5 space-y-3 transition-all hover:border-white/20 ${
+      className={`relative rounded-xl border p-5 space-y-3 transition-all hover:border-[#DDD5C5] ${
         option.recommended
           ? 'border-blue-500/50 bg-blue-950/20'
-          : 'border-white/8 bg-muted/30'
+          : 'border-[#DDD5C5] bg-[#EDE8DC]'
       }`}
     >
       {option.recommended && (
         <div className="absolute -top-2.5 left-4">
-          <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-blue-600 text-white">
+          <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-blue-600 text-[#0A3D62]">
             ✓ RECOMMENDED — No Stripe
           </span>
         </div>
@@ -512,12 +512,12 @@ function FilingOptionCard({ option }: { option: FilingOption }) {
           <div className="flex items-center gap-2 flex-wrap">
             <h3 className="text-sm font-semibold text-text-primary">{option.name}</h3>
           </div>
-          <div className="flex items-center gap-3 mt-1 flex-wrap text-xs text-gray-400">
+          <div className="flex items-center gap-3 mt-1 flex-wrap text-xs text-[#8A8A9A]">
             <span className="font-medium text-green-400">{option.price}</span>
             <span>·</span>
             <span>⏱ {option.timeline}</span>
           </div>
-          <p className="text-xs text-gray-400 mt-2 leading-relaxed">{option.description}</p>
+          <p className="text-xs text-[#8A8A9A] mt-2 leading-relaxed">{option.description}</p>
         </div>
       </div>
       <a
@@ -611,7 +611,7 @@ export function DelawareFormation() {
     <div className="flex flex-col h-full overflow-hidden">
 
       {/* ── Step progress bar ── */}
-      <div className="flex items-center gap-0 px-6 py-3 border-b border-white/8 flex-shrink-0 bg-muted/20">
+      <div className="flex items-center gap-0 px-6 py-3 border-b border-[#DDD5C5] flex-shrink-0 bg-[#F0EBE1]">
         {(['form', 'review', 'docs'] as Step[]).map((s, i) => {
           const labels = ['1. Company Details', '2. Filing Options', '3. Documents']
           const active = step === s
@@ -625,14 +625,14 @@ export function DelawareFormation() {
                   ? 'text-blue-400 bg-blue-950/40 border border-blue-500/50'
                   : past
                   ? 'text-green-400 hover:text-green-300'
-                  : 'text-gray-500 hover:text-gray-400'
+                  : 'text-[#8A8A9A] hover:text-[#8A8A9A]'
               }`}
             >
               {past && !active ? '✓' : `${i + 1}.`} {labels[i].split('. ')[1]}
             </button>
           )
         })}
-        <div className="ml-auto text-[10px] font-mono text-gray-500">🇺🇸 Delaware C-Corp</div>
+        <div className="ml-auto text-[10px] font-mono text-[#8A8A9A]">🇺🇸 Delaware C-Corp</div>
       </div>
 
       <div className="flex-1 overflow-y-auto">
@@ -642,27 +642,27 @@ export function DelawareFormation() {
           <div className="max-w-2xl mx-auto px-6 py-8 space-y-8">
             <div>
               <h2 className="text-base font-bold text-text-primary">Delaware C-Corp Formation</h2>
-              <p className="text-xs text-gray-400 mt-1">
+              <p className="text-xs text-[#8A8A9A] mt-1">
                 Enter your company details below. Documents will be generated locally — no data sent to any server.
               </p>
             </div>
 
             {/* Company Name */}
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Company Name *</label>
+              <label className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">Company Name *</label>
               <input
                 type="text"
                 value={form.companyName}
                 onChange={e => setField('companyName', e.target.value)}
                 placeholder="e.g. Wavult Ventures Inc."
-                className="w-full px-3 py-2 text-sm rounded-lg border border-white/12 bg-muted/40 text-text-primary placeholder-gray-600 focus:outline-none focus:border-blue-500/60 reveal"
+                className="w-full px-3 py-2 text-sm rounded-lg border border-[#DDD5C5] bg-[#F0EBE1] text-text-primary placeholder-gray-600 focus:outline-none focus:border-blue-500/60 reveal"
               />
-              <p className="text-[10px] text-gray-500">Must end with Inc., Corp., Corporation, Incorporated, or Ltd.</p>
+              <p className="text-[10px] text-[#8A8A9A]">Must end with Inc., Corp., Corporation, Incorporated, or Ltd.</p>
             </div>
 
             {/* Registered Agent */}
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Registered Agent</label>
+              <label className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">Registered Agent</label>
               <div className="space-y-2">
                 {(['harvard', 'northwest', 'stripe'] as const).map(key => {
                   const labels = {
@@ -679,66 +679,66 @@ export function DelawareFormation() {
                         onChange={() => setField('registeredAgentKey', key)}
                         className="accent-blue-500"
                       />
-                      <span className={`text-xs ${form.registeredAgentKey === key ? 'text-text-primary' : 'text-gray-400'}`}>
+                      <span className={`text-xs ${form.registeredAgentKey === key ? 'text-text-primary' : 'text-[#8A8A9A]'}`}>
                         {labels[key]}
                       </span>
                     </label>
                   )
                 })}
               </div>
-              <div className="mt-2 p-3 rounded-lg border border-white/8 bg-muted/20 text-xs text-gray-400 space-y-0.5 reveal">
-                <div><span className="text-gray-500">Name:</span> {agent.name}</div>
-                <div><span className="text-gray-500">Address:</span> {agent.address}, {agent.city}, {agent.state} {agent.zip}</div>
-                <div><span className="text-gray-500">County:</span> {agent.county}</div>
+              <div className="mt-2 p-3 rounded-lg border border-[#DDD5C5] bg-[#F0EBE1] text-xs text-[#8A8A9A] space-y-0.5 reveal">
+                <div><span className="text-[#8A8A9A]">Name:</span> {agent.name}</div>
+                <div><span className="text-[#8A8A9A]">Address:</span> {agent.address}, {agent.city}, {agent.state} {agent.zip}</div>
+                <div><span className="text-[#8A8A9A]">County:</span> {agent.county}</div>
               </div>
             </div>
 
             {/* Stock */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Authorized Shares</label>
+                <label className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">Authorized Shares</label>
                 <input
                   type="number"
                   value={form.authorizedShares}
                   onChange={e => setField('authorizedShares', parseInt(e.target.value) || 10_000_000)}
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-white/12 bg-muted/40 text-text-primary focus:outline-none focus:border-blue-500/60 reveal"
+                  className="w-full px-3 py-2 text-sm rounded-lg border border-[#DDD5C5] bg-[#F0EBE1] text-text-primary focus:outline-none focus:border-blue-500/60 reveal"
                 />
-                <p className="text-[10px] text-gray-500">Standard: 10,000,000 shares</p>
+                <p className="text-[10px] text-[#8A8A9A]">Standard: 10,000,000 shares</p>
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Par Value per Share</label>
+                <label className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">Par Value per Share</label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A8A9A] text-sm">$</span>
                   <input
                     type="text"
                     value={form.parValue}
                     onChange={e => setField('parValue', e.target.value)}
-                    className="w-full pl-7 pr-3 py-2 text-sm rounded-lg border border-white/12 bg-muted/40 text-text-primary focus:outline-none focus:border-blue-500/60 reveal"
+                    className="w-full pl-7 pr-3 py-2 text-sm rounded-lg border border-[#DDD5C5] bg-[#F0EBE1] text-text-primary focus:outline-none focus:border-blue-500/60 reveal"
                   />
                 </div>
-                <p className="text-[10px] text-gray-500">Standard: $0.0001</p>
+                <p className="text-[10px] text-[#8A8A9A]">Standard: $0.0001</p>
               </div>
             </div>
 
             {/* Founder */}
             <div className="grid grid-cols-1 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Incorporator / Founder Name</label>
+                <label className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">Incorporator / Founder Name</label>
                 <input
                   type="text"
                   value={form.founderName}
                   onChange={e => setField('founderName', e.target.value)}
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-white/12 bg-muted/40 text-text-primary focus:outline-none focus:border-blue-500/60"
+                  className="w-full px-3 py-2 text-sm rounded-lg border border-[#DDD5C5] bg-[#F0EBE1] text-text-primary focus:outline-none focus:border-blue-500/60"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Incorporator Address</label>
+                <label className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">Incorporator Address</label>
                 <input
                   type="text"
                   value={form.founderAddress}
                   onChange={e => setField('founderAddress', e.target.value)}
                   placeholder="Street, City, Country"
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-white/12 bg-muted/40 text-text-primary focus:outline-none focus:border-blue-500/60"
+                  className="w-full px-3 py-2 text-sm rounded-lg border border-[#DDD5C5] bg-[#F0EBE1] text-text-primary focus:outline-none focus:border-blue-500/60"
                 />
               </div>
             </div>
@@ -746,22 +746,22 @@ export function DelawareFormation() {
             {/* Incorporation Date & Business */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Incorporation Date</label>
+                <label className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">Incorporation Date</label>
                 <input
                   type="date"
                   value={form.incorporationDate}
                   onChange={e => setField('incorporationDate', e.target.value)}
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-white/12 bg-muted/40 text-text-primary focus:outline-none focus:border-blue-500/60"
+                  className="w-full px-3 py-2 text-sm rounded-lg border border-[#DDD5C5] bg-[#F0EBE1] text-text-primary focus:outline-none focus:border-blue-500/60"
                 />
               </div>
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Business Activity (SS-4)</label>
+                <label className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">Business Activity (SS-4)</label>
                 <input
                   type="text"
                   value={form.businessActivity}
                   onChange={e => setField('businessActivity', e.target.value)}
                   placeholder="e.g. Software, SaaS, AI"
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-white/12 bg-muted/40 text-text-primary focus:outline-none focus:border-blue-500/60"
+                  className="w-full px-3 py-2 text-sm rounded-lg border border-[#DDD5C5] bg-[#F0EBE1] text-text-primary focus:outline-none focus:border-blue-500/60"
                 />
               </div>
             </div>
@@ -782,26 +782,26 @@ export function DelawareFormation() {
           <div className="max-w-2xl mx-auto px-6 py-8 space-y-8">
             <div>
               <h2 className="text-base font-bold text-text-primary">Choose Filing Method</h2>
-              <p className="text-xs text-gray-400 mt-1">
+              <p className="text-xs text-[#8A8A9A] mt-1">
                 Select how to file your Delaware Certificate of Incorporation. Documents are generated locally regardless of which option you choose.
               </p>
             </div>
 
             {/* Summary */}
-            <div className="rounded-xl border border-white/8 bg-muted/20 p-4 space-y-2">
-              <div className="text-xs font-mono text-gray-500 uppercase tracking-wider mb-3">Formation Summary</div>
+            <div className="rounded-xl border border-[#DDD5C5] bg-[#F0EBE1] p-4 space-y-2">
+              <div className="text-xs font-mono text-[#8A8A9A] uppercase tracking-wider mb-3">Formation Summary</div>
               <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-xs">
-                <div className="text-gray-400">Company Name</div>
+                <div className="text-[#8A8A9A]">Company Name</div>
                 <div className="text-text-primary font-medium">{form.companyName}</div>
-                <div className="text-gray-400">Registered Agent</div>
+                <div className="text-[#8A8A9A]">Registered Agent</div>
                 <div className="text-text-primary">{agent.name}</div>
-                <div className="text-gray-400">Authorized Shares</div>
+                <div className="text-[#8A8A9A]">Authorized Shares</div>
                 <div className="text-text-primary">{Number(form.authorizedShares).toLocaleString()}</div>
-                <div className="text-gray-400">Par Value</div>
+                <div className="text-[#8A8A9A]">Par Value</div>
                 <div className="text-text-primary">${form.parValue}/share</div>
-                <div className="text-gray-400">Incorporator</div>
+                <div className="text-[#8A8A9A]">Incorporator</div>
                 <div className="text-text-primary">{form.founderName}</div>
-                <div className="text-gray-400">Incorporation Date</div>
+                <div className="text-[#8A8A9A]">Incorporation Date</div>
                 <div className="text-text-primary">{fmtDate(form.incorporationDate)}</div>
               </div>
             </div>
@@ -814,23 +814,23 @@ export function DelawareFormation() {
             </div>
 
             {/* API status note */}
-            <div className="rounded-lg border border-amber-900/30 bg-amber-950/10 p-4">
+            <div className="rounded-lg border border-amber-200 bg-amber-50 p-4">
               <p className="text-xs font-semibold text-amber-400 mb-1">🔌 API Integration Status</p>
-              <p className="text-xs text-gray-400 leading-relaxed">
-                <strong className="text-gray-300">Harvard Business Services</strong> — No public REST API documented. Filing can be done via their web portal or by contacting info@delawareinc.com for bulk/API arrangements.
+              <p className="text-xs text-[#8A8A9A] leading-relaxed">
+                <strong className="text-[#6B7280]">Harvard Business Services</strong> — No public REST API documented. Filing can be done via their web portal or by contacting info@delawareinc.com for bulk/API arrangements.
               </p>
-              <p className="text-xs text-gray-400 leading-relaxed mt-1">
-                <strong className="text-gray-300">Northwest Registered Agent</strong> — Partner API available for volume filers. Contact via northwestregisteredagent.com.
+              <p className="text-xs text-[#8A8A9A] leading-relaxed mt-1">
+                <strong className="text-[#6B7280]">Northwest Registered Agent</strong> — Partner API available for volume filers. Contact via northwestregisteredagent.com.
               </p>
-              <p className="text-xs text-gray-400 leading-relaxed mt-1">
-                <strong className="text-gray-300">Recommended flow:</strong> Generate documents below → File manually via Harvard or Northwest → Return here to upload confirmation.
+              <p className="text-xs text-[#8A8A9A] leading-relaxed mt-1">
+                <strong className="text-[#6B7280]">Recommended flow:</strong> Generate documents below → File manually via Harvard or Northwest → Return here to upload confirmation.
               </p>
             </div>
 
             <div className="flex gap-3">
               <button
                 onClick={() => setStep('form')}
-                className="flex-1 py-2.5 rounded-xl text-sm font-semibold border border-white/12 text-gray-300 hover:border-white/25 transition-colors"
+                className="flex-1 py-2.5 rounded-xl text-sm font-semibold border border-[#DDD5C5] text-[#6B7280] hover:border-[#DDD5C5] transition-colors"
               >
                 ← Back
               </button>
@@ -851,7 +851,7 @@ export function DelawareFormation() {
             <div className="flex items-start justify-between gap-4 flex-wrap">
               <div>
                 <h2 className="text-base font-bold text-text-primary">📦 Incorporation Package</h2>
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs text-[#8A8A9A] mt-1">
                   {form.companyName} · {docList.length} documents · Generated locally
                 </p>
               </div>
@@ -875,7 +875,7 @@ export function DelawareFormation() {
                     className={`w-full text-left px-3 py-2.5 rounded-lg text-xs transition-colors ${
                       activeDocIdx === i && previewDoc !== null
                         ? 'bg-blue-950/40 border border-blue-500/40 text-blue-300'
-                        : 'border border-white/6 bg-muted/20 text-gray-300 hover:bg-muted/40 hover:text-text-primary'
+                        : 'border border-[#DDD5C5] bg-[#F0EBE1] text-[#6B7280] hover:bg-[#F0EBE1] hover:text-text-primary'
                     }`}
                   >
                     <div className="font-medium leading-snug">{doc.title}</div>
@@ -884,34 +884,34 @@ export function DelawareFormation() {
               </div>
 
               {/* Right: preview or empty state */}
-              <div className="flex-1 rounded-xl border border-white/8 overflow-hidden flex flex-col">
+              <div className="flex-1 rounded-xl border border-[#DDD5C5] overflow-hidden flex flex-col">
                 {previewDoc !== null ? (
                   <>
-                    <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/8 bg-muted/30 flex-shrink-0">
-                      <span className="text-xs font-semibold text-gray-300">{docList[activeDocIdx].title}</span>
+                    <div className="flex items-center justify-between px-4 py-2.5 border-b border-[#DDD5C5] bg-[#EDE8DC] flex-shrink-0">
+                      <span className="text-xs font-semibold text-[#6B7280]">{docList[activeDocIdx].title}</span>
                       <div className="flex gap-2">
                         <button
                           onClick={() => downloadSingleDoc(docList[activeDocIdx].title, docList[activeDocIdx].content)}
-                          className="px-2.5 py-1 text-[10px] font-mono rounded border border-white/12 text-gray-300 hover:border-white/25 transition-colors"
+                          className="px-2.5 py-1 text-[10px] font-mono rounded border border-[#DDD5C5] text-[#6B7280] hover:border-[#DDD5C5] transition-colors"
                         >
                           ⬇ Download
                         </button>
                         <button
                           onClick={() => { navigator.clipboard.writeText(previewDoc) }}
-                          className="px-2.5 py-1 text-[10px] font-mono rounded border border-white/12 text-gray-300 hover:border-white/25 transition-colors"
+                          className="px-2.5 py-1 text-[10px] font-mono rounded border border-[#DDD5C5] text-[#6B7280] hover:border-[#DDD5C5] transition-colors"
                         >
                           📋 Copy
                         </button>
                       </div>
                     </div>
                     <div className="flex-1 overflow-y-auto p-4">
-                      <pre className="text-xs text-gray-300 whitespace-pre-wrap font-mono leading-relaxed">
+                      <pre className="text-xs text-[#6B7280] whitespace-pre-wrap font-mono leading-relaxed">
                         {previewDoc}
                       </pre>
                     </div>
                   </>
                 ) : (
-                  <div className="flex-1 flex items-center justify-center text-gray-500">
+                  <div className="flex-1 flex items-center justify-center text-[#8A8A9A]">
                     <div className="text-center space-y-2">
                       <div className="text-3xl">📄</div>
                       <p className="text-xs">Select a document to preview</p>
@@ -922,25 +922,25 @@ export function DelawareFormation() {
             </div>
 
             {/* SS-4 Quick Reference */}
-            <div className="rounded-xl border border-green-900/30 bg-green-950/10 p-5 space-y-3">
+            <div className="rounded-xl border border-green-200 bg-green-50 p-5 space-y-3">
               <div className="flex items-center gap-2">
                 <span className="text-base">🪪</span>
                 <h3 className="text-sm font-semibold text-green-400">IRS EIN Application (SS-4) — Quick Reference</h3>
               </div>
               <div className="grid grid-cols-2 gap-x-6 gap-y-1 text-xs">
-                <div className="text-gray-400">Legal Name</div>
+                <div className="text-[#8A8A9A]">Legal Name</div>
                 <div className="text-text-primary font-mono">{form.companyName}</div>
-                <div className="text-gray-400">Entity Type</div>
+                <div className="text-[#8A8A9A]">Entity Type</div>
                 <div className="text-text-primary font-mono">Corporation</div>
-                <div className="text-gray-400">State of Incorporation</div>
+                <div className="text-[#8A8A9A]">State of Incorporation</div>
                 <div className="text-text-primary font-mono">DE (Delaware)</div>
-                <div className="text-gray-400">Date Incorporated</div>
+                <div className="text-[#8A8A9A]">Date Incorporated</div>
                 <div className="text-text-primary font-mono">{fmtDate(form.incorporationDate)}</div>
-                <div className="text-gray-400">Fiscal Year End</div>
+                <div className="text-[#8A8A9A]">Fiscal Year End</div>
                 <div className="text-text-primary font-mono">December</div>
-                <div className="text-gray-400">Business Activity</div>
+                <div className="text-[#8A8A9A]">Business Activity</div>
                 <div className="text-text-primary font-mono">Technology / {form.businessActivity}</div>
-                <div className="text-gray-400">Responsible Party</div>
+                <div className="text-[#8A8A9A]">Responsible Party</div>
                 <div className="text-text-primary font-mono">{form.founderName}</div>
               </div>
               <a
@@ -952,14 +952,14 @@ export function DelawareFormation() {
               >
                 Apply for EIN at IRS.gov →
               </a>
-              <p className="text-[10px] text-gray-500 mt-1">
+              <p className="text-[10px] text-[#8A8A9A] mt-1">
                 ⚠️ As a foreign national, you may need an ITIN (Form W-7) before applying, or work with a US-based attorney who can serve as responsible party.
               </p>
             </div>
 
             {/* Next steps */}
-            <div className="rounded-xl border border-white/8 bg-muted/20 p-5 space-y-3">
-              <h3 className="text-xs font-mono uppercase tracking-wider text-gray-400">Post-Formation Checklist</h3>
+            <div className="rounded-xl border border-[#DDD5C5] bg-[#F0EBE1] p-5 space-y-3">
+              <h3 className="text-xs font-mono uppercase tracking-wider text-[#8A8A9A]">Post-Formation Checklist</h3>
               <div className="space-y-2">
                 {[
                   { icon: '1️⃣', text: 'File Certificate of Incorporation with Delaware SoS via Harvard Business Services or Northwest' },
@@ -970,7 +970,7 @@ export function DelawareFormation() {
                   { icon: '6️⃣', text: 'File BOI (Beneficial Ownership Information) report via FinCEN within 30 days' },
                   { icon: '7️⃣', text: 'Set up payroll, Carta equity management, and accounting (QuickBooks/Bench)' },
                 ].map(item => (
-                  <div key={item.icon} className="flex items-start gap-3 text-xs text-gray-300">
+                  <div key={item.icon} className="flex items-start gap-3 text-xs text-[#6B7280]">
                     <span className="flex-shrink-0">{item.icon}</span>
                     <span>{item.text}</span>
                   </div>
@@ -981,13 +981,13 @@ export function DelawareFormation() {
             <div className="flex gap-3">
               <button
                 onClick={() => setStep('review')}
-                className="px-4 py-2.5 rounded-xl text-sm font-semibold border border-white/12 text-gray-300 hover:border-white/25 transition-colors"
+                className="px-4 py-2.5 rounded-xl text-sm font-semibold border border-[#DDD5C5] text-[#6B7280] hover:border-[#DDD5C5] transition-colors"
               >
                 ← Back to Filing Options
               </button>
               <button
                 onClick={() => { setStep('form'); setPreviewDoc(null) }}
-                className="px-4 py-2.5 rounded-xl text-sm font-semibold border border-white/12 text-gray-300 hover:border-white/25 transition-colors"
+                className="px-4 py-2.5 rounded-xl text-sm font-semibold border border-[#DDD5C5] text-[#6B7280] hover:border-[#DDD5C5] transition-colors"
               >
                 Start Over
               </button>

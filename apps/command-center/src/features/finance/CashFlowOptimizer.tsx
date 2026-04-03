@@ -253,7 +253,7 @@ export function CashFlowOptimizer() {
                 <span>Skatt: <span className="text-red-700">{calc.taxPaid.toLocaleString(undefined, { maximumFractionDigits: 0 })} {e.currency}</span></span>
               </div>
               {showDetails === e.id && (
-                <div className="mt-2 rounded-lg bg-muted/30 border border-surface-border p-3 grid grid-cols-2 gap-2 text-xs">
+                <div className="mt-2 rounded-lg bg-[#F0EBE1] border border-surface-border p-3 grid grid-cols-2 gap-2 text-xs">
                   {[
                     { label: 'Omsättning', value: `${rev.toLocaleString()} ${e.currency}` },
                     { label: '≈ EUR', value: fmtEur(calc.revEur) },
@@ -317,7 +317,7 @@ export function CashFlowOptimizer() {
       </div>
 
       {/* Optimal rate recommendation */}
-      <div className="rounded-xl border border-surface-border bg-muted/30 p-4">
+      <div className="rounded-xl border border-surface-border bg-[#F0EBE1] p-4">
         <p className="text-xs font-semibold text-gray-600 mb-2">🎯 Optimal licensstruktur — rekommendation</p>
         <div className="space-y-2">
           {ENTITIES.map(e => {

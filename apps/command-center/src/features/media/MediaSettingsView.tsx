@@ -46,7 +46,7 @@ export function MediaSettingsView() {
         <div className="px-5 py-4 border-b border-surface-border">
           <h3 className="text-sm font-semibold text-text-primary">Integrationsstatus</h3>
         </div>
-        <div className="divide-y divide-white/5">
+        <div className="divide-y divide-[#DDD5C5]">
           {MOCK_CHANNELS.map(ch => (
             <div key={ch.id} className="px-5 py-4">
               <div className="flex items-center justify-between mb-2">
@@ -71,7 +71,7 @@ export function MediaSettingsView() {
                 />
                 <button
                   disabled
-                  className="px-3 py-1.5 text-xs text-gray-9000 border border-white/5 rounded-lg cursor-not-allowed"
+                  className="px-3 py-1.5 text-xs text-gray-9000 border border-[#DDD5C5] rounded-lg cursor-not-allowed"
                 >
                   Spara
                 </button>

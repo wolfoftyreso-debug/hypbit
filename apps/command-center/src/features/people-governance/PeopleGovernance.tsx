@@ -1,7 +1,7 @@
 // ─── People & Governance ─────────────────────────────────────────────────────
 // DISC-profiler, hälsodata och teamöversikt
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { DISC_PROFILES, HEALTH_DATA } from './pgData'
 import { DISC_DESCRIPTIONS, type DISCType, type DISCProfile } from './pgTypes'
@@ -593,6 +593,15 @@ function HalsaTab() {
 // ─── Main Component ────────────────────────────────────────────────────────────
 
 export function PeopleGovernance() {
+  const [_loadingState, setLoadingState] = useState(true)
+  const [_errorState, setErrorState] = useState<string | null>(null)
+
+  useEffect(() => {
+    // API integration point — currently using local data
+    setLoadingState(false)
+  }, [])
+
+
   const [selectedPerson, setSelectedPerson] = useState<Person | null>(null)
   const [selectedPassport, setSelectedPassport] = useState<(PassportInfo & { name: string }) | null>(null)
   const { activeEntity } = useEntityScope()

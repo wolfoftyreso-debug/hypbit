@@ -231,10 +231,10 @@ const PAYOUTS: Payout[] = [
 
 const PAYMENT_STATUS_CONFIG: Record<PaymentStatus, { color: string; bg: string; label: string }> = {
   CREATED:    { color: 'text-gray-9000',   bg: 'bg-gray-500/10 border-gray-500/20',   label: 'Skapad' },
-  PROCESSING: { color: 'text-gray-600',   bg: 'bg-muted/30 border-gray-200',   label: 'Behandlar' },
+  PROCESSING: { color: 'text-gray-600',   bg: 'bg-[#F0EBE1] border-gray-200',   label: 'Behandlar' },
   AUTHORIZED: { color: 'text-yellow-700', bg: 'bg-yellow-500/10 border-yellow-500/20', label: 'Auktoriserad' },
   CAPTURED:   { color: 'text-cyan-700',   bg: 'bg-cyan-500/10 border-cyan-500/20',   label: 'Captured' },
-  SETTLED:    { color: 'text-gray-700',  bg: 'bg-muted/30 border-green-500/20', label: 'Avvecklad' },
+  SETTLED:    { color: 'text-gray-700',  bg: 'bg-[#F0EBE1] border-green-500/20', label: 'Avvecklad' },
   FAILED:     { color: 'text-red-700',    bg: 'bg-red-500/10 border-red-500/20',     label: 'Misslyckad' },
   CANCELLED:  { color: 'text-gray-9000',   bg: 'bg-gray-500/10 border-gray-500/20',   label: 'Avbruten' },
   REFUNDED:   { color: 'text-blue-700', bg: 'bg-blue-600/10 border-blue-600/20', label: 'Återbetald' },
@@ -242,9 +242,9 @@ const PAYMENT_STATUS_CONFIG: Record<PaymentStatus, { color: string; bg: string; 
 
 const PAYOUT_STATUS_CONFIG: Record<PayoutStatus, { color: string; bg: string; label: string }> = {
   pending:   { color: 'text-yellow-700', bg: 'bg-yellow-500/10 border-yellow-500/20', label: 'Väntande' },
-  approved:  { color: 'text-gray-600',   bg: 'bg-muted/30 border-gray-200',   label: 'Godkänd' },
+  approved:  { color: 'text-gray-600',   bg: 'bg-[#F0EBE1] border-gray-200',   label: 'Godkänd' },
   sent:      { color: 'text-cyan-700',   bg: 'bg-cyan-500/10 border-cyan-500/20',   label: 'Skickad' },
-  confirmed: { color: 'text-gray-700',  bg: 'bg-muted/30 border-green-500/20', label: 'Bekräftad' },
+  confirmed: { color: 'text-gray-700',  bg: 'bg-[#F0EBE1] border-green-500/20', label: 'Bekräftad' },
 }
 
 const STATUS_ORDER: PaymentStatus[] = ['CREATED', 'PROCESSING', 'AUTHORIZED', 'CAPTURED', 'SETTLED']
@@ -310,7 +310,7 @@ function PaymentIntentDetail({ intent, onClose, onRefund }: {
       {intent.metadata && (
         <div>
           <span className="text-xs text-gray-9000 font-mono uppercase tracking-wider block mb-1">Metadata</span>
-          <div className="bg-muted/30 rounded-lg p-2 space-y-1">
+          <div className="bg-[#F0EBE1] rounded-lg p-2 space-y-1">
             {Object.entries(intent.metadata).map(([k, v]) => (
               <div key={k} className="flex items-center gap-2 text-xs">
                 <span className="text-gray-9000 font-mono">{k}:</span>
@@ -449,7 +449,7 @@ function PaymentIntentsSection() {
               <button
                 key={intent.id}
                 onClick={() => setSelected(selected?.id === intent.id ? null : intent)}
-                className={`w-full text-left grid grid-cols-[1fr_100px_120px_90px_80px] gap-3 px-4 py-3 hover:bg-muted/30 transition-colors ${selected?.id === intent.id ? 'bg-blue-50' : ''}`}
+                className={`w-full text-left grid grid-cols-[1fr_100px_120px_90px_80px] gap-3 px-4 py-3 hover:bg-[#F0EBE1] transition-colors ${selected?.id === intent.id ? 'bg-blue-50' : ''}`}
               >
                 <div>
                   <div className="text-xs text-gray-800 truncate">{intent.description}</div>
@@ -493,19 +493,19 @@ function PSPRouterSection() {
               <h4 className="text-sm font-bold text-text-primary">Revolut Business</h4>
               <p className="text-xs text-gray-9000">Intercompany + EUR/AED</p>
             </div>
-            <div className="ml-auto flex items-center gap-1.5 px-2 py-1 rounded-lg bg-muted/30 border border-green-500/20 text-xs text-text-secondary">
+            <div className="ml-auto flex items-center gap-1.5 px-2 py-1 rounded-lg bg-[#F0EBE1] border border-green-500/20 text-xs text-text-secondary">
               <span className="h-1.5 w-1.5 rounded-full bg-gray-400" />
               Aktiv
             </div>
           </div>
           <div className="space-y-2">
             {PSP_RULES.filter(r => r.psp === 'revolut').map((rule, i) => (
-              <div key={i} className="bg-muted/30 rounded-lg p-2.5">
+              <div key={i} className="bg-[#F0EBE1] rounded-lg p-2.5">
                 <div className="text-xs font-medium text-gray-600 mb-1">{rule.condition}</div>
                 <div className="text-xs text-gray-9000 mb-1.5">{rule.reason}</div>
                 <div className="flex flex-wrap gap-1">
                   {rule.examples.map(ex => (
-                    <span key={ex} className="text-[9px] px-1.5 py-0.5 rounded bg-muted/30 text-gray-600 border border-surface-border">
+                    <span key={ex} className="text-[9px] px-1.5 py-0.5 rounded bg-[#F0EBE1] text-gray-600 border border-surface-border">
                       {ex}
                     </span>
                   ))}
@@ -523,14 +523,14 @@ function PSPRouterSection() {
               <h4 className="text-sm font-bold text-text-primary">Stripe</h4>
               <p className="text-xs text-gray-9000">Kundbetalningar + fakturering</p>
             </div>
-            <div className="ml-auto flex items-center gap-1.5 px-2 py-1 rounded-lg bg-muted/30 border border-green-500/20 text-xs text-text-secondary">
+            <div className="ml-auto flex items-center gap-1.5 px-2 py-1 rounded-lg bg-[#F0EBE1] border border-green-500/20 text-xs text-text-secondary">
               <span className="h-1.5 w-1.5 rounded-full bg-gray-400" />
               Aktiv
             </div>
           </div>
           <div className="space-y-2">
             {PSP_RULES.filter(r => r.psp === 'stripe').map((rule, i) => (
-              <div key={i} className="bg-muted/30 rounded-lg p-2.5">
+              <div key={i} className="bg-[#F0EBE1] rounded-lg p-2.5">
                 <div className="text-xs font-medium text-blue-400 mb-1">{rule.condition}</div>
                 <div className="text-xs text-gray-9000 mb-1.5">{rule.reason}</div>
                 <div className="flex flex-wrap gap-1">
@@ -552,10 +552,10 @@ function PSPRouterSection() {
           <h4 className="text-xs font-semibold text-text-primary">Regelmatris — Belopp / Valuta / Typ → PSP</h4>
         </div>
         <div className="grid grid-cols-[1fr_80px_1fr_80px] gap-0">
-          <div className="px-4 py-2 bg-muted/30 text-xs text-gray-9000 font-mono uppercase tracking-wider border-b border-surface-border">Typ</div>
-          <div className="px-4 py-2 bg-muted/30 text-xs text-gray-9000 font-mono uppercase tracking-wider border-b border-surface-border">Valuta</div>
-          <div className="px-4 py-2 bg-muted/30 text-xs text-gray-9000 font-mono uppercase tracking-wider border-b border-surface-border">Belopp</div>
-          <div className="px-4 py-2 bg-muted/30 text-xs text-gray-9000 font-mono uppercase tracking-wider border-b border-surface-border">PSP</div>
+          <div className="px-4 py-2 bg-[#F0EBE1] text-xs text-gray-9000 font-mono uppercase tracking-wider border-b border-surface-border">Typ</div>
+          <div className="px-4 py-2 bg-[#F0EBE1] text-xs text-gray-9000 font-mono uppercase tracking-wider border-b border-surface-border">Valuta</div>
+          <div className="px-4 py-2 bg-[#F0EBE1] text-xs text-gray-9000 font-mono uppercase tracking-wider border-b border-surface-border">Belopp</div>
+          <div className="px-4 py-2 bg-[#F0EBE1] text-xs text-gray-9000 font-mono uppercase tracking-wider border-b border-surface-border">PSP</div>
           {[
             { typ: 'Intercompany', valuta: 'EUR / SEK', belopp: 'Alla', psp: 'revolut' as PSP },
             { typ: 'Leverantör', valuta: 'EUR / AED', belopp: 'Alla', psp: 'revolut' as PSP },
@@ -571,7 +571,7 @@ function PSPRouterSection() {
               <div key={`${i}-psp`} className={`px-4 py-2.5 border-b border-surface-border/50 ${i % 2 === 0 ? '' : 'bg-white/[0.01]'}`}>
                 <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
                   row.psp === 'revolut'
-                    ? 'bg-muted/30 text-gray-600 border border-gray-200'
+                    ? 'bg-[#F0EBE1] text-gray-600 border border-gray-200'
                     : 'bg-blue-600/15 text-blue-700 border border-blue-600/20'
                 }`}>
                   {row.psp === 'revolut' ? 'Revolut' : 'Stripe'}
@@ -650,13 +650,13 @@ function PayoutsSection() {
                 {payout.status === 'pending' && isAdmin && (
                   <button
                     onClick={() => approvePayout(payout.id)}
-                    className="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium bg-muted/30 border border-green-500/30 text-text-secondary hover:bg-muted/30 transition-colors"
+                    className="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium bg-[#F0EBE1] border border-green-500/30 text-text-secondary hover:bg-[#F0EBE1] transition-colors"
                   >
                     ✓ Godkänn
                   </button>
                 )}
                 {payout.status === 'pending' && !isAdmin && (
-                  <div className="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs text-gray-9000 bg-muted/30 border border-surface-border">
+                  <div className="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs text-gray-9000 bg-[#F0EBE1] border border-surface-border">
                     🔒 Admin krävs
                   </div>
                 )}
@@ -707,7 +707,7 @@ export function PaymentProcessor() {
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
               activeSection === s.id
                 ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                : 'text-gray-9000 hover:text-gray-600 hover:bg-muted/30 border border-transparent'
+                : 'text-gray-9000 hover:text-gray-600 hover:bg-[#F0EBE1] border border-transparent'
             }`}
           >
             <span>{s.icon}</span>

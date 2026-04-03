@@ -19,13 +19,13 @@ export function KnowledgeHub() {
   const [activeTab, setActiveTab] = useState<Tab>('systemskola')
 
   return (
-    <div className="flex flex-col h-full bg-muted/30 overflow-hidden">
+    <div className="flex flex-col h-full bg-[#F0EBE1] overflow-hidden">
       {/* Header */}
       <div className="flex-shrink-0 border-b border-surface-border px-4 md:px-6 pt-4 md:pt-5 pb-0">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-xl font-semibold text-text-primary">Knowledge Hub</h1>
-            <p className="text-sm text-gray-400 mt-0.5">
+            <p className="text-sm text-[#8A8A9A] mt-0.5">
               Systemskolan, kunskapsbas, Zoomer-certifiering och systemöversikt
             </p>
           </div>
@@ -40,7 +40,7 @@ export function KnowledgeHub() {
               className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors flex-shrink-0 ${
                 activeTab === tab.id
                   ? 'bg-[#2563EB]/15 text-[#2563EB] border border-[#2563EB]/30'
-                  : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50'
+                  : 'text-[#8A8A9A] hover:text-[#2C5F8A] hover:bg-[#EDE8DC]'
               }`}
             >
               {tab.label}

@@ -104,11 +104,11 @@ function WatchIcon() {
 
 // ─── Recovery badge ───────────────────────────────────────────────────────────
 function RecoveryBadge({ score }: { score: number | null }) {
-  if (score === null) return <div className="w-3 h-3 rounded-full bg-zinc-700 flex-shrink-0" title="Ej kopplat" />
+  if (score === null) return <div className="w-3 h-3 rounded-full bg-[#EDE8DC] flex-shrink-0" title="Ej kopplat" />
   const color = score >= 67 ? '#22C55E' : score >= 34 ? '#EAB308' : '#EF4444'
   return (
     <div
-      className="w-3 h-3 rounded-full flex-shrink-0 ring-2 ring-black/40"
+      className="w-3 h-3 rounded-full flex-shrink-0 ring-2 ring-[#DDD5C5]"
       style={{ backgroundColor: color }}
       title={`Recovery ${score}%`}
     />
@@ -142,16 +142,16 @@ function Breadcrumb({
   onNavigate: (layer: Layer) => void
 }) {
   return (
-    <div className="flex items-center gap-1 text-xs text-zinc-500 flex-wrap">
+    <div className="flex items-center gap-1 text-xs text-[#8A8A9A] flex-wrap">
       {items.map((item, idx) => (
         <span key={item.layer} className="flex items-center gap-1">
           {idx > 0 && <ChevronRight />}
           {idx === items.length - 1 ? (
-            <span className="text-zinc-300 font-medium">{item.label}</span>
+            <span className="text-[#6B7280] font-medium">{item.label}</span>
           ) : (
             <button
               onClick={() => onNavigate(item.layer)}
-              className="hover:text-zinc-200 transition-colors"
+              className="hover:text-[#2C5F8A] transition-colors"
             >
               {item.label}
             </button>
@@ -181,38 +181,38 @@ function EnterpriseLayer({
           <div className="w-12 h-12 rounded-2xl bg-blue-600/20 flex items-center justify-center text-2xl">🌐</div>
           <div>
             <h2 className="text-2xl font-bold text-text-primary">Wavult Group</h2>
-            <p className="text-sm text-zinc-400">Next-generation infrastructure ventures</p>
+            <p className="text-sm text-[#8A8A9A]">Next-generation infrastructure ventures</p>
           </div>
         </div>
 
         {/* Stats strip */}
         <div className="grid grid-cols-3 gap-3 mt-2">
-          <div className="rounded-xl bg-muted/30 border border-surface-border p-3 text-center">
+          <div className="rounded-xl bg-[#F0EBE1] border border-surface-border p-3 text-center">
             <div className="text-2xl font-bold text-text-primary">{totalEmployees}</div>
-            <div className="text-xs text-zinc-400 mt-0.5">Teammedlemmar</div>
+            <div className="text-xs text-[#8A8A9A] mt-0.5">Teammedlemmar</div>
           </div>
-          <div className="rounded-xl bg-muted/30 border border-surface-border p-3 text-center">
+          <div className="rounded-xl bg-[#F0EBE1] border border-surface-border p-3 text-center">
             <div className="text-2xl font-bold text-text-primary">{ENTITIES.length}</div>
-            <div className="text-xs text-zinc-400 mt-0.5">Bolag/Enheter</div>
+            <div className="text-xs text-[#8A8A9A] mt-0.5">Bolag/Enheter</div>
           </div>
-          <div className="rounded-xl bg-muted/30 border border-surface-border p-3 text-center">
+          <div className="rounded-xl bg-[#F0EBE1] border border-surface-border p-3 text-center">
             <div className="text-2xl font-bold" style={{ color: connectedCount > 0 ? '#22C55E' : '#71717A' }}>
               {connectedCount}
             </div>
-            <div className="text-xs text-zinc-400 mt-0.5">WHOOP aktiva</div>
+            <div className="text-xs text-[#8A8A9A] mt-0.5">WHOOP aktiva</div>
           </div>
         </div>
       </div>
 
       {/* Bolagsstruktur */}
       <div>
-        <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Bolagsstruktur</div>
+        <div className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider mb-3">Bolagsstruktur</div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {ENTITIES.map(entity => (
             <button
               key={entity.id}
               onClick={() => onSelectEntity(entity)}
-              className="text-left rounded-xl border border-surface-border p-4 hover:border-white/25 hover:bg-muted/30 transition-all duration-200 group"
+              className="text-left rounded-xl border border-surface-border p-4 hover:border-[#DDD5C5] hover:bg-[#F0EBE1] transition-all duration-200 group"
               style={{ borderColor: entity.color + '33' }}
             >
               <div className="flex items-start justify-between gap-2">
@@ -225,7 +225,7 @@ function EnterpriseLayer({
                   </div>
                   <div>
                     <div className="font-semibold text-sm text-text-primary">{entity.name}</div>
-                    <div className="text-xs text-zinc-400 mt-0.5">{entity.jurisdiction}</div>
+                    <div className="text-xs text-[#8A8A9A] mt-0.5">{entity.jurisdiction}</div>
                   </div>
                 </div>
                 <span
@@ -234,13 +234,13 @@ function EnterpriseLayer({
                       ? 'bg-green-500/20 text-green-700'
                       : entity.status === 'forming'
                       ? 'bg-amber-500/20 text-amber-700'
-                      : 'bg-zinc-500/20 text-zinc-400'
+                      : 'bg-[#EDE8DC] text-[#8A8A9A]'
                   }`}
                 >
                   {entity.status === 'active' ? 'Aktiv' : entity.status === 'forming' ? 'Bildas' : 'Planerad'}
                 </span>
               </div>
-              <p className="text-xs text-zinc-500 mt-2.5 leading-relaxed line-clamp-2">{entity.purpose}</p>
+              <p className="text-xs text-[#8A8A9A] mt-2.5 leading-relaxed line-clamp-2">{entity.purpose}</p>
               <div className="flex items-center justify-between mt-3">
                 <div className="flex -space-x-1.5">
                   {entity.memberIds.slice(0, 4).map(id => {
@@ -249,7 +249,7 @@ function EnterpriseLayer({
                     return (
                       <div
                         key={id}
-                        className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] ring-2 ring-zinc-900"
+                        className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] ring-2 ring-[#F5F0E8]"
                         style={{ backgroundColor: m.color + '33', color: m.color }}
                         title={m.name}
                       >
@@ -307,14 +307,14 @@ function EntityLayer({
                     ? 'bg-green-500/20 text-green-700'
                     : entity.status === 'forming'
                     ? 'bg-amber-500/20 text-amber-700'
-                    : 'bg-zinc-500/20 text-zinc-400'
+                    : 'bg-[#EDE8DC] text-[#8A8A9A]'
                 }`}
               >
                 {entity.status === 'active' ? 'Aktiv' : entity.status === 'forming' ? 'Bildas' : 'Planerad'}
               </span>
             </div>
-            <div className="text-sm text-zinc-400 mt-1">{entity.jurisdiction}</div>
-            <p className="text-sm text-zinc-300 mt-2 leading-relaxed">{entity.purpose}</p>
+            <div className="text-sm text-[#8A8A9A] mt-1">{entity.jurisdiction}</div>
+            <p className="text-sm text-[#6B7280] mt-2 leading-relaxed">{entity.purpose}</p>
           </div>
         </div>
       </div>
@@ -322,12 +322,12 @@ function EntityLayer({
       {/* Team list for this entity */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+          <div className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider">
             Team ({members.length} personer)
           </div>
           <button
             onClick={onViewTeam}
-            className="text-xs text-zinc-400 hover:text-text-primary transition-colors flex items-center gap-1"
+            className="text-xs text-[#8A8A9A] hover:text-text-primary transition-colors flex items-center gap-1"
           >
             <UsersIcon /> Visa org-träd
           </button>
@@ -337,12 +337,12 @@ function EntityLayer({
             <button
               key={member.id}
               onClick={() => onSelectPerson(member)}
-              className="flex items-center gap-3 text-left rounded-xl border border-surface-border p-3 hover:border-white/25 hover:bg-muted/30 transition-all duration-200"
+              className="flex items-center gap-3 text-left rounded-xl border border-surface-border p-3 hover:border-[#DDD5C5] hover:bg-[#F0EBE1] transition-all duration-200"
             >
               <Avatar member={member} size="sm" />
               <div className="flex-1 min-w-0">
                 <div className="font-medium text-sm text-text-primary truncate">{member.name}</div>
-                <div className="text-xs text-zinc-400 truncate">{member.title}</div>
+                <div className="text-xs text-[#8A8A9A] truncate">{member.title}</div>
               </div>
               <RecoveryBadge score={getRecovery(member.email)} />
               <ChevronRight />
@@ -374,8 +374,8 @@ function TeamLayer({
     return (
       <button
         onClick={() => onSelectPerson(member)}
-        className={`flex flex-col items-center text-center gap-1.5 p-3 rounded-xl border transition-all duration-200 hover:bg-muted/30 ${
-          isRoot ? 'border-gray-300 min-w-[120px]' : 'border-surface-border min-w-[100px]'
+        className={`flex flex-col items-center text-center gap-1.5 p-3 rounded-xl border transition-all duration-200 hover:bg-[#F0EBE1] ${
+          isRoot ? 'border-[#DDD5C5] min-w-[120px]' : 'border-surface-border min-w-[100px]'
         }`}
         style={{ borderColor: member.color + (isRoot ? '55' : '33') }}
       >
@@ -389,7 +389,7 @@ function TeamLayer({
           <div className={`font-semibold text-text-primary ${isRoot ? 'text-sm' : 'text-xs'} leading-tight`}>
             {member.name.split(' ')[0]}
           </div>
-          <div className="text-[10px] text-zinc-400 mt-0.5 leading-tight max-w-[90px]">
+          <div className="text-[10px] text-[#8A8A9A] mt-0.5 leading-tight max-w-[90px]">
             {member.title.split(' ').slice(0, 3).join(' ')}
           </div>
         </div>
@@ -408,8 +408,8 @@ function TeamLayer({
   return (
     <div className="flex flex-col gap-6 p-4 md:p-6 animate-in">
       <div>
-        <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-1">Wavult Group — Teamstruktur</div>
-        <p className="text-xs text-zinc-500">Klicka på en person för att öppna fullständig profil</p>
+        <div className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider mb-1">Wavult Group — Teamstruktur</div>
+        <p className="text-xs text-[#8A8A9A]">Klicka på en person för att öppna fullständig profil</p>
       </div>
 
       {/* Org tree visual */}
@@ -420,10 +420,10 @@ function TeamLayer({
         {/* Connector lines */}
         <div className="flex flex-col items-center">
           {/* Vertical line down from root */}
-          <div className="w-px h-6 bg-zinc-700" />
+          <div className="w-px h-6 bg-[#EDE8DC]" />
           {/* Horizontal bar */}
           <div
-            className="h-px bg-zinc-700"
+            className="h-px bg-[#EDE8DC]"
             style={{ width: `${Math.min(reports.length * 110, 600)}px` }}
           />
           {/* Vertical lines down to reports */}
@@ -433,7 +433,7 @@ function TeamLayer({
           >
             {reports.map(() => (
               <div key={Math.random()} className="flex-1 flex justify-center">
-                <div className="w-px h-5 bg-zinc-700" />
+                <div className="w-px h-5 bg-[#EDE8DC]" />
               </div>
             ))}
           </div>
@@ -449,7 +449,7 @@ function TeamLayer({
 
       {/* List view as alternative */}
       <div>
-        <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-3">Alla teammedlemmar</div>
+        <div className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider mb-3">Alla teammedlemmar</div>
         <div className="flex flex-col gap-2">
           {TEAM_MEMBERS.map(member => {
             const reportsToMember = member.reportsTo
@@ -459,7 +459,7 @@ function TeamLayer({
               <button
                 key={member.id}
                 onClick={() => onSelectPerson(member)}
-                className="flex items-center gap-3 text-left rounded-xl border border-surface-border p-3 hover:border-white/25 hover:bg-muted/30 transition-all duration-200"
+                className="flex items-center gap-3 text-left rounded-xl border border-surface-border p-3 hover:border-[#DDD5C5] hover:bg-[#F0EBE1] transition-all duration-200"
               >
                 <Avatar member={member} size="sm" />
                 <div className="flex-1 min-w-0">
@@ -474,9 +474,9 @@ function TeamLayer({
                       </span>
                     )}
                   </div>
-                  <div className="text-xs text-zinc-400 truncate">{member.title}</div>
+                  <div className="text-xs text-[#8A8A9A] truncate">{member.title}</div>
                   {reportsToMember && (
-                    <div className="text-[10px] text-zinc-600 mt-0.5">
+                    <div className="text-[10px] text-[#8A8A9A] mt-0.5">
                       Rapporterar till {reportsToMember.name.split(' ')[0]}
                     </div>
                   )}
@@ -570,17 +570,17 @@ function PersonLayer({
     return (
       <div className="flex flex-col items-center gap-1">
         <svg width="60" height="60" className="-rotate-90">
-          <circle cx="30" cy="30" r={r} stroke="#ffffff10" strokeWidth="4" fill="none" />
+          <circle cx="30" cy="30" r={r} stroke="#DDD5C5" strokeWidth="4" fill="none" />
           <circle
             cx="30" cy="30" r={r} stroke={color} strokeWidth="4" fill="none"
             strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round"
           />
-          <text x="30" y="30" textAnchor="middle" dominantBaseline="middle" fill="white"
+          <text x="30" y="30" textAnchor="middle" dominantBaseline="middle" fill="#0A3D62"
             fontSize="11" fontWeight="bold" transform="rotate(90 30 30)">
             {value}%
           </text>
         </svg>
-        <span className="text-[10px] text-zinc-400 uppercase tracking-wide">{label}</span>
+        <span className="text-[10px] text-[#8A8A9A] uppercase tracking-wide">{label}</span>
       </div>
     )
   }
@@ -600,7 +600,7 @@ function PersonLayer({
           </div>
           <div className="flex-1 min-w-0">
             <h2 className="text-xl font-bold text-text-primary">{member.name}</h2>
-            <div className="text-sm text-zinc-400 mt-0.5">{member.title}</div>
+            <div className="text-sm text-[#8A8A9A] mt-0.5">{member.title}</div>
             <div className="flex items-center gap-2 mt-2 flex-wrap">
               {member.disc && (
                 <span
@@ -611,7 +611,7 @@ function PersonLayer({
                 </span>
               )}
               {member.mbti && (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-zinc-300">
+                <span className="text-xs px-2 py-0.5 rounded-full bg-[#EDE8DC] text-[#6B7280]">
                   {member.mbti}
                 </span>
               )}
@@ -631,7 +631,7 @@ function PersonLayer({
                 ? `tel:${member.phone}`
                 : `https://t.me/${member.name.split(' ')[0].toLowerCase()}`
             }
-            className="flex-shrink-0 text-xs px-3 py-1.5 rounded-lg border border-gray-300 bg-muted/30 hover:bg-muted transition-all text-zinc-300"
+            className="flex-shrink-0 text-xs px-3 py-1.5 rounded-lg border border-[#DDD5C5] bg-[#F0EBE1] hover:bg-[#EDE8DC] transition-all text-[#6B7280]"
             target={member.contactPreference === 'telegram' ? '_blank' : undefined}
             rel="noreferrer"
           >
@@ -648,8 +648,8 @@ function PersonLayer({
             onClick={() => setTab(t.id)}
             className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg font-medium whitespace-nowrap transition-all flex-shrink-0 ${
               tab === t.id
-                ? 'bg-white/15 text-gray-900'
-                : 'text-zinc-400 hover:text-zinc-200'
+                ? 'bg-[#EDE8DC] text-gray-900'
+                : 'text-[#8A8A9A] hover:text-[#2C5F8A]'
             }`}
           >
             <span>{t.emoji}</span>
@@ -663,18 +663,18 @@ function PersonLayer({
         {tab === 'roll' && (
           <div className="flex flex-col gap-5">
             <div>
-              <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Befattning</div>
-              <div className="rounded-xl bg-muted/30 border border-surface-border p-4">
+              <div className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider mb-2">Befattning</div>
+              <div className="rounded-xl bg-[#F0EBE1] border border-surface-border p-4">
                 <div className="text-text-primary font-medium">{member.title}</div>
-                <div className="text-sm text-zinc-400 mt-1">{member.entity === 'wavult-group' ? 'Wavult Group' : member.entity}</div>
+                <div className="text-sm text-[#8A8A9A] mt-1">{member.entity === 'wavult-group' ? 'Wavult Group' : member.entity}</div>
               </div>
             </div>
 
             <div>
-              <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Ansvarsområden</div>
+              <div className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider mb-2">Ansvarsområden</div>
               <div className="flex flex-col gap-1.5">
                 {member.responsibilities.map(r => (
-                  <div key={r} className="flex items-start gap-2 text-sm text-zinc-300">
+                  <div key={r} className="flex items-start gap-2 text-sm text-[#6B7280]">
                     <span style={{ color: member.color }} className="mt-0.5 flex-shrink-0">▸</span>
                     {r}
                   </div>
@@ -684,12 +684,12 @@ function PersonLayer({
 
             {reportsToMember && (
               <div>
-                <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Rapporterar till</div>
-                <div className="flex items-center gap-3 rounded-xl bg-muted/30 border border-surface-border p-3">
+                <div className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider mb-2">Rapporterar till</div>
+                <div className="flex items-center gap-3 rounded-xl bg-[#F0EBE1] border border-surface-border p-3">
                   <Avatar member={reportsToMember} size="sm" />
                   <div>
                     <div className="text-sm font-medium text-text-primary">{reportsToMember.name}</div>
-                    <div className="text-xs text-zinc-400">{reportsToMember.title}</div>
+                    <div className="text-xs text-[#8A8A9A]">{reportsToMember.title}</div>
                   </div>
                 </div>
               </div>
@@ -697,16 +697,16 @@ function PersonLayer({
 
             {directReportMembers.length > 0 && (
               <div>
-                <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">
+                <div className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider mb-2">
                   Direkt underställda ({directReportMembers.length})
                 </div>
                 <div className="flex flex-col gap-2">
                   {directReportMembers.map(m => (
-                    <div key={m.id} className="flex items-center gap-3 rounded-xl bg-muted/30 border border-surface-border p-3">
+                    <div key={m.id} className="flex items-center gap-3 rounded-xl bg-[#F0EBE1] border border-surface-border p-3">
                       <Avatar member={m} size="sm" />
                       <div>
                         <div className="text-sm font-medium text-text-primary">{m.name}</div>
-                        <div className="text-xs text-zinc-400">{m.title}</div>
+                        <div className="text-xs text-[#8A8A9A]">{m.title}</div>
                       </div>
                     </div>
                   ))}
@@ -719,9 +719,9 @@ function PersonLayer({
         {tab === 'arbete' && (
           <div className="flex flex-col gap-4">
             <div>
-              <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Daglig arbetsbeskrivning</div>
-              <div className="rounded-xl bg-muted/30 border border-surface-border p-4">
-                <p className="text-sm text-zinc-300 leading-relaxed">{member.workDescription}</p>
+              <div className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider mb-2">Daglig arbetsbeskrivning</div>
+              <div className="rounded-xl bg-[#F0EBE1] border border-surface-border p-4">
+                <p className="text-sm text-[#6B7280] leading-relaxed">{member.workDescription}</p>
               </div>
             </div>
           </div>
@@ -732,19 +732,19 @@ function PersonLayer({
             {!whoopData || !whoopData.connected ? (
               <div className="rounded-xl border border-surface-border p-6 text-center">
                 <div className="text-3xl mb-2">⌚</div>
-                <div className="text-sm font-medium text-zinc-300">WHOOP ej kopplat</div>
-                <div className="text-xs text-zinc-500 mt-1">
+                <div className="text-sm font-medium text-[#6B7280]">WHOOP ej kopplat</div>
+                <div className="text-xs text-[#8A8A9A] mt-1">
                   {member.name.split(' ')[0]} har inte kopplat sitt WHOOP-armband till Wavult OS
                 </div>
               </div>
             ) : (
               <>
                 <div className="flex items-center justify-between">
-                  <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+                  <div className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider">
                     Hälsa & Kapacitet
                   </div>
                   {whoopData.cached && (
-                    <span className="text-[10px] text-zinc-500 px-2 py-0.5 rounded-full bg-muted/30">
+                    <span className="text-[10px] text-[#8A8A9A] px-2 py-0.5 rounded-full bg-[#F0EBE1]">
                       Cachad data
                     </span>
                   )}
@@ -775,27 +775,27 @@ function PersonLayer({
                 {/* Details */}
                 <div className="grid grid-cols-2 gap-3">
                   {whoopData.hrv !== null && (
-                    <div className="rounded-xl bg-muted/30 border border-surface-border p-3">
-                      <div className="text-xs text-zinc-400">HRV</div>
-                      <div className="text-xl font-bold text-text-primary mt-1">{whoopData.hrv} <span className="text-xs text-zinc-500">ms</span></div>
+                    <div className="rounded-xl bg-[#F0EBE1] border border-surface-border p-3">
+                      <div className="text-xs text-[#8A8A9A]">HRV</div>
+                      <div className="text-xl font-bold text-text-primary mt-1">{whoopData.hrv} <span className="text-xs text-[#8A8A9A]">ms</span></div>
                     </div>
                   )}
                   {whoopData.restingHr !== null && (
-                    <div className="rounded-xl bg-muted/30 border border-surface-border p-3">
-                      <div className="text-xs text-zinc-400">Vilopuls</div>
-                      <div className="text-xl font-bold text-text-primary mt-1">{whoopData.restingHr} <span className="text-xs text-zinc-500">bpm</span></div>
+                    <div className="rounded-xl bg-[#F0EBE1] border border-surface-border p-3">
+                      <div className="text-xs text-[#8A8A9A]">Vilopuls</div>
+                      <div className="text-xl font-bold text-text-primary mt-1">{whoopData.restingHr} <span className="text-xs text-[#8A8A9A]">bpm</span></div>
                     </div>
                   )}
                   {whoopData.sleepHours !== null && (
-                    <div className="rounded-xl bg-muted/30 border border-surface-border p-3">
-                      <div className="text-xs text-zinc-400">Sömntid</div>
-                      <div className="text-xl font-bold text-text-primary mt-1">{whoopData.sleepHours.toFixed(1)} <span className="text-xs text-zinc-500">h</span></div>
+                    <div className="rounded-xl bg-[#F0EBE1] border border-surface-border p-3">
+                      <div className="text-xs text-[#8A8A9A]">Sömntid</div>
+                      <div className="text-xl font-bold text-text-primary mt-1">{whoopData.sleepHours.toFixed(1)} <span className="text-xs text-[#8A8A9A]">h</span></div>
                     </div>
                   )}
                   {whoopData.strain !== null && (
-                    <div className="rounded-xl bg-muted/30 border border-surface-border p-3">
-                      <div className="text-xs text-zinc-400">Strain</div>
-                      <div className="text-xl font-bold text-text-primary mt-1">{whoopData.strain.toFixed(1)} <span className="text-xs text-zinc-500">/ 21</span></div>
+                    <div className="rounded-xl bg-[#F0EBE1] border border-surface-border p-3">
+                      <div className="text-xs text-[#8A8A9A]">Strain</div>
+                      <div className="text-xl font-bold text-text-primary mt-1">{whoopData.strain.toFixed(1)} <span className="text-xs text-[#8A8A9A]">/ 21</span></div>
                     </div>
                   )}
                 </div>
@@ -806,18 +806,18 @@ function PersonLayer({
 
         {tab === 'uppgifter' && (
           <div className="flex flex-col gap-4">
-            <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+            <div className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider">
               Pågående uppgifter
             </div>
             {tasks.length === 0 ? (
-              <div className="text-sm text-zinc-500 p-4 text-center">Inga uppgifter registrerade</div>
+              <div className="text-sm text-[#8A8A9A] p-4 text-center">Inga uppgifter registrerade</div>
             ) : (
               <div className="flex flex-col gap-2">
                 {tasks.map(task => (
                   <div
                     key={task.id}
                     className={`flex items-center gap-3 rounded-xl border p-3 ${
-                      task.status === 'done' ? 'opacity-50 border-white/5' : 'border-gray-200'
+                      task.status === 'done' ? 'opacity-50 border-[#DDD5C5]' : 'border-[#DDD5C5]'
                     }`}
                   >
                     <div
@@ -826,14 +826,14 @@ function PersonLayer({
                           ? 'bg-green-500'
                           : task.status === 'active'
                           ? 'bg-amber-400 animate-pulse'
-                          : 'bg-zinc-600'
+                          : 'bg-[#EDE8DC]'
                       }`}
                     />
                     <div className="flex-1 min-w-0">
-                      <div className={`text-sm ${task.status === 'done' ? 'line-through text-zinc-500' : 'text-gray-900'}`}>
+                      <div className={`text-sm ${task.status === 'done' ? 'line-through text-[#8A8A9A]' : 'text-gray-900'}`}>
                         {task.title}
                       </div>
-                      <div className="text-[10px] text-zinc-500 mt-0.5 uppercase">
+                      <div className="text-[10px] text-[#8A8A9A] mt-0.5 uppercase">
                         {task.status === 'done' ? 'Klar' : task.status === 'active' ? 'Pågår' : 'Väntar'}
                       </div>
                     </div>
@@ -843,7 +843,7 @@ function PersonLayer({
                           ? 'bg-red-500/20 text-red-700'
                           : task.priority === 'medium'
                           ? 'bg-amber-500/20 text-amber-700'
-                          : 'bg-zinc-500/20 text-zinc-400'
+                          : 'bg-[#EDE8DC] text-[#8A8A9A]'
                       }`}
                     >
                       {task.priority === 'high' ? 'Hög' : task.priority === 'medium' ? 'Medium' : 'Låg'}
@@ -857,17 +857,17 @@ function PersonLayer({
 
         {tab === 'kontakt' && (
           <div className="flex flex-col gap-4">
-            <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">Kontaktvägar</div>
+            <div className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider">Kontaktvägar</div>
             <div className="flex flex-col gap-2">
               <a
                 href={`mailto:${member.email}`}
-                className="flex items-center gap-3 rounded-xl border border-surface-border p-3 hover:bg-muted/30 transition-all"
+                className="flex items-center gap-3 rounded-xl border border-surface-border p-3 hover:bg-[#F0EBE1] transition-all"
               >
                 <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-700">
                   <MailIcon />
                 </div>
                 <div>
-                  <div className="text-xs text-zinc-400">E-post</div>
+                  <div className="text-xs text-[#8A8A9A]">E-post</div>
                   <div className="text-sm text-text-primary">{member.email}</div>
                 </div>
                 {member.contactPreference === 'email' && (
@@ -877,13 +877,13 @@ function PersonLayer({
 
               <a
                 href={`tel:${member.phone}`}
-                className="flex items-center gap-3 rounded-xl border border-surface-border p-3 hover:bg-muted/30 transition-all"
+                className="flex items-center gap-3 rounded-xl border border-surface-border p-3 hover:bg-[#F0EBE1] transition-all"
               >
                 <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center text-green-700">
                   <PhoneIcon />
                 </div>
                 <div>
-                  <div className="text-xs text-zinc-400">Telefon</div>
+                  <div className="text-xs text-[#8A8A9A]">Telefon</div>
                   <div className="text-sm text-text-primary">{member.phone}</div>
                 </div>
                 {member.contactPreference === 'phone' && (
@@ -896,7 +896,7 @@ function PersonLayer({
                   <TelegramIcon />
                 </div>
                 <div>
-                  <div className="text-xs text-zinc-400">Telegram</div>
+                  <div className="text-xs text-[#8A8A9A]">Telegram</div>
                   <div className="text-sm text-text-primary">@{member.name.split(' ')[0].toLowerCase()}</div>
                 </div>
                 {member.contactPreference === 'telegram' && (
@@ -906,9 +906,9 @@ function PersonLayer({
             </div>
 
             <div>
-              <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Feedback-stil</div>
-              <div className="rounded-xl bg-muted/30 border border-surface-border p-4">
-                <p className="text-sm text-zinc-300 leading-relaxed">{member.feedbackStyle}</p>
+              <div className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider mb-2">Feedback-stil</div>
+              <div className="rounded-xl bg-[#F0EBE1] border border-surface-border p-4">
+                <p className="text-sm text-[#6B7280] leading-relaxed">{member.feedbackStyle}</p>
               </div>
             </div>
           </div>
@@ -917,20 +917,20 @@ function PersonLayer({
         {tab === 'psyk' && (
           <div className="flex flex-col gap-5">
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-xl bg-muted/30 border border-surface-border p-4 text-center">
-                <div className="text-xs text-zinc-400 mb-1">Myers-Briggs</div>
+              <div className="rounded-xl bg-[#F0EBE1] border border-surface-border p-4 text-center">
+                <div className="text-xs text-[#8A8A9A] mb-1">Myers-Briggs</div>
                 <div className="text-2xl font-bold" style={{ color: member.color }}>{member.mbti ?? '–'}</div>
-                {!member.mbti && <div className="text-[10px] text-zinc-600 mt-1">Ej kartlagd</div>}
+                {!member.mbti && <div className="text-[10px] text-[#8A8A9A] mt-1">Ej kartlagd</div>}
               </div>
-              <div className="rounded-xl bg-muted/30 border border-surface-border p-4 text-center">
-                <div className="text-xs text-zinc-400 mb-1">DISC</div>
+              <div className="rounded-xl bg-[#F0EBE1] border border-surface-border p-4 text-center">
+                <div className="text-xs text-[#8A8A9A] mb-1">DISC</div>
                 <div className="text-2xl font-bold" style={{ color: member.color }}>{member.disc ?? '–'}</div>
-                {!member.disc && <div className="text-[10px] text-zinc-600 mt-1">Ej kartlagd</div>}
+                {!member.disc && <div className="text-[10px] text-[#8A8A9A] mt-1">Ej kartlagd</div>}
               </div>
             </div>
 
             <div>
-              <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Styrkor</div>
+              <div className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider mb-2">Styrkor</div>
               <div className="flex flex-wrap gap-2">
                 {member.strengths.map(s => (
                   <span
@@ -945,13 +945,13 @@ function PersonLayer({
             </div>
 
             <div>
-              <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Feedback-stil</div>
-              <div className="rounded-xl bg-muted/30 border border-surface-border p-4">
-                <p className="text-sm text-zinc-300 leading-relaxed">{member.feedbackStyle}</p>
+              <div className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider mb-2">Feedback-stil</div>
+              <div className="rounded-xl bg-[#F0EBE1] border border-surface-border p-4">
+                <p className="text-sm text-[#6B7280] leading-relaxed">{member.feedbackStyle}</p>
               </div>
             </div>
 
-            <div className="rounded-xl border border-surface-border p-4 text-center text-xs text-zinc-600">
+            <div className="rounded-xl border border-surface-border p-4 text-center text-xs text-[#8A8A9A]">
               <ActivityIcon />
               <div className="mt-1">Mer psykologisk data läggs till i kommande version</div>
             </div>
@@ -1051,7 +1051,7 @@ export function PeopleIntelligenceHub() {
   }
 
   return (
-    <div className="h-full flex flex-col bg-muted/30 text-text-primary overflow-hidden">
+    <div className="h-full flex flex-col bg-[#F0EBE1] text-text-primary overflow-hidden">
       {/* Header */}
       <div className="flex-shrink-0 px-4 md:px-6 py-4 border-b border-surface-border">
         <div className="flex items-center justify-between gap-3">
@@ -1077,7 +1077,7 @@ export function PeopleIntelligenceHub() {
             {layer !== 'enterprise' && (
               <button
                 onClick={goBack}
-                className="flex items-center gap-1 text-xs text-zinc-400 hover:text-text-primary transition-colors px-3 py-1.5 rounded-lg border border-surface-border hover:border-white/25"
+                className="flex items-center gap-1 text-xs text-[#8A8A9A] hover:text-text-primary transition-colors px-3 py-1.5 rounded-lg border border-surface-border hover:border-[#DDD5C5]"
               >
                 <ChevronLeft /> Tillbaka
               </button>

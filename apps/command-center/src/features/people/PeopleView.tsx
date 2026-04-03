@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { VoiceCallButton } from '../voice/VoiceCallButton'
 
@@ -349,11 +349,56 @@ function PersonCard({ person }: { person: typeof TEAM[0] }) {
 export function PeopleView() {
   const { activeEntity, isInScope } = useEntityScope()
   const isRoot = activeEntity.layer === 0
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetch('/api/people')
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
+      .then(() => setLoading(false))
+      .catch(e => { setError(e.message); setLoading(false) })
+  }, [])
 
   // Filter team by scope (root sees all)
   const visibleTeam = isRoot
     ? TEAM
     : TEAM.filter(p => isInScope(p.entity_id))
+
+  if (loading) {
+    return (
+      <div style={{ padding: 24 }}>
+        {[1,2,3,4,5].map(i => (
+          <div key={i} style={{ display: 'flex', gap: 14, marginBottom: 16, alignItems: 'center' }}>
+            <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'var(--color-bg-muted)', animation: 'pulse 1.5s ease-in-out infinite', flexShrink: 0 }} />
+            <div style={{ flex: 1 }}>
+              <div style={{ height: 14, width: 140, background: 'var(--color-bg-muted)', borderRadius: 4, marginBottom: 8, animation: 'pulse 1.5s ease-in-out infinite' }} />
+              <div style={{ height: 11, width: 90, background: 'var(--color-bg-muted)', borderRadius: 4, animation: 'pulse 1.5s ease-in-out infinite' }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '48px 24px', textAlign: 'center', margin: 24 }}>
+        <div style={{ fontSize: 32, marginBottom: 12 }}>⚠️</div>
+        <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8 }}>Kunde inte hämta teamdata</div>
+        <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>{error}</div>
+      </div>
+    )
+  }
+
+  if (visibleTeam.length === 0) {
+    return (
+      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '64px 24px', textAlign: 'center', margin: 24 }}>
+        <div style={{ fontSize: 40, marginBottom: 16 }}>👥</div>
+        <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8, fontSize: 16 }}>Inga teammedlemmar i scope</div>
+        <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>Byt scope för att se fler</div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-8 max-w-6xl">

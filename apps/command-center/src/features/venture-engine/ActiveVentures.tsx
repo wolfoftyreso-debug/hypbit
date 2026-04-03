@@ -10,7 +10,7 @@ import type { Venture } from './types'
 
 function statusColor(status: Venture['status']): { bg: string; text: string; dot: string } {
   switch (status) {
-    case 'ideation':   return { bg: 'bg-gray-50', text: 'text-gray-600', dot: 'bg-gray-400' }
+    case 'ideation':   return { bg: 'bg-gray-50', text: 'text-[#8A8A9A]', dot: 'bg-gray-400' }
     case 'building':   return { bg: 'bg-amber-50', text: 'text-amber-700', dot: 'bg-amber-500' }
     case 'live':       return { bg: 'bg-green-50', text: 'text-green-700', dot: 'bg-green-500' }
     case 'integrated': return { bg: 'bg-blue-50', text: 'text-blue-700', dot: 'bg-blue-500' }
@@ -22,7 +22,7 @@ function IntegrationBar({ level }: { level: number }) {
   return (
     <div>
       <div className="flex justify-between items-center mb-1">
-        <span className="text-xs text-gray-500">Integration</span>
+        <span className="text-xs text-[#8A8A9A]">Integration</span>
         <span className="text-xs font-semibold tabular-nums" style={{ color }}>{level}%</span>
       </div>
       <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
@@ -62,12 +62,12 @@ function AllocateModal({ venture, onClose, onAllocated }: AllocateModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
       <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm mx-4">
-        <h3 className="text-sm font-semibold text-gray-900 mb-1">Allocate Capital</h3>
-        <p className="text-xs text-gray-500 mb-4">To: <span className="font-medium text-gray-700">{venture.name}</span></p>
+        <h3 className="text-sm font-semibold text-[#0A3D62] mb-1">Allocate Capital</h3>
+        <p className="text-xs text-[#8A8A9A] mb-4">To: <span className="font-medium text-[#0A3D62]">{venture.name}</span></p>
 
         <form onSubmit={e => void handleSubmit(e)} className="space-y-3">
           <div>
-            <label className="text-xs text-gray-600 block mb-1">Amount (USD)</label>
+            <label className="text-xs text-[#8A8A9A] block mb-1">Amount (USD)</label>
             <input
               type="number"
               min="1"
@@ -79,7 +79,7 @@ function AllocateModal({ venture, onClose, onAllocated }: AllocateModalProps) {
             />
           </div>
           <div>
-            <label className="text-xs text-gray-600 block mb-1">Monthly burn rate (USD, optional)</label>
+            <label className="text-xs text-[#8A8A9A] block mb-1">Monthly burn rate (USD, optional)</label>
             <input
               type="number"
               min="0"
@@ -100,7 +100,7 @@ function AllocateModal({ venture, onClose, onAllocated }: AllocateModalProps) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+              className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg text-[#8A8A9A] hover:bg-gray-50 transition-colors"
             >
               Cancel
             </button>
@@ -136,12 +136,12 @@ export function ActiveVentures() {
   return (
     <div className="flex flex-col h-full">
       <div className="mb-3">
-        <h2 className="text-sm font-semibold text-gray-900">Active Ventures</h2>
-        <p className="text-xs text-gray-500 mt-0.5">Integration progress, ROI tracking, burn rate</p>
+        <h2 className="text-sm font-semibold text-[#0A3D62]">Active Ventures</h2>
+        <p className="text-xs text-[#8A8A9A] mt-0.5">Integration progress, ROI tracking, burn rate</p>
       </div>
 
       {loading && (
-        <div className="flex-1 flex items-center justify-center gap-2 text-gray-400">
+        <div className="flex-1 flex items-center justify-center gap-2 text-[#8A8A9A]">
           <Loader2 className="w-4 h-4 animate-spin" />
           <span className="text-sm">Loading ventures…</span>
         </div>
@@ -157,7 +157,7 @@ export function ActiveVentures() {
       {!loading && !error && (
         <div className="flex-1 overflow-y-auto space-y-2 pr-1">
           {ventures.length === 0 && (
-            <p className="text-sm text-gray-400 text-center py-8">No ventures yet. Validate an opportunity and create one.</p>
+            <p className="text-sm text-[#8A8A9A] text-center py-8">No ventures yet. Validate an opportunity and create one.</p>
           )}
           {ventures.map(venture => {
             const s = statusColor(venture.status)
@@ -165,7 +165,7 @@ export function ActiveVentures() {
             const roiDiff = venture.roi_actual - venture.roi_projected
 
             return (
-              <div key={venture.id} className="border border-gray-100 rounded-xl bg-white overflow-hidden hover:border-gray-200 transition-all">
+              <div key={venture.id} className="border border-[#DDD5C5] rounded-xl bg-white overflow-hidden hover:border-[#C8BCA8] transition-all">
                 {/* Card header */}
                 <button
                   className="w-full p-3 text-left"
@@ -179,29 +179,29 @@ export function ActiveVentures() {
                       </div>
                     </div>
                     {isExpanded
-                      ? <ChevronUp className="w-3.5 h-3.5 text-gray-400 shrink-0" />
-                      : <ChevronDown className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                      ? <ChevronUp className="w-3.5 h-3.5 text-[#8A8A9A] shrink-0" />
+                      : <ChevronDown className="w-3.5 h-3.5 text-[#8A8A9A] shrink-0" />
                     }
                   </div>
 
-                  <h3 className="text-sm font-semibold text-gray-900 mt-1.5 mb-2">{venture.name}</h3>
+                  <h3 className="text-sm font-semibold text-[#0A3D62] mt-1.5 mb-2">{venture.name}</h3>
 
                   <IntegrationBar level={venture.integration_level} />
 
                   {/* KPI row */}
                   <div className="grid grid-cols-3 gap-2 mt-2.5">
                     <div className="text-center">
-                      <p className="text-xs text-gray-400">ROI actual</p>
-                      <p className={`text-sm font-bold ${venture.roi_actual > 0 ? 'text-green-600' : 'text-gray-500'}`}>
+                      <p className="text-xs text-[#8A8A9A]">ROI actual</p>
+                      <p className={`text-sm font-bold ${venture.roi_actual > 0 ? 'text-green-600' : 'text-[#8A8A9A]'}`}>
                         {venture.roi_actual > 0 ? `${venture.roi_actual.toFixed(1)}×` : '—'}
                       </p>
                     </div>
                     <div className="text-center">
-                      <p className="text-xs text-gray-400">ROI target</p>
-                      <p className="text-sm font-bold text-gray-700">{venture.roi_projected.toFixed(1)}×</p>
+                      <p className="text-xs text-[#8A8A9A]">ROI target</p>
+                      <p className="text-sm font-bold text-[#0A3D62]">{venture.roi_projected.toFixed(1)}×</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-xs text-gray-400 flex items-center justify-center gap-0.5">
+                      <p className="text-xs text-[#8A8A9A] flex items-center justify-center gap-0.5">
                         <Flame className="w-3 h-3 text-orange-400" /> Burn
                       </p>
                       <p className="text-sm font-bold text-orange-500">
@@ -220,18 +220,18 @@ export function ActiveVentures() {
 
                 {/* Expanded details */}
                 {isExpanded && (
-                  <div className="border-t border-gray-50 px-3 pb-3 pt-2 space-y-2">
+                  <div className="border-t border-[#DDD5C5] px-3 pb-3 pt-2 space-y-2">
                     <div>
-                      <p className="text-xs font-medium text-gray-500 mb-0.5">Problem</p>
-                      <p className="text-xs text-gray-700 leading-relaxed">{venture.problem_definition}</p>
+                      <p className="text-xs font-medium text-[#8A8A9A] mb-0.5">Problem</p>
+                      <p className="text-xs text-[#0A3D62] leading-relaxed">{venture.problem_definition}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-gray-500 mb-0.5">System design</p>
-                      <p className="text-xs text-gray-700 leading-relaxed">{venture.system_design}</p>
+                      <p className="text-xs font-medium text-[#8A8A9A] mb-0.5">System design</p>
+                      <p className="text-xs text-[#0A3D62] leading-relaxed">{venture.system_design}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-medium text-gray-500 mb-0.5">Revenue model</p>
-                      <p className="text-xs text-gray-700 leading-relaxed">{venture.revenue_model}</p>
+                      <p className="text-xs font-medium text-[#8A8A9A] mb-0.5">Revenue model</p>
+                      <p className="text-xs text-[#0A3D62] leading-relaxed">{venture.revenue_model}</p>
                     </div>
                     <button
                       onClick={() => setAllocateFor(venture)}

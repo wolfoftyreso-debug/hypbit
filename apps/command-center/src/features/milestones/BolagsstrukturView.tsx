@@ -32,7 +32,7 @@ function StepTrack({ currentStep, color }: { currentStep: Step; color: string })
               <div
                 className="h-6 w-6 rounded-full flex items-center justify-center text-xs flex-shrink-0 transition-all"
                 style={{
-                  background: isActive ? color + '20' : isDone ? color : '#1F2937',
+                  background: isActive ? color + '20' : isDone ? color : '#F0EBE1',
                   border: `1.5px solid ${stepColor}`,
                 }}
               >
@@ -54,7 +54,7 @@ function StepTrack({ currentStep, color }: { currentStep: Step; color: string })
             {idx < STEPS.length - 1 && (
               <div
                 className="h-px flex-1 mx-0.5 mb-4"
-                style={{ background: isDone ? color + '60' : '#1F2937' }}
+                style={{ background: isDone ? color + '60' : '#DDD5C5' }}
               />
             )}
           </div>
@@ -117,7 +117,7 @@ function BolagCard({ bolag }: { bolag: Bolag }) {
           <span className="text-[9px] text-gray-9000 font-mono">Progress</span>
           <span className="text-[9px] font-mono" style={{ color: bolag.color }}>{bolag.progress}%</span>
         </div>
-        <div className="bg-muted/30 rounded-full h-1.5">
+        <div className="bg-[#F0EBE1] rounded-full h-1.5">
           <div
             className="h-1.5 rounded-full transition-all"
             style={{ width: `${bolag.progress}%`, background: bolag.color }}

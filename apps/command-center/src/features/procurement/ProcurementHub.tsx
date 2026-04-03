@@ -30,7 +30,7 @@ export function ProcurementHub() {
   const { activeEntity } = useEntityScope()
 
   return (
-    <div className="flex flex-col h-full bg-muted/30 text-text-primary">
+    <div className="flex flex-col h-full bg-[#F0EBE1] text-text-primary">
       {/* Header */}
       <div className="px-6 py-4 border-b border-surface-border flex-shrink-0">
         <div className="flex items-center gap-3">
@@ -50,8 +50,8 @@ export function ProcurementHub() {
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors whitespace-nowrap flex-shrink-0 relative ${
               activeTab === tab.id
-                ? 'bg-white/[0.08] text-gray-900'
-                : 'text-gray-9000 hover:text-gray-600 hover:bg-muted/30'
+                ? 'bg-[#EDE8DC] text-gray-900'
+                : 'text-gray-9000 hover:text-gray-600 hover:bg-[#F0EBE1]'
             }`}
           >
             <span className="text-sm leading-none">{tab.icon}</span>

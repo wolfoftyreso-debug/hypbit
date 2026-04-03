@@ -41,7 +41,7 @@ function PLTable({ entity, months }: { entity: EntityFinancials; months: Month[]
   const margin   = revenue > 0 ? ((result / revenue) * 100).toFixed(1) : '0.0'
 
   return (
-    <div className="bg-muted/30 border border-white/[0.07] rounded-xl overflow-hidden">
+    <div className="bg-[#F0EBE1] border border-[#DDD5C5] rounded-xl overflow-hidden">
       <div className="px-4 py-3 border-b border-surface-border flex items-center gap-2">
         <span className="h-2 w-2 rounded-full" style={{ background: entity.color }} />
         <span className="text-xs font-bold text-text-primary">{entity.shortName}</span>
@@ -58,7 +58,7 @@ function PLTable({ entity, months }: { entity: EntityFinancials; months: Month[]
             <span className="text-gray-9000">Kostnader</span>
             <span className="text-red-700 font-mono">-{fmt(expenses)}</span>
           </div>
-          <div className="h-px bg-white/[0.08] my-2" />
+          <div className="h-px bg-[#DDD5C5] my-2" />
           <div className="flex justify-between text-xs font-bold">
             <span className="text-text-primary">Resultat</span>
             <span className={result >= 0 ? 'text-green-700' : 'text-red-700'} style={{ fontFamily: 'monospace' }}>
@@ -212,7 +212,7 @@ export function FinancialReport() {
       {period === 'year' && entityId !== 'all' && (() => {
         const entity = ENTITY_FINANCIALS.find(e => e.id === entityId) ?? ENTITY_FINANCIALS[0]
         return (
-          <div className="bg-muted/30 border border-surface-border rounded-xl p-4">
+          <div className="bg-[#F0EBE1] border border-surface-border rounded-xl p-4">
             <p className="text-xs text-gray-9000 font-mono uppercase tracking-wider mb-2">Intäkt (grön) vs Kostnad (röd) per månad</p>
             <MiniBarChart entity={entity} months={MONTHS} />
             <div className="flex mt-1">

@@ -51,7 +51,7 @@ function PersonBadge({ name, role }: { name: string; role: string }) {
 function ChannelBadge({ channel }: { channel: Channel }) {
   const icons: Record<Channel, string> = { sms: '📱', email: '📧', telegram: '✈️', webhook: '🔗' }
   return (
-    <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-muted/30 text-gray-9000 border border-surface-border">
+    <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full bg-[#F0EBE1] text-gray-9000 border border-surface-border">
       {icons[channel]} {channel}
     </span>
   )
@@ -72,7 +72,7 @@ function RuleCard({ rule }: { rule: RoutingRule }) {
             <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full border ${prio.bg} ${prio.color}`}>
               {prio.label}
             </span>
-            <span className="text-[9px] font-mono text-gray-9000 bg-muted/30 px-1.5 py-0.5 rounded">
+            <span className="text-[9px] font-mono text-gray-9000 bg-[#F0EBE1] px-1.5 py-0.5 rounded">
               #{rule.id}
             </span>
           </div>

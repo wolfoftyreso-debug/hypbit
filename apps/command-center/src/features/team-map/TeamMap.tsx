@@ -143,7 +143,7 @@ function createMarkerElement(member: TeamLocation): HTMLElement {
     width: 12px; height: 12px;
     border-radius: 50%;
     background: ${statusColor(member.status)};
-    border: 2px solid #111827;
+    border: 2px solid #DDD5C5;
   `
 
   wrapper.appendChild(avatar)
@@ -273,8 +273,8 @@ export function TeamMap() {
       // Build popup content
       const popupHtml = `
         <div style="
-          background: #1f2937;
-          color: #f9fafb;
+          background: #FFFFFF;
+          color: #0A3D62;
           border-radius: 10px;
           padding: 12px 14px;
           min-width: 200px;
@@ -297,25 +297,25 @@ export function TeamMap() {
             </div>
           </div>
           ${whoop ? `
-          <div style="border-top:1px solid #374151; padding-top:8px; margin-bottom:8px;">
+          <div style="border-top:1px solid #DDD5C5; padding-top:8px; margin-bottom:8px;">
             <div style="font-size:10px; color:#6b7280; text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px;">⌚ WHOOP</div>
             <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px; text-align:center;">
-              <div style="background:#111827; border-radius:6px; padding:5px 3px;">
+              <div style="background:#F5F0E8; border-radius:6px; padding:5px 3px;">
                 <div style="font-size:15px; font-weight:700; color:${rColor};">${recovery != null ? Math.round(recovery)+'%' : '—'}</div>
-                <div style="font-size:9px; color:#6b7280; margin-top:1px;">Recovery</div>
+                <div style="font-size:9px; color:#8A8A9A; margin-top:1px;">Recovery</div>
               </div>
-              <div style="background:#111827; border-radius:6px; padding:5px 3px;">
+              <div style="background:#F5F0E8; border-radius:6px; padding:5px 3px;">
                 <div style="font-size:15px; font-weight:700; color:#818cf8;">${whoop.sleep_performance != null ? Math.round(whoop.sleep_performance)+'%' : '—'}</div>
-                <div style="font-size:9px; color:#6b7280; margin-top:1px;">Sömn</div>
+                <div style="font-size:9px; color:#8A8A9A; margin-top:1px;">Sömn</div>
               </div>
-              <div style="background:#111827; border-radius:6px; padding:5px 3px;">
+              <div style="background:#F5F0E8; border-radius:6px; padding:5px 3px;">
                 <div style="font-size:15px; font-weight:700; color:#f59e0b;">${whoop.strain_score != null ? Math.round(whoop.strain_score*10)/10 : '—'}</div>
-                <div style="font-size:9px; color:#6b7280; margin-top:1px;">Strain</div>
+                <div style="font-size:9px; color:#8A8A9A; margin-top:1px;">Strain</div>
               </div>
             </div>
           </div>
           ` : ''}
-          <div style="color:#9ca3af; font-size:11px; border-top:1px solid #374151; padding-top:8px;">
+          <div style="color:#8A8A9A; font-size:11px; border-top:1px solid #DDD5C5; padding-top:8px;">
             Senast sedd: ${timeAgo(member.last_seen)}
           </div>
         </div>
@@ -473,7 +473,7 @@ export function TeamMap() {
       `}</style>
 
       {error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-muted/30">
+        <div className="absolute inset-0 flex items-center justify-center bg-[#F0EBE1]">
           <div className="rounded-xl bg-red-950/60 border border-red-800/40 p-6 max-w-sm text-center">
             <p className="text-red-700 text-sm font-mono">{error}</p>
           </div>
@@ -485,7 +485,7 @@ export function TeamMap() {
         {/* Status switch */}
         <div
           className="flex rounded-lg overflow-hidden"
-          style={{ background: 'rgba(7,8,15,0.80)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.08)' }}
+          style={{ background: 'rgba(245,240,232,0.90)', backdropFilter: 'blur(12px)', border: '1px solid #DDD5C5' }}
         >
           {(['active', 'away', 'offline'] as const).map((s) => (
             <button
@@ -511,10 +511,10 @@ export function TeamMap() {
         <button
           onClick={centerOnTeam}
           style={{
-            background: 'rgba(7,8,15,0.80)',
+            background: 'rgba(245,240,232,0.90)',
             backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            color: '#FFFFFF',
+            border: '1px solid #DDD5C5',
+            color: '#0A3D62',
             padding: '5px 12px',
             borderRadius: 8,
             fontSize: 11,
@@ -533,7 +533,7 @@ export function TeamMap() {
           style={{
             background: sharingLocation ? 'rgba(55,65,81,0.80)' : 'rgba(139,92,246,0.90)',
             backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(255,255,255,0.08)',
+            border: '1px solid #DDD5C5',
             color: 'white',
             padding: '5px 12px',
             borderRadius: 8,
@@ -551,9 +551,9 @@ export function TeamMap() {
       <div
         className="absolute bottom-0 left-0 right-0 z-10 flex items-center justify-between px-4 py-2"
         style={{
-          background: 'rgba(7,8,15,0.88)',
+          background: 'rgba(245,240,232,0.95)',
           backdropFilter: 'blur(16px)',
-          borderTop: '1px solid rgba(255,255,255,0.06)',
+          borderTop: '1px solid #DDD5C5',
         }}
       >
         {/* Status info */}
@@ -611,7 +611,7 @@ export function TeamMap() {
               >
                 {member.avatar_initials}
               </div>
-              <span style={{ color: '#9CA3AF', fontSize: 9, fontWeight: 500, letterSpacing: '0.01em' }}>
+              <span style={{ color: '#8A8A9A', fontSize: 9, fontWeight: 500, letterSpacing: '0.01em' }}>
                 {member.full_name.split(' ')[0]}
               </span>
             </button>

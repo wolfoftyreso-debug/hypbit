@@ -86,7 +86,7 @@ export function PayrollOverview() {
               {active.map(emp => {
                 const c = calcSalary(emp.gross_salary)
                 return (
-                  <tr key={emp.id} className="border-b border-gray-200/50 hover:bg-gray-50/40 transition-colors">
+                  <tr key={emp.id} className="border-b border-gray-200/50 hover:bg-[#EDE8DC] transition-colors">
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-2">
                         <div
@@ -110,7 +110,7 @@ export function PayrollOverview() {
               })}
             </tbody>
             <tfoot>
-              <tr className="border-t border-surface-border bg-gray-50/20">
+              <tr className="border-t border-surface-border bg-[#F0EBE1]">
                 <td colSpan={2} className="px-5 py-3 text-xs font-semibold text-text-muted">TOTALT</td>
                 <td className="px-5 py-3 text-right text-xs font-bold text-text-primary tabular-nums">{fmt(totalGross)}</td>
                 <td className="px-5 py-3 text-right text-xs font-bold text-red-700 tabular-nums">

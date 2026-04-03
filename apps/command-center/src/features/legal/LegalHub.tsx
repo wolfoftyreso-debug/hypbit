@@ -142,7 +142,7 @@ function DocRow({ doc, onSend }: { doc: LegalDocument; onSend: (doc: LegalDocume
   const status = STATUS_CONFIG[doc.status]
   const levelColor = LEVEL_COLOR[doc.signing_level]
   return (
-    <div className="px-4 py-3 border-b border-surface-border/50 hover:bg-muted/30 transition-colors">
+    <div className="px-4 py-3 border-b border-surface-border/50 hover:bg-[#F0EBE1] transition-colors">
       {/* Row 1: icon + title + status badge */}
       <div className="flex items-start gap-2">
         <IconFile size={13} className="text-gray-9000 flex-shrink-0 mt-0.5" />
@@ -171,7 +171,7 @@ function DocRow({ doc, onSend }: { doc: LegalDocument; onSend: (doc: LegalDocume
         {(doc.status === 'proposed' || doc.status === 'draft') && (
           <button
             onClick={() => onSend(doc)}
-            className="flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-semibold bg-muted/30 hover:bg-white/[0.10] text-text-primary transition-colors flex-shrink-0 ml-auto"
+            className="flex items-center gap-1 px-2 py-0.5 rounded text-[9px] font-semibold bg-[#F0EBE1] hover:bg-white/[0.10] text-text-primary transition-colors flex-shrink-0 ml-auto"
           >
             <IconSend size={9} /> Skicka
           </button>
@@ -358,7 +358,7 @@ function NewDocModal({ onClose, onSave }: { onClose: () => void; onSave: (doc: P
         </div>
 
         {/* Föreslagen signering */}
-        <div className="flex items-center gap-2 mb-5 px-3 py-2 rounded-lg bg-muted/30 border border-surface-border">
+        <div className="flex items-center gap-2 mb-5 px-3 py-2 rounded-lg bg-[#F0EBE1] border border-surface-border">
           <span className="text-xs text-gray-9000">Föreslagen signering:</span>
           <span className="text-xs font-mono px-1.5 py-0.5 rounded" style={{ color: levelColor, background: levelColor + '20' }}>
             {defaultLevel} — {SIGNING_LEVEL_LABELS[defaultLevel]}
@@ -509,7 +509,7 @@ export function LegalHub() {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${filter === f ? 'bg-muted text-gray-900' : 'text-gray-9000 hover:text-gray-9000'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${filter === f ? 'bg-[#EDE8DC] text-gray-900' : 'text-gray-9000 hover:text-gray-9000'}`}
           >
             {f === 'all' ? 'Alla' : f === 'proposed' ? 'Föreslagna' : f === 'pending_signature' ? 'Väntar' : f === 'draft' ? 'Utkast' : 'Signerade'}
           </button>

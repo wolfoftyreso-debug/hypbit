@@ -183,7 +183,7 @@ function CommandNode({
             borderColor: selected ? role.color + '80' : role.color + '28',
             background: selected
               ? `linear-gradient(135deg, ${role.color}18, ${role.color}08)`
-              : '#0B0D16',
+              : '#FFFFFF',
             boxShadow: isApex
               ? `0 0 0 1px ${role.color}40, 0 8px 32px ${role.color}15`
               : selected
@@ -257,7 +257,7 @@ function DetailPanel({ role, onClose, onNavigate }: {
   const superior = COMMAND_CHAIN.find(r => r.id === role.reports_to)
 
   return (
-    <div className="h-full flex flex-col bg-white border-l border-white/[0.07] w-80 flex-shrink-0 overflow-y-auto">
+    <div className="h-full flex flex-col bg-white border-l border-[#DDD5C5] w-80 flex-shrink-0 overflow-y-auto">
       {/* Header */}
       <div className="flex-shrink-0 border-b border-surface-border p-5">
         <div className="flex items-start gap-3">
@@ -315,7 +315,7 @@ function DetailPanel({ role, onClose, onNavigate }: {
             const trendIcon  = kpi.trend === 'up' ? '↑' : kpi.trend === 'down' ? '↓' : '–'
             const isIssue = !kpi.good
             return (
-              <div key={kpi.label} className={`rounded-xl p-3 border ${isIssue ? 'bg-red-500/5 border-red-500/15' : 'bg-muted/30 border-gray-200'}`}>
+              <div key={kpi.label} className={`rounded-xl p-3 border ${isIssue ? 'bg-red-500/5 border-red-500/15' : 'bg-[#F0EBE1] border-gray-200'}`}>
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-xs text-gray-9000 font-medium">{kpi.label}</span>
                   <span className="text-sm font-bold font-mono" style={{ color: trendColor }}>
@@ -348,7 +348,7 @@ function DetailPanel({ role, onClose, onNavigate }: {
               <button
                 key={e.id}
                 onClick={() => onNavigate(e.id)}
-                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl border text-left transition-colors hover:bg-muted/30"
+                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl border text-left transition-colors hover:bg-[#F0EBE1]"
                 style={{ borderColor: e.color + '25', background: e.color + '08' }}
               >
                 <span>{e.flag}</span>
@@ -379,7 +379,7 @@ export function CommandHierarchyView() {
   const watchCount    = COMMAND_CHAIN.filter(r => r.status === 'yellow').length
 
   return (
-    <div className="flex h-full overflow-hidden bg-[#07090F]">
+    <div className="flex h-full overflow-hidden bg-[#F5F0E8]">
       {/* ── Main graph area ── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
@@ -468,7 +468,7 @@ export function CommandHierarchyView() {
                     {role.kpis.map(kpi => {
                       const tc = kpi.good ? '#10B981' : '#EF4444'
                       return (
-                        <div key={kpi.label} className={`rounded-lg p-2.5 ${!kpi.good ? 'bg-red-500/5 border border-red-500/15' : 'bg-muted/30'}`}>
+                        <div key={kpi.label} className={`rounded-lg p-2.5 ${!kpi.good ? 'bg-red-500/5 border border-red-500/15' : 'bg-[#F0EBE1]'}`}>
                           <div className="flex justify-between items-center">
                             <span className="text-xs text-gray-9000">{kpi.label}</span>
                             <span className="text-xs font-bold font-mono" style={{ color: tc }}>{kpi.value}</span>

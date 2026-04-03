@@ -88,7 +88,7 @@ function NewAudienceModal({ onClose }: { onClose: () => void }) {
 
           <button
             disabled
-            className="w-full py-2 text-sm text-gray-9000 border border-white/5 rounded-lg cursor-not-allowed"
+            className="w-full py-2 text-sm text-[#8A8A9A] border border-[#DDD5C5] rounded-lg cursor-not-allowed"
             title="Aktiveras i Fas 2"
           >
             📥 Importera från CRM — Fas 2
@@ -123,7 +123,7 @@ export function AudienceView() {
         <div className="flex items-center gap-2">
           <button
             disabled
-            className="px-3 py-1.5 text-sm text-gray-9000 border border-white/5 rounded-lg cursor-not-allowed"
+            className="px-3 py-1.5 text-sm text-[#8A8A9A] border border-[#DDD5C5] rounded-lg cursor-not-allowed"
             title="Aktiveras i Fas 2"
           >
             📥 Importera från CRM
@@ -181,7 +181,7 @@ export function AudienceView() {
         })}
       </div>
 
-      <div className="rounded-lg bg-gray-500 border border-surface-border px-4 py-3 text-xs text-gray-9000">
+      <div className="rounded-lg bg-[#EDE8DC] border border-surface-border px-4 py-3 text-xs text-gray-9000">
         💡 CRM-import och lookalike audiences aktiveras i Fas 2 (Q2 2026).
       </div>
 

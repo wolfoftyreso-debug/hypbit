@@ -73,12 +73,12 @@ function ProviderBadge({ provider, fallbackUsed }: { provider: LLMResult['provid
 
 function StatusPanel({ status, loading }: { status: LLMStatus | null; loading: boolean }) {
   return (
-    <div className="flex flex-wrap items-center gap-3 px-4 py-2 bg-muted/30 border border-surface-border rounded-xl text-xs font-mono">
-      <span className="text-gray-900/40">PROVIDERS</span>
-      {loading && <span className="text-gray-900/30 animate-pulse">Laddar...</span>}
+    <div className="flex flex-wrap items-center gap-3 px-4 py-2 bg-[#F0EBE1] border border-surface-border rounded-xl text-xs font-mono">
+      <span className="text-[#8A8A9A]">PROVIDERS</span>
+      {loading && <span className="text-[#8A8A9A] animate-pulse">Laddar...</span>}
       {!loading && !status && <span className="text-red-700/70">Kunde inte hämta status</span>}
       {!loading && status && status.providers.map(p => (
-        <span key={p.name} className={`flex items-center gap-1.5 ${p.available ? 'text-emerald-700' : 'text-gray-900/30'}`}>
+        <span key={p.name} className={`flex items-center gap-1.5 ${p.available ? 'text-emerald-700' : 'text-[#8A8A9A]'}`}>
           {p.available ? '✅' : '❌'}
           <span className="capitalize">{p.name === 'openai' ? 'OpenAI' : 'Anthropic'}</span>
         </span>
@@ -155,7 +155,7 @@ function ChatTab() {
       {/* Messages */}
       <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-1">
         {messages.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-48 text-gray-900/20 text-sm">
+          <div className="flex flex-col items-center justify-center h-48 text-[#8A8A9A] text-sm">
             <span className="text-4xl mb-3">🧠</span>
             <span>Starta konversationen...</span>
           </div>
@@ -172,7 +172,7 @@ function ChatTab() {
                     ? 'bg-blue-600 text-text-primary rounded-br-sm'
                     : msg.provider === 'error'
                     ? 'bg-red-500/10 border border-red-500/20 text-red-300 rounded-bl-sm'
-                    : 'bg-muted text-gray-900/90 rounded-bl-sm'
+                    : 'bg-[#EDE8DC] text-[#0A3D62] rounded-bl-sm'
                 }`}
               >
                 {msg.content}
@@ -185,11 +185,11 @@ function ChatTab() {
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="bg-muted px-4 py-3 rounded-2xl rounded-bl-sm">
+            <div className="bg-[#EDE8DC] px-4 py-3 rounded-2xl rounded-bl-sm">
               <span className="inline-flex gap-1">
-                <span className="w-2 h-2 bg-white/30 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <span className="w-2 h-2 bg-white/30 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <span className="w-2 h-2 bg-white/30 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                <span className="w-2 h-2 bg-[#DDD5C5] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                <span className="w-2 h-2 bg-[#DDD5C5] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                <span className="w-2 h-2 bg-[#DDD5C5] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
               </span>
             </div>
           </div>
@@ -210,7 +210,7 @@ function ChatTab() {
           }}
           placeholder="Skriv ett meddelande... (Enter för att skicka, Shift+Enter för ny rad)"
           rows={2}
-          className="flex-1 bg-muted/30 border border-surface-border rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-gray-900/20 focus:outline-none focus:border-blue-500 focus:bg-white/[0.08] resize-none"
+          className="flex-1 bg-[#F0EBE1] border border-surface-border rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-[#8A8A9A] focus:outline-none focus:border-blue-500 focus:bg-[#F0EBE1] resize-none"
           disabled={loading}
         />
         <button
@@ -225,7 +225,7 @@ function ChatTab() {
       {messages.length > 0 && (
         <button
           onClick={() => setMessages([])}
-          className="mt-2 text-xs text-gray-900/20 hover:text-gray-900/40 transition-colors self-center"
+          className="mt-2 text-xs text-[#8A8A9A] hover:text-[#8A8A9A] transition-colors self-center"
         >
           Rensa konversation
         </button>
@@ -280,24 +280,24 @@ function PlaygroundTab() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <label className="block text-xs text-gray-900/40 font-mono mb-1.5">SYSTEM PROMPT (valfri)</label>
+        <label className="block text-xs text-[#8A8A9A] font-mono mb-1.5">SYSTEM PROMPT (valfri)</label>
         <textarea
           value={systemPrompt}
           onChange={e => setSystemPrompt(e.target.value)}
           placeholder="Du är en hjälpsam assistent..."
           rows={3}
-          className="w-full bg-muted/30 border border-surface-border rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-gray-900/20 focus:outline-none focus:border-blue-500 focus:bg-white/[0.08] resize-none font-mono"
+          className="w-full bg-[#F0EBE1] border border-surface-border rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-[#8A8A9A] focus:outline-none focus:border-blue-500 focus:bg-[#F0EBE1] resize-none font-mono"
         />
       </div>
 
       <div>
-        <label className="block text-xs text-gray-900/40 font-mono mb-1.5">USER PROMPT *</label>
+        <label className="block text-xs text-[#8A8A9A] font-mono mb-1.5">USER PROMPT *</label>
         <textarea
           value={userPrompt}
           onChange={e => setUserPrompt(e.target.value)}
           placeholder="Skriv din prompt här..."
           rows={4}
-          className="w-full bg-muted/30 border border-surface-border rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-gray-900/20 focus:outline-none focus:border-blue-500 focus:bg-white/[0.08] resize-none"
+          className="w-full bg-[#F0EBE1] border border-surface-border rounded-xl px-4 py-3 text-sm text-text-primary placeholder:text-[#8A8A9A] focus:outline-none focus:border-blue-500 focus:bg-[#F0EBE1] resize-none"
         />
       </div>
 
@@ -315,7 +315,7 @@ function PlaygroundTab() {
           <div className="flex flex-wrap items-center gap-3 text-xs">
             <ProviderBadge provider={result.provider} fallbackUsed={result.fallbackUsed} />
             {latencyMs !== null && (
-              <span className="text-gray-900/30 font-mono">{latencyMs} ms</span>
+              <span className="text-[#8A8A9A] font-mono">{latencyMs} ms</span>
             )}
             {result.fallbackUsed && result.provider !== 'error' && (
               <span className="text-amber-700/70">Fallback användes</span>
@@ -326,7 +326,7 @@ function PlaygroundTab() {
           <div className={`p-4 rounded-xl border text-sm whitespace-pre-wrap leading-relaxed ${
             result.provider === 'error'
               ? 'bg-red-500/10 border-red-500/20 text-red-300'
-              : 'bg-muted/30 border-surface-border text-gray-900/90'
+              : 'bg-[#F0EBE1] border-surface-border text-[#0A3D62]'
           }`}>
             {result.provider === 'error'
               ? (result.userMessage ?? 'Systemet är tillfälligt otillgängligt.')
@@ -371,7 +371,7 @@ export function LLMHub() {
   ]
 
   return (
-    <div className="min-h-screen bg-muted/30 text-text-primary">
+    <div className="min-h-screen bg-[#F0EBE1] text-text-primary">
       {/* Header */}
       <div className="border-b border-surface-border bg-white/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
@@ -380,7 +380,7 @@ export function LLMHub() {
               <h1 className="text-xl font-bold text-text-primary flex items-center gap-2">
                 🧠 LLM Hub
               </h1>
-              <p className="text-sm text-gray-900/40 mt-0.5">
+              <p className="text-sm text-[#8A8A9A] mt-0.5">
                 GPT-4.6 → Claude Sonnet → Graceful Error
               </p>
             </div>
@@ -394,8 +394,8 @@ export function LLMHub() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeTab === tab.id
-                    ? 'bg-blue-600 text-gray-900'
-                    : 'text-gray-900/60 hover:text-text-primary hover:bg-muted'
+                    ? 'bg-blue-600 text-[#0A3D62]'
+                    : 'text-[#6B7280] hover:text-text-primary hover:bg-[#EDE8DC]'
                 }`}
               >
                 <span>{tab.icon}</span>

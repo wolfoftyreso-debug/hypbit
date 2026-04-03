@@ -55,17 +55,17 @@ function EntityCashFlow({ entity, allCashFlow }: { entity: FinanceEntity; allCas
       <div className="p-4 space-y-4">
         {/* Summary row + Runway + Burn Rate */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <div className="px-3 py-2 rounded-lg bg-muted/30 text-center">
+          <div className="px-3 py-2 rounded-lg bg-[#F0EBE1] text-center">
             <p className="text-[9px] text-gray-9000 font-mono uppercase">Inbetalningar 6m</p>
             <p className="text-[14px] font-bold text-green-700 mt-1">{fmt(totalInflow)} {entity.currency}</p>
             <p className="text-[8px] text-gray-600 mt-0.5">pengar som kommit in</p>
           </div>
-          <div className="px-3 py-2 rounded-lg bg-muted/30 text-center">
+          <div className="px-3 py-2 rounded-lg bg-[#F0EBE1] text-center">
             <p className="text-[9px] text-gray-9000 font-mono uppercase">Utbetalningar 6m</p>
             <p className="text-[14px] font-bold text-red-700 mt-1">{fmt(totalOutflow)} {entity.currency}</p>
             <p className="text-[8px] text-gray-600 mt-0.5">pengar som gått ut</p>
           </div>
-          <div className="px-3 py-2 rounded-lg bg-muted/30 text-center">
+          <div className="px-3 py-2 rounded-lg bg-[#F0EBE1] text-center">
             <p className="text-[9px] text-gray-9000 font-mono uppercase">Netto 6m</p>
             <p className="text-[14px] font-bold mt-1" style={{ color: netTotal >= 0 ? '#10B981' : '#EF4444' }}>
               {netTotal >= 0 ? '+' : ''}{fmt(netTotal)} {entity.currency}

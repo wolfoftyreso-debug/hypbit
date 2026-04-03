@@ -183,7 +183,7 @@ export function BerntWidget() {
       >
         <span className="text-xl">{open ? '✕' : '🤖'}</span>
         {connected && !open && (
-          <span className="absolute -top-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-400 border-2 border-[#07080F]" />
+          <span className="absolute -top-0.5 -right-0.5 h-3 w-3 rounded-full bg-green-400 border-2 border-white" />
         )}
       </button>
 
@@ -193,7 +193,7 @@ export function BerntWidget() {
           className="fixed bottom-20 right-6 z-50 w-80 flex flex-col rounded-2xl shadow-2xl overflow-hidden"
           style={{
             background: '#FFFFFF',
-            border: '1px solid rgba(139,92,246,0.3)',
+            border: '1px solid #DDD5C5',
             height: '420px',
             boxShadow: '0 0 40px #2563EB20, 0 20px 60px #0009',
           }}
@@ -201,7 +201,7 @@ export function BerntWidget() {
           {/* Header */}
           <div
             className="flex items-center gap-2.5 px-4 py-3 flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #1A1A2E 0%, #16213E 100%)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+            style={{ background: 'linear-gradient(135deg, #FFFFFF 0%, #F5F0E8 100%)', borderBottom: '1px solid #DDD5C5' }}
           >
             <div className="h-7 w-7 rounded-full flex items-center justify-center text-sm"
               style={{ background: 'linear-gradient(135deg, #2563EB, #1D4ED8)' }}>
@@ -256,7 +256,7 @@ export function BerntWidget() {
                   className="max-w-[85%] px-3 py-2 rounded-xl text-xs leading-relaxed"
                   style={msg.role === 'user'
                     ? { background: '#2563EB25', color: '#93C5FD', border: '1px solid #2563EB30' }
-                    : { background: '#1C2029', color: '#D1D5DB', border: '1px solid rgba(255,255,255,0.06)' }
+                    : { background: '#F5F0E8', color: '#0A3D62', border: '1px solid #DDD5C5' }
                   }
                 >
                   {msg.text}
@@ -265,7 +265,7 @@ export function BerntWidget() {
             ))}
             {loading && (
               <div className="flex justify-start">
-                <div className="px-3 py-2 rounded-xl text-xs" style={{ background: '#1C2029', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div className="px-3 py-2 rounded-xl text-xs" style={{ background: '#F5F0E8', border: '1px solid #DDD5C5' }}>
                   <span className="flex gap-1">
                     <span className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: '0ms' }} />
                     <span className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -294,7 +294,7 @@ export function BerntWidget() {
           )}
 
           {/* Input */}
-          <div className="px-3 pb-3 flex-shrink-0 flex gap-2" style={{ borderTop: '1px solid rgba(255,255,255,0.04)' }}>
+          <div className="px-3 pb-3 flex-shrink-0 flex gap-2" style={{ borderTop: '1px solid #DDD5C5' }}>
             <input
               type="text"
               value={input}

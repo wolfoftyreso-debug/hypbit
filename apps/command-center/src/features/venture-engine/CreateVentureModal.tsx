@@ -45,17 +45,17 @@ export function CreateVentureModal({ opportunity, onClose }: Props) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col">
         {/* Modal header */}
-        <div className="flex items-start justify-between p-5 border-b border-gray-100">
+        <div className="flex items-start justify-between p-5 border-b border-[#DDD5C5]">
           <div>
-            <h3 className="text-sm font-semibold text-gray-900">Create Venture</h3>
-            <p className="text-xs text-gray-500 mt-0.5">
-              From: <span className="font-medium text-gray-700">{opportunity.title}</span>
+            <h3 className="text-sm font-semibold text-[#0A3D62]">Create Venture</h3>
+            <p className="text-xs text-[#8A8A9A] mt-0.5">
+              From: <span className="font-medium text-[#0A3D62]">{opportunity.title}</span>
               {' · '}{opportunity.industry}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg hover:bg-gray-100 transition-colors text-gray-400"
+            className="p-1 rounded-lg hover:bg-[#EDE8DC] transition-colors text-[#8A8A9A]"
           >
             <X className="w-4 h-4" />
           </button>
@@ -64,76 +64,76 @@ export function CreateVentureModal({ opportunity, onClose }: Props) {
         {/* Form */}
         <form onSubmit={e => void handleSubmit(e)} className="flex-1 overflow-y-auto p-5 space-y-3">
           <div>
-            <label className="text-xs font-medium text-gray-600 block mb-1">Venture name *</label>
+            <label className="text-xs font-medium text-[#8A8A9A]00 block mb-1">Venture name *</label>
             <input
               required
               value={form.name}
               onChange={e => set('name', e.target.value)}
               placeholder="e.g. ClearSlot Health"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           <div>
-            <label className="text-xs font-medium text-gray-600 block mb-1">Problem definition *</label>
+            <label className="text-xs font-medium text-[#8A8A9A]00 block mb-1">Problem definition *</label>
             <textarea
               required
               value={form.problem_definition}
               onChange={e => set('problem_definition', e.target.value)}
               placeholder="What exact friction are we eliminating? Quantify the cost."
               rows={2}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
           </div>
 
           <div>
-            <label className="text-xs font-medium text-gray-600 block mb-1">System design *</label>
+            <label className="text-xs font-medium text-[#8A8A9A]00 block mb-1">System design *</label>
             <textarea
               required
               value={form.system_design}
               onChange={e => set('system_design', e.target.value)}
               placeholder="How will the system work? What integrations, automations, or platforms?"
               rows={2}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
           </div>
 
           <div>
-            <label className="text-xs font-medium text-gray-600 block mb-1">Revenue model</label>
+            <label className="text-xs font-medium text-[#8A8A9A]00 block mb-1">Revenue model</label>
             <textarea
               value={form.revenue_model}
               onChange={e => set('revenue_model', e.target.value)}
               placeholder="SaaS, marketplace fee, white-label, embedded…"
               rows={2}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
           </div>
 
           <div>
-            <label className="text-xs font-medium text-gray-600 block mb-1">Integration plan</label>
+            <label className="text-xs font-medium text-[#8A8A9A]00 block mb-1">Integration plan</label>
             <textarea
               value={form.integration_plan}
               onChange={e => set('integration_plan', e.target.value)}
               placeholder="Phase 1: … Phase 2: … Phase 3: …"
               rows={2}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs font-medium text-gray-600 block mb-1">Monthly burn (USD)</label>
+              <label className="text-xs font-medium text-[#8A8A9A]00 block mb-1">Monthly burn (USD)</label>
               <input
                 type="number"
                 min="0"
                 value={form.burn_rate}
                 onChange={e => set('burn_rate', e.target.value)}
                 placeholder="e.g. 25000"
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-gray-600 block mb-1">Target ROI (×)</label>
+              <label className="text-xs font-medium text-[#8A8A9A]00 block mb-1">Target ROI (×)</label>
               <input
                 type="number"
                 min="0"
@@ -141,7 +141,7 @@ export function CreateVentureModal({ opportunity, onClose }: Props) {
                 value={form.roi_projected}
                 onChange={e => set('roi_projected', e.target.value)}
                 placeholder="e.g. 3.5"
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
@@ -155,11 +155,11 @@ export function CreateVentureModal({ opportunity, onClose }: Props) {
         </form>
 
         {/* Footer */}
-        <div className="flex gap-2 p-5 border-t border-gray-100">
+        <div className="flex gap-2 p-5 border-t border-[#DDD5C5]">
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 px-4 py-2 text-sm border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors"
+            className="flex-1 px-4 py-2 text-sm border border-[#DDD5C5] rounded-xl text-[#8A8A9A] hover:bg-[#F0EBE1] transition-colors"
           >
             Cancel
           </button>

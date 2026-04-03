@@ -70,7 +70,7 @@ export function SMSView() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <MessageSquare size={16} className="text-green-400" />
-          <span className="text-sm font-semibold text-white">SMS via 46elks</span>
+          <span className="text-sm font-semibold text-[#0A3D62]">SMS via 46elks</span>
           <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-green-500/15 text-green-400 border border-green-500/20">
             ✓ Konfigurerad
           </span>
@@ -86,13 +86,13 @@ export function SMSView() {
 
       {/* Compose */}
       {showForm && (
-        <div className="bg-neutral-900 border border-white/10 rounded-xl p-4 space-y-3">
+        <div className="bg-white border border-[#DDD5C5] rounded-xl p-4 space-y-3">
           <div>
-            <label className="text-[10px] font-mono text-white/40 uppercase tracking-wider mb-1 block">Mottagare</label>
+            <label className="text-[10px] font-mono text-[#8A8A9A] uppercase tracking-wider mb-1 block">Mottagare</label>
             <select
               value={recipient}
               onChange={e => setRecipient(e.target.value)}
-              className="w-full bg-neutral-800 border border-white/10 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500/50"
+              className="w-full bg-[#EDE8DC] border border-[#DDD5C5] rounded-lg px-3 py-2 text-xs text-[#0A3D62] focus:outline-none focus:border-blue-500/50"
             >
               <option value="">Välj kontakt…</option>
               {TEAM_CONTACTS.map(c => (
@@ -104,18 +104,18 @@ export function SMSView() {
 
           {recipient === 'custom' && (
             <div>
-              <label className="text-[10px] font-mono text-white/40 uppercase tracking-wider mb-1 block">Nummer</label>
+              <label className="text-[10px] font-mono text-[#8A8A9A] uppercase tracking-wider mb-1 block">Nummer</label>
               <input
                 value={customNumber}
                 onChange={e => setCustomNumber(e.target.value)}
                 placeholder="+46…"
-                className="w-full bg-neutral-800 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50"
+                className="w-full bg-[#EDE8DC] border border-[#DDD5C5] rounded-lg px-3 py-2 text-xs text-[#0A3D62] placeholder-[#8A8A9A] focus:outline-none focus:border-blue-500/50"
               />
             </div>
           )}
 
           <div>
-            <label className="text-[10px] font-mono text-white/40 uppercase tracking-wider mb-1 block">
+            <label className="text-[10px] font-mono text-[#8A8A9A] uppercase tracking-wider mb-1 block">
               Meddelande ({message.length}/160)
             </label>
             <textarea
@@ -123,12 +123,12 @@ export function SMSView() {
               onChange={e => setMessage(e.target.value.slice(0, 160))}
               placeholder="Skriv SMS…"
               rows={3}
-              className="w-full bg-neutral-800 border border-white/10 rounded-lg px-3 py-2 text-xs text-white placeholder-white/20 focus:outline-none focus:border-blue-500/50 resize-none"
+              className="w-full bg-[#EDE8DC] border border-[#DDD5C5] rounded-lg px-3 py-2 text-xs text-[#0A3D62] placeholder-[#8A8A9A] focus:outline-none focus:border-blue-500/50 resize-none"
             />
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-[10px] text-white/30 font-mono">Avsändare: Wavult · Provider: 46elks</span>
+            <span className="text-[10px] text-[#8A8A9A] font-mono">Avsändare: Wavult · Provider: 46elks</span>
             <button
               onClick={sendSMS}
               disabled={sending || !recipient || !message.trim()}
@@ -142,19 +142,19 @@ export function SMSView() {
       )}
 
       {/* Log */}
-      <div className="bg-neutral-900 border border-white/10 rounded-xl overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/10 flex items-center justify-between">
-          <span className="text-xs font-semibold text-white">Skickade SMS</span>
-          <span className="text-[10px] text-white/30">{log.length} denna session</span>
+      <div className="bg-white border border-[#DDD5C5] rounded-xl overflow-hidden">
+        <div className="px-4 py-3 border-b border-[#DDD5C5] flex items-center justify-between">
+          <span className="text-xs font-semibold text-[#0A3D62]">Skickade SMS</span>
+          <span className="text-[10px] text-[#8A8A9A]">{log.length} denna session</span>
         </div>
         {log.length === 0 ? (
           <div className="p-8 flex flex-col items-center gap-3 text-center">
-            <MessageSquare size={24} className="text-white/10" />
-            <p className="text-xs text-white/20">Inga SMS skickade ännu</p>
-            <p className="text-[10px] text-white/15">SMS-historik är session-baserad</p>
+            <MessageSquare size={24} className="text-[#8A8A9A]" />
+            <p className="text-xs text-[#8A8A9A]">Inga SMS skickade ännu</p>
+            <p className="text-[10px] text-[#8A8A9A]">SMS-historik är session-baserad</p>
           </div>
         ) : (
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-[#DDD5C5]">
             {log.map(sms => (
               <div key={sms.id} className="px-4 py-3 flex items-start gap-3">
                 <div className="mt-0.5 flex-shrink-0">
@@ -164,13 +164,13 @@ export function SMSView() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
-                    <span className="text-xs font-medium text-white">{sms.toName}</span>
-                    <span className="text-[10px] text-white/30 font-mono">{sms.to}</span>
-                    <span className="ml-auto text-[10px] text-white/20 font-mono">
+                    <span className="text-xs font-medium text-[#0A3D62]">{sms.toName}</span>
+                    <span className="text-[10px] text-[#8A8A9A] font-mono">{sms.to}</span>
+                    <span className="ml-auto text-[10px] text-[#8A8A9A] font-mono">
                       {new Date(sms.timestamp).toLocaleTimeString('sv-SE')}
                     </span>
                   </div>
-                  <p className="text-xs text-white/50">{sms.message}</p>
+                  <p className="text-xs text-[#6B7280]">{sms.message}</p>
                 </div>
               </div>
             ))}
@@ -179,18 +179,18 @@ export function SMSView() {
       </div>
 
       {/* Kontakter */}
-      <div className="bg-neutral-900 border border-white/10 rounded-xl overflow-hidden">
-        <div className="px-4 py-3 border-b border-white/10">
-          <span className="text-xs font-semibold text-white">Team-kontakter</span>
+      <div className="bg-white border border-[#DDD5C5] rounded-xl overflow-hidden">
+        <div className="px-4 py-3 border-b border-[#DDD5C5]">
+          <span className="text-xs font-semibold text-[#0A3D62]">Team-kontakter</span>
         </div>
-        <div className="divide-y divide-white/5">
+        <div className="divide-y divide-[#DDD5C5]">
           {TEAM_CONTACTS.map(c => (
             <div key={c.number} className="flex items-center gap-3 px-4 py-3">
               <div className="flex-1">
-                <p className="text-xs font-medium text-white">{c.name}</p>
-                <p className="text-[10px] text-white/30">{c.role}</p>
+                <p className="text-xs font-medium text-[#0A3D62]">{c.name}</p>
+                <p className="text-[10px] text-[#8A8A9A]">{c.role}</p>
               </div>
-              <span className="text-xs font-mono text-white/40">{c.number}</span>
+              <span className="text-xs font-mono text-[#8A8A9A]">{c.number}</span>
               <button
                 onClick={() => { setRecipient(c.number); setShowForm(true) }}
                 className="text-[10px] px-2 py-1 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/20 transition-colors"

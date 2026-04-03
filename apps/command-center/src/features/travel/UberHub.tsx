@@ -52,23 +52,23 @@ function RestaurantCard({
       className={`w-full text-left p-3 rounded-lg border transition-all ${
         selected
           ? 'border-orange-500 bg-orange-500/10'
-          : 'border-white/10 bg-white/5 hover:bg-white/10'
+          : 'border-[#DDD5C5] bg-[#F5F0E8] hover:bg-[#EDE8DC]'
       }`}
     >
       <div className="flex items-start justify-between gap-2">
         <div>
-          <p className="font-semibold text-white text-sm">{r.name}</p>
-          <p className="text-xs text-white/50 mt-0.5">{r.cuisine}</p>
-          <p className="text-xs text-white/60 mt-1">{r.price}</p>
+          <p className="font-semibold text-[#0A3D62] text-sm">{r.name}</p>
+          <p className="text-xs text-[#8A8A9A] mt-0.5">{r.cuisine}</p>
+          <p className="text-xs text-[#6B7280] mt-1">{r.price}</p>
         </div>
         <div className="flex flex-col items-end gap-1 shrink-0">
           <div className="flex items-center gap-1">
             <Star size={11} className="text-yellow-400 fill-yellow-400" />
-            <span className="text-xs text-white/70">{r.rating}</span>
+            <span className="text-xs text-[#6B7280]">{r.rating}</span>
           </div>
           <div className="flex items-center gap-1">
-            <Clock size={11} className="text-white/40" />
-            <span className="text-xs text-white/50">{r.eta}</span>
+            <Clock size={11} className="text-[#8A8A9A]" />
+            <span className="text-xs text-[#8A8A9A]">{r.eta}</span>
           </div>
         </div>
       </div>
@@ -114,7 +114,7 @@ function ForBusinessTab() {
         <AlertCircle size={18} className="text-orange-400 shrink-0 mt-0.5" />
         <div className="flex-1">
           <p className="text-sm font-medium text-orange-300">Uber for Business account — pending setup</p>
-          <p className="text-xs text-white/50 mt-1">
+          <p className="text-xs text-[#8A8A9A] mt-1">
             Connect your Uber for Business account to enable real ride booking, billing, and reporting.
           </p>
         </div>
@@ -129,31 +129,31 @@ function ForBusinessTab() {
       </div>
 
       {/* Travel policy */}
-      <div className="p-4 rounded-xl border border-white/10 bg-white/5">
-        <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-          <FileText size={14} className="text-white/50" /> Travel Policy
+      <div className="p-4 rounded-xl border border-[#DDD5C5] bg-[#F5F0E8]">
+        <h3 className="text-sm font-semibold text-[#0A3D62] mb-3 flex items-center gap-2">
+          <FileText size={14} className="text-[#8A8A9A]" /> Travel Policy
         </h3>
         <div className="grid grid-cols-2 gap-3 text-sm">
-          <div className="p-3 rounded-lg bg-white/5 border border-white/10">
-            <p className="text-xs text-white/40 mb-1">Max cost per ride</p>
-            <p className="font-semibold text-white">THB 500 / SEK 250</p>
+          <div className="p-3 rounded-lg bg-[#F5F0E8] border border-[#DDD5C5]">
+            <p className="text-xs text-[#8A8A9A] mb-1">Max cost per ride</p>
+            <p className="font-semibold text-[#0A3D62]">THB 500 / SEK 250</p>
           </div>
-          <div className="p-3 rounded-lg bg-white/5 border border-white/10">
-            <p className="text-xs text-white/40 mb-1">Approved hours</p>
-            <p className="font-semibold text-white">07:00 – 23:00</p>
+          <div className="p-3 rounded-lg bg-[#F5F0E8] border border-[#DDD5C5]">
+            <p className="text-xs text-[#8A8A9A] mb-1">Approved hours</p>
+            <p className="font-semibold text-[#0A3D62]">07:00 – 23:00</p>
           </div>
-          <div className="p-3 rounded-lg bg-white/5 border border-white/10 col-span-2">
-            <p className="text-xs text-white/40 mb-1">Requires approval above</p>
-            <p className="font-semibold text-white">THB 1,000 → Manager sign-off</p>
+          <div className="p-3 rounded-lg bg-[#F5F0E8] border border-[#DDD5C5] col-span-2">
+            <p className="text-xs text-[#8A8A9A] mb-1">Requires approval above</p>
+            <p className="font-semibold text-[#0A3D62]">THB 1,000 → Manager sign-off</p>
           </div>
         </div>
       </div>
 
       {/* Book ride */}
-      <div className="p-4 rounded-xl border border-white/10 bg-white/5">
+      <div className="p-4 rounded-xl border border-[#DDD5C5] bg-[#F5F0E8]">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-            <Car size={14} className="text-white/50" /> Book Team Ride
+          <h3 className="text-sm font-semibold text-[#0A3D62] flex items-center gap-2">
+            <Car size={14} className="text-[#8A8A9A]" /> Book Team Ride
           </h3>
           <button
             onClick={() => setShowBookForm(v => !v)}
@@ -173,11 +173,11 @@ function ForBusinessTab() {
         {showBookForm && (
           <div className="space-y-3 mt-3">
             <div>
-              <label className="text-xs text-white/50 mb-1 block">Team member</label>
+              <label className="text-xs text-[#8A8A9A] mb-1 block">Team member</label>
               <select
                 value={ride.person}
                 onChange={e => setRide(p => ({ ...p, person: e.target.value }))}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62]"
               >
                 <option value="">Select person…</option>
                 {TEAM.map(t => <option key={t} value={t}>{t}</option>)}
@@ -185,51 +185,51 @@ function ForBusinessTab() {
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs text-white/50 mb-1 block">From</label>
+                <label className="text-xs text-[#8A8A9A] mb-1 block">From</label>
                 <input
                   value={ride.from}
                   onChange={e => setRide(p => ({ ...p, from: e.target.value }))}
                   placeholder="Pickup address"
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30"
+                  className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62] placeholder-[#8A8A9A]"
                 />
               </div>
               <div>
-                <label className="text-xs text-white/50 mb-1 block">To</label>
+                <label className="text-xs text-[#8A8A9A] mb-1 block">To</label>
                 <input
                   value={ride.to}
                   onChange={e => setRide(p => ({ ...p, to: e.target.value }))}
                   placeholder="Destination"
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30"
+                  className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62] placeholder-[#8A8A9A]"
                 />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs text-white/50 mb-1 block">Date</label>
+                <label className="text-xs text-[#8A8A9A] mb-1 block">Date</label>
                 <input
                   type="date"
                   value={ride.date}
                   onChange={e => setRide(p => ({ ...p, date: e.target.value }))}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                  className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62]"
                 />
               </div>
               <div>
-                <label className="text-xs text-white/50 mb-1 block">Time</label>
+                <label className="text-xs text-[#8A8A9A] mb-1 block">Time</label>
                 <input
                   type="time"
                   value={ride.time}
                   onChange={e => setRide(p => ({ ...p, time: e.target.value }))}
-                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+                  className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62]"
                 />
               </div>
             </div>
             <div>
-              <label className="text-xs text-white/50 mb-1 block">Project (optional)</label>
+              <label className="text-xs text-[#8A8A9A] mb-1 block">Project (optional)</label>
               <input
                 value={ride.project}
                 onChange={e => setRide(p => ({ ...p, project: e.target.value }))}
                 placeholder="e.g. Bangkok Workcamp"
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30"
+                className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62] placeholder-[#8A8A9A]"
               />
             </div>
             <button
@@ -245,11 +245,11 @@ function ForBusinessTab() {
       </div>
 
       {/* Ride history placeholder */}
-      <div className="p-4 rounded-xl border border-white/10 bg-white/5">
-        <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-          <Clock size={14} className="text-white/50" /> Ride History
+      <div className="p-4 rounded-xl border border-[#DDD5C5] bg-[#F5F0E8]">
+        <h3 className="text-sm font-semibold text-[#0A3D62] mb-3 flex items-center gap-2">
+          <Clock size={14} className="text-[#8A8A9A]" /> Ride History
         </h3>
-        <p className="text-xs text-white/40 text-center py-4">
+        <p className="text-xs text-[#8A8A9A] text-center py-4">
           No rides yet. Rides will appear here once Uber for Business is connected.
         </p>
       </div>
@@ -299,71 +299,71 @@ function TeamLunchTab() {
   return (
     <div className="space-y-4">
       {/* Order form */}
-      <div className="p-4 rounded-xl border border-white/10 bg-white/5">
-        <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-          <UtensilsCrossed size={14} className="text-white/50" /> Order Details
+      <div className="p-4 rounded-xl border border-[#DDD5C5] bg-[#F5F0E8]">
+        <h3 className="text-sm font-semibold text-[#0A3D62] mb-3 flex items-center gap-2">
+          <UtensilsCrossed size={14} className="text-[#8A8A9A]" /> Order Details
         </h3>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-xs text-white/50 mb-1 block">Date</label>
+            <label className="text-xs text-[#8A8A9A] mb-1 block">Date</label>
             <input
               type="date"
               value={order.date}
               onChange={e => setOrder(p => ({ ...p, date: e.target.value }))}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+              className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62]"
             />
           </div>
           <div>
-            <label className="text-xs text-white/50 mb-1 block">Time</label>
+            <label className="text-xs text-[#8A8A9A] mb-1 block">Time</label>
             <input
               type="time"
               value={order.time}
               onChange={e => setOrder(p => ({ ...p, time: e.target.value }))}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+              className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62]"
             />
           </div>
         </div>
 
         <div className="mt-3">
-          <label className="text-xs text-white/50 mb-1 block">Delivery Address</label>
+          <label className="text-xs text-[#8A8A9A] mb-1 block">Delivery Address</label>
           <select
             value={order.deliveryAddress}
             onChange={e => setOrder(p => ({ ...p, deliveryAddress: e.target.value }))}
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+            className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62]"
           >
             {Object.keys(LOCATIONS).map(loc => (
               <option key={loc} value={loc}>{loc}</option>
             ))}
           </select>
-          <p className="text-xs text-white/30 mt-1">{LOCATIONS[order.deliveryAddress]}</p>
+          <p className="text-xs text-[#8A8A9A] mt-1">{LOCATIONS[order.deliveryAddress]}</p>
         </div>
 
         <div className="grid grid-cols-2 gap-3 mt-3">
           <div>
-            <label className="text-xs text-white/50 mb-1 block">People</label>
+            <label className="text-xs text-[#8A8A9A] mb-1 block">People</label>
             <input
               type="number"
               min={1}
               max={50}
               value={order.numberOfPeople}
               onChange={e => setOrder(p => ({ ...p, numberOfPeople: +e.target.value }))}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+              className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62]"
             />
           </div>
           <div>
-            <label className="text-xs text-white/50 mb-1 block">Budget/person (THB)</label>
+            <label className="text-xs text-[#8A8A9A] mb-1 block">Budget/person (THB)</label>
             <input
               type="number"
               min={50}
               value={order.budgetPerPerson}
               onChange={e => setOrder(p => ({ ...p, budgetPerPerson: +e.target.value }))}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white"
+              className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62]"
             />
           </div>
         </div>
 
         <div className="mt-3">
-          <label className="text-xs text-white/50 mb-1 block">Cuisine</label>
+          <label className="text-xs text-[#8A8A9A] mb-1 block">Cuisine</label>
           <div className="flex flex-wrap gap-2">
             {cuisines.map(c => (
               <button
@@ -372,7 +372,7 @@ function TeamLunchTab() {
                 className={`text-xs px-2.5 py-1 rounded-full border transition-all ${
                   order.cuisinePreference === c
                     ? 'border-orange-500 bg-orange-500/20 text-orange-300'
-                    : 'border-white/10 text-white/50 hover:border-white/20'
+                    : 'border-[#DDD5C5] text-[#8A8A9A] hover:border-[#C8BCA8]'
                 }`}
               >
                 {c}
@@ -382,19 +382,19 @@ function TeamLunchTab() {
         </div>
 
         <div className="mt-3">
-          <label className="text-xs text-white/50 mb-1 block">Special notes / allergies</label>
+          <label className="text-xs text-[#8A8A9A] mb-1 block">Special notes / allergies</label>
           <input
             value={order.specialNotes}
             onChange={e => setOrder(p => ({ ...p, specialNotes: e.target.value }))}
             placeholder="e.g. No peanuts, vegetarian option needed"
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30"
+            className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62] placeholder-[#8A8A9A]"
           />
         </div>
       </div>
 
       {/* Restaurant cards */}
       <div>
-        <h3 className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-2 px-1">
+        <h3 className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider mb-2 px-1">
           Available Restaurants
         </h3>
         <div className="space-y-2">
@@ -410,22 +410,22 @@ function TeamLunchTab() {
       </div>
 
       {/* Estimated total + order button */}
-      <div className="p-4 rounded-xl border border-white/10 bg-white/5">
+      <div className="p-4 rounded-xl border border-[#DDD5C5] bg-[#F5F0E8]">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <p className="text-xs text-white/40">Estimated total</p>
-            <p className="text-xl font-bold text-white">
+            <p className="text-xs text-[#8A8A9A]">Estimated total</p>
+            <p className="text-xl font-bold text-[#0A3D62]">
               THB {estimatedTotal.toLocaleString()}
             </p>
-            <p className="text-xs text-white/40">
+            <p className="text-xs text-[#8A8A9A]">
               {order.numberOfPeople} people × THB {order.budgetPerPerson}
             </p>
           </div>
           {selectedRestaurant && (
             <div className="text-right">
-              <p className="text-xs text-white/40">Selected</p>
+              <p className="text-xs text-[#8A8A9A]">Selected</p>
               <p className="text-sm font-semibold text-orange-300">{selectedRestaurant.name}</p>
-              <p className="text-xs text-white/40">{selectedRestaurant.eta}</p>
+              <p className="text-xs text-[#8A8A9A]">{selectedRestaurant.eta}</p>
             </div>
           )}
         </div>
@@ -435,7 +435,7 @@ function TeamLunchTab() {
             <CheckCircle2 size={16} className="text-green-400" />
             <div>
               <p className="text-sm font-medium text-green-300">Order placed!</p>
-              <p className="text-xs text-white/40">Team lunch is on its way.</p>
+              <p className="text-xs text-[#8A8A9A]">Team lunch is on its way.</p>
             </div>
           </div>
         ) : (
@@ -500,7 +500,7 @@ function UberDirectTab() {
     <div className="space-y-4">
       {/* Quick templates */}
       <div>
-        <h3 className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-2 px-1">
+        <h3 className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider mb-2 px-1">
           Quick Templates
         </h3>
         <div className="space-y-2">
@@ -508,15 +508,15 @@ function UberDirectTab() {
             <button
               key={t.name}
               onClick={() => applyTemplate(t)}
-              className="w-full flex items-center justify-between p-3 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-all text-left"
+              className="w-full flex items-center justify-between p-3 rounded-lg border border-[#DDD5C5] bg-[#F5F0E8] hover:bg-[#EDE8DC] transition-all text-left"
             >
               <div className="flex items-center gap-2">
-                <Package size={14} className="text-white/40" />
-                <span className="text-sm text-white">{t.name}</span>
+                <Package size={14} className="text-[#8A8A9A]" />
+                <span className="text-sm text-[#0A3D62]">{t.name}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-white/30">{t.type}</span>
-                <ChevronRight size={14} className="text-white/30" />
+                <span className="text-xs text-[#8A8A9A]">{t.type}</span>
+                <ChevronRight size={14} className="text-[#8A8A9A]" />
               </div>
             </button>
           ))}
@@ -524,54 +524,54 @@ function UberDirectTab() {
       </div>
 
       {/* Delivery form */}
-      <div className="p-4 rounded-xl border border-white/10 bg-white/5 space-y-3">
-        <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-          <Truck size={14} className="text-white/50" /> New Delivery
+      <div className="p-4 rounded-xl border border-[#DDD5C5] bg-[#F5F0E8] space-y-3">
+        <h3 className="text-sm font-semibold text-[#0A3D62] flex items-center gap-2">
+          <Truck size={14} className="text-[#8A8A9A]" /> New Delivery
         </h3>
 
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-xs text-white/50 mb-1 block">From</label>
+            <label className="text-xs text-[#8A8A9A] mb-1 block">From</label>
             <input
               value={form.from}
               onChange={e => setForm(p => ({ ...p, from: e.target.value }))}
               placeholder="Pickup address"
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30"
+              className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62] placeholder-[#8A8A9A]"
             />
           </div>
           <div>
-            <label className="text-xs text-white/50 mb-1 block">To</label>
+            <label className="text-xs text-[#8A8A9A] mb-1 block">To</label>
             <input
               value={form.to}
               onChange={e => setForm(p => ({ ...p, to: e.target.value }))}
               placeholder="Delivery address"
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30"
+              className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62] placeholder-[#8A8A9A]"
             />
           </div>
         </div>
 
         <div>
-          <label className="text-xs text-white/50 mb-1 block">Recipient (name + phone)</label>
+          <label className="text-xs text-[#8A8A9A] mb-1 block">Recipient (name + phone)</label>
           <input
             value={form.recipient}
             onChange={e => setForm(p => ({ ...p, recipient: e.target.value }))}
             placeholder="e.g. Dennis Bjarnemark +46761474243"
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30"
+            className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62] placeholder-[#8A8A9A]"
           />
         </div>
 
         <div>
-          <label className="text-xs text-white/50 mb-1 block">Description</label>
+          <label className="text-xs text-[#8A8A9A] mb-1 block">Description</label>
           <input
             value={form.description}
             onChange={e => setForm(p => ({ ...p, description: e.target.value }))}
             placeholder="e.g. Signed contract, Legal documents"
-            className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white placeholder-white/30"
+            className="w-full bg-[#F5F0E8] border border-[#DDD5C5] rounded-lg px-3 py-2 text-sm text-[#0A3D62] placeholder-[#8A8A9A]"
           />
         </div>
 
         <div>
-          <label className="text-xs text-white/50 mb-1 block">Urgency</label>
+          <label className="text-xs text-[#8A8A9A] mb-1 block">Urgency</label>
           <div className="flex gap-2">
             {(['standard', 'express'] as const).map(u => (
               <button
@@ -580,7 +580,7 @@ function UberDirectTab() {
                 className={`flex-1 py-2 rounded-lg border text-sm font-medium transition-all ${
                   form.urgency === u
                     ? 'border-orange-500 bg-orange-500/20 text-orange-300'
-                    : 'border-white/10 text-white/50 hover:border-white/20'
+                    : 'border-[#DDD5C5] text-[#8A8A9A] hover:border-[#C8BCA8]'
                 }`}
               >
                 {u === 'express' ? <span className="flex items-center justify-center gap-1"><Zap size={12} /> Express</span> : 'Standard'}
@@ -611,20 +611,20 @@ function UberDirectTab() {
 
       {/* History */}
       {history.length > 0 && (
-        <div className="p-4 rounded-xl border border-white/10 bg-white/5">
-          <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-            <Clock size={14} className="text-white/50" /> Delivery History
+        <div className="p-4 rounded-xl border border-[#DDD5C5] bg-[#F5F0E8]">
+          <h3 className="text-sm font-semibold text-[#0A3D62] mb-3 flex items-center gap-2">
+            <Clock size={14} className="text-[#8A8A9A]" /> Delivery History
           </h3>
           <div className="space-y-2">
             {history.map(item => (
-              <div key={item.id} className="p-3 rounded-lg bg-white/5 border border-white/10">
+              <div key={item.id} className="p-3 rounded-lg bg-[#F5F0E8] border border-[#DDD5C5]">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <p className="text-sm font-medium text-white">{item.description}</p>
-                    <p className="text-xs text-white/40 mt-0.5">
+                    <p className="text-sm font-medium text-[#0A3D62]">{item.description}</p>
+                    <p className="text-xs text-[#8A8A9A] mt-0.5">
                       {item.from} → {item.to}
                     </p>
-                    <p className="text-xs text-white/30">{item.createdAt}</p>
+                    <p className="text-xs text-[#8A8A9A]">{item.createdAt}</p>
                   </div>
                   <StatusBadge status={item.status} />
                 </div>
@@ -651,21 +651,21 @@ export function UberHub() {
     ]
     return (
       <div className="space-y-5">
-        <div className="p-4 rounded-xl border border-white/10 bg-white/5">
+        <div className="p-4 rounded-xl border border-[#DDD5C5] bg-[#F5F0E8]">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-8 h-8 rounded-full bg-black border border-white/10 flex items-center justify-center">
-              <Car className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 rounded-full bg-[#F5F0E8] border border-[#DDD5C5] flex items-center justify-center">
+              <Car className="w-4 h-4 text-[#0A3D62]" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-white">Uber for Business — Team Invite</p>
-              <p className="text-xs text-white/50">Wavult Group Business Account</p>
+              <p className="text-sm font-semibold text-[#0A3D62]">Uber for Business — Team Invite</p>
+              <p className="text-xs text-[#8A8A9A]">Wavult Group Business Account</p>
             </div>
           </div>
-          <div className="p-3 rounded-lg bg-white/5 border border-white/10 mb-3 flex items-center justify-between gap-2">
-            <span className="text-xs text-white/60 truncate">{INVITE_URL}</span>
+          <div className="p-3 rounded-lg bg-[#F5F0E8] border border-[#DDD5C5] mb-3 flex items-center justify-between gap-2">
+            <span className="text-xs text-[#6B7280] truncate">{INVITE_URL}</span>
             <button
               onClick={() => navigator.clipboard.writeText(INVITE_URL)}
-              className="text-xs px-2 py-1 rounded bg-white/10 hover:bg-white/20 text-white/70 shrink-0"
+              className="text-xs px-2 py-1 rounded bg-[#EDE8DC] hover:bg-[#DDD5C5] text-[#6B7280] shrink-0"
             >
               Copy
             </button>
@@ -674,21 +674,21 @@ export function UberHub() {
             href={INVITE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-black text-white text-sm font-medium hover:bg-neutral-900 transition-colors border border-white/10"
+            className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-[#F5F0E8] text-[#0A3D62] text-sm font-medium hover:bg-[#EDE8DC] transition-colors border border-[#DDD5C5]"
           >
             <ExternalLink className="w-4 h-4" />
             Open Invite Link
           </a>
         </div>
 
-        <div className="p-4 rounded-xl border border-white/10 bg-white/5">
-          <p className="text-xs text-white/50 uppercase tracking-wider font-medium mb-3">Team Members</p>
+        <div className="p-4 rounded-xl border border-[#DDD5C5] bg-[#F5F0E8]">
+          <p className="text-xs text-[#8A8A9A] uppercase tracking-wider font-medium mb-3">Team Members</p>
           <div className="space-y-2">
             {TEAM.map(m => (
-              <div key={m.phone} className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
+              <div key={m.phone} className="flex items-center justify-between p-3 rounded-lg bg-[#F5F0E8] border border-[#DDD5C5]">
                 <div>
-                  <p className="text-sm font-medium text-white">{m.name}</p>
-                  <p className="text-xs text-white/40">{m.role} · {m.phone}</p>
+                  <p className="text-sm font-medium text-[#0A3D62]">{m.name}</p>
+                  <p className="text-xs text-[#8A8A9A]">{m.role} · {m.phone}</p>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4 text-green-400" />
@@ -717,23 +717,23 @@ export function UberHub() {
   ]
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-[#F5F0E8] text-[#0A3D62]">
       <div className="max-w-2xl mx-auto px-4 py-6">
         {/* Header */}
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-1">
-            <div className="w-8 h-8 rounded-full bg-black border border-white/10 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-[#F5F0E8] border border-[#DDD5C5] flex items-center justify-center">
               <span className="text-base">🚗</span>
             </div>
-            <h1 className="text-xl font-bold text-white">Uber Hub</h1>
+            <h1 className="text-xl font-bold text-[#0A3D62]">Uber Hub</h1>
           </div>
-          <p className="text-sm text-white/40 ml-11">
+          <p className="text-sm text-[#8A8A9A] ml-11">
             Team transport, lunch delivery &amp; document courier
           </p>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 p-1 bg-white/5 rounded-xl border border-white/10 mb-6">
+        <div className="flex gap-1 p-1 bg-[#F5F0E8] rounded-xl border border-[#DDD5C5] mb-6">
           {tabs.map(t => {
             const Icon = t.icon
             return (
@@ -743,7 +743,7 @@ export function UberHub() {
                 className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-sm font-medium transition-all ${
                   tab === t.id
                     ? 'bg-orange-500 text-white shadow'
-                    : 'text-white/40 hover:text-white/70'
+                    : 'text-[#8A8A9A] hover:text-[#6B7280]'
                 }`}
               >
                 <Icon size={14} />

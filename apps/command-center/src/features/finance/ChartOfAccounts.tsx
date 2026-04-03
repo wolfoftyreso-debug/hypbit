@@ -64,7 +64,7 @@ export function ChartOfAccounts() {
   return (
     <div className="space-y-4">
       {/* Explanatory ingress */}
-      <div className="rounded-xl border border-surface-border bg-muted/30 px-4 py-3">
+      <div className="rounded-xl border border-surface-border bg-[#F0EBE1] px-4 py-3">
         <p className="text-xs text-gray-9000 leading-relaxed">
           <span className="font-semibold text-text-primary">Vad är en kontoplan?</span>{' '}
           En kontoplan är bokföringens "adressbok" — varje konto har ett nummer och ett syfte.
@@ -112,7 +112,7 @@ export function ChartOfAccounts() {
             {/* Group header */}
             <button
               onClick={() => toggleGroup(group)}
-              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/30 transition-colors text-left"
+              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#F0EBE1] transition-colors text-left"
             >
               <span className="text-base">{isExpanded ? '▾' : '▸'}</span>
               <span className="text-sm font-semibold text-text-primary flex-1">{group}</span>
@@ -142,7 +142,7 @@ export function ChartOfAccounts() {
                   return (
                     <div
                       key={account.id}
-                      className="grid grid-cols-12 px-4 py-2.5 items-center border-b border-surface-border/50 last:border-0 hover:bg-muted/30 transition-colors min-w-[500px]"
+                      className="grid grid-cols-12 px-4 py-2.5 items-center border-b border-surface-border/50 last:border-0 hover:bg-[#F0EBE1] transition-colors min-w-[500px]"
                     >
                       <span className="col-span-1 text-xs font-mono text-gray-9000">{account.account_nr}</span>
                       <span className="col-span-4 text-xs text-text-primary">{account.name}</span>

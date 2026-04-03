@@ -7,7 +7,7 @@ function BudgetBar({ value, max }: { value: number; max: number }) {
   const pct = max > 0 ? Math.min(100, (value / max) * 100) : 0
   return (
     <div className="flex items-center gap-2">
-      <div className="flex-1 h-1.5 bg-muted/30 rounded-full overflow-hidden">
+      <div className="flex-1 h-1.5 bg-[#F0EBE1] rounded-full overflow-hidden">
         <div
           className="h-full bg-blue-600 rounded-full transition-all"
           style={{ width: `${pct}%` }}
@@ -47,7 +47,7 @@ function CampaignBudgetPanel({ campaign }: { campaign: Campaign }) {
         {allocations.map(alloc => {
           const ch = MOCK_CHANNELS.find(c => c.id === alloc.channel_id)
           return (
-            <div key={alloc.id} className="flex items-center gap-3 py-2 border-b border-white/5 last:border-0">
+            <div key={alloc.id} className="flex items-center gap-3 py-2 border-b border-[#DDD5C5] last:border-0">
               <span className="text-xs text-gray-600 w-32 flex-shrink-0">{ch?.provider ?? alloc.channel_id}</span>
               <div className="flex-1">
                 <BudgetBar value={alloc.total_spent} max={alloc.daily_budget || 1} />
@@ -66,7 +66,7 @@ function CampaignBudgetPanel({ campaign }: { campaign: Campaign }) {
 
       <div className="flex items-center justify-between pt-1">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-4 rounded-full bg-muted flex items-center px-0.5 cursor-not-allowed" title="Aktiveras i Fas 3">
+          <div className="w-8 h-4 rounded-full bg-[#EDE8DC] flex items-center px-0.5 cursor-not-allowed" title="Aktiveras i Fas 3">
             <div className="w-3 h-3 rounded-full bg-gray-500" />
           </div>
           <span className="text-xs text-gray-9000">Auto-optimize — Fas 3</span>
@@ -95,7 +95,7 @@ export function BudgetView() {
         ))}
       </div>
 
-      <div className="rounded-lg bg-gray-500 border border-surface-border px-4 py-3 text-xs text-gray-9000">
+      <div className="rounded-lg bg-[#EDE8DC] border border-surface-border px-4 py-3 text-xs text-gray-9000">
         ⚙️ Auto-optimering och AI-budgetjustering aktiveras i Fas 3 (Q3 2026).
       </div>
     </div>

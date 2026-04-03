@@ -113,7 +113,7 @@ function KpiBar({ label, current, target }: { label: string; current: number; ta
           {current.toLocaleString()} / {target.toLocaleString()}
         </span>
       </div>
-      <div className="h-1 rounded-full bg-muted/30 overflow-hidden">
+      <div className="h-1 rounded-full bg-[#F0EBE1] overflow-hidden">
         <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: color }} />
       </div>
     </div>
@@ -139,8 +139,8 @@ function ActivityCard({ activity, selected, onClick }: {
       className="relative flex-shrink-0 cursor-pointer rounded-lg border px-3 py-2 transition-all reveal"
       style={{
         width: '180px',
-        background: selected ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.02)',
-        borderColor: selected ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.06)',
+        background: selected ? '#EDE8DC' : '#F5F0E8',
+        borderColor: selected ? '#DDD5C5' : '#DDD5C5',
       }}
     >
       {/* Left status stripe */}
@@ -214,7 +214,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
   return (
     <div
       className="w-full md:w-[340px] flex-shrink-0 flex flex-col h-full overflow-hidden"
-      style={{ background: '#FFFFFF', borderLeft: '1px solid rgba(255,255,255,0.06)' }}
+      style={{ background: '#FFFFFF', borderLeft: '1px solid #DDD5C5' }}
     >
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-surface-border">
@@ -289,7 +289,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
               ))}
             </div>
           ) : valid && activity.status === 'ready' ? (
-            <div className="rounded-lg px-3 py-2 bg-muted/30 border border-surface-border reveal">
+            <div className="rounded-lg px-3 py-2 bg-[#F0EBE1] border border-surface-border reveal">
               <p className="text-xs" style={{ color: '#10B981' }}>✓ Ready to deploy</p>
               <p className="text-[9px] text-gray-9000 mt-0.5">All requirements met</p>
             </div>
@@ -317,7 +317,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
 
         {/* 4. ASSET */}
         <PanelSection label="Asset">
-          <div className="rounded-lg px-3 py-2 bg-muted/30 border border-surface-border/50 space-y-1.5 reveal">
+          <div className="rounded-lg px-3 py-2 bg-[#F0EBE1] border border-surface-border/50 space-y-1.5 reveal">
             <div className="flex items-center justify-between gap-2">
               <span className="text-[9px] font-mono text-gray-9000 uppercase">{activity.asset.type.replace('-', ' ')}</span>
               <span className="text-[8px] font-bold uppercase tracking-widest px-1 rounded"
@@ -357,7 +357,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
               </span>
             </div>
             <div className="space-y-1">
-              <div className="h-1 rounded-full bg-muted/30 overflow-hidden">
+              <div className="h-1 rounded-full bg-[#F0EBE1] overflow-hidden">
                 <div className="h-full rounded-full"
                   style={{
                     width: `${spendPct}%`,
@@ -375,7 +375,7 @@ function ActivityPanel({ activity, onClose }: { activity: CampaignActivity; onCl
                 {activity.budget.approved ? 'Approved' : 'Pending approval'}
               </span>
               <span className="text-[8px] font-bold uppercase tracking-widest px-1 rounded"
-                style={{ background: '#ffffff08', color: '#6B7280' }}>
+                style={{ background: '#F5F0E8', color: '#6B7280' }}>
                 {activity.budget.status}
               </span>
             </div>
@@ -713,7 +713,7 @@ export function CampaignOS() {
         className="flex-shrink-0 flex items-center gap-2 px-5 py-2 border-b"
         style={{ borderColor: 'rgba(0,0,0,0.06)', background: '#FFFFFF' }}
       >
-        <span className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mr-1">Bolag</span>
+        <span className="text-[9px] font-bold uppercase tracking-widest text-[#8A8A9A] mr-1">Bolag</span>
         {ENTITY_FILTER_OPTIONS.map(opt => {
           const active = filterEntity === opt.id
           const color = opt.id === 'all' ? '#6B7280' : (ENTITY_COLOR[opt.id] ?? '#6B7280')
@@ -760,12 +760,12 @@ export function CampaignOS() {
       {/* ── TOOLBAR ─────────────────────────────────────────────────────────── */}
       <div
         className="flex-shrink-0 flex items-center justify-between px-5 border-b"
-        style={{ height: '44px', borderColor: 'rgba(255,255,255,0.06)' }}
+        style={{ height: '44px', borderColor: '#DDD5C5' }}
       >
         {/* Left: title + period + view toggle */}
         <div className="flex items-center gap-3">
           <span className="text-xs font-bold text-text-primary tracking-wide">Campaign OS</span>
-          <span className="text-[9px] font-mono text-gray-600 px-2 py-0.5 rounded border border-surface-border bg-muted/30">
+          <span className="text-[9px] font-mono text-gray-600 px-2 py-0.5 rounded border border-surface-border bg-[#F0EBE1]">
             Q2 2026
           </span>
           <div style={{ display: 'flex', gap: 4 }}>
@@ -892,7 +892,7 @@ export function CampaignOS() {
                             <div className="flex flex-col">
                               <span
                                 className="text-[9px] font-mono"
-                                style={{ color: isToday ? '#F59E0B' : '#F3F4F6' }}
+                                style={{ color: isToday ? '#F59E0B' : '#8A8A9A' }}
                               >
                                 {weekLabel_}
                               </span>

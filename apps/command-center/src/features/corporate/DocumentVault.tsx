@@ -53,13 +53,13 @@ export function DocumentVault() {
           <div className="flex gap-1.5 flex-wrap">
             <button
               onClick={() => setSelectedCategory('all')}
-              className={`px-2.5 py-1 rounded-lg text-xs border transition-colors ${selectedCategory === 'all' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-muted/30 text-gray-9000 border-surface-border hover:text-gray-900'}`}
+              className={`px-2.5 py-1 rounded-lg text-xs border transition-colors ${selectedCategory === 'all' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-[#EDE8DC] text-gray-9000 border-surface-border hover:text-gray-900'}`}
             >Alla</button>
             {CATEGORIES.map(cat => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-2.5 py-1 rounded-lg text-xs border transition-colors ${selectedCategory === cat ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-muted/30 text-gray-9000 border-surface-border hover:text-gray-900'}`}
+                className={`px-2.5 py-1 rounded-lg text-xs border transition-colors ${selectedCategory === cat ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-[#EDE8DC] text-gray-9000 border-surface-border hover:text-gray-900'}`}
               >{cat}</button>
             ))}
           </div>
@@ -68,7 +68,7 @@ export function DocumentVault() {
         {/* Upload button */}
         <div className="ml-auto flex flex-col items-end gap-1.5">
           <label className="text-xs text-gray-9000 block font-mono uppercase tracking-wider opacity-0">·</label>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-muted/30 border border-surface-border text-gray-600 text-xs hover:bg-muted transition-colors">
+          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#EDE8DC] border border-surface-border text-gray-600 text-xs hover:bg-[#EDE8DC] transition-colors">
             <span>⬆</span> Ladda upp dokument
           </button>
         </div>
@@ -87,7 +87,7 @@ export function DocumentVault() {
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-colors cursor-pointer ${
                 selectedStatus === s
                   ? STATUS_STYLES[s]
-                  : 'bg-muted/30 text-gray-9000 border-surface-border hover:text-gray-900'
+                  : 'bg-[#EDE8DC] text-gray-9000 border-surface-border hover:text-gray-900'
               }`}
             >
               <span className="capitalize">{s}:</span>
@@ -108,7 +108,7 @@ export function DocumentVault() {
         ) : (
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-surface-border bg-muted/30">
+              <tr className="border-b border-surface-border bg-[#EDE8DC]">
                 <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Dokument</th>
                 <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Bolag</th>
                 <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Kategori</th>
@@ -121,7 +121,7 @@ export function DocumentVault() {
               {filtered.map((doc, i) => {
                 const company = COMPANIES.find(c => c.id === doc.companyId)!
                 return (
-                  <tr key={doc.id} className={`border-b border-surface-border/50 hover:bg-muted/30 transition-colors ${i % 2 === 0 ? '' : 'bg-white/[0.01]'}`}>
+                  <tr key={doc.id} className={`border-b border-surface-border/50 hover:bg-[#EDE8DC] transition-colors ${i % 2 === 0 ? '' : 'bg-white/[0.01]'}`}>
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <span className="text-base">{FILE_ICONS[doc.fileType]}</span>
@@ -138,7 +138,7 @@ export function DocumentVault() {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-xs text-gray-9000 bg-muted/30 px-2 py-0.5 rounded border border-surface-border">
+                      <span className="text-xs text-gray-9000 bg-[#EDE8DC] px-2 py-0.5 rounded border border-surface-border">
                         {doc.category}
                       </span>
                     </td>

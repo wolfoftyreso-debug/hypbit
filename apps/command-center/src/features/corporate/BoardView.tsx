@@ -136,7 +136,7 @@ export function BoardView() {
           { label: 'Planerade', value: counts.planerat, color: 'bg-blue-400' },
           { label: 'Protokoll klart', value: counts.klar, color: 'bg-green-400' },
         ].map(s => (
-          <div key={s.label} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/30 border border-surface-border text-xs">
+          <div key={s.label} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EDE8DC] border border-surface-border text-xs">
             <span className={`h-1.5 w-1.5 rounded-full ${s.color}`} />
             <span className="text-gray-9000">{s.label}:</span>
             <span className="text-text-primary font-semibold">{s.value}</span>
@@ -165,7 +165,7 @@ export function BoardView() {
         <div className="overflow-x-auto">
         <table className="w-full text-xs min-w-[560px]">
           <thead>
-            <tr className="border-b border-surface-border bg-muted/30">
+            <tr className="border-b border-surface-border bg-[#EDE8DC]">
               <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Datum</th>
               <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Bolag</th>
               <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Typ</th>
@@ -180,7 +180,7 @@ export function BoardView() {
               return (
                 <tr
                   key={m.id}
-                  className={`border-b border-surface-border/50 cursor-pointer hover:bg-muted/30 transition-colors ${i % 2 === 0 ? '' : 'bg-white/[0.01]'}`}
+                  className={`border-b border-surface-border/50 cursor-pointer hover:bg-[#EDE8DC] transition-colors ${i % 2 === 0 ? '' : 'bg-white/[0.01]'}`}
                   onClick={() => setSelected(m)}
                 >
                   <td className="px-4 py-3 text-gray-9000 whitespace-nowrap">{formatDate(m.date)}</td>
@@ -231,7 +231,7 @@ export function BoardView() {
                   <select
                     value={form.companyId}
                     onChange={e => setForm(f => ({ ...f, companyId: e.target.value as CompanyId }))}
-                    className="w-full text-xs bg-muted/30 border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-brand-accent/50"
+                    className="w-full text-xs bg-[#EDE8DC] border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-brand-accent/50"
                   >
                     {COMPANIES.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
@@ -241,7 +241,7 @@ export function BoardView() {
                   <select
                     value={form.type}
                     onChange={e => setForm(f => ({ ...f, type: e.target.value as MeetingType }))}
-                    className="w-full text-xs bg-muted/30 border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-brand-accent/50"
+                    className="w-full text-xs bg-[#EDE8DC] border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-brand-accent/50"
                   >
                     <option value="styrelsemöte">Styrelsemöte</option>
                     <option value="extra styrelsemöte">Extra styrelsemöte</option>
@@ -255,7 +255,7 @@ export function BoardView() {
                   type="date"
                   value={form.date}
                   onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                  className="w-full text-xs bg-muted/30 border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-brand-accent/50"
+                  className="w-full text-xs bg-[#EDE8DC] border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-brand-accent/50"
                 />
               </div>
               <div>
@@ -265,7 +265,7 @@ export function BoardView() {
                   value={form.agenda}
                   onChange={e => setForm(f => ({ ...f, agenda: e.target.value }))}
                   placeholder="Godkännande av budget&#10;Rekrytering av CTO"
-                  className="w-full text-xs bg-muted/30 border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-brand-accent/50 resize-none"
+                  className="w-full text-xs bg-[#EDE8DC] border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-brand-accent/50 resize-none"
                 />
               </div>
               <div>
@@ -275,7 +275,7 @@ export function BoardView() {
                   value={form.decisions}
                   onChange={e => setForm(f => ({ ...f, decisions: e.target.value }))}
                   placeholder="Budget om X kr godkänd.&#10;CTO-rekrytering inleds."
-                  className="w-full text-xs bg-muted/30 border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-brand-accent/50 resize-none"
+                  className="w-full text-xs bg-[#EDE8DC] border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-brand-accent/50 resize-none"
                 />
               </div>
             </div>

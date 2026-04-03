@@ -99,7 +99,7 @@ function LevelCard({ level, count }: { level: ZoomerLevel; count: number }) {
       <span className="text-xl">{level.emoji}</span>
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-text-primary">{level.name}</p>
-        <p className="text-xs text-gray-500">{level.description}</p>
+        <p className="text-xs text-[#8A8A9A]">{level.description}</p>
       </div>
       <div
         className="px-2.5 py-1 rounded-full text-xs font-semibold"
@@ -153,7 +153,7 @@ export function ZoomerCert() {
         <h2 className="text-lg font-semibold text-text-primary flex items-center gap-2">
           🏆 Zoomer-certifiering
         </h2>
-        <p className="text-xs text-gray-400 mt-0.5">
+        <p className="text-xs text-[#8A8A9A] mt-0.5">
           Certifieringsnivåer och live-statistik för quiXzoom-nätverket
         </p>
       </div>
@@ -161,7 +161,7 @@ export function ZoomerCert() {
       {/* Nivåer */}
       <div className="rounded-xl border border-surface-border bg-surface-secondary overflow-hidden">
         <div className="px-4 py-3 border-b border-surface-border">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Nivåer</p>
+          <p className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider">Nivåer</p>
         </div>
         <div className="p-3 flex flex-col gap-2">
           {LEVELS.map((level) => (
@@ -177,7 +177,7 @@ export function ZoomerCert() {
       {/* Statistik */}
       <div className="rounded-xl border border-surface-border bg-surface-secondary overflow-hidden">
         <div className="px-4 py-3 border-b border-surface-border flex items-center justify-between">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+          <p className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider">
             Statistik · Live från quiXzoom API
           </p>
           {!loading && (
@@ -195,23 +195,23 @@ export function ZoomerCert() {
 
         <div className="p-4">
           {loading ? (
-            <div className="flex items-center gap-2 text-gray-500 text-sm">
+            <div className="flex items-center gap-2 text-[#8A8A9A] text-sm">
               <span className="inline-block w-3 h-3 rounded-full border-2 border-gray-500 border-t-transparent animate-spin" />
               Hämtar från api.quixzoom.com…
             </div>
           ) : error ? (
             <div className="text-center py-6">
               <p className="text-4xl mb-2">🌐</p>
-              <p className="text-sm text-gray-400">Inga zoomers registrerade ännu</p>
-              <p className="text-xs text-gray-600 mt-1">
+              <p className="text-sm text-[#8A8A9A]">Inga zoomers registrerade ännu</p>
+              <p className="text-xs text-[#6B7280] mt-1">
                 quiXzoom-nätverket lanserar i Sverige, juni 2026
               </p>
             </div>
           ) : totalZoomers === 0 ? (
             <div className="text-center py-6">
               <p className="text-4xl mb-2">🌱</p>
-              <p className="text-sm text-gray-400">Inga zoomers registrerade ännu</p>
-              <p className="text-xs text-gray-600 mt-1">
+              <p className="text-sm text-[#8A8A9A]">Inga zoomers registrerade ännu</p>
+              <p className="text-xs text-[#6B7280] mt-1">
                 Sverige-lansering: mitten juni 2026 · Mål: 100 aktiva zoomers på 60 dagar
               </p>
             </div>
@@ -219,7 +219,7 @@ export function ZoomerCert() {
             <div className="grid grid-cols-2 gap-3">
               <div className="px-4 py-3 rounded-lg bg-surface-primary border border-surface-border text-center">
                 <p className="text-2xl font-bold text-text-primary">{totalZoomers}</p>
-                <p className="text-xs text-gray-500 mt-0.5">Totalt</p>
+                <p className="text-xs text-[#8A8A9A] mt-0.5">Totalt</p>
               </div>
               {LEVELS.map((level) => (
                 <div
@@ -233,7 +233,7 @@ export function ZoomerCert() {
                   <p className="text-xl font-bold" style={{ color: level.color }}>
                     {levelCounts[level.id]}
                   </p>
-                  <p className="text-xs text-gray-500 mt-0.5">
+                  <p className="text-xs text-[#8A8A9A] mt-0.5">
                     {level.emoji} {level.name}
                   </p>
                 </div>
@@ -245,10 +245,10 @@ export function ZoomerCert() {
 
       {/* Info */}
       <div className="rounded-xl border border-surface-border bg-surface-secondary p-4">
-        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+        <p className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider mb-3">
           Certifieringsflöde
         </p>
-        <ol className="text-sm text-gray-400 space-y-1.5 list-none">
+        <ol className="text-sm text-[#8A8A9A] space-y-1.5 list-none">
           {[
             'Ladda ner quiXzoom-appen (iOS / Android)',
             'Registrera och verifiera identitet (KYC)',
@@ -258,7 +258,7 @@ export function ZoomerCert() {
             '→ Aktiv zoomer med tillgång till alla uppdrag',
           ].map((step, i) => (
             <li key={i} className="flex gap-2">
-              <span className="text-gray-600 flex-shrink-0">{i + 1}.</span>
+              <span className="text-[#6B7280] flex-shrink-0">{i + 1}.</span>
               <span>{step}</span>
             </li>
           ))}

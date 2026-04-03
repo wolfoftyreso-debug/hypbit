@@ -37,7 +37,7 @@ const severityConfig: Record<AgentSeverity, {
     dot: 'bg-blue-400',
   },
   low: {
-    bg: 'bg-muted/30',
+    bg: 'bg-[#F0EBE1]',
     border: 'border-gray-200',
     text: 'text-gray-600',
     icon: Clock,
@@ -53,12 +53,41 @@ const severityConfig: Record<AgentSeverity, {
 }
 
 export function AgentCommandPanel() {
-  const { tasks } = useBosTasks()
+  const { tasks, loading, error } = useBosTasks()
   const { queue, systemMessage } = useAgentQueue(tasks)
   const { t } = useTranslation()
 
   const sysConfig = severityConfig[systemMessage.severity ?? 'info']
   const SysIcon = sysConfig.icon
+
+  if (loading) {
+    return (
+      <div style={{ padding: 16 }}>
+        {[1, 2, 3].map(i => (
+          <div key={i} style={{ background: 'var(--color-bg-muted)', borderRadius: 8, height: 44, marginBottom: 8, animation: 'pulse 1.5s ease-in-out infinite' }} />
+        ))}
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 10, padding: '32px 20px', textAlign: 'center' }}>
+        <div style={{ fontSize: 24, marginBottom: 8 }}>⚠️</div>
+        <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--color-text-primary)', marginBottom: 4 }}>Agent-kö ej tillgänglig</div>
+        <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>{error}</div>
+      </div>
+    )
+  }
+
+  if (queue.length === 0) {
+    return (
+      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 10, padding: '32px 20px', textAlign: 'center' }}>
+        <div style={{ fontSize: 24, marginBottom: 8 }}>✅</div>
+        <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--color-text-primary)' }}>Inga väntande uppgifter</div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-2">
@@ -98,7 +127,7 @@ export function AgentCommandPanel() {
       })}
 
       {queue.length === 0 && (
-        <div className="px-3 py-3 text-center text-xs text-gray-400">
+        <div className="px-3 py-3 text-center text-xs text-[#8A8A9A]">
           {t('agent.system.no_tasks')}
         </div>
       )}

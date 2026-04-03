@@ -51,7 +51,7 @@ export function CustomerAccountView({ accountId }: { accountId: string }) {
   return (
     <div style={{ maxWidth: 900, margin: '0 auto', padding: '32px 24px', fontFamily: 'system-ui, sans-serif' }}>
       {/* Account Header */}
-      <div style={{ background: '#1a1a2e', borderRadius: 12, padding: '28px 32px', marginBottom: 24, color: '#F5F0E8' }}>
+      <div style={{ background: '#FFFFFF', borderRadius: 12, padding: '28px 32px', marginBottom: 24, color: '#F5F0E8' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, color: '#C9A84C', textTransform: 'uppercase', marginBottom: 8 }}>

@@ -180,7 +180,7 @@ export function ExportView() {
                   className={`w-full flex items-start gap-3 px-4 py-3 rounded-xl border text-left transition-all ${
                     selectedReport === opt.id
                       ? 'border-[#6C63FF]/50 bg-[#6C63FF]/10'
-                      : 'border-surface-border bg-muted/30 hover:border-surface-border hover:bg-muted/30'
+                      : 'border-surface-border bg-[#F0EBE1] hover:border-surface-border hover:bg-[#F0EBE1]'
                   }`}
                 >
                   <span className="text-xl flex-shrink-0 mt-0.5">{opt.icon}</span>
@@ -212,7 +212,7 @@ export function ExportView() {
                   className={`px-3 py-2.5 rounded-lg border text-xs text-left transition-all ${
                     selectedPeriod === p.id
                       ? 'border-[#6C63FF]/50 bg-[#6C63FF]/10 text-gray-900'
-                      : 'border-surface-border bg-muted/30 text-gray-9000 hover:text-gray-800'
+                      : 'border-surface-border bg-[#F0EBE1] text-gray-9000 hover:text-gray-800'
                   }`}
                 >
                   {p.label}
@@ -231,8 +231,8 @@ export function ExportView() {
                   onClick={() => setSelectedEntity(e.id)}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg border text-xs transition-all ${
                     selectedEntity === e.id
-                      ? 'border-white/[0.15] bg-muted/30 text-gray-900'
-                      : 'border-surface-border/50 bg-white/[0.01] text-gray-9000 hover:text-gray-800'
+                      ? 'border-[#DDD5C5] bg-[#F0EBE1] text-gray-900'
+                      : 'border-surface-border/50 bg-[#F5F0E8] text-gray-9000 hover:text-gray-800'
                   }`}
                 >
                   <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: e.color }} />
@@ -256,7 +256,7 @@ export function ExportView() {
                   className={`flex-1 flex flex-col items-center gap-1 px-3 py-3 rounded-xl border transition-all ${
                     selectedFormat === f.id
                       ? 'border-[#6C63FF]/50 bg-[#6C63FF]/10'
-                      : 'border-surface-border bg-muted/30 hover:border-gray-200'
+                      : 'border-surface-border bg-[#F0EBE1] hover:border-gray-200'
                   }`}
                 >
                   <span className="text-xl">{f.icon}</span>
@@ -274,7 +274,7 @@ export function ExportView() {
           {/* Preview card */}
           <div>
             <p className="text-xs text-gray-9000 font-mono uppercase tracking-widest mb-2">Förhandsgranskning</p>
-            <div className="bg-muted/30 border border-white/[0.07] rounded-xl p-5 space-y-3">
+            <div className="bg-[#F0EBE1] border border-[#DDD5C5] rounded-xl p-5 space-y-3">
               <div className="flex items-center gap-3">
                 <span className="text-3xl">{report.icon}</span>
                 <div>
@@ -354,11 +354,11 @@ export function ExportView() {
               <div className="flex gap-2 mt-2">
                 <button
                   onClick={() => setGenerated(false)}
-                  className="flex-1 py-2 rounded-lg bg-muted/30 border border-surface-border text-xs text-gray-600 hover:text-text-primary transition-colors"
+                  className="flex-1 py-2 rounded-lg bg-[#F0EBE1] border border-surface-border text-xs text-gray-600 hover:text-text-primary transition-colors"
                 >
                   Ny rapport
                 </button>
-                <button className="flex-1 py-2 rounded-lg bg-muted/30 border border-surface-border text-xs text-gray-600 hover:text-text-primary transition-colors">
+                <button className="flex-1 py-2 rounded-lg bg-[#F0EBE1] border border-surface-border text-xs text-gray-600 hover:text-text-primary transition-colors">
                   Schemalägg
                 </button>
               </div>
@@ -366,7 +366,7 @@ export function ExportView() {
           )}
 
           {/* Scheduled reports hint */}
-          <div className="bg-muted/30 border border-surface-border rounded-xl p-4">
+          <div className="bg-[#F0EBE1] border border-surface-border rounded-xl p-4">
             <p className="text-xs text-gray-9000 font-mono uppercase tracking-wider mb-2">Schemalagda rapporter</p>
             <div className="space-y-2">
               {[

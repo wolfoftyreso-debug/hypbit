@@ -14,7 +14,7 @@ export function HealthOverviewWidget() {
   const watching = scores.filter(s => s.level === 'watch').length
 
   return (
-    <div className="bg-muted/30 border border-surface-border rounded-2xl overflow-hidden">
+    <div className="bg-[#EDE8DC] border border-surface-border rounded-2xl overflow-hidden">
       <div className="px-4 py-3 border-b border-surface-border flex items-center justify-between">
         <div className="flex items-center gap-2">
           <p className="text-sm font-medium text-gray-900/70">Entity Health</p>
@@ -50,7 +50,7 @@ export function HealthOverviewWidget() {
             <button
               key={hs.entity_id}
               onClick={() => navigate(`/entities/${hs.entity_id}`)}
-              className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-muted/30 transition-colors text-left"
+              className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-[#EDE8DC] transition-colors text-left"
             >
               {/* Gauge */}
               <div className="flex-shrink-0">

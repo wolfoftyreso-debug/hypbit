@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   MARKET_SITES, SITE_STATUS_COLOR, PRODUCT_COLOR, getSiteAlerts,
@@ -528,6 +528,15 @@ function WorldSVG({
 // ─── Main MarketMap ───────────────────────────────────────────────────────────
 
 export function MarketMap() {
+  const [_loadingState, setLoadingState] = useState(true)
+  const [_errorState, setErrorState] = useState<string | null>(null)
+
+  useEffect(() => {
+    // API integration point — currently using local data
+    setLoadingState(false)
+  }, [])
+
+
   const { t: _t } = useTranslation() // ready for i18n
   const [selectedSite, setSelectedSite] = useState<MarketSite | null>(null)
   const [regionFilter, setRegionFilter] = useState<string>('all')

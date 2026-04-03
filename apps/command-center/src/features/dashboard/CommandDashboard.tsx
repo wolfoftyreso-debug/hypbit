@@ -45,7 +45,7 @@ function StatusDot({ status }: { status: string }) {
 }
 
 function Skeleton({ w = '100%', h = 16 }: { w?: string | number; h?: number }) {
-  return <div className="animate-pulse rounded" style={{ width: w, height: h, background: 'rgba(255,255,255,0.06)' }} />
+  return <div className="animate-pulse rounded" style={{ width: w, height: h, background: '#EDE8DC' }} />
 }
 
 // ─── ECS Status Card ─────────────────────────────────────────────────────────
@@ -77,13 +77,13 @@ function ECSStatusCard() {
   const stopped = services.filter(s => s.status === 'stopped').length
 
   return (
-    <div className="bg-neutral-900 border border-white/10 rounded-xl p-5">
+    <div className="bg-white border border-[#DDD5C5] rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Server size={14} className="text-blue-400" />
-          <span className="text-xs font-mono text-white/50 uppercase tracking-widest">ECS Services</span>
+          <span className="text-xs font-mono text-[#0A3D62]/50 uppercase tracking-widest">ECS Services</span>
         </div>
-        <button onClick={fetch_} className="text-white/30 hover:text-white/60 transition-colors">
+        <button onClick={fetch_} className="text-[#0A3D62]/30 hover:text-[#0A3D62]/60 transition-colors">
           <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
         </button>
       </div>
@@ -93,11 +93,11 @@ function ECSStatusCard() {
       ) : error ? (
         <div className="flex items-center gap-2 text-xs text-red-400"><XCircle size={12} />{error}</div>
       ) : services.length === 0 ? (
-        <p className="text-xs text-white/30">Inga ECS-tjänster hittades</p>
+        <p className="text-xs text-[#0A3D62]/30">Inga ECS-tjänster hittades</p>
       ) : (
         <>
           <div className="flex gap-3 mb-4">
-            <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-green-500" /><span className="text-xs text-white/60">{running} running</span></div>
+            <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-green-500" /><span className="text-xs text-[#0A3D62]/60">{running} running</span></div>
             {degraded > 0 && <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-orange-400" /><span className="text-xs text-orange-400">{degraded} degraded</span></div>}
             {stopped > 0 && <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-red-500" /><span className="text-xs text-red-400">{stopped} stopped</span></div>}
           </div>
@@ -105,11 +105,11 @@ function ECSStatusCard() {
             {services.slice(0, 6).map(svc => (
               <div key={svc.name} className="flex items-center gap-2">
                 <StatusDot status={svc.status} />
-                <span className="text-xs text-white/70 flex-1 truncate">{svc.name}</span>
-                <span className="text-xs font-mono text-white/30">{svc.running}/{svc.desired}</span>
+                <span className="text-xs text-[#0A3D62]/70 flex-1 truncate">{svc.name}</span>
+                <span className="text-xs font-mono text-[#0A3D62]/30">{svc.running}/{svc.desired}</span>
               </div>
             ))}
-            {services.length > 6 && <p className="text-xs text-white/30">+{services.length - 6} fler</p>}
+            {services.length > 6 && <p className="text-xs text-[#0A3D62]/30">+{services.length - 6} fler</p>}
           </div>
         </>
       )}
@@ -142,13 +142,13 @@ function DomainsCard() {
   useEffect(() => { fetch_() }, [fetch_])
 
   return (
-    <div className="bg-neutral-900 border border-white/10 rounded-xl p-5">
+    <div className="bg-white border border-[#DDD5C5] rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Globe size={14} className="text-orange-400" />
-          <span className="text-xs font-mono text-white/50 uppercase tracking-widest">Domäner</span>
+          <span className="text-xs font-mono text-[#0A3D62]/50 uppercase tracking-widest">Domäner</span>
         </div>
-        <button onClick={fetch_} className="text-white/30 hover:text-white/60 transition-colors">
+        <button onClick={fetch_} className="text-[#0A3D62]/30 hover:text-[#0A3D62]/60 transition-colors">
           <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
         </button>
       </div>
@@ -158,13 +158,13 @@ function DomainsCard() {
       ) : error ? (
         <div className="flex items-center gap-2 text-xs text-red-400"><XCircle size={12} />{error}</div>
       ) : domains.length === 0 ? (
-        <p className="text-xs text-white/30">Inga domäner hittades</p>
+        <p className="text-xs text-[#0A3D62]/30">Inga domäner hittades</p>
       ) : (
         <div className="space-y-2">
           {domains.map(d => (
             <div key={d.name} className="flex items-center gap-2">
               <StatusDot status={d.status === 'active' ? 'running' : 'degraded'} />
-              <span className="text-xs text-white/70 flex-1">{d.name}</span>
+              <span className="text-xs text-[#0A3D62]/70 flex-1">{d.name}</span>
               <span className={`text-xs font-mono ${d.status === 'active' ? 'text-green-400' : 'text-orange-400'}`}>{d.status}</span>
             </div>
           ))}
@@ -199,13 +199,13 @@ function ReposCard() {
   useEffect(() => { fetch_() }, [fetch_])
 
   return (
-    <div className="bg-neutral-900 border border-white/10 rounded-xl p-5">
+    <div className="bg-white border border-[#DDD5C5] rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <GitBranch size={14} className="text-purple-400" />
-          <span className="text-xs font-mono text-white/50 uppercase tracking-widest">Senaste repos</span>
+          <span className="text-xs font-mono text-[#0A3D62]/50 uppercase tracking-widest">Senaste repos</span>
         </div>
-        <button onClick={fetch_} className="text-white/30 hover:text-white/60 transition-colors">
+        <button onClick={fetch_} className="text-[#0A3D62]/30 hover:text-[#0A3D62]/60 transition-colors">
           <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
         </button>
       </div>
@@ -215,13 +215,13 @@ function ReposCard() {
       ) : error ? (
         <div className="flex items-center gap-2 text-xs text-red-400"><XCircle size={12} />{error}</div>
       ) : repos.length === 0 ? (
-        <p className="text-xs text-white/30">Inga repos hittades</p>
+        <p className="text-xs text-[#0A3D62]/30">Inga repos hittades</p>
       ) : (
         <div className="space-y-2">
           {repos.map(r => (
             <div key={r.id} className="flex items-center gap-2">
-              <span className="text-xs text-white/70 flex-1 truncate">{r.name}</span>
-              <span className="text-xs text-white/30 font-mono">{relTime(r.pushedAt)}</span>
+              <span className="text-xs text-[#0A3D62]/70 flex-1 truncate">{r.name}</span>
+              <span className="text-xs text-[#0A3D62]/30 font-mono">{relTime(r.pushedAt)}</span>
             </div>
           ))}
         </div>
@@ -262,11 +262,11 @@ function APIHealthCard() {
   const allOk = checks.every(c => c.status === 'ok')
 
   return (
-    <div className="bg-neutral-900 border border-white/10 rounded-xl p-5">
+    <div className="bg-white border border-[#DDD5C5] rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Activity size={14} className="text-green-400" />
-          <span className="text-xs font-mono text-white/50 uppercase tracking-widest">API Health</span>
+          <span className="text-xs font-mono text-[#0A3D62]/50 uppercase tracking-widest">API Health</span>
         </div>
         {allOk && <CheckCircle size={12} className="text-green-400" />}
         {!allOk && checks.some(c => c.status === 'error') && <AlertTriangle size={12} className="text-orange-400" />}
@@ -274,11 +274,11 @@ function APIHealthCard() {
       <div className="space-y-3">
         {checks.map(c => (
           <div key={c.url} className="flex items-center gap-2">
-            {c.status === 'loading' ? <div className="w-2 h-2 rounded-full bg-white/20 animate-pulse" />
+            {c.status === 'loading' ? <div className="w-2 h-2 rounded-full bg-[#DDD5C5] animate-pulse" />
               : c.status === 'ok' ? <span className="w-2 h-2 rounded-full bg-green-500" style={{ boxShadow: '0 0 5px #34C75960' }} />
               : <span className="w-2 h-2 rounded-full bg-red-500" />}
-            <span className="text-xs text-white/70 flex-1">{c.label}</span>
-            <span className={`text-xs font-mono ${c.status === 'ok' ? 'text-green-400' : c.status === 'error' ? 'text-red-400' : 'text-white/30'}`}>
+            <span className="text-xs text-[#0A3D62]/70 flex-1">{c.label}</span>
+            <span className={`text-xs font-mono ${c.status === 'ok' ? 'text-green-400' : c.status === 'error' ? 'text-red-400' : 'text-[#0A3D62]/30'}`}>
               {c.status === 'loading' ? '…' : c.status}
             </span>
           </div>
@@ -309,22 +309,22 @@ function VenturesCard() {
   ]
 
   return (
-    <div className="bg-neutral-900 border border-white/10 rounded-xl p-5">
+    <div className="bg-white border border-[#DDD5C5] rounded-xl p-5">
       <div className="flex items-center gap-2 mb-4">
         <Zap size={14} className="text-yellow-400" />
-        <span className="text-xs font-mono text-white/50 uppercase tracking-widest">Venture Engine</span>
+        <span className="text-xs font-mono text-[#0A3D62]/50 uppercase tracking-widest">Venture Engine</span>
       </div>
       {loading ? (
         <div className="space-y-2"><Skeleton /><Skeleton w="60%" /></div>
       ) : !stats ? (
-        <p className="text-xs text-white/30">Data saknas — venture-engine ej konfigurerad</p>
+        <p className="text-xs text-[#0A3D62]/30">Data saknas — venture-engine ej konfigurerad</p>
       ) : (
         <div className="grid grid-cols-3 gap-3">
           {kpis.map(k => (
             <div key={k.label} className="text-center">
               <div className="flex justify-center mb-1">{k.icon}</div>
-              <div className="text-lg font-bold font-mono text-white">{String(k.value)}</div>
-              <div className="text-[10px] text-white/30">{k.label}</div>
+              <div className="text-lg font-bold font-mono text-[#0A3D62]">{String(k.value)}</div>
+              <div className="text-[10px] text-[#0A3D62]/30">{k.label}</div>
             </div>
           ))}
         </div>
@@ -355,10 +355,10 @@ export function CommandDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-sm font-semibold text-white">Command Center</h1>
-          <p className="text-xs text-white/40 mt-0.5">Wavult Group — Operationellt kontrollcenter</p>
+          <h1 className="text-sm font-semibold text-[#0A3D62]">Command Center</h1>
+          <p className="text-xs text-[#0A3D62]/40 mt-0.5">Wavult Group — Operationellt kontrollcenter</p>
         </div>
-        <div className="flex items-center gap-1.5 text-xs font-mono text-white/30">
+        <div className="flex items-center gap-1.5 text-xs font-mono text-[#0A3D62]/30">
           <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
           {now.toLocaleTimeString('sv-SE')}
         </div>
@@ -395,7 +395,7 @@ export function CommandDashboard() {
 
       {/* Quick Links */}
       <div>
-        <h2 className="text-xs font-mono text-white/30 uppercase tracking-widest mb-3">Snabblänkar</h2>
+        <h2 className="text-xs font-mono text-[#0A3D62]/30 uppercase tracking-widest mb-3">Snabblänkar</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {QUICK_LINKS.map((link) => (
             <a
@@ -403,12 +403,12 @@ export function CommandDashboard() {
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-neutral-900 border border-white/10 rounded-xl p-4 flex flex-col items-center gap-2 text-center hover:bg-neutral-800 transition-colors"
+              className="bg-white border border-[#DDD5C5] rounded-xl p-4 flex flex-col items-center gap-2 text-center hover:bg-[#EDE8DC] transition-colors"
               style={{ textDecoration: 'none' }}
             >
               <span style={{ fontSize: 24 }}>{link.icon}</span>
-              <span className="text-xs font-medium text-white/70">{link.name}</span>
-              <span className="text-[10px] text-white/30">{link.sub}</span>
+              <span className="text-xs font-medium text-[#0A3D62]/70">{link.name}</span>
+              <span className="text-[10px] text-[#0A3D62]/30">{link.sub}</span>
             </a>
           ))}
         </div>
@@ -416,14 +416,14 @@ export function CommandDashboard() {
 
       {/* Entities */}
       <div>
-        <h2 className="text-xs font-mono text-white/30 uppercase tracking-widest mb-3">Entities</h2>
+        <h2 className="text-xs font-mono text-[#0A3D62]/30 uppercase tracking-widest mb-3">Entities</h2>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {[
             { name: 'Wavult Group Holding', code: 'WGH', jurisdiction: '🇦🇪 DIFC, Dubai', type: 'Holding', color: '#2563EB', products: ['Capital structure', 'IP ownership'] },
             { name: 'Wavult Technologies LLC', code: 'WTL', jurisdiction: '🇺🇸 Texas, USA', type: 'Operating', color: '#3B82F6', products: ['quiXzoom platform'] },
             { name: 'Wavult Intelligence UAB', code: 'WIU', jurisdiction: '🇱🇹 Vilnius, LT', type: 'Operating', color: '#06B6D4', products: ['Optic Insights Group'] },
           ].map((entity) => (
-            <div key={entity.code} className="bg-neutral-900 border border-white/10 rounded-xl p-5">
+            <div key={entity.code} className="bg-white border border-[#DDD5C5] rounded-xl p-5">
               <div className="flex items-start gap-3 mb-4">
                 <div
                   className="h-10 w-10 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0"
@@ -432,20 +432,20 @@ export function CommandDashboard() {
                   <span style={{ color: entity.color }}>{entity.code[0]}</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-white">{entity.name}</p>
-                  <p className="text-xs text-white/40">{entity.jurisdiction}</p>
+                  <p className="text-sm font-semibold text-[#0A3D62]">{entity.name}</p>
+                  <p className="text-xs text-[#0A3D62]/40">{entity.jurisdiction}</p>
                 </div>
               </div>
               <div className="space-y-1">
                 {entity.products.map((p) => (
-                  <div key={p} className="text-xs text-white/40 flex items-center gap-1.5">
-                    <span className="h-1 w-1 rounded-full bg-white/20" />
+                  <div key={p} className="text-xs text-[#0A3D62]/40 flex items-center gap-1.5">
+                    <span className="h-1 w-1 rounded-full bg-[#DDD5C5]" />
                     {p}
                   </div>
                 ))}
               </div>
-              <div className="mt-3 pt-3 border-t border-white/10">
-                <span className="text-xs text-white/30">{entity.type}</span>
+              <div className="mt-3 pt-3 border-t border-[#DDD5C5]">
+                <span className="text-xs text-[#0A3D62]/30">{entity.type}</span>
               </div>
             </div>
           ))}

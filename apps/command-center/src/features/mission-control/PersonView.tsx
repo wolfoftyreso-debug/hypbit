@@ -63,7 +63,7 @@ function TaskRow({ task, variant }: { task: Task; variant: 'action' | 'blocking'
 
         {variant === 'action' && (
           <button className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-text-primary ${
-            task.priority === 'critical' ? 'bg-red-600 hover:bg-red-700' : 'bg-white hover:bg-muted/30'
+            task.priority === 'critical' ? 'bg-red-600 hover:bg-red-700' : 'bg-white hover:bg-[#F0EBE1]'
           } transition-colors`}>
             {effectiveState === 'IN_PROGRESS' ? t('task.continue') : t('task.start')}
             <ArrowRight className="w-3 h-3" />
@@ -99,7 +99,7 @@ export function PersonView() {
   const person = PERSONS[selectedId]
 
   return (
-    <div className="min-h-full bg-muted/30 space-y-6">
+    <div className="min-h-full bg-[#F0EBE1] space-y-6">
 
       {/* ── Person Selector ────────────────────────────────────────────── */}
       <div className="bg-white border border-surface-border rounded-xl shadow-sm p-5">

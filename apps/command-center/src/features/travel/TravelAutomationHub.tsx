@@ -136,14 +136,14 @@ function StatusIcon({ status, size = 16 }: { status: StepStatus; size?: number }
   if (status === 'confirmed')  return <CheckCircle2 size={size} style={{ color: '#22c55e' }} />
   if (status === 'issue')      return <AlertCircle size={size} style={{ color: '#ef4444' }} />
   if (status === 'processing') return <Clock size={size} style={{ color: '#eab308' }} />
-  return <Clock size={size} style={{ color: '#6b7280' }} />
+  return <Clock size={size} style={{ color: '#8A8A9A' }} />
 }
 
 function statusColor(status: StepStatus): string {
   if (status === 'confirmed')  return '#22c55e'
   if (status === 'issue')      return '#ef4444'
   if (status === 'processing') return '#eab308'
-  return '#6b7280'
+  return '#8A8A9A'
 }
 
 function statusLabel(status: StepStatus): string {
@@ -186,7 +186,7 @@ function StepCard({
   const isConfirmed = step.status === 'confirmed'
 
   const borderColor = isIssue ? '#ef444433' : isConfirmed ? '#22c55e33' : isProcessing ? '#eab30833' : '#ffffff10'
-  const bgColor = isIssue ? '#1f0a0a' : isConfirmed ? '#0a1f0a' : isProcessing ? '#1a1500' : '#111'
+  const bgColor = isIssue ? '#fff1f2' : isConfirmed ? '#f0fdf4' : isProcessing ? '#fffbeb' : '#FFFFFF'
 
   return (
     <div style={{
@@ -203,7 +203,7 @@ function StepCard({
     }}>
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ fontSize: 13, fontWeight: 600, color: '#e5e7eb' }}>{def.label}</span>
+        <span style={{ fontSize: 13, fontWeight: 600, color: '#0A3D62' }}>{def.label}</span>
         <StatusIcon status={step.status} size={15} />
       </div>
 
@@ -225,7 +225,7 @@ function StepCard({
       </div>
 
       {/* Note */}
-      <p style={{ fontSize: 11, color: '#9ca3af', margin: 0, lineHeight: 1.5, flex: 1 }}>{step.note}</p>
+      <p style={{ fontSize: 11, color: '#8A8A9A', margin: 0, lineHeight: 1.5, flex: 1 }}>{step.note}</p>
 
       {/* Action button */}
       <button
@@ -257,7 +257,7 @@ function StepCard({
 function IntegrationStatus() {
   return (
     <div style={{ marginTop: 24 }}>
-      <h3 style={{ fontSize: 12, fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 12px' }}>
+      <h3 style={{ fontSize: 12, fontWeight: 700, color: '#8A8A9A', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 12px' }}>
         API-integrationer
       </h3>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 10 }}>
@@ -294,16 +294,16 @@ function IntegrationStatus() {
           },
         ].map(i => (
           <div key={i.name} style={{
-            background: '#0d0d0d',
-            border: '1px solid #1f1f1f',
+            background: '#FFFFFF',
+            border: '1px solid #DDD5C5',
             borderRadius: 8,
             padding: '12px 14px',
             display: 'flex',
             flexDirection: 'column',
             gap: 6,
           }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: '#d1d5db' }}>{i.name}</span>
-            <span style={{ fontSize: 11, color: '#9ca3af' }}>{i.message}</span>
+            <span style={{ fontSize: 12, fontWeight: 600, color: '#0A3D62' }}>{i.name}</span>
+            <span style={{ fontSize: 11, color: '#8A8A9A' }}>{i.message}</span>
             {i.action && (
               <a href={i.action.href} target="_blank" rel="noopener noreferrer"
                 style={{ fontSize: 11, color: '#60a5fa', display: 'flex', alignItems: 'center', gap: 4, textDecoration: 'none' }}>
@@ -345,7 +345,7 @@ function ParticipantRow({
   ]
 
   return (
-    <div style={{ borderBottom: '1px solid #1a1a1a' }}>
+    <div style={{ borderBottom: '1px solid #DDD5C5' }}>
       <div
         onClick={() => setExpanded(e => !e)}
         style={{
@@ -356,19 +356,19 @@ function ParticipantRow({
           cursor: 'pointer',
         }}
       >
-        <span style={{ fontSize: 13, color: '#e5e7eb', flex: 1 }}>{name}</span>
+        <span style={{ fontSize: 13, color: '#0A3D62', flex: 1 }}>{name}</span>
         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <span style={{ fontSize: 11, color: '#9ca3af', display: 'flex', alignItems: 'center', gap: 4 }}>
+          <span style={{ fontSize: 11, color: '#8A8A9A', display: 'flex', alignItems: 'center', gap: 4 }}>
             <StatusIcon status={flightStatus} size={12} /> Flyg
           </span>
-          <span style={{ fontSize: 11, color: '#9ca3af', display: 'flex', alignItems: 'center', gap: 4 }}>
+          <span style={{ fontSize: 11, color: '#8A8A9A', display: 'flex', alignItems: 'center', gap: 4 }}>
             <StatusIcon status={visaStatus} size={12} /> Visum
           </span>
-          <span style={{ fontSize: 11, color: '#9ca3af', display: 'flex', alignItems: 'center', gap: 4 }}>
+          <span style={{ fontSize: 11, color: '#8A8A9A', display: 'flex', alignItems: 'center', gap: 4 }}>
             <StatusIcon status={docs.pass ? 'confirmed' : 'pending'} size={12} /> Dok
           </span>
         </div>
-        {expanded ? <ChevronUp size={14} color="#6b7280" /> : <ChevronDown size={14} color="#6b7280" />}
+        {expanded ? <ChevronUp size={14} color="#8A8A9A" /> : <ChevronDown size={14} color="#8A8A9A" />}
       </div>
 
       {expanded && (
@@ -380,8 +380,8 @@ function ParticipantRow({
               gap: 6,
               cursor: 'pointer',
               fontSize: 12,
-              color: docs[item.key] ? '#22c55e' : '#9ca3af',
-              background: docs[item.key] ? '#0a2010' : '#111',
+              color: docs[item.key] ? '#22c55e' : '#8A8A9A',
+              background: docs[item.key] ? '#f0fdf4' : '#FFFFFF',
               border: `1px solid ${docs[item.key] ? '#22c55e44' : '#222'}`,
               padding: '4px 10px',
               borderRadius: 6,
@@ -467,7 +467,7 @@ function TripCard({ trip, onUpdate }: { trip: Trip; onUpdate: (t: Trip) => void 
   }
 
   const overallColors: Record<StepStatus, string> = {
-    pending: '#6b7280',
+    pending: '#8A8A9A',
     processing: '#eab308',
     confirmed: '#22c55e',
     issue: '#ef4444',
@@ -475,8 +475,8 @@ function TripCard({ trip, onUpdate }: { trip: Trip; onUpdate: (t: Trip) => void 
 
   return (
     <div style={{
-      background: '#0a0a0a',
-      border: '1px solid #1e1e1e',
+      background: '#FFFFFF',
+      border: '1px solid #DDD5C5',
       borderRadius: 14,
       padding: 24,
       marginBottom: 24,
@@ -486,10 +486,10 @@ function TripCard({ trip, onUpdate }: { trip: Trip; onUpdate: (t: Trip) => void 
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
             <span style={{ fontSize: 22 }}>{trip.flag}</span>
-            <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: '#f9fafb' }}>{trip.name}</h2>
+            <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: '#0A3D62' }}>{trip.name}</h2>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 13, color: '#9ca3af' }}>
+            <span style={{ fontSize: 13, color: '#8A8A9A' }}>
               {formatDate(trip.departure)} – {formatDate(trip.return)}
             </span>
             <span style={{
@@ -521,7 +521,7 @@ function TripCard({ trip, onUpdate }: { trip: Trip; onUpdate: (t: Trip) => void 
              trip.overallStatus === 'confirmed' ? 'BEKRÄFTAD' :
              trip.overallStatus === 'issue' ? 'ÅTGÄRD KRÄVS' : 'VÄNTAR'}
           </div>
-          <div style={{ fontSize: 11, color: '#6b7280', marginTop: 4 }}>
+          <div style={{ fontSize: 11, color: '#8A8A9A', marginTop: 4 }}>
             <Users size={11} style={{ display: 'inline', marginRight: 4 }} />
             {trip.participants.length} deltagare
           </div>
@@ -531,12 +531,12 @@ function TripCard({ trip, onUpdate }: { trip: Trip; onUpdate: (t: Trip) => void 
       {/* Progress bar */}
       <div style={{ marginBottom: 20 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-          <span style={{ fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>
+          <span style={{ fontSize: 11, color: '#8A8A9A', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>
             Bokningssteg
           </span>
-          <span style={{ fontSize: 11, color: '#9ca3af' }}>{completedSteps}/{totalSteps} klara</span>
+          <span style={{ fontSize: 11, color: '#8A8A9A' }}>{completedSteps}/{totalSteps} klara</span>
         </div>
-        <div style={{ height: 4, background: '#1a1a1a', borderRadius: 2 }}>
+        <div style={{ height: 4, background: '#DDD5C5', borderRadius: 2 }}>
           <div style={{
             height: '100%',
             width: `${(completedSteps / totalSteps) * 100}%`,
@@ -561,7 +561,7 @@ function TripCard({ trip, onUpdate }: { trip: Trip; onUpdate: (t: Trip) => void 
 
       {/* Participants */}
       <div style={{ marginBottom: 20 }}>
-        <h3 style={{ fontSize: 12, fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 10px' }}>
+        <h3 style={{ fontSize: 12, fontWeight: 700, color: '#8A8A9A', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 10px' }}>
           Deltagare
         </h3>
         {trip.participants.map(name => (
@@ -580,9 +580,9 @@ function TripCard({ trip, onUpdate }: { trip: Trip; onUpdate: (t: Trip) => void 
         onClick={() => setShowIntegrations(s => !s)}
         style={{
           background: 'none',
-          border: '1px solid #1e1e1e',
+          border: '1px solid #DDD5C5',
           borderRadius: 8,
-          color: '#9ca3af',
+          color: '#8A8A9A',
           fontSize: 12,
           padding: '6px 12px',
           cursor: 'pointer',
@@ -627,9 +627,9 @@ function TripCard({ trip, onUpdate }: { trip: Trip; onUpdate: (t: Trip) => void 
           style={{
             padding: '8px 16px',
             borderRadius: 8,
-            border: '1px solid #1e1e1e',
+            border: '1px solid #DDD5C5',
             background: 'transparent',
-            color: '#9ca3af',
+            color: '#8A8A9A',
             fontSize: 13,
             fontWeight: 600,
             cursor: 'pointer',
@@ -647,9 +647,9 @@ function TripCard({ trip, onUpdate }: { trip: Trip; onUpdate: (t: Trip) => void 
           style={{
             padding: '8px 16px',
             borderRadius: 8,
-            border: '1px solid #1e1e1e',
+            border: '1px solid #DDD5C5',
             background: 'transparent',
-            color: '#9ca3af',
+            color: '#8A8A9A',
             fontSize: 13,
             fontWeight: 600,
             cursor: 'pointer',
@@ -667,7 +667,7 @@ function TripCard({ trip, onUpdate }: { trip: Trip; onUpdate: (t: Trip) => void 
             fontSize: 12,
             color: smsResult.startsWith('✅') ? '#22c55e' : '#f59e0b',
             padding: '6px 12px',
-            background: smsResult.startsWith('✅') ? '#0a2010' : '#1a1000',
+            background: smsResult.startsWith('✅') ? '#f0fdf4' : '#fffbeb',
             borderRadius: 6,
           }}>
             {smsResult}
@@ -696,7 +696,7 @@ export function TravelAutomationHub() {
       margin: '0 auto',
       padding: '24px 20px',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-      color: '#f9fafb',
+      color: '#0A3D62',
     }}>
       {/* Global CSS for animations */}
       <style>{`
@@ -719,7 +719,7 @@ export function TravelAutomationHub() {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <Plane size={20} color="#60a5fa" />
-            <h1 style={{ margin: 0, fontSize: 20, fontWeight: 700, color: '#f9fafb' }}>Travel Automation</h1>
+            <h1 style={{ margin: 0, fontSize: 20, fontWeight: 700, color: '#0A3D62' }}>Travel Automation</h1>
             {issueCount > 0 && (
               <span style={{
                 background: '#ef4444',
@@ -733,7 +733,7 @@ export function TravelAutomationHub() {
               </span>
             )}
           </div>
-          <p style={{ margin: '4px 0 0', fontSize: 13, color: '#6b7280' }}>
+          <p style={{ margin: '4px 0 0', fontSize: 13, color: '#8A8A9A' }}>
             Fullständig resebokning & statushantering för gruppresor
           </p>
         </div>
@@ -763,8 +763,8 @@ export function TravelAutomationHub() {
         <div style={{
           textAlign: 'center',
           padding: '60px 20px',
-          color: '#6b7280',
-          border: '1px dashed #1e1e1e',
+          color: '#8A8A9A',
+          border: '1px dashed #DDD5C5',
           borderRadius: 12,
         }}>
           <MapPin size={32} style={{ opacity: 0.4, marginBottom: 12 }} />

@@ -35,7 +35,7 @@ export function ApprovalView() {
       <div className={`rounded-xl border p-4 transition-colors ${
         isPending
           ? 'border-amber-500/20 bg-amber-500/[0.03]'
-          : 'border-surface-border bg-muted/30'
+          : 'border-surface-border bg-[#F0EBE1]'
       }`}>
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
@@ -75,7 +75,7 @@ export function ApprovalView() {
               placeholder="Kommentar (valfritt)…"
               value={comment[req.id] ?? ''}
               onChange={e => setComment(prev => ({ ...prev, [req.id]: e.target.value }))}
-              className="w-full bg-muted/30 border border-surface-border rounded-lg px-3 py-1.5 text-xs text-text-primary placeholder-gray-600 focus:outline-none focus:border-gray-300 mb-3"
+              className="w-full bg-[#F0EBE1] border border-surface-border rounded-lg px-3 py-1.5 text-xs text-text-primary placeholder-gray-600 focus:outline-none focus:border-gray-300 mb-3"
             />
             <div className="flex gap-2">
               <button
@@ -108,7 +108,7 @@ export function ApprovalView() {
         ].map(stat => (
           <div
             key={stat.label}
-            className="rounded-xl border border-surface-border bg-muted/30 p-4"
+            className="rounded-xl border border-surface-border bg-[#F0EBE1] p-4"
           >
             <div className="text-[24px] font-bold" style={{ color: stat.color }}>{stat.value}</div>
             <div className="text-xs text-gray-9000 font-mono uppercase tracking-wider mt-1">{stat.label}</div>

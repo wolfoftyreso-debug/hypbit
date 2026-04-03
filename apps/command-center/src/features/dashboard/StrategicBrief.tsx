@@ -559,7 +559,7 @@ function CompetitorTable() {
             onClick={() => setSelected(selected === comp.name ? null : comp.name)}
             className={`text-left rounded-xl border p-3 transition-all ${
               selected === comp.name
-                ? 'border-white/25 bg-white/8'
+                ? 'border-[#DDD5C5] bg-[#F0EBE1]'
                 : 'border-[color:var(--color-border)]'
             }`}
           >
@@ -720,7 +720,7 @@ function ComplianceFramework() {
             onClick={() => setSelected(selected === item.standard ? null : item.standard)}
             className={`text-left rounded-xl border p-3 transition-all ${
               selected === item.standard
-                ? 'border-white/25 bg-white/8'
+                ? 'border-[#DDD5C5] bg-[#F0EBE1]'
                 : 'border-[color:var(--color-border)]'
             }`}
           >
@@ -811,7 +811,7 @@ export function StrategicBrief() {
           </button>
         ))}
       </div>
-      <div className="h-px bg-muted flex-shrink-0" />
+      <div className="h-px bg-[#EDE8DC] flex-shrink-0" />
 
       {/* Content */}
       <div className="flex-1 overflow-auto p-5">

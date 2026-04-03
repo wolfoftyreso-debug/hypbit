@@ -31,7 +31,7 @@ function GanttBar({ startDate, endDate, color, status }: {
   return (
     <div className="relative h-6 w-full">
       {/* Track */}
-      <div className="absolute inset-y-2 inset-x-0 bg-muted/30 rounded-full" />
+      <div className="absolute inset-y-2 inset-x-0 bg-[#F0EBE1] rounded-full" />
       {/* Bar */}
       <div
         className="absolute inset-y-1 rounded-full transition-all"
@@ -80,7 +80,7 @@ export function QuixzoomLaunchView() {
             <h2 className="text-[18px] font-bold text-text-primary">quiXzoom — Sverige-launch</h2>
             <p className="text-xs text-gray-9000 mt-0.5">Mitten juni 2026 · Crowdsourcad kamerainfrastruktur</p>
             <div className="flex items-center gap-3 mt-2">
-              <div className="flex-1 bg-white/[0.08] rounded-full h-2">
+              <div className="flex-1 bg-[#DDD5C5] rounded-full h-2">
                 <div
                   className="h-2 rounded-full bg-blue-500 transition-all"
                   style={{ width: `${pct}%` }}

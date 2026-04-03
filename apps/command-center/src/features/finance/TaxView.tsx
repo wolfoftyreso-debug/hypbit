@@ -68,7 +68,7 @@ export function TaxView() {
       </div>
 
       {/* Next VAT deadline reminder */}
-      <div className="rounded-xl border border-surface-border bg-muted/30 px-4 py-3 flex items-start gap-3">
+      <div className="rounded-xl border border-surface-border bg-[#F0EBE1] px-4 py-3 flex items-start gap-3">
         <span className="text-text-secondary text-lg flex-shrink-0">📅</span>
         <div>
           <p className="text-xs font-semibold text-text-secondary">Nästa momsdeadline (SE)</p>
@@ -198,7 +198,7 @@ export function TaxView() {
                 const isOverdue = tp.status === 'unreported' && tp.due_date != null && tp.due_date < new Date().toISOString().slice(0, 10)
                 return (
                   <div key={tp.id}
-                    className={`grid grid-cols-12 px-4 py-3 items-center hover:bg-muted/30 transition-colors ${isUrgent ? 'border-l-2 border-red-500/50' : ''}`}
+                    className={`grid grid-cols-12 px-4 py-3 items-center hover:bg-[#F0EBE1] transition-colors ${isUrgent ? 'border-l-2 border-red-500/50' : ''}`}
                   >
                     <div className="col-span-2 flex items-center gap-1.5">
                       <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: fe?.color }} />

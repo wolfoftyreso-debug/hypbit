@@ -1,6 +1,6 @@
 // ─── Talent Radar — OpenClaw Elite Recruitment ───────────────────────────────
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   TALENT_TARGETS, STATUS_LABELS, STATUS_COLORS, SOURCE_ICONS,
   type TalentTarget, type TalentStatus
@@ -41,8 +41,8 @@ function TargetCard({ target, onClick, selected }: {
   return (
     <button
       onClick={onClick}
-      className="w-full text-left px-4 py-3.5 border-b border-surface-border/50 transition-colors hover:bg-muted/30"
-      style={{ background: selected ? '#1a1d2e' : undefined }}
+      className="w-full text-left px-4 py-3.5 border-b border-surface-border/50 transition-colors hover:bg-[#F0EBE1]"
+      style={{ background: selected ? '#EDE8DC' : undefined }}
     >
       <div className="flex items-start gap-3">
         <div className="text-xl flex-shrink-0 mt-0.5">
@@ -97,7 +97,7 @@ function TargetDetail({ target }: { target: TalentTarget }) {
 
       {/* Repo */}
       {target.repoUrl && (
-        <div className="rounded-xl border border-surface-border bg-muted/30 p-4">
+        <div className="rounded-xl border border-surface-border bg-[#F0EBE1] p-4">
           <div className="text-xs text-gray-9000 font-mono mb-1">REPO</div>
           <p className="text-sm text-gray-600 mb-2">{target.repoDescription}</p>
           <a
@@ -116,7 +116,7 @@ function TargetDetail({ target }: { target: TalentTarget }) {
         <div className="text-xs text-gray-9000 font-mono mb-2">SPECIALTIES</div>
         <div className="flex flex-wrap gap-1.5">
           {target.specialty.map(s => (
-            <span key={s} className="text-xs px-2.5 py-1 rounded-lg bg-muted/30 text-gray-600 border border-surface-border">
+            <span key={s} className="text-xs px-2.5 py-1 rounded-lg bg-[#F0EBE1] text-gray-600 border border-surface-border">
               {s}
             </span>
           ))}
@@ -152,7 +152,7 @@ function TargetDetail({ target }: { target: TalentTarget }) {
           href={target.profileUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs px-3 py-2 rounded-lg bg-muted/30 text-gray-600 hover:bg-white/[0.1] transition-colors border border-surface-border"
+          className="text-xs px-3 py-2 rounded-lg bg-[#F0EBE1] text-gray-600 hover:bg-[#EDE8DC] transition-colors border border-surface-border"
         >
           View Profile →
         </a>
@@ -161,7 +161,7 @@ function TargetDetail({ target }: { target: TalentTarget }) {
             href={target.repoUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs px-3 py-2 rounded-lg bg-muted/30 text-gray-600 hover:bg-white/[0.1] transition-colors border border-surface-border"
+            className="text-xs px-3 py-2 rounded-lg bg-[#F0EBE1] text-gray-600 hover:bg-[#EDE8DC] transition-colors border border-surface-border"
           >
             View Repo →
           </a>
@@ -184,7 +184,7 @@ function StatsBar({ targets }: { targets: TalentTarget[] }) {
   }, {} as Record<string, number>)
 
   return (
-    <div className="flex items-center gap-4 px-5 py-3 border-b border-surface-border bg-[#07090F] flex-wrap">
+    <div className="flex items-center gap-4 px-5 py-3 border-b border-surface-border bg-[#F5F0E8] flex-wrap">
       <div className="text-xs text-gray-9000 font-mono">
         <span className="text-text-primary font-semibold">{targets.length}</span> targets
       </div>
@@ -206,6 +206,18 @@ export function TalentRadar() {
   const [selectedId, setSelectedId] = useState<string | null>(TALENT_TARGETS[0]?.id ?? null)
   const [filterStatus, setFilterStatus] = useState<TalentStatus | 'all'>('all')
   const [mobileShowDetail, setMobileShowDetail] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetch('/api/talent')
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
+      .then(() => setLoading(false))
+      .catch(e => { setError(e.message); setLoading(false) })
+  }, [])
+
+  if (loading) return <div style={{ padding: 24 }}>{[1,2,3].map(i => <div key={i} style={{ background: 'var(--color-bg-muted)', borderRadius: 10, height: 72, marginBottom: 10, animation: 'pulse 1.5s ease-in-out infinite' }} />)}</div>
+  if (error) return <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '48px 24px', textAlign: 'center', margin: 24 }}><div style={{ fontSize: 32, marginBottom: 12 }}>⚠️</div><div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8 }}>Talent-data ej tillgänglig</div><div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>{error}</div></div>
 
   const filtered = filterStatus === 'all'
     ? TALENT_TARGETS

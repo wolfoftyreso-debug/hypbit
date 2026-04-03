@@ -199,7 +199,7 @@ function MemberCard({ member }: { member: TeamMember }) {
         {/* HRV / Sömn / Strain */}
         <div className="grid grid-cols-3 gap-2">
           {/* HRV */}
-          <div className="rounded-xl bg-muted/30 p-3 flex flex-col items-center gap-1">
+          <div className="rounded-xl bg-[#F0EBE1] p-3 flex flex-col items-center gap-1">
             <span className="text-[10px] text-gray-9000 uppercase font-semibold tracking-wider">HRV</span>
             <span className="text-xl font-bold text-text-primary tabular-nums">
               {member.hrv != null ? Math.round(member.hrv) : '—'}
@@ -208,7 +208,7 @@ function MemberCard({ member }: { member: TeamMember }) {
           </div>
 
           {/* Sömn */}
-          <div className="rounded-xl bg-muted/30 p-3 flex flex-col items-center gap-1">
+          <div className="rounded-xl bg-[#F0EBE1] p-3 flex flex-col items-center gap-1">
             <span className="text-[10px] text-gray-9000 uppercase font-semibold tracking-wider">Sömn</span>
             <span className="text-xl font-bold text-blue-700 tabular-nums">
               {member.sleep_hours != null ? `${member.sleep_hours.toFixed(1)}h` : '—'}
@@ -219,7 +219,7 @@ function MemberCard({ member }: { member: TeamMember }) {
           </div>
 
           {/* Strain */}
-          <div className="rounded-xl bg-muted/30 p-3 flex flex-col items-center gap-1">
+          <div className="rounded-xl bg-[#F0EBE1] p-3 flex flex-col items-center gap-1">
             <span className="text-[10px] text-gray-9000 uppercase font-semibold tracking-wider">Strain</span>
             <span className="text-xl font-bold text-orange-700 tabular-nums">
               {member.strain_score != null ? (Math.round(member.strain_score * 10) / 10).toFixed(1) : '—'}
@@ -231,7 +231,7 @@ function MemberCard({ member }: { member: TeamMember }) {
         {/* Strain bar */}
         {member.strain_score != null && (
           <div>
-            <div className="h-1 rounded-full bg-muted/30 overflow-hidden">
+            <div className="h-1 rounded-full bg-[#F0EBE1] overflow-hidden">
               <div
                 className="h-full rounded-full transition-all"
                 style={{
@@ -289,7 +289,7 @@ function TeamPulse({
         <button
           onClick={onRefresh}
           disabled={loading}
-          className="text-xs px-3 py-1.5 rounded-lg bg-muted/30 text-gray-9000 hover:bg-white/[0.10] transition-colors disabled:opacity-50"
+          className="text-xs px-3 py-1.5 rounded-lg bg-[#F0EBE1] text-gray-9000 hover:bg-white/[0.10] transition-colors disabled:opacity-50"
         >
           {loading ? '↻ Synkar…' : '↻ Synka'}
         </button>
@@ -505,7 +505,7 @@ function SetupAndConnectTab({ onConnected }: { onConnected: () => void }) {
             }
 
             return (
-              <div className="w-full rounded-xl border border-surface-border bg-muted p-4 grid grid-cols-3 gap-3 text-center">
+              <div className="w-full rounded-xl border border-surface-border bg-[#EDE8DC] p-4 grid grid-cols-3 gap-3 text-center">
                 <div>
                   <div
                     className="text-2xl font-bold"
@@ -620,7 +620,7 @@ function SetupAndConnectTab({ onConnected }: { onConnected: () => void }) {
               <div className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-sm font-bold text-text-primary">
                 {num}
               </div>
-              {!isLastStep && <div className="w-px flex-1 bg-muted min-h-[20px]" />}
+              {!isLastStep && <div className="w-px flex-1 bg-[#EDE8DC] min-h-[20px]" />}
             </div>
             <div className="flex-1 pb-2">
               <div className="flex items-center gap-2 mb-2">
@@ -707,7 +707,7 @@ export function WHOOPTeamDashboard() {
   ]
 
   return (
-    <div className="h-full flex flex-col bg-muted/30 text-text-primary overflow-hidden">
+    <div className="h-full flex flex-col bg-[#F0EBE1] text-text-primary overflow-hidden">
       {/* Header */}
       <div className="flex-shrink-0 px-4 md:px-6 pt-5 pb-0 border-b border-surface-border">
         <div className="flex items-center gap-3 mb-4">

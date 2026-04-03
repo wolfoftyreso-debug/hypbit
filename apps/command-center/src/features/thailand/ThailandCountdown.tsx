@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const TARGET = new Date('2026-04-11T00:00:00+07:00') // Bangkok time
+const TARGET = new Date('2026-04-11T00:00:00+07:00')
 
 function getTimeLeft() {
   const now = new Date()
@@ -15,64 +15,68 @@ function getTimeLeft() {
   }
 }
 
+const unit: React.CSSProperties = {
+  background: 'var(--color-surface)',
+  border: '1px solid var(--color-border)',
+  borderRadius: 12,
+  padding: '20px 16px',
+  textAlign: 'center',
+  minWidth: 80,
+  flex: 1,
+}
+
 export function ThailandCountdown() {
   const [time, setTime] = useState(getTimeLeft())
+  const [loaded, setLoaded] = useState(false)
+
   useEffect(() => {
+    setLoaded(true)
     const id = setInterval(() => setTime(getTimeLeft()), 1000)
     return () => clearInterval(id)
   }, [])
 
+  if (!loaded) {
+    return (
+      <div style={{ padding: 24 }}>
+        <div style={{ background: 'var(--color-bg-muted)', borderRadius: 12, height: 140, animation: 'pulse 1.5s ease-in-out infinite' }} />
+      </div>
+    )
+  }
+
   if (time.done) {
     return (
-      <div
-        className="rounded-xl border border-yellow-500/30 p-6 text-center"
-        style={{ background: 'linear-gradient(135deg, #1a0a2e 0%, #0D0F1A 100%)' }}
-      >
-        <div className="text-5xl mb-3">🇹🇭</div>
-        <p className="text-text-primary font-bold text-2xl">Vi är i Thailand!</p>
-        <p className="text-gray-900/50 text-sm mt-1">Workcamp pågår</p>
+      <div style={{ background: 'var(--color-brand)', borderRadius: 12, padding: '32px 24px', textAlign: 'center', color: 'var(--color-text-inverse)' }}>
+        <div style={{ fontSize: 40, marginBottom: 12 }}>🇹🇭</div>
+        <div style={{ fontSize: 24, fontWeight: 800 }}>Vi är i Bangkok!</div>
+        <div style={{ fontSize: 13, color: 'rgba(245,240,232,.6)', marginTop: 8 }}>Workcamp pågår — bygg hårt, bygg rätt.</div>
       </div>
     )
   }
 
   return (
-    <div
-      className="rounded-xl border border-blue-600/20 overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #1a0a2e 0%, #0D0F1A 100%)' }}
-    >
-      {/* Header */}
-      <div className="px-5 pt-5 pb-4 border-b border-surface-border flex items-center gap-3">
-        <span className="text-3xl">🇹🇭</span>
-        <div>
-          <h3 className="text-sm font-semibold text-text-primary">Thailand Workcamp</h3>
-          <p className="text-xs text-gray-9000 mt-0.5">11 April 2026 — Projektstart</p>
-        </div>
+    <div>
+      <div style={{ background: 'var(--color-brand)', borderRadius: 12, padding: '24px 28px', marginBottom: 20, color: 'var(--color-text-inverse)' }}>
+        <div style={{ fontSize: 9, fontFamily: 'monospace', color: 'var(--color-accent)', letterSpacing: '.15em', textTransform: 'uppercase', marginBottom: 8 }}>Thailand Workcamp</div>
+        <h2 style={{ fontSize: 22, fontWeight: 800, margin: '0 0 4px' }}>Bangkok · 11 april 2026</h2>
+        <p style={{ fontSize: 13, color: 'rgba(245,240,232,.6)', margin: 0 }}>Nysa Hotel · Sukhumvit · Hela teamet</p>
       </div>
 
-      {/* Countdown grid */}
-      <div className="grid grid-cols-4 gap-2 md:gap-3 px-3 md:px-5 py-4 md:py-5">
+      <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
         {[
-          { label: 'DAGAR', value: time.days },
-          { label: 'TIMMAR', value: time.hours },
-          { label: 'MINUTER', value: time.minutes },
-          { label: 'SEKUNDER', value: time.seconds },
+          { label: 'Dagar', value: time.days },
+          { label: 'Timmar', value: time.hours },
+          { label: 'Minuter', value: time.minutes },
+          { label: 'Sekunder', value: time.seconds },
         ].map(({ label, value }) => (
-          <div
-            key={label}
-            className="rounded-xl p-3 text-center"
-            style={{ background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.15)' }}
-          >
-            <p className="text-3xl md:text-5xl font-bold tabular-nums leading-none" style={{ color: '#a78bfa' }}>
-              {String(value).padStart(2, '0')}
-            </p>
-            <p className="text-[9px] text-gray-9000 uppercase tracking-wider mt-2">{label}</p>
+          <div key={label} style={unit}>
+            <div style={{ fontSize: 36, fontWeight: 800, color: 'var(--color-brand)', lineHeight: 1 }}>{String(value).padStart(2, '0')}</div>
+            <div style={{ fontSize: 10, color: 'var(--color-text-muted)', marginTop: 6, letterSpacing: '.1em', textTransform: 'uppercase' }}>{label}</div>
           </div>
         ))}
       </div>
 
-      {/* Footer */}
-      <div className="px-5 pb-4 text-center">
-        <p className="text-xs text-gray-9000">Hela teamet samlas — projekten rullas ut 🚀</p>
+      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 10, padding: '14px 18px', fontSize: 13, color: 'var(--color-text-muted)' }}>
+        📍 Nysa Hotel Bangkok · 73/7-8 Soi Sukhumvit 13 · <strong style={{ color: 'var(--color-text-primary)' }}>{time.days} dagar kvar</strong>
       </div>
     </div>
   )

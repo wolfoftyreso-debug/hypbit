@@ -81,16 +81,16 @@ function NodeCard({ node, depth = 0 }: { node: OwnerNode; depth?: number }) {
         {/* Tree lines */}
         {depth > 0 && (
           <div className="flex flex-col items-center flex-shrink-0" style={{ width: 32, marginTop: 24 }}>
-            <div className="w-px flex-1 bg-white/[0.1]" style={{ minHeight: 20, maxHeight: 20 }} />
+            <div className="w-px flex-1 bg-[#DDD5C5]" style={{ minHeight: 20, maxHeight: 20 }} />
             <div className="flex items-center" style={{ height: 2 }}>
-              <div className="w-4 h-px bg-white/[0.1]" />
+              <div className="w-4 h-px bg-[#DDD5C5]" />
             </div>
           </div>
         )}
 
         {/* Card */}
         <div
-          className="rounded-xl border p-4 flex-1 transition-all hover:bg-muted/30"
+          className="rounded-xl border p-4 flex-1 transition-all hover:bg-[#EDE8DC]"
           style={{
             borderColor: node.color + '40',
             background: node.color + '08',
@@ -140,7 +140,7 @@ function NodeCard({ node, depth = 0 }: { node: OwnerNode; depth?: number }) {
         <div className="flex flex-col ml-8 mt-0">
           {/* Vertical line from parent */}
           <div className="flex">
-            <div className="w-px bg-white/[0.1] mx-4" style={{ minHeight: 16, maxHeight: 16 }} />
+            <div className="w-px bg-[#DDD5C5] mx-4" style={{ minHeight: 16, maxHeight: 16 }} />
           </div>
           <div className="flex">
             <div className="flex flex-col gap-3 flex-1">
@@ -153,7 +153,7 @@ function NodeCard({ node, depth = 0 }: { node: OwnerNode; depth?: number }) {
                       style={{ width: 16, height: 28, borderBottomLeftRadius: 4 }}
                     />
                     {i < node.children!.length - 1 && (
-                      <div className="w-px flex-1 bg-white/[0.1]" />
+                      <div className="w-px flex-1 bg-[#DDD5C5]" />
                     )}
                   </div>
                   <div className="flex-1">

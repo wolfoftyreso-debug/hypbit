@@ -73,12 +73,12 @@ export function InboxView() {
   return (
     <div className="flex h-full gap-4">
       {/* Sidebar */}
-      <div className="w-80 flex-shrink-0 flex flex-col gap-0 bg-neutral-900 border border-white/10 rounded-xl overflow-hidden">
+      <div className="w-80 flex-shrink-0 flex flex-col gap-0 bg-white border border-[#DDD5C5] rounded-xl overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[#DDD5C5]">
           <div className="flex items-center gap-2">
             <Inbox size={14} className="text-blue-400" />
-            <span className="text-xs font-semibold text-white">Inkorg</span>
+            <span className="text-xs font-semibold text-[#0A3D62]">Inkorg</span>
             {unread > 0 && (
               <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30">
                 {unread}
@@ -88,7 +88,7 @@ export function InboxView() {
           <button
             onClick={fetchInbox}
             disabled={loading}
-            className="text-white/30 hover:text-white/60 transition-colors"
+            className="text-[#8A8A9A] hover:text-[#6B7280] transition-colors"
           >
             <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
           </button>
@@ -100,10 +100,10 @@ export function InboxView() {
             <div className="p-4 space-y-3">
               {[...Array(5)].map((_, i) => (
                 <div key={i} className="flex gap-3 items-start animate-pulse">
-                  <div className="w-8 h-8 rounded-full bg-white/10 flex-shrink-0" />
+                  <div className="w-8 h-8 rounded-full bg-[#EDE8DC] flex-shrink-0" />
                   <div className="flex-1 space-y-1.5">
-                    <div className="h-3 bg-white/10 rounded w-3/4" />
-                    <div className="h-2 bg-white/5 rounded w-full" />
+                    <div className="h-3 bg-[#EDE8DC] rounded w-3/4" />
+                    <div className="h-2 bg-[#F0EBE1] rounded w-full" />
                   </div>
                 </div>
               ))}
@@ -112,12 +112,12 @@ export function InboxView() {
             <div className="p-4 flex flex-col items-center gap-3 text-center">
               <AlertCircle size={20} className="text-red-400" />
               <p className="text-xs text-red-400">{error}</p>
-              <button onClick={fetchInbox} className="text-xs text-white/40 hover:text-white/60">Försök igen</button>
+              <button onClick={fetchInbox} className="text-xs text-[#8A8A9A] hover:text-[#6B7280]">Försök igen</button>
             </div>
           ) : emails.length === 0 ? (
             <div className="p-8 flex flex-col items-center gap-3 text-center">
-              <Mail size={24} className="text-white/20" />
-              <p className="text-xs text-white/30">Inga mail i inkorgen</p>
+              <Mail size={24} className="text-[#8A8A9A]" />
+              <p className="text-xs text-[#8A8A9A]">Inga mail i inkorgen</p>
             </div>
           ) : (
             emails.map(email => {
@@ -128,8 +128,8 @@ export function InboxView() {
                 <button
                   key={email.id}
                   onClick={() => setSelected(email)}
-                  className={`w-full text-left flex items-start gap-3 px-4 py-3 border-b border-white/5 transition-colors ${
-                    isSelected ? 'bg-blue-500/10 border-l-2 border-l-blue-500' : 'hover:bg-white/5'
+                  className={`w-full text-left flex items-start gap-3 px-4 py-3 border-b border-[#DDD5C5] transition-colors ${
+                    isSelected ? 'bg-blue-500/10 border-l-2 border-l-blue-500' : 'hover:bg-[#EDE8DC]'
                   }`}
                 >
                   <div
@@ -140,12 +140,12 @@ export function InboxView() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-1 mb-0.5">
-                      <span className={`text-xs truncate ${email.read ? 'text-white/50' : 'text-white font-semibold'}`}>
+                      <span className={`text-xs truncate ${email.read ? 'text-[#8A8A9A]' : 'text-[#0A3D62] font-semibold'}`}>
                         {name}
                       </span>
-                      <span className="text-[10px] text-white/20 font-mono flex-shrink-0">{relTime(email.date)}</span>
+                      <span className="text-[10px] text-[#8A8A9A] font-mono flex-shrink-0">{relTime(email.date)}</span>
                     </div>
-                    <p className={`text-xs truncate ${email.read ? 'text-white/30' : 'text-white/60'}`}>
+                    <p className={`text-xs truncate ${email.read ? 'text-[#8A8A9A]' : 'text-[#6B7280]'}`}>
                       {email.subject || '(inget ämne)'}
                     </p>
                   </div>
@@ -158,7 +158,7 @@ export function InboxView() {
       </div>
 
       {/* Detail pane */}
-      <div className="flex-1 bg-neutral-900 border border-white/10 rounded-xl overflow-hidden">
+      <div className="flex-1 bg-white border border-[#DDD5C5] rounded-xl overflow-hidden">
         {selected ? (
           <div className="p-6 h-full overflow-auto">
             <div className="flex items-start gap-4 mb-6">
@@ -176,14 +176,14 @@ export function InboxView() {
               })()}
               <div className="flex-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-semibold text-white">{extractDisplayName(selected.from)}</span>
-                  <span className="text-xs text-white/30 font-mono">{selected.date}</span>
+                  <span className="text-sm font-semibold text-[#0A3D62]">{extractDisplayName(selected.from)}</span>
+                  <span className="text-xs text-[#8A8A9A] font-mono">{selected.date}</span>
                 </div>
-                <div className="text-xs text-white/30">{selected.from}</div>
+                <div className="text-xs text-[#8A8A9A]">{selected.from}</div>
               </div>
             </div>
-            <h2 className="text-base font-bold text-white mb-4">{selected.subject || '(inget ämne)'}</h2>
-            <div className="text-xs text-white/50 bg-white/5 rounded-xl p-4">
+            <h2 className="text-base font-bold text-[#0A3D62] mb-4">{selected.subject || '(inget ämne)'}</h2>
+            <div className="text-xs text-[#6B7280] bg-[#F0EBE1] rounded-xl p-4">
               Öppna detta mail i Loopia Webmail för att läsa hela innehållet.
               <br /><br />
               <a
@@ -199,8 +199,8 @@ export function InboxView() {
         ) : (
           <div className="h-full flex items-center justify-center">
             <div className="text-center">
-              <Mail size={32} className="text-white/10 mx-auto mb-3" />
-              <p className="text-xs text-white/20">Välj ett mail för att läsa det</p>
+              <Mail size={32} className="text-[#8A8A9A] mx-auto mb-3" />
+              <p className="text-xs text-[#8A8A9A]">Välj ett mail för att läsa det</p>
             </div>
           </div>
         )}

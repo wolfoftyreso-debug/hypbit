@@ -54,7 +54,7 @@ function IntegrationCard({
   return (
     <button
       onClick={onClick}
-      className="flex flex-col gap-2 p-4 rounded-xl border border-surface-border bg-muted/30 hover:bg-muted hover:border-gray-300 transition-all text-left w-full group"
+      className="flex flex-col gap-2 p-4 rounded-xl border border-surface-border bg-[#F0EBE1] hover:bg-[#EDE8DC] hover:border-gray-300 transition-all text-left w-full group"
     >
       <div className="flex items-start justify-between gap-2">
         <span className="text-2xl leading-none">{integration.icon}</span>
@@ -177,7 +177,7 @@ function NewsCard({ news }: { news: ProviderNews }) {
   }[news.type]
 
   return (
-    <div className="p-4 rounded-xl border border-surface-border bg-muted/30 hover:bg-white/8 transition-colors">
+    <div className="p-4 rounded-xl border border-surface-border bg-[#F0EBE1] hover:bg-[#EDE8DC] transition-colors">
       <div className="flex items-start gap-3 mb-2">
         <span className="text-xl mt-0.5">{news.icon}</span>
         <div className="flex-1 min-w-0">
@@ -191,7 +191,7 @@ function NewsCard({ news }: { news: ProviderNews }) {
         </div>
       </div>
       <div className="mt-2">
-        <span className="text-xs text-gray-900/40 bg-muted/30 px-2 py-0.5 rounded">{news.category}</span>
+        <span className="text-xs text-gray-900/40 bg-[#F0EBE1] px-2 py-0.5 rounded">{news.category}</span>
       </div>
     </div>
   )
@@ -239,7 +239,7 @@ export function APIHub() {
   ] as const
 
   return (
-    <div className="min-h-screen bg-[#080C10] text-text-primary">
+    <div className="min-h-screen bg-[#F5F0E8] text-text-primary">
       {/* Header */}
       <div className="border-b border-surface-border bg-white/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
@@ -267,13 +267,13 @@ export function APIHub() {
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeTab === tab.id
                     ? 'bg-blue-600 text-gray-900'
-                    : 'text-gray-900/60 hover:text-text-primary hover:bg-muted'
+                    : 'text-gray-900/60 hover:text-text-primary hover:bg-[#EDE8DC]'
                 }`}
               >
                 <span>{tab.icon}</span>
                 <span>{tab.label}</span>
                 <span className={`text-xs px-1.5 py-0.5 rounded-full ${
-                  activeTab === tab.id ? 'bg-white/20' : 'bg-muted'
+                  activeTab === tab.id ? 'bg-white/20' : 'bg-[#EDE8DC]'
                 }`}>
                   {tab.count}
                 </span>
@@ -295,7 +295,7 @@ export function APIHub() {
                 placeholder="Sök API, provider, kategori..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="flex-1 bg-muted/30 border border-surface-border rounded-xl px-4 py-2.5 text-sm text-text-primary placeholder:text-gray-900/30 focus:outline-none focus:border-blue-500 focus:bg-white/8"
+                className="flex-1 bg-[#F0EBE1] border border-surface-border rounded-xl px-4 py-2.5 text-sm text-text-primary placeholder:text-gray-900/30 focus:outline-none focus:border-blue-500 focus:bg-white"
               />
               <div className="text-sm text-gray-900/40 flex items-center px-2">
                 {filteredIntegrations.length} integrationer
@@ -311,7 +311,7 @@ export function APIHub() {
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
                     selectedCategory === cat.id
                       ? 'bg-blue-600 border-blue-600 text-gray-900'
-                      : 'border-gray-300 text-gray-900/60 hover:border-white/40 hover:text-text-primary bg-muted/30'
+                      : 'border-gray-300 text-gray-900/60 hover:border-[#DDD5C5] hover:text-text-primary bg-[#F0EBE1]'
                   }`}
                 >
                   <span>{cat.icon}</span>
@@ -352,7 +352,7 @@ export function APIHub() {
                 { label: 'Paid', value: LIVE_INTEGRATIONS.filter(i => i.price === 'paid' || i.price === 'usage-based').length, color: 'text-orange-700', icon: '💳' },
                 { label: 'Free', value: LIVE_INTEGRATIONS.filter(i => i.price === 'free').length, color: 'text-emerald-700', icon: '✅' },
               ].map(stat => (
-                <div key={stat.label} className="bg-muted/30 border border-surface-border rounded-xl p-4 text-center">
+                <div key={stat.label} className="bg-[#F0EBE1] border border-surface-border rounded-xl p-4 text-center">
                   <div className="text-2xl mb-1">{stat.icon}</div>
                   <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>
                   <div className="text-xs text-gray-900/40 mt-0.5">{stat.label}</div>
@@ -391,7 +391,7 @@ export function APIHub() {
               <h2 className="text-sm font-semibold text-gray-900/60 uppercase tracking-wider">
                 Provider Updates
               </h2>
-              <span className="text-xs text-gray-900/30 bg-muted/30 px-2 py-1 rounded">
+              <span className="text-xs text-gray-900/30 bg-[#F0EBE1] px-2 py-1 rounded">
                 Statisk demo — uapix live-data planeras
               </span>
             </div>

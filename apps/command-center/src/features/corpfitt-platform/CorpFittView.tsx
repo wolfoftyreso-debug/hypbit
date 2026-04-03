@@ -1,48 +1,92 @@
-import { useApi } from '../../shared/auth/useApi'
 import { useState, useEffect } from 'react'
 
-export default function CorpFittView() {
-  const { apiFetch } = useApi()
-  const [stats, setStats] = useState<any>(null)
+interface FitnessChallenge { id: string; title: string; participants: number; daysLeft: number; category: string; status: 'active' | 'upcoming' | 'completed' }
+interface TeamFitnessScore { memberId: string; name: string; score: number; rank: number; streak: number }
+
+function useCorpFittData() {
+  const [challenges, setChallenges] = useState<FitnessChallenge[]>([])
+  const [leaderboard, setLeaderboard] = useState<TeamFitnessScore[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    apiFetch('/api/corpfitt/stats').then(r => r.ok ? r.json() : null).then(setStats).catch(() => null)
-  }, [apiFetch])
+    Promise.all([
+      fetch('/api/corpfitt/challenges').then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`)),
+      fetch('/api/corpfitt/leaderboard').then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`)),
+    ])
+      .then(([c, l]) => { setChallenges(c.challenges ?? []); setLeaderboard(l.scores ?? []); setLoading(false) })
+      .catch(e => { setError(String(e)); setLoading(false) })
+  }, [])
+
+  return { challenges, leaderboard, loading, error }
+}
+
+export default function CorpFittView() {
+  const { challenges, leaderboard, loading, error } = useCorpFittData()
 
   return (
-    <div style={{ padding: '0 0 40px' }}>
-      <div style={{ background: 'linear-gradient(135deg,#0A1F3D,#152d52)', borderRadius: 12, padding: '24px 28px', marginBottom: 24, color: '#F5F0E8' }}>
-        <div style={{ fontSize: 9, fontFamily: 'monospace', color: 'rgba(200,168,75,.7)', letterSpacing: '.15em', textTransform: 'uppercase', marginBottom: 8 }}>CorpFitt Platform</div>
-        <h2 style={{ fontSize: 22, fontWeight: 800, margin: '0 0 6px' }}>Global Fitness Access</h2>
-        <p style={{ fontSize: 13, color: 'rgba(245,240,232,.55)', margin: 0 }}>$20/visit · $300 monthly cap · 9 hotel chains · 60+ locations</p>
+    <div>
+      <div style={{ background: 'var(--color-brand)', borderRadius: 12, padding: '24px 28px', marginBottom: 24, color: 'var(--color-text-inverse)' }}>
+        <div style={{ fontSize: 9, fontFamily: 'monospace', color: 'var(--color-accent)', letterSpacing: '.15em', textTransform: 'uppercase', marginBottom: 8 }}>CorpFitt</div>
+        <h2 style={{ fontSize: 22, fontWeight: 800, margin: '0 0 6px' }}>Team Fitness</h2>
+        <p style={{ fontSize: 13, color: 'rgba(245,240,232,.6)', margin: 0 }}>Hälsoutmaningar och teamprestation</p>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16, marginBottom: 24 }}>
-        {[
-          { label: 'Total visits', value: stats?.total_visits ?? '—' },
-          { label: 'Active users', value: stats?.active_users ?? '—' },
-          { label: 'Partner locations', value: '60+' },
-          { label: 'MRR', value: stats?.mrr ?? '$0' },
-        ].map(({ label, value }) => (
-          <div key={label} style={{ background: '#fff', border: '1px solid #DDD5C5', borderRadius: 10, padding: '18px 20px' }}>
-            <div style={{ fontSize: 10, color: '#9ca3af', textTransform: 'uppercase', letterSpacing: '.1em', marginBottom: 6 }}>{label}</div>
-            <div style={{ fontSize: 26, fontWeight: 800, color: '#0A1F3D' }}>{value}</div>
+
+      {loading && (
+        <div>
+          {[1,2,3].map(i => <div key={i} style={{ background: 'var(--color-bg-muted)', borderRadius: 10, height: 70, marginBottom: 10, animation: 'pulse 1.5s ease-in-out infinite' }} />)}
+        </div>
+      )}
+
+      {error && (
+        <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '48px 24px', textAlign: 'center' }}>
+          <div style={{ fontSize: 32, marginBottom: 12 }}>⚠️</div>
+          <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8 }}>Fitness-data ej tillgänglig</div>
+          <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>{error}</div>
+        </div>
+      )}
+
+      {!loading && !error && challenges.length === 0 && (
+        <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '64px 24px', textAlign: 'center' }}>
+          <div style={{ fontSize: 40, marginBottom: 16 }}>💪</div>
+          <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8, fontSize: 16 }}>Inga aktiva utmaningar</div>
+          <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>Skapa en hälsoutmaning för teamet</div>
+        </div>
+      )}
+
+      {!loading && !error && challenges.length > 0 && (
+        <div>
+          <div style={{ fontSize: 11, color: 'var(--color-text-muted)', letterSpacing: '.15em', textTransform: 'uppercase', marginBottom: 12 }}>Aktiva utmaningar</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
+            {challenges.filter(c => c.status === 'active').map(c => (
+              <div key={c.id} style={{ background: 'var(--color-surface)', border: '1px solid var(--color-accent)', borderRadius: 10, padding: '16px 18px', display: 'flex', alignItems: 'center', gap: 14 }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 700, fontSize: 14, color: 'var(--color-text-primary)' }}>{c.title}</div>
+                  <div style={{ fontSize: 12, color: 'var(--color-text-muted)', marginTop: 2 }}>{c.participants} deltagare · {c.category}</div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--color-accent)' }}>{c.daysLeft}</div>
+                  <div style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>dagar kvar</div>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <div style={{ background: '#fff', border: '1px solid #DDD5C5', borderRadius: 10, padding: 24 }}>
-        <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 16 }}>Quick links</h3>
-        {[
-          { label: 'Landing page', url: 'https://d14gf6x22fx96q.cloudfront.net/corpfitt/index.html' },
-          { label: 'Partner onboarding', url: 'https://d14gf6x22fx96q.cloudfront.net/corpfitt/partners.html' },
-          { label: 'Developer API docs', url: 'https://d14gf6x22fx96q.cloudfront.net/corpfitt/developers.html' },
-          { label: 'Gitea repo', url: 'https://git.wavult.com/wavult/corpfitt-app' },
-        ].map(({ label, url }) => (
-          <a key={label} href={url} target="_blank" rel="noopener noreferrer"
-            style={{ display: 'block', padding: '10px 0', borderBottom: '1px solid #f0ede6', fontSize: 13, color: '#0A1F3D', textDecoration: 'none', fontWeight: 500 }}>
-            {label} <span style={{ color: '#C8A84B', fontSize: 11 }}>↗</span>
-          </a>
-        ))}
-      </div>
+
+          {leaderboard.length > 0 && (
+            <>
+              <div style={{ fontSize: 11, color: 'var(--color-text-muted)', letterSpacing: '.15em', textTransform: 'uppercase', marginBottom: 12 }}>Topplista</div>
+              {leaderboard.slice(0, 5).map(m => (
+                <div key={m.memberId} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 0', borderBottom: '1px solid var(--color-border)' }}>
+                  <div style={{ width: 28, height: 28, borderRadius: '50%', background: m.rank <= 3 ? 'var(--color-accent)' : 'var(--color-bg-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 13, color: m.rank <= 3 ? 'var(--color-brand)' : 'var(--color-text-muted)' }}>{m.rank}</div>
+                  <span style={{ flex: 1, fontWeight: 600, fontSize: 13 }}>{m.name}</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--color-brand)' }}>{m.score} pts</span>
+                  <span style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>🔥 {m.streak}d</span>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+      )}
     </div>
   )
 }

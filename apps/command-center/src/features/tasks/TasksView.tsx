@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { useTranslation } from '../../shared/i18n/useTranslation'
 
@@ -261,6 +261,18 @@ export function TasksView() {
   const { t: _t } = useTranslation() // ready for i18n
   const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS)
   const [filter, setFilter] = useState<string>('all')
+  const [loading, setLoading] = useState(true)
+  const [taskError, setTaskError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetch('/api/tasks')
+      .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
+      .then(d => { if (d.tasks?.length) setTasks(d.tasks); setLoading(false) })
+      .catch(e => { setTaskError(String(e)); setLoading(false) })
+  }, [])
+
+  if (loading) return <div style={{ padding: 24 }}>{[1,2,3,4].map(i => <div key={i} style={{ background: 'var(--color-bg-muted)', borderRadius: 10, height: 56, marginBottom: 10, animation: 'pulse 1.5s ease-in-out infinite' }} />)}</div>
+  if (taskError && tasks.length === 0) return <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '48px 24px', textAlign: 'center', margin: 24 }}><div style={{ fontSize: 32, marginBottom: 12 }}>⚠️</div><div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8 }}>Uppgifter ej tillgängliga</div><div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>{taskError}</div></div>
   const { activeEntity, isInScope } = useEntityScope()
   const isRoot = activeEntity.layer === 0
 

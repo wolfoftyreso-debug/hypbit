@@ -230,9 +230,9 @@ function NodeCard({
     <div
       onClick={onClick}
       style={{
-        background: selected ? '#0F0F0F' : '#080808',
-        border: `1px solid ${selected ? zone.color : '#1A1A1A'}`,
-        borderLeft: `3px solid ${node.critical ? zone.color : '#2A2A2A'}`,
+        background: selected ? '#F0EBE1' : '#FFFFFF',
+        border: `1px solid ${selected ? zone.color : '#DDD5C5'}`,
+        borderLeft: `3px solid ${node.critical ? zone.color : '#DDD5C5'}`,
         borderRadius: 4,
         padding: '10px 12px',
         cursor: 'pointer',
@@ -260,10 +260,10 @@ function NodeCard({
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 8 }}>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: '#E4E4E7', letterSpacing: '0.02em', lineHeight: 1.2 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: '#0A3D62', letterSpacing: '0.02em', lineHeight: 1.2 }}>
             {node.label}
           </div>
-          <div style={{ fontSize: 9, color: '#3F3F46', marginTop: 2, lineHeight: 1.3 }}>
+          <div style={{ fontSize: 9, color: '#8A8A9A', marginTop: 2, lineHeight: 1.3 }}>
             {node.sublabel}
           </div>
         </div>
@@ -293,24 +293,24 @@ function NodeCard({
       <div style={{
         display: 'grid', gridTemplateColumns: '1fr 1fr',
         gap: '4px 8px',
-        borderTop: '1px solid #141414',
+        borderTop: '1px solid #DDD5C5',
         paddingTop: 8,
       }}>
         {[
-          { label: 'LATENCY', value: `${Math.round(node.metrics.latency)}ms`, color: node.metrics.latency > 200 ? '#F59E0B' : '#A1A1AA' },
-          { label: 'RPS', value: fmtRps(node.metrics.rps), color: '#A1A1AA' },
+          { label: 'LATENCY', value: `${Math.round(node.metrics.latency)}ms`, color: node.metrics.latency > 200 ? '#F59E0B' : '#8A8A9A' },
+          { label: 'RPS', value: fmtRps(node.metrics.rps), color: '#8A8A9A' },
           { label: 'LOAD', value: `${Math.round(node.metrics.load)}%`, color: lc },
-          { label: 'ERRORS', value: `${node.metrics.errors.toFixed(1)}%`, color: node.metrics.errors > 1 ? '#EF4444' : '#A1A1AA' },
+          { label: 'ERRORS', value: `${node.metrics.errors.toFixed(1)}%`, color: node.metrics.errors > 1 ? '#EF4444' : '#8A8A9A' },
         ].map(m => (
           <div key={m.label}>
-            <div style={{ fontSize: 7, color: '#3F3F46', letterSpacing: '0.1em', marginBottom: 1 }}>{m.label}</div>
+            <div style={{ fontSize: 7, color: '#8A8A9A', letterSpacing: '0.1em', marginBottom: 1 }}>{m.label}</div>
             <div style={{ fontSize: 11, fontWeight: 700, color: m.color, fontVariantNumeric: 'tabular-nums' }}>{m.value}</div>
           </div>
         ))}
       </div>
 
       {/* Load bar */}
-      <div style={{ marginTop: 8, height: 2, background: '#141414', borderRadius: 1, overflow: 'hidden' }}>
+      <div style={{ marginTop: 8, height: 2, background: '#DDD5C5', borderRadius: 1, overflow: 'hidden' }}>
         <div style={{
           height: '100%', width: `${node.metrics.load}%`,
           background: lc,
@@ -379,7 +379,7 @@ function EdgeLayer({ nodes, edges, selectedId }: {
             <path
               d={`M${from.x},${from.y} C${mx},${from.y} ${mx},${to.y} ${to.x},${to.y}`}
               fill="none"
-              stroke={edge.critical ? '#10B981' : '#1E1E1E'}
+              stroke={edge.critical ? '#10B981' : '#DDD5C5'}
               strokeWidth={edge.critical ? (isSelected ? 2.5 : 2) : 1}
               strokeDasharray={edge.critical ? undefined : '4,4'}
               markerEnd={`url(#arrow-${edge.critical ? 'critical' : 'normal'})`}
@@ -414,7 +414,7 @@ function DetailPanel({ node, onClose }: { node: SystemNode; onClose: () => void 
   return (
     <div style={{
       width: 320, flexShrink: 0,
-      background: '#060606',
+      background: '#FFFFFF',
       borderLeft: '1px solid #141414',
       display: 'flex', flexDirection: 'column',
       fontFamily: 'ui-monospace, "SF Mono", monospace',
@@ -424,12 +424,12 @@ function DetailPanel({ node, onClose }: { node: SystemNode; onClose: () => void 
       <div style={{ padding: '16px 20px', borderBottom: '1px solid #141414' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#F4F4F5', marginBottom: 2 }}>{node.label}</div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#0A3D62', marginBottom: 2 }}>{node.label}</div>
             <div style={{ fontSize: 9, color: '#3F3F46' }}>{node.sublabel}</div>
           </div>
           <button onClick={onClose} style={{
             background: 'none', border: 'none', cursor: 'pointer',
-            color: '#3F3F46', fontSize: 14, padding: '2px 4px',
+            color: '#8A8A9A', fontSize: 14, padding: '2px 4px',
           }}>✕</button>
         </div>
         <div style={{ display: 'flex', gap: 6, marginTop: 10 }}>
@@ -458,7 +458,7 @@ function DetailPanel({ node, onClose }: { node: SystemNode; onClose: () => void 
 
       {/* Metrics */}
       <div style={{ padding: '14px 20px', borderBottom: '1px solid #141414' }}>
-        <div style={{ fontSize: 8, color: '#3F3F46', letterSpacing: '0.1em', marginBottom: 10 }}>METRICS</div>
+        <div style={{ fontSize: 8, color: '#8A8A9A', letterSpacing: '0.1em', marginBottom: 10 }}>METRICS</div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 20px' }}>
           {[
             { k: 'Latency', v: `${Math.round(node.metrics.latency)} ms` },
@@ -468,8 +468,8 @@ function DetailPanel({ node, onClose }: { node: SystemNode; onClose: () => void 
             { k: 'Uptime 30d', v: `${node.metrics.uptime.toFixed(2)}%` },
           ].map(m => (
             <div key={m.k}>
-              <div style={{ fontSize: 8, color: '#3F3F46', letterSpacing: '0.08em', marginBottom: 3 }}>{m.k.toUpperCase()}</div>
-              <div style={{ fontSize: 14, fontWeight: 700, color: m.c ?? '#A1A1AA', fontVariantNumeric: 'tabular-nums' }}>{m.v}</div>
+              <div style={{ fontSize: 8, color: '#8A8A9A', letterSpacing: '0.08em', marginBottom: 3 }}>{m.k.toUpperCase()}</div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: m.c ?? '#8A8A9A', fontVariantNumeric: 'tabular-nums' }}>{m.v}</div>
             </div>
           ))}
         </div>
@@ -477,20 +477,20 @@ function DetailPanel({ node, onClose }: { node: SystemNode; onClose: () => void 
 
       {/* Description */}
       <div style={{ padding: '14px 20px', borderBottom: '1px solid #141414' }}>
-        <div style={{ fontSize: 8, color: '#3F3F46', letterSpacing: '0.1em', marginBottom: 8 }}>DESCRIPTION</div>
-        <div style={{ fontSize: 11, color: '#71717A', lineHeight: 1.7 }}>{node.description}</div>
+        <div style={{ fontSize: 8, color: '#8A8A9A', letterSpacing: '0.1em', marginBottom: 8 }}>DESCRIPTION</div>
+        <div style={{ fontSize: 11, color: '#8A8A9A', lineHeight: 1.7 }}>{node.description}</div>
       </div>
 
       {/* Dependencies */}
       {node.dependencies.length > 0 && (
         <div style={{ padding: '14px 20px', borderBottom: '1px solid #141414' }}>
-          <div style={{ fontSize: 8, color: '#3F3F46', letterSpacing: '0.1em', marginBottom: 8 }}>DEPENDENCIES</div>
+          <div style={{ fontSize: 8, color: '#8A8A9A', letterSpacing: '0.1em', marginBottom: 8 }}>DEPENDENCIES</div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {node.dependencies.map(d => (
               <span key={d} style={{
                 padding: '2px 8px', borderRadius: 3,
-                background: '#141414', border: '1px solid #1E1E1E',
-                fontSize: 9, color: '#71717A',
+                background: '#DDD5C5', border: '1px solid #1E1E1E',
+                fontSize: 9, color: '#8A8A9A',
               }}>{d}</span>
             ))}
           </div>
@@ -499,17 +499,17 @@ function DetailPanel({ node, onClose }: { node: SystemNode; onClose: () => void 
 
       {/* Logs */}
       <div style={{ padding: '14px 20px', flex: 1, overflowY: 'auto' }}>
-        <div style={{ fontSize: 8, color: '#3F3F46', letterSpacing: '0.1em', marginBottom: 8 }}>RECENT LOGS</div>
+        <div style={{ fontSize: 8, color: '#8A8A9A', letterSpacing: '0.1em', marginBottom: 8 }}>RECENT LOGS</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           {node.logs.map((log, i) => (
             <div key={i} style={{
               fontSize: 9, lineHeight: 1.6,
-              color: log.includes('[WARN]') ? '#F59E0B' : log.includes('[ERROR]') ? '#EF4444' : '#52525B',
+              color: log.includes('[WARN]') ? '#F59E0B' : log.includes('[ERROR]') ? '#EF4444' : '#8A8A9A',
               fontFamily: 'ui-monospace, monospace',
               padding: '4px 8px',
-              background: '#0A0A0A',
+              background: '#FFFFFF',
               borderRadius: 3,
-              borderLeft: `2px solid ${log.includes('[WARN]') ? '#F59E0B' : log.includes('[ERROR]') ? '#EF4444' : '#1A1A1A'}`,
+              borderLeft: `2px solid ${log.includes('[WARN]') ? '#F59E0B' : log.includes('[ERROR]') ? '#EF4444' : '#DDD5C5'}`,
             }}>{log}</div>
           ))}
         </div>
@@ -521,6 +521,15 @@ function DetailPanel({ node, onClose }: { node: SystemNode; onClose: () => void 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export function SystemGraph() {
+  const [_loadingState, setLoadingState] = useState(true)
+  const [_errorState, setErrorState] = useState<string | null>(null)
+
+  useEffect(() => {
+    // API integration point — currently using local data
+    setLoadingState(false)
+  }, [])
+
+
   const [nodes, setNodes] = useState<SystemNode[]>(INITIAL_NODES)
   const [selected, setSelected] = useState<string | null>(null)
   const [tick, setTick] = useState(0)
@@ -564,12 +573,12 @@ export function SystemGraph() {
   return (
     <div style={{
       height: '100%', display: 'flex', flexDirection: 'column',
-      background: '#050505',
+      background: '#FFFFFF',
       fontFamily: 'ui-monospace, "SF Mono", Menlo, monospace',
     }}>
       {/* ── Global system bar ── */}
       <div style={{
-        background: '#0A0A0A',
+        background: '#FFFFFF',
         borderBottom: '1px solid #141414',
         padding: '10px 20px',
         display: 'flex', alignItems: 'center', gap: 0, flexShrink: 0,
@@ -581,7 +590,7 @@ export function SystemGraph() {
             background: criticalAlerts > 0 ? '#EF4444' : degradedCount > 0 ? '#F59E0B' : '#10B981',
             boxShadow: `0 0 8px ${criticalAlerts > 0 ? '#EF4444' : degradedCount > 0 ? '#F59E0B' : '#10B981'}`,
           }} />
-          <span style={{ fontSize: 11, fontWeight: 700, color: '#E4E4E7', letterSpacing: '0.06em' }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: '#0A3D62', letterSpacing: '0.06em' }}>
             SYSTEM {criticalAlerts > 0 ? 'CRITICAL' : degradedCount > 0 ? 'DEGRADED' : 'STABLE'}
           </span>
         </div>
@@ -591,16 +600,16 @@ export function SystemGraph() {
           { label: 'NODES', value: `${liveCount} / ${nodes.length}`, color: '#10B981' },
           { label: 'DEGRADED', value: String(degradedCount), color: degradedCount > 0 ? '#F59E0B' : '#3F3F46' },
           { label: 'CRITICAL ALERTS', value: String(criticalAlerts), color: criticalAlerts > 0 ? '#EF4444' : '#3F3F46' },
-          { label: 'THROUGHPUT', value: `${fmtRps(totalRps)} req/s`, color: '#A1A1AA' },
-          { label: 'AVG LATENCY', value: `${avgLatency} ms`, color: avgLatency > 100 ? '#F59E0B' : '#A1A1AA' },
+          { label: 'THROUGHPUT', value: `${fmtRps(totalRps)} req/s`, color: '#8A8A9A' },
+          { label: 'AVG LATENCY', value: `${avgLatency} ms`, color: avgLatency > 100 ? '#F59E0B' : '#8A8A9A' },
         ].map(s => (
           <div key={s.label} style={{ paddingLeft: 24, paddingRight: 24, borderRight: '1px solid #1A1A1A' }}>
-            <div style={{ fontSize: 7, color: '#3F3F46', letterSpacing: '0.1em', marginBottom: 2 }}>{s.label}</div>
+            <div style={{ fontSize: 7, color: '#8A8A9A', letterSpacing: '0.1em', marginBottom: 2 }}>{s.label}</div>
             <div style={{ fontSize: 13, fontWeight: 700, color: s.color, fontVariantNumeric: 'tabular-nums' }}>{s.value}</div>
           </div>
         ))}
 
-        <div style={{ marginLeft: 'auto', fontSize: 9, color: '#27272A' }}>
+        <div style={{ marginLeft: 'auto', fontSize: 9, color: '#8A8A9A' }}>
           LIVE · {new Date().toLocaleTimeString('sv-SE')} — tick #{tick}
         </div>
       </div>
@@ -627,7 +636,7 @@ export function SystemGraph() {
                 }}>
                   <div style={{
                     position: 'absolute', top: 16, left: ZONE_PAD.left,
-                    fontSize: 8, fontWeight: 800, color: '#2A2A2A',
+                    fontSize: 8, fontWeight: 800, color: '#DDD5C5',
                     letterSpacing: '0.16em',
                   }}>
                     {cfg.label}
@@ -669,13 +678,13 @@ export function SystemGraph() {
 
       {/* ── Bottom legend ── */}
       <div style={{
-        background: '#0A0A0A', borderTop: '1px solid #141414',
+        background: '#FFFFFF', borderTop: '1px solid #DDD5C5',
         padding: '8px 20px', display: 'flex', alignItems: 'center', gap: 24, flexShrink: 0,
       }}>
         <div style={{ display: 'flex', gap: 16 }}>
           {[
             { color: '#10B981', dash: false, label: 'Critical path' },
-            { color: '#1E1E1E', dash: true, label: 'Secondary' },
+            { color: '#DDD5C5', dash: true, label: 'Secondary' },
           ].map(e => (
             <div key={e.label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <svg width="20" height="8">
@@ -688,7 +697,7 @@ export function SystemGraph() {
             </div>
           ))}
         </div>
-        <div style={{ width: 1, height: 12, background: '#1A1A1A' }} />
+        <div style={{ width: 1, height: 12, background: '#DDD5C5' }} />
         <div style={{ display: 'flex', gap: 12 }}>
           {Object.entries(ZONE_CONFIG).map(([k, v]) => (
             <div key={k} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
@@ -697,7 +706,7 @@ export function SystemGraph() {
             </div>
           ))}
         </div>
-        <div style={{ marginLeft: 'auto', fontSize: 9, color: '#27272A' }}>
+        <div style={{ marginLeft: 'auto', fontSize: 9, color: '#8A8A9A' }}>
           ▲ corner = critical path node · click node for drill-down
         </div>
       </div>

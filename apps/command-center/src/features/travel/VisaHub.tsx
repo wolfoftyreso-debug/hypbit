@@ -208,7 +208,7 @@ function statusLabel(s: ApplicationStatus): string {
 
 function statusColor(s: ApplicationStatus): string {
   return {
-    not_started: 'text-zinc-400',
+    not_started: 'text-[#8A8A9A]',
     in_progress: 'text-yellow-400',
     submitted: 'text-blue-400',
     approved: 'text-emerald-400',
@@ -218,7 +218,7 @@ function statusColor(s: ApplicationStatus): string {
 
 function statusBadgeBg(s: ApplicationStatus): string {
   return {
-    not_started: 'bg-zinc-800 text-zinc-300',
+    not_started: 'bg-[#EDE8DC] text-[#6B7280]',
     in_progress: 'bg-yellow-900/40 text-yellow-300',
     submitted: 'bg-blue-900/40 text-blue-300',
     approved: 'bg-emerald-900/40 text-emerald-300',
@@ -240,7 +240,7 @@ function UrgentBanner({ trip, visa }: { trip: Trip; visa: VisaInfo }) {
   const isOverdue = deadlineDays !== null && deadlineDays < 0
 
   return (
-    <div className="rounded-xl border border-red-500/60 bg-red-950/40 px-5 py-4 flex items-start gap-3">
+    <div className="rounded-xl border border-red-200 bg-red-50 px-5 py-4 flex items-start gap-3">
       <AlertTriangle className="text-red-400 mt-0.5 shrink-0" size={20} />
       <div>
         <p className="text-red-300 font-semibold text-sm">
@@ -276,20 +276,20 @@ function TripCard({
       onClick={onClick}
       className={`rounded-xl border p-4 text-left transition-all cursor-pointer ${
         selected
-          ? 'border-blue-600 bg-blue-900/20'
-          : 'border-zinc-700 bg-zinc-900 hover:border-zinc-500'
+          ? 'border-blue-400 bg-blue-50'
+          : 'border-[#DDD5C5] bg-white hover:border-[#C8BCA8]'
       }`}
     >
       <div className="text-2xl mb-1">{visa.flag}</div>
-      <div className="text-white font-semibold text-sm">{visa.country}</div>
-      <div className="text-zinc-400 text-xs mt-0.5">{trip.displayDate}</div>
-      <div className="text-zinc-400 text-xs">{trip.durationDays} dagar</div>
+      <div className="text-[#0A3D62] font-semibold text-sm">{visa.country}</div>
+      <div className="text-[#8A8A9A] text-xs mt-0.5">{trip.displayDate}</div>
+      <div className="text-[#8A8A9A] text-xs">{trip.durationDays} dagar</div>
       {days !== null && (
-        <div className={`text-xs mt-1 font-medium ${days < 14 ? 'text-red-400' : 'text-zinc-400'}`}>
+        <div className={`text-xs mt-1 font-medium ${days < 14 ? 'text-red-400' : 'text-[#8A8A9A]'}`}>
           {days < 0 ? `${Math.abs(days)}d sedan` : `om ${days}d`}
         </div>
       )}
-      <div className="mt-2 rounded bg-zinc-800 px-2 py-0.5 text-[10px] text-zinc-300 leading-tight">
+      <div className="mt-2 rounded bg-[#EDE8DC] px-2 py-0.5 text-[10px] text-[#6B7280] leading-tight">
         {visa.requiresVisa ? visa.visaType : 'Inget visum krävs'}
       </div>
     </button>
@@ -321,14 +321,14 @@ function TeamStatusRow({
   }
 
   return (
-    <div className="flex items-center justify-between py-2.5 border-b border-zinc-800 last:border-0">
+    <div className="flex items-center justify-between py-2.5 border-b border-[#DDD5C5] last:border-0">
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-xs font-bold text-zinc-300">
+        <div className="w-8 h-8 rounded-full bg-[#EDE8DC] flex items-center justify-center text-xs font-bold text-[#6B7280]">
           {member.firstName[0]}
         </div>
         <div>
-          <p className="text-sm text-white">{member.name}</p>
-          <p className="text-xs text-zinc-500">{member.phone}</p>
+          <p className="text-sm text-[#0A3D62]">{member.name}</p>
+          <p className="text-xs text-[#8A8A9A]">{member.phone}</p>
         </div>
       </div>
       <div className="flex items-center gap-2">
@@ -351,7 +351,7 @@ function TeamStatusRow({
         )}
         <button
           onClick={() => onSendReminder(member)}
-          className="text-xs px-2 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors"
+          className="text-xs px-2 py-1 rounded-lg bg-[#EDE8DC] hover:bg-[#DDD5C5] text-[#6B7280] transition-colors"
           title="Skicka SMS-påminnelse"
         >
           SMS
@@ -380,14 +380,14 @@ function RequirementsChecklist({ requirements }: { requirements: string[] }) {
         >
           <div
             className={`mt-0.5 w-4 h-4 rounded border flex-shrink-0 flex items-center justify-center transition-colors ${
-              checked[req] ? 'bg-emerald-600 border-emerald-600' : 'border-zinc-600 group-hover:border-zinc-400'
+              checked[req] ? 'bg-emerald-600 border-emerald-600' : 'border-[#DDD5C5] group-hover:border-[#C8BCA8]'
             }`}
             onClick={() => toggle(req)}
           >
             {checked[req] && <CheckCircle2 size={12} className="text-white" />}
           </div>
           <span
-            className={`text-sm transition-colors ${checked[req] ? 'text-zinc-500 line-through' : 'text-zinc-300'}`}
+            className={`text-sm transition-colors ${checked[req] ? 'text-[#8A8A9A] line-through' : 'text-[#6B7280]'}`}
             onClick={() => toggle(req)}
           >
             {req}
@@ -432,20 +432,20 @@ export function VisaHub() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white p-6">
+    <div className="min-h-screen bg-[#F5F0E8] text-[#0A3D62] p-6">
       <div className="max-w-4xl mx-auto space-y-6">
 
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-[#0A3D62] flex items-center gap-2">
               🛂 Visum & Arbetstillstånd
             </h1>
-            <p className="text-zinc-400 text-sm mt-1">
+            <p className="text-[#8A8A9A] text-sm mt-1">
               Automatiserad visumhantering för Wavult Group · Svenska passinnehavare
             </p>
           </div>
-          <div className="flex items-center gap-2 text-xs text-zinc-500">
+          <div className="flex items-center gap-2 text-xs text-[#8A8A9A]">
             <Globe size={14} />
             <span>5 teammedlemmar</span>
           </div>
@@ -458,7 +458,7 @@ export function VisaHub() {
 
         {/* Active trips */}
         <div>
-          <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-widest mb-3">Aktiva resor</h2>
+          <h2 className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-widest mb-3">Aktiva resor</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
             {ACTIVE_TRIPS.map(trip => (
               <TripCard
@@ -475,11 +475,11 @@ export function VisaHub() {
         {visa && (
           <>
             {/* Visa info card */}
-            <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5 space-y-3">
+            <div className="rounded-xl border border-[#DDD5C5] bg-white p-5 space-y-3">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <div className="text-lg font-semibold">{visa.flag} {visa.country} — {visa.visaType}</div>
-                  <div className="text-zinc-400 text-sm mt-0.5">
+                  <div className="text-[#8A8A9A] text-sm mt-0.5">
                     Max {visa.maxStay} dagar · Handläggningstid {visa.processingDays} dagar · Kostnad: {visa.cost}
                   </div>
                 </div>
@@ -489,30 +489,30 @@ export function VisaHub() {
                   <span className="bg-emerald-900/40 text-emerald-300 text-xs px-2.5 py-1 rounded-full font-medium whitespace-nowrap">Inget visum</span>
                 )}
               </div>
-              <p className="text-zinc-400 text-sm leading-relaxed">{visa.notes}</p>
+              <p className="text-[#8A8A9A] text-sm leading-relaxed">{visa.notes}</p>
               {visa.embassyAddress && (
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-zinc-800">
-                  <div className="flex items-center gap-2 text-xs text-zinc-400">
-                    <MapPin size={12} className="text-zinc-500" />
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-[#DDD5C5]">
+                  <div className="flex items-center gap-2 text-xs text-[#8A8A9A]">
+                    <MapPin size={12} className="text-[#8A8A9A]" />
                     {visa.embassyAddress}
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-zinc-400">
-                    <Phone size={12} className="text-zinc-500" />
-                    <a href={`tel:${visa.embassyPhone}`} className="hover:text-white transition-colors">{visa.embassyPhone}</a>
+                  <div className="flex items-center gap-2 text-xs text-[#8A8A9A]">
+                    <Phone size={12} className="text-[#8A8A9A]" />
+                    <a href={`tel:${visa.embassyPhone}`} className="hover:text-[#0A3D62] transition-colors">{visa.embassyPhone}</a>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-zinc-400">
-                    <Mail size={12} className="text-zinc-500" />
-                    <a href={`mailto:${visa.embassyEmail}`} className="hover:text-white transition-colors">{visa.embassyEmail}</a>
+                  <div className="flex items-center gap-2 text-xs text-[#8A8A9A]">
+                    <Mail size={12} className="text-[#8A8A9A]" />
+                    <a href={`mailto:${visa.embassyEmail}`} className="hover:text-[#0A3D62] transition-colors">{visa.embassyEmail}</a>
                   </div>
                 </div>
               )}
             </div>
 
             {/* Team status */}
-            <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5">
+            <div className="rounded-xl border border-[#DDD5C5] bg-white p-5">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm font-semibold text-white flex items-center gap-2">
-                  <Users size={16} className="text-zinc-400" />
+                <h2 className="text-sm font-semibold text-[#0A3D62] flex items-center gap-2">
+                  <Users size={16} className="text-[#8A8A9A]" />
                   Teamstatus — {visa.flag} {visa.country}
                 </h2>
                 <button
@@ -520,7 +520,7 @@ export function VisaHub() {
                   className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${
                     smsAllSent
                       ? 'bg-emerald-800 text-emerald-300'
-                      : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-300'
+                      : 'bg-[#EDE8DC] hover:bg-[#DDD5C5] text-[#6B7280]'
                   }`}
                 >
                   {smsAllSent ? '✓ SMS skickade' : 'Skicka SMS till alla'}
@@ -542,9 +542,9 @@ export function VisaHub() {
 
             {/* Requirements checklist */}
             {visa.requirements.length > 0 && (
-              <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5">
-                <h2 className="text-sm font-semibold text-white flex items-center gap-2 mb-4">
-                  <FileText size={16} className="text-zinc-400" />
+              <div className="rounded-xl border border-[#DDD5C5] bg-white p-5">
+                <h2 className="text-sm font-semibold text-[#0A3D62] flex items-center gap-2 mb-4">
+                  <FileText size={16} className="text-[#8A8A9A]" />
                   Krav & dokument
                 </h2>
                 <RequirementsChecklist requirements={visa.requirements} />
@@ -567,14 +567,14 @@ export function VisaHub() {
               {visa.embassyPhone && (
                 <a
                   href={`tel:${visa.embassyPhone}`}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-sm font-medium transition-colors"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#EDE8DC] hover:bg-[#DDD5C5] text-[#2C5F8A] text-sm font-medium transition-colors"
                 >
                   <Phone size={15} />
                   Ring ambassaden
                 </a>
               )}
               {visa.urgentDeadline && (
-                <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-700 text-zinc-400 text-sm">
+                <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#F5F0E8] border border-[#DDD5C5] text-[#8A8A9A] text-sm">
                   <Clock size={15} />
                   Deadline: {visa.urgentDeadline}
                 </div>
@@ -584,8 +584,8 @@ export function VisaHub() {
         )}
 
         {/* Auto-detect info */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
-          <p className="text-xs text-zinc-500 flex items-center gap-2">
+        <div className="rounded-xl border border-[#DDD5C5] bg-[#F5F0E8] p-4">
+          <p className="text-xs text-[#8A8A9A] flex items-center gap-2">
             <CheckCircle2 size={12} className="text-blue-600" />
             Kalenderintegration aktiv — resor &gt;7 dagar utomlands triggar automatisk visumkontroll och SMS-påminnelse till teamet.
           </p>

@@ -58,7 +58,7 @@ function MeetingCard({ meeting }: { meeting: MeetingCadence }) {
             <p className="text-[10px] font-bold uppercase tracking-wider text-gray-9000 mb-1">👥 Deltagare</p>
             <div className="flex flex-wrap gap-1">
               {meeting.participants.map(p => (
-                <span key={p} className="text-[11px] px-2 py-0.5 rounded-full bg-muted/30 text-gray-600 border border-surface-border">
+                <span key={p} className="text-[11px] px-2 py-0.5 rounded-full bg-[#F0EBE1] text-gray-600 border border-surface-border">
                   {p}
                 </span>
               ))}
@@ -97,7 +97,7 @@ function MeetingCard({ meeting }: { meeting: MeetingCadence }) {
               <p className="text-[10px] font-bold uppercase tracking-wider text-gray-9000 mb-1">🛠 Verktyg</p>
               <div className="flex flex-wrap gap-1">
                 {meeting.tools.map(t => (
-                  <span key={t} className="text-[11px] px-2 py-0.5 rounded-full bg-muted/30 text-gray-9000 border border-surface-border font-mono">
+                  <span key={t} className="text-[11px] px-2 py-0.5 rounded-full bg-[#F0EBE1] text-gray-9000 border border-surface-border font-mono">
                     {t}
                   </span>
                 ))}
@@ -133,7 +133,7 @@ function LevelSection({ level }: { level: (typeof LEVEL_META)[0] }) {
           <span>{level.icon}</span>
           <span>Nivå {level.level} — {level.label}</span>
         </div>
-        <div className="flex-1 h-px bg-muted/30" />
+        <div className="flex-1 h-px bg-[#F0EBE1]" />
         <span className="text-[11px] text-gray-9000">{level.description}</span>
       </div>
 
@@ -152,7 +152,7 @@ function LevelSection({ level }: { level: (typeof LEVEL_META)[0] }) {
 function LevelConnector() {
   return (
     <div className="flex justify-center py-1">
-      <div className="w-px h-6 bg-gradient-to-b from-white/10 to-white/[0.03]" />
+      <div className="w-px h-6 bg-gradient-to-b from-[#DDD5C5] to-[#DDD5C5]" />
     </div>
   )
 }
@@ -182,7 +182,7 @@ export function MeetingCadenceView() {
   const automatedCount = MEETING_CADENCE.filter(m => m.automate).length
 
   return (
-    <div className="min-h-full bg-muted/30 text-text-primary">
+    <div className="min-h-full bg-[#F0EBE1] text-text-primary">
       {/* Header */}
       <div className="px-4 md:px-6 py-4 border-b border-surface-border">
         <div className="flex items-start justify-between gap-4 flex-wrap">
@@ -197,7 +197,7 @@ export function MeetingCadenceView() {
           </div>
           {/* Stats */}
           <div className="flex items-center gap-3 flex-wrap">
-            <div className="px-3 py-1.5 rounded-lg bg-muted/30 border border-surface-border text-center">
+            <div className="px-3 py-1.5 rounded-lg bg-[#F0EBE1] border border-surface-border text-center">
               <div className="text-lg font-bold text-text-primary">{totalMeetings}</div>
               <div className="text-[10px] text-gray-9000">Mötestyper</div>
             </div>
@@ -214,7 +214,7 @@ export function MeetingCadenceView() {
       </div>
 
       {/* Legend */}
-      <div className="px-4 md:px-6 py-2 border-b border-surface-border/50 bg-white/[0.01]">
+      <div className="px-4 md:px-6 py-2 border-b border-surface-border/50 bg-[#F5F0E8]">
         <Legend />
       </div>
 

@@ -181,7 +181,7 @@ export function SubmissionsView() {
             className="text-xs px-3 py-1.5 rounded-lg border font-medium transition-all"
             style={filterStatus === s
               ? { background: (STATUS_COLORS[s] ?? '#ffffff') + '20', color: STATUS_COLORS[s] ?? '#fff', borderColor: (STATUS_COLORS[s] ?? '#ffffff') + '40' }
-              : { background: 'transparent', color: '#4B5563', borderColor: '#ffffff0a' }
+              : { background: 'transparent', color: '#4B5563', borderColor: '#DDD5C5' }
             }
           >
             {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -192,7 +192,7 @@ export function SubmissionsView() {
 
       {/* Toast */}
       {toast && (
-        <div className={`fixed top-5 right-5 z-50 px-4 py-3 rounded-xl text-sm font-medium shadow-2xl transition-all ${toast.ok ? 'bg-emerald-900/90 text-emerald-200 border border-emerald-700' : 'bg-red-900/90 text-red-200 border border-red-700'}`}>
+        <div className={`fixed top-5 right-5 z-50 px-4 py-3 rounded-xl text-sm font-medium shadow-2xl transition-all ${toast.ok ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
           {toast.msg}
         </div>
       )}
@@ -284,7 +284,7 @@ export function SubmissionsView() {
                       onClick={() => handleReject(sub)}
                       disabled={isApproving}
                       className="text-xs px-3 py-1.5 rounded-lg transition-all disabled:opacity-50"
-                      style={{ background: 'transparent', color: '#6B7280', border: '1px solid #ffffff0a' }}
+                      style={{ background: 'transparent', color: '#6B7280', border: '1px solid #DDD5C5' }}
                     >
                       Avvisa
                     </button>
@@ -313,7 +313,7 @@ export function SubmissionsView() {
                     />
                   ))}
                   {imgCount > 6 && (
-                    <div className="h-16 w-24 rounded-lg border border-surface-border bg-muted/30 flex items-center justify-center text-xs text-text-muted flex-shrink-0">
+                    <div className="h-16 w-24 rounded-lg border border-surface-border bg-[#F0EBE1] flex items-center justify-center text-xs text-text-muted flex-shrink-0">
                       +{imgCount - 6}
                     </div>
                   )}
@@ -321,7 +321,7 @@ export function SubmissionsView() {
               )}
 
               {sub.reviewer_notes && (
-                <p className="text-xs text-text-muted bg-muted/30 rounded-lg px-3 py-2">
+                <p className="text-xs text-text-muted bg-[#F0EBE1] rounded-lg px-3 py-2">
                   💬 {sub.reviewer_notes}
                 </p>
               )}

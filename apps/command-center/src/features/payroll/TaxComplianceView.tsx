@@ -100,7 +100,7 @@ export function TaxComplianceView() {
               {TAX_DECLARATIONS.map(dec => {
                 const d = daysUntil(dec.deadline)
                 return (
-                  <tr key={dec.period} className="border-b border-gray-200/50 hover:bg-gray-50/30 transition-colors">
+                  <tr key={dec.period} className="border-b border-[#DDD5C5] hover:bg-[#EDE8DC] transition-colors">
                     <td className="px-5 py-3 text-xs text-text-primary">{fmtPeriod(dec.period)}</td>
                     <td className="px-5 py-3 text-xs text-text-muted">{dec.deadline}</td>
                     <td className="px-5 py-3 text-right text-xs text-amber-700 tabular-nums font-medium">{fmt(dec.amount)}</td>
@@ -175,7 +175,7 @@ export function TaxComplianceView() {
               className="rounded-lg p-3 border"
               style={d.paid
                 ? { borderColor: '#34D39930', background: '#34D39910' }
-                : { borderColor: 'rgb(255 255 255 / 0.06)', background: 'rgb(255 255 255 / 0.02)' }
+                : { borderColor: '#DDD5C5', background: '#F5F0E8' }
               }
             >
               <div className="text-xs text-text-muted">{d.month} 2026</div>

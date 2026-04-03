@@ -120,7 +120,7 @@ export function SystemView() {
               <span className="text-xs text-gray-9000 w-36 flex-shrink-0">{row.label}</span>
               <span
                 className={`text-xs ${row.mono ? 'font-mono' : 'font-medium'}`}
-                style={{ color: row.highlight ?? '#D1D5DB' }}
+                style={{ color: row.highlight ?? '#6B7280' }}
               >
                 {row.value}
               </span>
@@ -194,7 +194,7 @@ export function SystemView() {
               : 'Triggar Wavult deployment gate (kräver godkännande)'}
           </p>
           {deploying && (
-            <div className="mt-2 h-1 rounded-full bg-muted/30 overflow-hidden">
+            <div className="mt-2 h-1 rounded-full bg-[#F0EBE1] overflow-hidden">
               <div
                 className="h-full rounded-full bg-red-500 animate-pulse"
                 style={{ width: '60%', transition: 'width 2.5s ease' }}

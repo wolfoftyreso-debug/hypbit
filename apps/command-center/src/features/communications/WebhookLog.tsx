@@ -49,11 +49,11 @@ export function WebhookLog() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Webhook size={14} className="text-blue-400" />
-          <span className="text-xs font-semibold text-white">Webhook-logg</span>
+          <span className="text-xs font-semibold text-[#0A3D62]">Webhook-logg</span>
         </div>
         <button
           onClick={fetchWebhooks}
-          className="text-white/30 hover:text-white/60 transition-colors"
+          className="text-[#8A8A9A] hover:text-[#6B7280] transition-colors"
         >
           <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
         </button>
@@ -68,8 +68,8 @@ export function WebhookLog() {
               onClick={() => setSourceFilter(s)}
               className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
                 sourceFilter === s
-                  ? 'bg-white/10 border-white/20 text-white'
-                  : 'border-white/10 text-white/40 hover:border-white/20'
+                  ? 'bg-[#EDE8DC] border-[#DDD5C5] text-[#0A3D62]'
+                  : 'border-[#DDD5C5] text-[#8A8A9A] hover:border-[#DDD5C5]'
               }`}
             >
               {s}
@@ -79,10 +79,10 @@ export function WebhookLog() {
       )}
 
       {/* List */}
-      <div className="bg-neutral-900 border border-white/10 rounded-xl overflow-hidden">
+      <div className="bg-white border border-[#DDD5C5] rounded-xl overflow-hidden">
         {loading ? (
           <div className="p-8 flex items-center justify-center">
-            <RefreshCw size={18} className="text-white/20 animate-spin" />
+            <RefreshCw size={18} className="text-[#8A8A9A] animate-spin" />
           </div>
         ) : error ? (
           <div className="p-6 flex items-center gap-2">
@@ -91,14 +91,14 @@ export function WebhookLog() {
           </div>
         ) : events.length === 0 ? (
           <div className="p-10 flex flex-col items-center gap-3 text-center">
-            <Activity size={24} className="text-white/10" />
-            <p className="text-sm font-medium text-white/30">Inga webhooks ännu</p>
-            <p className="text-xs text-white/20">
+            <Activity size={24} className="text-[#8A8A9A]" />
+            <p className="text-sm font-medium text-[#8A8A9A]">Inga webhooks ännu</p>
+            <p className="text-xs text-[#8A8A9A]">
               Webhooks loggas här när de anländer från Stripe, 46elks m.fl.
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-[#DDD5C5]">
             {filtered.map(evt => (
               <div key={evt.id} className="flex items-center gap-3 px-4 py-3">
                 <span
@@ -111,10 +111,10 @@ export function WebhookLog() {
                   {evt.status}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs text-white/70 font-mono truncate">{evt.event}</p>
-                  <p className="text-[10px] text-white/30">{evt.source}</p>
+                  <p className="text-xs text-[#6B7280] font-mono truncate">{evt.event}</p>
+                  <p className="text-[10px] text-[#8A8A9A]">{evt.source}</p>
                 </div>
-                <span className="text-[10px] text-white/20 font-mono flex-shrink-0">
+                <span className="text-[10px] text-[#8A8A9A] font-mono flex-shrink-0">
                   {new Date(evt.timestamp).toLocaleTimeString('sv-SE')}
                 </span>
               </div>

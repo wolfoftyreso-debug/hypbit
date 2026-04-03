@@ -1,38 +1,82 @@
-// Visar teammedlemmarnas senaste aktivitet + roll
-// Data hårdkodad för nu (inga live-signaler ännu)
+import { useState, useEffect } from 'react'
 
-const TEAM = [
-  { name: 'Erik Svensson',             role: 'Chairman & Group CEO',          emoji: '👑', status: 'active', lastSeen: 'Nu' },
-  { name: 'Leon Russo De Cerame',      role: 'CEO – Wavult Operations',        emoji: '⚙️', status: 'active', lastSeen: '30m sedan' },
-  { name: 'Winston Bjarnemark',        role: 'CFO',                            emoji: '💰', status: 'active', lastSeen: '1h sedan' },
-  { name: 'Dennis Bjarnemark',         role: 'Board Member / Chief Legal',     emoji: '⚖️', status: 'active', lastSeen: '2h sedan' },
-  { name: 'Johan Berglund',            role: 'Group CTO',                      emoji: '🧠', status: 'active', lastSeen: '45m sedan' },
-]
+interface TeamMember { id: string; name: string; role: string; status: 'online' | 'away' | 'offline'; location?: string; currentTask?: string; avatar?: string }
 
-export function TeamStatusWidget() {
+function useTeamStatus() {
+  const [members, setMembers] = useState<TeamMember[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  useEffect(() => {
+    fetch('/api/team/status')
+      .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
+      .then(d => { setMembers(d.members ?? []); setLoading(false) })
+      .catch(e => { setError(String(e)); setLoading(false) })
+  }, [])
+  return { members, loading, error }
+}
+
+const statusColor = { online: '#16a34a', away: '#d97706', offline: '#9ca3af' }
+const statusLabel = { online: 'Online', away: 'Borta', offline: 'Offline' }
+
+export default function TeamStatusWidget() {
+  const { members, loading, error } = useTeamStatus()
+
+  const online = members.filter(m => m.status === 'online').length
+
   return (
-    <div className="bg-muted/30 border border-surface-border rounded-2xl overflow-hidden">
-      <div className="px-4 py-3 border-b border-surface-border flex justify-between items-center">
-        <p className="text-sm font-medium text-gray-900/70">Team</p>
-        <span className="text-xs text-emerald-700">
-          {TEAM.filter(m => m.status === 'active').length} aktiva
-        </span>
+    <div>
+      <div style={{ background: 'var(--color-brand)', borderRadius: 12, padding: '24px 28px', marginBottom: 24, color: 'var(--color-text-inverse)' }}>
+        <div style={{ fontSize: 9, fontFamily: 'monospace', color: 'var(--color-accent)', letterSpacing: '.15em', textTransform: 'uppercase', marginBottom: 8 }}>Wavult Group</div>
+        <h2 style={{ fontSize: 22, fontWeight: 800, margin: '0 0 4px' }}>Team Status</h2>
+        {!loading && !error && <p style={{ fontSize: 13, color: 'rgba(245,240,232,.6)', margin: 0 }}>{online} av {members.length} online</p>}
       </div>
-      {TEAM.map(member => (
-        <div key={member.name} className="flex items-center gap-3 px-4 py-3 border-b border-surface-border/50 last:border-0">
-          <div className="relative">
-            <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-sm">
-              {member.emoji}
-            </div>
-            <div className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border border-[#0A0A1B] ${member.status === 'active' ? 'bg-emerald-400' : 'bg-yellow-400'}`} />
+
+      {loading && [1,2,3,4,5].map(i => (
+        <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'center', padding: '12px 0', borderBottom: '1px solid var(--color-border)' }}>
+          <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--color-bg-muted)', animation: 'pulse 1.5s ease-in-out infinite' }} />
+          <div style={{ flex: 1 }}>
+            <div style={{ width: 120, height: 14, background: 'var(--color-bg-muted)', borderRadius: 4, marginBottom: 6, animation: 'pulse 1.5s ease-in-out infinite' }} />
+            <div style={{ width: 80, height: 11, background: 'var(--color-bg-muted)', borderRadius: 4, animation: 'pulse 1.5s ease-in-out infinite' }} />
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-text-primary">{member.name}</p>
-            <p className="text-xs text-gray-900/40">{member.role}</p>
-          </div>
-          <span className="text-xs text-gray-900/30">{member.lastSeen}</span>
         </div>
       ))}
+
+      {error && (
+        <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '48px 24px', textAlign: 'center' }}>
+          <div style={{ fontSize: 32, marginBottom: 12 }}>⚠️</div>
+          <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8 }}>Kunde inte hämta teamstatus</div>
+          <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>{error}</div>
+        </div>
+      )}
+
+      {!loading && !error && members.length === 0 && (
+        <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '48px 24px', textAlign: 'center' }}>
+          <div style={{ fontSize: 32, marginBottom: 12 }}>👥</div>
+          <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8 }}>Inga teammedlemmar</div>
+          <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>Bjud in teamet för att se status här</div>
+        </div>
+      )}
+
+      {!loading && !error && members.length > 0 && (
+        <div>
+          {members.map((m, i) => (
+            <div key={m.id} style={{ display: 'flex', gap: 14, alignItems: 'center', padding: '14px 0', borderBottom: i < members.length - 1 ? '1px solid var(--color-border)' : 'none' }}>
+              <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--color-brand)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: 15, flexShrink: 0 }}>
+                {m.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--color-text-primary)' }}>{m.name}</div>
+                <div style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>{m.role}{m.location ? ` · ${m.location}` : ''}</div>
+                {m.currentTask && <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 2, fontStyle: 'italic' }}>→ {m.currentTask}</div>}
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                <div style={{ width: 8, height: 8, borderRadius: '50%', background: statusColor[m.status] }} />
+                <span style={{ fontSize: 11, color: statusColor[m.status], fontWeight: 600 }}>{statusLabel[m.status]}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }

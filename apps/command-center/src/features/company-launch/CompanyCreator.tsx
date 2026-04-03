@@ -215,7 +215,7 @@ function StepItem({
       <div className="flex-1 min-w-0">
         <span
           className={`text-xs leading-5 ${
-            step.done ? 'line-through text-gray-500' : 'text-gray-300'
+            step.done ? 'line-through text-[#8A8A9A]' : 'text-[#6B7280]'
           }`}
         >
           {step.label}
@@ -224,7 +224,7 @@ function StepItem({
           <span className="text-[10px] text-amber-400 ml-1 font-mono">{step.eta}</span>
         )}
         {!step.done && step.requires && !step.eta && (
-          <span className="text-[10px] text-gray-500 ml-1">needs {step.requires}</span>
+          <span className="text-[10px] text-[#8A8A9A] ml-1">needs {step.requires}</span>
         )}
         {step.done && step.date && (
           <span className="text-[10px] text-green-600 ml-1 font-mono">{step.date}</span>
@@ -261,7 +261,7 @@ function CompanyCard({
       {/* Delete button */}
       <button
         onClick={() => onDelete(company.id)}
-        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-gray-600 hover:text-red-400 text-xs px-1"
+        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-[#8A8A9A] hover:text-red-400 text-xs px-1"
         title="Remove company"
       >
         ✕
@@ -271,12 +271,12 @@ function CompanyCard({
       <div>
         <div className="flex items-center gap-2 mb-0.5">
           <span className="text-xl leading-none">{company.flag}</span>
-          <span className="text-sm font-bold text-white leading-tight">{company.name}</span>
+          <span className="text-sm font-bold text-[#0A3D62] leading-tight">{company.name}</span>
         </div>
         <div className="flex items-center gap-2 pl-8">
-          <span className="text-[11px] text-gray-400">{jurisLabel}</span>
+          <span className="text-[11px] text-[#8A8A9A]">{jurisLabel}</span>
           {company.fileNumber && (
-            <span className="text-[10px] font-mono text-gray-500">{company.fileNumber}</span>
+            <span className="text-[10px] font-mono text-[#8A8A9A]">{company.fileNumber}</span>
           )}
         </div>
       </div>
@@ -284,7 +284,7 @@ function CompanyCard({
       {/* Progress bar */}
       <div>
         <div className="flex items-center justify-between mb-1">
-          <span className="text-[11px] font-mono text-gray-400">{pct}%</span>
+          <span className="text-[11px] font-mono text-[#8A8A9A]">{pct}%</span>
           <span className="text-xs flex items-center gap-1">
             <span>{status.emoji}</span>
             <span
@@ -326,12 +326,12 @@ function CompanyCard({
 
       {/* Created date */}
       {company.createdAt && (
-        <div className="text-[10px] text-gray-600 font-mono pt-1 border-t border-white/5">
+        <div className="text-[10px] text-[#8A8A9A] font-mono pt-1 border-t border-[#DDD5C5]">
           Created {company.createdAt}
         </div>
       )}
       {!company.createdAt && (
-        <div className="text-[10px] text-gray-600 font-mono pt-1 border-t border-white/5">
+        <div className="text-[10px] text-[#8A8A9A] font-mono pt-1 border-t border-[#DDD5C5]">
           Not yet started
         </div>
       )}
@@ -376,20 +376,20 @@ function NewCompanyModal({
       <div
         className="rounded-2xl p-6 w-full max-w-sm flex flex-col gap-5"
         style={{
-          background: '#111827',
+          background: '#FFFFFF',
           border: '1.5px solid rgba(255,255,255,0.12)',
           boxShadow: '0 25px 60px rgba(0,0,0,0.8)',
         }}
       >
         {/* Title */}
         <div>
-          <h2 className="text-base font-bold text-white">+ Nytt bolag</h2>
-          <p className="text-xs text-gray-400 mt-0.5">Namn → jurisdiktion → klar. Vi sköter resten.</p>
+          <h2 className="text-base font-bold text-[#0A3D62]">+ Nytt bolag</h2>
+          <p className="text-xs text-[#8A8A9A] mt-0.5">Namn → jurisdiktion → klar. Vi sköter resten.</p>
         </div>
 
         {/* Name input */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Bolagsnamn</label>
+          <label className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">Bolagsnamn</label>
           <input
             autoFocus
             type="text"
@@ -397,7 +397,7 @@ function NewCompanyModal({
             onChange={e => setName(e.target.value)}
             onKeyDown={e => { if (e.key === 'Enter') handleCreate() }}
             placeholder="My Startup Inc."
-            className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none transition-all"
+            className="w-full px-3 py-2.5 rounded-lg text-sm text-[#0A3D62] outline-none transition-all"
             style={{
               background: 'rgba(255,255,255,0.06)',
               border: '1px solid rgba(255,255,255,0.15)',
@@ -407,7 +407,7 @@ function NewCompanyModal({
 
         {/* Jurisdiction dropdown */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Jurisdiktion</label>
+          <label className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider">Jurisdiktion</label>
           <div className="flex gap-2 flex-wrap">
             {[{id:'delaware',label:'🇺🇸 Delaware'},{id:'sweden-ab',label:'🇸🇪 Sverige'},{id:'dubai-dmcc',label:'🇦🇪 Dubai'},{id:'lithuania-uab',label:'🇱🇹 Litauen'}].map(opt => (
               <button key={opt.id} onClick={() => setJurisdiction(opt.id)}
@@ -420,14 +420,14 @@ function NewCompanyModal({
           <select
             value={jurisdiction}
             onChange={e => setJurisdiction(e.target.value)}
-            className="w-full px-3 py-2.5 rounded-lg text-sm text-white outline-none appearance-none cursor-pointer transition-all"
+            className="w-full px-3 py-2.5 rounded-lg text-sm text-[#0A3D62] outline-none appearance-none cursor-pointer transition-all"
             style={{
               background: 'rgba(255,255,255,0.06)',
               border: '1px solid rgba(255,255,255,0.15)',
             }}
           >
             {JURISDICTIONS.map(j => (
-              <option key={j.id} value={j.id} style={{ background: '#1f2937' }}>
+              <option key={j.id} value={j.id} style={{ background: '#FFFFFF' }}>
                 {j.flag} {j.label}
               </option>
             ))}
@@ -440,18 +440,18 @@ function NewCompanyModal({
           style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}
         >
           <div className="flex flex-col">
-            <span className="text-[10px] text-gray-500 uppercase tracking-wider font-mono">Timeline</span>
-            <span className="text-sm font-semibold text-white">~{selected.days} days</span>
+            <span className="text-[10px] text-[#8A8A9A] uppercase tracking-wider font-mono">Timeline</span>
+            <span className="text-sm font-semibold text-[#0A3D62]">~{selected.days} days</span>
           </div>
-          <div className="w-px h-8 bg-white/10" />
+          <div className="w-px h-8 bg-[#DDD5C5]" />
           <div className="flex flex-col">
-            <span className="text-[10px] text-gray-500 uppercase tracking-wider font-mono">Kostnad</span>
-            <span className="text-sm font-semibold text-white">{selected.cost}</span>
+            <span className="text-[10px] text-[#8A8A9A] uppercase tracking-wider font-mono">Kostnad</span>
+            <span className="text-sm font-semibold text-[#0A3D62]">{selected.cost}</span>
           </div>
-          <div className="w-px h-8 bg-white/10" />
+          <div className="w-px h-8 bg-[#DDD5C5]" />
           <div className="flex flex-col">
-            <span className="text-[10px] text-gray-500 uppercase tracking-wider font-mono">Steg</span>
-            <span className="text-sm font-semibold text-white">{getDefaultSteps(jurisdiction).length}</span>
+            <span className="text-[10px] text-[#8A8A9A] uppercase tracking-wider font-mono">Steg</span>
+            <span className="text-sm font-semibold text-[#0A3D62]">{getDefaultSteps(jurisdiction).length}</span>
           </div>
         </div>
 
@@ -459,7 +459,7 @@ function NewCompanyModal({
         <div className="flex gap-2">
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-2.5 rounded-lg text-sm font-semibold text-gray-400 transition-colors hover:text-white"
+            className="flex-1 px-4 py-2.5 rounded-lg text-sm font-semibold text-[#8A8A9A] transition-colors hover:text-[#0A3D62]"
             style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
           >
             Avbryt
@@ -467,7 +467,7 @@ function NewCompanyModal({
           <button
             onClick={handleCreate}
             disabled={!name.trim()}
-            className="flex-1 px-4 py-2.5 rounded-lg text-sm font-bold text-white transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex-1 px-4 py-2.5 rounded-lg text-sm font-bold text-[#0A3D62] transition-all hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
             style={{ background: 'linear-gradient(135deg, #2563EB, #1d4ed8)' }}
           >
             Skapa bolag →
@@ -525,10 +525,10 @@ export function CompanyCreator() {
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {/* ── Header ── */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-white/8 flex-shrink-0">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-[#DDD5C5] flex-shrink-0">
         <div>
-          <h2 className="text-base font-bold text-white">🏢 Bolagsportfölj</h2>
-          <p className="text-xs text-gray-400 mt-0.5">
+          <h2 className="text-base font-bold text-[#0A3D62]">🏢 Bolagsportfölj</h2>
+          <p className="text-xs text-[#8A8A9A] mt-0.5">
             {total} bolag &middot; {complete} klara &middot; {inProgress} aktiva
           </p>
         </div>
@@ -536,7 +536,7 @@ export function CompanyCreator() {
         {/* Create button */}
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-white transition-all hover:scale-105 hover:opacity-90 active:scale-95"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-[#0A3D62] transition-all hover:scale-105 hover:opacity-90 active:scale-95"
           style={{
             background: 'linear-gradient(135deg, #2563EB 0%, #7C3AED 100%)',
             boxShadow: '0 4px 15px rgba(37,99,235,0.4)',
@@ -553,12 +553,12 @@ export function CompanyCreator() {
           <div className="flex flex-col items-center justify-center h-full gap-4 text-center">
             <span className="text-5xl">🏢</span>
             <div>
-              <p className="text-sm font-semibold text-gray-300">Inga bolag ännu</p>
-              <p className="text-xs text-gray-500 mt-1">Klicka på "+ Skapa nytt bolag" för att komma igång</p>
+              <p className="text-sm font-semibold text-[#6B7280]">Inga bolag ännu</p>
+              <p className="text-xs text-[#8A8A9A] mt-1">Klicka på "+ Skapa nytt bolag" för att komma igång</p>
             </div>
             <button
               onClick={() => setShowModal(true)}
-              className="px-6 py-3 rounded-xl text-sm font-bold text-white"
+              className="px-6 py-3 rounded-xl text-sm font-bold text-[#0A3D62]"
               style={{ background: 'linear-gradient(135deg, #2563EB, #1d4ed8)' }}
             >
               + Skapa första bolaget
@@ -585,20 +585,20 @@ export function CompanyCreator() {
       </div>
 
       {/* ── Footer summary ── */}
-      <div className="px-6 py-3 border-t border-white/8 flex-shrink-0 flex items-center gap-6 flex-wrap">
+      <div className="px-6 py-3 border-t border-[#DDD5C5] flex-shrink-0 flex items-center gap-6 flex-wrap">
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">⚪ Ej startade</span>
-          <span className="text-sm font-bold text-gray-300">{companies.filter(c => calcProgress(c.steps) === 0).length}</span>
+          <span className="text-[10px] font-mono text-[#8A8A9A] uppercase tracking-wider">⚪ Ej startade</span>
+          <span className="text-sm font-bold text-[#6B7280]">{companies.filter(c => calcProgress(c.steps) === 0).length}</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">🟡 Pågående</span>
+          <span className="text-[10px] font-mono text-[#8A8A9A] uppercase tracking-wider">🟡 Pågående</span>
           <span className="text-sm font-bold text-amber-400">{inProgress}</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono text-gray-500 uppercase tracking-wider">🟢 Klara</span>
+          <span className="text-[10px] font-mono text-[#8A8A9A] uppercase tracking-wider">🟢 Klara</span>
           <span className="text-sm font-bold text-green-400">{complete}</span>
         </div>
-        <div className="ml-auto text-[10px] font-mono text-gray-600">
+        <div className="ml-auto text-[10px] font-mono text-[#8A8A9A]">
           Sparas lokalt i localStorage
         </div>
       </div>

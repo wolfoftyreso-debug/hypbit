@@ -310,7 +310,7 @@ function NodeCard({
         <text
           x={CARD_W - 8} y={CARD_H - 8}
           fontSize={7}
-          fill="#F2F2F7"
+          fill="#0A3D62"
           textAnchor="middle"
           fontFamily="monospace"
           fontWeight="700"
@@ -326,7 +326,7 @@ function NodeCard({
       </text>
 
       {/* Full name — truncate if long */}
-      <text x={14} y={48} fontSize={11} fill="#D1D5DB" fontFamily="sans-serif" fontWeight="500">
+      <text x={14} y={48} fontSize={11} fill="#0A3D62" fontFamily="sans-serif" fontWeight="500">
         {entity.name.length > 24 ? entity.name.slice(0, 23) + '…' : entity.name}
       </text>
 
@@ -504,7 +504,7 @@ function DrillPanel({
               OPEN
             </button>
             <button onClick={onClose}
-              className="text-gray-9000 hover:text-gray-600 transition-colors w-6 h-6 flex items-center justify-center rounded hover:bg-muted">
+              className="text-gray-9000 hover:text-gray-600 transition-colors w-6 h-6 flex items-center justify-center rounded hover:bg-[#EDE8DC]">
               ✕
             </button>
           </div>
@@ -576,7 +576,7 @@ function DrillPanel({
                   const c  = KPI_STATUS_COLOR[st]
                   const pct = Math.min(100, Math.round((kpi.current_value / kpi.target_value) * 100))
                   return (
-                    <div key={kpi.id} className="rounded-lg px-3 py-2 border border-surface-border/50 bg-muted/30">
+                    <div key={kpi.id} className="rounded-lg px-3 py-2 border border-surface-border/50 bg-[#F0EBE1]">
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="text-xs text-gray-600">{kpi.name}</span>
                         <div className="flex items-center gap-1.5">
@@ -666,7 +666,7 @@ function DrillPanel({
                 const s = REL_STYLE[r.type]
                 const source = liveEntities.find(e => e.id === r.from_entity_id)
                 return (
-                  <div key={r.id} className="flex items-center gap-2.5 px-3 py-2 rounded-lg border border-surface-border/50 bg-muted/30">
+                  <div key={r.id} className="flex items-center gap-2.5 px-3 py-2 rounded-lg border border-surface-border/50 bg-[#F0EBE1]">
                     <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: s.stroke }} />
                     <span className="text-xs font-semibold" style={{ color: source?.color ?? '#fff' }}>
                       {source?.shortName}
@@ -848,7 +848,7 @@ function CommandChainNode({
       {/* Card bg — clean dark background, neutral border */}
       <rect width={CMD_NODE_W} height={CMD_NODE_H} rx={9}
         fill="#FFFFFF"
-        stroke="#ffffff0f"
+        stroke="#DDD5C5"
         strokeWidth={1}
       />
 
@@ -898,7 +898,7 @@ function CommandChainNode({
         return (
           <g key={kpi.id}>
             <text x={10} y={y_pos} fontSize={9} fill="#9CA3AF">{kpi.name}</text>
-            <rect x={10} y={y_pos + 3} width={CMD_NODE_W - 22} height={4} rx={2} fill="#ffffff08" />
+            <rect x={10} y={y_pos + 3} width={CMD_NODE_W - 22} height={4} rx={2} fill="#DDD5C5" />
             <rect x={10} y={y_pos + 3} width={Math.min(barW, CMD_NODE_W - 22)} height={4} rx={2} fill={kColor} />
             <text x={CMD_NODE_W - 10} y={y_pos} textAnchor="end" fontSize={9} fontWeight="700" fill={kColor}>
               {kpi.current}
@@ -937,12 +937,12 @@ function CommandChainLayer({
         width={CMD_NODE_W + 32}
         height={CMD_APEX_Y + CMD_NODE_H + CMD_GAP + reportTotalH + 48}
         rx={14}
-        fill="#F9FAFB"
-        stroke="#ffffff06"
+        fill="#F5F0E8"
+        stroke="#DDD5C5"
         strokeWidth={1}
       />
       {/* Column label */}
-      <text x={CMD_X_START} y={CMD_APEX_Y - 10} fontSize={8} fill="#283040" fontWeight="700" letterSpacing="2">
+      <text x={CMD_X_START} y={CMD_APEX_Y - 10} fontSize={8} fill="#0A3D62" fontWeight="700" letterSpacing="2">
         COMMAND CHAIN
       </text>
 
@@ -972,7 +972,7 @@ function CommandChainLayer({
             <line
               x1={apexCx} y1={busY}
               x2={apexCx} y2={firstRepY + reportTotalH - 16}
-              stroke="#ffffff10" strokeWidth={1.5}
+              stroke="#DDD5C5" strokeWidth={1.5}
             />
           </g>
         )
@@ -986,7 +986,7 @@ function CommandChainLayer({
           <g key={r.id}>
             {/* Tick from spine */}
             <line x1={cx} y1={ry + CMD_NODE_H / 2} x2={CMD_X_START} y2={ry + CMD_NODE_H / 2}
-              stroke="#ffffff10" strokeWidth={1} strokeDasharray="3 3" />
+              stroke="#DDD5C5" strokeWidth={1} strokeDasharray="3 3" />
             <CommandChainNode
               role={r}
               x={CMD_X_START}
@@ -1135,7 +1135,7 @@ export function OrgGraph() {
       {/* ── Graph area ── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden md:pt-0 pt-8">
         {/* ── Toolbar — precision control bar ── */}
-        <div className="flex-shrink-0 flex items-center justify-between gap-4 px-5 py-2.5 border-b border-surface-border bg-muted/30">
+        <div className="flex-shrink-0 flex items-center justify-between gap-4 px-5 py-2.5 border-b border-surface-border bg-[#F0EBE1]">
           {/* Left: title + count */}
           <div className="flex items-center gap-3 min-w-0">
             <h1 className="text-sm font-bold text-text-primary tracking-tight">Corporate Graph</h1>
@@ -1173,7 +1173,7 @@ export function OrgGraph() {
               className="text-xs px-3 py-1.5 rounded-lg border font-medium transition-all"
               style={showCommandChain
                 ? { background: '#2563EB18', color: '#60A5FA', borderColor: '#2563EB35' }
-                : { background: 'transparent', color: '#4B5563', borderColor: '#ffffff0a' }
+                : { background: 'transparent', color: '#4B5563', borderColor: '#DDD5C5' }
               }
             >
               Chain
@@ -1182,7 +1182,7 @@ export function OrgGraph() {
             {/* 5. Show all relationships toggle */}
             <button
               onClick={() => setShowAllEdges(s => !s)}
-              className={`px-2 py-1 text-xs rounded font-mono border transition-colors ${showAllEdges ? 'bg-muted border-white/30 text-gray-900' : 'border-surface-border text-gray-9000 hover:text-gray-9000'}`}
+              className={`px-2 py-1 text-xs rounded font-mono border transition-colors ${showAllEdges ? 'bg-[#EDE8DC] border-[#DDD5C5] text-gray-900' : 'border-surface-border text-gray-9000 hover:text-gray-9000'}`}
             >
               {showAllEdges ? '← Enkel vy' : '+ Visa alla relationer'}
             </button>
@@ -1203,7 +1203,7 @@ export function OrgGraph() {
         </div>
 
         {/* SVG canvas */}
-        <div className="flex-1 overflow-auto bg-muted/30">
+        <div className="flex-1 overflow-auto bg-[#F0EBE1]">
           <svg
             viewBox={`0 0 ${svgW} ${svgHeight}`}
             style={{ minWidth: showCommandChain ? TOTAL_W : 700, width: '100%', minHeight: svgHeight }}
@@ -1211,7 +1211,7 @@ export function OrgGraph() {
             {/* Background grid */}
             <defs>
               <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff05" strokeWidth="0.5" />
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#DDD5C5" strokeWidth="0.5" />
               </pattern>
             </defs>
             <rect width={svgW} height={svgHeight} fill="url(#grid)" />
@@ -1222,7 +1222,7 @@ export function OrgGraph() {
                 <rect
                   x={0} y={LAYER_Y[ly] - 20}
                   width={SVG_W} height={CARD_H + 40}
-                  fill={ly % 2 === 0 ? '#ffffff02' : '#ffffff01'}
+                  fill={ly % 2 === 0 ? '#F5F0E8' : '#EDE8DC'}
                 />
                 <text x={14} y={LAYER_Y[ly] - 5} fontSize={11} fill="#9CA3AF" fontWeight="600" letterSpacing="1.9">
                   {LAYER_LABEL[ly]}
@@ -1277,7 +1277,7 @@ export function OrgGraph() {
               <line
                 x1={CMD_X_START - 20} y1={20}
                 x2={CMD_X_START - 20} y2={svgHeight - 20}
-                stroke="#ffffff06" strokeWidth={1}
+                stroke="#DDD5C5" strokeWidth={1}
               />
             )}
           </svg>

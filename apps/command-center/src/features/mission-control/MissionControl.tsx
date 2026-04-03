@@ -47,7 +47,7 @@ function FlowCard({ flow, allTasks }: { flow: Flow; allTasks: Task[] }) {
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <span className="font-semibold text-text-primary text-sm">{flow.title}</span>
-          <span className={`text-xs font-mono px-2 py-0.5 rounded ${moduleColors[flow.module] ?? 'bg-muted text-gray-600'}`}>
+          <span className={`text-xs font-mono px-2 py-0.5 rounded ${moduleColors[flow.module] ?? 'bg-[#EDE8DC] text-gray-600'}`}>
             {flow.module.toUpperCase()}
           </span>
         </div>
@@ -59,7 +59,7 @@ function FlowCard({ flow, allTasks }: { flow: Flow; allTasks: Task[] }) {
       <p className="text-xs text-gray-9000 mb-3">{flow.description}</p>
 
       {/* Progress bar */}
-      <div className="w-full bg-muted rounded-full h-1.5 mb-3">
+      <div className="w-full bg-[#EDE8DC] rounded-full h-1.5 mb-3">
         <div
           className={`h-1.5 rounded-full transition-all ${
             progress === 100 ? 'bg-emerald-500' :
@@ -171,7 +171,7 @@ export function MissionControl() {
 
   if (loading) {
     return (
-      <div className="min-h-full bg-muted/30 flex items-center justify-center">
+      <div className="min-h-full bg-[#F0EBE1] flex items-center justify-center">
         <div className="text-gray-9000 font-mono text-sm">{t('system.loading')}</div>
       </div>
     )
@@ -235,7 +235,7 @@ export function MissionControl() {
   const escalations = checkEscalations(TASKS)
 
   return (
-    <div className="min-h-full bg-muted/30 space-y-6">
+    <div className="min-h-full bg-[#F0EBE1] space-y-6">
 
       {/* ── System Status Header ─────────────────────────────────────────── */}
       <div className={`${statusConfig.bg} ${statusConfig.text} rounded-xl p-5 shadow-sm`}>

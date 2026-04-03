@@ -341,7 +341,7 @@ function HealthGauge({ score, color: _color }: { score: number; color: string })
 
   return (
     <svg width="64" height="64" className="-rotate-90">
-      <circle cx="32" cy="32" r={r} stroke="#ffffff08" strokeWidth="5" fill="none" />
+      <circle cx="32" cy="32" r={r} stroke="#DDD5C5" strokeWidth="5" fill="none" />
       <circle
         cx="32" cy="32" r={r}
         stroke={statusColor} strokeWidth="5" fill="none"
@@ -353,7 +353,7 @@ function HealthGauge({ score, color: _color }: { score: number; color: string })
         x="32" y="32"
         textAnchor="middle"
         dominantBaseline="middle"
-        fill="white"
+        fill="#0A3D62"
         fontSize="12"
         fontWeight="bold"
         transform="rotate(90 32 32)"
@@ -453,7 +453,7 @@ function RiskMatrix() {
             key={risk.id}
             onClick={() => setSelectedRisk(selectedRisk === risk.id ? null : risk.id)}
             className={`text-left rounded-xl p-3 border transition-all ${
-              selectedRisk === risk.id ? 'border-white/30 bg-muted' : 'border-surface-border bg-muted/30 hover:bg-white/8'
+              selectedRisk === risk.id ? 'border-[#DDD5C5] bg-[#EDE8DC]' : 'border-surface-border bg-[#F0EBE1] hover:bg-[#EDE8DC]'
             }`}
           >
             <div className="flex items-center gap-2 mb-1">
@@ -473,14 +473,14 @@ function RiskMatrix() {
             <div className="flex gap-3 mt-2">
               <div className="flex items-center gap-1.5 text-xs">
                 <span className="text-gray-9000">P</span>
-                <div className="w-20 bg-muted/30 rounded-full h-1.5">
+                <div className="w-20 bg-[#F0EBE1] rounded-full h-1.5">
                   <div className="h-full rounded-full bg-amber-500" style={{ width: `${risk.probability * 10}%` }} />
                 </div>
                 <span className="text-amber-700">{risk.probability}</span>
               </div>
               <div className="flex items-center gap-1.5 text-xs">
                 <span className="text-gray-9000">I</span>
-                <div className="w-20 bg-muted/30 rounded-full h-1.5">
+                <div className="w-20 bg-[#F0EBE1] rounded-full h-1.5">
                   <div className="h-full rounded-full bg-red-500" style={{ width: `${risk.impact * 10}%` }} />
                 </div>
                 <span className="text-red-700">{risk.impact}</span>
@@ -493,7 +493,7 @@ function RiskMatrix() {
       {/* Right: detail */}
       <div className="flex-1">
         {selected ? (
-          <div className="rounded-xl border border-surface-border bg-muted/30 p-5 flex flex-col gap-4">
+          <div className="rounded-xl border border-surface-border bg-[#F0EBE1] p-5 flex flex-col gap-4">
             <div className="flex items-start gap-3">
               <div
                 className="text-xs font-bold px-2 py-1 rounded uppercase"
@@ -561,7 +561,7 @@ function DecisionLog() {
   return (
     <div className="flex flex-col gap-3">
       {DECISION_LOG.map(entry => (
-        <div key={entry.id} className="rounded-xl border border-surface-border bg-muted/30 p-4">
+        <div key={entry.id} className="rounded-xl border border-surface-border bg-[#F0EBE1] p-4">
           <div className="flex items-start gap-3">
             <div className="flex flex-col items-center gap-1 flex-shrink-0 pt-1">
               <div
@@ -569,7 +569,7 @@ function DecisionLog() {
                 style={{ backgroundColor: statusColors[entry.status] }}
               />
               {'|'.repeat(entry.impactScore).split('').map((_, i) => (
-                <div key={i} className="w-1 h-1 rounded-full bg-white/20" />
+                <div key={i} className="w-1 h-1 rounded-full bg-[#EDE8DC]" />
               ))}
             </div>
             <div className="flex-1 min-w-0">
@@ -588,7 +588,7 @@ function DecisionLog() {
               </div>
               <h4 className="text-sm font-bold text-text-primary mb-1">{entry.decision}</h4>
               <p className="text-xs text-gray-9000 mb-2">{entry.context}</p>
-              <div className="rounded bg-muted/30 border border-surface-border px-3 py-2">
+              <div className="rounded bg-[#F0EBE1] border border-surface-border px-3 py-2">
                 <div className="text-xs font-semibold text-gray-9000 uppercase tracking-wide mb-0.5">Konsekvens</div>
                 <p className="text-xs text-gray-600">{entry.consequence}</p>
               </div>
@@ -618,7 +618,7 @@ function MarketSignals() {
       {MARKET_SIGNALS.map(signal => (
         <div
           key={signal.id}
-          className={`rounded-xl border p-4 ${signal.actionable ? 'border-white/15 bg-muted/30' : 'border-white/8 bg-white/3 opacity-70'}`}
+          className={`rounded-xl border p-4 ${signal.actionable ? 'border-[#DDD5C5] bg-[#F0EBE1]' : 'border-[#DDD5C5] bg-[#F5F0E8] opacity-70'}`}
         >
           <div className="flex items-start gap-3">
             <div className="mt-0.5">
@@ -710,7 +710,7 @@ function PixPhilosophy() {
       {/* Core Philosophy */}
       <div>
         <div className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Kärnprincip</div>
-        <div className="rounded-xl border border-surface-border bg-muted/30 p-5">
+        <div className="rounded-xl border border-surface-border bg-[#F0EBE1] p-5">
           <div className="text-lg font-bold text-text-primary mb-2 italic">"Systems should run the business. Not the other way around."</div>
           <p className="text-sm text-gray-600 leading-relaxed">
             Avancerade bolag som Amazon, Nvidia och Tesla uppnår inte hög output av slumpen. De opererar på system som
@@ -765,10 +765,10 @@ function PixPhilosophy() {
                     {i + 1}
                   </div>
                   {i < quixzoomPix.length - 1 && (
-                    <div className="w-px h-4 bg-muted ml-2" />
+                    <div className="w-px h-4 bg-[#EDE8DC] ml-2" />
                   )}
                 </div>
-                <div className="flex-1 rounded-lg bg-muted/30 border border-surface-border px-3 py-2">
+                <div className="flex-1 rounded-lg bg-[#F0EBE1] border border-surface-border px-3 py-2">
                   <div className="flex items-center gap-2">
                     <code className="text-xs font-mono" style={{ color: pix.color }}>{pix.event}</code>
                     <span className="text-xs text-gray-9000">— {pix.desc}</span>
@@ -795,7 +795,7 @@ function PixPhilosophy() {
             </thead>
             <tbody>
               {competitors.map((c, i) => (
-                <tr key={c.name} className={`border-b border-white/5 ${i === competitors.length - 1 ? 'bg-green-500/5' : ''}`}>
+                <tr key={c.name} className={`border-b border-[#DDD5C5] ${i === competitors.length - 1 ? 'bg-green-500/5' : ''}`}>
                   <td className={`py-2 pr-4 font-medium ${i === competitors.length - 1 ? 'text-green-700' : 'text-gray-900'}`}>{c.name}</td>
                   <td className={`py-2 pr-4 ${i === competitors.length - 1 ? 'text-green-300' : 'text-red-700'}`}>{c.cost}</td>
                   <td className={`py-2 pr-4 ${i === competitors.length - 1 ? 'text-green-300' : 'text-amber-700'}`}>{c.setup}</td>
@@ -808,7 +808,7 @@ function PixPhilosophy() {
       </div>
 
       {/* Modular strategy */}
-      <div className="rounded-xl border border-surface-border bg-muted/30 p-5">
+      <div className="rounded-xl border border-surface-border bg-[#F0EBE1] p-5">
         <div className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-3">Modulär Strategi</div>
         <div className="grid grid-cols-2 gap-3 text-xs">
           <div>
@@ -854,7 +854,7 @@ export function SystemIntelligenceHub() {
   const highRisks = RISK_MATRIX.filter(r => r.level === 'high').length
 
   return (
-    <div className="h-full flex flex-col bg-muted/30 text-text-primary overflow-hidden">
+    <div className="h-full flex flex-col bg-[#F0EBE1] text-text-primary overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between px-4 md:px-6 py-4 border-b border-surface-border flex-shrink-0">
         <div className="flex items-center gap-3">
@@ -894,8 +894,8 @@ export function SystemIntelligenceHub() {
             onClick={() => setActiveTab(t.id)}
             className={`flex items-center gap-1.5 text-xs px-3 py-2 rounded-t-lg font-medium border-b-2 transition-all ${
               activeTab === t.id
-                ? 'text-text-primary border-blue-500 bg-white/8'
-                : 'text-gray-9000 border-transparent hover:text-text-primary hover:bg-muted/30'
+                ? 'text-text-primary border-blue-500 bg-[#EDE8DC]'
+                : 'text-gray-9000 border-transparent hover:text-text-primary hover:bg-[#F0EBE1]'
             }`}
           >
             <span>{t.icon}</span>
@@ -903,7 +903,7 @@ export function SystemIntelligenceHub() {
           </button>
         ))}
       </div>
-      <div className="h-px bg-muted flex-shrink-0" />
+      <div className="h-px bg-[#EDE8DC] flex-shrink-0" />
 
       {/* Content */}
       <div className="flex-1 overflow-auto p-5">
@@ -913,7 +913,7 @@ export function SystemIntelligenceHub() {
               <EntityCard key={entity.id} entity={entity} />
             ))}
             {/* Group summary card */}
-            <div className="rounded-xl border border-surface-border bg-muted/30 p-4 flex flex-col gap-2">
+            <div className="rounded-xl border border-surface-border bg-[#F0EBE1] p-4 flex flex-col gap-2">
               <div className="text-xs font-semibold text-gray-9000 uppercase tracking-wider">Koncernhälsa (λ)</div>
               <div className={`text-4xl font-mono font-bold ${avgHealth >= 70 ? 'text-green-700' : avgHealth >= 40 ? 'text-amber-700' : 'text-red-700'}`}>
                 λ {(avgHealth / 100).toFixed(2)}
@@ -926,7 +926,7 @@ export function SystemIntelligenceHub() {
                 {ENTITY_HEALTH.map(e => (
                   <div key={e.id} className="flex items-center gap-2 text-xs">
                     <span className="w-16 text-gray-9000">{e.code}</span>
-                    <div className="flex-1 bg-muted/30 rounded-full h-1.5">
+                    <div className="flex-1 bg-[#F0EBE1] rounded-full h-1.5">
                       <div
                         className="h-full rounded-full"
                         style={{

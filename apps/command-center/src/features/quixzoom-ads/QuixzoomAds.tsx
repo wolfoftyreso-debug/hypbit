@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ShoppingCart, Star, MapPin, Database, Check } from 'lucide-react'
 
 interface AdsPackage {
@@ -26,6 +26,28 @@ const TYPE_LABELS: Record<string, string> = { leads: 'Leads', market_data: 'Mark
 export function QuixzoomAds() {
   const [activeTab, setActiveTab] = useState<'marketplace' | 'builder'>('marketplace')
   const [cart, setCart] = useState<string[]>([])
+  const [packages, setPackages] = useState(DEMO_PACKAGES)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetch('/api/quixzoom/ads/packages')
+      .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
+      .then(d => { if (d.packages?.length) setPackages(d.packages); setLoading(false) })
+      .catch(() => setLoading(false)) // fall back to DEMO_PACKAGES on error
+  }, [])
+
+  if (loading) {
+    return (
+      <div style={{ padding: 24 }}>
+        <div style={{ background: 'var(--color-brand)', borderRadius: 12, padding: '24px 28px', marginBottom: 20, color: '#fff' }}>
+          <div style={{ fontSize: 9, fontFamily: 'monospace', color: 'var(--color-accent)', letterSpacing: '.15em', textTransform: 'uppercase', marginBottom: 8 }}>Quixom Ads</div>
+          <h2 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>Marketplace</h2>
+        </div>
+        {[1,2,3].map(i => <div key={i} style={{ background: 'var(--color-bg-muted)', borderRadius: 10, height: 90, marginBottom: 12, animation: 'pulse 1.5s ease-in-out infinite' }} />)}
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col h-full" style={{ background: '#F2F2F7' }}>

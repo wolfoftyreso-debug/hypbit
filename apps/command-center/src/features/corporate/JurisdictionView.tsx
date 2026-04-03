@@ -45,7 +45,7 @@ export function JurisdictionView() {
             className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
               selectedCompany === 'all'
                 ? 'bg-blue-50 text-blue-700 border-blue-200'
-                : 'bg-muted/30 text-gray-9000 border-surface-border hover:text-gray-900'
+                : 'bg-[#EDE8DC] text-gray-9000 border-surface-border hover:text-gray-900'
             }`}
           >
             Alla bolag
@@ -57,7 +57,7 @@ export function JurisdictionView() {
               className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                 selectedCompany === c.id
                   ? 'border opacity-100'
-                  : 'bg-muted/30 text-gray-9000 border-surface-border hover:text-gray-900'
+                  : 'bg-[#EDE8DC] text-gray-9000 border-surface-border hover:text-gray-900'
               }`}
               style={selectedCompany === c.id ? { background: c.color + '20', color: c.color, borderColor: c.color + '50' } : {}}
             >
@@ -113,7 +113,7 @@ export function JurisdictionView() {
                   </thead>
                   <tbody>
                     {reqs.map(req => (
-                      <tr key={req.id} className="border-b border-white/[0.03] hover:bg-muted/30 transition-colors">
+                      <tr key={req.id} className="border-b border-white/[0.03] hover:bg-[#EDE8DC] transition-colors">
                         <td className="px-4 py-2.5 text-gray-9000 font-mono text-xs">{req.authority}</td>
                         <td className="px-4 py-2.5">
                           <div className="text-gray-800">{req.requirement}</div>

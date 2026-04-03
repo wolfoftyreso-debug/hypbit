@@ -80,7 +80,7 @@ export function ProcurementContractsView() {
               return (
                 <tr
                   key={c.id}
-                  className={`border-b border-white/[0.03] hover:bg-muted/30 transition-colors ${
+                  className={`border-b border-[#DDD5C5] hover:bg-[#F0EBE1] transition-colors ${
                     days <= 90 ? 'bg-amber-500/[0.02]' : ''
                   }`}
                 >

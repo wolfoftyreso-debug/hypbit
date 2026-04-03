@@ -35,7 +35,7 @@ function StatusIcon({ status }: { status: DayStatus }) {
         <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
       </span>
     )
-  return <span className="text-gray-600">⬜</span>
+  return <span className="text-[#6B7280]">⬜</span>
 }
 
 // ── Kategori-filter ────────────────────────────────────────
@@ -88,7 +88,7 @@ export function AcademyView() {
           <h2 className="text-lg font-semibold text-text-primary flex items-center gap-2">
             🎓 Systemskolan v2
           </h2>
-          <p className="text-xs text-gray-400 mt-0.5">
+          <p className="text-xs text-[#8A8A9A] mt-0.5">
             {beforeThailand
               ? 'Startar 11 april 2026 · Bangkok, Thailand'
               : `Dag ${currentDay} av ${MAX_DAYS} · Thailand Workcamp`}
@@ -116,7 +116,7 @@ export function AcademyView() {
           <div className="flex items-start justify-between gap-3">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <p className="text-xs text-gray-500 uppercase tracking-widest">
+                <p className="text-xs text-[#8A8A9A] uppercase tracking-widest">
                   DAG {selectedDay} AV {MAX_DAYS} · VECKA {lesson.week}
                 </p>
                 <span
@@ -141,22 +141,22 @@ export function AcademyView() {
           <div className="px-5 py-4">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-sm">📖</span>
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+              <span className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider">
                 Analogin
               </span>
             </div>
-            <p className="text-sm text-gray-300 leading-relaxed">{lesson.analogy}</p>
+            <p className="text-sm text-[#6B7280] leading-relaxed">{lesson.analogy}</p>
           </div>
 
           {/* Tekniskt */}
           <div className="px-5 py-4">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-sm">⚙️</span>
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+              <span className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider">
                 Tekniskt
               </span>
             </div>
-            <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">
+            <p className="text-sm text-[#6B7280] leading-relaxed whitespace-pre-line">
               {lesson.technical}
             </p>
           </div>
@@ -165,22 +165,22 @@ export function AcademyView() {
           <div className="px-5 py-4">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-sm">🔗</span>
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+              <span className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider">
                 Kopplingen till Wavult
               </span>
             </div>
-            <p className="text-sm text-gray-300 leading-relaxed">{lesson.connection}</p>
+            <p className="text-sm text-[#6B7280] leading-relaxed">{lesson.connection}</p>
           </div>
 
           {/* Relaterade entities */}
           {lesson.source_entities.length > 0 && (
             <div className="px-5 py-3 bg-surface-primary/30">
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xs text-gray-500">🔧 Services:</span>
+                <span className="text-xs text-[#8A8A9A]">🔧 Services:</span>
                 {lesson.source_entities.map((entity) => (
                   <span
                     key={entity}
-                    className="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-border text-gray-400 border border-gray-700"
+                    className="px-2 py-0.5 rounded text-[10px] font-mono bg-surface-border text-[#8A8A9A] border border-[#DDD5C5]"
                   >
                     {entity}
                   </span>
@@ -192,9 +192,9 @@ export function AcademyView() {
           {/* Imorgon */}
           {selectedDay < MAX_DAYS && (
             <div className="px-5 py-3 bg-surface-primary/50">
-              <p className="text-xs text-gray-500">
-                <span className="text-gray-400">➡️ Imorgon:</span>{' '}
-                <span className="text-gray-300">{lesson.tomorrow}</span>
+              <p className="text-xs text-[#8A8A9A]">
+                <span className="text-[#8A8A9A]">➡️ Imorgon:</span>{' '}
+                <span className="text-[#6B7280]">{lesson.tomorrow}</span>
               </p>
             </div>
           )}
@@ -205,13 +205,13 @@ export function AcademyView() {
       <div className="flex flex-col gap-2">
         {/* Sökfält */}
         <div className="relative">
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">🔍</span>
+          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8A8A9A] text-sm">🔍</span>
           <input
             type="text"
             placeholder="Sök lektion..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-surface-secondary border border-surface-border text-xs text-gray-300 placeholder-gray-600 focus:outline-none focus:border-gray-500"
+            className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-surface-secondary border border-surface-border text-xs text-[#6B7280] placeholder-gray-600 focus:outline-none focus:border-gray-500"
           />
         </div>
 
@@ -221,8 +221,8 @@ export function AcademyView() {
             onClick={() => setFilterCategory('all')}
             className={`px-2 py-1 rounded text-[10px] font-medium transition-colors ${
               filterCategory === 'all'
-                ? 'bg-gray-700 text-white'
-                : 'text-gray-500 hover:text-gray-300'
+                ? 'bg-[#EDE8DC] text-[#0A3D62]'
+                : 'text-[#8A8A9A] hover:text-[#6B7280]'
             }`}
           >
             Alla ({CURRICULUM.length})
@@ -235,7 +235,7 @@ export function AcademyView() {
                 key={cat}
                 onClick={() => setFilterCategory(cat)}
                 className={`px-2 py-1 rounded text-[10px] font-medium transition-colors border ${
-                  isActive ? 'text-white' : 'text-gray-500 hover:text-gray-300 border-transparent'
+                  isActive ? 'text-[#0A3D62]' : 'text-[#8A8A9A] hover:text-[#6B7280] border-transparent'
                 }`}
                 style={
                   isActive
@@ -257,7 +257,7 @@ export function AcademyView() {
       {/* Dag-grid */}
       <div className="rounded-xl border border-surface-border bg-surface-secondary p-4">
         <div className="flex items-center justify-between mb-3">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <p className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider">
             {showingAll ? `Alla ${MAX_DAYS} dagar` : `${filteredLessons.length} lektioner`}
           </p>
           {!showingAll && (
@@ -266,7 +266,7 @@ export function AcademyView() {
                 setFilterCategory('all')
                 setSearchQuery('')
               }}
-              className="text-[10px] text-gray-500 hover:text-gray-300"
+              className="text-[10px] text-[#8A8A9A] hover:text-[#6B7280]"
             >
               Rensa filter ✕
             </button>
@@ -305,9 +305,9 @@ export function AcademyView() {
                   className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full"
                   style={{ backgroundColor: CATEGORY_COLORS[l.category] }}
                 />
-                <span className="text-[10px] text-gray-500 leading-none">{l.day}</span>
+                <span className="text-[10px] text-[#8A8A9A] leading-none">{l.day}</span>
                 <StatusIcon status={status} />
-                <span className="text-[9px] text-gray-600 truncate w-full text-center leading-tight">
+                <span className="text-[9px] text-[#6B7280] truncate w-full text-center leading-tight">
                   {l.emoji}
                 </span>
               </button>
@@ -323,7 +323,7 @@ export function AcademyView() {
                 className="w-2 h-2 rounded-full"
                 style={{ backgroundColor: CATEGORY_COLORS[cat] }}
               />
-              <span className="text-[9px] text-gray-600">{CATEGORY_LABELS[cat].split(' ')[1]}</span>
+              <span className="text-[9px] text-[#6B7280]">{CATEGORY_LABELS[cat].split(' ')[1]}</span>
             </div>
           ))}
         </div>
@@ -334,7 +334,7 @@ export function AcademyView() {
         <button
           onClick={() => setSelectedDay((d) => Math.max(1, d - 1))}
           disabled={selectedDay <= 1}
-          className="flex-1 py-2 px-3 rounded-lg border border-surface-border text-xs text-gray-400 hover:text-gray-200 hover:bg-surface-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="flex-1 py-2 px-3 rounded-lg border border-surface-border text-xs text-[#8A8A9A] hover:text-[#2C5F8A] hover:bg-surface-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
           ← Föregående
         </button>
@@ -347,7 +347,7 @@ export function AcademyView() {
         <button
           onClick={() => setSelectedDay((d) => Math.min(MAX_DAYS, d + 1))}
           disabled={selectedDay >= MAX_DAYS}
-          className="flex-1 py-2 px-3 rounded-lg border border-surface-border text-xs text-gray-400 hover:text-gray-200 hover:bg-surface-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="flex-1 py-2 px-3 rounded-lg border border-surface-border text-xs text-[#8A8A9A] hover:text-[#2C5F8A] hover:bg-surface-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
           Nästa →
         </button>

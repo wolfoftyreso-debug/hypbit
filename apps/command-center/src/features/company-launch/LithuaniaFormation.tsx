@@ -133,12 +133,12 @@ function NameChecker() {
           onChange={e => setQuery(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && checkName()}
           placeholder="e.g. quiXzoom UAB"
-          className="flex-1 px-3 py-2 rounded-lg border border-white/10 bg-muted/40 text-sm text-text-primary placeholder-gray-600 focus:outline-none focus:border-blue-500 transition-colors"
+          className="flex-1 px-3 py-2 rounded-lg border border-[#DDD5C5] bg-[#F0EBE1] text-sm text-text-primary placeholder-gray-600 focus:outline-none focus:border-blue-500 transition-colors"
         />
         <button
           onClick={checkName}
           disabled={status === 'checking' || !query.trim()}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold bg-blue-700 hover:bg-blue-600 text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold bg-blue-700 hover:bg-blue-600 text-[#0A3D62] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {status === 'checking' ? (
             <Loader2 className="w-4 h-4 animate-spin" />
@@ -150,31 +150,31 @@ function NameChecker() {
       </div>
 
       {status === 'available' && (
-        <div className="flex items-center gap-2 p-3 rounded-lg border border-green-900/40 bg-green-950/10">
+        <div className="flex items-center gap-2 p-3 rounded-lg border border-green-900/40 bg-green-50">
           <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
           <div>
             <p className="text-sm text-green-400 font-semibold">Name appears available</p>
-            <p className="text-xs text-gray-400">No exact match found in Registrų centras. Verify directly before applying.</p>
+            <p className="text-xs text-[#8A8A9A]">No exact match found in Registrų centras. Verify directly before applying.</p>
           </div>
         </div>
       )}
 
       {status === 'taken' && results.length > 0 && (
-        <div className="p-3 rounded-lg border border-amber-900/40 bg-amber-950/10">
+        <div className="p-3 rounded-lg border border-amber-200 bg-amber-50">
           <p className="text-xs font-semibold text-amber-400 mb-2">⚠️ Similar names found — verify uniqueness</p>
           <ul className="space-y-1">
             {results.map((r, i) => (
-              <li key={i} className="text-xs text-gray-400 font-mono">· {r}</li>
+              <li key={i} className="text-xs text-[#8A8A9A] font-mono">· {r}</li>
             ))}
           </ul>
         </div>
       )}
 
       {status === 'error' && (
-        <div className="flex items-start gap-2 p-3 rounded-lg border border-gray-800 bg-muted/20">
-          <AlertCircle className="w-4 h-4 text-gray-500 flex-shrink-0 mt-0.5" />
+        <div className="flex items-start gap-2 p-3 rounded-lg border border-gray-800 bg-[#F0EBE1]">
+          <AlertCircle className="w-4 h-4 text-[#8A8A9A] flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-xs text-gray-400">Direct API check not available from browser (CORS). Check manually:</p>
+            <p className="text-xs text-[#8A8A9A]">Direct API check not available from browser (CORS). Check manually:</p>
             <a
               href={`https://www.registrucentras.lt/jar/p/index.php?query=${encodeURIComponent(query)}`}
               target="_blank"
@@ -187,7 +187,7 @@ function NameChecker() {
         </div>
       )}
 
-      <p className="text-[10px] text-gray-600">
+      <p className="text-[10px] text-[#8A8A9A]">
         Source:{' '}
         <a href="https://www.registrucentras.lt/jar/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
           registrucentras.lt
@@ -242,13 +242,13 @@ export function LithuaniaFormation() {
             EU · Schengen
           </span>
         </div>
-        <p className="text-xs text-gray-400 ml-10">
+        <p className="text-xs text-[#8A8A9A] ml-10">
           15% corporate tax · EU jurisdiction · GDPR compliant · Digital-first registration
         </p>
       </div>
 
       {/* Why Lithuania */}
-      <section className="rounded-xl border border-white/8 bg-muted/20 p-5">
+      <section className="rounded-xl border border-[#DDD5C5] bg-[#F0EBE1] p-5">
         <h3 className="text-sm font-semibold text-text-primary mb-3">Why Lithuania for Wavult Group?</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
@@ -257,10 +257,10 @@ export function LithuaniaFormation() {
             { icon: '⚡', label: 'Digital Setup', sub: 'Register fully online' },
             { icon: '🎯', label: 'quiXzoom UAB', sub: 'EU operations base' },
           ].map(item => (
-            <div key={item.label} className="text-center p-3 rounded-lg bg-muted/30 border border-white/8">
+            <div key={item.label} className="text-center p-3 rounded-lg bg-[#EDE8DC] border border-[#DDD5C5]">
               <span className="text-xl block mb-1">{item.icon}</span>
               <p className="text-xs font-semibold text-text-primary">{item.label}</p>
-              <p className="text-[10px] text-gray-500 mt-0.5">{item.sub}</p>
+              <p className="text-[10px] text-[#8A8A9A] mt-0.5">{item.sub}</p>
             </div>
           ))}
         </div>
@@ -291,23 +291,23 @@ export function LithuaniaFormation() {
             { step: 'Tax registration (VMI)', desc: 'Register as VAT payer if applicable', days: 'Day 7–10', done: false },
             { step: 'Bank account opening', desc: 'Revolut Business, Paysera, or local bank', days: 'Day 10–14', done: false },
           ].map((item, i) => (
-            <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-white/8 bg-muted/20">
+            <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-[#DDD5C5] bg-[#F0EBE1]">
               <span className="flex-shrink-0 w-5 h-5 rounded-full bg-green-900/40 text-green-400 text-[10px] font-bold flex items-center justify-center mt-0.5">
                 {i + 1}
               </span>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
                   <p className="text-sm font-medium text-text-primary">{item.step}</p>
-                  <span className="text-[10px] font-mono text-gray-500 flex-shrink-0">{item.days}</span>
+                  <span className="text-[10px] font-mono text-[#8A8A9A] flex-shrink-0">{item.days}</span>
                 </div>
-                <p className="text-xs text-gray-400">{item.desc}</p>
+                <p className="text-xs text-[#8A8A9A]">{item.desc}</p>
               </div>
             </div>
           ))}
         </div>
-        <div className="mt-3 p-3 rounded-lg border border-green-900/30 bg-green-950/10">
+        <div className="mt-3 p-3 rounded-lg border border-green-200 bg-green-50">
           <p className="text-xs text-green-400 font-semibold">⏱ Total timeline: ~7–14 business days</p>
-          <p className="text-xs text-gray-400 mt-0.5">With a formation service like EasyLegal or Fondia, often completed in 5–7 days.</p>
+          <p className="text-xs text-[#8A8A9A] mt-0.5">With a formation service like EasyLegal or Fondia, often completed in 5–7 days.</p>
         </div>
       </section>
 
@@ -317,27 +317,27 @@ export function LithuaniaFormation() {
           <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-900/50 text-green-400 text-xs font-bold flex items-center justify-center">3</span>
           <h3 className="text-sm font-semibold text-text-primary">Cost Breakdown</h3>
         </div>
-        <div className="rounded-lg border border-white/8 overflow-hidden">
+        <div className="rounded-lg border border-[#DDD5C5] overflow-hidden">
           <table className="w-full text-xs">
             <thead>
-              <tr className="border-b border-white/8 bg-muted/50">
-                <th className="text-left px-4 py-2 font-mono text-gray-500 uppercase tracking-wider text-[10px]">Item</th>
-                <th className="text-left px-4 py-2 font-mono text-gray-500 uppercase tracking-wider text-[10px]">Amount</th>
-                <th className="text-left px-4 py-2 font-mono text-gray-500 uppercase tracking-wider text-[10px]">Note</th>
+              <tr className="border-b border-[#DDD5C5] bg-[#F0EBE1]">
+                <th className="text-left px-4 py-2 font-mono text-[#8A8A9A] uppercase tracking-wider text-[10px]">Item</th>
+                <th className="text-left px-4 py-2 font-mono text-[#8A8A9A] uppercase tracking-wider text-[10px]">Amount</th>
+                <th className="text-left px-4 py-2 font-mono text-[#8A8A9A] uppercase tracking-wider text-[10px]">Note</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-[#DDD5C5]">
               {COST_ITEMS.map(item => (
-                <tr key={item.label} className="hover:bg-muted/20 transition-colors">
+                <tr key={item.label} className="hover:bg-[#F0EBE1] transition-colors">
                   <td className="px-4 py-3 text-text-primary">{item.label}</td>
                   <td className="px-4 py-3 font-mono text-green-400 font-semibold">{item.amount}</td>
-                  <td className="px-4 py-3 text-gray-500">{item.note}</td>
+                  <td className="px-4 py-3 text-[#8A8A9A]">{item.note}</td>
                 </tr>
               ))}
-              <tr className="bg-muted/30 border-t border-white/10">
+              <tr className="bg-[#EDE8DC] border-t border-[#DDD5C5]">
                 <td className="px-4 py-3 font-bold text-text-primary">Total (excl. capital)</td>
                 <td className="px-4 py-3 font-mono font-bold text-green-400">~€1,200–2,200</td>
-                <td className="px-4 py-3 text-gray-500">One-time setup cost</td>
+                <td className="px-4 py-3 text-[#8A8A9A]">One-time setup cost</td>
               </tr>
             </tbody>
           </table>
@@ -349,28 +349,28 @@ export function LithuaniaFormation() {
         <div className="flex items-center gap-2 mb-4">
           <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-900/50 text-green-400 text-xs font-bold flex items-center justify-center">4</span>
           <h3 className="text-sm font-semibold text-text-primary">Document Checklist</h3>
-          <span className="ml-auto text-xs text-gray-500 font-mono">{checkedDocs}/{docs.length} ready · {readyPct}%</span>
+          <span className="ml-auto text-xs text-[#8A8A9A] font-mono">{checkedDocs}/{docs.length} ready · {readyPct}%</span>
         </div>
         <div className="space-y-2">
           {docs.map(doc => (
             <div
               key={doc.id}
               className={`flex items-start gap-3 p-3 rounded-lg border transition-all cursor-pointer ${
-                doc.checked ? 'border-green-900/40 bg-green-950/10' : 'border-white/8 bg-muted/20 hover:border-white/16'
+                doc.checked ? 'border-green-900/40 bg-green-50' : 'border-[#DDD5C5] bg-[#F0EBE1] hover:border-[#DDD5C5]'
               }`}
               onClick={() => toggleDoc(doc.id)}
             >
               <div className="flex-shrink-0 mt-0.5">
                 {doc.checked
                   ? <CheckCircle className="w-4 h-4 text-green-500" />
-                  : <Circle className="w-4 h-4 text-gray-600" />
+                  : <Circle className="w-4 h-4 text-[#8A8A9A]" />
                 }
               </div>
               <div>
                 <p className={`text-sm font-medium ${doc.checked ? 'text-green-400 line-through opacity-70' : 'text-text-primary'}`}>
                   {doc.label}
                 </p>
-                <p className="text-xs text-gray-400">{doc.description}</p>
+                <p className="text-xs text-[#8A8A9A]">{doc.description}</p>
               </div>
             </div>
           ))}
@@ -385,7 +385,7 @@ export function LithuaniaFormation() {
         </div>
         <div className="space-y-3 mb-5">
           {PARTNERS.map(p => (
-            <div key={p.name} className="flex items-start justify-between gap-4 p-4 rounded-lg border border-white/8 bg-muted/20">
+            <div key={p.name} className="flex items-start justify-between gap-4 p-4 rounded-lg border border-[#DDD5C5] bg-[#F0EBE1]">
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-sm font-semibold text-text-primary">{p.name}</span>
@@ -396,8 +396,8 @@ export function LithuaniaFormation() {
                     {p.badge}
                   </span>
                 </div>
-                <p className="text-xs text-gray-400">{p.description}</p>
-                <p className="text-[10px] text-gray-600 mt-1 font-mono">{p.email}</p>
+                <p className="text-xs text-[#8A8A9A]">{p.description}</p>
+                <p className="text-[10px] text-[#8A8A9A] mt-1 font-mono">{p.email}</p>
               </div>
               <a
                 href={p.url}
@@ -413,10 +413,10 @@ export function LithuaniaFormation() {
 
         {/* CTA — Fondia */}
         {fondiaSent ? (
-          <div className="rounded-lg border border-green-900/40 bg-green-950/10 p-4 text-center">
+          <div className="rounded-lg border border-green-900/40 bg-green-50 p-4 text-center">
             <CheckCircle className="w-6 h-6 text-green-500 mx-auto mb-2" />
             <p className="text-sm font-semibold text-green-400">Request Sent to Fondia</p>
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-[#8A8A9A] mt-1">
               Logged to CRM. Fondia will follow up within 1 business day.
             </p>
           </div>
@@ -424,7 +424,7 @@ export function LithuaniaFormation() {
           <button
             onClick={requestFondia}
             disabled={fondiaSending}
-            className="w-full py-3 rounded-lg text-sm font-bold bg-green-700 hover:bg-green-600 text-white transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+            className="w-full py-3 rounded-lg text-sm font-bold bg-green-700 hover:bg-green-600 text-[#0A3D62] transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {fondiaSending ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -437,7 +437,7 @@ export function LithuaniaFormation() {
 
       {/* Useful links */}
       <section>
-        <h3 className="text-xs font-mono uppercase tracking-widest text-gray-500 mb-3">Official Resources</h3>
+        <h3 className="text-xs font-mono uppercase tracking-widest text-[#8A8A9A] mb-3">Official Resources</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           {[
             { label: 'Registrų centras (JAR)', url: 'https://www.registrucentras.lt/jar/', desc: 'Company registry search' },
@@ -450,12 +450,12 @@ export function LithuaniaFormation() {
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-start gap-3 p-3 rounded-lg border border-white/8 bg-muted/20 hover:border-white/20 transition-colors group"
+              className="flex items-start gap-3 p-3 rounded-lg border border-[#DDD5C5] bg-[#F0EBE1] hover:border-[#DDD5C5] transition-colors group"
             >
-              <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-green-400 flex-shrink-0 mt-0.5 transition-colors" />
+              <ExternalLink className="w-4 h-4 text-[#8A8A9A] group-hover:text-green-400 flex-shrink-0 mt-0.5 transition-colors" />
               <div>
                 <p className="text-xs font-semibold text-text-primary group-hover:text-green-400 transition-colors">{link.label}</p>
-                <p className="text-[10px] text-gray-500">{link.desc}</p>
+                <p className="text-[10px] text-[#8A8A9A]">{link.desc}</p>
               </div>
             </a>
           ))}

@@ -56,7 +56,7 @@ export function PurchaseOrdersView() {
               key={s}
               onClick={() => setFilterStatus(s)}
               className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${
-                filterStatus === s ? 'bg-muted text-gray-900' : 'text-gray-9000 hover:text-gray-600'
+                filterStatus === s ? 'bg-[#EDE8DC] text-gray-900' : 'text-gray-9000 hover:text-gray-600'
               }`}
             >
               {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -73,7 +73,7 @@ export function PurchaseOrdersView() {
 
       {/* New PO form */}
       {showForm && (
-        <div className="mx-6 mt-4 p-4 rounded-xl border border-surface-border bg-muted/30 flex-shrink-0">
+        <div className="mx-6 mt-4 p-4 rounded-xl border border-surface-border bg-[#F0EBE1] flex-shrink-0">
           <p className="text-xs font-semibold text-text-primary mb-3">Ny inköpsorder</p>
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -81,7 +81,7 @@ export function PurchaseOrdersView() {
               <select
                 value={form.supplierId}
                 onChange={e => setForm({ ...form, supplierId: e.target.value })}
-                className="w-full bg-muted/30 border border-surface-border rounded-lg px-3 py-1.5 text-xs text-text-primary focus:outline-none focus:border-gray-300"
+                className="w-full bg-[#F0EBE1] border border-surface-border rounded-lg px-3 py-1.5 text-xs text-text-primary focus:outline-none focus:border-gray-300"
               >
                 <option value="">Välj leverantör…</option>
                 {SUPPLIERS.filter(s => s.status === 'aktiv').map(s => (
@@ -96,7 +96,7 @@ export function PurchaseOrdersView() {
                 placeholder="Vad beställs?"
                 value={form.description}
                 onChange={e => setForm({ ...form, description: e.target.value })}
-                className="w-full bg-muted/30 border border-surface-border rounded-lg px-3 py-1.5 text-xs text-text-primary placeholder-gray-600 focus:outline-none focus:border-gray-300"
+                className="w-full bg-[#F0EBE1] border border-surface-border rounded-lg px-3 py-1.5 text-xs text-text-primary placeholder-gray-600 focus:outline-none focus:border-gray-300"
               />
             </div>
             <div>
@@ -106,7 +106,7 @@ export function PurchaseOrdersView() {
                 placeholder="0"
                 value={form.amount}
                 onChange={e => setForm({ ...form, amount: e.target.value })}
-                className="w-full bg-muted/30 border border-surface-border rounded-lg px-3 py-1.5 text-xs text-text-primary placeholder-gray-600 focus:outline-none focus:border-gray-300"
+                className="w-full bg-[#F0EBE1] border border-surface-border rounded-lg px-3 py-1.5 text-xs text-text-primary placeholder-gray-600 focus:outline-none focus:border-gray-300"
               />
             </div>
             <div>
@@ -114,7 +114,7 @@ export function PurchaseOrdersView() {
               <select
                 value={form.currency}
                 onChange={e => setForm({ ...form, currency: e.target.value as Currency })}
-                className="w-full bg-muted/30 border border-surface-border rounded-lg px-3 py-1.5 text-xs text-text-primary focus:outline-none focus:border-gray-300"
+                className="w-full bg-[#F0EBE1] border border-surface-border rounded-lg px-3 py-1.5 text-xs text-text-primary focus:outline-none focus:border-gray-300"
               >
                 <option>SEK</option>
                 <option>USD</option>
@@ -154,7 +154,7 @@ export function PurchaseOrdersView() {
             {filtered.map(o => {
               const meta = STATUS_META[o.status]
               return (
-                <tr key={o.id} className="border-b border-white/[0.03] hover:bg-muted/30 transition-colors">
+                <tr key={o.id} className="border-b border-[#DDD5C5] hover:bg-[#F0EBE1] transition-colors">
                   <td className="py-3 pr-6">
                     <span className="text-sm font-semibold text-text-primary">{o.supplierName}</span>
                   </td>

@@ -113,22 +113,22 @@ export function OperationsCenter() {
     { time: '06:13', actor: 'Erik', action: 'Knowledge Hub utvidgad — 21 kurser', type: 'success' },
   ]
 
-  const panelClass = 'bg-white border border-slate-200 rounded-xl shadow-sm'
-  const panelHeader = 'flex items-center justify-between px-4 py-3 border-b border-slate-100'
+  const panelClass = 'bg-white border border-[#DDD5C5] rounded-xl shadow-sm'
+  const panelHeader = 'flex items-center justify-between px-4 py-3 border-b border-[#DDD5C5]'
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-[#F5F0E8]">
       {/* GLOBAL STATUS BAR */}
-      <div className="sticky top-0 z-20 bg-white border-b border-slate-200 min-h-12 flex flex-wrap items-center px-4 gap-2 py-2 text-sm">
+      <div className="sticky top-0 z-20 bg-white border-b border-[#DDD5C5] min-h-12 flex flex-wrap items-center px-4 gap-2 py-2 text-sm">
         <button
           onClick={() => setActiveModule(null)}
-          className={`flex items-center gap-1.5 px-3 py-1 rounded-lg font-medium transition-colors ${blockers.length > 0 ? 'bg-red-50 text-red-700 border border-red-200' : 'text-slate-400'}`}
+          className={`flex items-center gap-1.5 px-3 py-1 rounded-lg font-medium transition-colors ${blockers.length > 0 ? 'bg-red-50 text-red-700 border border-red-200' : 'text-[#8A8A9A]'}`}
         >
           <AlertTriangle className="w-3.5 h-3.5" />
           <span className="font-mono">{blockers.length}</span>
           <span>{t('system.blockers')}</span>
         </button>
-        <button className={`flex items-center gap-1.5 px-3 py-1 rounded-lg font-medium transition-colors ${risks.length > 0 ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'text-slate-400'}`}>
+        <button className={`flex items-center gap-1.5 px-3 py-1 rounded-lg font-medium transition-colors ${risks.length > 0 ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'text-[#8A8A9A]'}`}>
           <Clock className="w-3.5 h-3.5" />
           <span className="font-mono">{risks.length}</span>
           <span>{t('ops.risk')}</span>
@@ -138,7 +138,7 @@ export function OperationsCenter() {
           <span className="font-mono">{ok.length}</span>
           <span>{t('ops.ok')}</span>
         </button>
-        <div className="ml-auto font-mono text-slate-400 text-xs">
+        <div className="ml-auto font-mono text-[#8A8A9A] text-xs">
           {now.toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit' })} · Wavult OS
         </div>
       </div>
@@ -151,22 +151,22 @@ export function OperationsCenter() {
         {/* MODULES */}
         <div className={`col-span-12 md:col-span-4 ${panelClass}`}>
           <div className={panelHeader}>
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{t('ops.modules')}</span>
+            <span className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wide">{t('ops.modules')}</span>
           </div>
           <div className="p-2">
             {moduleData.map(mod => (
               <button
                 key={mod.id}
                 onClick={() => setActiveModule(activeModule === mod.id ? null : mod.id)}
-                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-colors hover:bg-slate-50 ${activeModule === mod.id ? 'bg-slate-100' : ''}`}
+                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm transition-colors hover:bg-[#F5F0E8] ${activeModule === mod.id ? 'bg-[#EDE8DC]' : ''}`}
               >
                 <div className="flex items-center gap-2">
                   {statusDot(mod.status)}
-                  <span className="font-medium text-slate-800">{mod.label}</span>
+                  <span className="font-medium text-[#2C5F8A]">{mod.label}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs text-slate-400">{mod.openCount} {t('module.open_tasks')}</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-300" />
+                  <span className="font-mono text-xs text-[#8A8A9A]">{mod.openCount} {t('module.open_tasks')}</span>
+                  <ChevronRight className="w-3.5 h-3.5 text-[#6B7280]" />
                 </div>
               </button>
             ))}
@@ -176,18 +176,18 @@ export function OperationsCenter() {
         {/* FLOWS */}
         <div className={`col-span-12 md:col-span-4 ${panelClass}`}>
           <div className={panelHeader}>
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{t('ops.flows')}</span>
+            <span className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wide">{t('ops.flows')}</span>
           </div>
           <div className="p-3 space-y-3">
             {flows.slice(0, 5).map(flow => (
               <div key={flow.id}>
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-medium text-slate-700 capitalize">{flow.label}</span>
+                  <span className="text-sm font-medium text-[#6B7280] capitalize">{flow.label}</span>
                   <span className={`font-mono text-xs ${flow.status === 'red' ? 'text-red-600' : flow.status === 'amber' ? 'text-amber-600' : 'text-emerald-600'}`}>
                     {flow.done}/{flow.total}
                   </span>
                 </div>
-                <div className="w-full bg-slate-100 rounded-full h-1.5">
+                <div className="w-full bg-[#EDE8DC] rounded-full h-1.5">
                   <div
                     className={`h-1.5 rounded-full transition-all ${flow.status === 'red' ? 'bg-red-500' : flow.status === 'amber' ? 'bg-amber-400' : 'bg-emerald-500'}`}
                     style={{ width: `${flow.pct}%` }}
@@ -201,21 +201,21 @@ export function OperationsCenter() {
         {/* TEAM */}
         <div className={`col-span-12 md:col-span-4 overflow-x-auto ${panelClass}`}>
           <div className={panelHeader}>
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{t('ops.team')}</span>
-            <Users className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wide">{t('ops.team')}</span>
+            <Users className="w-3.5 h-3.5 text-[#8A8A9A]" />
           </div>
           <div className="p-2">
             {teamData.map(person => (
-              <div key={person.owner} className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-slate-50">
+              <div key={person.owner} className="flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-[#F5F0E8]">
                 <div className="flex items-center gap-2">
                   {statusDot(person.status)}
-                  <span className="text-sm font-medium text-slate-800">{person.name}</span>
+                  <span className="text-sm font-medium text-[#2C5F8A]">{person.name}</span>
                 </div>
                 <div className="flex items-center gap-3 text-xs font-mono">
                   {person.blocking > 0 && (
                     <span className="text-red-600">{t('team.blocking')} {person.blocking}</span>
                   )}
-                  <span className="text-slate-400">{person.open} {t('team.tasks_left')}</span>
+                  <span className="text-[#8A8A9A]">{person.open} {t('team.tasks_left')}</span>
                 </div>
               </div>
             ))}
@@ -227,12 +227,12 @@ export function OperationsCenter() {
         {/* ALERTS */}
         <div className={`col-span-12 md:col-span-4 ${panelClass}`}>
           <div className={panelHeader}>
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{t('alerts.title')}</span>
+            <span className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wide">{t('alerts.title')}</span>
             <AlertTriangle className="w-3.5 h-3.5 text-red-500" />
           </div>
           <div className="p-2 space-y-1">
             {alerts.length === 0 ? (
-              <p className="px-3 py-4 text-sm text-slate-400 text-center">{t('alerts.none')}</p>
+              <p className="px-3 py-4 text-sm text-[#8A8A9A] text-center">{t('alerts.none')}</p>
             ) : alerts.map(task => (
               <div key={task.id} className="flex items-start gap-2 px-3 py-2 rounded-lg bg-red-50 border border-red-100">
                 <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 flex-shrink-0" />
@@ -248,24 +248,24 @@ export function OperationsCenter() {
         {/* TASK PRESSURE */}
         <div className={`col-span-12 md:col-span-4 ${panelClass}`}>
           <div className={panelHeader}>
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{t('ops.task_pressure')}</span>
-            <Activity className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wide">{t('ops.task_pressure')}</span>
+            <Activity className="w-3.5 h-3.5 text-[#8A8A9A]" />
           </div>
           <div className="p-4 space-y-4">
             <div className="flex justify-between items-baseline">
-              <span className="text-sm text-slate-600">{t('ops.total_open')}</span>
-              <span className="font-mono text-2xl font-bold text-slate-900">{resolved.filter(task => task.resolvedState !== 'DONE').length}</span>
+              <span className="text-sm text-[#8A8A9A]">{t('ops.total_open')}</span>
+              <span className="font-mono text-2xl font-bold text-[#0A3D62]">{resolved.filter(task => task.resolvedState !== 'DONE').length}</span>
             </div>
             <div className="flex justify-between items-baseline">
-              <span className="text-sm text-slate-600">{t('ops.critical')}</span>
+              <span className="text-sm text-[#8A8A9A]">{t('ops.critical')}</span>
               <span className="font-mono text-lg font-semibold text-red-600">{resolved.filter(task => task.priority === 'critical' && task.resolvedState !== 'DONE').length}</span>
             </div>
             <div className="flex justify-between items-baseline">
-              <span className="text-sm text-slate-600">{t('ops.blocked')}</span>
-              <span className="font-mono text-lg font-semibold text-slate-500">{resolved.filter(task => task.resolvedState === 'BLOCKED').length}</span>
+              <span className="text-sm text-[#8A8A9A]">{t('ops.blocked')}</span>
+              <span className="font-mono text-lg font-semibold text-[#8A8A9A]">{resolved.filter(task => task.resolvedState === 'BLOCKED').length}</span>
             </div>
             <div className="flex justify-between items-baseline">
-              <span className="text-sm text-slate-600">{t('ops.done')}</span>
+              <span className="text-sm text-[#8A8A9A]">{t('ops.done')}</span>
               <span className="font-mono text-lg font-semibold text-emerald-600">{ok.length}</span>
             </div>
           </div>
@@ -274,16 +274,16 @@ export function OperationsCenter() {
         {/* AUDIT LOG */}
         <div className={`col-span-12 md:col-span-4 ${panelClass}`}>
           <div className={panelHeader}>
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{t('ops.audit_log')}</span>
-            <FileText className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-wide">{t('ops.audit_log')}</span>
+            <FileText className="w-3.5 h-3.5 text-[#8A8A9A]" />
           </div>
           <div className="p-2 space-y-1">
             {auditLog.map((entry, i) => (
-              <div key={i} className="flex items-start gap-3 px-3 py-2 rounded-lg hover:bg-slate-50">
-                <span className="font-mono text-xs text-slate-400 w-10 flex-shrink-0 pt-0.5">{entry.time}</span>
+              <div key={i} className="flex items-start gap-3 px-3 py-2 rounded-lg hover:bg-[#F5F0E8]">
+                <span className="font-mono text-xs text-[#8A8A9A] w-10 flex-shrink-0 pt-0.5">{entry.time}</span>
                 <div className="min-w-0">
-                  <span className="text-xs font-semibold text-slate-700">{entry.actor} </span>
-                  <span className="text-xs text-slate-500">{entry.action}</span>
+                  <span className="text-xs font-semibold text-[#6B7280]">{entry.actor} </span>
+                  <span className="text-xs text-[#8A8A9A]">{entry.action}</span>
                 </div>
               </div>
             ))}

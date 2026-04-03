@@ -105,7 +105,7 @@ function LatencyBar({ ms }: { ms: number }) {
   const color = ms < 100 ? 'bg-green-400' : ms < 400 ? 'bg-yellow-400' : 'bg-red-400'
   return (
     <div className="flex items-center gap-2">
-      <div className="flex-1 h-1 bg-muted/30 rounded-full overflow-hidden">
+      <div className="flex-1 h-1 bg-[#F0EBE1] rounded-full overflow-hidden">
         <div className={`h-full rounded-full ${color}`} style={{ width: `${pct}%` }} />
       </div>
       <span className="text-xs font-mono text-gray-9000 w-12 text-right">{ms} ms</span>
@@ -160,7 +160,7 @@ export function APIStatusView() {
           <button
             onClick={simulateRefresh}
             disabled={refreshing}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-white border border-surface-border text-gray-9000 hover:text-text-primary hover:border-white/[0.16] transition-colors disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-white border border-surface-border text-gray-9000 hover:text-text-primary hover:border-[#DDD5C5] transition-colors disabled:opacity-50"
           >
             <span className={refreshing ? 'animate-spin' : ''}>↻</span>
             {refreshing ? 'Checkar…' : 'Refresha'}

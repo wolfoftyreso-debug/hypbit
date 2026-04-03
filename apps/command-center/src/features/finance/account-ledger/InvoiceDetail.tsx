@@ -222,7 +222,7 @@ export function InvoiceDetail({ invoiceId }: { invoiceId: string }) {
         maxWidth: 600, margin: '0 auto', padding: '32px 24px',
         fontFamily: 'system-ui, sans-serif',
       }}>
-        <div style={{ background: '#1a1a2e', borderRadius: 12, padding: '32px 36px', color: '#F5F0E8' }}>
+        <div style={{ background: '#FFFFFF', borderRadius: 12, padding: '32px 36px', color: '#F5F0E8' }}>
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, color: '#C9A84C', textTransform: 'uppercase', marginBottom: 12 }}>
             Invoice
           </div>

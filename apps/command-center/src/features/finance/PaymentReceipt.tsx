@@ -151,7 +151,7 @@ export function PaymentReceipt({ receipt, onClose }: {
             <div className="flex items-center gap-2">
               <button
                 onClick={handleDownloadHTML}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white hover:bg-blue-500 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-[#0A3D62] hover:bg-blue-500 transition-colors"
               >
                 ⬇ Download
               </button>
@@ -164,7 +164,7 @@ export function PaymentReceipt({ receipt, onClose }: {
               {onClose && (
                 <button
                   onClick={onClose}
-                  className="flex items-center justify-center w-7 h-7 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors text-lg leading-none"
+                  className="flex items-center justify-center w-7 h-7 rounded-lg text-[#8A8A9A] hover:text-gray-600 hover:bg-gray-100 transition-colors text-lg leading-none"
                 >
                   ×
                 </button>
@@ -177,17 +177,17 @@ export function PaymentReceipt({ receipt, onClose }: {
             <div ref={receiptRef} className="bg-white">
 
               {/* Header */}
-              <div className="px-8 pt-8 pb-6" style={{ background: '#0f172a' }}>
+              <div className="px-8 pt-8 pb-6" style={{ background: '#FFFFFF' }}>
                 <div className="flex items-start justify-between">
                   <div>
-                    <div className="text-2xl font-extrabold text-white tracking-tight">
+                    <div className="text-2xl font-extrabold text-[#0A3D62] tracking-tight">
                       Wavult<span style={{ color: '#60a5fa' }}>.</span>
                     </div>
-                    <div className="text-xs text-slate-400 mt-1">Wavult Group · Åvägen 9, 135 48 Tyresö, Sweden</div>
+                    <div className="text-xs text-[#8A8A9A] mt-1">Wavult Group · Åvägen 9, 135 48 Tyresö, Sweden</div>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <div className="text-xs font-mono text-slate-500 uppercase tracking-widest">Receipt</div>
-                    <div className="text-sm font-bold text-white mt-0.5">{receipt.reference}</div>
+                    <div className="text-xs font-mono text-[#8A8A9A] uppercase tracking-widest">Receipt</div>
+                    <div className="text-sm font-bold text-[#0A3D62] mt-0.5">{receipt.reference}</div>
                   </div>
                 </div>
               </div>
@@ -210,10 +210,10 @@ export function PaymentReceipt({ receipt, onClose }: {
 
               {/* Amount block */}
               <div className="px-8 py-8 text-center border-b border-gray-100">
-                <div className="text-5xl font-extrabold text-slate-900 tracking-tight" style={{ letterSpacing: '-2px' }}>
+                <div className="text-5xl font-extrabold text-[#0A3D62] tracking-tight" style={{ letterSpacing: '-2px' }}>
                   {fmtAmount(receipt.amount, receipt.currency)}
                 </div>
-                <div className="text-sm text-slate-500 mt-2">
+                <div className="text-sm text-[#8A8A9A] mt-2">
                   {receipt.currency} · {receipt.direction === 'inbound' ? 'Received' : 'Sent'}
                 </div>
               </div>
@@ -223,10 +223,10 @@ export function PaymentReceipt({ receipt, onClose }: {
                 <table className="w-full">
                   <tbody>
                     {detailRows.map(([label, value, mono], i) => (
-                      <tr key={i} className="border-b border-slate-50">
-                        <td className="py-2.5 pr-4 text-sm text-slate-500 font-medium w-2/5 align-top">{label}</td>
+                      <tr key={i} className="border-b border-[#DDD5C5]">
+                        <td className="py-2.5 pr-4 text-sm text-[#8A8A9A] font-medium w-2/5 align-top">{label}</td>
                         <td
-                          className="py-2.5 text-sm font-semibold text-slate-900 align-top"
+                          className="py-2.5 text-sm font-semibold text-[#0A3D62] align-top"
                           style={mono ? { fontFamily: 'monospace', fontSize: '11px', wordBreak: 'break-all' } : {}}
                         >
                           {label === 'Status' ? (
@@ -240,9 +240,9 @@ export function PaymentReceipt({ receipt, onClose }: {
               </div>
 
               {/* Footer */}
-              <div className="px-8 py-5 bg-slate-50 border-t border-slate-200">
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  <strong className="text-slate-500">This is an automated receipt from Wavult Group financial system.</strong>{' '}
+              <div className="px-8 py-5 bg-[#F5F0E8] border-t border-[#DDD5C5]">
+                <p className="text-xs text-[#8A8A9A] leading-relaxed">
+                  <strong className="text-[#8A8A9A]">This is an automated receipt from Wavult Group financial system.</strong>{' '}
                   Retain for your records. Questions? finance@wavult.com{' '}
                   · Generated {new Date().toLocaleString()}
                 </p>
@@ -266,7 +266,7 @@ export function PaymentReceiptCard({ receipt, onClick }: {
   return (
     <button
       onClick={onClick}
-      className="w-full text-left flex items-center gap-4 px-4 py-3 rounded-xl border border-white/8 bg-muted/30 hover:bg-muted/50 transition-colors"
+      className="w-full text-left flex items-center gap-4 px-4 py-3 rounded-xl border border-[#DDD5C5] bg-[#F0EBE1] hover:bg-[#F0EBE1] transition-colors"
     >
       <div
         className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center text-base"
@@ -282,11 +282,11 @@ export function PaymentReceiptCard({ receipt, onClick }: {
           </span>
         </div>
         <div className="flex items-center gap-3 mt-0.5">
-          <span className="text-xs text-gray-400 font-mono">{receipt.reference}</span>
+          <span className="text-xs text-[#8A8A9A] font-mono">{receipt.reference}</span>
           <span className="text-[9px] font-mono px-1.5 py-0.5 rounded-full" style={{ background: statusCfg.badgeBg, color: statusCfg.badgeColor }}>
             {receipt.status}
           </span>
-          <span className="text-xs text-gray-500 ml-auto">{new Date(receipt.date).toLocaleDateString()}</span>
+          <span className="text-xs text-[#8A8A9A] ml-auto">{new Date(receipt.date).toLocaleDateString()}</span>
         </div>
       </div>
     </button>

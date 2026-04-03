@@ -264,11 +264,47 @@ export function ProjectsView() {
   const cd = useCountdown(THAILAND_DATE)
   const { activeEntity, isInScope } = useEntityScope()
   const isRoot = activeEntity.layer === 0
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    fetch('/api/projects')
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
+      .then(() => setLoading(false))
+      .catch(e => { setError(e.message); setLoading(false) })
+  }, [])
 
   // Filter projects by scope
   const visibleProjects = isRoot
     ? PROJECTS
     : PROJECTS.filter(p => isInScope(p.entity_id))
+
+  if (loading) {
+    return (
+      <div style={{ padding: 24 }}>
+        {[1,2,3].map(i => <div key={i} style={{ background: 'var(--color-bg-muted)', borderRadius: 12, height: 100, marginBottom: 14, animation: 'pulse 1.5s ease-in-out infinite' }} />)}
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '48px 24px', textAlign: 'center', margin: 24 }}>
+        <div style={{ fontSize: 32, marginBottom: 12 }}>⚠️</div>
+        <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8 }}>Kunde inte hämta projekt</div>
+        <div style={{ fontSize: 13, color: 'var(--color-text-muted)' }}>{error}</div>
+      </div>
+    )
+  }
+
+  if (visibleProjects.length === 0) {
+    return (
+      <div style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 12, padding: '64px 24px', textAlign: 'center', margin: 24 }}>
+        <div style={{ fontSize: 40, marginBottom: 16 }}>🚀</div>
+        <div style={{ fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8, fontSize: 16 }}>Inga projekt i detta scope</div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-8 max-w-6xl">

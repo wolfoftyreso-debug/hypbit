@@ -129,7 +129,7 @@ export function PayrollRun() {
                   </thead>
                   <tbody>
                     {active.map(emp => (
-                      <tr key={emp.id} className="border-b border-gray-200/50">
+                      <tr key={emp.id} className="border-b border-[#DDD5C5]">
                         <td className="px-5 py-3 text-xs text-text-primary">{emp.name}</td>
                         <td className="px-5 py-3 text-xs text-text-muted">{emp.role}</td>
                         <td className="px-5 py-3 text-right text-xs text-text-primary tabular-nums">{fmt(emp.gross_salary)}</td>
@@ -164,7 +164,7 @@ export function PayrollRun() {
                     {active.map(emp => {
                       const c = calcSalary(emp.gross_salary)
                       return (
-                        <tr key={emp.id} className="border-b border-gray-200/50">
+                        <tr key={emp.id} className="border-b border-[#DDD5C5]">
                           <td className="px-5 py-3 text-xs text-text-primary">{emp.name}</td>
                           <td className="px-5 py-3 text-right text-xs text-text-primary tabular-nums">{fmt(c.gross)}</td>
                           <td className="px-5 py-3 text-right text-xs text-red-700 tabular-nums">−{fmt(c.taxDeduction)}</td>
@@ -184,14 +184,14 @@ export function PayrollRun() {
                 <h3 className="text-sm font-semibold text-text-primary">Steg 3: Granska totaler</h3>
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    { label: 'Totala bruttolöner', value: fmt(totalGross), color: '#ffffff' },
+                    { label: 'Totala bruttolöner', value: fmt(totalGross), color: '#0A3D62' },
                     { label: 'Totala skatteavdrag', value: `−${fmt(totalTax)}`, color: '#F87171' },
                     { label: 'Totalt att utbetala (netto)', value: fmt(totalNet), color: '#34D399' },
                     { label: 'Arbetsgivaravgifter (31.42%)', value: fmt(totalEmployerTax), color: '#FBBF24' },
                     { label: 'Total kostnad för bolaget', value: fmt(totalCost), color: '#C084FC' },
                     { label: 'Antal anställda', value: String(active.length), color: '#60A5FA' },
                   ].map(s => (
-                    <div key={s.label} className="bg-gray-50/30 rounded-xl p-4">
+                    <div key={s.label} className="bg-[#F0EBE1] rounded-xl p-4">
                       <div className="text-xs text-text-muted mb-1">{s.label}</div>
                       <div className="text-lg font-bold tabular-nums" style={{ color: s.color }}>{s.value}</div>
                     </div>
@@ -220,7 +220,7 @@ export function PayrollRun() {
             <button
               onClick={() => step > 1 && setStep((step - 1) as Step)}
               disabled={step === 1}
-              className="text-xs px-4 py-2 rounded-lg bg-muted/30 border border-surface-border text-text-muted hover:text-text-primary transition-colors disabled:opacity-30"
+              className="text-xs px-4 py-2 rounded-lg bg-[#F0EBE1] border border-surface-border text-text-muted hover:text-text-primary transition-colors disabled:opacity-30"
             >
               ← Föregående
             </button>
@@ -250,7 +250,7 @@ export function PayrollRun() {
               <div className="text-xs text-text-muted">
                 {fmtPeriod(currentPeriod)} — {fmt(totalNet)} utbetalas till {active.length} anställda
               </div>
-              <button onClick={reset} className="mt-4 text-xs px-4 py-2 rounded-lg bg-muted/30 border border-surface-border text-text-muted hover:text-text-primary transition-colors">
+              <button onClick={reset} className="mt-4 text-xs px-4 py-2 rounded-lg bg-[#F0EBE1] border border-surface-border text-text-muted hover:text-text-primary transition-colors">
                 Ny körning
               </button>
             </>
@@ -289,7 +289,7 @@ export function PayrollRun() {
                 </tr>
               )}
               {PAYROLL_HISTORY.map(run => (
-                <tr key={run.id} className="border-b border-gray-200/50">
+                <tr key={run.id} className="border-b border-[#DDD5C5]">
                   <td className="px-5 py-3 text-xs text-text-primary">{fmtPeriod(run.period)}</td>
                   <td className="px-5 py-3 text-xs text-text-muted">{run.runDate}</td>
                   <td className="px-5 py-3 text-right text-xs text-text-primary tabular-nums">{fmt(run.totalGross)}</td>

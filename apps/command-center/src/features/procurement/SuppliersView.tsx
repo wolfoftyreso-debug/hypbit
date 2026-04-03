@@ -78,8 +78,8 @@ export function SuppliersView() {
           { label: 'Årsackum.',   value: fmtSEKFull(totals.ytd) },
           { label: 'Helår (est)', value: fmtSEKFull(totals.yearly) },
         ].map(({ label, value }) => (
-          <div key={label} className="flex-1 min-w-[100px] bg-muted/40 border border-surface-border rounded-xl px-3 py-2.5">
-            <div className="text-[10px] text-gray-500 font-medium uppercase tracking-wider mb-1">{label}</div>
+          <div key={label} className="flex-1 min-w-[100px] bg-[#F0EBE1] border border-surface-border rounded-xl px-3 py-2.5">
+            <div className="text-[10px] text-[#8A8A9A] font-medium uppercase tracking-wider mb-1">{label}</div>
             <div className="text-sm font-semibold text-text-primary">{value}</div>
           </div>
         ))}
@@ -92,7 +92,7 @@ export function SuppliersView() {
           placeholder="Sök leverantör…"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="bg-muted/30 border border-surface-border rounded-lg px-3 py-1.5 text-xs text-text-primary placeholder-gray-600 focus:outline-none focus:border-gray-300 w-44"
+          className="bg-[#F0EBE1] border border-surface-border rounded-lg px-3 py-1.5 text-xs text-text-primary placeholder-gray-600 focus:outline-none focus:border-gray-300 w-44"
         />
 
         <div className="flex gap-1 flex-wrap">
@@ -102,8 +102,8 @@ export function SuppliersView() {
               onClick={() => setFilterCategory(cat as SupplierCategory | 'Alla')}
               className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${
                 filterCategory === cat
-                  ? 'bg-muted text-gray-900'
-                  : 'text-gray-500 hover:text-gray-600'
+                  ? 'bg-[#EDE8DC] text-gray-900'
+                  : 'text-[#8A8A9A] hover:text-gray-600'
               }`}
             >
               {cat !== 'Alla' && (
@@ -123,7 +123,7 @@ export function SuppliersView() {
               key={s}
               onClick={() => setFilterStatus(s as SupplierStatus | 'Alla')}
               className={`px-2.5 py-1 rounded-lg text-xs transition-colors ${
-                filterStatus === s ? 'bg-muted text-gray-900' : 'text-gray-500 hover:text-gray-600'
+                filterStatus === s ? 'bg-[#EDE8DC] text-gray-900' : 'text-[#8A8A9A] hover:text-gray-600'
               }`}
             >
               {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -139,7 +139,7 @@ export function SuppliersView() {
             <thead>
               <tr className="text-left border-b border-surface-border">
                 {['Leverantör', 'Kategori', 'Land', 'Kontakt', 'Per dag', 'Per vecka', 'Per månad', 'YTD', 'Föregående år', 'Status'].map(h => (
-                  <th key={h} className="pb-2 text-[10px] font-semibold text-gray-500 uppercase tracking-wider pr-4 whitespace-nowrap">{h}</th>
+                  <th key={h} className="pb-2 text-[10px] font-semibold text-[#8A8A9A] uppercase tracking-wider pr-4 whitespace-nowrap">{h}</th>
                 ))}
               </tr>
             </thead>
@@ -151,11 +151,11 @@ export function SuppliersView() {
                 const badge = STATUS_BADGE[s.status]
 
                 return (
-                  <tr key={s.id} className="border-b border-white/[0.03] hover:bg-muted/30 transition-colors group">
+                  <tr key={s.id} className="border-b border-[#DDD5C5] hover:bg-[#F0EBE1] transition-colors group">
                     <td className="py-3 pr-4">
                       <div className="text-sm font-semibold text-text-primary">{s.name}</div>
                       {s.cost?.note && (
-                        <div className="text-[10px] text-gray-500 mt-0.5">{s.cost.note}</div>
+                        <div className="text-[10px] text-[#8A8A9A] mt-0.5">{s.cost.note}</div>
                       )}
                     </td>
                     <td className="py-3 pr-4">
@@ -167,10 +167,10 @@ export function SuppliersView() {
                       </span>
                     </td>
                     <td className="py-3 pr-4">
-                      <span className="text-xs text-gray-500">{s.country}</span>
+                      <span className="text-xs text-[#8A8A9A]">{s.country}</span>
                     </td>
                     <td className="py-3 pr-4">
-                      <span className="text-xs text-gray-500 font-mono">{s.email}</span>
+                      <span className="text-xs text-[#8A8A9A] font-mono">{s.email}</span>
                     </td>
 
                     {/* Kostnadsfält */}
@@ -187,7 +187,7 @@ export function SuppliersView() {
                       <span className="text-xs font-mono text-text-primary">{fmtSEK(c.ytd)}</span>
                     </td>
                     <td className="py-3 pr-4">
-                      <span className="text-xs font-mono text-gray-500">
+                      <span className="text-xs font-mono text-[#8A8A9A]">
                         {prevYear ? fmtSEK(prevYear) : '–'}
                       </span>
                     </td>
@@ -209,7 +209,7 @@ export function SuppliersView() {
             {filtered.length > 0 && (
               <tfoot>
                 <tr className="border-t-2 border-surface-border">
-                  <td colSpan={4} className="py-3 pr-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  <td colSpan={4} className="py-3 pr-4 text-xs font-semibold text-[#8A8A9A] uppercase tracking-wider">
                     Totalt ({filtered.length} leverantörer)
                   </td>
                   <td className="py-3 pr-4">
@@ -232,13 +232,13 @@ export function SuppliersView() {
         </div>
 
         {filtered.length === 0 && (
-          <div className="text-center py-16 text-gray-500 text-sm">Inga leverantörer matchar filtret</div>
+          <div className="text-center py-16 text-[#8A8A9A] text-sm">Inga leverantörer matchar filtret</div>
         )}
 
         <div className="mt-4 text-xs text-gray-600 font-mono">
           {filtered.length} av {SUPPLIERS.length} leverantörer
           {' · '}
-          <span className="text-gray-400">Fyll i avgMonthlySEK i mockData.ts för att se verkliga kostnader</span>
+          <span className="text-[#8A8A9A]">Fyll i avgMonthlySEK i mockData.ts för att se verkliga kostnader</span>
         </div>
       </div>
     </div>
