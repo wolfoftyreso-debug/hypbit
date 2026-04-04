@@ -1,4 +1,4 @@
-// ─── OAuth SSO — Google, Microsoft, GitHub, Apple ────────────────────────────
+// ─── OAuth SSO — Google, Microsoft, GitHub, Apple, GitLab, Bitbucket, Discord, Slack, LinkedIn ──
 // Routes:
 //   GET  /v1/auth/oauth/:provider          — initiate flow
 //   GET  /v1/auth/oauth/:provider/callback — OAuth callback (browser redirect)
@@ -50,7 +50,47 @@ const OAUTH_CONFIGS = {
     client_id:     process.env.APPLE_CLIENT_ID     || '',
     client_secret: process.env.APPLE_CLIENT_SECRET || '',
   },
-} as const
+  gitlab: {
+    auth_url:     'https://gitlab.com/oauth/authorize',
+    token_url:    'https://gitlab.com/oauth/token',
+    userinfo_url: 'https://gitlab.com/api/v4/user',
+    scope:        'read_user email',
+    client_id:     process.env.GITLAB_CLIENT_ID     || '',
+    client_secret: process.env.GITLAB_CLIENT_SECRET || '',
+  },
+  bitbucket: {
+    auth_url:     'https://bitbucket.org/site/oauth2/authorize',
+    token_url:    'https://bitbucket.org/site/oauth2/access_token',
+    userinfo_url: 'https://api.bitbucket.org/2.0/user',
+    scope:        'account email',
+    client_id:     process.env.BITBUCKET_CLIENT_ID     || '',
+    client_secret: process.env.BITBUCKET_CLIENT_SECRET || '',
+  },
+  discord: {
+    auth_url:     'https://discord.com/api/oauth2/authorize',
+    token_url:    'https://discord.com/api/oauth2/token',
+    userinfo_url: 'https://discord.com/api/users/@me',
+    scope:        'identify email',
+    client_id:     process.env.DISCORD_CLIENT_ID     || '',
+    client_secret: process.env.DISCORD_CLIENT_SECRET || '',
+  },
+  slack: {
+    auth_url:     'https://slack.com/openid/connect/authorize',
+    token_url:    'https://slack.com/api/openid.connect.token',
+    userinfo_url: 'https://slack.com/api/openid.connect.userInfo',
+    scope:        'openid email profile',
+    client_id:     process.env.SLACK_CLIENT_ID     || '',
+    client_secret: process.env.SLACK_CLIENT_SECRET || '',
+  },
+  linkedin: {
+    auth_url:     'https://www.linkedin.com/oauth/v2/authorization',
+    token_url:    'https://www.linkedin.com/oauth/v2/accessToken',
+    userinfo_url: 'https://api.linkedin.com/v2/userinfo',
+    scope:        'openid profile email',
+    client_id:     process.env.LINKEDIN_CLIENT_ID     || '',
+    client_secret: process.env.LINKEDIN_CLIENT_SECRET || '',
+  },
+}
 
 type Provider = keyof typeof OAUTH_CONFIGS
 
@@ -168,6 +208,38 @@ router.get('/v1/auth/oauth/:provider/callback', async (req, res) => {
       const user = await userRes.json() as Record<string, unknown>
       email = (user.mail as string) || (user.userPrincipalName as string) || ''
       name  = (user.displayName as string) || ''
+
+    } else if (provider === 'gitlab') {
+      const r2 = await fetch(config.userinfo_url, { headers: { Authorization: `Bearer ${access_token}` } })
+      const u = await r2.json() as Record<string, unknown>
+      email = (u.email as string) || ''
+      name  = (u.name as string) || (u.username as string) || ''
+
+    } else if (provider === 'bitbucket') {
+      const r2 = await fetch(config.userinfo_url, { headers: { Authorization: `Bearer ${access_token}` } })
+      const u = await r2.json() as Record<string, unknown>
+      name = (u.display_name as string) || ''
+      const emailR = await fetch('https://api.bitbucket.org/2.0/user/emails', { headers: { Authorization: `Bearer ${access_token}` } })
+      const emails = await emailR.json() as { values?: Array<{ email: string; is_primary: boolean }> }
+      email = emails.values?.find(e => e.is_primary)?.email || emails.values?.[0]?.email || ''
+
+    } else if (provider === 'discord') {
+      const r2 = await fetch(config.userinfo_url, { headers: { Authorization: `Bearer ${access_token}` } })
+      const u = await r2.json() as Record<string, unknown>
+      email = (u.email as string) || ''
+      name  = (u.global_name as string) || (u.username as string) || ''
+
+    } else if (provider === 'slack') {
+      const r2 = await fetch(config.userinfo_url, { headers: { Authorization: `Bearer ${access_token}` } })
+      const u = await r2.json() as Record<string, unknown>
+      email = (u.email as string) || ''
+      name  = (u.name as string) || ''
+
+    } else if (provider === 'linkedin') {
+      const r2 = await fetch(config.userinfo_url, { headers: { Authorization: `Bearer ${access_token}` } })
+      const u = await r2.json() as Record<string, unknown>
+      email = (u.email as string) || ''
+      name  = (u.name as string) || ''
 
     } else {
       // google + apple (apple sends name in id_token, but we try userinfo first)
