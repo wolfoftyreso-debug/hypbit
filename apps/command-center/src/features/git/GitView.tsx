@@ -3,8 +3,12 @@
  * ARKIV (left) → LIVE 🟢🔒 (center, largest) → DEV (right)
  * Live data from Gitea API. Topics: status-live/dev/archive, domain-xxx-xxx
  */
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 import { useGiteaRepos, useGiteaBranches, GiteaRepo, GiteaBranch } from './useGiteaRepos'
+import { useRole } from '../../shared/auth/RoleContext'
+import { useAuth } from '../../shared/auth/AuthContext'
+import { FileViewer } from './FileViewer'
 
 type RepoStatus = 'live' | 'dev' | 'offline' | 'archive'
 type SortKey = 'status' | 'name'
@@ -354,10 +358,240 @@ const Arrow = () => (
   <div style={{ display: 'flex', alignItems: 'center', padding: '0 8px', paddingTop: 55, color: 'rgba(10,61,98,.2)', fontSize: 18, flexShrink: 0 }}>→</div>
 )
 
+// ── Archive types & helpers ───────────────────────────────────────────────────
+
+type ArchiveState = 'idle' | 'confirm' | 'password' | 'loading' | 'success' | 'error'
+
+const GITEA_URL = import.meta.env.VITE_GITEA_URL ?? 'https://git.wavult.com'
+const GITEA_TOKEN = import.meta.env.VITE_GITEA_TOKEN ?? ''
+const API_URL = import.meta.env.VITE_API_URL ?? 'https://api.wavult.com'
+const BYPASS_AUTH = import.meta.env.VITE_BYPASS_AUTH === 'true'
+
+async function validatePassword(password: string, token: string | null): Promise<boolean> {
+  if (BYPASS_AUTH) {
+    return password === 'wavult2026'
+  }
+  try {
+    const res = await fetch(`${API_URL}/api/auth/validate-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({ password }),
+    })
+    return res.ok
+  } catch {
+    return false
+  }
+}
+
+async function archiveRepo(fullName: string): Promise<void> {
+  const res = await fetch(`${GITEA_URL}/api/v1/repos/${fullName}`, {
+    method: 'PATCH',
+    headers: {
+      'Authorization': `token ${GITEA_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ archived: true }),
+  })
+  if (!res.ok) throw new Error(`Gitea archive failed: ${res.status}`)
+}
+
+// ── Archive Dialog ────────────────────────────────────────────────────────────
+
+interface ArchiveDialogProps {
+  repoName: string
+  fullName: string
+  onClose: () => void
+  onSuccess: () => void
+}
+
+function ArchiveDialog({ repoName, fullName, onClose, onSuccess }: ArchiveDialogProps) {
+  const [state, setState] = useState<ArchiveState>('confirm')
+  const [password, setPassword] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
+  const { getToken } = useAuth()
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (state === 'password') {
+      setTimeout(() => inputRef.current?.focus(), 50)
+    }
+  }, [state])
+
+  async function handleArchive() {
+    if (!password) return
+    setState('loading')
+    try {
+      const token = await getToken()
+      const valid = await validatePassword(password, token)
+      if (!valid) {
+        setState('error')
+        setErrorMsg('Fel lösenord. Åtgärden avbröts.')
+        return
+      }
+      await archiveRepo(fullName)
+      setState('success')
+      onSuccess()
+    } catch (err) {
+      setState('error')
+      setErrorMsg(err instanceof Error ? err.message : 'Arkivering misslyckades.')
+    }
+  }
+
+  const overlay: React.CSSProperties = {
+    position: 'fixed', inset: 0, zIndex: 10000,
+    background: 'rgba(5,5,16,.75)', backdropFilter: 'blur(4px)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+  }
+  const box: React.CSSProperties = {
+    background: '#FDFAF5', borderRadius: 14, padding: '32px 28px',
+    width: 420, maxWidth: '90vw', fontFamily: 'system-ui,sans-serif',
+    border: '1px solid rgba(10,61,98,.15)',
+    boxShadow: '0 24px 60px rgba(5,5,16,.35)',
+  }
+  const title: React.CSSProperties = {
+    fontSize: 16, fontWeight: 800, color: '#0A3D62',
+    marginBottom: 10, fontFamily: 'monospace',
+  }
+  const desc: React.CSSProperties = {
+    fontSize: 13, color: 'rgba(10,61,98,.65)', lineHeight: 1.6, marginBottom: 24,
+  }
+  const row: React.CSSProperties = {
+    display: 'flex', gap: 10, justifyContent: 'flex-end', marginTop: 20,
+  }
+  const btnCancel: React.CSSProperties = {
+    padding: '8px 16px', borderRadius: 6,
+    border: '1.5px solid rgba(10,61,98,.2)',
+    background: 'transparent', color: 'rgba(10,61,98,.6)',
+    cursor: 'pointer', fontSize: 13, fontWeight: 600,
+  }
+  const btnPrimary: React.CSSProperties = {
+    padding: '8px 18px', borderRadius: 6,
+    border: 'none', background: '#0A3D62',
+    color: '#F5F0E8', cursor: 'pointer',
+    fontSize: 13, fontWeight: 700,
+  }
+  const btnDanger: React.CSSProperties = {
+    ...btnPrimary,
+    background: '#8B1A1A',
+  }
+
+  return (
+    <div style={overlay} onClick={(e) => { if (e.target === e.currentTarget) onClose() }}>
+      <div style={box}>
+
+        {/* Step 1: Confirm */}
+        {state === 'confirm' && (
+          <>
+            <div style={title}>🗃️ Arkivera &quot;{repoName}&quot;?</div>
+            <div style={desc}>
+              Det här repot kommer markeras som arkiverat i Gitea.<br />
+              Koden finns kvar och kan återställas, men repot visas som inaktivt i alla vyer.
+            </div>
+            <div style={row}>
+              <button style={btnCancel} onClick={onClose}>Avbryt</button>
+              <button style={btnPrimary} onClick={() => setState('password')}>Fortsätt →</button>
+            </div>
+          </>
+        )}
+
+        {/* Step 2: Password */}
+        {state === 'password' && (
+          <>
+            <div style={title}>🔐 Bekräfta med lösenord</div>
+            <div style={desc}>Ange ditt lösenord för att bekräfta arkivering av <strong>{repoName}</strong>.</div>
+            <input
+              ref={inputRef}
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') handleArchive() }}
+              placeholder="●●●●●●●●●●●●"
+              style={{
+                width: '100%', boxSizing: 'border-box',
+                padding: '10px 14px', borderRadius: 8,
+                border: '1.5px solid rgba(10,61,98,.25)',
+                background: '#F9F6F0', fontSize: 15,
+                color: '#0A3D62', outline: 'none',
+                fontFamily: 'monospace', letterSpacing: '.08em',
+              }}
+            />
+            <div style={{ fontSize: 11, color: 'rgba(10,61,98,.4)', marginTop: 8 }}>
+              Fel lösenord = åtgärden avbryts automatiskt
+            </div>
+            <div style={row}>
+              <button style={btnCancel} onClick={() => { setPassword(''); setState('confirm') }}>Avbryt</button>
+              <button style={btnDanger} onClick={handleArchive} disabled={!password}>
+                Arkivera nu
+              </button>
+            </div>
+          </>
+        )}
+
+        {/* Step 3: Loading */}
+        {state === 'loading' && (
+          <>
+            <div style={title}>⏳ Arkiverar…</div>
+            <div style={desc}>Validerar lösenord och arkiverar repot i Gitea…</div>
+          </>
+        )}
+
+        {/* Step 3: Success */}
+        {state === 'success' && (
+          <>
+            <div style={title}>✅ Arkiverat!</div>
+            <div style={desc}>&quot;{repoName}&quot; har markerats som arkiverat i Gitea.</div>
+            <div style={row}>
+              <button style={btnPrimary} onClick={onClose}>Stäng</button>
+            </div>
+          </>
+        )}
+
+        {/* Step 3: Error */}
+        {state === 'error' && (
+          <>
+            <div style={title}>❌ Misslyckades</div>
+            <div style={{ ...desc, color: '#8B1A1A' }}>{errorMsg}</div>
+            <div style={row}>
+              <button style={btnCancel} onClick={onClose}>Stäng</button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+
+function SuccessToast({ message }: { message: string }) {
+  return (
+    <div style={{
+      position: 'fixed', bottom: 28, right: 28, zIndex: 10001,
+      background: '#0A3D62', color: '#F5F0E8',
+      padding: '12px 20px', borderRadius: 10,
+      fontFamily: 'monospace', fontSize: 13, fontWeight: 700,
+      boxShadow: '0 8px 24px rgba(5,5,16,.3)',
+      display: 'flex', alignItems: 'center', gap: 8,
+      animation: 'fadeInUp .2s ease',
+    }}>
+      ✅ {message}
+    </div>
+  )
+}
+
 // ── Repo Row ──────────────────────────────────────────────────────────────────
 function RepoRow({ repo }: { repo: Repo }) {
   const [cockpit, setCockpit] = useState<Version | null>(null)
+  const [browsing, setBrowsing] = useState(false)
   const [open, setOpen] = useState(true)
+  const [showArchiveDialog, setShowArchiveDialog] = useState(false)
+  const [toast, setToast] = useState<string | null>(null)
+  const queryClient = useQueryClient()
+  const { role } = useRole()
+  const canArchive = role?.id === 'group-ceo' || role?.id === 'cto' || role?.id === 'admin'
 
   // Fetch branches for this repo
   const { data: branches = [] } = useGiteaBranches(repo.fullName)
@@ -390,6 +624,12 @@ function RepoRow({ repo }: { repo: Repo }) {
         <span style={{ fontSize: 11, color: 'rgba(10,61,98,.4)', fontFamily: 'monospace' }}>{repo.name}</span>
         <a href={repo.repo_url} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
           style={{ fontSize: 9, color: '#E8B84B', fontFamily: 'monospace', textDecoration: 'none', marginLeft: 4 }}>git ↗</a>
+        <button
+          onClick={e => { e.stopPropagation(); setBrowsing(true) }}
+          style={{ fontSize: 10, color: 'rgba(10,61,98,.6)', fontFamily: 'monospace', background: 'rgba(10,61,98,.07)', border: '1px solid rgba(10,61,98,.15)', borderRadius: 4, padding: '2px 7px', cursor: 'pointer', marginLeft: 4 }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(10,61,98,.14)'; (e.currentTarget as HTMLElement).style.color = '#0A3D62' }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(10,61,98,.07)'; (e.currentTarget as HTMLElement).style.color = 'rgba(10,61,98,.6)' }}
+        >📂 Bläddra</button>
         <div style={{ width: 7, height: 7, borderRadius: '50%', background: statusColors[repo.status], marginLeft: 4 }} />
         <span style={{ fontSize: 9, fontFamily: 'monospace', color: statusColors[repo.status], textTransform: 'uppercase' }}>{statusLabels[repo.status]}</span>
         {repo.description && <span style={{ fontSize: 11, color: 'rgba(10,61,98,.35)', marginLeft: 8 }}>{repo.description}</span>}
@@ -398,7 +638,33 @@ function RepoRow({ repo }: { repo: Repo }) {
             {branches.length} branches
           </span>
         )}
-        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'rgba(10,61,98,.25)' }}>{open ? '▲' : '▼'}</span>
+        <span style={{ marginLeft: 'auto', fontSize: 12, color: 'rgba(10,61,98,.25)', display: 'flex', alignItems: 'center', gap: 8 }}>
+          {canArchive && (
+            <button
+              title={`Arkivera ${repo.name}`}
+              onClick={e => { e.stopPropagation(); setShowArchiveDialog(true) }}
+              style={{
+                background: 'none', border: '1px solid transparent',
+                borderRadius: 5, padding: '2px 6px', cursor: 'pointer',
+                fontSize: 14, color: 'rgba(10,61,98,.25)',
+                transition: 'all .15s', lineHeight: 1,
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.color = '#8B1A1A'
+                ;(e.currentTarget as HTMLElement).style.borderColor = 'rgba(139,26,26,.3)'
+                ;(e.currentTarget as HTMLElement).style.background = 'rgba(139,26,26,.06)'
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.color = 'rgba(10,61,98,.25)'
+                ;(e.currentTarget as HTMLElement).style.borderColor = 'transparent'
+                ;(e.currentTarget as HTMLElement).style.background = 'none'
+              }}
+            >
+              🗃️
+            </button>
+          )}
+          {open ? '▲' : '▼'}
+        </span>
       </div>
 
       {/* Sites */}
@@ -481,6 +747,22 @@ function RepoRow({ repo }: { repo: Repo }) {
           onClose={() => setCockpit(null)}
         />
       )}
+
+      {showArchiveDialog && (
+        <ArchiveDialog
+          repoName={repo.name}
+          fullName={repo.fullName}
+          onClose={() => setShowArchiveDialog(false)}
+          onSuccess={() => {
+            setShowArchiveDialog(false)
+            queryClient.invalidateQueries({ queryKey: ['gitea-repos'] })
+            setToast(`${repo.name} arkiverat`)
+            setTimeout(() => setToast(null), 3000)
+          }}
+        />
+      )}
+
+      {toast && <SuccessToast message={toast} />}
     </div>
   )
 }
