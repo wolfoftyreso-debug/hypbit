@@ -1,10 +1,16 @@
 import { v4 as uuid } from 'uuid'
-import { createClient } from '@supabase/supabase-js'
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-const supabase = createClient(
-  process.env.SUPABASE_URL || '',
-  process.env.SUPABASE_SERVICE_KEY || ''
-)
+const SUPABASE_URL = process.env.SUPABASE_URL || ''
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+
+// Guard: krascha inte om Supabase ej är konfigurerat (system kör mot RDS direkt)
+let supabase: SupabaseClient | null = null
+if (SUPABASE_URL.match(/^https?:\/\//i) && SUPABASE_KEY) {
+  supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+} else {
+  console.warn('[eventEngine] Supabase ej konfigurerat — event-logging inaktiverat')
+}
 
 export type EventType =
   | 'task.created' | 'task.accepted' | 'task.submitted' | 'task.validated' | 'task.approved' | 'task.rejected'
@@ -43,6 +49,11 @@ export async function emitEvent(
     actor_id: opts?.actorId,
     payload,
     occurred_at: new Date().toISOString(),
+  }
+
+  if (!supabase) {
+    console.log(`[eventEngine] Event skipped (no Supabase): ${eventType} ${aggregateId}`)
+    return
   }
 
   const { error } = await supabase
