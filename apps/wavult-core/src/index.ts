@@ -11,6 +11,7 @@ import quixzoomRouter from './routes/quixzoom'
 import flightsRouter from './routes/flights'
 import twilioRouter from './routes/twilio'
 import aiApiRouter from './routes/ai-api'
+import agentsRouter from './routes/agents'
 import mediaApiRouter from './routes/media-api'
 import berntRouter from './routes/bernt'
 import intelligenceRouter from './routes/intelligence'
@@ -117,6 +118,7 @@ app.use('/', quixzoomRouter)
 app.use('/', flightsRouter)
 app.use('/', twilioRouter)
 app.use('/', aiApiRouter)
+app.use('/', agentsRouter)              // Agent Mesh — 10 expert agents med intelligent routing
 app.use('/', mediaApiRouter)
 
 // NVIDIA NIM — status endpoint
