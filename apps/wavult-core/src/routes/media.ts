@@ -5,11 +5,11 @@ const router = Router()
 const sb = () => createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!)
 
 async function ensureTables() {
-  await sb().rpc('exec_sql', { sql: `
+  await (sb().rpc('exec_sql', { sql: `
     CREATE TABLE IF NOT EXISTS media_campaigns (id TEXT PRIMARY KEY, name TEXT, status TEXT DEFAULT 'draft', budget NUMERIC, spent NUMERIC DEFAULT 0, start_date TEXT, end_date TEXT, created_at TIMESTAMPTZ DEFAULT NOW());
     CREATE TABLE IF NOT EXISTS media_channels (id TEXT PRIMARY KEY, name TEXT, type TEXT, status TEXT DEFAULT 'active', created_at TIMESTAMPTZ DEFAULT NOW());
     CREATE TABLE IF NOT EXISTS media_audiences (id TEXT PRIMARY KEY, name TEXT, campaign_id TEXT, size INT, created_at TIMESTAMPTZ DEFAULT NOW());
-  ` }).catch(() => null)
+  ` }) as unknown as Promise<any>).catch(() => null)
 }
 
 router.get('/campaigns', async (_req: Request, res: Response) => {

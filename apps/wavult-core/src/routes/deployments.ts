@@ -14,7 +14,7 @@ const router = Router()
 const sb = () => createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!)
 
 async function ensureTables() {
-  await sb().rpc('exec_sql', { sql: `
+  await (sb().rpc('exec_sql', { sql: `
     CREATE TABLE IF NOT EXISTS deployment_versions (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       domain TEXT NOT NULL,
@@ -57,7 +57,7 @@ async function ensureTables() {
     CREATE INDEX IF NOT EXISTS idx_dr_domain ON deployment_requests(domain);
     CREATE INDEX IF NOT EXISTS idx_dr_status ON deployment_requests(status);
     CREATE INDEX IF NOT EXISTS idx_dv_domain ON deployment_versions(domain);
-  ` }).catch(() => null)
+  ` }) as unknown as Promise<any>).catch(() => null)
 }
 
 // POST /api/deployments/request — request a deployment (goes to approval queue)
@@ -75,12 +75,12 @@ router.post('/request', async (req: Request, res: Response) => {
     if (error) throw error
 
     // Notify via audit log
-    await sb().from('audit_log').insert({
+    await (sb().from('audit_log').insert({
       actor: requested_by, action: 'deployment_requested',
       resource_type: 'domain', resource_id: domain,
       details: { domain, target: `${target_s3_bucket}/${target_s3_key}`, request_id: data.id },
       severity: 'warning'
-    }).catch(() => null)
+    }) as unknown as Promise<any>).catch(() => null)
 
     res.status(201).json({
       ok: true, request_id: data.id,
@@ -122,13 +122,13 @@ router.post('/:requestId/approve', async (req: Request, res: Response) => {
     const DEPLOY_PASSWORD = process.env.DEPLOY_PASSWORD || ''
     if (!deploy_password || deploy_password !== DEPLOY_PASSWORD) {
       // Log failed attempt
-      await sb().from('audit_log').insert({
+      await (sb().from('audit_log').insert({
         actor: approved_by || 'unknown',
         action: 'deployment_approval_rejected_wrong_password',
         resource_type: 'deployment', resource_id: req.params.requestId,
         details: { attempted_by: approved_by, ip: req.ip },
         severity: 'critical'
-      }).catch(() => null)
+      }) as unknown as Promise<any>).catch(() => null)
       return res.status(403).json({ 
         error: 'Invalid deploy password. Production deployments require the CEO deploy password.',
         logged: true
@@ -172,12 +172,12 @@ router.post('/:requestId/approve', async (req: Request, res: Response) => {
       status: 'deployed', deployment_version_id: version?.id
     }).eq('id', req.params.requestId)
 
-    await sb().from('audit_log').insert({
+    await (sb().from('audit_log').insert({
       actor: approved_by, action: 'deployment_approved_and_executed',
       resource_type: 'domain', resource_id: request.domain,
       details: { domain: request.domain, version: nextVersion, approved_by },
       severity: 'info'
-    }).catch(() => null)
+    }) as unknown as Promise<any>).catch(() => null)
 
     res.json({
       ok: true, version: nextVersion, domain: request.domain,
@@ -213,12 +213,12 @@ router.post('/:requestId/mark-deployed', async (req: Request, res: Response) => 
       }).eq('id', request.deployment_version_id)
     }
 
-    await sb().from('audit_log').insert({
+    await (sb().from('audit_log').insert({
       actor: deployed_by || 'github-actions', action: 'deployment_executed_by_pipeline',
       resource_type: 'domain', resource_id: request.domain,
       details: { request_id: req.params.requestId, commit },
       severity: 'info'
-    }).catch(() => null)
+    }) as unknown as Promise<any>).catch(() => null)
 
     res.json({ ok: true, message: 'Deployment marked as executed by pipeline' })
   } catch (e: any) { res.status(500).json({ error: e.message }) }
@@ -242,7 +242,7 @@ router.post('/:versionId/rollback', async (req: Request, res: Response) => {
     await sb().from('deployment_versions').update({ status: 'rolled_back' })
       .eq('id', req.params.versionId)
 
-    await sb().from('audit_log').insert({
+    await (sb().from('audit_log').insert({
       actor: rolled_back_by, action: 'deployment_rolled_back',
       resource_type: 'domain', resource_id: version.domain,
       details: {
@@ -252,7 +252,7 @@ router.post('/:versionId/rollback', async (req: Request, res: Response) => {
         rolled_back_by
       },
       severity: 'warning'
-    }).catch(() => null)
+    }) as unknown as Promise<any>).catch(() => null)
 
     res.json({
       ok: true,

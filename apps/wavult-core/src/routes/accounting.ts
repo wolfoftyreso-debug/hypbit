@@ -10,7 +10,7 @@ const router = Router()
 const sb = () => createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!)
 
 async function ensureTables() {
-  await sb().rpc('exec_sql', { sql: `
+  await (sb().rpc('exec_sql', { sql: `
     -- Chart of accounts (BAS-kontoplan)
     CREATE TABLE IF NOT EXISTS accounting_accounts (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -56,7 +56,7 @@ async function ensureTables() {
     CREATE INDEX IF NOT EXISTS idx_jl_entry ON journal_lines(journal_entry_id);
     CREATE INDEX IF NOT EXISTS idx_jl_account ON journal_lines(account_number);
     CREATE INDEX IF NOT EXISTS idx_aa_entity ON accounting_accounts(entity_id);
-  ` }).catch((e: any) => console.log('Table create (ok):', e.message?.slice(0,100)))
+  ` }) as unknown as Promise<any>).catch((e: any) => console.log('Table create (ok):', e.message?.slice(0,100)))
 }
 
 // GET /api/accounting/:entityId/accounts — kontoplan

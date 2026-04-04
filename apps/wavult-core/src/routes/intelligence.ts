@@ -11,7 +11,7 @@ const sb = () => createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SE
 
 // Ensure tables
 async function ensureTables() {
-  await sb().rpc('exec_sql', { sql: `
+  await (sb().rpc('exec_sql', { sql: `
     CREATE TABLE IF NOT EXISTS customer_signals (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       customer_id TEXT NOT NULL,
@@ -40,7 +40,7 @@ async function ensureTables() {
       product_fit JSONB DEFAULT '[]',
       updated_at TIMESTAMPTZ DEFAULT NOW()
     );
-  ` }).catch(() => null)
+  ` }) as unknown as Promise<any>).catch(() => null)
 }
 
 // POST /api/intelligence/signal — capture a signal

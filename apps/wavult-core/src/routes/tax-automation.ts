@@ -199,7 +199,7 @@ router.post('/:entityId/initiate-payment/:declarationId', async (req: Request, r
     }).eq('id', declaration.id)
     
     // Audit log
-    await sb().from('audit_log').insert({
+    await (sb().from('audit_log').insert({
       actor: approved_by,
       action: 'tax_payment_initiated',
       resource_type: 'tax_declaration',
@@ -212,7 +212,7 @@ router.post('/:entityId/initiate-payment/:declarationId', async (req: Request, r
         revolut_result: paymentResult.id || 'pending'
       },
       severity: 'info'
-    }).catch(() => null)
+    }) as unknown as Promise<any>).catch(() => null)
     
     res.json({
       ok: true,

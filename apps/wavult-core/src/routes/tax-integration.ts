@@ -13,7 +13,7 @@ const router = Router()
 const sb = () => createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!)
 
 async function ensureTables() {
-  await sb().rpc('exec_sql', { sql: `
+  await (sb().rpc('exec_sql', { sql: `
     CREATE TABLE IF NOT EXISTS tax_declarations (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       entity_id TEXT NOT NULL,
@@ -38,7 +38,7 @@ async function ensureTables() {
     CREATE INDEX IF NOT EXISTS idx_tax_entity ON tax_declarations(entity_id);
     CREATE INDEX IF NOT EXISTS idx_tax_deadline ON tax_declarations(deadline ASC);
     CREATE INDEX IF NOT EXISTS idx_tax_status ON tax_declarations(status);
-  ` }).catch(() => null)
+  ` }) as unknown as Promise<any>).catch(() => null)
 }
 
 // ─── SWEDEN ────────────────────────────────────────────────────────────────────
@@ -233,7 +233,7 @@ router.post('/:entityId/declarations/:declarationId/submit', async (req: Request
     if (error) throw error
 
     // Audit log — varje inlämning loggas
-    await sb().from('audit_log').insert({
+    await (sb().from('audit_log').insert({
       actor: submitted_by || 'system',
       action: 'tax_declaration_submitted',
       resource_type: 'tax_declaration',
@@ -245,7 +245,7 @@ router.post('/:entityId/declarations/:declarationId/submit', async (req: Request
         ref: submission_ref,
       },
       severity: 'info',
-    }).catch(() => null)
+    }) as unknown as Promise<any>).catch(() => null)
 
     res.json(data)
   } catch (e: any) { res.status(500).json({ error: e.message }) }

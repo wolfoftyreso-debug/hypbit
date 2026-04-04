@@ -88,10 +88,10 @@ async function checkSupabase(): Promise<CheckResult> {
     if (!url || !key) throw new Error('SUPABASE_URL/SUPABASE_SERVICE_KEY not configured')
     const supabase = createClient(url, key)
     const { error } = await raceTimeout(
-      supabase.from('audit_log').select('id').limit(1),
+      supabase.from('audit_log').select('id').limit(1) as unknown as Promise<{ data: { id: string }[]; error: { message: string } | null }>,
       5000
     )
-    if (error) throw new Error(error.message)
+    if (error) throw new Error((error as { message: string }).message)
     return { id: 'supabase', name: 'Supabase', status: 'ok', latencyMs: Date.now() - start, detail: 'SELECT 1 ok', lastOk: new Date().toISOString() }
   } catch (err) {
     return { id: 'supabase', name: 'Supabase', status: 'error', latencyMs: Date.now() - start, detail: String(err), lastOk: null }

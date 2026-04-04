@@ -17,7 +17,7 @@ function sb() {
 
 async function ensureTables() {
   const client = sb()
-  await client.rpc('exec_sql', { sql: `
+  await (client.rpc('exec_sql', { sql: `
     CREATE TABLE IF NOT EXISTS org_entities (
       id TEXT PRIMARY KEY,
       wg_id TEXT,
@@ -59,7 +59,7 @@ async function ensureTables() {
       created_at TIMESTAMPTZ DEFAULT NOW(),
       updated_at TIMESTAMPTZ DEFAULT NOW()
     );
-  ` }).catch(() => null)
+  ` }) as unknown as Promise<any>).catch(() => null)
 }
 
 // GET /api/org-graph/entities

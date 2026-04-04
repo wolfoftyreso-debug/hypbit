@@ -5,7 +5,7 @@ const router = Router()
 const sb = () => createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!)
 
 async function ensureTable() {
-  await sb().rpc('exec_sql', {
+  await (sb().rpc('exec_sql', {
     sql: `CREATE TABLE IF NOT EXISTS audit_log (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       timestamp TIMESTAMPTZ DEFAULT NOW(),
@@ -18,7 +18,7 @@ async function ensureTable() {
       severity TEXT DEFAULT 'info'
     );
     CREATE INDEX IF NOT EXISTS idx_audit_time ON audit_log(timestamp DESC);`
-  }).catch(() => null)
+  }) as unknown as Promise<any>).catch(() => null)
 }
 
 router.get('/', async (req: Request, res: Response) => {

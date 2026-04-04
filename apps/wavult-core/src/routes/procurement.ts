@@ -5,7 +5,7 @@ const router = Router()
 const sb = () => createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_KEY!)
 
 async function ensureTables() {
-  await sb().rpc('exec_sql', { sql: `
+  await (sb().rpc('exec_sql', { sql: `
     CREATE TABLE IF NOT EXISTS suppliers (
       id TEXT PRIMARY KEY, name TEXT NOT NULL, category TEXT,
       country TEXT, contact TEXT, email TEXT, status TEXT DEFAULT 'aktiv',
@@ -30,7 +30,7 @@ async function ensureTables() {
       requested_by TEXT, requested_at TEXT, status TEXT DEFAULT 'väntande',
       approver TEXT, created_at TIMESTAMPTZ DEFAULT NOW()
     );
-  ` }).catch(() => null)
+  ` }) as unknown as Promise<any>).catch(() => null)
 }
 
 router.get('/suppliers', async (_req: Request, res: Response) => {
