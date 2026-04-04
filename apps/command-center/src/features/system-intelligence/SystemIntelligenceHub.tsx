@@ -1,9 +1,16 @@
 // ─── System Intelligence Hub ───────────────────────────────────────────────
 // Koncernhälsa-oscilloskop · Strategisk riskmatris · Beslutslogg · Marknadssignaler
-// Inspirerad av dissg/Lambda System — anpassad för Wavult Group
+// Fullt reaktiv mot backend — ingen hårdkodad data
 
 import { useState } from 'react'
 import { useTranslation } from '../../shared/i18n/useTranslation'
+import {
+  useSystemIntelligence,
+  type QmsEntity,
+  type QmsControl,
+  type DecisionMeeting,
+  type MarketSignal,
+} from './useSystemIntelligence'
 
 // ─── SVG Icons ────────────────────────────────────────────────────────────────
 function ActivityIcon() {
@@ -27,514 +34,264 @@ function ClockIcon() {
 function RadarIcon() {
   return <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19.07 4.93A10 10 0 0 0 6.99 3.34"/><path d="M4 6h.01"/><path d="M2.29 9.62A10 10 0 1 0 21.31 8.35"/><path d="M16.24 7.76A6 6 0 1 0 8.23 16.67"/><path d="M12 18h.01"/><path d="M17.99 11.66A6 6 0 0 1 15.77 16.67"/><circle cx="12" cy="12" r="2"/><path d="m13.41 10.59 5.66-5.66"/></svg>
 }
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-type HealthStatus = 'green' | 'yellow' | 'red'
-type RiskLevel = 'low' | 'medium' | 'high' | 'critical'
-type TrendDir = 'up' | 'down' | 'stable'
-
-interface EntityHealth {
-  id: string
-  name: string
-  code: string
-  jurisdiction: string
-  emoji: string
-  healthScore: number   // 0-100  (Lambda-inspirerat)
-  status: HealthStatus
-  trend: TrendDir
-  signals: string[]
-  stressors: string[]
-  color: string
+function RefreshIcon() {
+  return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
 }
 
-interface RiskItem {
-  id: string
-  category: string
-  title: string
-  description: string
-  probability: number   // 0-10
-  impact: number        // 0-10
-  riskScore: number     // probability * impact
-  level: RiskLevel
-  owner: string
-  mitigation: string
-  eta?: string
-}
+// ─── Loading & Empty States ───────────────────────────────────────────────────
 
-interface DecisionLogEntry {
-  id: string
-  date: string
-  decision: string
-  context: string
-  decisionMaker: string
-  consequence: string
-  status: 'pending' | 'executed' | 'monitoring' | 'closed'
-  impactScore: number   // 1-5
-}
-
-interface MarketSignal {
-  id: string
-  product: string
-  signal: string
-  direction: TrendDir
-  strength: 'weak' | 'moderate' | 'strong'
-  source: string
-  date: string
-  actionable: boolean
-}
-
-// ─── Data ─────────────────────────────────────────────────────────────────────
-
-const ENTITY_HEALTH: EntityHealth[] = [
-  {
-    id: 'wgh',
-    name: 'Wavult Group FZCO',
-    code: 'WGH',
-    jurisdiction: '🇦🇪 Dubai',
-    emoji: '🏛',
-    healthScore: 52,
-    status: 'yellow',
-    trend: 'up',
-    signals: ['Holding-struktur planerad', 'IP-ägarskap definierat', 'Dubai-formation pågår'],
-    stressors: ['Formation ej klar', 'Inga revenues ännu', 'Bank-konto ej öppnat'],
-    color: '#2563EB',
-  },
-  {
-    id: 'wdo',
-    name: 'Wavult DevOps FZCO',
-    code: 'WDO',
-    jurisdiction: '🇦🇪 Dubai',
-    emoji: '⚙️',
-    healthScore: 45,
-    status: 'yellow',
-    trend: 'stable',
-    signals: ['License-modell designad', 'Tech stack aktiv', 'Team i produktion'],
-    stressors: ['Formation ej klar', 'Intercompany-avtal saknas', 'Revenue-ström ej live'],
-    color: '#3B82F6',
-  },
-  {
-    id: 'qxi-us',
-    name: 'QuiXzoom Inc',
-    code: 'QXI',
-    jurisdiction: '🇺🇸 Delaware',
-    emoji: '📸',
-    healthScore: 38,
-    status: 'red',
-    trend: 'up',
-    signals: ['Plattformskoncept klar', 'MVP under uppbyggnad', 'GTM-strategi definierad'],
-    stressors: ['Ingen live-produkt', 'Inga betalande kunder', 'Inkorporation ej klar'],
-    color: '#F59E0B',
-  },
-  {
-    id: 'qxi-eu',
-    name: 'QuiXzoom UAB',
-    code: 'QXEU',
-    jurisdiction: '🇱🇹 Vilnius',
-    emoji: '🇪🇺',
-    healthScore: 30,
-    status: 'red',
-    trend: 'stable',
-    signals: ['EU-struktur planerad', 'GDPR-ramverk designat'],
-    stressors: ['Ej inkorporerad', 'Inga live operations', 'EU-expansion väntar på US-launch'],
-    color: '#10B981',
-  },
-  {
-    id: 'lndvx-se',
-    name: 'Landvex AB',
-    code: 'LVX',
-    jurisdiction: '🇸🇪 Stockholm',
-    emoji: '🏗',
-    healthScore: 55,
-    status: 'yellow',
-    trend: 'up',
-    signals: ['B2G-pipeline aktiv', 'Landvex web live', 'Enterprise sales pågår'],
-    stressors: ['Inga kontrakt signerade', 'Lång säljcykel', 'Resursbrist i säljteam'],
-    color: '#EC4899',
-  },
-]
-
-const RISK_MATRIX: RiskItem[] = [
-  {
-    id: 'r1',
-    category: 'Finansiellt',
-    title: 'Cash runway < 90 dagar',
-    description: 'Om inga intäkter genereras eller kapital tas in inom 90 dagar riskerar driften att stanna.',
-    probability: 6,
-    impact: 9,
-    riskScore: 54,
-    level: 'critical',
-    owner: 'Winston (CFO)',
-    mitigation: 'Aktivera bridge-finansiering, påskynda första kundkontrakt, strama åt burn rate',
-    eta: '2026-04-30',
-  },
-  {
-    id: 'r2',
-    category: 'Juridiskt',
-    title: 'Dubai-formation försenad',
-    description: 'Wavult Group FZCO och Wavult DevOps FZCO är ännu inte formerade — IP-ägarskap och skatteoptimering kan ej verkställas.',
-    probability: 5,
-    impact: 8,
-    riskScore: 40,
-    level: 'high',
-    owner: 'Dennis (Legal)',
-    mitigation: 'Anlita FZCO-agent i Dubai, sätt deadline före Thailand workcamp',
-    eta: '2026-04-10',
-  },
-  {
-    id: 'r3',
-    category: 'Produkt',
-    title: 'QuiXzoom MVP försenad',
-    description: 'Om MVP:n inte är live till sommar 2026 riskerar vi att missa säsong och early-mover advantage.',
-    probability: 6,
-    impact: 7,
-    riskScore: 42,
-    level: 'high',
-    owner: 'Johan (CTO)',
-    mitigation: 'Avgränsa MVP hårt, prioriera core loop (uppdrag → delivery → payment), skippa nice-to-have',
-    eta: '2026-06-01',
-  },
-  {
-    id: 'r4',
-    category: 'Team',
-    title: 'Nyckelresurs saknas i säljteam',
-    description: 'Leon är ensam på säljsidan — sjukdom eller frånvaro skapar pipeline-stopp.',
-    probability: 4,
-    impact: 7,
-    riskScore: 28,
-    level: 'medium',
-    owner: 'Leon (CEO Ops)',
-    mitigation: 'Rekrytera junior sälj eller aktivera frilansare, dokumentera all pipeline-data i CRM',
-    eta: '2026-05-01',
-  },
-  {
-    id: 'r5',
-    category: 'Marknad',
-    title: 'Landvex B2G-säljcykel > 12 månader',
-    description: 'Kommunala upphandlingar tar tid — risk att Landvex bränner kapital utan intäkter.',
-    probability: 7,
-    impact: 6,
-    riskScore: 42,
-    level: 'high',
-    owner: 'Erik (CEO)',
-    mitigation: 'Lägg till B2B-komponent vid sidan av B2G, prospektera privata fastighetsbolag',
-    eta: '2026-06-30',
-  },
-  {
-    id: 'r6',
-    category: 'Tekniskt',
-    title: 'Supabase single-point-of-failure',
-    description: 'All produktionsdata för Wavult OS ligger i ett enda Supabase-projekt — dokumentera disaster recovery plan.',
-    probability: 3,
-    impact: 8,
-    riskScore: 24,
-    level: 'medium',
-    owner: 'Johan (CTO)',
-    mitigation: 'Aktivera Supabase automatisk backup, dokumentera disaster recovery plan',
-    eta: '2026-04-15',
-  },
-]
-
-const DECISION_LOG: DecisionLogEntry[] = [
-  {
-    id: 'd1',
-    date: '2026-03-21',
-    decision: 'Bolagsstruktur: Dubai holding + Wavult DevOps FZCO + subsidiaries',
-    context: 'Skatteoptimering via Dubai 0% bolagsskatt, IP ägs av holding, subsidiaries betalar licensavgifter',
-    decisionMaker: 'Erik Svensson',
-    consequence: 'Alla IP-rättigheter och tech-plattformen hamnar i Dubai — möjliggör global expansion med minimal skattebelastning',
-    status: 'executing',
-    impactScore: 5,
-  } as any,
-  {
-    id: 'd2',
-    date: '2026-03-21',
-    decision: 'Thailand workcamp 11 april — teamets kick-off',
-    context: 'Vecka 1: teambuilding + systemutbildning. Sedan: live-driftsättning av alla projekt',
-    decisionMaker: 'Erik Svensson',
-    consequence: 'Team alignat, alla system redo att rulla. Ger fokus och energi inför Q2 2026',
-    status: 'pending',
-    impactScore: 4,
-  },
-  {
-    id: 'd3',
-    date: '2026-03-15',
-    decision: 'Landvex AB aktiveras som first revenue vehicle',
-    context: 'B2G-pipeline för QuiXzoom-liknande intelligens till kommuner och fastighetsbolag',
-    decisionMaker: 'Erik Svensson',
-    consequence: 'Landvex = snabbast till revenue pga befintliga kontakter. QuiXzoom = långsiktig plattform',
-    status: 'executing',
-    impactScore: 4,
-  } as any,
-  {
-    id: 'd4',
-    date: '2026-03-10',
-    decision: 'Wavult OS byggs som intern plattform (inte extern produkt)',
-    context: 'OS-et är Bernt + command center för Wavult Group. Säljs inte externt i Fas 1.',
-    decisionMaker: 'Erik Svensson',
-    consequence: 'Team arbetar med ett enda operativsystem. Minskar friktion, ökar transparens.',
-    status: 'executing',
-    impactScore: 3,
-  } as any,
-]
-
-const MARKET_SIGNALS: MarketSignal[] = [
-  {
-    id: 'ms1',
-    product: 'QuiXzoom',
-    signal: 'Drone-regler i EU liberaliseras 2026 — öppnar ny kategori för airborne capture',
-    direction: 'up',
-    strength: 'strong',
-    source: 'EASA regulatory update',
-    date: '2026-03',
-    actionable: true,
-  },
-  {
-    id: 'ms2',
-    product: 'Landvex',
-    signal: 'Svenska kommuner ökar budgetar för digital infrastrukturanalys +18% YoY',
-    direction: 'up',
-    strength: 'strong',
-    source: 'SKR (Sveriges Kommuner och Regioner)',
-    date: '2026-03',
-    actionable: true,
-  },
-  {
-    id: 'ms3',
-    product: 'QuiXzoom',
-    signal: 'Konkurrent Patchwork Nation höjer priser 30% — öppnar prispressad marknad',
-    direction: 'up',
-    strength: 'moderate',
-    source: 'Market tracking',
-    date: '2026-02',
-    actionable: true,
-  },
-  {
-    id: 'ms4',
-    product: 'Landvex',
-    signal: 'US fastighetsmarknad i kylning — B2G mer resilient än B2B property',
-    direction: 'stable',
-    strength: 'moderate',
-    source: 'Federal Reserve / Housing Index',
-    date: '2026-03',
-    actionable: false,
-  },
-  {
-    id: 'ms5',
-    product: 'QuiXzoom',
-    signal: 'AI-baserad bildanalys = commodity 2026 — differentiering måste vara capture-nätverket, inte AI:n',
-    direction: 'down',
-    strength: 'strong',
-    source: 'Gartner / Internal analysis',
-    date: '2026-03',
-    actionable: true,
-  },
-]
-
-// ─── Health Score Gauge ───────────────────────────────────────────────────────
-
-function HealthGauge({ score, color: _color }: { score: number; color: string }) {
-  const r = 24
-  const circ = 2 * Math.PI * r
-  const offset = circ - (score / 100) * circ
-  const statusColor = score >= 70 ? '#10B981' : score >= 40 ? '#F59E0B' : '#EF4444'
-
+function LoadingSpinner() {
   return (
-    <svg width="64" height="64" className="-rotate-90">
-      <circle cx="32" cy="32" r={r} stroke="#DDD5C5" strokeWidth="5" fill="none" />
-      <circle
-        cx="32" cy="32" r={r}
-        stroke={statusColor} strokeWidth="5" fill="none"
-        strokeDasharray={circ}
-        strokeDashoffset={offset}
-        strokeLinecap="round"
-      />
-      <text
-        x="32" y="32"
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fill="#0A3D62"
-        fontSize="12"
-        fontWeight="bold"
-        transform="rotate(90 32 32)"
+    <div className="flex items-center justify-center py-16 gap-3 text-gray-500">
+      <div className="w-5 h-5 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
+      <span className="text-sm">Hämtar data…</span>
+    </div>
+  )
+}
+
+function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
+  return (
+    <div className="flex flex-col items-center justify-center py-12 gap-3">
+      <div className="text-red-500"><AlertIcon /></div>
+      <div className="text-sm text-red-700 font-medium">Kunde inte hämta data</div>
+      <div className="text-xs text-gray-500 max-w-xs text-center">{message}</div>
+      <button
+        onClick={onRetry}
+        className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg bg-[#EDE8DC] border border-[#DDD5C5] hover:bg-[#DDD5C5] transition-colors"
       >
-        {score}
-      </text>
-    </svg>
+        <RefreshIcon /> Försök igen
+      </button>
+    </div>
+  )
+}
+
+function EmptyState({ icon, title, subtitle }: { icon: string; title: string; subtitle: string }) {
+  return (
+    <div className="flex flex-col items-center justify-center py-12 gap-2 text-center">
+      <div className="text-3xl">{icon}</div>
+      <div className="text-sm font-medium text-gray-700">{title}</div>
+      <div className="text-xs text-gray-500 max-w-xs">{subtitle}</div>
+    </div>
   )
 }
 
 // ─── Entity Card ──────────────────────────────────────────────────────────────
 
-function EntityCard({ entity }: { entity: EntityHealth }) {
-  const statusColors: Record<HealthStatus, string> = {
-    green: '#10B981',
-    yellow: '#F59E0B',
-    red: '#EF4444',
-  }
+function EntityCard({ entity }: { entity: QmsEntity }) {
+  const stats = entity.stats ?? { not_started: 0, in_progress: 0, implemented: 0, verified: 0, not_applicable: 0 }
+  const total = stats.not_started + stats.in_progress + stats.implemented + stats.verified + stats.not_applicable
+  const done = stats.implemented + stats.verified
+  const healthScore = total > 0 ? Math.round((done / (total - stats.not_applicable || 1)) * 100) : 0
+
+  const statusColor = healthScore >= 70 ? '#10B981' : healthScore >= 40 ? '#F59E0B' : '#EF4444'
+  const statusLabel = healthScore >= 70 ? 'Hälsosam' : healthScore >= 40 ? 'Varning' : 'Kritisk'
+
+  const r = 24
+  const circ = 2 * Math.PI * r
+  const offset = circ - (healthScore / 100) * circ
 
   return (
-    <div
-      className="rounded-xl p-4 border"
-      style={{ borderColor: entity.color + '33', backgroundColor: entity.color + '0A' }}
-    >
+    <div className="rounded-xl p-4 border border-[#DDD5C5] bg-[#F5F0E8]">
       <div className="flex items-start gap-3">
-        <HealthGauge score={entity.healthScore} color={entity.color} />
+        <svg width="64" height="64" className="-rotate-90">
+          <circle cx="32" cy="32" r={r} stroke="#DDD5C5" strokeWidth="5" fill="none" />
+          <circle
+            cx="32" cy="32" r={r}
+            stroke={statusColor} strokeWidth="5" fill="none"
+            strokeDasharray={circ}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+          />
+          <text
+            x="32" y="32"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fill="#0A3D62"
+            fontSize="12"
+            fontWeight="bold"
+            transform="rotate(90 32 32)"
+          >
+            {healthScore}
+          </text>
+        </svg>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-lg">{entity.emoji}</span>
             <span className="font-bold text-text-primary text-sm">{entity.name}</span>
-            <span
-              className="text-xs font-bold px-1.5 py-0.5 rounded"
-              style={{ backgroundColor: statusColors[entity.status] + '22', color: statusColors[entity.status] }}
-            >
-              {entity.code}
-            </span>
+            {entity.slug && (
+              <span
+                className="text-xs font-bold px-1.5 py-0.5 rounded uppercase"
+                style={{ backgroundColor: statusColor + '22', color: statusColor }}
+              >
+                {entity.slug.toUpperCase()}
+              </span>
+            )}
           </div>
-          <div className="text-xs text-gray-9000 mt-0.5">{entity.jurisdiction}</div>
+          {entity.jurisdiction && (
+            <div className="text-xs text-gray-500 mt-0.5">{entity.jurisdiction}</div>
+          )}
           <div className="flex items-center gap-1.5 mt-1">
-            <div
-              className="w-2 h-2 rounded-full"
-              style={{ backgroundColor: statusColors[entity.status] }}
-            />
-            <span className="text-xs" style={{ color: statusColors[entity.status] }}>
-              {entity.status === 'green' ? 'Hälsosam' : entity.status === 'yellow' ? 'Varning' : 'Kritisk'}
-            </span>
-            {entity.trend === 'up' && <span className="text-green-700"><TrendingUpIcon /></span>}
-            {entity.trend === 'down' && <span className="text-red-700"><TrendingDownIcon /></span>}
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: statusColor }} />
+            <span className="text-xs" style={{ color: statusColor }}>{statusLabel}</span>
           </div>
         </div>
       </div>
 
-      {/* Signals */}
-      <div className="mt-3 flex flex-col gap-1">
-        {entity.signals.slice(0, 2).map(s => (
-          <div key={s} className="flex items-start gap-1.5 text-xs text-gray-600">
-            <span className="text-green-700 flex-shrink-0 mt-0.5"><CheckIcon /></span>{s}
+      {/* Standards */}
+      {entity.standard_versions && entity.standard_versions.length > 0 && (
+        <div className="mt-3 flex flex-wrap gap-1">
+          {entity.standard_versions.map(s => (
+            <div key={s} className="flex items-center gap-1 text-xs text-gray-600">
+              <span className="text-green-600"><CheckIcon /></span>{s}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Implementation stats */}
+      {total > 0 && (
+        <div className="mt-3">
+          <div className="flex gap-2 text-xs">
+            {stats.implemented + stats.verified > 0 && (
+              <span className="text-green-700">{stats.implemented + stats.verified} klar</span>
+            )}
+            {stats.in_progress > 0 && (
+              <span className="text-amber-700">{stats.in_progress} pågår</span>
+            )}
+            {stats.not_started > 0 && (
+              <span className="text-red-700">{stats.not_started} ej påbörjad</span>
+            )}
           </div>
-        ))}
-        {entity.stressors.slice(0, 2).map(s => (
-          <div key={s} className="flex items-start gap-1.5 text-xs text-gray-9000">
-            <span className="text-red-700 flex-shrink-0 mt-0.5"><AlertIcon /></span>{s}
-          </div>
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   )
 }
 
 // ─── Risk Matrix ──────────────────────────────────────────────────────────────
 
-function RiskMatrix() {
-  const [selectedRisk, setSelectedRisk] = useState<string | null>(null)
+type RiskLevel = 'not_started' | 'in_progress_late' | 'in_progress' | 'done'
 
-  const levelColors: Record<RiskLevel, string> = {
-    low: '#10B981',
-    medium: '#F59E0B',
-    high: '#F97316',
-    critical: '#EF4444',
+function getRiskLevel(ctrl: QmsControl): RiskLevel {
+  const status = ctrl.implementation?.status ?? 'not_started'
+  if (status === 'not_started') return 'not_started'
+  if (status === 'in_progress') {
+    const td = ctrl.implementation?.target_date
+    if (td && new Date(td) < new Date()) return 'in_progress_late'
+    return 'in_progress'
   }
-  const levelLabels: Record<RiskLevel, string> = {
-    low: 'Låg',
-    medium: 'Medium',
-    high: 'Hög',
-    critical: 'Kritisk',
+  return 'done'
+}
+
+const levelMeta: Record<RiskLevel, { label: string; color: string; sortPriority: number }> = {
+  not_started:     { label: 'Ej påbörjad', color: '#EF4444', sortPriority: 0 },
+  in_progress_late:{ label: 'Försenad',    color: '#F97316', sortPriority: 1 },
+  in_progress:     { label: 'Pågår',       color: '#F59E0B', sortPriority: 2 },
+  done:            { label: 'Klar',        color: '#10B981', sortPriority: 3 },
+}
+
+function RiskMatrix({ controls, loading }: { controls: QmsControl[]; loading: boolean }) {
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+
+  if (loading) return <LoadingSpinner />
+
+  const relevant = controls
+    .filter(c => c.implementation?.status !== 'not_applicable')
+    .sort((a, b) => {
+      const la = getRiskLevel(a)
+      const lb = getRiskLevel(b)
+      return levelMeta[la].sortPriority - levelMeta[lb].sortPriority
+    })
+
+  if (relevant.length === 0) {
+    return (
+      <EmptyState
+        icon="🔒"
+        title="Inga QMS-kontroller registrerade"
+        subtitle="Kontroller hämtas från /v1/qms/wavult-os/controls. Lägg till wavult-os som QMS-entitet."
+      />
+    )
   }
 
-  const sorted = [...RISK_MATRIX].sort((a, b) => b.riskScore - a.riskScore)
-  const selected = sorted.find(r => r.id === selectedRisk)
+  const selected = relevant.find(r => r.id === selectedId)
 
   return (
     <div className="flex gap-5 h-full">
-      {/* Left: list */}
-      <div className="flex flex-col gap-2 w-80 flex-shrink-0">
-        {sorted.map(risk => (
-          <button
-            key={risk.id}
-            onClick={() => setSelectedRisk(selectedRisk === risk.id ? null : risk.id)}
-            className={`text-left rounded-xl p-3 border transition-all ${
-              selectedRisk === risk.id ? 'border-[#DDD5C5] bg-[#EDE8DC]' : 'border-surface-border bg-[#F0EBE1] hover:bg-[#EDE8DC]'
-            }`}
-          >
-            <div className="flex items-center gap-2 mb-1">
-              <div
-                className="text-xs font-bold px-1.5 py-0.5 rounded uppercase"
-                style={{ backgroundColor: levelColors[risk.level] + '22', color: levelColors[risk.level] }}
-              >
-                {levelLabels[risk.level]}
-              </div>
-              <span className="text-xs text-gray-9000">{risk.category}</span>
-              <span className="ml-auto text-xs font-bold text-text-primary">{risk.riskScore}</span>
-            </div>
-            <div className="text-sm font-medium text-text-primary">{risk.title}</div>
-            <div className="text-xs text-gray-9000 mt-0.5 truncate">{risk.owner}</div>
-
-            {/* P×I bars */}
-            <div className="flex gap-3 mt-2">
-              <div className="flex items-center gap-1.5 text-xs">
-                <span className="text-gray-9000">P</span>
-                <div className="w-20 bg-[#F0EBE1] rounded-full h-1.5">
-                  <div className="h-full rounded-full bg-amber-500" style={{ width: `${risk.probability * 10}%` }} />
+      {/* List */}
+      <div className="flex flex-col gap-2 w-80 flex-shrink-0 overflow-y-auto">
+        {relevant.map(ctrl => {
+          const level = getRiskLevel(ctrl)
+          const meta = levelMeta[level]
+          return (
+            <button
+              key={ctrl.id}
+              onClick={() => setSelectedId(selectedId === ctrl.id ? null : ctrl.id)}
+              className={`text-left rounded-xl p-3 border transition-all ${
+                selectedId === ctrl.id ? 'border-[#DDD5C5] bg-[#EDE8DC]' : 'border-surface-border bg-[#F0EBE1] hover:bg-[#EDE8DC]'
+              }`}
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <div
+                  className="text-xs font-bold px-1.5 py-0.5 rounded"
+                  style={{ backgroundColor: meta.color + '22', color: meta.color }}
+                >
+                  {meta.label}
                 </div>
-                <span className="text-amber-700">{risk.probability}</span>
+                {ctrl.category && (
+                  <span className="text-xs text-gray-500">{ctrl.category}</span>
+                )}
               </div>
-              <div className="flex items-center gap-1.5 text-xs">
-                <span className="text-gray-9000">I</span>
-                <div className="w-20 bg-[#F0EBE1] rounded-full h-1.5">
-                  <div className="h-full rounded-full bg-red-500" style={{ width: `${risk.impact * 10}%` }} />
-                </div>
-                <span className="text-red-700">{risk.impact}</span>
-              </div>
-            </div>
-          </button>
-        ))}
+              <div className="text-xs text-gray-400 font-mono mb-0.5">{ctrl.clause}</div>
+              <div className="text-sm font-medium text-text-primary">{ctrl.title}</div>
+              {ctrl.implementation?.responsible_person && (
+                <div className="text-xs text-gray-500 mt-0.5">{ctrl.implementation.responsible_person}</div>
+              )}
+            </button>
+          )
+        })}
       </div>
 
-      {/* Right: detail */}
+      {/* Detail */}
       <div className="flex-1">
         {selected ? (
           <div className="rounded-xl border border-surface-border bg-[#F0EBE1] p-5 flex flex-col gap-4">
             <div className="flex items-start gap-3">
               <div
                 className="text-xs font-bold px-2 py-1 rounded uppercase"
-                style={{ backgroundColor: levelColors[selected.level] + '22', color: levelColors[selected.level] }}
+                style={{
+                  backgroundColor: levelMeta[getRiskLevel(selected)].color + '22',
+                  color: levelMeta[getRiskLevel(selected)].color
+                }}
               >
-                {levelLabels[selected.level]} RISK
+                {levelMeta[getRiskLevel(selected)].label}
               </div>
               <div>
                 <h3 className="text-lg font-bold text-text-primary">{selected.title}</h3>
-                <div className="text-xs text-gray-9000">{selected.category} · Owner: {selected.owner}</div>
+                <div className="text-xs text-gray-500">{selected.clause} · {selected.category}</div>
               </div>
             </div>
-            <p className="text-sm text-gray-600 leading-relaxed">{selected.description}</p>
-            <div className="flex gap-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-amber-700">{selected.probability}</div>
-                <div className="text-xs text-gray-9000">Sannolikhet</div>
+            {selected.implementation?.gap_analysis && (
+              <div>
+                <div className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">Gap-analys</div>
+                <p className="text-sm text-gray-600">{selected.implementation.gap_analysis}</p>
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-red-700">{selected.impact}</div>
-                <div className="text-xs text-gray-9000">Impact</div>
+            )}
+            {selected.implementation?.responsible_person && (
+              <div className="flex items-center gap-2 text-xs text-gray-500">
+                <span className="font-medium">Ansvarig:</span>
+                {selected.implementation.responsible_person}
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-text-primary">{selected.riskScore}</div>
-                <div className="text-xs text-gray-9000">Risk Score</div>
-              </div>
-            </div>
-            <div>
-              <div className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">Mitigering</div>
-              <p className="text-sm text-gray-600">{selected.mitigation}</p>
-            </div>
-            {selected.eta && (
-              <div className="flex items-center gap-2 text-xs text-gray-9000">
-                <ClockIcon /> Deadline: <span className="text-text-primary">{selected.eta}</span>
+            )}
+            {selected.implementation?.target_date && (
+              <div className="flex items-center gap-2 text-xs text-gray-500">
+                <ClockIcon /> Deadline:
+                <span className="text-text-primary">{selected.implementation.target_date}</span>
               </div>
             )}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center h-full text-gray-9000 gap-2">
+          <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-2">
             <RadarIcon />
-            <div className="text-sm">Välj en risk för detaljer</div>
+            <div className="text-sm">Välj en kontroll för detaljer</div>
           </div>
         )}
       </div>
@@ -544,131 +301,257 @@ function RiskMatrix() {
 
 // ─── Decision Log ─────────────────────────────────────────────────────────────
 
-function DecisionLog() {
-  const statusColors: Record<string, string> = {
-    pending: '#F59E0B',
-    executing: '#3B82F6',
-    monitoring: '#2563EB',
-    closed: '#10B981',
-  }
-  const statusLabels: Record<string, string> = {
-    pending: 'Väntar',
-    executing: 'Genomförs',
-    monitoring: 'Övervakas',
-    closed: 'Klar',
+const meetingStatusColors: Record<string, string> = {
+  scheduled: '#F59E0B',
+  in_progress: '#3B82F6',
+  completed: '#10B981',
+  cancelled: '#6B7280',
+}
+const meetingStatusLabels: Record<string, string> = {
+  scheduled: 'Planerat',
+  in_progress: 'Pågår',
+  completed: 'Klar',
+  cancelled: 'Avbokat',
+}
+
+function DecisionLog({ meetings, loading }: { meetings: DecisionMeeting[]; loading: boolean }) {
+  if (loading) return <LoadingSpinner />
+
+  if (meetings.length === 0) {
+    return (
+      <EmptyState
+        icon="📋"
+        title="Ingen beslutslogg ännu"
+        subtitle="Beslut och möten registreras via /api/decisions/meetings. Lägg till ditt första beslutsmöte."
+      />
+    )
   }
 
   return (
     <div className="flex flex-col gap-3">
-      {DECISION_LOG.map(entry => (
-        <div key={entry.id} className="rounded-xl border border-surface-border bg-[#F0EBE1] p-4">
-          <div className="flex items-start gap-3">
-            <div className="flex flex-col items-center gap-1 flex-shrink-0 pt-1">
-              <div
-                className="w-2.5 h-2.5 rounded-full"
-                style={{ backgroundColor: statusColors[entry.status] }}
-              />
-              {'|'.repeat(entry.impactScore).split('').map((_, i) => (
-                <div key={i} className="w-1 h-1 rounded-full bg-[#EDE8DC]" />
-              ))}
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 flex-wrap mb-1">
-                <div
-                  className="text-xs font-bold px-1.5 py-0.5 rounded uppercase"
-                  style={{ backgroundColor: statusColors[entry.status] + '22', color: statusColors[entry.status] }}
-                >
-                  {statusLabels[entry.status]}
-                </div>
-                <span className="text-xs text-gray-9000 flex items-center gap-1">
-                  <ClockIcon />{entry.date}
-                </span>
-                <span className="text-xs text-gray-9000">av {entry.decisionMaker}</span>
-                <span className="ml-auto text-xs text-gray-9000">Impact: {'★'.repeat(entry.impactScore)}</span>
+      {meetings.map(meeting => {
+        const statusColor = meetingStatusColors[meeting.status ?? ''] ?? '#6B7280'
+        const statusLabel = meetingStatusLabels[meeting.status ?? ''] ?? meeting.status ?? 'Okänd'
+        const decisions = meeting.decisions ?? []
+        const actions = meeting.action_items ?? []
+
+        return (
+          <div key={meeting.id} className="rounded-xl border border-surface-border bg-[#F0EBE1] p-4">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 pt-1">
+                <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: statusColor }} />
               </div>
-              <h4 className="text-sm font-bold text-text-primary mb-1">{entry.decision}</h4>
-              <p className="text-xs text-gray-9000 mb-2">{entry.context}</p>
-              <div className="rounded bg-[#F0EBE1] border border-surface-border px-3 py-2">
-                <div className="text-xs font-semibold text-gray-9000 uppercase tracking-wide mb-0.5">Konsekvens</div>
-                <p className="text-xs text-gray-600">{entry.consequence}</p>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap mb-1">
+                  <div
+                    className="text-xs font-bold px-1.5 py-0.5 rounded uppercase"
+                    style={{ backgroundColor: statusColor + '22', color: statusColor }}
+                  >
+                    {statusLabel}
+                  </div>
+                  {meeting.date && (
+                    <span className="text-xs text-gray-500 flex items-center gap-1">
+                      <ClockIcon />{meeting.date}
+                    </span>
+                  )}
+                  {meeting.attendees && meeting.attendees.length > 0 && (
+                    <span className="text-xs text-gray-500">{meeting.attendees.join(', ')}</span>
+                  )}
+                </div>
+                <h4 className="text-sm font-bold text-text-primary mb-1">{meeting.title}</h4>
+                {meeting.summary && (
+                  <p className="text-xs text-gray-500 mb-2">{meeting.summary}</p>
+                )}
+
+                {decisions.length > 0 && (
+                  <div className="rounded bg-[#EDE8DC] border border-surface-border px-3 py-2 mb-2">
+                    <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Beslut</div>
+                    <ul className="flex flex-col gap-1">
+                      {decisions.map((d, i) => (
+                        <li key={i} className="text-xs text-gray-700 flex items-start gap-1.5">
+                          <CheckIcon />
+                          {typeof d === 'string' ? d : d.text ?? JSON.stringify(d)}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {actions.length > 0 && (
+                  <div className="rounded bg-[#EDE8DC] border border-surface-border px-3 py-2">
+                    <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Åtgärdspunkter</div>
+                    <ul className="flex flex-col gap-1">
+                      {actions.map((a, i) => (
+                        <li key={i} className="text-xs text-gray-700 flex items-start gap-1.5">
+                          <span className={(a.done) ? 'text-green-600' : 'text-amber-600'}>
+                            {a.done ? <CheckIcon /> : <ClockIcon />}
+                          </span>
+                          {typeof a === 'string' ? a : a.text ?? JSON.stringify(a)}
+                          {typeof a !== 'string' && a.owner && (
+                            <span className="text-gray-400">({a.owner})</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }
 
 // ─── Market Signals ───────────────────────────────────────────────────────────
 
-function MarketSignals() {
-  const strengthColors: Record<string, string> = {
-    weak: '#6B7280',
-    moderate: '#F59E0B',
-    strong: '#10B981',
-  }
-  const productColors: Record<string, string> = {
-    QuiXzoom: '#F59E0B',
-    Landvex: '#EC4899',
+function MarketSignals({ signals, loading }: { signals: MarketSignal[]; loading: boolean }) {
+  if (loading) return <LoadingSpinner />
+
+  if (signals.length === 0) {
+    return (
+      <EmptyState
+        icon="📈"
+        title="Inga marknadssignaler registrerade"
+        subtitle="Lägg till signaler via POST /api/intelligence/signal med source, customer_id och value. Signaler dyker upp här direkt."
+      />
+    )
   }
 
   return (
     <div className="flex flex-col gap-3">
-      {MARKET_SIGNALS.map(signal => (
-        <div
-          key={signal.id}
-          className={`rounded-xl border p-4 ${signal.actionable ? 'border-[#DDD5C5] bg-[#F0EBE1]' : 'border-[#DDD5C5] bg-[#F5F0E8] opacity-70'}`}
-        >
-          <div className="flex items-start gap-3">
-            <div className="mt-0.5">
-              {signal.direction === 'up' && <span className="text-green-700"><TrendingUpIcon /></span>}
-              {signal.direction === 'down' && <span className="text-red-700"><TrendingDownIcon /></span>}
-              {signal.direction === 'stable' && <span className="text-gray-9000">→</span>}
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 flex-wrap mb-1">
-                <div
-                  className="text-xs font-bold px-1.5 py-0.5 rounded"
-                  style={{ backgroundColor: (productColors[signal.product] || '#6B7280') + '22', color: productColors[signal.product] || '#6B7280' }}
-                >
-                  {signal.product}
+      {signals.map(signal => {
+        const value = signal.value ?? 50
+        const isStrong = value >= 70
+        const isWeak = value < 30
+
+        return (
+          <div
+            key={signal.id}
+            className="rounded-xl border border-[#DDD5C5] bg-[#F0EBE1] p-4"
+          >
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5">
+                {isStrong && <span className="text-green-700"><TrendingUpIcon /></span>}
+                {isWeak && <span className="text-red-700"><TrendingDownIcon /></span>}
+                {!isStrong && !isWeak && <span className="text-gray-500">→</span>}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap mb-1">
+                  {signal.product_hint && (
+                    <div className="text-xs font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-700">
+                      {signal.product_hint}
+                    </div>
+                  )}
+                  <div className="text-xs font-bold px-1.5 py-0.5 rounded uppercase"
+                    style={{
+                      backgroundColor: isStrong ? '#10B98122' : isWeak ? '#EF444422' : '#F59E0B22',
+                      color: isStrong ? '#10B981' : isWeak ? '#EF4444' : '#F59E0B'
+                    }}
+                  >
+                    {isStrong ? 'Stark' : isWeak ? 'Svag' : 'Måttlig'} ({value})
+                  </div>
                 </div>
-                <div
-                  className="text-xs font-bold px-1.5 py-0.5 rounded uppercase"
-                  style={{ backgroundColor: strengthColors[signal.strength] + '22', color: strengthColors[signal.strength] }}
-                >
-                  {signal.strength}
-                </div>
-                {signal.actionable && (
-                  <div className="text-xs font-bold px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-700 uppercase">
-                    Actionable
+                <div className="text-xs text-gray-400 font-mono mb-0.5">{signal.source}</div>
+                {signal.metadata && Object.keys(signal.metadata).length > 0 && (
+                  <p className="text-sm text-gray-700">
+                    {JSON.stringify(signal.metadata).slice(0, 200)}
+                  </p>
+                )}
+                {signal.timestamp && (
+                  <div className="text-xs text-gray-500 mt-1">
+                    {new Date(signal.timestamp).toLocaleDateString('sv-SE')}
+                    {signal.customer_id && ` · ${signal.customer_id}`}
                   </div>
                 )}
               </div>
-              <p className="text-sm text-gray-800">{signal.signal}</p>
-              <div className="text-xs text-gray-9000 mt-1">{signal.source} · {signal.date}</div>
             </div>
           </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }
 
-// ─── Strategic Overview ───────────────────────────────────────────────────────
+// ─── Koncernhälsa (Oscilloskop) ───────────────────────────────────────────────
 
-// TODO: Connect to /v1/qms/wavult-os/dashboard or Strategic Brief API
-// when endpoint is ready. Currently uses empty reactive state.
-function useStrategicData() {
-  const [data, _setData] = useState<null>(null)
-  // Future: fetch('/v1/qms/wavult-os/dashboard').then(res => res.json()).then(setData)
-  return { data, loading: false }
+function KoncernHalsa({
+  entities,
+  risk_summary,
+  loading,
+}: {
+  entities: QmsEntity[]
+  risk_summary: { critical: number; high: number; medium: number; low: number; group_lambda: number; total_controls: number }
+  loading: boolean
+}) {
+  if (loading) return <LoadingSpinner />
+
+  if (entities.length === 0) {
+    return (
+      <EmptyState
+        icon="🏛"
+        title="Inga koncernenheter registrerade"
+        subtitle="Lägg till enheter i QMS-systemet via /v1/qms/entities. De visas här automatiskt."
+      />
+    )
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      {entities.map(entity => (
+        <EntityCard key={entity.id} entity={entity} />
+      ))}
+
+      {/* Group Lambda card */}
+      <div className="rounded-xl border border-surface-border bg-[#F0EBE1] p-4 flex flex-col gap-2">
+        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Koncernhälsa (λ)</div>
+        <div className={`text-4xl font-mono font-bold ${
+          risk_summary.group_lambda >= 0.7 ? 'text-green-700'
+          : risk_summary.group_lambda >= 0.4 ? 'text-amber-700'
+          : 'text-red-700'
+        }`}>
+          λ {risk_summary.group_lambda.toFixed(2)}
+        </div>
+        <p className="text-xs text-gray-500 leading-relaxed">
+          Lambda = andel QMS-kontroller implementerade/verifierade av totalt tillämpliga.
+          λ &lt; 0.5 = kritisk systemstress.
+          {risk_summary.total_controls > 0 && (
+            <> {risk_summary.low} av {risk_summary.total_controls} kontroller klara.</>
+          )}
+        </p>
+        {/* Per-entity progress bars */}
+        <div className="mt-2 flex flex-col gap-1.5">
+          {entities.map(e => {
+            const s = e.stats ?? { not_started: 0, in_progress: 0, implemented: 0, verified: 0, not_applicable: 0 }
+            const total = s.not_started + s.in_progress + s.implemented + s.verified
+            const done = s.implemented + s.verified
+            const pct = total > 0 ? Math.round((done / total) * 100) : 0
+            return (
+              <div key={e.id} className="flex items-center gap-2 text-xs">
+                <span className="w-24 truncate text-gray-500">{e.slug ?? e.id}</span>
+                <div className="flex-1 bg-[#EDE8DC] rounded-full h-1.5">
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: `${pct}%`,
+                      backgroundColor: pct >= 70 ? '#10B981' : pct >= 40 ? '#F59E0B' : '#EF4444',
+                    }}
+                  />
+                </div>
+                <span className="text-text-primary w-8 text-right">{pct}%</span>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+  )
 }
 
-function StrategicOverview() {
-  const { data: _data, loading: _loading } = useStrategicData()
+// ─── Strategi (statisk, produktbaserad) ───────────────────────────────────────
 
+function StrategicOverview() {
   const zoomercycle = [
     { event: 'mission_created', desc: 'En ny bilduppgift läggs till på kartan — en zoomer tilldelas', color: '#2563EB' },
     { event: 'zoomer_assigned', desc: 'Zoomer accepterar uppdrag och påbörjar det', color: '#3B82F6' },
@@ -691,7 +574,7 @@ function StrategicOverview() {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Wavult OS — intern plattform */}
+      {/* Wavult OS */}
       <div className="rounded-2xl border border-[#DDD5C5] bg-[#F5F0E8] p-6">
         <div className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">Wavult OS</div>
         <div className="text-xl font-bold text-[#0A3D62] mb-3">Internt enterprise-operativsystem</div>
@@ -800,8 +683,19 @@ function StrategicOverview() {
 type ActiveTab = 'oscilloskop' | 'risker' | 'beslut' | 'marknad' | 'pix'
 
 export function SystemIntelligenceHub() {
-  const { t: _t } = useTranslation() // ready for i18n
+  const { t: _t } = useTranslation()
   const [activeTab, setActiveTab] = useState<ActiveTab>('oscilloskop')
+
+  const {
+    entities,
+    controls,
+    risk_summary,
+    market_signals,
+    meetings,
+    loading,
+    error,
+    refetch,
+  } = useSystemIntelligence()
 
   const tabs: { id: ActiveTab; label: string; icon: string }[] = [
     { id: 'oscilloskop', label: 'Koncernhälsa', icon: '📡' },
@@ -810,11 +704,6 @@ export function SystemIntelligenceHub() {
     { id: 'marknad', label: 'Marknadssignaler', icon: '📈' },
     { id: 'pix', label: 'Strategi', icon: '🎯' },
   ]
-
-  // Overall group health = average
-  const avgHealth = Math.round(ENTITY_HEALTH.reduce((s, e) => s + e.healthScore, 0) / ENTITY_HEALTH.length)
-  const criticalRisks = RISK_MATRIX.filter(r => r.level === 'critical').length
-  const highRisks = RISK_MATRIX.filter(r => r.level === 'high').length
 
   return (
     <div className="h-full flex flex-col bg-[#F0EBE1] text-text-primary overflow-hidden">
@@ -826,26 +715,49 @@ export function SystemIntelligenceHub() {
           </div>
           <div>
             <h1 className="text-lg font-bold text-text-primary">System Intelligence</h1>
-            <p className="text-xs text-gray-9000">Koncernhälsa · Risker · Beslut · Marknad</p>
+            <p className="text-xs text-gray-500">Koncernhälsa · Risker · Beslut · Marknad</p>
           </div>
         </div>
 
-        {/* Summary KPIs */}
+        {/* Summary KPIs — från faktisk backend-data */}
         <div className="flex items-center gap-4">
           <div className="text-center">
-            <div className={`text-xl font-bold ${avgHealth >= 70 ? 'text-green-700' : avgHealth >= 40 ? 'text-amber-700' : 'text-red-700'}`}>
-              λ {(avgHealth / 100).toFixed(2)}
-            </div>
-            <div className="text-xs text-gray-9000">Group Lambda</div>
+            {loading ? (
+              <div className="h-7 w-16 bg-[#EDE8DC] rounded animate-pulse" />
+            ) : (
+              <div className={`text-xl font-bold ${
+                risk_summary.group_lambda >= 0.7 ? 'text-green-700'
+                : risk_summary.group_lambda >= 0.4 ? 'text-amber-700'
+                : 'text-red-700'
+              }`}>
+                λ {risk_summary.group_lambda.toFixed(2)}
+              </div>
+            )}
+            <div className="text-xs text-gray-500">Group Lambda</div>
           </div>
           <div className="text-center">
-            <div className="text-xl font-bold text-red-700">{criticalRisks}</div>
-            <div className="text-xs text-gray-9000">Kritiska risker</div>
+            {loading ? (
+              <div className="h-7 w-8 bg-[#EDE8DC] rounded animate-pulse" />
+            ) : (
+              <div className="text-xl font-bold text-red-700">{risk_summary.critical}</div>
+            )}
+            <div className="text-xs text-gray-500">Kritiska risker</div>
           </div>
           <div className="text-center">
-            <div className="text-xl font-bold text-amber-700">{highRisks}</div>
-            <div className="text-xs text-gray-9000">Höga risker</div>
+            {loading ? (
+              <div className="h-7 w-8 bg-[#EDE8DC] rounded animate-pulse" />
+            ) : (
+              <div className="text-xl font-bold text-amber-700">{risk_summary.high}</div>
+            )}
+            <div className="text-xs text-gray-500">Försenade</div>
           </div>
+          <button
+            onClick={refetch}
+            className="p-2 rounded-lg bg-[#EDE8DC] border border-[#DDD5C5] hover:bg-[#DDD5C5] transition-colors text-gray-500"
+            title="Uppdatera"
+          >
+            <RefreshIcon />
+          </button>
         </div>
       </div>
 
@@ -858,7 +770,7 @@ export function SystemIntelligenceHub() {
             className={`flex items-center gap-1.5 text-xs px-3 py-2 rounded-t-lg font-medium border-b-2 transition-all ${
               activeTab === t.id
                 ? 'text-text-primary border-blue-500 bg-[#EDE8DC]'
-                : 'text-gray-9000 border-transparent hover:text-text-primary hover:bg-[#F0EBE1]'
+                : 'text-gray-500 border-transparent hover:text-text-primary hover:bg-[#F0EBE1]'
             }`}
           >
             <span>{t.icon}</span>
@@ -870,51 +782,32 @@ export function SystemIntelligenceHub() {
 
       {/* Content */}
       <div className="flex-1 overflow-auto p-5">
-        {activeTab === 'oscilloskop' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-            {ENTITY_HEALTH.map(entity => (
-              <EntityCard key={entity.id} entity={entity} />
-            ))}
-            {/* Group summary card */}
-            <div className="rounded-xl border border-surface-border bg-[#F0EBE1] p-4 flex flex-col gap-2">
-              <div className="text-xs font-semibold text-gray-9000 uppercase tracking-wider">Koncernhälsa (λ)</div>
-              <div className={`text-4xl font-mono font-bold ${avgHealth >= 70 ? 'text-green-700' : avgHealth >= 40 ? 'text-amber-700' : 'text-red-700'}`}>
-                λ {(avgHealth / 100).toFixed(2)}
-              </div>
-              <p className="text-xs text-gray-9000 leading-relaxed">
-                Lambda &lt; 0.5 = kritisk systemstress. Wavult Group är i uppbyggnadsfas — 
-                hälsopoäng reflekterar att bolagsstruktur och produkter ännu ej är live, inte operativa problem.
-              </p>
-              <div className="mt-2 flex flex-col gap-1.5">
-                {ENTITY_HEALTH.map(e => (
-                  <div key={e.id} className="flex items-center gap-2 text-xs">
-                    <span className="w-16 text-gray-9000">{e.code}</span>
-                    <div className="flex-1 bg-[#F0EBE1] rounded-full h-1.5">
-                      <div
-                        className="h-full rounded-full"
-                        style={{
-                          width: `${e.healthScore}%`,
-                          backgroundColor: e.healthScore >= 70 ? '#10B981' : e.healthScore >= 40 ? '#F59E0B' : '#EF4444',
-                        }}
-                      />
-                    </div>
-                    <span className="text-text-primary w-6 text-right">{e.healthScore}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+        {/* Global error banner (non-blocking) */}
+        {error && (
+          <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 flex items-center gap-3">
+            <span className="text-red-500"><AlertIcon /></span>
+            <span className="text-xs text-red-700 flex-1">{error}</span>
+            <button onClick={refetch} className="text-xs text-red-700 underline hover:no-underline">Försök igen</button>
           </div>
+        )}
+
+        {activeTab === 'oscilloskop' && (
+          <KoncernHalsa entities={entities} risk_summary={risk_summary} loading={loading} />
         )}
 
         {activeTab === 'risker' && (
           <div className="h-full" style={{ minHeight: '500px' }}>
-            <RiskMatrix />
+            <RiskMatrix controls={controls} loading={loading} />
           </div>
         )}
 
-        {activeTab === 'beslut' && <DecisionLog />}
+        {activeTab === 'beslut' && (
+          <DecisionLog meetings={meetings} loading={loading} />
+        )}
 
-        {activeTab === 'marknad' && <MarketSignals />}
+        {activeTab === 'marknad' && (
+          <MarketSignals signals={market_signals} loading={loading} />
+        )}
 
         {activeTab === 'pix' && <StrategicOverview />}
       </div>
