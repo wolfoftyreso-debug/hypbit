@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Phone, Plus, RefreshCw, Copy, CheckCircle } from 'lucide-react'
 
-const API = 'https://api.wavult.com'
+const API = import.meta.env.VITE_API_URL ?? 'https://api.wavult.com'
 
 interface PhoneNumber {
   sid: string

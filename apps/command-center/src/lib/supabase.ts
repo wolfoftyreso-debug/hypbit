@@ -1,17 +1,6 @@
-import { createClient } from '@supabase/supabase-js'
-
-// SECURITY: Frontend uses anon key + server-side auth ONLY.
-// Service role key must NEVER appear in frontend code — it ships in the JS bundle
-// and gives anyone full database access bypassing RLS.
-// Privileged operations go through the server API (api.wavult.com).
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string
-
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.error('Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY — check .env.local')
-}
-
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+// Supabase client BORTTAGEN — data går via wavult-core API
+// Typer behålls för bakåtkompatibilitet
+export const supabase = null as any // TODO: ta bort när alla imports är migrerade
 
 // ─── Legacy LedgerEntry type (kept for backward compat) ──────────────────────
 

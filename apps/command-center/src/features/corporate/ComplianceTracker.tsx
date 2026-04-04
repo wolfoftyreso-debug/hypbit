@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import { COMPLIANCE_ITEMS, COMPANIES, ComplianceStatus, CompanyId } from './data'
+import { useTranslation } from '../../shared/i18n/useTranslation'
 
-const STATUS_STYLES: Record<ComplianceStatus, { pill: string; dot: string; label: string; icon: string }> = {
-  'ej påbörjad': { pill: 'bg-gray-100 text-gray-600 border-gray-200',         dot: 'bg-gray-400', label: 'Ej påbörjad', icon: '○' },
-  'pågår':       { pill: 'bg-blue-50 text-blue-700 border-blue-200',          dot: 'bg-blue-400', label: 'Pågår',       icon: '◑' },
-  'klar':        { pill: 'bg-green-50 text-green-700 border-green-200',       dot: 'bg-green-400',label: 'Klar',        icon: '✓' },
-  'förfallen':   { pill: 'bg-red-50 text-red-700 border-red-200',             dot: 'bg-red-500',  label: 'Förfallen',   icon: '!' },
+const STATUS_STYLES: Record<ComplianceStatus, { pill: string; dot: string; labelKey: string; icon: string }> = {
+  'ej påbörjad': { pill: 'bg-gray-100 text-gray-600 border-gray-200',         dot: 'bg-gray-400', labelKey: 'corporate.compliance.statusNotStarted', icon: '○' },
+  'pågår':       { pill: 'bg-blue-50 text-blue-700 border-blue-200',          dot: 'bg-blue-400', labelKey: 'corporate.compliance.statusInProgress',  icon: '◑' },
+  'klar':        { pill: 'bg-green-50 text-green-700 border-green-200',       dot: 'bg-green-400',labelKey: 'corporate.compliance.statusDone',        icon: '✓' },
+  'förfallen':   { pill: 'bg-red-50 text-red-700 border-red-200',             dot: 'bg-red-500',  labelKey: 'corporate.compliance.statusOverdue',     icon: '!' },
 }
 
 const WHO_DOES_WHAT: Record<string, string> = {
@@ -23,10 +24,11 @@ function formatDate(d: string) {
 }
 
 function DeadlineBadge({ date, status }: { date: string; status: ComplianceStatus }) {
-  if (status === 'klar') return <span className="text-xs text-green-600 font-semibold">✓ Klar</span>
+  const { t } = useTranslation()
+  if (status === 'klar') return <span className="text-xs text-green-600 font-semibold">{t('corporate.compliance.badgeDone')}</span>
   const days = daysUntil(date)
   const formatted = formatDate(date)
-  if (days < 0)   return <span className="text-xs font-bold text-red-700">FÖRFALLEN {formatted}</span>
+  if (days < 0)   return <span className="text-xs font-bold text-red-700">{t('corporate.compliance.overdueLabel')} {formatted}</span>
   if (days <= 7)  return <span className="text-xs font-bold text-red-600 animate-pulse">{formatted} — {days} dagar kvar</span>
   if (days <= 30) return <span className="text-xs font-semibold text-amber-700">{formatted} — {days} dagar kvar</span>
   return <span className="text-xs text-gray-500">{formatted} — {days} dagar</span>
@@ -35,6 +37,7 @@ function DeadlineBadge({ date, status }: { date: string; status: ComplianceStatu
 const ALL_STATUSES: ComplianceStatus[] = ['ej påbörjad', 'pågår', 'klar', 'förfallen']
 
 export function ComplianceTracker() {
+  const { t } = useTranslation()
   const [selectedCompany, setSelectedCompany] = useState<CompanyId | 'all'>('all')
   const [selectedStatus, setSelectedStatus] = useState<ComplianceStatus | 'all'>('all')
   const [expandedId, setExpandedId] = useState<string | null>(null)
@@ -65,11 +68,9 @@ export function ComplianceTracker() {
       <div className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 flex gap-3 items-start">
         <span className="text-lg flex-shrink-0">ℹ️</span>
         <div>
-          <p className="text-xs font-semibold text-blue-800 mb-0.5">Vad är Compliance?</p>
+          <p className="text-xs font-semibold text-blue-800 mb-0.5">{t('corporate.compliance.infoTitle')}</p>
           <p className="text-xs text-blue-700 leading-relaxed">
-            Juridiska och skattemässiga krav varje bolag måste uppfylla — årsredovisningar, skattedeklarationer, licensförnyelser m.m.
-            <strong> Systemet håller koll. Ansvarig person i varje rad är den som ska agera.</strong>
-            {' '}Du som CEO behöver bara granska och godkänna — inget annat.
+            {t('corporate.compliance.infoBody')}
           </p>
         </div>
       </div>
@@ -78,7 +79,7 @@ export function ComplianceTracker() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <div className="rounded-xl border border-surface-border bg-white p-4 shadow-card">
           <div className="text-3xl font-bold text-text-primary">{totals.klar}<span className="text-base font-normal text-gray-400">/{totals.total}</span></div>
-          <div className="text-xs font-semibold text-gray-700 mt-1">Klara krav</div>
+          <div className="text-xs font-semibold text-gray-700 mt-1">{t('corporate.compliance.completedReqs')}</div>
           <div className="text-xs text-gray-400 mt-0.5">av totalt {totals.total} juridiska krav</div>
           <div className="mt-2 h-1.5 rounded-full bg-gray-100 overflow-hidden">
             <div className="h-full rounded-full bg-green-400" style={{ width: `${progress}%` }} />
@@ -88,19 +89,19 @@ export function ComplianceTracker() {
 
         <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 shadow-card">
           <div className="text-3xl font-bold text-blue-700">{totals.pagar}</div>
-          <div className="text-xs font-semibold text-blue-800 mt-1">Pågår just nu</div>
+          <div className="text-xs font-semibold text-blue-800 mt-1">{t('corporate.compliance.summaryInProgress')}</div>
           <div className="text-xs text-blue-600 mt-0.5">Ansvariga arbetar med dessa</div>
         </div>
 
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 shadow-card">
           <div className="text-3xl font-bold text-amber-700">{totals.ejPaborjad}</div>
-          <div className="text-xs font-semibold text-amber-800 mt-1">Ej påbörjade</div>
+          <div className="text-xs font-semibold text-amber-800 mt-1">{t('corporate.compliance.notStarted')}</div>
           <div className="text-xs text-amber-600 mt-0.5">Väntar på att tilldelas/startas</div>
         </div>
 
         <div className={`rounded-xl border p-4 shadow-card ${totals.forfallen > 0 ? 'border-red-300 bg-red-50' : 'border-surface-border bg-white'}`}>
           <div className={`text-3xl font-bold ${totals.forfallen > 0 ? 'text-red-700' : 'text-gray-400'}`}>{totals.forfallen}</div>
-          <div className={`text-xs font-semibold mt-1 ${totals.forfallen > 0 ? 'text-red-800' : 'text-gray-500'}`}>Förfallna</div>
+          <div className={`text-xs font-semibold mt-1 ${totals.forfallen > 0 ? 'text-red-800' : 'text-gray-500'}`}>{t('corporate.compliance.overdue')}</div>
           <div className={`text-xs mt-0.5 ${totals.forfallen > 0 ? 'text-red-600' : 'text-gray-400'}`}>
             {totals.forfallen > 0 ? '⚠️ Kräver omedelbar åtgärd' : 'Inget förfallet — bra!'}
           </div>
@@ -112,7 +113,7 @@ export function ComplianceTracker() {
         <div className="rounded-xl border border-amber-300 bg-amber-50 p-4">
           <div className="flex items-center gap-2 mb-3">
             <span className="text-base">⚡</span>
-            <span className="text-xs font-bold text-amber-900 uppercase tracking-wider">Kräver åtgärd inom 30 dagar</span>
+            <span className="text-xs font-bold text-amber-900 uppercase tracking-wider">{t('corporate.compliance.urgentTitle')}</span>
           </div>
           <div className="space-y-2">
             {urgent.map(item => {
@@ -165,7 +166,7 @@ export function ComplianceTracker() {
               onClick={() => setSelectedStatus(selectedStatus === s ? 'all' : s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${selectedStatus === s ? STATUS_STYLES[s].pill + ' font-bold' : 'bg-white text-gray-600 border-surface-border hover:border-gray-400'}`}
             >
-              {STATUS_STYLES[s].icon} {STATUS_STYLES[s].label}
+              {STATUS_STYLES[s].icon} {t(STATUS_STYLES[s].labelKey)}
               <span className="ml-1.5 opacity-60">
                 {COMPLIANCE_ITEMS.filter(i =>
                   i.status === s &&
@@ -182,8 +183,8 @@ export function ComplianceTracker() {
         {filtered.length === 0 ? (
           <div className="px-6 py-12 text-center">
             <div className="text-2xl mb-2">✓</div>
-            <div className="text-sm font-semibold text-gray-700">Inga krav matchar filtret</div>
-            <div className="text-xs text-gray-400 mt-1">Prova ett annat filter ovan</div>
+            <div className="text-sm font-semibold text-gray-700">{t('corporate.compliance.noMatch')}</div>
+            <div className="text-xs text-gray-400 mt-1">{t('corporate.compliance.noMatchHint')}</div>
           </div>
         ) : (
           <table className="w-full text-xs">
@@ -217,7 +218,7 @@ export function ComplianceTracker() {
                     >
                       <td className="px-4 py-3">
                         <div className="flex items-start gap-2">
-                          <span className={`mt-0.5 flex-shrink-0 text-[11px] font-bold ${st.label === 'Förfallen' ? 'text-red-500' : st.label === 'Klar' ? 'text-green-500' : 'text-gray-400'}`}>{st.icon}</span>
+                          <span className={`mt-0.5 flex-shrink-0 text-[11px] font-bold ${item.status === 'förfallen' ? 'text-red-500' : item.status === 'klar' ? 'text-green-500' : 'text-gray-400'}`}>{st.icon}</span>
                           <div>
                             <div className="text-gray-900 font-medium">{item.requirement}</div>
                             <div className="text-[10px] text-gray-400 mt-0.5 uppercase tracking-wider">{item.category}</div>
@@ -242,7 +243,7 @@ export function ComplianceTracker() {
                       </td>
                       <td className="px-4 py-3">
                         <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border ${st.pill}`}>
-                          {st.label}
+                          {t(st.labelKey)}
                         </span>
                       </td>
                     </tr>
@@ -251,11 +252,11 @@ export function ComplianceTracker() {
                         <td colSpan={5} className="px-6 py-4">
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                             <div>
-                              <div className="font-semibold text-gray-700 mb-1">Vad ska göras?</div>
+                              <div className="font-semibold text-gray-700 mb-1">{t('corporate.compliance.whatToDo')}</div>
                               <div className="text-gray-600 leading-relaxed">{item.requirement} — lämnas in till relevant myndighet för {company?.jurisdiction}.</div>
                             </div>
                             <div>
-                              <div className="font-semibold text-gray-700 mb-1">Vem gör det?</div>
+                              <div className="font-semibold text-gray-700 mb-1">{t('corporate.compliance.whoDoes')}</div>
                               <div className="text-gray-600">
                                 {item.owner
                                   ? <><strong>{item.owner}</strong><br /><span className="text-gray-400">{WHO_DOES_WHAT[item.owner] ?? 'Ansvarar för denna uppgift'}</span></>
@@ -264,8 +265,8 @@ export function ComplianceTracker() {
                               </div>
                             </div>
                             <div>
-                              <div className="font-semibold text-gray-700 mb-1">Din roll som CEO</div>
-                              <div className="text-gray-500">Granska och godkänn när {item.owner ?? 'ansvarig'} rapporterar klart. Inget annat krävs av dig.</div>
+                              <div className="font-semibold text-gray-700 mb-1">{t('corporate.compliance.yourRole')}</div>
+                              <div className="text-gray-500">{t('corporate.compliance.yourRoleText', { owner: item.owner ?? 'ansvarig' })}</div>
                             </div>
                             {item.notes && (
                               <div className="md:col-span-3">

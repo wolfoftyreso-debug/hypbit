@@ -1,21 +1,22 @@
 /**
- * AuthContext — Supabase-baserad autentisering för Wavult OS
+ * AuthContext — wavult-core autentisering för Wavult OS
  *
  * Hanterar:
- * - Supabase-session (JWT, refresh, persistens)
+ * - JWT via wavult-core Identity Core (/v1/auth/login)
  * - Exponerar getToken() för API-anrop
- * - Lyssnar på auth state changes (login/logout/refresh)
+ * - VITE_BYPASS_AUTH=true returnerar dummy-token direkt
  */
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import type { Session, User } from '@supabase/supabase-js'
-import { supabase } from './supabase'
+
+const API_URL = import.meta.env.VITE_API_URL ?? 'https://api.wavult.com'
+const BYPASS_AUTH = import.meta.env.VITE_BYPASS_AUTH === 'true'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface AuthState {
-  session: Session | null
-  user: User | null
+  session: null
+  user: { email: string } | null
   loading: boolean
   getToken: () => Promise<string | null>
   signIn: (email: string, password: string) => Promise<{ error: string | null }>
@@ -27,73 +28,67 @@ interface AuthState {
 const AuthContext = createContext<AuthState | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [session, setSession] = useState<Session | null>(null)
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<{ email: string } | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Hämta initial session — med timeout så loading inte hänger för evigt
-    const sessionTimeout = setTimeout(() => setLoading(false), 2000)
-    supabase.auth.getSession()
-      .then(({ data }) => {
-        setSession(data.session)
-        setUser(data.session?.user ?? null)
-      })
-      .catch(() => {/* Supabase unreachable — visa login */})
-      .finally(() => {
-        clearTimeout(sessionTimeout)
-        setLoading(false)
-      })
+    if (BYPASS_AUTH) {
+      setUser({ email: 'bypass@wavult.com' })
+      setLoading(false)
+      return
+    }
 
-    // Lyssna på auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-    })
-
-    return () => subscription.unsubscribe()
+    // Restore session from localStorage
+    const token = localStorage.getItem('ic_token')
+    const email = localStorage.getItem('ic_email')
+    if (token && email) {
+      setUser({ email })
+    }
+    setLoading(false)
   }, [])
 
   async function getToken(): Promise<string | null> {
-    const { data } = await supabase.auth.getSession()
-    return data.session?.access_token ?? null
+    if (BYPASS_AUTH) return 'bypass-token'
+    return localStorage.getItem('ic_token')
   }
 
   async function signIn(email: string, password: string): Promise<{ error: string | null }> {
     const normalizedEmail = email.trim().toLowerCase()
-
-    // Try Identity Core (hybrid mode)
     try {
-      const icRes = await fetch('https://api.wavult.com/v1/auth/login', {
+      const res = await fetch(`${API_URL}/v1/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: normalizedEmail, password }),
-        signal: AbortSignal.timeout(5000),
+        signal: AbortSignal.timeout(8000),
       })
-      if (icRes.ok) {
-        const data = await icRes.json()
-        if (data?.data?.access_token) {
-          localStorage.setItem('ic_token', data.data.access_token)
-          localStorage.setItem('ic_refresh', data.data.refresh_token || '')
-          localStorage.setItem('ic_session', data.data.session_id || '')
-        }
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        return { error: body?.message ?? `HTTP ${res.status}` }
       }
-    } catch {
-      // IC unavailable — continue with Supabase
+      const data = await res.json()
+      if (data?.data?.access_token) {
+        localStorage.setItem('ic_token', data.data.access_token)
+        localStorage.setItem('ic_refresh', data.data.refresh_token || '')
+        localStorage.setItem('ic_session', data.data.session_id || '')
+        localStorage.setItem('ic_email', normalizedEmail)
+        setUser({ email: normalizedEmail })
+      }
+      return { error: null }
+    } catch (err) {
+      return { error: 'Inloggning misslyckades — kontrollera nätverket' }
     }
-
-    // Primary: Supabase (until cutover)
-    const { error } = await supabase.auth.signInWithPassword({ email: normalizedEmail, password })
-    if (error) return { error: error.message }
-    return { error: null }
   }
 
   async function signOut(): Promise<void> {
-    await supabase.auth.signOut()
+    localStorage.removeItem('ic_token')
+    localStorage.removeItem('ic_refresh')
+    localStorage.removeItem('ic_session')
+    localStorage.removeItem('ic_email')
+    setUser(null)
   }
 
   return (
-    <AuthContext.Provider value={{ session, user, loading, getToken, signIn, signOut }}>
+    <AuthContext.Provider value={{ session: null, user, loading, getToken, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   )

@@ -1,5 +1,21 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { supabase, type Contact } from '../../../lib/supabase'
+import { useAuth } from '../../../shared/auth/AuthContext'
+import type { Contact } from '../../../lib/supabase'
+
+const API = import.meta.env.VITE_API_URL ?? 'https://api.wavult.com'
+
+async function apiFetch<T>(path: string, token: string | null, options?: RequestInit): Promise<T> {
+  const res = await fetch(`${API}${path}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+      ...(options?.headers ?? {}),
+    },
+  })
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  return res.json()
+}
 
 type ContactFilters = {
   companyId?: string
@@ -9,86 +25,65 @@ type ContactFilters = {
 }
 
 export function useContacts(filters?: ContactFilters) {
+  const { getToken } = useAuth()
   return useQuery({
     queryKey: ['contacts', filters],
     queryFn: async () => {
-      let query = supabase
-        .from('contacts')
-        .select('*')
-        .order('created_at', { ascending: false })
-
-      if (filters?.companyId) {
-        query = query.eq('company_id', filters.companyId)
+      try {
+        const token = await getToken()
+        const params = new URLSearchParams()
+        if (filters?.companyId) params.set('company_id', filters.companyId)
+        if (filters?.type)      params.set('type', filters.type)
+        if (filters?.status)    params.set('status', filters.status)
+        if (filters?.search)    params.set('search', filters.search)
+        const qs = params.toString()
+        const data = await apiFetch<Contact[]>(`/api/contacts${qs ? `?${qs}` : ''}`, token)
+        return data ?? []
+      } catch (err) {
+        console.warn('[CRM] contacts fetch error:', err)
+        return [] as Contact[]
       }
-      if (filters?.type) {
-        query = query.eq('type', filters.type)
-      }
-      if (filters?.status) {
-        query = query.eq('status', filters.status)
-      }
-      if (filters?.search) {
-        query = query.or(`name.ilike.%${filters.search}%,email.ilike.%${filters.search}%`)
-      }
-
-      const { data, error } = await query
-
-      if (error) throw error
-      return data as Contact[]
     },
   })
 }
 
 export function useContact(id: string) {
+  const { getToken } = useAuth()
   return useQuery({
     queryKey: ['contacts', id],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('contacts')
-        .select('*')
-        .eq('id', id)
-        .single()
-
-      if (error) throw error
-      return data as Contact
+      const token = await getToken()
+      return apiFetch<Contact>(`/api/contacts/${id}`, token)
     },
     enabled: !!id,
   })
 }
 
 export function useCreateContact() {
+  const { getToken } = useAuth()
   const queryClient = useQueryClient()
-
   return useMutation({
     mutationFn: async (contact: Omit<Contact, 'id' | 'created_at' | 'updated_at'>) => {
-      const { data, error } = await supabase
-        .from('contacts')
-        .insert(contact)
-        .select()
-        .single()
-
-      if (error) throw error
-      return data as Contact
+      const token = await getToken()
+      return apiFetch<Contact>('/api/contacts', token, {
+        method: 'POST',
+        body: JSON.stringify(contact),
+      })
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['contacts'] })
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['contacts'] }),
   })
 }
 
 export function useUpdateContact() {
+  const { getToken } = useAuth()
   const queryClient = useQueryClient()
-
   return useMutation({
     mutationFn: async ({ id, ...updates }: Partial<Contact> & { id: string }) => {
-      const { data, error } = await supabase
-        .from('contacts')
-        .update({ ...updates, updated_at: new Date().toISOString() })
-        .eq('id', id)
-        .select()
-        .single()
-
-      if (error) throw error
-      return data as Contact
+      const token = await getToken()
+      return apiFetch<Contact>(`/api/contacts/${id}`, token, {
+        method: 'PATCH',
+        body: JSON.stringify(updates),
+      })
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['contacts'] })
@@ -98,19 +93,17 @@ export function useUpdateContact() {
 }
 
 export function useDeleteContact() {
+  const { getToken } = useAuth()
   const queryClient = useQueryClient()
-
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('contacts')
-        .delete()
-        .eq('id', id)
-
-      if (error) throw error
+      const token = await getToken()
+      const res = await fetch(`${API}/api/contacts/${id}`, {
+        method: 'DELETE',
+        headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['contacts'] })
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['contacts'] }),
   })
 }

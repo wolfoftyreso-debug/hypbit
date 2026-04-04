@@ -62,7 +62,7 @@ const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    labelKey: 'BOLAG & JURIDIK',
+    labelKey: 'nav.group.corporate',
     items: [
       { to: '/entities',       labelKey: 'Bolagsöversikt', icon: Building2 },
       { to: '/company-launch', labelKey: 'Bolagsstart',    icon: Rocket },
@@ -75,7 +75,7 @@ const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    labelKey: 'ORGANISATION',
+    labelKey: 'nav.group.organisation',
     items: [
       { to: '/org',                  labelKey: 'Organisationsöversikt', icon: Network },
       { to: '/org/context',          labelKey: 'Kontext',               icon: Network },
@@ -89,7 +89,7 @@ const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    labelKey: 'EKONOMI',
+    labelKey: 'nav.group.ekonomi',
     items: [
       { to: '/finance',      labelKey: 'Finance Hub',  icon: DollarSign },
       { to: '/transactions', labelKey: 'Transaktioner', icon: Receipt },
@@ -100,7 +100,7 @@ const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    labelKey: 'OPERATIONS',
+    labelKey: 'nav.group.operations',
     items: [
       { to: '/milestones',      labelKey: 'Milestones',       icon: Flag },
       { to: '/projects',        labelKey: 'Projekt',          icon: Layers },
@@ -115,21 +115,21 @@ const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    labelKey: 'KOMMUNIKATION',
+    labelKey: 'nav.group.kommunikation',
     items: [
       { to: '/communications', labelKey: 'Kommunikation', icon: MessageSquare },
       { to: '/media',          labelKey: 'Media',         icon: Film },
     ],
   },
   {
-    labelKey: 'MARKNADER',
+    labelKey: 'nav.group.marknader',
     items: [
       { to: '/markets', labelKey: 'Marknader',  icon: Globe },
       { to: '/markets', labelKey: 'MarketMap',  icon: MapPin },
     ],
   },
   {
-    labelKey: 'PLATTFORMAR',
+    labelKey: 'nav.group.plattformar',
     items: [
       { to: '/zoomer-app',     labelKey: 'Zoomer-app',     icon: Smartphone },
       { to: '/landvex-portal', labelKey: 'Landvex Portal', icon: MapPin },
@@ -142,7 +142,7 @@ const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    labelKey: 'DEV & INFRA',
+    labelKey: 'nav.group.devInfra',
     items: [
       { to: '/infrastructure',      labelKey: 'Infrastruktur',       icon: Server },
       { to: '/terraform',           labelKey: 'Terraform',           icon: Server },
@@ -160,7 +160,7 @@ const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    labelKey: 'VERKTYG',
+    labelKey: 'nav.group.verktyg',
     items: [
       { to: '/api-hub',    labelKey: 'API Hub',       icon: Zap },
       { to: '/llm-hub',    labelKey: 'LLM Hub',       icon: Terminal },
@@ -203,7 +203,7 @@ function SidebarNav({ criticalAlertCount, onNavigate }: {
                 color: 'var(--sidebar-text, rgba(245,240,232,0.75))',
               }}
             >
-              {group.labelKey?.startsWith('nav.') ? t(group.labelKey) : group.labelKey}
+              {t(group.labelKey)}
             </div>
           )}
           <div className="space-y-0.5">
@@ -235,7 +235,7 @@ function SidebarNav({ criticalAlertCount, onNavigate }: {
                   end={item.to === '/'}
                 >
                   <item.icon className="w-4 h-4 flex-shrink-0" />
-                  <span className="flex-1 min-w-0 truncate">{item.labelKey?.startsWith('nav.') ? t(item.labelKey) : item.labelKey}</span>
+                  <span className="flex-1 min-w-0 truncate">{t(item.labelKey)}</span>
                   {item.to === '/alerts' && criticalAlertCount > 0 && (
                     <span
                       className="flex-shrink-0"
@@ -332,7 +332,7 @@ export function Shell({ children }: ShellProps) {
 
         {/* Entity Switcher — prominent at top of nav */}
         <div className="px-3 py-3" style={{ borderBottom: '1px solid var(--sidebar-border, rgba(201,168,76,0.15))' }}>
-          <p className="px-1 mb-2" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--sidebar-text, rgba(245,240,232,0.75))' }}>Aktivt bolag</p>
+          <p className="px-1 mb-2" style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--sidebar-text, rgba(245,240,232,0.75))' }}>{t('shell.activeEntity')}</p>
           <EntitySwitcher />
         </div>
 
@@ -344,7 +344,7 @@ export function Shell({ children }: ShellProps) {
 
         {/* Agent Claw — priority queue */}
         <div className="pt-3 mt-2 px-2" style={{ borderTop: '1px solid var(--sidebar-border, rgba(201,168,76,0.15))' }}>
-          <p className="px-3 py-1 mb-2" style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--sidebar-text, rgba(245,240,232,0.75))', fontFamily: 'var(--font-mono)' }}>Agent Claw</p>
+          <p className="px-3 py-1 mb-2" style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--sidebar-text, rgba(245,240,232,0.75))', fontFamily: 'var(--font-mono)' }}>{t('nav.group.agentClaw')}</p>
           <AgentCommandPanel />
         </div>
 
@@ -428,7 +428,7 @@ export function Shell({ children }: ShellProps) {
                   onMouseEnter={e => (e.currentTarget.style.color = '#C0392B')}
                   onMouseLeave={e => (e.currentTarget.style.color = '#6B6560')}
                 >
-                  Logga ut
+                  {t('auth.logout')}
                 </button>
                 {/* Avatar */}
                 <div

@@ -1,66 +1,82 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import {
-  supabase,
-  type FinanceEntity,
-  type FinanceAccount,
-  type FinanceLedgerEntry,
-  type FinanceInvoice,
-  type FinanceCashFlow,
-  type FinanceKpi,
-  type FinanceIntercompany,
-  type FinanceTaxPeriod,
+import { useAuth } from '../../../shared/auth/AuthContext'
+import type {
+  FinanceEntity,
+  FinanceAccount,
+  FinanceLedgerEntry,
+  FinanceInvoice,
+  FinanceCashFlow,
+  FinanceKpi,
+  FinanceIntercompany,
+  FinanceTaxPeriod,
 } from '../../../lib/supabase'
+
+const API = import.meta.env.VITE_API_URL ?? 'https://api.wavult.com'
+
+async function apiFetch<T>(path: string, token: string | null, options?: RequestInit): Promise<T> {
+  const res = await fetch(`${API}${path}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+      ...(options?.headers ?? {}),
+    },
+  })
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  return res.json()
+}
 
 // ─── Finance Entities ─────────────────────────────────────────────────────────
 
 export function useFinanceEntities() {
+  const { getToken } = useAuth()
   return useQuery({
     queryKey: ['finance-entities'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('finance_entities')
-        .select('*')
-        .order('name')
-      // Don't throw — return empty array so UI falls back to mockData gracefully
-      if (error) {
-        console.warn('[Finance] finance_entities query error:', error.message)
+      try {
+        const token = await getToken()
+        const data = await apiFetch<FinanceEntity[]>('/api/finance/entities', token)
+        return data ?? []
+      } catch (err) {
+        console.warn('[Finance] finance_entities fetch error:', err)
         return [] as FinanceEntity[]
       }
-      return (data || []) as FinanceEntity[]
     },
-    staleTime: 1000 * 60 * 5, // 5 min — entities rarely change
+    staleTime: 1000 * 60 * 5,
   })
 }
 
 // ─── Finance KPIs ─────────────────────────────────────────────────────────────
 
 export function useFinanceKpis(period?: string) {
+  const { getToken } = useAuth()
   return useQuery({
     queryKey: ['finance-kpis', period],
     queryFn: async () => {
-      let query = supabase.from('finance_kpis').select('*').order('entity_id')
-      if (period) query = query.eq('period', period)
-      const { data, error } = await query
-      if (error) {
-        console.warn('[Finance] finance_kpis query error:', error.message)
+      try {
+        const token = await getToken()
+        const path = period ? `/api/finance/kpis?period=${encodeURIComponent(period)}` : '/api/finance/kpis'
+        const data = await apiFetch<FinanceKpi[]>(path, token)
+        return data ?? []
+      } catch (err) {
+        console.warn('[Finance] finance_kpis fetch error:', err)
         return [] as FinanceKpi[]
       }
-      return (data || []) as FinanceKpi[]
     },
   })
 }
 
 export function useUpsertFinanceKpi() {
+  const { getToken } = useAuth()
   const qc = useQueryClient()
   return useMutation({
     mutationFn: async (kpi: Omit<FinanceKpi, 'id' | 'result' | 'created_at' | 'updated_at'>) => {
-      const { data, error } = await supabase
-        .from('finance_kpis')
-        .upsert(kpi, { onConflict: 'entity_id,period' })
-        .select()
-        .single()
-      if (error) throw error
-      return data as FinanceKpi
+      const token = await getToken()
+      const data = await apiFetch<FinanceKpi>('/api/finance/kpis', token, {
+        method: 'POST',
+        body: JSON.stringify(kpi),
+      })
+      return data
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['finance-kpis'] }),
   })
@@ -78,42 +94,40 @@ type LedgerFilters = {
 }
 
 export function useFinanceLedger(filters?: LedgerFilters) {
+  const { getToken } = useAuth()
   return useQuery({
     queryKey: ['finance-ledger', filters],
     queryFn: async () => {
-      let query = supabase
-        .from('finance_ledger')
-        .select('*')
-        .order('date', { ascending: false })
-
-      if (filters?.entityId) query = query.eq('entity_id', filters.entityId)
-      if (filters?.dateFrom)  query = query.gte('date', filters.dateFrom)
-      if (filters?.dateTo)    query = query.lte('date', filters.dateTo)
-      if (filters?.currency)  query = query.eq('currency', filters.currency)
-      if (filters?.accountNr) query = query.ilike('account_nr', `%${filters.accountNr}%`)
-      if (filters?.refNr)     query = query.ilike('ref_nr', `%${filters.refNr}%`)
-
-      const { data, error } = await query
-      if (error) {
-        console.warn('[Finance] finance_ledger query error:', error.message)
+      try {
+        const token = await getToken()
+        const params = new URLSearchParams()
+        if (filters?.entityId)  params.set('entity_id', filters.entityId)
+        if (filters?.dateFrom)  params.set('date_from', filters.dateFrom)
+        if (filters?.dateTo)    params.set('date_to', filters.dateTo)
+        if (filters?.currency)  params.set('currency', filters.currency)
+        if (filters?.accountNr) params.set('account_nr', filters.accountNr)
+        if (filters?.refNr)     params.set('ref_nr', filters.refNr)
+        const qs = params.toString()
+        const data = await apiFetch<FinanceLedgerEntry[]>(`/api/finance/ledger${qs ? `?${qs}` : ''}`, token)
+        return data ?? []
+      } catch (err) {
+        console.warn('[Finance] finance_ledger fetch error:', err)
         return [] as FinanceLedgerEntry[]
       }
-      return (data || []) as FinanceLedgerEntry[]
     },
   })
 }
 
 export function useCreateLedgerEntry() {
+  const { getToken } = useAuth()
   const qc = useQueryClient()
   return useMutation({
     mutationFn: async (entry: Omit<FinanceLedgerEntry, 'id' | 'created_at' | 'updated_at'>) => {
-      const { data, error } = await supabase
-        .from('finance_ledger')
-        .insert(entry)
-        .select()
-        .single()
-      if (error) throw error
-      return data as FinanceLedgerEntry
+      const token = await getToken()
+      return apiFetch<FinanceLedgerEntry>('/api/finance/ledger', token, {
+        method: 'POST',
+        body: JSON.stringify(entry),
+      })
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['finance-ledger'] }),
   })
@@ -122,20 +136,19 @@ export function useCreateLedgerEntry() {
 // ─── Finance Accounts ─────────────────────────────────────────────────────────
 
 export function useFinanceAccounts(entityId?: string) {
+  const { getToken } = useAuth()
   return useQuery({
     queryKey: ['finance-accounts', entityId],
     queryFn: async () => {
-      let query = supabase
-        .from('finance_accounts')
-        .select('*')
-        .order('account_nr')
-      if (entityId) query = query.eq('entity_id', entityId)
-      const { data, error } = await query
-      if (error) {
-        console.warn('[Finance] finance_accounts query error:', error.message)
+      try {
+        const token = await getToken()
+        const path = entityId ? `/api/finance/accounts?entity_id=${encodeURIComponent(entityId)}` : '/api/finance/accounts'
+        const data = await apiFetch<FinanceAccount[]>(path, token)
+        return data ?? []
+      } catch (err) {
+        console.warn('[Finance] finance_accounts fetch error:', err)
         return [] as FinanceAccount[]
       }
-      return (data || []) as FinanceAccount[]
     },
     staleTime: 1000 * 60 * 2,
   })
@@ -149,53 +162,51 @@ type InvoiceFilters = {
 }
 
 export function useFinanceInvoices(filters?: InvoiceFilters) {
+  const { getToken } = useAuth()
   return useQuery({
     queryKey: ['finance-invoices', filters],
     queryFn: async () => {
-      let query = supabase
-        .from('finance_invoices')
-        .select('*')
-        .order('issue_date', { ascending: false })
-      if (filters?.entityId) query = query.eq('entity_id', filters.entityId)
-      if (filters?.status)   query = query.eq('status', filters.status)
-      const { data, error } = await query
-      if (error) {
-        console.warn('[Finance] finance_invoices query error:', error.message)
+      try {
+        const token = await getToken()
+        const params = new URLSearchParams()
+        if (filters?.entityId) params.set('entity_id', filters.entityId)
+        if (filters?.status)   params.set('status', filters.status)
+        const qs = params.toString()
+        const data = await apiFetch<FinanceInvoice[]>(`/api/invoices${qs ? `?${qs}` : ''}`, token)
+        return data ?? []
+      } catch (err) {
+        console.warn('[Finance] finance_invoices fetch error:', err)
         return [] as FinanceInvoice[]
       }
-      return (data || []) as FinanceInvoice[]
     },
   })
 }
 
 export function useCreateInvoice() {
+  const { getToken } = useAuth()
   const qc = useQueryClient()
   return useMutation({
     mutationFn: async (invoice: Omit<FinanceInvoice, 'id' | 'created_at' | 'updated_at'>) => {
-      const { data, error } = await supabase
-        .from('finance_invoices')
-        .insert(invoice)
-        .select()
-        .single()
-      if (error) throw error
-      return data as FinanceInvoice
+      const token = await getToken()
+      return apiFetch<FinanceInvoice>('/api/invoices', token, {
+        method: 'POST',
+        body: JSON.stringify(invoice),
+      })
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['finance-invoices'] }),
   })
 }
 
 export function useUpdateInvoiceStatus() {
+  const { getToken } = useAuth()
   const qc = useQueryClient()
   return useMutation({
     mutationFn: async ({ id, status }: { id: string; status: FinanceInvoice['status'] }) => {
-      const { data, error } = await supabase
-        .from('finance_invoices')
-        .update({ status })
-        .eq('id', id)
-        .select()
-        .single()
-      if (error) throw error
-      return data as FinanceInvoice
+      const token = await getToken()
+      return apiFetch<FinanceInvoice>(`/api/invoices/${id}`, token, {
+        method: 'PATCH',
+        body: JSON.stringify({ status }),
+      })
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['finance-invoices'] }),
   })
@@ -204,21 +215,22 @@ export function useUpdateInvoiceStatus() {
 // ─── Finance Cash Flow ────────────────────────────────────────────────────────
 
 export function useFinanceCashFlow(entityId?: string, year?: number) {
+  const { getToken } = useAuth()
   return useQuery({
     queryKey: ['finance-cashflow', entityId, year],
     queryFn: async () => {
-      let query = supabase
-        .from('finance_cashflow')    // correct table name: finance_cashflow (no underscore between cash and flow)
-        .select('*')
-        .order('period_year', { ascending: true })
-      if (entityId) query = query.eq('entity_id', entityId)
-      if (year)     query = query.eq('period_year', year)
-      const { data, error } = await query
-      if (error) {
-        console.warn('[Finance] finance_cashflow query error:', error.message)
+      try {
+        const token = await getToken()
+        const params = new URLSearchParams()
+        if (entityId) params.set('entity_id', entityId)
+        if (year)     params.set('year', String(year))
+        const qs = params.toString()
+        const data = await apiFetch<FinanceCashFlow[]>(`/api/finance/cashflow${qs ? `?${qs}` : ''}`, token)
+        return data ?? []
+      } catch (err) {
+        console.warn('[Finance] finance_cashflow fetch error:', err)
         return [] as FinanceCashFlow[]
       }
-      return (data || []) as FinanceCashFlow[]
     },
   })
 }
@@ -226,34 +238,32 @@ export function useFinanceCashFlow(entityId?: string, year?: number) {
 // ─── Finance Intercompany ─────────────────────────────────────────────────────
 
 export function useFinanceIntercompany() {
+  const { getToken } = useAuth()
   return useQuery({
     queryKey: ['finance-intercompany'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('finance_intercompany')
-        .select('*')
-        .order('date', { ascending: false })
-      if (error) {
-        console.warn('[Finance] finance_intercompany query error:', error.message)
+      try {
+        const token = await getToken()
+        const data = await apiFetch<FinanceIntercompany[]>('/api/finance/intercompany', token)
+        return data ?? []
+      } catch (err) {
+        console.warn('[Finance] finance_intercompany fetch error:', err)
         return [] as FinanceIntercompany[]
       }
-      return (data || []) as FinanceIntercompany[]
     },
   })
 }
 
 export function useUpdateIntercompanyStatus() {
+  const { getToken } = useAuth()
   const qc = useQueryClient()
   return useMutation({
     mutationFn: async ({ id, status }: { id: string; status: FinanceIntercompany['status'] }) => {
-      const { data, error } = await supabase
-        .from('finance_intercompany')
-        .update({ status })
-        .eq('id', id)
-        .select()
-        .single()
-      if (error) throw error
-      return data as FinanceIntercompany
+      const token = await getToken()
+      return apiFetch<FinanceIntercompany>(`/api/finance/intercompany/${id}`, token, {
+        method: 'PATCH',
+        body: JSON.stringify({ status }),
+      })
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['finance-intercompany'] }),
   })
@@ -262,36 +272,33 @@ export function useUpdateIntercompanyStatus() {
 // ─── Finance Tax Periods ──────────────────────────────────────────────────────
 
 export function useFinanceTaxPeriods(entityId?: string) {
+  const { getToken } = useAuth()
   return useQuery({
     queryKey: ['finance-tax-periods', entityId],
     queryFn: async () => {
-      let query = supabase
-        .from('finance_tax_periods')
-        .select('*')
-        .order('due_date', { ascending: true })
-      if (entityId) query = query.eq('entity_id', entityId)
-      const { data, error } = await query
-      if (error) {
-        console.warn('[Finance] finance_tax_periods query error:', error.message)
+      try {
+        const token = await getToken()
+        const path = entityId ? `/api/finance/tax-periods?entity_id=${encodeURIComponent(entityId)}` : '/api/finance/tax-periods'
+        const data = await apiFetch<FinanceTaxPeriod[]>(path, token)
+        return data ?? []
+      } catch (err) {
+        console.warn('[Finance] finance_tax_periods fetch error:', err)
         return [] as FinanceTaxPeriod[]
       }
-      return (data || []) as FinanceTaxPeriod[]
     },
   })
 }
 
 export function useUpdateTaxPeriodStatus() {
+  const { getToken } = useAuth()
   const qc = useQueryClient()
   return useMutation({
     mutationFn: async ({ id, status }: { id: string; status: FinanceTaxPeriod['status'] }) => {
-      const { data, error } = await supabase
-        .from('finance_tax_periods')
-        .update({ status })
-        .eq('id', id)
-        .select()
-        .single()
-      if (error) throw error
-      return data as FinanceTaxPeriod
+      const token = await getToken()
+      return apiFetch<FinanceTaxPeriod>(`/api/finance/tax-periods/${id}`, token, {
+        method: 'PATCH',
+        body: JSON.stringify({ status }),
+      })
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ['finance-tax-periods'] }),
   })

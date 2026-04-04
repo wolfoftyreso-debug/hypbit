@@ -57,13 +57,14 @@ function Breadcrumbs({ crumbs }: { crumbs: { label: string; href?: string }[] })
 
 // ─── Help banner for first-time users ────────────────────────────────────────
 function WelcomeBanner() {
+  const { t } = useTranslation()
   const [dismissed, setDismissed] = useState(() => !!localStorage.getItem('wavult-banner-dismissed'))
   if (dismissed) return null
   return (
     <div className="mb-6 rounded-xl p-4 flex items-start gap-3 reveal card-interactive" style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderLeft: "3px solid var(--color-accent)" }}>
       <span className="text-xl flex-shrink-0">👋</span>
       <div className="flex-1 min-w-0">
-        <p style={{ fontSize: 14, fontWeight: 600, color: "var(--color-text-primary)", marginBottom: 4 }}>Välkommen till Wavult OS</p>
+        <p style={{ fontSize: 14, fontWeight: 600, color: "var(--color-text-primary)", marginBottom: 4 }}>{t('dashboard.welcome.title')}</p>
         <p style={{ fontSize: 12, color: "var(--color-text-secondary)", lineHeight: 1.6 }}>
           Det här är ert operativsystem. Alla moduler i vänstermenyn har ett <strong style={{ color: "var(--color-text-primary)" }}>?</strong>-märke — klicka på det för att förstå vad en flik eller funktion gör. Byt bolag med <strong style={{ color: "var(--color-text-primary)" }}>väljaren uppe till vänster</strong>.
         </p>
@@ -107,6 +108,7 @@ function VisaAlertBanner() {
 function CeoDashboard() {
   const corpEntities = STATIC_CORP_ENTITIES
   const activeCount = corpEntities.filter(e => e.status === 'aktiv').length
+  const { t } = useTranslation()
 
   const [drawer, setDrawer] = useState<{ title: string; content: React.ReactNode } | null>(null)
 
@@ -127,6 +129,8 @@ function CeoDashboard() {
 
   const openDrawer = (title: string, content: React.ReactNode) => setDrawer({ title, content })
   const closeDrawer = () => setDrawer(null)
+
+  const tStatus = (status: string) => t(STATUS_LABEL_KEYS[status] ?? 'dashboard.status.active') || (STATUS_LABELS[status] ?? status)
 
   const statusBadgeStyle = (status: string) => ({
     background: (STATUS_COLORS[status] ?? '#8A8278') + '18',
@@ -149,7 +153,7 @@ function CeoDashboard() {
         <div style={{ marginBottom: 4 }}>
           <span style={{ fontSize: 10, fontWeight: 700, color: "var(--color-text-muted)", letterSpacing: "0.10em", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>G-01</span>
         </div>
-        <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>GROUP CEO — Strategisk överblick</h1>
+        <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{t('dashboard.ceo.overview')}</h1>
       </div>
 
       {/* 4 overview cards */}
@@ -166,7 +170,7 @@ function CeoDashboard() {
                     <div className="text-xs text-[var(--color-text-muted)] mt-0.5">{e.jurisdiction}</div>
                   </div>
                   <span style={statusBadgeStyle(e.status === 'aktiv' ? 'active' : 'planned')}>
-                    {e.status}
+                    {tStatus(e.status === 'aktiv' ? 'active' : 'planned')}
                   </span>
                 </div>
               ))}
@@ -212,7 +216,7 @@ function CeoDashboard() {
               {capitalItems.map((item, i) => (
                 <div key={i} className="flex items-center justify-between py-2 border-b border-[var(--color-border)] last:border-0">
                   <span className="text-sm text-[var(--color-text-secondary)]">{item.text}</span>
-                  <span style={statusBadgeStyle(item.status)}>{STATUS_LABELS[item.status] ?? item.status}</span>
+                  <span style={statusBadgeStyle(item.status)}>{tStatus(item.status)}</span>
                 </div>
               ))}
             </div>
@@ -257,15 +261,15 @@ function CeoDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ClickableEarthSection
           id="S-01"
-          title="STRATEGISKA PRIORITERINGAR"
+          title={t('dashboard.ceo.strategicPriorities')}
           onRowClick={(item) => openDrawer(item.text, (
             <div className="space-y-3">
               <div className="flex items-center gap-2 mb-4">
                 <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
-                <span style={{ ...statusBadgeStyle(item.status) }}>{STATUS_LABELS[item.status] ?? item.status}</span>
+                <span style={{ ...statusBadgeStyle(item.status) }}>{tStatus(item.status)}</span>
               </div>
               <p className="text-sm text-[var(--color-text-secondary)]">
-                Strategisk prioritering inom Wavult Group — {STATUS_LABELS[item.status] === 'Pågår' ? 'Initiativet är aktivt under genomförande.' : STATUS_LABELS[item.status] === 'Aktiv' ? 'Initiativet är live och operativt.' : 'Initiativet är planerat för kommande kvartal.'}
+                {item.status === 'in-progress' ? t('dashboard.ceo.statusDesc.inProgress') : item.status === 'active' ? t('dashboard.ceo.statusDesc.active') : t('dashboard.ceo.statusDesc.other')}
               </p>
             </div>
           ))}
@@ -279,15 +283,15 @@ function CeoDashboard() {
         />
         <ClickableEarthSection
           id="A-01"
-          title="KAPITALALLOKERING"
+          title={t('dashboard.ceo.capitalAllocation')}
           onRowClick={(item) => openDrawer(item.text, (
             <div className="space-y-3">
               <div className="flex items-center gap-2 mb-4">
                 <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
-                <span style={{ ...statusBadgeStyle(item.status) }}>{STATUS_LABELS[item.status] ?? item.status}</span>
+                <span style={{ ...statusBadgeStyle(item.status) }}>{tStatus(item.status)}</span>
               </div>
               <p className="text-sm text-[var(--color-text-secondary)]">
-                Kapitalpost inom Wavult Group — resurser allokerade för {item.text.toLowerCase()}.
+                {t('dashboard.ceo.capitalDesc', { name: item.text.toLowerCase() })}
               </p>
             </div>
           ))}
@@ -303,15 +307,15 @@ function CeoDashboard() {
       {/* Beslutslogg (ID: L-01) */}
       <ClickableEarthSection
         id="L-01"
-        title="BESLUTSLOGG"
+        title={t('dashboard.ceo.decisionLog')}
         onRowClick={(item) => openDrawer(item.text, (
           <div className="space-y-3">
             <div className="flex items-center gap-2 mb-4">
               <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
-              <span style={{ ...statusBadgeStyle(item.status) }}>{STATUS_LABELS[item.status] ?? item.status}</span>
+              <span style={{ ...statusBadgeStyle(item.status) }}>{tStatus(item.status)}</span>
             </div>
             <p className="text-sm text-[var(--color-text-secondary)]">
-              Styrelsebeslut registrerat i Wavult Groups beslutslogg.
+              {t('dashboard.ceo.decisionDesc')}
             </p>
           </div>
         ))}
@@ -739,6 +743,17 @@ const STATUS_COLORS: Record<string, string> = {
   'in-progress': '#B8860B', /* warm ochre — Pågår */
   blocked: '#C0392B',     /* alert röd — Blockerad */
 }
+
+// Status label keys — resolved via t() at render time
+const STATUS_LABEL_KEYS: Record<string, string> = {
+  active: 'dashboard.status.active',
+  done: 'dashboard.status.done',
+  planned: 'dashboard.status.planned',
+  'in-progress': 'dashboard.status.inProgress',
+  blocked: 'dashboard.status.blocked',
+}
+
+// Legacy static fallback (used in non-hook contexts, kept for TS compat)
 const STATUS_LABELS: Record<string, string> = {
   active: 'Aktiv',
   done: 'Klar',
@@ -901,6 +916,7 @@ function ClickableEarthSection({ id, title, items, onRowClick }: {
 // ─── Scope Banner ──────────────────────────────────────────────────────────────
 function ScopeBanner() {
   const { activeEntity } = useEntityScope()
+  const { t } = useTranslation()
   const isRoot = activeEntity.layer === 0
 
   return (
@@ -916,10 +932,10 @@ function ScopeBanner() {
         style={{ background: '#8B7355' }}
       />
       <span style={{ color: '#1A1A1A', fontWeight: 600 }}>
-        {isRoot ? 'Viewing: Wavult Group (All entities)' : `Viewing: ${activeEntity.name}`}
+        {isRoot ? t('shell.viewing.all') : t('shell.viewing.scoped', { name: activeEntity.name })}
       </span>
       {!isRoot && (
-        <span style={{ color: '#6B6560', marginLeft: 4 }}>— scoped view</span>
+        <span style={{ color: '#6B6560', marginLeft: 4 }}>{t('shell.viewing.scopedSuffix')}</span>
       )}
     </div>
   )
