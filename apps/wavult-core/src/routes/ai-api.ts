@@ -1,12 +1,134 @@
+// ─── AI API Route ─────────────────────────────────────────────────────────────
+// Kombinerar legacy-endpoints (/v1/ai/complete, /v1/ai/tts, /v1/ai/image)
+// med det nya Enterprise AI Orchestration Layer (/v1/ai/orchestrate m.fl.)
+
 import { Router, Request, Response } from 'express'
 import { requireAuth } from '../middleware/requireAuth'
+import {
+  orchestrate,
+  getAILogs,
+  getAIStats,
+  MODEL_REGISTRY,
+  getCacheStats,
+} from '../ai'
+import type { AIRequest } from '../ai'
 
 const router = Router()
 router.use(requireAuth)
 
-// Unified AI completion endpoint
-// POST /v1/ai/complete
-// Body: { provider, model, messages, max_tokens }
+// ─────────────────────────────────────────────────────────────────────────────
+// ORCHESTRATION LAYER — nya endpoints
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * POST /v1/ai/orchestrate — central AI-gateway med automatisk modellval
+ *
+ * Body:
+ *   task_type: 'chat' | 'code' | 'analysis' | 'embedding' | 'stt' | 'classification' | 'document' | 'reasoning'
+ *   prompt: string
+ *   system?: string
+ *   context?: string
+ *   max_tokens?: number
+ *   temperature?: number
+ *   model_override?: ModelId
+ *   cache?: boolean  (default: true)
+ *   metadata?: Record<string, unknown>
+ */
+router.post('/v1/ai/orchestrate', async (req: Request, res: Response) => {
+  try {
+    const aiReq: AIRequest = {
+      task_type: req.body.task_type || 'chat',
+      prompt: req.body.prompt,
+      system: req.body.system,
+      context: req.body.context,
+      max_tokens: req.body.max_tokens,
+      temperature: req.body.temperature,
+      model_override: req.body.model_override,
+      cache: req.body.cache,
+      audio_url: req.body.audio_url,
+      metadata: req.body.metadata,
+    }
+
+    if (!aiReq.prompt) {
+      return res.status(400).json({ error: 'prompt required' })
+    }
+
+    const result = await orchestrate(aiReq)
+    return res.json(result)
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error('[ai:orchestrate] error:', message)
+    return res.status(503).json({
+      error: 'AI orchestration failed',
+      detail: message,
+    })
+  }
+})
+
+/**
+ * GET /v1/ai/models — lista alla konfigurerade modeller med status
+ */
+router.get('/v1/ai/models', (_req: Request, res: Response) => {
+  const models = Object.values(MODEL_REGISTRY).map(m => ({
+    id: m.id,
+    name: m.name,
+    provider: m.provider,
+    available: m.available,
+    cost_per_1k_tokens: m.costPer1kTokens,
+    max_context_tokens: m.maxContextTokens,
+    strengths: m.strengths,
+  }))
+  return res.json(models)
+})
+
+/**
+ * GET /v1/ai/stats — aggregerad användningsstatistik
+ */
+router.get('/v1/ai/stats', (_req: Request, res: Response) => {
+  return res.json({
+    ...getAIStats(),
+    cache: getCacheStats(),
+  })
+})
+
+/**
+ * GET /v1/ai/logs?limit=100 — senaste AI-anrop
+ */
+router.get('/v1/ai/logs', (req: Request, res: Response) => {
+  const limit = Math.min(parseInt(req.query.limit as string) || 100, 1000)
+  return res.json(getAILogs(limit))
+})
+
+/**
+ * GET /v1/ai/health — hälsostatus för orchestratorn
+ */
+router.get('/v1/ai/health', (_req: Request, res: Response) => {
+  const models = Object.values(MODEL_REGISTRY)
+  const available = models.filter(m => m.available).map(m => m.id)
+  const byProvider = models.reduce((acc, m) => {
+    if (!acc[m.provider]) acc[m.provider] = { total: 0, available: 0 }
+    acc[m.provider].total++
+    if (m.available) acc[m.provider].available++
+    return acc
+  }, {} as Record<string, { total: number; available: number }>)
+
+  return res.json({
+    status: available.length > 0 ? 'healthy' : 'degraded',
+    available_models: available,
+    total_models: models.length,
+    by_provider: byProvider,
+    cache: getCacheStats(),
+  })
+})
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LEGACY ENDPOINTS — bevarade för bakåtkompatibilitet
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * POST /v1/ai/complete — legacy multi-provider endpoint
+ * Body: { provider, model, messages, max_tokens }
+ */
 router.post('/v1/ai/complete', async (req: Request, res: Response) => {
   const { provider = 'anthropic', model, messages, max_tokens = 1000 } = req.body
 
@@ -15,7 +137,7 @@ router.post('/v1/ai/complete', async (req: Request, res: Response) => {
   const startTime = Date.now()
 
   try {
-    let result: any
+    let result: Record<string, unknown>
 
     if (provider === 'openai' || provider === 'gpt') {
       const apiKey = process.env.OPENAI_API_KEY || ''
@@ -24,13 +146,15 @@ router.post('/v1/ai/complete', async (req: Request, res: Response) => {
         headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ model: model || 'gpt-4o-mini', messages, max_tokens }),
       })
-      const data = await response.json() as any
+      const data = await response.json() as Record<string, unknown>
+      const usage = data.usage as Record<string, number> | undefined
+      const choices = data.choices as Array<{ message?: { content?: string } }> | undefined
       result = {
         provider: 'openai',
         model: data.model,
-        content: data.choices?.[0]?.message?.content,
-        tokens: data.usage?.total_tokens,
-        cost_estimate: (data.usage?.total_tokens || 0) * 0.00015 / 1000,
+        content: choices?.[0]?.message?.content,
+        tokens: usage?.total_tokens,
+        cost_estimate: (usage?.total_tokens || 0) * 0.00015 / 1000,
       }
     } else if (provider === 'gemini') {
       const apiKey = process.env.GEMINI_API_KEY || ''
@@ -41,16 +165,18 @@ router.post('/v1/ai/complete', async (req: Request, res: Response) => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            contents: messages.map((m: any) => ({
+            contents: (messages as Array<{ role: string; content: string }>).map(m => ({
               role: m.role === 'assistant' ? 'model' : 'user',
-              parts: [{ text: m.content }]
-            }))
+              parts: [{ text: m.content }],
+            })),
           }),
-        }
+        },
       )
-      const data = await response.json() as any
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text || ''
-      const tokens = data.usageMetadata?.totalTokenCount || 0
+      const data = await response.json() as Record<string, unknown>
+      const candidates = data.candidates as Array<{ content?: { parts?: Array<{ text?: string }> } }> | undefined
+      const usageMeta = data.usageMetadata as { totalTokenCount?: number } | undefined
+      const text = candidates?.[0]?.content?.parts?.[0]?.text || ''
+      const tokens = usageMeta?.totalTokenCount || 0
       result = {
         provider: 'gemini',
         model: model_name,
@@ -59,20 +185,20 @@ router.post('/v1/ai/complete', async (req: Request, res: Response) => {
         cost_estimate: tokens * 0.000075 / 1000,
       }
     } else if (provider === 'did') {
-      // D-ID video avatar generation
       const apiKey = process.env.DID_API_KEY || ''
-      const { script, presenter_id = 'amy-jcwCkr1grs' } = req.body
+      const { script, presenter_id = 'amy-jcwCkr1grs' } = req.body as { script?: string; presenter_id?: string }
+      const lastMessage = (messages as Array<{ content: string }>)[messages.length - 1]
       const response = await fetch('https://api.d-id.com/talks', {
         method: 'POST',
         headers: { 'Authorization': `Basic ${apiKey}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           source_url: `https://d-id-public-bucket.s3.amazonaws.com/presenters/${presenter_id}.jpg`,
-          script: { type: 'text', input: script || messages[messages.length-1]?.content || '', language: 'sv' }
+          script: { type: 'text', input: script || lastMessage?.content || '', language: 'sv' },
         }),
       })
-      const data = await response.json() as any
+      const data = await response.json() as { id?: string; status?: string }
       result = { provider: 'did', id: data.id, status: data.status, cost_estimate: 0.01 }
-        } else {
+    } else {
       // Default: Anthropic
       const apiKey = process.env.ANTHROPIC_API_KEY || ''
       const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -88,19 +214,23 @@ router.post('/v1/ai/complete', async (req: Request, res: Response) => {
           max_tokens,
         }),
       })
-      const data = await response.json() as any
+      const data = await response.json() as {
+        model?: string
+        content?: Array<{ text?: string }>
+        usage?: { input_tokens?: number; output_tokens?: number }
+      }
+      const inputTokens = data.usage?.input_tokens || 0
+      const outputTokens = data.usage?.output_tokens || 0
       result = {
         provider: 'anthropic',
         model: data.model,
         content: data.content?.[0]?.text,
-        tokens: (data.usage?.input_tokens || 0) + (data.usage?.output_tokens || 0),
-        cost_estimate: ((data.usage?.input_tokens || 0) * 0.00025 + (data.usage?.output_tokens || 0) * 0.00125) / 1000,
+        tokens: inputTokens + outputTokens,
+        cost_estimate: (inputTokens * 0.00025 + outputTokens * 0.00125) / 1000,
       }
     }
 
     const latencyMs = Date.now() - startTime
-
-    // Log for cost tracking
     console.log(JSON.stringify({
       event: 'AI_API_CALL',
       provider,
@@ -112,21 +242,25 @@ router.post('/v1/ai/complete', async (req: Request, res: Response) => {
     }))
 
     return res.json({ ...result, latency_ms: latencyMs })
-
-  } catch (err) {
-    // Fallback: if primary provider fails, try the other
-    console.error(`[AI] ${provider} failed, attempting fallback:`, err)
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error(`[AI] ${provider} failed:`, message)
     return res.status(502).json({
       error: `AI provider ${provider} failed`,
       fallback_available: provider !== 'openai',
-      detail: String(err),
+      detail: message,
     })
   }
 })
 
-// POST /v1/ai/tts — text to speech
+/**
+ * POST /v1/ai/tts — ElevenLabs text-to-speech proxy
+ */
 router.post('/v1/ai/tts', async (req: Request, res: Response) => {
-  const { text, voice_id = '21m00Tcm4TlvDq8ikWAM', provider = 'elevenlabs' } = req.body
+  const { text, voice_id = '21m00Tcm4TlvDq8ikWAM' } = req.body as {
+    text?: string
+    voice_id?: string
+  }
   if (!text) return res.status(400).json({ error: 'text required' })
 
   const apiKey = process.env.ELEVENLABS_API_KEY || ''
@@ -143,31 +277,27 @@ router.post('/v1/ai/tts', async (req: Request, res: Response) => {
     const audio = await response.arrayBuffer()
     res.setHeader('Content-Type', 'audio/mpeg')
     return res.send(Buffer.from(audio))
-  } catch (err) {
+  } catch (err: unknown) {
     return res.status(502).json({ error: 'TTS failed', detail: String(err) })
   }
 })
 
-// POST /v1/ai/image — image generation proxy via API Core (never call providers directly from clients)
-// Body: { prompt, model?, count? }
-// Returns: { images: [{ b64: string, mimeType: string }], model, count }
-// Supports:
-//   - gemini-2.5-flash-image  → generateContent (multimodal, inline b64)
-//   - imagen-3.0-generate-002 → generateImages  (Imagen API)
+/**
+ * POST /v1/ai/image — bildgenerering via Gemini/Imagen
+ */
 router.post('/v1/ai/image', async (req: Request, res: Response) => {
-  const {
-    prompt,
-    model = 'gemini-2.5-flash-image',
-    count = 1,
-  } = req.body
+  const { prompt, model = 'gemini-2.5-flash-image', count = 1 } = req.body as {
+    prompt?: string
+    model?: string
+    count?: number
+  }
 
   if (!prompt) return res.status(400).json({ error: 'prompt required' })
 
   const apiKey = process.env.GEMINI_API_KEY || ''
-  if (!apiKey) return res.status(500).json({ error: 'GEMINI_API_KEY not configured in API Core' })
+  if (!apiKey) return res.status(500).json({ error: 'GEMINI_API_KEY not configured' })
 
   try {
-    // Gemini Flash image model — uses generateContent with responseModalities
     if (model.includes('flash-image') || model.includes('gemini')) {
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
@@ -178,14 +308,16 @@ router.post('/v1/ai/image', async (req: Request, res: Response) => {
             contents: [{ parts: [{ text: prompt }] }],
             generationConfig: { responseModalities: ['IMAGE', 'TEXT'] },
           }),
-        }
+        },
       )
       if (!response.ok) {
         const err = await response.text()
         return res.status(response.status).json({ error: 'Gemini image generation failed', detail: err })
       }
-      const data = await response.json() as any
-      const images: { b64: string; mimeType: string }[] = []
+      const data = await response.json() as {
+        candidates?: Array<{ content?: { parts?: Array<{ inlineData?: { data?: string; mimeType?: string } }> } }>
+      }
+      const images: Array<{ b64: string; mimeType: string }> = []
       for (const part of data?.candidates?.[0]?.content?.parts || []) {
         if (part.inlineData?.data) {
           images.push({ b64: part.inlineData.data, mimeType: part.inlineData.mimeType || 'image/png' })
@@ -194,7 +326,7 @@ router.post('/v1/ai/image', async (req: Request, res: Response) => {
       return res.json({ images, model, count: images.length })
     }
 
-    // Imagen models — uses generateImages
+    // Imagen models
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateImages?key=${apiKey}`,
       {
@@ -206,34 +338,37 @@ router.post('/v1/ai/image', async (req: Request, res: Response) => {
           safety_filter_level: 'BLOCK_ONLY_HIGH',
           person_generation: 'ALLOW_ADULT',
         }),
-      }
+      },
     )
     if (!response.ok) {
       const err = await response.text()
       return res.status(response.status).json({ error: 'Imagen generation failed', detail: err })
     }
-    const data = await response.json() as any
-    const images = (data.generatedImages || []).map((img: any) => ({
+    const data = await response.json() as {
+      generatedImages?: Array<{ image?: { imageBytes?: string } }>
+    }
+    const images = (data.generatedImages || []).map(img => ({
       b64: img.image?.imageBytes || '',
       mimeType: 'image/png',
     }))
     return res.json({ images, model, count: images.length })
-
-  } catch (err) {
+  } catch (err: unknown) {
     return res.status(502).json({ error: 'Image generation failed', detail: String(err) })
   }
 })
 
-// GET /v1/ai/cost — cost summary (from CloudWatch logs ideally, simplified here)
-router.get('/v1/ai/cost', async (_req: Request, res: Response) => {
+/**
+ * GET /v1/ai/cost — kostnadsoversikt (legacy)
+ */
+router.get('/v1/ai/cost', (_req: Request, res: Response) => {
+  const stats = getAIStats()
   return res.json({
-    note: 'Cost tracking via CloudWatch Logs. Integrate with /finance for aggregated costs.',
-    providers: ['openai', 'anthropic', 'elevenlabs'],
-    cost_per_1k_tokens: {
-      'gpt-4o-mini': 0.15,
-      'claude-haiku': 1.25,
-      'claude-sonnet': 15.0,
-    },
+    total_cost_usd: stats.totalCost,
+    total_requests: stats.total,
+    by_model: stats.byModel,
+    avg_latency_ms: stats.avgLatency,
+    cache_hit_rate: stats.cacheHitRate,
+    note: 'Live stats from orchestration layer. For CloudWatch aggregation, see /v1/ai/stats.',
   })
 })
 
