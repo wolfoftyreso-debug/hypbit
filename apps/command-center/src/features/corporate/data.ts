@@ -386,6 +386,7 @@ export interface Document {
   status: DocumentStatus
   fileType: 'pdf' | 'docx' | 'xlsx'
   size?: string
+  url?: string  // S3/CDN URL — om saknas visas upload-knapp
 }
 
 export const DOCUMENTS: Document[] = [

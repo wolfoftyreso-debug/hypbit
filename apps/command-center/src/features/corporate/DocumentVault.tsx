@@ -1,5 +1,14 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { DOCUMENTS, COMPANIES, DocumentCategory, DocumentStatus, CompanyId } from './data'
+
+const S3_UPLOAD_BASE = 'https://wavult-documents-eu.s3.eu-north-1.amazonaws.com'
+const CDN_BASE = 'https://d3iytjrde747np.cloudfront.net'
+
+async function uploadToS3(file: File, docId: string, companyId: string): Promise<string> {
+  const key = `${companyId}/${docId}/${file.name}`
+  // Presigned upload måste gå via wavult-core — tills dess: visa instruktion
+  throw new Error(`Ladda upp via AWS CLI:\naws s3 cp "${file.name}" s3://wavult-documents-eu/${key}`)
+}
 
 const STATUS_STYLES: Record<DocumentStatus, string> = {
   'utkast':    'bg-yellow-500/15 text-yellow-700 border-yellow-500/30',
@@ -23,6 +32,41 @@ export function DocumentVault() {
   const [selectedCompany, setSelectedCompany] = useState<CompanyId | 'all'>('all')
   const [selectedCategory, setSelectedCategory] = useState<DocumentCategory | 'all'>('all')
   const [selectedStatus, setSelectedStatus] = useState<DocumentStatus | 'all'>('all')
+  const [uploadingId, setUploadingId] = useState<string | null>(null)
+  const [toast, setToast] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [pendingDoc, setPendingDoc] = useState<typeof DOCUMENTS[0] | null>(null)
+
+  function showToast(msg: string) {
+    setToast(msg)
+    setTimeout(() => setToast(null), 4000)
+  }
+
+  function handleDownload(doc: typeof DOCUMENTS[0]) {
+    if (doc.url) {
+      window.open(doc.url, '_blank')
+    } else {
+      // Trigga file-upload flow
+      setPendingDoc(doc)
+      fileInputRef.current?.click()
+    }
+  }
+
+  async function handleFileSelected(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file || !pendingDoc) return
+    setUploadingId(pendingDoc.id)
+    try {
+      await uploadToS3(file, pendingDoc.id, pendingDoc.companyId)
+      showToast(`✅ ${pendingDoc.name} uppladdad`)
+    } catch (err: any) {
+      showToast(err.message)
+    } finally {
+      setUploadingId(null)
+      setPendingDoc(null)
+      e.target.value = ''
+    }
+  }
 
   const filtered = DOCUMENTS.filter(d =>
     (selectedCompany === 'all' || d.companyId === selectedCompany) &&
@@ -149,7 +193,21 @@ export function DocumentVault() {
                       </span>
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <button className="text-xs text-gray-9000 hover:text-blue-700 transition-colors">⬇ Hämta</button>
+                      {doc.url ? (
+                        <button
+                          onClick={() => handleDownload(doc)}
+                          className="text-xs text-blue-700 hover:text-blue-900 font-medium transition-colors flex items-center gap-1 ml-auto"
+                        >⬇ Hämta</button>
+                      ) : (
+                        <button
+                          onClick={() => handleDownload(doc)}
+                          disabled={uploadingId === doc.id}
+                          className="text-xs text-amber-700 hover:text-amber-900 font-medium transition-colors flex items-center gap-1 ml-auto opacity-70 hover:opacity-100"
+                          title="Filen är inte uppladdad ännu — klicka för att ladda upp"
+                        >
+                          {uploadingId === doc.id ? '⏳ Laddar...' : '⬆ Ladda upp'}
+                        </button>
+                      )}
                     </td>
                   </tr>
                 )
@@ -158,6 +216,22 @@ export function DocumentVault() {
           </table>
         )}
       </div>
+
+      {/* Hidden file input för upload */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".pdf,.docx,.xlsx"
+        className="hidden"
+        onChange={handleFileSelected}
+      />
+
+      {/* Toast */}
+      {toast && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#1A1A2E] text-[#F5F0E8] text-xs px-5 py-3 rounded-xl shadow-floating max-w-sm text-center whitespace-pre-wrap">
+          {toast}
+        </div>
+      )}
     </div>
   )
 }
