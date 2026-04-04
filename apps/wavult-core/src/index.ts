@@ -170,32 +170,57 @@ app.get('/health', healthLimiter, (_req, res) => {
     service: 'wavult-core',
     version: '2.0.0',
     providers: {
-      // AI
-      anthropic: !!process.env.ANTHROPIC_API_KEY,
-      deepseek: !!process.env.DEEPSEEK_API_KEY,
-      gemini: !!process.env.GEMINI_API_KEY,
-      openai: !!process.env.OPENAI_API_KEY,
-      nvidia: !!process.env.NVIDIA_API_KEY,
-      perplexity: !!process.env.PERPLEXITY_API_KEY,
-      elevenlabs: !!process.env.ELEVENLABS_API_KEY,
-      // Payments
-      revolut: !!process.env.REVOLUT_CLIENT_ID,
-      stripe: !!process.env.STRIPE_SECRET_KEY,
-      // Comms
-      resend: !!process.env.RESEND_API_KEY,
-      telegram: !!process.env.TELEGRAM_BOT_TOKEN,
-      fortysix_elks: !!process.env.FORTYSIX_ELKS_USERNAME,
-      twilio: !!process.env.TWILIO_ACCOUNT_SID,
-      // Data
-      apollo: !!process.env.APOLLO_API_KEY,
-      whoop: !!process.env.WHOOP_CLIENT_ID,
-      // Media
-      pexels: !!process.env.PEXELS_API_KEY,
-      coverr: !!process.env.COVERR_API_KEY,
-      mapbox: !!process.env.MAPBOX_PUBLIC_TOKEN,
-      duffel: !!process.env.DUFFEL_ACCESS_TOKEN,
-      did: !!process.env.DID_API_KEY,
-      shotstack: !!process.env.SHOTSTACK_PRODUCTION_KEY,
+      ai: {
+        anthropic: !!process.env.ANTHROPIC_API_KEY,
+        deepseek: !!process.env.DEEPSEEK_API_KEY,
+        gemini: !!process.env.GEMINI_API_KEY,
+        openai: !!process.env.OPENAI_API_KEY,
+        nvidia: !!process.env.NVIDIA_API_KEY,
+        perplexity: !!process.env.PERPLEXITY_API_KEY,
+        groq: !!process.env.GROQ_API_KEY,
+        stability: !!process.env.STABILITY_API_KEY,
+        runway: !!process.env.RUNWAY_API_KEY,
+        sora: !!process.env.SORA_API_KEY,
+        veo3: !!process.env.VEO3_API_KEY,
+      },
+      payments: {
+        revolut: !!process.env.REVOLUT_CLIENT_ID,
+        stripe: !!process.env.STRIPE_SECRET_KEY,
+        klarna: !!process.env.KLARNA_API_KEY,
+        swish: !!process.env.SWISH_PAYEE_NUMBER,
+      },
+      communications: {
+        elevenlabs: !!process.env.ELEVENLABS_API_KEY,
+        '46elks': !!process.env.FORTYSIX_ELKS_USERNAME,
+        twilio: !!process.env.TWILIO_ACCOUNT_SID,
+        resend: !!process.env.RESEND_API_KEY,
+        telegram: !!process.env.TELEGRAM_BOT_TOKEN,
+      },
+      data: {
+        apollo: !!process.env.APOLLO_API_KEY,
+        whoop: !!process.env.WHOOP_CLIENT_ID,
+        mixpanel: !!process.env.MIXPANEL_TOKEN,
+        hunter: !!process.env.HUNTER_API_KEY,
+        clearbit: !!process.env.CLEARBIT_API_KEY,
+        ga4: !!process.env.GA4_MEASUREMENT_ID,
+      },
+      media: {
+        pexels: !!process.env.PEXELS_API_KEY,
+        coverr: !!process.env.COVERR_API_KEY,
+        mapbox: !!process.env.MAPBOX_PUBLIC_TOKEN,
+        duffel: !!process.env.DUFFEL_ACCESS_TOKEN,
+        d_id: !!process.env.DID_API_KEY,
+        shotstack: !!process.env.SHOTSTACK_PRODUCTION_KEY,
+      },
+      legal: {
+        scrive: !!process.env.SCRIVE_API_TOKEN,
+        docusign: !!process.env.DOCUSIGN_ACCESS_TOKEN,
+      },
+      monitoring: {
+        sentry: !!process.env.SENTRY_DSN,
+        datadog: !!process.env.DATADOG_API_KEY,
+        pagerduty: !!process.env.PAGERDUTY_KEY,
+      },
     },
   })
 })
