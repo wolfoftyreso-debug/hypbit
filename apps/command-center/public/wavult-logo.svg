@@ -1,0 +1,31 @@
+<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wavult">
+  <!--
+    Wavult logotyp — manometer
+    Halvring (övre halvan), smalt gap i toppen (±7°)
+    Visare exakt rakt upp = MITT I toleransen
+  -->
+  <defs>
+    <clipPath id="clip-upper">
+      <rect x="0" y="0" width="200" height="121"/>
+    </clipPath>
+    <mask id="gap-mask">
+      <!-- Allt vitt = synligt -->
+      <rect width="200" height="200" fill="white"/>
+      <!-- Gap: smal spalt rakt upp, ±7° → vid r=100: x=±12.2 -->
+      <polygon points="100,121 88,0 112,0" fill="black"/>
+    </mask>
+  </defs>
+
+  <!-- Donut-ring, maskad med gap -->
+  <g clip-path="url(#clip-upper)" mask="url(#gap-mask)">
+    <circle cx="100" cy="121" r="100" fill="#0A3D62"/>
+    <circle cx="100" cy="121" r="65"  fill="white"/>
+  </g>
+
+  <!-- Visare: rakt upp -->
+  <line x1="100" y1="121" x2="100" y2="24"
+        stroke="#0A3D62" stroke-width="9" stroke-linecap="round"/>
+
+  <!-- Pivot -->
+  <circle cx="100" cy="121" r="11" fill="#0A3D62"/>
+</svg>
