@@ -153,12 +153,20 @@ function AuthenticatedApp() {
     return roleId ? (ROLES.find(r => r.id === roleId) ?? null) : null
   }, [user, role])
 
-  // Om ej inloggad och inte laddar → visa login direkt
-  // Om laddar men ingen session ännu → visa login (reaktiv auth uppdaterar när klar)
-  if (!session) return <LoginPage />
+  // Preview/dev bypass — VITE_BYPASS_AUTH=true auto-loggar in som Erik (group-ceo)
+  const bypassAuth = import.meta.env.VITE_BYPASS_AUTH === 'true'
+  if (bypassAuth && !session) {
+    const bypassRole = ROLES.find(r => r.id === 'group-ceo')
+    if (bypassRole && !role) setRole(bypassRole)
+    // Fortsätt — hoppa över login-kontroll
+  } else if (!session) {
+    // Om ej inloggad och inte laddar → visa login direkt
+    return <LoginPage />
+  }
 
-  // Inloggad men okänd email → visa rollval som fallback
-  if (!computedRole) return <RoleLogin />
+  // Inloggad men okänd email → visa rollval som fallback (skippa om bypass)
+  const bypassAuth2 = import.meta.env.VITE_BYPASS_AUTH === 'true'
+  if (!computedRole && !bypassAuth2) return <RoleLogin />
 
   return (
     <OperatorProvider>
