@@ -90,6 +90,70 @@ const OAUTH_CONFIGS = {
     client_id:     process.env.LINKEDIN_CLIENT_ID     || '',
     client_secret: process.env.LINKEDIN_CLIENT_SECRET || '',
   },
+  twitter: {
+    auth_url:     'https://twitter.com/i/oauth2/authorize',
+    token_url:    'https://api.twitter.com/2/oauth2/token',
+    userinfo_url: 'https://api.twitter.com/2/users/me?user.fields=name,username,profile_image_url',
+    scope:        'tweet.read users.read offline.access',
+    client_id:     process.env.TWITTER_CLIENT_ID     || '',
+    client_secret: process.env.TWITTER_CLIENT_SECRET || '',
+  },
+  atlassian: {
+    auth_url:     'https://auth.atlassian.com/authorize',
+    token_url:    'https://auth.atlassian.com/oauth/token',
+    userinfo_url: 'https://api.atlassian.com/me',
+    scope:        'read:me offline_access',
+    client_id:     process.env.ATLASSIAN_CLIENT_ID     || '',
+    client_secret: process.env.ATLASSIAN_CLIENT_SECRET || '',
+  },
+  twitch: {
+    auth_url:     'https://id.twitch.tv/oauth2/authorize',
+    token_url:    'https://id.twitch.tv/oauth2/token',
+    userinfo_url: 'https://api.twitch.tv/helix/users',
+    scope:        'user:read:email',
+    client_id:     process.env.TWITCH_CLIENT_ID     || '',
+    client_secret: process.env.TWITCH_CLIENT_SECRET || '',
+  },
+  figma: {
+    auth_url:     'https://www.figma.com/oauth',
+    token_url:    'https://www.figma.com/api/oauth/token',
+    userinfo_url: 'https://api.figma.com/v1/me',
+    scope:        'file_read',
+    client_id:     process.env.FIGMA_CLIENT_ID     || '',
+    client_secret: process.env.FIGMA_CLIENT_SECRET || '',
+  },
+  notion: {
+    auth_url:     'https://api.notion.com/v1/oauth/authorize',
+    token_url:    'https://api.notion.com/v1/oauth/token',
+    userinfo_url: 'https://api.notion.com/v1/users/me',
+    scope:        '',
+    client_id:     process.env.NOTION_CLIENT_ID     || '',
+    client_secret: process.env.NOTION_CLIENT_SECRET || '',
+  },
+  facebook: {
+    auth_url:     'https://www.facebook.com/v18.0/dialog/oauth',
+    token_url:    'https://graph.facebook.com/v18.0/oauth/access_token',
+    userinfo_url: 'https://graph.facebook.com/me?fields=id,name,email',
+    scope:        'email public_profile',
+    client_id:     process.env.FACEBOOK_CLIENT_ID     || '',
+    client_secret: process.env.FACEBOOK_CLIENT_SECRET || '',
+  },
+  digitalocean: {
+    auth_url:     'https://cloud.digitalocean.com/v1/oauth/authorize',
+    token_url:    'https://cloud.digitalocean.com/v1/oauth/token',
+    userinfo_url: 'https://api.digitalocean.com/v2/account',
+    scope:        'read',
+    client_id:     process.env.DIGITALOCEAN_CLIENT_ID     || '',
+    client_secret: process.env.DIGITALOCEAN_CLIENT_SECRET || '',
+  },
+  okta: {
+    auth_url:     `https://${process.env.OKTA_DOMAIN || 'your-domain.okta.com'}/oauth2/v1/authorize`,
+    token_url:    `https://${process.env.OKTA_DOMAIN || 'your-domain.okta.com'}/oauth2/v1/token`,
+    userinfo_url: `https://${process.env.OKTA_DOMAIN || 'your-domain.okta.com'}/oauth2/v1/userinfo`,
+    scope:        'openid email profile',
+    client_id:     process.env.OKTA_CLIENT_ID     || '',
+    client_secret: process.env.OKTA_CLIENT_SECRET || '',
+  },
 }
 
 type Provider = keyof typeof OAUTH_CONFIGS
@@ -240,6 +304,48 @@ router.get('/v1/auth/oauth/:provider/callback', async (req, res) => {
       const u = await r2.json() as Record<string, unknown>
       email = (u.email as string) || ''
       name  = (u.name as string) || ''
+
+    } else if (provider === 'twitter') {
+      const r2 = await fetch(config.userinfo_url, { headers: { Authorization: `Bearer ${access_token}` } })
+      const u = await r2.json() as any
+      name  = u.data?.name || u.data?.username || ''
+      email = `${u.data?.username}@twitter.verified`
+
+    } else if (provider === 'atlassian') {
+      const r2 = await fetch(config.userinfo_url, { headers: { Authorization: `Bearer ${access_token}` } })
+      const u = await r2.json() as any
+      email = u.email || ''; name = u.name || u.displayName || ''
+
+    } else if (provider === 'twitch') {
+      const r2 = await fetch(config.userinfo_url, { headers: { Authorization: `Bearer ${access_token}`, 'Client-Id': config.client_id } })
+      const u = await r2.json() as any
+      const twitchUser = u.data?.[0]
+      email = twitchUser?.email || `${twitchUser?.login}@twitch.verified`; name = twitchUser?.display_name || ''
+
+    } else if (provider === 'figma') {
+      const r2 = await fetch(config.userinfo_url, { headers: { Authorization: `Bearer ${access_token}` } })
+      const u = await r2.json() as any
+      email = u.email || ''; name = u.handle || ''
+
+    } else if (provider === 'notion') {
+      const r2 = await fetch(config.userinfo_url, { headers: { Authorization: `Bearer ${access_token}`, 'Notion-Version': '2022-06-28' } })
+      const u = await r2.json() as any
+      email = u.person?.email || `${u.id}@notion.verified`; name = u.name || ''
+
+    } else if (provider === 'facebook') {
+      const r2 = await fetch(config.userinfo_url, { headers: { Authorization: `Bearer ${access_token}` } })
+      const u = await r2.json() as any
+      email = u.email || ''; name = u.name || ''
+
+    } else if (provider === 'digitalocean') {
+      const r2 = await fetch(config.userinfo_url, { headers: { Authorization: `Bearer ${access_token}` } })
+      const u = await r2.json() as any
+      email = u.account?.email || ''; name = u.account?.name || ''
+
+    } else if (provider === 'okta') {
+      const r2 = await fetch(config.userinfo_url, { headers: { Authorization: `Bearer ${access_token}` } })
+      const u = await r2.json() as any
+      email = u.email || ''; name = u.name || ''
 
     } else {
       // google + apple (apple sends name in id_token, but we try userinfo first)
