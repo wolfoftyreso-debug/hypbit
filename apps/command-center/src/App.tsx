@@ -102,6 +102,7 @@ const ApiflyAdminView        = lazy(() => import('./features/apifly/ApiflyAdminV
 const MLCSPlatform           = lazy(() => import('./features/mlcs-platform/MLCSView'))
 const SystemAuditDashboard   = lazy(() => import('./features/system-audit/SystemAuditDashboard').then(m => ({ default: m.SystemAuditDashboard })))
 const UXQualityDashboard     = lazy(() => import('./features/ux-quality/UXQualityDashboard').then(m => ({ default: m.UXQualityDashboard })))
+const ProfileView            = lazy(() => import('./features/profile/ProfileView').then(m => ({ default: m.ProfileView })))
 
 // ─── Page loader fallback ───────────────────────────────────────────────────────
 function PageLoader() {
@@ -264,6 +265,7 @@ function AuthenticatedApp() {
               <Route path="/agent/legacy" element={<AgentCommandPanel />} />
               <Route path="/system/audit" element={<SystemAuditDashboard />} />
               <Route path="/ux-quality" element={<UXQualityDashboard />} />
+              <Route path="/profile" element={<ProfileView />} />
             </Routes>
           </Suspense>
         </Shell>

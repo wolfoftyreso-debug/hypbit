@@ -36,6 +36,8 @@ import { useTranslation } from '../i18n/useTranslation'
 import { useAuth } from '../auth/AuthContext'
 import { LanguageToggle } from '../i18n/LanguageToggle'
 import { IllustrationModule } from '../ui/IllustrationModule'
+import { useAuditLog } from '../audit/useAuditLog'
+import { useNavigate } from 'react-router-dom'
 
 // ─── Nav item/group types ──────────────────────────────────────────────────────
 
@@ -181,9 +183,10 @@ interface ShellProps {
   children: React.ReactNode
 }
 
-function SidebarNav({ criticalAlertCount, onNavigate }: {
+function SidebarNav({ criticalAlertCount, onNavigate, onAuditLog }: {
   criticalAlertCount: number
   onNavigate?: () => void
+  onAuditLog?: (module: string, label: string) => void
 }) {
   const { pathname } = useLocation()
   const { t } = useTranslation()
@@ -216,7 +219,10 @@ function SidebarNav({ criticalAlertCount, onNavigate }: {
                 <NavLink
                   key={item.to}
                   to={item.to}
-                  onClick={onNavigate}
+                  onClick={() => {
+                    onAuditLog?.(item.to.replace(/^\//, '') || 'dashboard', t(item.labelKey))
+                    onNavigate?.()
+                  }}
                   className="flex items-center gap-3 min-w-0"
                   style={{
                     padding: '8px 12px',
@@ -269,6 +275,8 @@ export function Shell({ children }: ShellProps) {
   const { t } = useTranslation()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [notifOpen, setNotifOpen] = useState(false)
+  const { log } = useAuditLog()
+  const navigate = useNavigate()
 
   useEffect(() => {
     setSidebarOpen(false)
@@ -340,6 +348,7 @@ export function Shell({ children }: ShellProps) {
         <SidebarNav
           criticalAlertCount={criticalAlertCount}
           onNavigate={() => setSidebarOpen(false)}
+          onAuditLog={(module, label) => log({ type: 'navigate', module, label: `Navigerade till ${label}` })}
         />
 
         {/* Agent Claw — priority queue */}
@@ -430,13 +439,18 @@ export function Shell({ children }: ShellProps) {
                 >
                   {t('auth.logout')}
                 </button>
-                {/* Avatar */}
-                <div
-                  className="hidden sm:flex h-7 w-7 rounded-full items-center justify-center text-xs font-bold flex-shrink-0"
-                  style={{ background: '#8B7355', color: '#F5F0E8' }}
+                {/* Avatar — klick navigerar till profil */}
+                <button
+                  onClick={() => {
+                    log({ type: 'navigate', module: 'auth', label: 'Navigerade till Profil' })
+                    navigate('/profile')
+                  }}
+                  className="hidden sm:flex h-7 w-7 rounded-full items-center justify-center text-xs font-bold flex-shrink-0 cursor-pointer"
+                  style={{ background: '#8B7355', color: '#F5F0E8', border: 'none' }}
+                  title="Min profil & sessionshistorik"
                 >
-                  E
-                </div>
+                  {effectiveRole?.initials?.charAt(0) ?? 'E'}
+                </button>
               </>
             )}
 
