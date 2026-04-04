@@ -5,6 +5,47 @@ import { CommandDashboard } from './CommandDashboard'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { useTranslation } from '../../shared/i18n/useTranslation'
 import { useVisaAlerts } from '../visa/useVisaAlerts'
+import { useCorpEntities } from '../corporate/hooks/useCorporate'
+
+// ─── InfoDrawer ────────────────────────────────────────────────────────────────
+function InfoDrawer({ title, children, onClose }: { title: string; children: React.ReactNode; onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 flex justify-end" onClick={onClose}>
+      <div
+        className="w-full max-w-md h-full bg-[var(--color-surface)] shadow-floating border-l border-[var(--color-border)] overflow-y-auto p-6"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-base font-bold text-[var(--color-text-primary)]">{title}</h2>
+          <button
+            onClick={onClose}
+            className="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] text-xl"
+          >
+            ×
+          </button>
+        </div>
+        {children}
+      </div>
+    </div>
+  )
+}
+
+// ─── Breadcrumbs ──────────────────────────────────────────────────────────────
+function Breadcrumbs({ crumbs }: { crumbs: { label: string; href?: string }[] }) {
+  return (
+    <nav className="flex items-center gap-1.5 text-xs text-[var(--color-text-muted)] mb-4">
+      {crumbs.map((c, i) => (
+        <span key={i} className="flex items-center gap-1.5">
+          {i > 0 && <span className="opacity-40">/</span>}
+          {c.href
+            ? <a href={c.href} className="hover:text-[var(--color-text-primary)] transition-colors">{c.label}</a>
+            : <span className={i === crumbs.length - 1 ? 'text-[var(--color-text-primary)] font-medium' : ''}>{c.label}</span>
+          }
+        </span>
+      ))}
+    </nav>
+  )
+}
 
 // ─── Help banner for first-time users ────────────────────────────────────────
 function WelcomeBanner() {
@@ -56,8 +97,42 @@ function VisaAlertBanner() {
 
 // ─── CEO Dashboard — Earth & Stone ────────────────────────────────────────────
 function CeoDashboard() {
+  const { data: corpEntities, refetch: refetchEntities, isFetching } = useCorpEntities()
+  const activeCount = corpEntities?.filter(e => e.status === 'aktiv').length ?? 6
+
+  const [drawer, setDrawer] = useState<{ title: string; content: React.ReactNode } | null>(null)
+
+  const teamMembers = [
+    { name: 'Erik Svensson', role: 'Chairman & Group CEO' },
+    { name: 'Johan Berglund', role: 'Group CTO' },
+    { name: 'Winston Bjarnemark', role: 'CFO' },
+    { name: 'Dennis Bjarnemark', role: 'Chief Legal & Operations (Interim)' },
+    { name: 'Leon Russo De Cerame', role: 'CEO Wavult Operations' },
+  ]
+
+  const capitalItems = [
+    { text: 'Wavult Operations', status: 'active' },
+    { text: 'quiXzoom - MVP build', status: 'active' },
+    { text: 'Landvex - enterprise infrastruktur', status: 'planned' },
+    { text: 'Quixom Ads - fas 2', status: 'planned' },
+  ]
+
+  const openDrawer = (title: string, content: React.ReactNode) => setDrawer({ title, content })
+  const closeDrawer = () => setDrawer(null)
+
+  const statusBadgeStyle = (status: string) => ({
+    background: (STATUS_COLORS[status] ?? '#8A8278') + '18',
+    color: STATUS_COLORS[status] ?? '#8A8278',
+    border: `1px solid ${(STATUS_COLORS[status] ?? '#8A8278')}30`,
+    fontSize: 10,
+    padding: '1px 6px',
+    borderRadius: 9999,
+    fontWeight: 600,
+  })
+
   return (
     <div className="space-y-8 max-w-6xl">
+      <Breadcrumbs crumbs={[{ label: 'Wavult OS', href: '/' }, { label: 'Dashboard' }, { label: 'Group CEO' }]} />
       <VisaAlertBanner />
       <WelcomeBanner />
 
@@ -71,57 +146,198 @@ function CeoDashboard() {
 
       {/* 4 overview cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { id: 'C-01', label: 'AKTIVA BOLAG', value: '6', delta: 'WGH, WOH, OZ UAB, OZ Inc, LVX AC, LVX Inc' },
-          { id: 'K-02', label: 'TEAM ONLINE', value: '5', delta: 'Alla kärnroller bemannade' },
-          { id: 'P-03', label: 'KAPITAL ALLOKERAT', value: 'Q2', delta: 'Thailand workcamp - 11 april' },
-          { id: 'M-04', label: 'MARKNADSFAS', value: 'SE', delta: 'Sverige, mitten juni 2026' },
-        ].map(s => (
-          <div key={s.id} style={{ background: "var(--color-surface)", border: "1px solid #DED9CC", borderRadius: "var(--radius-xl)", padding: 20, position: 'relative' }}>
-            <div style={{ fontSize: 9, fontWeight: 700, color: "var(--color-text-muted)", marginBottom: 4, fontFamily: "var(--font-mono)", letterSpacing: "0.08em" }}>{s.id}</div>
-            <div style={{ fontSize: 10, color: "var(--color-text-muted)", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 600 }}>{s.label}</div>
-            <div className="text-3xl font-bold" style={{ color: "#1A1A1A" }}>{s.value}</div>
-            <div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 8 }}>{s.delta}</div>
+        {/* Aktiva Bolag — reactive */}
+        <button
+          className="card card-interactive p-5 text-left"
+          onClick={() => openDrawer('Aktiva Bolag', (
+            <div className="space-y-3">
+              {(corpEntities ?? []).map(e => (
+                <div key={e.id} className="flex items-center justify-between py-2 border-b border-[var(--color-border)] last:border-0">
+                  <div>
+                    <div className="text-sm font-medium text-[var(--color-text-primary)]">{e.name}</div>
+                    <div className="text-xs text-[var(--color-text-muted)] mt-0.5">{e.jurisdiction}</div>
+                  </div>
+                  <span style={statusBadgeStyle(e.status === 'aktiv' ? 'active' : 'planned')}>
+                    {e.status}
+                  </span>
+                </div>
+              ))}
+              {!corpEntities && <p className="text-sm text-[var(--color-text-muted)]">Laddar...</p>}
+            </div>
+          ))}
+        >
+          <div className="label-xs mb-2">C-01 · AKTIVA BOLAG</div>
+          <div className="text-3xl font-bold text-[var(--color-text-primary)] flex items-center gap-2">
+            {isFetching ? <span className="animate-pulse">…</span> : activeCount}
+            <button
+              onClick={e => { e.stopPropagation(); refetchEntities() }}
+              title="Uppdatera"
+              className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] ml-1"
+              style={{ fontSize: 14 }}
+            >↻</button>
           </div>
-        ))}
+          <div className="text-xs text-[var(--color-text-secondary)] mt-2">WGH, WOH, OZ UAB, OZ Inc, LVX AC, LVX Inc</div>
+        </button>
+
+        {/* Team Online */}
+        <button
+          className="card card-interactive p-5 text-left"
+          onClick={() => openDrawer('Team Online', (
+            <div className="space-y-3">
+              {teamMembers.map(m => (
+                <div key={m.name} className="flex items-start gap-3 py-2 border-b border-[var(--color-border)] last:border-0">
+                  <span className="mt-1 h-2 w-2 rounded-full bg-green-500 flex-shrink-0" />
+                  <div>
+                    <div className="text-sm font-medium text-[var(--color-text-primary)]">{m.name}</div>
+                    <div className="text-xs text-[var(--color-text-muted)] mt-0.5">{m.role}</div>
+                  </div>
+                </div>
+              ))}
+              <button
+                onClick={() => refetchEntities()}
+                className="mt-4 text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] flex items-center gap-1"
+              >
+                ↻ Uppdatera data
+              </button>
+            </div>
+          ))}
+        >
+          <div className="label-xs mb-2">K-02 · TEAM ONLINE</div>
+          <div className="text-3xl font-bold text-[var(--color-text-primary)]">5</div>
+          <div className="text-xs text-[var(--color-text-secondary)] mt-2">Alla kärnroller bemannade</div>
+        </button>
+
+        {/* Kapital Allokerat */}
+        <button
+          className="card card-interactive p-5 text-left"
+          onClick={() => openDrawer('Kapital Allokerat', (
+            <div className="space-y-3">
+              {capitalItems.map((item, i) => (
+                <div key={i} className="flex items-center justify-between py-2 border-b border-[var(--color-border)] last:border-0">
+                  <span className="text-sm text-[var(--color-text-secondary)]">{item.text}</span>
+                  <span style={statusBadgeStyle(item.status)}>{STATUS_LABELS[item.status] ?? item.status}</span>
+                </div>
+              ))}
+            </div>
+          ))}
+        >
+          <div className="label-xs mb-2">P-03 · KAPITAL ALLOKERAT</div>
+          <div className="text-3xl font-bold text-[var(--color-text-primary)]">Q2</div>
+          <div className="text-xs text-[var(--color-text-secondary)] mt-2">Thailand workcamp - 11 april</div>
+        </button>
+
+        {/* Marknadsfas */}
+        <button
+          className="card card-interactive p-5 text-left"
+          onClick={() => openDrawer('Marknadsfas', (
+            <div className="space-y-4">
+              <div>
+                <div className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">Sverige-lansering</div>
+                <p className="text-sm text-[var(--color-text-secondary)]">
+                  Planerad lansering i Sverige mitten av <strong className="text-[var(--color-text-primary)]">juni 2026</strong>. Primärmarknad för Landvex och quiXzoom rollout.
+                </p>
+              </div>
+              <div>
+                <div className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">Thailand Workcamp</div>
+                <p className="text-sm text-[var(--color-text-secondary)]">
+                  <strong className="text-[var(--color-text-primary)]">11 april 2026</strong> — Vecka 1: teambuilding + utbildning. Sedan: projekten sätts upp redo att rulla ut.
+                </p>
+              </div>
+              <div>
+                <div className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">Nästa marknader</div>
+                <p className="text-sm text-[var(--color-text-secondary)]">UAE (Dubai), USA (Texas), Litauen — bolagsstruktur under etablering.</p>
+              </div>
+            </div>
+          ))}
+        >
+          <div className="label-xs mb-2">M-04 · MARKNADSFAS</div>
+          <div className="text-3xl font-bold text-[var(--color-text-primary)]">SE</div>
+          <div className="text-xs text-[var(--color-text-secondary)] mt-2">Sverige, mitten juni 2026</div>
+        </button>
       </div>
 
       {/* Strategiska prioriteringar (ID: S-01) + Kapitalallokering (ID: A-01) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <EarthSection id="S-01" title="STRATEGISKA PRIORITERINGAR">
-          {[
+        <ClickableEarthSection
+          id="S-01"
+          title="STRATEGISKA PRIORITERINGAR"
+          onRowClick={(item) => openDrawer(item.text, (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
+                <span style={{ ...statusBadgeStyle(item.status) }}>{STATUS_LABELS[item.status] ?? item.status}</span>
+              </div>
+              <p className="text-sm text-[var(--color-text-secondary)]">
+                Strategisk prioritering inom Wavult Group — {STATUS_LABELS[item.status] === 'Pågår' ? 'Initiativet är aktivt under genomförande.' : STATUS_LABELS[item.status] === 'Aktiv' ? 'Initiativet är live och operativt.' : 'Initiativet är planerat för kommande kvartal.'}
+              </p>
+            </div>
+          ))}
+          items={[
             { text: 'Thailand workcamp', status: 'active' },
             { text: 'Bolagsstruktur Dubai', status: 'planned' },
             { text: 'quiXzoom MVP launch', status: 'in-progress' },
             { text: 'Landvex enterprise launch - Q3 2026', status: 'planned' },
             { text: 'Texas LLC incorporation', status: 'planned' },
           ]}
-        </EarthSection>
-        <EarthSection id="A-01" title="KAPITALALLOKERING">
-          {[
+        />
+        <ClickableEarthSection
+          id="A-01"
+          title="KAPITALALLOKERING"
+          onRowClick={(item) => openDrawer(item.text, (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
+                <span style={{ ...statusBadgeStyle(item.status) }}>{STATUS_LABELS[item.status] ?? item.status}</span>
+              </div>
+              <p className="text-sm text-[var(--color-text-secondary)]">
+                Kapitalpost inom Wavult Group — resurser allokerade för {item.text.toLowerCase()}.
+              </p>
+            </div>
+          ))}
+          items={[
             { text: 'Wavult Operations', status: 'active' },
             { text: 'quiXzoom - MVP build', status: 'active' },
             { text: 'Landvex - enterprise infrastruktur', status: 'planned' },
             { text: 'Quixom Ads - fas 2', status: 'planned' },
           ]}
-        </EarthSection>
+        />
       </div>
 
       {/* Beslutslogg (ID: L-01) */}
-      <EarthSection id="L-01" title="BESLUTSLOGG">
-        {[
+      <ClickableEarthSection
+        id="L-01"
+        title="BESLUTSLOGG"
+        onRowClick={(item) => openDrawer(item.text, (
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
+              <span style={{ ...statusBadgeStyle(item.status) }}>{STATUS_LABELS[item.status] ?? item.status}</span>
+            </div>
+            <p className="text-sm text-[var(--color-text-secondary)]">
+              Styrelsebeslut registrerat i Wavult Groups beslutslogg.
+            </p>
+          </div>
+        ))}
+        items={[
           { text: 'Hypbit-bilverkstad skrotad', status: 'done' },
           { text: 'Landvex AB (Sverige) - registrerat och aktivt', status: 'done' },
         ]}
-      </EarthSection>
+      />
+
+      {drawer && <InfoDrawer title={drawer.title} onClose={closeDrawer}>{drawer.content}</InfoDrawer>}
     </div>
   )
 }
 
 // ─── CEO Operations Dashboard ──────────────────────────────────────────────────
 function Opsdashboard() {
+  const [drawer, setDrawer] = useState<{ title: string; content: React.ReactNode } | null>(null)
+  const openDrawer = (title: string, content: React.ReactNode) => setDrawer({ title, content })
+  const closeDrawer = () => setDrawer(null)
+
   return (
     <div className="space-y-8 max-w-6xl">
+      <Breadcrumbs crumbs={[{ label: 'Wavult OS', href: '/' }, { label: 'Dashboard' }, { label: 'CEO Operations' }]} />
       <div>
         <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>CEO Operations</h1>
         <p style={{ color: "var(--color-text-secondary)", marginTop: 4, fontSize: 14 }}>Daglig drift & execution — Wavult Operations</p>
@@ -129,47 +345,81 @@ function Opsdashboard() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Aktiva initiativ', value: '8', delta: '3 blockerade', color: '#10B981' },
-          { label: 'Team kapacitet', value: '5/5', delta: 'Alla roller bemannade', color: '#3B82F6' },
-          { label: 'Thailand nedräkning', value: '17d', delta: '11 april 2026', color: '#F59E0B' },
-          { label: 'Delivery pace', value: 'Hög', delta: 'Q1 sprint aktiv', color: '#2563EB' },
+          { label: 'Aktiva initiativ', value: '8', delta: '3 blockerade', color: '#10B981',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">8 aktiva initiativ varav 3 är blockerade och väntar på extern input eller beslut.</p> },
+          { label: 'Team kapacitet', value: '5/5', delta: 'Alla roller bemannade', color: '#3B82F6',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Alla 5 kärnroller är bemannade: Erik, Johan, Winston, Dennis, Leon.</p> },
+          { label: 'Thailand nedräkning', value: '17d', delta: '11 april 2026', color: '#F59E0B',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Thailand Workcamp startar 11 april 2026. Vecka 1: teambuilding + utbildning. Sedan: projekten sätts upp redo att rulla ut.</p> },
+          { label: 'Delivery pace', value: 'Hög', delta: 'Q1 sprint aktiv', color: '#2563EB',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Q1 sprint är aktiv med hög leveranstakt. Nästa review: Thailand workcamp.</p> },
         ].map(s => (
-          <div key={s.label} style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-xl)", padding: 20 }}>
-            <div style={{ fontSize: 11, color: "var(--color-text-muted)", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
+          <button
+            key={s.label}
+            className="card card-interactive p-5 text-left"
+            onClick={() => openDrawer(s.label, s.drawerContent)}
+          >
+            <div className="label-xs mb-2">{s.label}</div>
             <div className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
-            <div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 8 }}>{s.delta}</div>
-          </div>
+            <div className="text-xs text-[var(--color-text-secondary)] mt-2">{s.delta}</div>
+          </button>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Section title="Aktiva initiativ">
-          {[
+        <ClickableSection
+          title="Aktiva initiativ"
+          onRowClick={(item) => openDrawer(item.text, (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
+                <span style={{ fontSize: 11, background: (STATUS_COLORS[item.status] ?? '#8A8278') + '18', color: STATUS_COLORS[item.status] ?? '#8A8278', padding: '1px 6px', borderRadius: 9999, fontWeight: 600 }}>{STATUS_LABELS[item.status] ?? item.status}</span>
+              </div>
+              <p className="text-sm text-[var(--color-text-secondary)]">Initiativ inom CEO Operations-ansvaret.</p>
+            </div>
+          ))}
+          items={[
             { text: 'Wavult OS Command Center — rollsystem live', status: 'active' },
             { text: 'quiXzoom API — ECS eu-north-1 live', status: 'active' },
             { text: 'Landvex sajt — CF Pages, senaste deploy live', status: 'active' },
             { text: 'Bolagsstruktur UAE — väntar på rättslig rådgivning', status: 'blocked' },
             { text: 'Texas LLC — Dennis driver incorporation docs', status: 'in-progress' },
           ]}
-        </Section>
-        <Section title="Team — daglig status">
-          {[
+        />
+        <ClickableSection
+          title="Team — daglig status"
+          onRowClick={(item) => openDrawer(item.text, (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
+                <span style={{ fontSize: 11, background: (STATUS_COLORS[item.status] ?? '#8A8278') + '18', color: STATUS_COLORS[item.status] ?? '#8A8278', padding: '1px 6px', borderRadius: 9999, fontWeight: 600 }}>{STATUS_LABELS[item.status] ?? item.status}</span>
+              </div>
+              <p className="text-sm text-[var(--color-text-secondary)]">Teammedlemmens nuvarande fokus och status.</p>
+            </div>
+          ))}
+          items={[
             { text: 'Johan: Wavult OS infrastruktur + ECS pipeline', status: 'active' },
             { text: 'Winston: Kassaflöde + budgetuppföljning', status: 'active' },
             { text: 'Dennis: Texas LLC docs + compliance', status: 'in-progress' },
             { text: 'Leon: Q1 execution koordinering', status: 'active' },
             { text: 'Erik: Thailand workcamp + bolagsstruktur', status: 'active' },
           ]}
-        </Section>
+        />
       </div>
+      {drawer && <InfoDrawer title={drawer.title} onClose={closeDrawer}>{drawer.content}</InfoDrawer>}
     </div>
   )
 }
 
 // ─── CFO Dashboard ─────────────────────────────────────────────────────────────
 function CfoDashboard() {
+  const [drawer, setDrawer] = useState<{ title: string; content: React.ReactNode } | null>(null)
+  const openDrawer = (title: string, content: React.ReactNode) => setDrawer({ title, content })
+  const closeDrawer = () => setDrawer(null)
+
   return (
     <div className="space-y-8 max-w-6xl">
+      <Breadcrumbs crumbs={[{ label: 'Wavult OS', href: '/' }, { label: 'Dashboard' }, { label: 'CFO' }]} />
       <div>
         <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>CFO</h1>
         <p style={{ color: "var(--color-text-secondary)", marginTop: 4, fontSize: 14 }}>Finansiell kontroll — Wavult Ecosystem</p>
@@ -177,47 +427,81 @@ function CfoDashboard() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Bolag med ekonomi', value: '6', delta: 'WGH, WOP, QZ UAB, QZ Inc, LVX AB, LVX Inc', color: '#3B82F6' },
-          { label: 'Infrastruktur (AWS)', value: 'Live', delta: 'eu-north-1 · ECS · S3 multi-region', color: '#10B981' },
-          { label: 'Transfer pricing', value: 'Ej satt', delta: 'Kräver CLO + extern rådgivare', color: '#FF9500' },
-          { label: 'Dubai holding', value: 'Planerat', delta: 'Väntar på bolagsbildning', color: '#2563EB' },
+          { label: 'Bolag med ekonomi', value: '6', delta: 'WGH, WOP, QZ UAB, QZ Inc, LVX AB, LVX Inc', color: '#3B82F6',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">6 bolag med ekonomisk redovisning: Wavult Group Holding, Wavult Operations, QuiXzoom UAB, QuiXzoom Inc, Landvex AB, Landvex Inc.</p> },
+          { label: 'Infrastruktur (AWS)', value: 'Live', delta: 'eu-north-1 · ECS · S3 multi-region', color: '#10B981',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">AWS ECS eu-north-1 live med wavult-api och quixzoom-api. S3 multi-region CRR aktiv.</p> },
+          { label: 'Transfer pricing', value: 'Ej satt', delta: 'Kräver CLO + extern rådgivare', color: '#FF9500',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Transfer pricing-policy är ej fastställd. Kräver samverkan mellan CFO, CLO och extern skatterådgivare.</p> },
+          { label: 'Dubai holding', value: 'Planerat', delta: 'Väntar på bolagsbildning', color: '#2563EB',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Wavult Group (Dubai Free Zone) under bildning. Ska bli holdingbolag för IP och internprissättning.</p> },
         ].map(s => (
-          <div key={s.label} style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-xl)", padding: 20 }}>
-            <div style={{ fontSize: 11, color: "var(--color-text-muted)", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
+          <button
+            key={s.label}
+            className="card card-interactive p-5 text-left"
+            onClick={() => openDrawer(s.label, s.drawerContent)}
+          >
+            <div className="label-xs mb-2">{s.label}</div>
             <div className="text-2xl font-bold" style={{ color: s.color }}>{s.value}</div>
-            <div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 8 }}>{s.delta}</div>
-          </div>
+            <div className="text-xs text-[var(--color-text-secondary)] mt-2">{s.delta}</div>
+          </button>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Section title="Finansiell struktur (att implementera)">
-          {[
+        <ClickableSection
+          title="Finansiell struktur (att implementera)"
+          onRowClick={(item) => openDrawer(item.text, (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
+                <span style={{ fontSize: 11, background: (STATUS_COLORS[item.status] ?? '#8A8278') + '18', color: STATUS_COLORS[item.status] ?? '#8A8278', padding: '1px 6px', borderRadius: 9999, fontWeight: 600 }}>{STATUS_LABELS[item.status] ?? item.status}</span>
+              </div>
+              <p className="text-sm text-[var(--color-text-secondary)]">Finansiell strukturåtgärd inom Wavult Ecosystem.</p>
+            </div>
+          ))}
+          items={[
             { text: 'Intercompany service fee — WOP fakturerar dotterbolag', status: 'planned' },
             { text: 'IP-royalty — Wavult Group tar 5–15% på omsättning', status: 'planned' },
             { text: 'Transfer pricing-policy — kräver CLO + extern rådgivare', status: 'blocked' },
             { text: 'Separat bankkonto per bolag — storbank varje jurisdiktion', status: 'planned' },
             { text: 'Supabase US East — planerat (OI US expansion)', status: 'planned' },
           ]}
-        </Section>
-        <Section title="Infrastrukturkostnader (aktiva)">
-          {[
+        />
+        <ClickableSection
+          title="Infrastrukturkostnader (aktiva)"
+          onRowClick={(item) => openDrawer(item.text, (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
+                <span style={{ fontSize: 11, background: (STATUS_COLORS[item.status] ?? '#8A8278') + '18', color: STATUS_COLORS[item.status] ?? '#8A8278', padding: '1px 6px', borderRadius: 9999, fontWeight: 600 }}>{STATUS_LABELS[item.status] ?? item.status}</span>
+              </div>
+              <p className="text-sm text-[var(--color-text-secondary)]">Infrastrukturkostnad — löpande driftkostnad för Wavult Group.</p>
+            </div>
+          ))}
+          items={[
             { text: 'AWS ECS eu-north-1 — wavult-api + quixzoom-api', status: 'active' },
             { text: 'S3: 4 buckets (EU + US primär + backup)', status: 'active' },
             { text: 'Supabase West EU — quixzoom-v2 + wavult-os projekt', status: 'active' },
             { text: 'Cloudflare — 2 zoner, CF Pages (10/10 slots)', status: 'active' },
             { text: 'CF Pages — quiXzoom landing, Wavult, OI portals', status: 'active' },
           ]}
-        </Section>
+        />
       </div>
+      {drawer && <InfoDrawer title={drawer.title} onClose={closeDrawer}>{drawer.content}</InfoDrawer>}
     </div>
   )
 }
 
 // ─── CTO Dashboard ─────────────────────────────────────────────────────────────
 function CtoDashboard() {
+  const [drawer, setDrawer] = useState<{ title: string; content: React.ReactNode } | null>(null)
+  const openDrawer = (title: string, content: React.ReactNode) => setDrawer({ title, content })
+  const closeDrawer = () => setDrawer(null)
+
   return (
     <div className="space-y-8 max-w-6xl">
+      <Breadcrumbs crumbs={[{ label: 'Wavult OS', href: '/' }, { label: 'Dashboard' }, { label: 'Group CTO' }]} />
       <div>
         <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Group CTO</h1>
         <p style={{ color: "var(--color-text-secondary)", marginTop: 4, fontSize: 14 }}>Teknisk arkitektur & infrastruktur — Wavult Ecosystem</p>
@@ -225,56 +509,94 @@ function CtoDashboard() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'API Services', value: '2', delta: 'wavult-api + quixzoom-api live', color: '#06B6D4' },
-          { label: 'Supabase', value: '2', delta: 'quixzoom-v2 + wavult-os (EU West)', color: '#3ECF8E' },
-          { label: 'S3 Buckets', value: '4', delta: 'EU + US, CRR aktiv', color: '#FF9500' },
-          { label: 'CF Pages', value: '10/10', delta: 'Max — behöver frigöra slots', color: '#FF3B30' },
+          { label: 'API Services', value: '2', delta: 'wavult-api + quixzoom-api live', color: '#06B6D4',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">wavult-api på api.wavult.com och quixzoom-api — båda på ECS eu-north-1 med Docker-containers.</p> },
+          { label: 'Supabase', value: '2', delta: 'quixzoom-v2 + wavult-os (EU West)', color: '#3ECF8E',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Supabase West EU: projekt lpeipzdm (quixzoom-v2) och wavult-os. 13 migrationer live.</p> },
+          { label: 'S3 Buckets', value: '4', delta: 'EU + US, CRR aktiv', color: '#FF9500',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">4 S3-buckets: EU primär, EU backup, US primär, US backup. Cross-Region Replication (CRR) aktiv.</p> },
+          { label: 'CF Pages', value: '10/10', delta: 'Max — behöver frigöra slots', color: '#FF3B30',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Cloudflare Pages är maxat på 10/10 slots. Åtgärd: ta bort landvex-fr/nl/de/fi/be/it (6 projekt).</p> },
         ].map(s => (
-          <div key={s.label} style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-xl)", padding: 20 }}>
-            <div style={{ fontSize: 11, color: "var(--color-text-muted)", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
+          <button
+            key={s.label}
+            className="card card-interactive p-5 text-left"
+            onClick={() => openDrawer(s.label, s.drawerContent)}
+          >
+            <div className="label-xs mb-2">{s.label}</div>
             <div className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
-            <div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 8 }}>{s.delta}</div>
-          </div>
+            <div className="text-xs text-[var(--color-text-secondary)] mt-2">{s.delta}</div>
+          </button>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Section title="Infrastruktur — live">
-          {[
+        <ClickableSection
+          title="Infrastruktur — live"
+          onRowClick={(item) => openDrawer(item.text, (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
+                <span style={{ fontSize: 11, background: (STATUS_COLORS[item.status] ?? '#8A8278') + '18', color: STATUS_COLORS[item.status] ?? '#8A8278', padding: '1px 6px', borderRadius: 9999, fontWeight: 600 }}>{STATUS_LABELS[item.status] ?? item.status}</span>
+              </div>
+              <p className="text-sm text-[var(--color-text-secondary)]">Live infrastrukturkomponent i Wavult Ecosystem.</p>
+            </div>
+          ))}
+          items={[
             { text: 'wavult-api — ECS eu-north-1, api.wavult.com', status: 'active' },
             { text: 'quixzoom-api — ECS cluster wavult, task def :2', status: 'active' },
             { text: 'quiXzoom frontend — S3 + CloudFront (dewrtqzc20flx)', status: 'active' },
             { text: 'Supabase lpeipzdm — 13 migrationer live', status: 'active' },
             { text: 'S3 multi-region — CRR eu→eu + us→us', status: 'active' },
           ]}
-        </Section>
-        <Section title="Öppna tekniska TODO">
-          {[
+        />
+        <ClickableSection
+          title="Öppna tekniska TODO"
+          onRowClick={(item) => openDrawer(item.text, (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
+                <span style={{ fontSize: 11, background: (STATUS_COLORS[item.status] ?? '#8A8278') + '18', color: STATUS_COLORS[item.status] ?? '#8A8278', padding: '1px 6px', borderRadius: 9999, fontWeight: 600 }}>{STATUS_LABELS[item.status] ?? item.status}</span>
+              </div>
+              <p className="text-sm text-[var(--color-text-secondary)]">Teknisk backlog-post som behöver åtgärdas.</p>
+            </div>
+          ))}
+          items={[
             { text: 'CF Pages-slots: ta bort landvex-fr/nl/de/fi/be/it (6 projekt)', status: 'blocked' },
             { text: 'Supabase US East — planerat (OI US expansion)', status: 'planned' },
             { text: 'ECS us-east-1 — ny service för OI US API', status: 'planned' },
             { text: 'optical-insight-eu + optical-insight-us — CF Pages deploy', status: 'planned' },
             { text: 'CF Pages API-token — Erik skapar på dash.cloudflare.com', status: 'blocked' },
           ]}
-        </Section>
+        />
       </div>
 
-      <Section title="Stack">
-        {[
+      <ClickableSection
+        title="Stack"
+        onRowClick={(item) => openDrawer('Tech Stack', (
+          <p className="text-sm text-[var(--color-text-secondary)]">{item.text}</p>
+        ))}
+        items={[
           { text: 'TypeScript · Node.js/Express · React/Next.js', status: 'active' },
           { text: 'Supabase (PostgreSQL) · Docker · AWS ECS', status: 'active' },
           { text: 'Cloudflare · Wavult CI (Gitea) · CF Pages · Stripe · Revolut', status: 'active' },
           { text: 'Trigger.dev · ECR: 155407238699.dkr.ecr.eu-north-1', status: 'active' },
         ]}
-      </Section>
+      />
+      {drawer && <InfoDrawer title={drawer.title} onClose={closeDrawer}>{drawer.content}</InfoDrawer>}
     </div>
   )
 }
 
 // ─── CLO Dashboard ─────────────────────────────────────────────────────────────
 function CloDashboard() {
+  const [drawer, setDrawer] = useState<{ title: string; content: React.ReactNode } | null>(null)
+  const openDrawer = (title: string, content: React.ReactNode) => setDrawer({ title, content })
+  const closeDrawer = () => setDrawer(null)
+
   return (
     <div className="space-y-8 max-w-6xl">
+      <Breadcrumbs crumbs={[{ label: 'Wavult OS', href: '/' }, { label: 'Dashboard' }, { label: 'Chief Legal & Compliance' }]} />
       <div>
         <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Chief Legal & Compliance</h1>
         <p style={{ color: "var(--color-text-secondary)", marginTop: 4, fontSize: 14 }}>Bolagsstruktur, avtal & risk — Wavult Ecosystem</p>
@@ -282,22 +604,40 @@ function CloDashboard() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Bolag totalt', value: '6', delta: '2 Dubai · 2 EU · 2 US', color: '#F59E0B' },
-          { label: 'Aktiva bolag', value: '1', delta: 'Landvex AB (Sverige) live', color: '#10B981' },
-          { label: 'Under bildning', value: '5', delta: 'Dubai, Delaware, Texas, Litauen', color: '#FF9500' },
-          { label: 'IP-skydd', value: 'Ej satt', delta: 'Ska ligga i Wavult Group Dubai', color: '#FF3B30' },
+          { label: 'Bolag totalt', value: '6', delta: '2 Dubai · 2 EU · 2 US', color: '#F59E0B',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">6 bolag totalt: 2 Dubai (Free Zone A), 2 EU (Litauen + Sverige), 2 US (Delaware + Texas).</p> },
+          { label: 'Aktiva bolag', value: '1', delta: 'Landvex AB (Sverige) live', color: '#10B981',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Landvex AB är det enda fullt aktiva bolaget. Registrerat och operativt i Sverige.</p> },
+          { label: 'Under bildning', value: '5', delta: 'Dubai, Delaware, Texas, Litauen', color: '#FF9500',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">5 bolag under bildning: Wavult Group Dubai, Wavult Operations Dubai, QuiXzoom UAB (LT), QuiXzoom Inc (DE), Landvex Inc (TX).</p> },
+          { label: 'IP-skydd', value: 'Ej satt', delta: 'Ska ligga i Wavult Group Dubai', color: '#FF3B30',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">IP-skydd är ej etablerat. Plan: all IP ska överlåtas till Wavult Group (Dubai Free Zone A) för optimal skattestruktur.</p> },
         ].map(s => (
-          <div key={s.label} style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-xl)", padding: 20 }}>
-            <div style={{ fontSize: 11, color: "var(--color-text-muted)", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
+          <button
+            key={s.label}
+            className="card card-interactive p-5 text-left"
+            onClick={() => openDrawer(s.label, s.drawerContent)}
+          >
+            <div className="label-xs mb-2">{s.label}</div>
             <div className="text-2xl font-bold" style={{ color: s.color }}>{s.value}</div>
-            <div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 8 }}>{s.delta}</div>
-          </div>
+            <div className="text-xs text-[var(--color-text-secondary)] mt-2">{s.delta}</div>
+          </button>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Section title="Bolagsstruktur — status">
-          {[
+        <ClickableSection
+          title="Bolagsstruktur — status"
+          onRowClick={(item) => openDrawer(item.text, (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
+                <span style={{ fontSize: 11, background: (STATUS_COLORS[item.status] ?? '#8A8278') + '18', color: STATUS_COLORS[item.status] ?? '#8A8278', padding: '1px 6px', borderRadius: 9999, fontWeight: 600 }}>{STATUS_LABELS[item.status] ?? item.status}</span>
+              </div>
+              <p className="text-sm text-[var(--color-text-secondary)]">Bolag i Wavult Groups juridiska struktur.</p>
+            </div>
+          ))}
+          items={[
             { text: 'Wavult Group (Holding, Dubai Free Zone A) — planerat', status: 'planned' },
             { text: 'Wavult Operations (Dubai Free Zone A) — planerat', status: 'planned' },
             { text: 'QuiXzoom UAB (Litauen) — planerat', status: 'planned' },
@@ -305,25 +645,41 @@ function CloDashboard() {
             { text: 'Landvex Inc (Texas/Houston) — under bildning', status: 'in-progress' },
             { text: 'Landvex AB (Sverige) — live', status: 'active' },
           ]}
-        </Section>
-        <Section title="Juridiska prioriteringar">
-          {[
+        />
+        <ClickableSection
+          title="Juridiska prioriteringar"
+          onRowClick={(item) => openDrawer(item.text, (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
+                <span style={{ fontSize: 11, background: (STATUS_COLORS[item.status] ?? '#8A8278') + '18', color: STATUS_COLORS[item.status] ?? '#8A8278', padding: '1px 6px', borderRadius: 9999, fontWeight: 600 }}>{STATUS_LABELS[item.status] ?? item.status}</span>
+              </div>
+              <p className="text-sm text-[var(--color-text-secondary)]">Juridisk prioritering som hanteras av CLO-funktionen.</p>
+            </div>
+          ))}
+          items={[
             { text: 'IP-överlåtelse — kod, varumärke → Wavult Group Dubai', status: 'planned' },
             { text: 'Intercompany-avtal — service fee + royalty-struktur', status: 'planned' },
             { text: 'Transfer pricing-policy — samverka med CFO + extern rådgivare', status: 'planned' },
             { text: 'GDPR-compliance — EU-data aldrig till US-buckets', status: 'active' },
             { text: 'Texas LLC — incorporation docs pågår', status: 'in-progress' },
           ]}
-        </Section>
+        />
       </div>
+      {drawer && <InfoDrawer title={drawer.title} onClose={closeDrawer}>{drawer.content}</InfoDrawer>}
     </div>
   )
 }
 
 // ─── CPO Dashboard (vakant) ────────────────────────────────────────────────────
 function CpoDashboard() {
+  const [drawer, setDrawer] = useState<{ title: string; content: React.ReactNode } | null>(null)
+  const openDrawer = (title: string, content: React.ReactNode) => setDrawer({ title, content })
+  const closeDrawer = () => setDrawer(null)
+
   return (
     <div className="space-y-8 max-w-6xl">
+      <Breadcrumbs crumbs={[{ label: 'Wavult OS', href: '/' }, { label: 'Dashboard' }, { label: 'CPO' }]} />
       <div>
         <h1 style={{ fontSize: 22, fontWeight: 700, color: "var(--color-text-primary)" }}>Chief Product Officer</h1>
         <p style={{ color: "var(--color-text-secondary)", marginTop: 4, fontSize: 14 }}>Produktstrategi & roadmap — Vakant (interim: Erik)</p>
@@ -337,28 +693,48 @@ function CpoDashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Section title="Produkter — aktiva">
-          {[
+        <ClickableSection
+          title="Produkter — aktiva"
+          onRowClick={(item) => openDrawer(item.text, (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
+                <span style={{ fontSize: 11, background: (STATUS_COLORS[item.status] ?? '#8A8278') + '18', color: STATUS_COLORS[item.status] ?? '#8A8278', padding: '1px 6px', borderRadius: 9999, fontWeight: 600 }}>{STATUS_LABELS[item.status] ?? item.status}</span>
+              </div>
+              <p className="text-sm text-[var(--color-text-secondary)]">Produkt i Wavult Ecosystem — under CPO-ansvaret (interim: Erik).</p>
+            </div>
+          ))}
+          items={[
             { text: 'quiXzoom — crowdsourcad kamerainfrastruktur (zoomer-plattform)', status: 'active' },
             { text: 'Optical Insight / Landvex — B2G kontrollsystem', status: 'active' },
             { text: 'Wavult OS — internt operativsystem för Wavult Group', status: 'active' },
             { text: 'Quixom Ads — fas 2, monetisering av quiXzoom-data', status: 'planned' },
           ]}
-        </Section>
-        <Section title="Produktprinciper (låsta)">
-          {[
+        />
+        <ClickableSection
+          title="Produktprinciper (låsta)"
+          onRowClick={(item) => openDrawer(item.text, (
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
+              </div>
+              <p className="text-sm text-[var(--color-text-secondary)]">Låst produktprincip — gäller alla produkter och all kommunikation.</p>
+            </div>
+          ))}
+          items={[
             { text: 'Säg aldrig "AI" — säg optisk analys, vision engine, optical layer', status: 'active' },
             { text: 'Zoomers — aldrig fotografer, operatörer, fältpersonal', status: 'active' },
             { text: 'Landvex: Right control. Right cost. Right interval.', status: 'active' },
             { text: 'OI: Works on day one. Gets smarter every day you use it.', status: 'active' },
           ]}
-        </Section>
+        />
       </div>
+      {drawer && <InfoDrawer title={drawer.title} onClose={closeDrawer}>{drawer.content}</InfoDrawer>}
     </div>
   )
 }
 
-// ─── Shared Section component ──────────────────────────────────────────────────
+// ─── Shared status maps ────────────────────────────────────────────────────────
 const STATUS_COLORS: Record<string, string> = {
   active: '#2D6A4F',      /* forest green — Aktiv */
   done: '#2D6A4F',        /* forest green — Klar */
@@ -374,6 +750,7 @@ const STATUS_LABELS: Record<string, string> = {
   blocked: 'Blockerad',
 }
 
+// ─── Section component (non-clickable) ────────────────────────────────────────
 function Section({ title, children }: { title: string; children: { text: string; status: string }[] }) {
   return (
     <div>
@@ -400,6 +777,44 @@ function Section({ title, children }: { title: string; children: { text: string;
               {STATUS_LABELS[item.status] ?? item.status}
             </span>
           </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ─── Clickable Section component ──────────────────────────────────────────────
+function ClickableSection({ title, items, onRowClick }: {
+  title: string
+  items: { text: string; status: string }[]
+  onRowClick: (item: { text: string; status: string }) => void
+}) {
+  return (
+    <div>
+      <h2 style={{ fontSize: 11, fontWeight: 600, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>{title}</h2>
+      <div style={{ background: "var(--color-surface)", border: "1px solid #DED9CC", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
+        {items.map((item, i) => (
+          <button
+            key={i}
+            onClick={() => onRowClick(item)}
+            className="w-full flex items-start gap-3 px-5 py-3.5 text-left hover:bg-[var(--color-surface-hover,rgba(0,0,0,0.03))] transition-colors"
+            style={{ borderBottom: i < items.length - 1 ? '1px solid #DED9CC' : 'none' }}
+          >
+            <span
+              className="mt-1 h-2 w-2 rounded-full flex-shrink-0"
+              style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }}
+            />
+            <span style={{ fontSize: 13, color: "var(--color-text-secondary)", flex: 1 }}>{item.text}</span>
+            <span
+              className="text-xs px-1.5 py-0.5 rounded flex-shrink-0"
+              style={{
+                background: (STATUS_COLORS[item.status] ?? '#8A8278') + '18',
+                color: STATUS_COLORS[item.status] ?? '#8A8278',
+              }}
+            >
+              {STATUS_LABELS[item.status] ?? item.status}
+            </span>
+          </button>
         ))}
       </div>
     </div>
@@ -437,6 +852,49 @@ function EarthSection({ id, title, children }: { id: string; title: string; chil
               {STATUS_LABELS[item.status] ?? item.status}
             </span>
           </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ─── Clickable EarthSection (for CEO dashboard with ID tags) ──────────────────
+function ClickableEarthSection({ id, title, items, onRowClick }: {
+  id: string
+  title: string
+  items: { text: string; status: string }[]
+  onRowClick: (item: { text: string; status: string }) => void
+}) {
+  return (
+    <div>
+      <div className="flex items-center gap-2 mb-3">
+        <span style={{ fontSize: 9, fontWeight: 700, color: "var(--color-text-muted)", fontFamily: "var(--font-mono)", letterSpacing: "0.08em" }}>{id}</span>
+        <h2 style={{ fontSize: 11, fontWeight: 600, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.08em" }}>{title}</h2>
+      </div>
+      <div style={{ background: "var(--color-surface)", border: "1px solid #DED9CC", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
+        {items.map((item, i) => (
+          <button
+            key={i}
+            onClick={() => onRowClick(item)}
+            className="w-full flex items-start gap-3 px-5 py-3.5 text-left hover:bg-[var(--color-surface-hover,rgba(0,0,0,0.03))] transition-colors"
+            style={{ borderBottom: i < items.length - 1 ? '1px solid #DED9CC' : 'none' }}
+          >
+            <span
+              className="mt-1 h-2 w-2 rounded-full flex-shrink-0"
+              style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }}
+            />
+            <span style={{ fontSize: 13, color: "#1A1A1A", flex: 1 }}>{item.text}</span>
+            <span
+              className="text-xs px-2 py-0.5 rounded-full flex-shrink-0 font-medium"
+              style={{
+                background: (STATUS_COLORS[item.status] ?? '#8A8278') + '18',
+                color: STATUS_COLORS[item.status] ?? '#8A8278',
+                border: `1px solid ${(STATUS_COLORS[item.status] ?? '#8A8278')}30`,
+              }}
+            >
+              {STATUS_LABELS[item.status] ?? item.status}
+            </span>
+          </button>
         ))}
       </div>
     </div>
