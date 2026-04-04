@@ -298,5 +298,8 @@
   "nav.system_intelligence": "System Intelligence",
   "nav.meeting_cadence": "Meeting Cadence",
   "nav.bernt": "Bernt",
-  "nav.agent": "Agent"
+  "nav.agent": "Agent Mesh",
+  "nav.qms": "QMS",
+  "nav.tuv": "TÜV Audit",
+  "nav.jurisdiction": "Jurisdiction"
 }

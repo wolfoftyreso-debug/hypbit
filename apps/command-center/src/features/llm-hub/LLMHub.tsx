@@ -1,5 +1,6 @@
 // ─── LLM Hub — Wavult Group ───────────────────────────────────────────────────
 // Fallback-strategi: GPT-4.6 → Claude Sonnet → Graceful Error
+// Providers: OpenAI · Anthropic · Grok (xAI) · Gemini · DeepSeek · Groq
 // "Vi gör aldrig något fel i våra system." — Erik Svensson
 
 import { useState, useRef, useEffect } from 'react'
@@ -9,7 +10,7 @@ import { useTranslation } from '../../shared/i18n/useTranslation'
 
 interface LLMResult {
   text: string
-  provider: 'openai' | 'anthropic' | 'error'
+  provider: 'openai' | 'anthropic' | 'grok' | 'gemini' | 'deepseek' | 'groq' | 'error'
   fallbackUsed: boolean
   userMessage?: string
 }
@@ -17,7 +18,7 @@ interface LLMResult {
 interface ChatMessage {
   role: 'user' | 'assistant' | 'system'
   content: string
-  provider?: 'openai' | 'anthropic' | 'error'
+  provider?: 'openai' | 'anthropic' | 'grok' | 'gemini' | 'deepseek' | 'groq' | 'error'
   fallbackUsed?: boolean
 }
 
@@ -25,6 +26,17 @@ interface LLMStatus {
   ok: boolean
   providers: Array<{ name: string; available: boolean }>
   message: string
+}
+
+// Kända providers med displaynamn och ikon
+const PROVIDER_META: Record<string, { label: string; icon: string }> = {
+  openai:     { label: 'OpenAI',    icon: '✦' },
+  anthropic:  { label: 'Anthropic', icon: '◆' },
+  grok:       { label: 'Grok (xAI)',icon: '⚡' },
+  gemini:     { label: 'Gemini',    icon: '◎' },
+  deepseek:   { label: 'DeepSeek',  icon: '🧩' },
+  groq:       { label: 'Groq',      icon: '⚡' },
+  local:      { label: 'Local (Llama)', icon: '🦙' },
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -37,6 +49,15 @@ function apiUrl(path: string): string {
 
 // ─── Provider Badge ───────────────────────────────────────────────────────────
 
+const BADGE_STYLES: Record<string, { bg: string; text: string; icon: string; label: string }> = {
+  openai:    { bg: 'bg-emerald-500/20', text: 'text-emerald-700', icon: '✦', label: 'OpenAI' },
+  anthropic: { bg: 'bg-blue-600/20',   text: 'text-blue-700',    icon: '◆', label: 'Anthropic' },
+  grok:      { bg: 'bg-violet-500/20', text: 'text-violet-700',  icon: '⚡', label: 'Grok (xAI)' },
+  gemini:    { bg: 'bg-sky-500/20',    text: 'text-sky-700',     icon: '◎', label: 'Gemini' },
+  deepseek:  { bg: 'bg-teal-500/20',   text: 'text-teal-700',    icon: '🧩', label: 'DeepSeek' },
+  groq:      { bg: 'bg-orange-500/20', text: 'text-orange-700',  icon: '⚡', label: 'Groq' },
+}
+
 function ProviderBadge({ provider, fallbackUsed }: { provider: LLMResult['provider']; fallbackUsed: boolean }) {
   if (provider === 'error') {
     return (
@@ -46,25 +67,27 @@ function ProviderBadge({ provider, fallbackUsed }: { provider: LLMResult['provid
     )
   }
 
+  const style = BADGE_STYLES[provider]
+
   if (fallbackUsed) {
     return (
       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-amber-500/20 text-amber-700 font-mono">
-        ⚠️ Fallback · {provider === 'openai' ? 'OpenAI' : 'Anthropic'}
+        ⚠️ Fallback · {style?.label ?? provider}
       </span>
     )
   }
 
-  if (provider === 'openai') {
+  if (!style) {
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-emerald-500/20 text-emerald-700 font-mono">
-        ✦ OpenAI
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-gray-500/20 text-gray-700 font-mono">
+        {provider}
       </span>
     )
   }
 
   return (
-    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-blue-600/20 text-blue-700 font-mono">
-      ◆ Anthropic
+    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs ${style.bg} ${style.text} font-mono`}>
+      {style.icon} {style.label}
     </span>
   )
 }
@@ -77,12 +100,16 @@ function StatusPanel({ status, loading }: { status: LLMStatus | null; loading: b
       <span className="text-[#8A8A9A]">PROVIDERS</span>
       {loading && <span className="text-[#8A8A9A] animate-pulse">Laddar...</span>}
       {!loading && !status && <span className="text-red-700/70">Kunde inte hämta status</span>}
-      {!loading && status && status.providers.map(p => (
-        <span key={p.name} className={`flex items-center gap-1.5 ${p.available ? 'text-emerald-700' : 'text-[#8A8A9A]'}`}>
-          {p.available ? '✅' : '❌'}
-          <span className="capitalize">{p.name === 'openai' ? 'OpenAI' : 'Anthropic'}</span>
-        </span>
-      ))}
+      {!loading && status && status.providers.map(p => {
+        const meta = PROVIDER_META[p.name]
+        const label = meta?.label ?? p.name
+        return (
+          <span key={p.name} className={`flex items-center gap-1.5 ${p.available ? 'text-emerald-700' : 'text-[#8A8A9A]'}`}>
+            {p.available ? '✅' : '❌'}
+            <span>{label}</span>
+          </span>
+        )
+      })}
       {!loading && status && (
         <span className={`ml-auto ${status.ok ? 'text-emerald-700/60' : 'text-red-700/60'}`}>
           {status.message}
@@ -383,7 +410,7 @@ export function LLMHub() {
                 🧠 LLM Hub
               </h1>
               <p className="text-sm text-[#8A8A9A] mt-0.5">
-                GPT-4.6 → Claude Sonnet → Graceful Error
+                GPT-4.6 · Claude · Grok · Gemini · DeepSeek · Groq
               </p>
             </div>
           </div>

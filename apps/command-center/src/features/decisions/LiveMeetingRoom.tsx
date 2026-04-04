@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Vote, Plus, CheckSquare } from 'lucide-react'
+import { useWavultAPI } from '../../shared/hooks/useWavultAPI'
+import { useApi } from '../../shared/auth/useApi'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -53,9 +55,20 @@ interface Meeting {
   notes: string
 }
 
-// ─── Demo data ────────────────────────────────────────────────────────────────
+interface MeetingRecord {
+  id: string
+  title: string
+  date: string
+  attendees: string[]
+  status: string
+  summary: string
+  decisions: unknown[]
+  action_items: unknown[]
+}
 
-const DEMO_PARTICIPANTS: Participant[] = [
+// ─── Default participants ─────────────────────────────────────────────────────
+
+const DEFAULT_PARTICIPANTS: Participant[] = [
   { id: 'erik-svensson', name: 'Erik Svensson', role: 'Chairman', joinedAt: new Date().toISOString(), isPresent: true },
   { id: 'leon-russo', name: 'Leon Russo', role: 'CEO Ops', joinedAt: new Date().toISOString(), isPresent: true },
   { id: 'dennis-bjarnemark', name: 'Dennis Bjarnemark', role: 'CLO', joinedAt: new Date().toISOString(), isPresent: false },
@@ -63,31 +76,33 @@ const DEMO_PARTICIPANTS: Participant[] = [
   { id: 'johan-berglund', name: 'Johan Berglund', role: 'CTO', joinedAt: new Date().toISOString(), isPresent: false },
 ]
 
-const DEMO_AGENDA: AgendaItem[] = [
-  { id: 'a1', title: 'Öppning & Närvaro', duration: 5, type: 'info', status: 'done' },
-  { id: 'a2', title: 'Q2 OKR Review — Wavult Group', duration: 20, type: 'discussion', status: 'active' },
-  { id: 'a3', title: 'Beslut: Thailand Workcamp Budget', duration: 10, type: 'vote', status: 'pending' },
-  { id: 'a4', title: 'Landvex — Pipeline Update (Leon)', duration: 15, type: 'discussion', status: 'pending' },
-  { id: 'a5', title: 'Teknisk status (Johan)', duration: 10, type: 'info', status: 'pending' },
-  { id: 'a6', title: 'Åtgärdspunkter & Stängning', duration: 10, type: 'decision', status: 'pending' },
-]
-
 // ─── Component ────────────────────────────────────────────────────────────────
 
 export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: string }) {
+  const { apiFetch } = useApi()
+  // Load all meetings from API to show context
+  const { data: meetingsData, loading: meetingsLoading } = useWavultAPI<MeetingRecord[]>('/api/decisions/meetings')
+
   const [meeting, setMeeting] = useState<Meeting>({
     id: meetingId,
     title: 'QBR — Wavult Group Q2 2026',
     type: 'QBR',
     startedAt: new Date().toISOString(),
-    participants: DEMO_PARTICIPANTS,
-    agenda: DEMO_AGENDA,
+    participants: DEFAULT_PARTICIPANTS,
+    agenda: [
+      { id: 'a1', title: 'Öppning & Närvaro', duration: 5, type: 'info', status: 'done' },
+      { id: 'a2', title: 'Q2 OKR Review — Wavult Group', duration: 20, type: 'discussion', status: 'active' },
+      { id: 'a3', title: 'Beslut: Thailand Workcamp Budget', duration: 10, type: 'vote', status: 'pending' },
+      { id: 'a4', title: 'Landvex — Pipeline Update (Leon)', duration: 15, type: 'discussion', status: 'pending' },
+      { id: 'a5', title: 'Teknisk status (Johan)', duration: 10, type: 'info', status: 'pending' },
+      { id: 'a6', title: 'Åtgärdspunkter & Stängning', duration: 10, type: 'decision', status: 'pending' },
+    ],
     votes: [],
     actions: [],
     notes: '',
   })
 
-  const [activeTab, setActiveTab] = useState<'agenda' | 'vote' | 'actions' | 'notes'>('agenda')
+  const [activeTab, setActiveTab] = useState<'agenda' | 'vote' | 'actions' | 'notes' | 'history'>('agenda')
   const [elapsed, setElapsed] = useState(0)
   const [currentUser] = useState({ id: 'erik-svensson', name: 'Erik Svensson' })
   const [newAction, setNewAction] = useState({ title: '', ownerId: '', deadline: '' })
@@ -95,7 +110,6 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
   const [showAddVote, setShowAddVote] = useState(false)
   const [showAddAction, setShowAddAction] = useState(false)
 
-  // Elapsed timer (increments every minute)
   useEffect(() => {
     const t = setInterval(() => setElapsed(e => e + 1), 60000)
     return () => clearInterval(t)
@@ -163,6 +177,25 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
     }))
   }
 
+  async function saveMeetingToAPI() {
+    try {
+      await apiFetch('/api/decisions/meetings', {
+        method: 'POST',
+        body: JSON.stringify({
+          id: meeting.id,
+          title: meeting.title,
+          date: new Date().toISOString().split('T')[0],
+          attendees: meeting.participants.filter(p => p.isPresent).map(p => p.name),
+          status: 'active',
+          decisions: meeting.votes.filter(v => v.status === 'closed').map(v => ({ question: v.question, result: v.result })),
+          action_items: meeting.actions.map(a => ({ title: a.title, owner: a.ownerName, deadline: a.deadline })),
+        }),
+      })
+    } catch {
+      // Fire and forget — local state is source of truth during live meeting
+    }
+  }
+
   function addAction() {
     if (!newAction.title || !newAction.ownerId) return
     const owner = meeting.participants.find(p => p.id === newAction.ownerId)
@@ -204,7 +237,6 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
     fontWeight: 600,
     background: activeTab === tab ? '#2563EB' : 'transparent',
     color: activeTab === tab ? '#FFFFFF' : '#6B7280',
-    position: 'relative',
   })
 
   return (
@@ -220,7 +252,7 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
             </div>
             <h2 style={{ fontSize: 18, fontWeight: 700, color: '#1C1C1E', margin: '2px 0' }}>{meeting.title}</h2>
             <div style={{ fontSize: 13, color: '#6B7280' }}>
-              {presentCount}/{meeting.participants.length} deltagare närvarande
+              {presentCount}/{meeting.participants.length} deltagare
               {openVotes.length > 0 && (
                 <span style={{ marginLeft: 12, color: '#FF9500', fontWeight: 600 }}>
                   ⚡ {openVotes.length} öppen röstning
@@ -229,56 +261,51 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
             </div>
           </div>
 
-          {/* Participant avatars */}
-          <div style={{ display: 'flex' }}>
-            {meeting.participants.map((p, idx) => (
-              <button
-                key={p.id}
-                onClick={() => togglePresence(p.id)}
-                title={`${p.name} — ${p.isPresent ? 'Koppla bort' : 'Koppla upp'}`}
-                style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: '50%',
-                  border: `3px solid ${p.isPresent ? '#34C759' : '#E5E7EB'}`,
-                  background: p.isPresent ? '#34C75920' : '#F3F4F6',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 12,
-                  fontWeight: 700,
-                  color: p.isPresent ? '#065F46' : '#9CA3AF',
-                  cursor: 'pointer',
-                  marginLeft: idx === 0 ? 0 : -8,
-                  position: 'relative',
-                  zIndex: meeting.participants.length - idx,
-                }}
-              >
-                {p.name.split(' ').map(n => n[0]).join('')}
-                {p.isPresent && (
-                  <span style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    right: 0,
-                    width: 10,
-                    height: 10,
-                    background: '#34C759',
-                    borderRadius: '50%',
-                    border: '2px solid white',
-                  }} />
-                )}
-              </button>
-            ))}
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            {/* Save to API */}
+            <button
+              onClick={saveMeetingToAPI}
+              style={{ padding: '6px 12px', borderRadius: 8, border: '1px solid #E5E7EB', background: '#F9FAFB', fontSize: 12, cursor: 'pointer', color: '#374151' }}
+            >
+              💾 Spara
+            </button>
+
+            {/* Participant avatars */}
+            <div style={{ display: 'flex' }}>
+              {meeting.participants.map((p, idx) => (
+                <button
+                  key={p.id}
+                  onClick={() => togglePresence(p.id)}
+                  title={`${p.name} — ${p.isPresent ? 'Koppla bort' : 'Koppla upp'}`}
+                  style={{
+                    width: 36, height: 36, borderRadius: '50%',
+                    border: `3px solid ${p.isPresent ? '#34C759' : '#E5E7EB'}`,
+                    background: p.isPresent ? '#34C75920' : '#F3F4F6',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 12, fontWeight: 700,
+                    color: p.isPresent ? '#065F46' : '#9CA3AF',
+                    cursor: 'pointer', marginLeft: idx === 0 ? 0 : -8,
+                    position: 'relative', zIndex: meeting.participants.length - idx,
+                  }}
+                >
+                  {p.name.split(' ').map(n => n[0]).join('')}
+                  {p.isPresent && (
+                    <span style={{ position: 'absolute', bottom: 0, right: 0, width: 10, height: 10, background: '#34C759', borderRadius: '50%', border: '2px solid white' }} />
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: 4, marginTop: 12 }}>
+        <div style={{ display: 'flex', gap: 4, marginTop: 12, flexWrap: 'wrap' }}>
           {[
             { id: 'agenda', label: 'Agenda' },
             { id: 'vote', label: `Röstning${openVotes.length > 0 ? ` (${openVotes.length})` : ''}` },
             { id: 'actions', label: `Åtgärder (${meeting.actions.length})` },
             { id: 'notes', label: 'Anteckningar' },
+            { id: 'history', label: `Historik${meetingsData ? ` (${meetingsData.length})` : ''}` },
           ].map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id as typeof activeTab)} style={tabStyle(tab.id)}>
               {tab.label}
@@ -293,38 +320,26 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
         {/* AGENDA */}
         {activeTab === 'agenda' && (
           <div style={{ maxWidth: 700, margin: '0 auto' }}>
-            <div style={{ fontSize: 13, color: '#6B7280', marginBottom: 12 }}>
-              Total mötestid: {totalMinutes} min
-            </div>
+            <div style={{ fontSize: 13, color: '#6B7280', marginBottom: 12 }}>Total mötestid: {totalMinutes} min</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {meeting.agenda.map((item, i) => (
                 <div key={item.id} style={{
-                  background: '#FFFFFF',
-                  borderRadius: 14,
-                  padding: '16px 20px',
+                  background: '#FFFFFF', borderRadius: 14, padding: '16px 20px',
                   border: `2px solid ${item.status === 'active' ? '#2563EB' : item.status === 'done' ? '#34C75930' : 'rgba(0,0,0,0.06)'}`,
                   opacity: item.status === 'done' ? 0.6 : 1,
                 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                       <div style={{
-                        width: 28,
-                        height: 28,
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 12,
-                        fontWeight: 700,
+                        width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: 12, fontWeight: 700,
                         background: item.status === 'done' ? '#34C75920' : item.status === 'active' ? '#2563EB20' : '#F3F4F6',
                         color: item.status === 'done' ? '#065F46' : item.status === 'active' ? '#2563EB' : '#9CA3AF',
                       }}>
                         {item.status === 'done' ? '✓' : i + 1}
                       </div>
                       <div>
-                        <div style={{ fontSize: 14, fontWeight: item.status === 'active' ? 700 : 500, color: '#1C1C1E' }}>
-                          {item.title}
-                        </div>
+                        <div style={{ fontSize: 14, fontWeight: item.status === 'active' ? 700 : 500, color: '#1C1C1E' }}>{item.title}</div>
                         <div style={{ fontSize: 12, color: '#8E8E93' }}>
                           {item.duration} min ·{' '}
                           {item.type === 'vote' ? '🗳️ Röstning' : item.type === 'decision' ? '✅ Beslut' : item.type === 'discussion' ? '💬 Diskussion' : 'ℹ️ Info'}
@@ -332,21 +347,9 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
                       </div>
                     </div>
                     {item.status === 'active' && (
-                      <button onClick={() => advanceAgenda(item.id)} style={{
-                        padding: '6px 14px',
-                        borderRadius: 8,
-                        background: '#2563EB',
-                        color: '#FFF',
-                        border: 'none',
-                        fontSize: 12,
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                      }}>
+                      <button onClick={() => advanceAgenda(item.id)} style={{ padding: '6px 14px', borderRadius: 8, background: '#2563EB', color: '#FFF', border: 'none', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
                         Klar →
                       </button>
-                    )}
-                    {item.status === 'pending' && i > 0 && meeting.agenda[i - 1].status === 'active' && (
-                      <div style={{ fontSize: 11, color: '#8E8E93' }}>Nästa</div>
                     )}
                   </div>
                 </div>
@@ -359,22 +362,7 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
         {activeTab === 'vote' && (
           <div style={{ maxWidth: 600, margin: '0 auto' }}>
             {!showAddVote ? (
-              <button onClick={() => setShowAddVote(true)} style={{
-                width: '100%',
-                padding: '14px',
-                borderRadius: 12,
-                border: '2px dashed rgba(0,0,0,0.15)',
-                background: 'transparent',
-                color: '#2563EB',
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: 'pointer',
-                marginBottom: 16,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 8,
-              }}>
+              <button onClick={() => setShowAddVote(true)} style={{ width: '100%', padding: '14px', borderRadius: 12, border: '2px dashed rgba(0,0,0,0.15)', background: 'transparent', color: '#2563EB', fontSize: 14, fontWeight: 600, cursor: 'pointer', marginBottom: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
                 <Plus style={{ width: 16, height: 16 }} /> Öppna ny omröstning
               </button>
             ) : (
@@ -382,16 +370,12 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
                 <input
                   value={newVoteQuestion}
                   onChange={e => setNewVoteQuestion(e.target.value)}
-                  placeholder="Beslutsfråga — t.ex. 'Godkänner vi Thailand Workcamp budget?'"
+                  placeholder="Beslutsfråga..."
                   style={{ width: '100%', padding: '11px 14px', borderRadius: 10, border: '1px solid rgba(0,0,0,0.1)', fontSize: 14, marginBottom: 10, boxSizing: 'border-box' }}
                 />
                 <div style={{ display: 'flex', gap: 8 }}>
-                  <button onClick={() => openVote(newVoteQuestion)} disabled={!newVoteQuestion} style={{
-                    flex: 2, padding: '10px', background: '#2563EB', color: '#FFF', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: 'pointer',
-                  }}>Starta omröstning</button>
-                  <button onClick={() => setShowAddVote(false)} style={{
-                    flex: 1, padding: '10px', background: '#F3F4F6', color: '#6B7280', border: 'none', borderRadius: 10, fontSize: 14, cursor: 'pointer',
-                  }}>Avbryt</button>
+                  <button onClick={() => openVote(newVoteQuestion)} disabled={!newVoteQuestion} style={{ flex: 2, padding: '10px', background: '#2563EB', color: '#FFF', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>Starta omröstning</button>
+                  <button onClick={() => setShowAddVote(false)} style={{ flex: 1, padding: '10px', background: '#F3F4F6', color: '#6B7280', border: 'none', borderRadius: 10, fontSize: 14, cursor: 'pointer' }}>Avbryt</button>
                 </div>
               </div>
             )}
@@ -412,42 +396,27 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
 
               return (
                 <div key={vote.id} style={{
-                  background: '#FFFFFF',
-                  borderRadius: 14,
-                  padding: 20,
-                  marginBottom: 12,
+                  background: '#FFFFFF', borderRadius: 14, padding: 20, marginBottom: 12,
                   border: `2px solid ${vote.status === 'open' ? '#2563EB' : vote.result === 'approved' ? '#34C759' : vote.result === 'rejected' ? '#FF3B30' : '#FF9500'}`,
                 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
                     <div>
                       <div style={{ fontSize: 15, fontWeight: 700, color: '#1C1C1E' }}>{vote.question}</div>
                       <div style={{ fontSize: 12, color: '#8E8E93', marginTop: 2 }}>
-                        {vote.status === 'open'
-                          ? `${total} av ${presentCount} har röstat`
-                          : `Stängd · ${vote.result === 'approved' ? '✅ Godkänd' : vote.result === 'rejected' ? '❌ Avslag' : '⚖️ Lika'}`}
+                        {vote.status === 'open' ? `${total} av ${presentCount} har röstat` : `Stängd · ${vote.result === 'approved' ? '✅ Godkänd' : vote.result === 'rejected' ? '❌ Avslag' : '⚖️ Lika'}`}
                       </div>
                     </div>
                     {vote.status === 'open' && total > 0 && (
-                      <button onClick={() => closeVote(vote.id)} style={{
-                        padding: '6px 14px',
-                        background: '#FF3B3015',
-                        color: '#FF3B30',
-                        border: '1px solid #FF3B3030',
-                        borderRadius: 8,
-                        fontSize: 12,
-                        fontWeight: 600,
-                        cursor: 'pointer',
-                      }}>Stäng</button>
+                      <button onClick={() => closeVote(vote.id)} style={{ padding: '6px 14px', background: '#FF3B3015', color: '#FF3B30', border: '1px solid #FF3B3030', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Stäng</button>
                     )}
                   </div>
 
-                  {/* Vote bars */}
                   <div style={{ display: 'flex', gap: 6, marginBottom: 16, height: 8 }}>
                     {total > 0 ? (
                       <>
-                        <div style={{ flex: yes, background: '#34C759', borderRadius: 4 }} title={`Ja: ${yes}`} />
-                        <div style={{ flex: no, background: '#FF3B30', borderRadius: 4 }} title={`Nej: ${no}`} />
-                        <div style={{ flex: abstain, background: '#FF9500', borderRadius: 4 }} title={`Avstår: ${abstain}`} />
+                        <div style={{ flex: yes, background: '#34C759', borderRadius: 4 }} />
+                        <div style={{ flex: no, background: '#FF3B30', borderRadius: 4 }} />
+                        <div style={{ flex: abstain, background: '#FF9500', borderRadius: 4 }} />
                       </>
                     ) : (
                       <div style={{ flex: 1, background: '#F3F4F6', borderRadius: 4 }} />
@@ -468,17 +437,9 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
                         { choice: 'abstain' as const, label: 'Avstår', color: '#FF9500', bg: '#FF950015' },
                       ].map(btn => (
                         <button key={btn.choice} onClick={() => castVote(vote.id, btn.choice)} style={{
-                          flex: 1,
-                          padding: '10px',
-                          borderRadius: 10,
+                          flex: 1, padding: '10px', borderRadius: 10,
                           border: `2px solid ${myVote === btn.choice ? btn.color : 'transparent'}`,
-                          background: btn.bg,
-                          color: btn.color,
-                          fontSize: 14,
-                          fontWeight: 600,
-                          cursor: 'pointer',
-                          transform: myVote === btn.choice ? 'scale(1.03)' : 'scale(1)',
-                          transition: 'transform 0.1s',
+                          background: btn.bg, color: btn.color, fontSize: 14, fontWeight: 600, cursor: 'pointer',
                         }}>
                           {btn.label} {myVote === btn.choice ? '✓' : ''}
                         </button>
@@ -495,57 +456,22 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
         {activeTab === 'actions' && (
           <div style={{ maxWidth: 650, margin: '0 auto' }}>
             {!showAddAction ? (
-              <button onClick={() => setShowAddAction(true)} style={{
-                width: '100%',
-                padding: '14px',
-                borderRadius: 12,
-                border: '2px dashed rgba(0,0,0,0.15)',
-                background: 'transparent',
-                color: '#2563EB',
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: 'pointer',
-                marginBottom: 16,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 8,
-              }}>
+              <button onClick={() => setShowAddAction(true)} style={{ width: '100%', padding: '14px', borderRadius: 12, border: '2px dashed rgba(0,0,0,0.15)', background: 'transparent', color: '#2563EB', fontSize: 14, fontWeight: 600, cursor: 'pointer', marginBottom: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
                 <Plus style={{ width: 16, height: 16 }} /> Lägg till åtgärdspunkt
               </button>
             ) : (
               <div style={{ background: '#FFFFFF', borderRadius: 14, padding: 20, marginBottom: 16, border: '1px solid rgba(0,0,0,0.08)' }}>
-                <input
-                  value={newAction.title}
-                  onChange={e => setNewAction(a => ({ ...a, title: e.target.value }))}
-                  placeholder="Vad ska göras?"
-                  style={{ width: '100%', padding: '11px 14px', borderRadius: 10, border: '1px solid rgba(0,0,0,0.1)', fontSize: 14, marginBottom: 8, boxSizing: 'border-box' }}
-                />
+                <input value={newAction.title} onChange={e => setNewAction(a => ({ ...a, title: e.target.value }))} placeholder="Vad ska göras?" style={{ width: '100%', padding: '11px 14px', borderRadius: 10, border: '1px solid rgba(0,0,0,0.1)', fontSize: 14, marginBottom: 8, boxSizing: 'border-box' }} />
                 <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
-                  <select
-                    value={newAction.ownerId}
-                    onChange={e => setNewAction(a => ({ ...a, ownerId: e.target.value }))}
-                    style={{ flex: 2, padding: '10px', borderRadius: 10, border: '1px solid rgba(0,0,0,0.1)', fontSize: 14 }}
-                  >
+                  <select value={newAction.ownerId} onChange={e => setNewAction(a => ({ ...a, ownerId: e.target.value }))} style={{ flex: 2, padding: '10px', borderRadius: 10, border: '1px solid rgba(0,0,0,0.1)', fontSize: 14 }}>
                     <option value="">Välj ansvarig</option>
-                    {meeting.participants.map(p => (
-                      <option key={p.id} value={p.id}>{p.name}</option>
-                    ))}
+                    {meeting.participants.map(p => (<option key={p.id} value={p.id}>{p.name}</option>))}
                   </select>
-                  <input
-                    type="date"
-                    value={newAction.deadline}
-                    onChange={e => setNewAction(a => ({ ...a, deadline: e.target.value }))}
-                    style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1px solid rgba(0,0,0,0.1)', fontSize: 14 }}
-                  />
+                  <input type="date" value={newAction.deadline} onChange={e => setNewAction(a => ({ ...a, deadline: e.target.value }))} style={{ flex: 1, padding: '10px', borderRadius: 10, border: '1px solid rgba(0,0,0,0.1)', fontSize: 14 }} />
                 </div>
                 <div style={{ display: 'flex', gap: 8 }}>
-                  <button onClick={addAction} disabled={!newAction.title || !newAction.ownerId} style={{
-                    flex: 2, padding: '10px', background: '#2563EB', color: '#FFF', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: 'pointer',
-                  }}>Lägg till</button>
-                  <button onClick={() => setShowAddAction(false)} style={{
-                    flex: 1, padding: '10px', background: '#F3F4F6', color: '#6B7280', border: 'none', borderRadius: 10, fontSize: 14, cursor: 'pointer',
-                  }}>Avbryt</button>
+                  <button onClick={addAction} disabled={!newAction.title || !newAction.ownerId} style={{ flex: 2, padding: '10px', background: '#2563EB', color: '#FFF', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>Lägg till</button>
+                  <button onClick={() => setShowAddAction(false)} style={{ flex: 1, padding: '10px', background: '#F3F4F6', color: '#6B7280', border: 'none', borderRadius: 10, fontSize: 14, cursor: 'pointer' }}>Avbryt</button>
                 </div>
               </div>
             )}
@@ -560,34 +486,14 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
             {meeting.actions.map(action => {
               const signed = action.signedBy.includes(currentUser.id)
               return (
-                <div key={action.id} style={{
-                  background: '#FFFFFF',
-                  borderRadius: 14,
-                  padding: '16px 20px',
-                  marginBottom: 10,
-                  border: '1px solid rgba(0,0,0,0.08)',
-                  borderLeft: `4px solid ${action.signedBy.length >= 2 ? '#34C759' : '#2563EB'}`,
-                }}>
+                <div key={action.id} style={{ background: '#FFFFFF', borderRadius: 14, padding: '16px 20px', marginBottom: 10, border: '1px solid rgba(0,0,0,0.08)', borderLeft: `4px solid ${action.signedBy.length >= 2 ? '#34C759' : '#2563EB'}` }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ fontSize: 14, fontWeight: 600, color: '#1C1C1E' }}>{action.title}</div>
-                      <div style={{ fontSize: 12, color: '#6B7280', marginTop: 3 }}>
-                        Ansvarig: <strong>{action.ownerName}</strong> · Deadline: {action.deadline}
-                      </div>
-                      <div style={{ fontSize: 11, color: '#8E8E93', marginTop: 4 }}>
-                        Signerat av {action.signedBy.length}/{meeting.participants.filter(p => p.isPresent).length} deltagare
-                      </div>
+                      <div style={{ fontSize: 12, color: '#6B7280', marginTop: 3 }}>Ansvarig: <strong>{action.ownerName}</strong> · Deadline: {action.deadline}</div>
+                      <div style={{ fontSize: 11, color: '#8E8E93', marginTop: 4 }}>Signerat av {action.signedBy.length}/{presentCount} deltagare</div>
                     </div>
-                    <button onClick={() => signAction(action.id)} disabled={signed} style={{
-                      padding: '8px 16px',
-                      borderRadius: 10,
-                      background: signed ? '#34C75915' : '#2563EB20',
-                      color: signed ? '#34C759' : '#2563EB',
-                      border: `1px solid ${signed ? '#34C75930' : '#2563EB30'}`,
-                      fontSize: 12,
-                      fontWeight: 600,
-                      cursor: signed ? 'not-allowed' : 'pointer',
-                    }}>
+                    <button onClick={() => signAction(action.id)} disabled={signed} style={{ padding: '8px 16px', borderRadius: 10, background: signed ? '#34C75915' : '#2563EB20', color: signed ? '#34C759' : '#2563EB', border: `1px solid ${signed ? '#34C75930' : '#2563EB30'}`, fontSize: 12, fontWeight: 600, cursor: signed ? 'not-allowed' : 'pointer' }}>
                       {signed ? '✓ Signerad' : 'Signera'}
                     </button>
                   </div>
@@ -601,31 +507,40 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
         {activeTab === 'notes' && (
           <div style={{ maxWidth: 650, margin: '0 auto' }}>
             <div style={{ background: '#FFFFFF', borderRadius: 14, padding: 20, border: '1px solid rgba(0,0,0,0.08)' }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: '#6B7280', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-                Mötesanteckningar — {meeting.title}
-              </div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: '#6B7280', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>Mötesanteckningar — {meeting.title}</div>
               <textarea
                 value={meeting.notes}
                 onChange={e => setMeeting(m => ({ ...m, notes: e.target.value }))}
-                placeholder="Skriv anteckningar här... Alla deltagare kan se och redigera."
-                style={{
-                  width: '100%',
-                  minHeight: 400,
-                  padding: '14px',
-                  borderRadius: 10,
-                  border: '1px solid rgba(0,0,0,0.1)',
-                  fontSize: 14,
-                  fontFamily: 'system-ui',
-                  lineHeight: 1.6,
-                  resize: 'vertical',
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
+                placeholder="Skriv anteckningar här..."
+                style={{ width: '100%', minHeight: 400, padding: '14px', borderRadius: 10, border: '1px solid rgba(0,0,0,0.1)', fontSize: 14, fontFamily: 'system-ui', lineHeight: 1.6, resize: 'vertical', outline: 'none', boxSizing: 'border-box' }}
               />
-              <div style={{ marginTop: 10, fontSize: 12, color: '#8E8E93' }}>
-                {meeting.notes.length} tecken · Autosparas
-              </div>
+              <div style={{ marginTop: 10, fontSize: 12, color: '#8E8E93' }}>{meeting.notes.length} tecken</div>
             </div>
+          </div>
+        )}
+
+        {/* HISTORY — from API */}
+        {activeTab === 'history' && (
+          <div style={{ maxWidth: 700, margin: '0 auto' }}>
+            {meetingsLoading && <div style={{ padding: 40, color: '#666', textAlign: 'center' }}>Laddar möteshistorik...</div>}
+            {!meetingsLoading && (!meetingsData || meetingsData.length === 0) && (
+              <div style={{ padding: 40, color: '#888', textAlign: 'center' }}>Ingen möteshistorik tillgänglig</div>
+            )}
+            {meetingsData && meetingsData.length > 0 && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {meetingsData.map(m => (
+                  <div key={m.id} style={{ background: '#FFFFFF', borderRadius: 12, padding: '14px 18px', border: '1px solid rgba(0,0,0,0.08)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div>
+                        <div style={{ fontSize: 14, fontWeight: 600, color: '#1C1C1E' }}>{m.title}</div>
+                        <div style={{ fontSize: 12, color: '#8E8E93', marginTop: 3 }}>{m.date} · {m.attendees?.length ?? 0} deltagare · Status: {m.status}</div>
+                        {m.summary && <div style={{ fontSize: 12, color: '#6B7280', marginTop: 4 }}>{m.summary}</div>}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

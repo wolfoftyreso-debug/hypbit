@@ -9,6 +9,7 @@ const GEMINI_KEY = process.env.GEMINI_API_KEY || ''
 const OPENAI_KEY = process.env.OPENAI_API_KEY || ''
 const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY || ''
 const GROQ_KEY = process.env.GROQ_API_KEY || ''
+const GROK_KEY = process.env.GROK_API_KEY || ''
 
 export const MODEL_REGISTRY: Record<ModelId, ModelConfig> = {
   'llama4-scout': {
@@ -121,9 +122,29 @@ export const MODEL_REGISTRY: Record<ModelId, ModelConfig> = {
     strengths: ['chat', 'reasoning', 'code', 'classification'],
     available: !!GROQ_KEY,
   },
+  'grok-3': {
+    id: 'grok-3',
+    name: 'Grok 3 (xAI)',
+    provider: 'xai',
+    endpoint: 'https://api.x.ai/v1/chat/completions',
+    costPer1kTokens: 0.003,
+    maxContextTokens: 131_072,
+    strengths: ['creative', 'reasoning', 'chat', 'analysis'],
+    available: !!GROK_KEY && GROK_KEY !== 'CONFIGURE_ME',
+  },
+  'grok-3-mini': {
+    id: 'grok-3-mini',
+    name: 'Grok 3 Mini (xAI)',
+    provider: 'xai',
+    endpoint: 'https://api.x.ai/v1/chat/completions',
+    costPer1kTokens: 0.0003,
+    maxContextTokens: 131_072,
+    strengths: ['creative', 'chat', 'classification'],
+    available: !!GROK_KEY && GROK_KEY !== 'CONFIGURE_ME',
+  },
 }
 
-// Routing-matris — DeepSeek V3 som billig/snabb fallback, R1 för reasoning
+// Routing-matris — DeepSeek V3 som billig/snabb fallback, R1 för reasoning, Grok för kreativa uppgifter
 export const ROUTING_MATRIX: Record<TaskType, ModelId[]> = {
   chat:           ['llama4-scout', 'groq-llama', 'deepseek-v3', 'gemini-flash', 'claude-haiku', 'claude-sonnet'],
   code:           ['claude-sonnet', 'deepseek-v3', 'claude-haiku', 'llama4-scout', 'gemini-pro'],
@@ -133,6 +154,7 @@ export const ROUTING_MATRIX: Record<TaskType, ModelId[]> = {
   classification: ['llama4-scout', 'groq-llama', 'deepseek-v3', 'gemini-flash', 'claude-haiku'],
   document:       ['gemini-pro', 'llama4-maverick', 'claude-sonnet', 'deepseek-v3', 'llama4-scout'],
   reasoning:      ['deepseek-r1', 'claude-sonnet', 'gemini-pro', 'deepseek-v3', 'llama4-scout'],
+  creative:       ['grok-3', 'grok-3-mini', 'claude-sonnet', 'deepseek-v3', 'gemini-flash'],
 }
 
 export function selectModel(taskType: TaskType, override?: ModelId): ModelConfig {

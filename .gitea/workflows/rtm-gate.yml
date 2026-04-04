@@ -1,3 +1,8 @@
+# ═══════════════════════════════════════════════════
+#  WAVULT OS — CI/CD Pipeline
+#  ⊙ Wavult Group · eu-north-1 · git.wavult.com
+# ═══════════════════════════════════════════════════
+
 name: RTM Gate
 
 on:

@@ -2,8 +2,9 @@
 // Alla kontaktvägar för hela Wavult Group — team, bolag, externa.
 // Single source of truth för mail, telefon, och kommunikationskanaler.
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslation } from '../../shared/i18n/useTranslation'
+import { useApi } from '../../shared/auth/useApi'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -333,7 +334,15 @@ function ContactCard({ contact, expanded, onToggle }: {
 
 export function ContactsView() {
   const { t: _t } = useTranslation() // ready for i18n
+  const { apiFetch } = useApi()
+  const [liveContacts, setLiveContacts] = useState<Contact[]>([])
   const [search, setSearch] = useState('')
+
+  // Load any additional contacts from backend (dynamic/custom contacts)
+  useEffect(() => {
+    apiFetch('/v1/comms/health').then(r => r.ok ? r.json() : null).catch(() => null)
+    // TODO: load custom contacts from /api/contacts when endpoint exists
+  }, [])
   const [activeCategory, setActiveCategory] = useState<string>('all')
   const [expandedId, setExpandedId] = useState<string | null>(null)
 

@@ -97,7 +97,6 @@ export async function handleIncomingReceiptWebhook(payload: {
   bodyText: string
 }): Promise<{ matched: boolean; transactionId?: string; confidence?: number }> {
   // In production: fetch transactions from API, run matcher, update receiptUrl
-  // For now: log and return
-  console.log('[ReceiptIngestion] New receipt:', payload.subject, 'from', payload.from)
+  // For now: return unmatched
   return { matched: false }
 }

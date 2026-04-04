@@ -110,7 +110,7 @@ uapixOrdersRouter.post('/api/uapix/orders', async (req: Request, res: Response) 
 
   // ─── Bygg modul-lista för mailet ──────────────────────────────────────────
   const moduleList = modules
-    .map((m: { title: string; basePrice: number; integrations: { name: string }[] }) =>
+    .map((m: { id: string; title: string; basePrice: number; integrations: { name: string }[] }) =>
       `<tr>
         <td style="padding:8px 0;border-bottom:1px solid #222;">${m.title}</td>
         <td style="padding:8px 0;border-bottom:1px solid #222;text-align:right;font-family:monospace">$${PRICES[m.id] ?? m.basePrice}/mo</td>

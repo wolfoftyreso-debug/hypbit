@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import {
-  PROSPECTS,
-  ACTIVITIES,
   STAGE_COLORS,
   PRODUCT_COLORS,
   TEAM_COLORS,
@@ -10,10 +8,11 @@ import {
   daysSince,
   type CRMStage,
   type CRMProduct,
-  type Prospect,
   type TeamMember,
 } from './data'
 import { useTranslation } from '../../shared/i18n/useTranslation'
+import { useCrmProspects, useCrmActivities } from './hooks/useCRM'
+import type { CrmProspect } from '../../lib/supabase'
 
 const STAGES: Array<CRMStage | 'Alla'> = ['Alla', 'Lead', 'Kvalificerad', 'Demo/Möte', 'Offert', 'Förhandling', 'Vunnen', 'Förlorad']
 const PRODUCTS: Array<CRMProduct | 'Alla'> = ['Alla', 'quiXzoom', 'Landvex', 'Wavult OS']
@@ -25,22 +24,28 @@ export function ProspectList() {
   const [stageFilter, setStageFilter] = useState<CRMStage | 'Alla'>('Alla')
   const [productFilter, setProductFilter] = useState<CRMProduct | 'Alla'>('Alla')
   const [assigneeFilter, setAssigneeFilter] = useState<TeamMember | 'Alla'>('Alla')
-  const [selected, setSelected] = useState<Prospect | null>(null)
+  const [selected, setSelected] = useState<CrmProspect | null>(null)
 
-  const filtered = PROSPECTS.filter(p => {
+  const { data: prospects = [], isLoading, error } = useCrmProspects()
+  const { data: allActivities = [] } = useCrmActivities(selected?.id)
+
+  if (isLoading) return <div style={{ padding: 40, color: '#666' }}>Laddar...</div>
+  if (error) return <div style={{ padding: 40, color: '#c0392b' }}>Fel: {String(error)}</div>
+
+  const filtered = prospects.filter(p => {
     const matchSearch =
       p.company.toLowerCase().includes(search.toLowerCase()) ||
-      p.contactName.toLowerCase().includes(search.toLowerCase())
+      p.contact_name.toLowerCase().includes(search.toLowerCase())
     const matchStage = stageFilter === 'Alla' || p.stage === stageFilter
-    const matchProduct = productFilter === 'Alla' || p.product === productFilter
-    const matchAssignee = assigneeFilter === 'Alla' || p.assignee === assigneeFilter
+    const matchProduct = productFilter === 'Alla' || (p.product as string) === productFilter
+    const matchAssignee = assigneeFilter === 'Alla' || (p.assignee as string) === assigneeFilter
     return matchSearch && matchStage && matchProduct && matchAssignee
   })
 
   const prospectActivities = selected
-    ? ACTIVITIES.filter(a => a.prospectId === selected.id).sort(
-        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-      )
+    ? allActivities
+        .filter(a => a.prospect_id === selected.id)
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     : []
 
   return (
@@ -57,7 +62,7 @@ export function ProspectList() {
               className="bg-white border border-surface-border rounded-lg px-3 py-2 text-sm text-text-primary placeholder-gray-600 focus:outline-none focus:border-gray-300 w-60"
             />
             <span className="text-xs text-text-muted ml-auto">
-              {filtered.length} prospects · {formatSEK(filtered.reduce((s, p) => s + p.valueSEK, 0))} total
+              {filtered.length} prospects · {formatSEK(filtered.reduce((s, p) => s + p.value_sek, 0))} total
             </span>
           </div>
           <div className="flex gap-1.5 flex-wrap">
@@ -107,6 +112,13 @@ export function ProspectList() {
           </div>
         </div>
 
+        {/* Empty state */}
+        {!filtered.length && (
+          <div className="text-center py-16 text-text-muted text-sm">
+            Inga prospects tillgängliga
+          </div>
+        )}
+
         {/* Table */}
         <div className="overflow-auto rounded-xl border border-surface-border">
           <table className="w-full text-sm min-w-[700px]">
@@ -131,11 +143,11 @@ export function ProspectList() {
                   <td className="px-4 py-3">
                     <span className="font-medium text-text-primary">{p.company}</span>
                   </td>
-                  <td className="px-4 py-3 text-text-muted">{p.contactName}</td>
+                  <td className="px-4 py-3 text-text-muted">{p.contact_name}</td>
                   <td className="px-4 py-3">
                     <span
                       className="text-xs px-2 py-0.5 rounded-full font-medium"
-                      style={{ background: PRODUCT_COLORS[p.product] + '20', color: PRODUCT_COLORS[p.product] }}
+                      style={{ background: PRODUCT_COLORS[p.product as CRMProduct] + '20', color: PRODUCT_COLORS[p.product as CRMProduct] }}
                     >
                       {p.product}
                     </span>
@@ -148,9 +160,9 @@ export function ProspectList() {
                       {p.stage}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-text-primary font-semibold tabular-nums">{formatSEK(p.valueSEK)}</td>
+                  <td className="px-4 py-3 text-text-primary font-semibold tabular-nums">{formatSEK(p.value_sek)}</td>
                   <td className="px-4 py-3 text-text-muted text-xs">
-                    {daysSince(p.lastActivity) === 0 ? 'Idag' : `${daysSince(p.lastActivity)}d sedan`}
+                    {p.last_activity ? (daysSince(p.last_activity) === 0 ? 'Idag' : `${daysSince(p.last_activity)}d sedan`) : '—'}
                   </td>
                   <td className="px-4 py-3">
                     <span
@@ -182,7 +194,7 @@ export function ProspectList() {
             <div className="flex items-start justify-between gap-2">
               <div>
                 <h3 className="font-bold text-text-primary">{selected.company}</h3>
-                <p className="text-sm text-text-muted mt-0.5">{selected.contactName}</p>
+                <p className="text-sm text-text-muted mt-0.5">{selected.contact_name}</p>
               </div>
               <button
                 onClick={() => setSelected(null)}
@@ -200,7 +212,7 @@ export function ProspectList() {
               </span>
               <span
                 className="text-xs px-2 py-0.5 rounded-full"
-                style={{ background: PRODUCT_COLORS[selected.product] + '20', color: PRODUCT_COLORS[selected.product] }}
+                style={{ background: PRODUCT_COLORS[selected.product as CRMProduct] + '20', color: PRODUCT_COLORS[selected.product as CRMProduct] }}
               >
                 {selected.product}
               </span>
@@ -217,22 +229,15 @@ export function ProspectList() {
           <div className="px-4 py-3 border-b border-surface-border space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-text-muted">Värde</span>
-              <span className="text-text-primary font-bold">{formatSEK(selected.valueSEK)}/år</span>
+              <span className="text-text-primary font-bold">{formatSEK(selected.value_sek)}/år</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-text-muted">Dagar i stage</span>
-              <span className="text-text-primary">{selected.daysInStage}d</span>
+              <span className="text-text-primary">{selected.days_in_stage}d</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-text-muted">Senaste aktivitet</span>
-              <span className="text-text-primary">{daysSince(selected.lastActivity)}d sedan</span>
-            </div>
-            {selected.notes && (
-              <p className="text-xs text-text-muted italic pt-1">{selected.notes}</p>
-            )}
-            <div className="pt-1">
-              <p className="text-xs text-text-muted">Nästa steg</p>
-              <p className="text-xs text-text-primary mt-0.5">{selected.nextStep}</p>
+              <span className="text-text-primary">{selected.last_activity ? `${daysSince(selected.last_activity)}d sedan` : '—'}</span>
             </div>
           </div>
 

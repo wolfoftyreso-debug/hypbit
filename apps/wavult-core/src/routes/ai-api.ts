@@ -358,6 +358,79 @@ router.post('/v1/ai/image', async (req: Request, res: Response) => {
 })
 
 /**
+ * POST /v1/ai/grok — direkt proxy till xAI Grok API
+ *
+ * Body:
+ *   prompt: string      — user message
+ *   model?: string      — 'grok-3' (default) | 'grok-3-mini' | 'grok-2'
+ *   system?: string     — system prompt (valfri)
+ *
+ * Routing hint: brainstorm, alternativ, kreativ, naming, trend → Grok
+ */
+router.post('/v1/ai/grok', async (req: Request, res: Response) => {
+  const { prompt, model = 'grok-3', system } = req.body as {
+    prompt?: string
+    model?: string
+    system?: string
+  }
+
+  if (!prompt) return res.status(400).json({ error: 'prompt required' })
+
+  const apiKey = process.env.GROK_API_KEY
+  if (!apiKey || apiKey === 'CONFIGURE_ME') {
+    return res.status(503).json({
+      error: 'Grok not configured — set GROK_API_KEY in SSM /wavult/prod/GROK_API_KEY',
+      provider: 'grok',
+    })
+  }
+
+  try {
+    const messages: Array<{role: string; content: string}> = []
+    if (system) messages.push({ role: 'system', content: system })
+    messages.push({ role: 'user', content: prompt })
+
+    const response = await fetch('https://api.x.ai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model,
+        messages,
+        stream: false,
+      }),
+      signal: AbortSignal.timeout(60_000),
+    })
+
+    if (!response.ok) {
+      const errText = await response.text().catch(() => `HTTP ${response.status}`)
+      return res.status(response.status).json({
+        error: 'xAI Grok API error',
+        detail: errText,
+        provider: 'grok',
+      })
+    }
+
+    const data = await response.json() as {
+      choices?: Array<{ message?: { content?: string } }>
+      usage?: { prompt_tokens?: number; completion_tokens?: number; total_tokens?: number }
+    }
+
+    return res.json({
+      provider: 'grok',
+      model,
+      response: data.choices?.[0]?.message?.content,
+      usage: data.usage,
+    })
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error('[ai:grok] error:', message)
+    return res.status(503).json({ error: 'Grok request failed', detail: message, provider: 'grok' })
+  }
+})
+
+/**
  * GET /v1/ai/cost — kostnadsoversikt (legacy)
  */
 router.get('/v1/ai/cost', (_req: Request, res: Response) => {

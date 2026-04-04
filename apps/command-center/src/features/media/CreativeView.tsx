@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Creative } from './types'
 import { useCampaigns } from './hooks/useMedia'
 import { useTranslation } from '../../shared/i18n/useTranslation'
+import { MOCK_CAMPAIGNS, MOCK_CREATIVES } from './mockData'
 
 const STATUS_COLORS: Record<Creative['status'], string> = {
   draft: 'bg-muted text-gray-600',

@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useCampaigns } from './hooks/useMedia'
-import type { Campaign } from './types'
+import type { Campaign, BudgetAllocation } from './types'
 import { useTranslation } from '../../shared/i18n/useTranslation'
+import { MOCK_BUDGET_ALLOCATIONS, MOCK_CHANNELS, MOCK_CAMPAIGNS } from './mockData'
 
 function BudgetBar({ value, max }: { value: number; max: number }) {
   const pct = max > 0 ? Math.min(100, (value / max) * 100) : 0

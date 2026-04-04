@@ -147,4 +147,10 @@ router.patch('/v1/zoomers/:id', async (req: Request, res: Response) => {
   }
 })
 
+// GET /api/quixzoom/ads/packages — list quixzoom ads packages
+// TODO: implement full logic — create quixzoom_ads_packages table
+router.get('/api/quixzoom/ads/packages', (_req: Request, res: Response) => {
+  res.json({ packages: [] })
+})
+
 export default router

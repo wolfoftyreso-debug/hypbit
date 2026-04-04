@@ -3,7 +3,7 @@ import { useGlobalScrollReveal } from './shared/hooks/useScrollReveal'
 // ─── Wavult OS v2 — Application Root ───────────────────────────────────────────
 // Provider hierarchy: Auth → Role → EntityScope → Operator → Events → Shell
 
-import React, { lazy, Suspense, useState } from 'react'
+import React, { lazy, Suspense, useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { AuthProvider, useAuth } from './shared/auth/AuthContext'
 import { ThemeProvider } from './shared/theme/ThemeContext'
@@ -75,6 +75,7 @@ const FinanceFlow            = lazy(() => import('./features/finance-flow/Financ
 const FlightSearch           = lazy(() => import('./features/travel/FlightSearch').then(m => ({ default: m.FlightSearch })))
 const VisaHub                = lazy(() => import('./features/visa/VisaHub').then(m => ({ default: m.VisaHub })))
 const QmsDashboard           = lazy(() => import('./features/qms/QmsDashboard').then(m => ({ default: m.QmsDashboard })))
+const TuvAuditView           = lazy(() => import('./features/qms/TuvAuditView').then(m => ({ default: m.TuvAuditView })))
 const OkrDashboard           = lazy(() => import('./features/okr/OkrDashboard'))
 const TravelAutomationHub    = lazy(() => import('./features/travel/TravelAutomationHub').then(m => ({ default: m.TravelAutomationHub })))
 const UberHub                = lazy(() => import('./features/travel/UberHub').then(m => ({ default: m.UberHub })))
@@ -235,6 +236,7 @@ function AuthenticatedApp() {
               <Route path="/flights" element={<FlightSearch />} />
               <Route path="/visa" element={<VisaHub />} />
               <Route path="/qms" element={<QmsDashboard />} />
+              <Route path="/tuv" element={<TuvAuditView />} />
               <Route path="/okr" element={<OkrDashboard />} />
               <Route path="/travel" element={<TravelAutomationHub />} />
               <Route path="/uber" element={<UberHub />} />

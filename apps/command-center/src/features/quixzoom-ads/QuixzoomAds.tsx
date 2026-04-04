@@ -15,18 +15,14 @@ interface AdsPackage {
   verified: boolean
 }
 
-const DEMO_PACKAGES: AdsPackage[] = [
-  { id: 'p1', title: 'Bryggägare Stockholms Skärgård', description: 'Komplett lista med bryggägare i Stockholms skärgård med GPS-koordinater och kontaktuppgifter', geography: 'Stockholms skärgård', recordCount: 2840, price: 8900, currency: 'SEK', dataType: 'leads', qualityScore: 92, creator: 'Wavult Data', verified: true },
-  { id: 'p2', title: 'Kommunala Kajanläggningar Sverige', description: 'Alla kommunala kajanläggningar med inspektionsstatus och ansvarig teknisk chef', geography: 'Sverige', recordCount: 1240, price: 14500, currency: 'SEK', dataType: 'leads', qualityScore: 88, creator: 'Wavult Data', verified: true },
-  { id: 'p3', title: 'Fritidshus Värmdö — Marknadsdata', description: 'Marknadsdata för fritidshus med geo-taggade bilder och infrastrukturdata', geography: 'Värmdö', recordCount: 5600, price: 6200, currency: 'SEK', dataType: 'market_data', qualityScore: 85, creator: 'Creator AB', verified: false },
-]
+// No fallback packages — real data only
 
 const TYPE_LABELS: Record<string, string> = { leads: 'Leads', market_data: 'Marknadsdata', analytics: 'Analytics' }
 
 export function QuixzoomAds() {
   const [activeTab, setActiveTab] = useState<'marketplace' | 'builder'>('marketplace')
   const [cart, setCart] = useState<string[]>([])
-  const [packages, setPackages] = useState(DEMO_PACKAGES)
+  const [packages, setPackages] = useState<AdsPackage[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [usingFallback, setUsingFallback] = useState(false)
@@ -34,8 +30,8 @@ export function QuixzoomAds() {
   useEffect(() => {
     fetch('/api/quixzoom/ads/packages')
       .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
-      .then(d => { if (d.packages?.length) setPackages(d.packages); setLoading(false) })
-      .catch(() => { setLoading(false); setUsingFallback(true) }) // fall back to DEMO_PACKAGES on error
+      .then(d => { setPackages(d.packages ?? []); setLoading(false) })
+      .catch(() => { setLoading(false); setUsingFallback(false) })
   }, [])
 
   if (loading) {
@@ -84,16 +80,16 @@ export function QuixzoomAds() {
         </div>
       </div>
 
-      {usingFallback && (
-        <div style={{ margin: '0 24px 0', padding: '8px 14px', background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.3)', borderRadius: 8, fontSize: 12, color: '#92400e' }}>
-          Visar exempelpaket · Live-marketplace ej ansluten
+      {packages.length === 0 && !loading && (
+        <div style={{ margin: '0 24px 12px', padding: '8px 14px', background: 'rgba(107,114,128,0.06)', border: '1px solid rgba(107,114,128,0.2)', borderRadius: 8, fontSize: 12, color: '#6b7280' }}>
+          Inga datapaket tillgängliga ännu
         </div>
       )}
       {/* Marketplace */}
       {activeTab === 'marketplace' && (
         <div style={{ flex: 1, overflow: 'auto', padding: 24 }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
-            {DEMO_PACKAGES.map(pkg => (
+            {packages.map(pkg => (
               <div key={pkg.id} style={{ background: '#FFFFFF', borderRadius: 16, padding: 20, boxShadow: '0 2px 8px rgba(0,0,0,0.06)', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
                   <div style={{ padding: '3px 10px', background: '#2563EB10', color: '#2563EB', borderRadius: 20, fontSize: 11, fontWeight: 600 }}>

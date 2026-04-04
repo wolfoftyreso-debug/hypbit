@@ -1,6 +1,7 @@
 // ─── Agent Command Panel ─────────────────────────────────────────────────────
 // Live priority queue driven by Agent Claw rule engine
 
+import React from 'react'
 import { useBosTasks } from '../../core/state/useBosTasks'
 import { useAgentQueue } from '../../core/agent/useAgentQueue'
 import { useTranslation } from '../../shared/i18n/useTranslation'
@@ -14,41 +15,47 @@ const severityConfig: Record<AgentSeverity, {
   text: string
   icon: React.ComponentType<{ className?: string }>
   dot: string
+  style?: React.CSSProperties
 }> = {
   critical: {
-    bg: 'bg-red-50',
-    border: 'border-red-200',
-    text: 'text-red-700',
+    bg: '',
+    border: '',
+    text: '',
     icon: AlertTriangle,
-    dot: 'bg-red-500',
+    dot: '',
+    style: { background: 'rgba(192,57,43,0.12)', border: '1px solid rgba(192,57,43,0.30)', color: '#C0392B' },
   },
   high: {
-    bg: 'bg-amber-50',
-    border: 'border-amber-200',
-    text: 'text-amber-700',
+    bg: '',
+    border: '',
+    text: '',
     icon: Clock,
-    dot: 'bg-amber-400',
+    dot: '',
+    style: { background: 'rgba(230,126,34,0.12)', border: '1px solid rgba(230,126,34,0.30)', color: '#E67E22' },
   },
   medium: {
-    bg: 'bg-blue-50',
-    border: 'border-blue-200',
-    text: 'text-blue-700',
+    bg: '',
+    border: '',
+    text: '',
     icon: ArrowRight,
-    dot: 'bg-blue-400',
+    dot: '',
+    style: { background: 'rgba(43,91,168,0.10)', border: '1px solid rgba(43,91,168,0.25)', color: '#2B5BA8' },
   },
   low: {
-    bg: 'bg-[#F0EBE1]',
-    border: 'border-gray-200',
-    text: 'text-gray-600',
+    bg: '',
+    border: '',
+    text: '',
     icon: Clock,
-    dot: 'bg-gray-300',
+    dot: '',
+    style: { background: 'rgba(58,53,48,0.08)', border: '1px solid rgba(58,53,48,0.15)', color: '#6B6560' },
   },
   info: {
-    bg: 'bg-green-50',
-    border: 'border-green-200',
-    text: 'text-green-700',
+    bg: '',
+    border: '',
+    text: '',
     icon: CheckCircle,
-    dot: 'bg-green-400',
+    dot: '',
+    style: { background: 'rgba(45,106,79,0.10)', border: '1px solid rgba(45,106,79,0.25)', color: '#2D6A4F' },
   },
 }
 
@@ -58,7 +65,7 @@ export function AgentCommandPanel() {
   const { t } = useTranslation()
 
   const sysConfig = severityConfig[systemMessage.severity ?? 'info']
-  const SysIcon = sysConfig.icon
+  const SysIcon = sysConfig.icon as React.ElementType
 
   if (loading) {
     return (
@@ -92,12 +99,12 @@ export function AgentCommandPanel() {
   return (
     <div className="space-y-2">
       {/* System status message */}
-      <div className={`flex items-center gap-2 px-3 py-2 rounded-lg border ${sysConfig.bg} ${sysConfig.border}`}>
-        <SysIcon className={`w-3.5 h-3.5 ${sysConfig.text} flex-shrink-0`} />
-        <span className={`text-xs font-medium ${sysConfig.text}`}>
+      <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={sysConfig.style}>
+        <SysIcon className="w-3.5 h-3.5 flex-shrink-0" color={sysConfig.style?.color} />
+        <span className="text-xs font-medium" style={{ color: sysConfig.style?.color }}>
           {renderAgentMessage(systemMessage, t)}
         </span>
-        <Zap className="w-3 h-3 text-blue-700 ml-auto" />
+        <Zap className="w-3 h-3 ml-auto" style={{ color: sysConfig.style?.color, opacity: 0.7 }} />
       </div>
 
       {/* Priority queue */}
@@ -108,19 +115,23 @@ export function AgentCommandPanel() {
         return (
           <div
             key={task.id}
-            className={`flex items-start gap-2.5 px-3 py-2 rounded-lg border ${config.bg} ${config.border} ${isBlocked ? 'opacity-60' : ''}`}
+            className="flex items-start gap-2.5 px-3 py-2 rounded-lg"
+            style={{ ...config.style, opacity: isBlocked ? 0.6 : 1 }}
           >
-            <span className={`w-1.5 h-1.5 rounded-full ${config.dot} mt-1.5 flex-shrink-0`} />
+            <span
+              className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
+              style={{ background: config.style?.color }}
+            />
             <div className="min-w-0 flex-1">
-              <p className={`text-xs font-semibold ${config.text} truncate`}>{task.title}</p>
-              <p className={`text-xs ${config.text} opacity-75 mt-0.5`}>
+              <p className="text-xs font-semibold truncate" style={{ color: config.style?.color }}>{task.title}</p>
+              <p className="text-xs mt-0.5" style={{ color: config.style?.color, opacity: 0.75 }}>
                 {renderAgentMessage(agentMessage, t)}
               </p>
             </div>
             {isBlocked ? (
-              <Lock className={`w-3 h-3 ${config.text} flex-shrink-0 mt-0.5`} />
+              <Lock className="w-3 h-3 flex-shrink-0 mt-0.5" style={{ color: config.style?.color }} />
             ) : (
-              <ArrowRight className={`w-3 h-3 ${config.text} flex-shrink-0 mt-0.5`} />
+              <ArrowRight className="w-3 h-3 flex-shrink-0 mt-0.5" style={{ color: config.style?.color }} />
             )}
           </div>
         )

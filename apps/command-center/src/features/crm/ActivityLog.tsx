@@ -1,34 +1,38 @@
 import { useState } from 'react'
 import {
-  ACTIVITIES,
   ACTIVITY_ICONS,
   TEAM_COLORS,
-  PROSPECTS,
-  type Activity,
   type ActivityType,
   type TeamMember,
 } from './data'
 import { useTranslation } from '../../shared/i18n/useTranslation'
+import { useCrmActivities, useCrmProspects, useCreateActivity } from './hooks/useCRM'
 
 const ACTIVITY_TYPES: ActivityType[] = ['Samtal', 'Email', 'Möte', 'Demo', 'Offert skickad', 'Follow-up']
 const TEAM_MEMBERS: TeamMember[] = ['Leon', 'Dennis', 'Erik']
 
 export function ActivityLog() {
   const { t: _t } = useTranslation() // ready for i18n
-  const [activities, setActivities] = useState<Activity[]>(
-    [...ACTIVITIES].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-  )
   const [filter, setFilter] = useState<ActivityType | 'Alla'>('Alla')
   const [byFilter, setByFilter] = useState<TeamMember | 'Alla'>('Alla')
   const [showForm, setShowForm] = useState(false)
 
   // New activity form state
   const [formType, setFormType] = useState<ActivityType>('Samtal')
-  const [formProspect, setFormProspect] = useState(PROSPECTS[0]?.id ?? '')
+  const [formProspect, setFormProspect] = useState('')
   const [formBy, setFormBy] = useState<TeamMember>('Leon')
   const [formNote, setFormNote] = useState('')
 
-  const filtered = activities.filter(a => {
+  const { data: activities = [], isLoading, error } = useCrmActivities()
+  const { data: prospects = [] } = useCrmProspects()
+  const createActivity = useCreateActivity()
+
+  if (isLoading) return <div style={{ padding: 40, color: '#666' }}>Laddar...</div>
+  if (error) return <div style={{ padding: 40, color: '#c0392b' }}>Fel: {String(error)}</div>
+
+  const sorted = [...activities].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+
+  const filtered = sorted.filter(a => {
     const matchType = filter === 'Alla' || a.type === filter
     const matchBy = byFilter === 'Alla' || a.by === byFilter
     return matchType && matchBy
@@ -36,18 +40,15 @@ export function ActivityLog() {
 
   function logActivity() {
     if (!formNote.trim()) return
-    const prospect = PROSPECTS.find(p => p.id === formProspect)
-    if (!prospect) return
-    const newActivity: Activity = {
-      id: `a${Date.now()}`,
+    const prospect = prospects.find(p => p.id === formProspect)
+    createActivity.mutate({
       type: formType,
-      prospectId: formProspect,
-      company: prospect.company,
+      prospect_id: formProspect || null,
+      company: prospect?.company ?? '',
       by: formBy,
       date: new Date().toISOString(),
       note: formNote,
-    }
-    setActivities(prev => [newActivity, ...prev])
+    })
     setFormNote('')
     setShowForm(false)
   }
@@ -92,7 +93,8 @@ export function ActivityLog() {
                 onChange={e => setFormProspect(e.target.value)}
                 className="w-full bg-muted/30 border border-surface-border rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none appearance-none"
               >
-                {PROSPECTS.map(p => (
+                <option value="">— Välj prospect —</option>
+                {prospects.map(p => (
                   <option key={p.id} value={p.id}>{p.company}</option>
                 ))}
               </select>
@@ -123,10 +125,10 @@ export function ActivityLog() {
           <div className="flex gap-3">
             <button
               onClick={logActivity}
-              disabled={!formNote.trim()}
+              disabled={!formNote.trim() || createActivity.isPending}
               className="text-sm px-4 py-2 rounded-lg bg-brand-accent text-text-primary hover:opacity-90 transition-opacity font-medium disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              Logga
+              {createActivity.isPending ? 'Sparar...' : 'Logga'}
             </button>
             <button
               onClick={() => setShowForm(false)}
@@ -168,7 +170,7 @@ export function ActivityLog() {
           <button
             key={m}
             onClick={() => setByFilter(m as TeamMember | 'Alla')}
-            className={`text-xs px-3 py-1.5 rounded-lg transition-colors`}
+            className="text-xs px-3 py-1.5 rounded-lg transition-colors"
             style={
               byFilter === m && m !== 'Alla'
                 ? { background: TEAM_COLORS[m as TeamMember] + '20', color: TEAM_COLORS[m as TeamMember], border: `1px solid ${TEAM_COLORS[m as TeamMember]}40` }
@@ -181,6 +183,13 @@ export function ActivityLog() {
           </button>
         ))}
       </div>
+
+      {/* Empty state */}
+      {!filtered.length && (
+        <div className="py-12 text-center text-text-muted text-sm">
+          Inga aktiviteter tillgängliga
+        </div>
+      )}
 
       {/* Log */}
       <div className="space-y-2">
@@ -213,7 +222,7 @@ export function ActivityLog() {
           </div>
         ))}
 
-        {filtered.length === 0 && (
+        {filtered.length === 0 && activities.length > 0 && (
           <div className="py-12 text-center text-text-muted text-sm">
             Inga aktiviteter matchar filter
           </div>

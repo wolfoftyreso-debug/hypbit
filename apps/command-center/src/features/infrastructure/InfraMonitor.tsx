@@ -86,17 +86,37 @@ export function InfraMonitor() {
   const [logLastRefresh, setLogLastRefresh] = useState(Date.now())
   const logContainerRef = useRef<HTMLDivElement>(null)
 
-  // Fetch infra status
+  // Fetch infra status — mapped from /v1/infrastructure/health (real ECS data)
   const fetchInfra = useCallback(async () => {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch('/api/infra/status')
+      const apiBase = (import.meta.env.VITE_API_URL as string | undefined) ?? 'https://api.wavult.com'
+      const token = typeof window !== 'undefined' ? localStorage.getItem('wavult_token') : null
+      const res = await fetch(`${apiBase}/v1/infrastructure/health`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const data = await res.json()
-      setInfra(data)
-      if (!selectedService && data.services?.length > 0) {
-        setSelectedService(data.services[0].name)
+      const raw = await res.json()
+      // Map /v1/infrastructure/health response shape to InfraStatus
+      const mapped: InfraStatus = {
+        cluster: 'wavult',
+        services: (raw.services ?? []).map((s: { name: string; running: number; desired: number; status: string }) => ({
+          name: s.name,
+          running: s.running ?? 0,
+          desired: s.desired ?? 1,
+          status: s.status === 'operational' ? 'running'
+                : s.status === 'degraded'    ? 'degraded'
+                : 'stopped',
+        })),
+        domains: [],
+      }
+      setInfra(mapped)
+      if (!selectedService && mapped.services.length > 0) {
+        setSelectedService(mapped.services[0].name)
       }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Fetch failed')
@@ -105,12 +125,16 @@ export function InfraMonitor() {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Fetch logs
+  // Fetch logs — not yet available in backend, show empty gracefully
   const fetchLogs = useCallback(async (serviceName: string) => {
     if (!serviceName) return
     setLogsLoading(true)
     try {
-      const res = await fetch(`/api/infra/logs/${encodeURIComponent(serviceName)}`)
+      const apiBase = (import.meta.env.VITE_API_URL as string | undefined) ?? 'https://api.wavult.com'
+      const token = typeof window !== 'undefined' ? localStorage.getItem('wavult_token') : null
+      const res = await fetch(`${apiBase}/api/infra/logs/${encodeURIComponent(serviceName)}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json()
       setLogs(data.logs ?? [])
@@ -140,7 +164,12 @@ export function InfraMonitor() {
   const handleRestart = async (serviceName: string) => {
     setRestarting(prev => new Set(prev).add(serviceName))
     try {
-      await fetch(`/api/infra/restart/${encodeURIComponent(serviceName)}`, { method: 'POST' })
+      const apiBase = (import.meta.env.VITE_API_URL as string | undefined) ?? 'https://api.wavult.com'
+      const token = typeof window !== 'undefined' ? localStorage.getItem('wavult_token') : null
+      await fetch(`${apiBase}/api/infra/restart/${encodeURIComponent(serviceName)}`, {
+        method: 'POST',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      })
       setTimeout(() => fetchInfra(), 3000)
     } catch {
       // ignore

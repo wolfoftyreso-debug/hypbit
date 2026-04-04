@@ -6,7 +6,7 @@ import { DocumentVault } from './DocumentVault'
 import { ComplianceTracker } from './ComplianceTracker'
 import { OwnershipView } from './OwnershipView'
 import { CompendiumView } from './CompendiumView'
-import { BOARD_MEETINGS, COMPLIANCE_ITEMS, COMPANIES } from './data'
+import { useCorpEntities, useCorpBoardMeetings, useCorpComplianceStats } from './hooks/useCorporate'
 
 type Tab = 'board' | 'jurisdictions' | 'documents' | 'compliance' | 'ownership' | 'compendium'
 
@@ -19,18 +19,16 @@ const TABS: Array<{ id: Tab; label: string; icon: string }> = [
   { id: 'compendium',    label: 'Kompendium',         icon: '📋' },
 ]
 
-function daysUntil(date: string) {
-  return Math.ceil((new Date(date).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
-}
-
 function QuickStats() {
-  const activeCompanies = COMPANIES.filter(c => c.status === 'aktiv').length
-  const upcomingMeetings = BOARD_MEETINGS.filter(m => m.status === 'planerat').length
-  const pendingCompliance = COMPLIANCE_ITEMS.filter(i => i.status !== 'klar').length
-  const overdue = COMPLIANCE_ITEMS.filter(i => i.status !== 'klar' && daysUntil(i.deadline) < 0).length
-  const urgentDeadlines = COMPLIANCE_ITEMS.filter(
-    i => i.status !== 'klar' && daysUntil(i.deadline) > 0 && daysUntil(i.deadline) <= 30
-  ).length
+  const { data: entities = [] } = useCorpEntities()
+  const { data: meetings = [] } = useCorpBoardMeetings()
+  const { data: stats } = useCorpComplianceStats()
+
+  const activeCompanies = entities.filter(c => c.status === 'aktiv').length
+  const upcomingMeetings = meetings.filter(m => m.status === 'planerat').length
+  const pendingCompliance = stats ? stats.total - stats.completed : 0
+  const overdue = stats?.overdue ?? 0
+  const urgentDeadlines = stats?.dueIn30 ?? 0
 
   return (
     <div className="flex gap-3 flex-wrap text-xs">
@@ -54,6 +52,7 @@ function QuickStats() {
 export function CorporateHub() {
   const [activeTab, setActiveTab] = useState<Tab>('board')
   const { activeEntity } = useEntityScope()
+  const { data: entities = [] } = useCorpEntities()
 
   return (
     <div className="flex flex-col h-full bg-muted/30 text-text-primary">
@@ -65,7 +64,7 @@ export function CorporateHub() {
             <div>
               <h1 className="text-[16px] font-bold text-text-primary">Bolagsadmin</h1>
               <p className="text-xs text-gray-9000 font-mono">
-                {activeEntity.shortName} — {COMPANIES.length} entiteter · SE · US-DE · US-TX · LT · AE
+                {activeEntity.shortName} — {entities.length} entiteter · SE · US-DE · US-TX · LT · AE
               </p>
             </div>
           </div>

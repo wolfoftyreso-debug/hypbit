@@ -14,49 +14,53 @@ html, body, #root {
      Primary: cream/beige + deep navy + gold accent
   ═══════════════════════════════════════════════════════════ */
 
-  /* ── Backgrounds — warm cream tones ─────────────────────── */
-  --color-bg:              #F5F0E8;   /* main app background — warm cream */
-  --color-bg-subtle:       #EDE8DC;   /* sidebar, panels */
-  --color-bg-muted:        #E8E0D0;   /* hover states */
+  /* ── Backgrounds — Earth & Stone ────────────────────────── */
+  --color-bg:              #F7F2E8;   /* main app background — warm yellow-beige */
+  --color-bg-subtle:       #EDE8DC;   /* panels */
+  --color-bg-muted:        #E5DFD0;   /* hover states */
   --color-surface:         #FDFAF5;   /* cards, modals — slightly lighter */
   --color-surface-raised:  #FFFFFF;   /* elevated cards */
-  --color-border:          #DDD5C5;   /* subtle border */
-  --color-border-strong:   #C8C1B4;   /* strong border */
+  --color-border:          #DED9CC;   /* COL-06 subtle border */
+  --color-border-strong:   #C4BFB2;   /* strong border */
 
   /* ── Text ────────────────────────────────────────────────── */
-  --color-text-primary:    #0A3D62;   /* Wavult navy — primary text */
-  --color-text-secondary:  #2C5F8A;   /* secondary text */
-  --color-text-muted:      #8A8A9A;   /* muted/placeholder */
-  --color-text-inverse:    #F5F0E8;   /* text on dark backgrounds */
+  --color-text-primary:    #1A1A1A;   /* charcoal — primary text */
+  --color-text-secondary:  #3A3530;   /* secondary text */
+  --color-text-muted:      #8A8278;   /* muted/placeholder */
+  --color-text-inverse:    #E5E5E1;   /* text on dark backgrounds */
 
-  /* ── Brand — Deep Navy ───────────────────────────────────── */
-  --color-brand:           #0A3D62;   /* Wavult navy */
-  --color-brand-hover:     #072E4A;
-  --color-brand-light:     #E0EBF4;
-  --color-brand-subtle:    #F0F0F8;
+  /* ── Brand — Ochre-Taupe ─────────────────────────────────── */
+  --color-brand:           #8B7355;   /* ochre-taupe */
+  --color-brand-hover:     #7A6347;
+  --color-brand-light:     #EDE4D6;
+  --color-brand-subtle:    #F5EFE4;
 
-  /* ── Accent — Gold ───────────────────────────────────────── */
-  --color-accent:          #E8B84B;   /* Wavult gold */
-  --color-accent-hover:    #D4A53A;
-  --color-accent-light:    #FDF4DC;
-  --color-accent-subtle:   #FEF8E8;
+  /* ── Accent — Ochre ──────────────────────────────────────── */
+  --color-accent:          #8B7355;   /* ochre-taupe accent */
+  --color-accent-hover:    #7A6347;
+  --color-accent-light:    #EDE4D6;
+  --color-accent-subtle:   #F5EFE4;
 
-  /* ── Interactive — Navy (replaces cold blue) ─────────────── */
-  --color-interactive:     #2C3E6B;   /* interactive blue-navy */
-  --color-interactive-hover: #1A2E5A;
-  --color-interactive-light: #E0E6F5;
+  /* ── Interactive ─────────────────────────────────────────── */
+  --color-interactive:     #2B5BA8;   /* medium blue */
+  --color-interactive-hover: #1E4A8A;
+  --color-interactive-light: #E0EBF4;
 
-  /* ── Danger — RED: ONLY for critical failures, system down, security breach ─ */
-  /* Never use red for: badges, tags, labels, notifications, counts, deletions   */
-  /* For warnings/attention: use --color-warning (amber) instead                 */
-  --color-danger:          #C0392B;   /* CRITICAL ONLY */
+  /* ── Status Colors — Earth & Stone palette ──────────────── */
+  --color-status-active:   #2D6A4F;   /* forest green — Aktiv */
+  --color-status-planned:  #2B5BA8;   /* medium blue — Planerad */
+  --color-status-ongoing:  #B8860B;   /* warm ochre — Pågår */
+  --color-status-done:     #2D6A4F;   /* forest green — Klar */
+
+  /* ── Danger — RED: ONLY for critical failures ───────────── */
+  --color-danger:          #C0392B;   /* Alert röd */
   --color-danger-bg:       #FDECEA;
   --color-danger-text:     #FFFFFF;
 
-  /* ── Warning — AMBER: delays, pending, attention needed ─────────────────── */
-  --color-warning:         #B8760A;
+  /* ── Warning — AMBER/ORANGE ──────────────────────────────── */
+  --color-warning:         #B8860B;   /* warm ochre */
   --color-warning-bg:      #FDF3E0;
-  --color-warning-strong:  #D97706;
+  --color-warning-strong:  #E67E22;   /* Alert orange */
 
   /* ── Negative — for financial loss, decline ─────────────────────────────── */
   --color-negative:        #A0522D;   /* Warm burnt red-brown, not alarming */
@@ -106,14 +110,14 @@ html, body, #root {
   --shadow-lg:   0 8px 24px rgba(26,26,46,0.10), 0 4px 8px rgba(26,26,46,0.06);
   --shadow-xl:   0 16px 48px rgba(26,26,46,0.12), 0 8px 16px rgba(26,26,46,0.08);
 
-  /* ── Sidebar ─────────────────────────────────────────────── */
-  --sidebar-bg:            #0A3D62;   /* deep navy sidebar */
-  --sidebar-border:        rgba(201,168,76,0.15);
-  --sidebar-text:          rgba(245,240,232,0.75);
+  /* ── Sidebar — Obsidian (Earth & Stone) ─────────────────── */
+  --sidebar-bg:            #242321;   /* Obsidian — djup varm mörkgrå */
+  --sidebar-border:        rgba(139,115,85,0.20);  /* ochre-taupe border */
+  --sidebar-text:          #E5E5E1;   /* soft off-white */
   --sidebar-text-active:   #F5F0E8;
-  --sidebar-accent:        #E8B84B;
-  --sidebar-item-hover:    rgba(245,240,232,0.06);
-  --sidebar-item-active:   rgba(201,168,76,0.12);
+  --sidebar-accent:        #8B7355;   /* ochre-taupe accent */
+  --sidebar-item-hover:    rgba(229,229,225,0.06);
+  --sidebar-item-active:   #3A3530;   /* subtle dark highlight */
 
   /* ── Illustrations CDN base ──────────────────────────────── */
   --cdn-illustrations: "https://d14gf6x22fx96q.cloudfront.net/brief/brief-characters";
@@ -132,6 +136,6 @@ html, body, #root {
   --color-bg-grouped:      var(--color-bg-subtle);
   --color-accent-text:     var(--color-text-inverse);
   --color-text-tertiary:   var(--color-text-muted);
-  --color-topbar-bg:       rgba(242,237,228,0.92);
+  --color-topbar-bg:       rgba(247,242,232,0.95);
   --shadow-xs:             0 1px 2px rgba(26,26,46,0.04);
 }

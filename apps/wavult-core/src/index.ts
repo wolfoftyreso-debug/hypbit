@@ -61,6 +61,8 @@ import okrRouter from './routes/okr'
 import llmRouter from './routes/llm'
 import rtmRouter from './routes/rtm'
 import jurisdictionRouter from './routes/jurisdiction'
+import travelRouter from './routes/travel'
+import campaignRouter from './routes/campaign'
 import { validateDbConfig } from './lib/db'
 import { supabaseCloudWriteGuard } from './middleware/supabase-guard'
 
@@ -182,6 +184,8 @@ app.use('/', jurisdictionRouter)                // Jurisdiction — Legal Bounda
 app.use('/', academyRouter)                     // Academy — ISO/compliance-kurser + kompetensmatris-koppling
 app.use('/', okrRouter)                         // OKR — Google-modellen: Objectives, Key Results, Check-ins
 app.use('/api/config', configRouter)
+app.use('/', travelRouter)              // Travel — trip management
+app.use('/', campaignRouter)            // Campaign OS — activities, budgets, KPIs
 app.use('/api/dgs', dgsRouter)
 app.use('/', accountsRouter)                    // Customer account ledger + invoice spool file
 app.use('/', revolutOAuthRouter)

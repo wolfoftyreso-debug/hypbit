@@ -1,25 +1,22 @@
 import { useState } from 'react'
-import { CONTACTS, PROSPECTS, PRODUCT_COLORS, STAGE_COLORS } from './data'
+import { PRODUCT_COLORS, STAGE_COLORS } from './data'
 import { useTranslation } from '../../shared/i18n/useTranslation'
+import { useCrmContacts, useCrmProspects } from './hooks/useCRM'
 
 export function ContactsView() {
   const { t: _t } = useTranslation() // ready for i18n
   const [search, setSearch] = useState('')
 
-  const filtered = CONTACTS.filter(c => {
-    const q = search.toLowerCase()
-    return (
-      c.name.toLowerCase().includes(q) ||
-      c.company.toLowerCase().includes(q) ||
-      c.role.toLowerCase().includes(q) ||
-      c.email.toLowerCase().includes(q)
-    )
-  })
+  const { data: contacts = [], isLoading: loadingContacts, error: contactsError } = useCrmContacts(search)
+  const { data: prospects = [] } = useCrmProspects()
 
-  function getProspect(prospectId?: string) {
+  function getProspect(prospectId?: string | null) {
     if (!prospectId) return null
-    return PROSPECTS.find(p => p.id === prospectId) ?? null
+    return prospects.find(p => p.id === prospectId) ?? null
   }
+
+  if (loadingContacts) return <div style={{ padding: 40, color: '#666' }}>Laddar...</div>
+  if (contactsError) return <div style={{ padding: 40, color: '#c0392b' }}>Fel: {String(contactsError)}</div>
 
   return (
     <div className="space-y-5">
@@ -27,7 +24,7 @@ export function ContactsView() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h2 className="text-sm font-semibold text-text-primary">Kontakter</h2>
-          <p className="text-sm text-text-muted mt-0.5">{CONTACTS.length} kontakter i registret</p>
+          <p className="text-sm text-text-muted mt-0.5">{contacts.length} kontakter i registret</p>
         </div>
         <input
           value={search}
@@ -37,10 +34,17 @@ export function ContactsView() {
         />
       </div>
 
+      {/* Empty state */}
+      {!contacts.length && (
+        <div className="col-span-3 py-12 text-center text-text-muted text-sm">
+          Inga kontakter tillgängliga
+        </div>
+      )}
+
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-        {filtered.map(c => {
-          const prospect = getProspect(c.prospectId)
+        {contacts.map(c => {
+          const prospect = getProspect(c.prospect_id)
           return (
             <div
               key={c.id}
@@ -63,27 +67,29 @@ export function ContactsView() {
 
               {/* Contact details */}
               <div className="space-y-1.5">
-                <a
-                  href={`mailto:${c.email}`}
-                  className="flex items-center gap-2 text-xs text-text-muted hover:text-text-primary transition-colors group"
-                >
-                  <span className="text-text-muted group-hover:text-text-muted">📧</span>
-                  <span className="truncate">{c.email}</span>
-                </a>
-                <a
-                  href={`tel:${c.phone}`}
-                  className="flex items-center gap-2 text-xs text-text-muted hover:text-text-primary transition-colors group"
-                >
-                  <span className="text-text-muted group-hover:text-text-muted">📞</span>
-                  <span>{c.phone}</span>
-                </a>
+                {c.email && (
+                  <a
+                    href={`mailto:${c.email}`}
+                    className="flex items-center gap-2 text-xs text-text-muted hover:text-text-primary transition-colors group"
+                  >
+                    <span className="text-text-muted group-hover:text-text-muted">📧</span>
+                    <span className="truncate">{c.email}</span>
+                  </a>
+                )}
+                {c.phone && (
+                  <a
+                    href={`tel:${c.phone}`}
+                    className="flex items-center gap-2 text-xs text-text-muted hover:text-text-primary transition-colors group"
+                  >
+                    <span className="text-text-muted group-hover:text-text-muted">📞</span>
+                    <span>{c.phone}</span>
+                  </a>
+                )}
               </div>
 
               {/* Linked prospect */}
               {prospect && (
-                <div
-                  className="flex items-center justify-between pt-2 border-t border-surface-border"
-                >
+                <div className="flex items-center justify-between pt-2 border-t border-surface-border">
                   <div className="flex items-center gap-2">
                     <span
                       className="text-xs px-1.5 py-0.5 rounded"
@@ -105,7 +111,7 @@ export function ContactsView() {
           )
         })}
 
-        {filtered.length === 0 && (
+        {contacts.length === 0 && (
           <div className="col-span-3 py-12 text-center text-text-muted text-sm">
             Inga kontakter matchar sökningen
           </div>

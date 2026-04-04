@@ -1,30 +1,35 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import {
-  DEALS,
   DEAL_STATUS_COLORS,
   PRODUCT_COLORS,
   TEAM_COLORS,
   formatSEK,
-  type Deal,
   type DealStatus,
 } from './data'
+import { useCrmDeals, useUpdateDeal } from './hooks/useCRM'
+import type { CrmDeal } from '../../lib/supabase'
 
 const STATUSES: Array<DealStatus | 'Alla'> = ['Alla', 'Utkast', 'Skickad', 'Under förhandling', 'Signerad', 'Avbruten']
 
 export function DealsView() {
-  const [deals, setDeals] = useState<Deal[]>(DEALS)
   const [statusFilter, setStatusFilter] = useState<DealStatus | 'Alla'>('Alla')
+
+  const { data: deals = [], isLoading, error } = useCrmDeals()
+  const updateDeal = useUpdateDeal()
+
+  if (isLoading) return <div style={{ padding: 40, color: '#666' }}>Laddar...</div>
+  if (error) return <div style={{ padding: 40, color: '#c0392b' }}>Fel: {String(error)}</div>
 
   const filtered = statusFilter === 'Alla' ? deals : deals.filter(d => d.status === statusFilter)
 
-  const totalValue = deals.filter(d => d.status === 'Signerad').reduce((s, d) => s + d.valueSEK, 0)
+  const totalValue = deals.filter(d => d.status === 'Signerad').reduce((s, d) => s + d.value_sek, 0)
   const pendingValue = deals
     .filter(d => d.status === 'Under förhandling' || d.status === 'Skickad')
-    .reduce((s, d) => s + d.valueSEK, 0)
+    .reduce((s, d) => s + d.value_sek, 0)
 
-  function updateStatus(id: string, status: DealStatus) {
-    setDeals(prev => prev.map(d => d.id === id ? { ...d, status } : d))
+  function updateStatus(deal: CrmDeal, status: DealStatus) {
+    updateDeal.mutate({ id: deal.id, status })
   }
 
   return (
@@ -67,6 +72,13 @@ export function DealsView() {
         ))}
       </div>
 
+      {/* Empty state */}
+      {!deals.length && (
+        <div className="text-center py-16 text-text-muted text-sm">
+          Inga avtal tillgängliga
+        </div>
+      )}
+
       {/* Deals table */}
       <div className="overflow-auto rounded-xl border border-surface-border">
         <table className="w-full text-sm min-w-[680px]">
@@ -99,9 +111,9 @@ export function DealsView() {
                     {d.status}
                   </span>
                 </td>
-                <td className="px-4 py-3 font-bold text-text-primary tabular-nums">{formatSEK(d.valueSEK)}</td>
-                <td className="px-4 py-3 text-text-muted text-xs">{d.startDate}</td>
-                <td className="px-4 py-3 text-text-muted text-xs">{d.durationMonths} mån</td>
+                <td className="px-4 py-3 font-bold text-text-primary tabular-nums">{formatSEK(d.value_sek)}</td>
+                <td className="px-4 py-3 text-text-muted text-xs">{d.start_date ?? '—'}</td>
+                <td className="px-4 py-3 text-text-muted text-xs">{d.duration_months} mån</td>
                 <td className="px-4 py-3">
                   <span
                     className="text-xs px-2 py-0.5 rounded-full"
@@ -113,8 +125,9 @@ export function DealsView() {
                 <td className="px-4 py-3">
                   <select
                     value={d.status}
-                    onChange={e => updateStatus(d.id, e.target.value as DealStatus)}
-                    className="text-xs bg-muted/30 border border-surface-border rounded px-2 py-1 text-gray-600 focus:outline-none appearance-none cursor-pointer"
+                    onChange={e => updateStatus(d, e.target.value as DealStatus)}
+                    disabled={updateDeal.isPending}
+                    className="text-xs bg-muted/30 border border-surface-border rounded px-2 py-1 text-gray-600 focus:outline-none appearance-none cursor-pointer disabled:opacity-50"
                   >
                     {STATUSES.filter(s => s !== 'Alla').map(s => (
                       <option key={s} value={s}>{s}</option>
@@ -138,7 +151,7 @@ export function DealsView() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {STATUSES.filter(s => s !== 'Alla').map(s => {
           const count = deals.filter(d => d.status === s).length
-          const val = deals.filter(d => d.status === s).reduce((sum, d) => sum + d.valueSEK, 0)
+          const val = deals.filter(d => d.status === s).reduce((sum, d) => sum + d.value_sek, 0)
           return (
             <div
               key={s}

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useChannels } from './hooks/useMedia'
 import type { MediaChannel } from './types'
+import { MOCK_CHANNELS } from './mockData'
 
 const PROVIDER_LABELS: Record<MediaChannel['provider'], string> = {
   spotify: 'Spotify',

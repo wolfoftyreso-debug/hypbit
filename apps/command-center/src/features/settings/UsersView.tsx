@@ -17,11 +17,7 @@ interface User {
   createdAt: string
 }
 
-const MOCK_USERS: User[] = [
-  { id: 'mock-1', name: 'Erik Svensson',   email: 'erik@hypbit.com',   role: 'admin',  active: true,  createdAt: '2025-01-01T00:00:00Z' },
-  { id: 'mock-2', name: 'Dennis Bjarnemark', email: 'dennis@hypbit.com', role: 'admin', active: true,  createdAt: '2025-01-01T00:00:00Z' },
-  { id: 'mock-3', name: 'Leon Russo',       email: 'leon@hypbit.com',   role: 'user',  active: true,  createdAt: '2025-01-01T00:00:00Z' },
-]
+// No mock data — only real API data is shown
 
 // ─── Sub-modals ────────────────────────────────────────────────────────────────
 
@@ -172,12 +168,12 @@ export function UsersView() {
         setUsers(Array.isArray(data) ? data : data.users ?? [])
         setApiError(null)
       } else {
-        setApiError(`API svarade med HTTP ${res.status}. Visar exempeldata.`)
-        setUsers(MOCK_USERS)
+        setApiError(`API svarade med HTTP ${res.status}. Kontrollera identity-service.`)
+        setUsers([])
       }
     } catch {
-      setApiError('Kunde inte nå API. Visar exempeldata.')
-      setUsers(MOCK_USERS)
+      setApiError('Kunde inte nå API. Kontrollera att identity-service är tillgänglig.')
+      setUsers([])
     } finally {
       setLoading(false)
     }
@@ -256,6 +252,10 @@ export function UsersView() {
         {loading ? (
           <div style={{ padding: 40, textAlign: 'center', color: 'var(--color-text-tertiary)', fontSize: 13 }}>
             Laddar användare…
+          </div>
+        ) : !loading && users.length === 0 && !apiError ? (
+          <div style={{ padding: 40, textAlign: 'center', color: 'var(--color-text-tertiary)', fontSize: 13 }}>
+            Inga användare tillgängliga
           </div>
         ) : (
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>

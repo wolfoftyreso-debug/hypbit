@@ -59,7 +59,7 @@ function useCurrentLocation() {
 
 export function ProfileView() {
   const { user, signOut } = useAuth()
-  const { avatarUrl, openUploader, saving } = useAvatar()
+  const { openUploader } = useAvatar()
   const location = useCurrentLocation()
   const [showQR, setShowQR] = useState(false)
   const [qrUrl, setQrUrl] = useState('')
@@ -70,8 +70,6 @@ export function ProfileView() {
 
   // Contact card URL
   const contactUrl = `https://wavult.com/contact/erik`
-  const vCard = `BEGIN:VCARD\nVERSION:3.0\nFN:Erik Svensson\nORG:Wavult Group\nTITLE:Chairman & Group CEO\nTEL;TYPE=CELL,VOICE:+46709123223\nEMAIL:erik@wavult.com\nURL:https://wavult.com\nEND:VCARD`
-
   const generateQR = async () => {
     const url = await QRCode.toDataURL(contactUrl, { 
       width: 280, margin: 2,

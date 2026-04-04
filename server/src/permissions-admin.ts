@@ -1,23 +1,8 @@
 import { Router, Request, Response } from "express";
 import { supabase } from "./supabase";
 import { eventBus } from "./events";
-
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-interface AuthUser {
-  id: string;
-  org_id: string;
-  role: string;
-}
-
-declare global {
-  namespace Express {
-    interface Request {
-      user?: AuthUser;
-    }
-  }
-}
+import type { AuthUser } from "./shared/middleware/auth-types";
+import "./shared/middleware/auth-types";
 
 // ---------------------------------------------------------------------------
 // Router

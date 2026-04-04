@@ -131,10 +131,6 @@ function NewCampaignModal({ onClose }: { onClose: () => void }) {
               />
             </div>
           </div>
-
-          <div className="rounded-lg bg-blue-950/40 border border-blue-500/20 px-4 py-3 text-xs text-blue-300">
-            ℹ️ Fas 1 — Manuell drift. Integrationer aktiveras i Fas 2.
-          </div>
         </div>
         <div className="px-6 py-4 border-t border-surface-border flex justify-end gap-3">
           <button onClick={onClose} className="px-4 py-2 text-sm text-gray-9000 hover:text-text-primary transition-colors">Avbryt</button>
@@ -151,15 +147,13 @@ function NewCampaignModal({ onClose }: { onClose: () => void }) {
 }
 
 function CampaignDetail({ campaign, onBack }: { campaign: Campaign; onBack: () => void }) {
-  const allocations = MOCK_BUDGET_ALLOCATIONS.filter(a => a.campaign_id === campaign.id)
-
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
         <button onClick={onBack} className="text-gray-9000 hover:text-text-primary text-sm transition-colors">← Tillbaka</button>
         <span className="text-gray-600">/</span>
         <span className="text-text-primary font-medium">{campaign.name}</span>
-        <span className={`text-xs px-2 py-0.5 rounded-full font-mono ${STATUS_COLORS[campaign.status]}`}>
+        <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono ${STATUS_COLORS[campaign.status]}`}>
           {campaign.status}
         </span>
       </div>
@@ -180,36 +174,14 @@ function CampaignDetail({ campaign, onBack }: { campaign: Campaign; onBack: () =
 
       <div className="bg-white border border-surface-border rounded-xl p-5">
         <h3 className="text-sm font-semibold text-text-primary mb-4">Kanal-allokering</h3>
-        {allocations.length === 0 ? (
-          <p className="text-sm text-gray-9000">Inga kanalallokationer konfigurerade.</p>
-        ) : (
-          <div className="space-y-2">
-            {allocations.map(alloc => {
-              const ch = MOCK_CHANNELS.find(c => c.id === alloc.channel_id)
-              return (
-                <div key={alloc.id} className="flex items-center justify-between py-2 border-b border-[#DDD5C5] last:border-0">
-                  <span className="text-sm text-gray-600">{ch?.provider ?? alloc.channel_id}</span>
-                  <div className="flex items-center gap-4 text-xs text-gray-9000">
-                    <span>Budget: 0 {campaign.currency}/dag</span>
-                    <span>Spend: 0</span>
-                    <span>Score: —</span>
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        )}
-      </div>
-
-      <div className="rounded-lg bg-blue-950/40 border border-blue-500/20 px-4 py-3 text-xs text-blue-300">
-        ℹ️ Fas 1 — Manuell drift. Integrationer aktiveras i Fas 2. Spend och ROI uppdateras manuellt.
+        <p className="text-sm text-gray-9000">Inga kanalallokationer konfigurerade för denna kampanj.</p>
       </div>
     </div>
   )
 }
 
 export function CampaignView() {
-  const { campaigns } = useCampaigns()
+  const { campaigns, loading, error } = useCampaigns()
   const [showModal, setShowModal] = useState(false)
   const [selected, setSelected] = useState<Campaign | null>(null)
 
@@ -217,12 +189,28 @@ export function CampaignView() {
     return <CampaignDetail campaign={selected} onBack={() => setSelected(null)} />
   }
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-40 text-gray-9000 text-xs">
+        Laddar kampanjer...
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-40 text-red-500 text-xs">
+        Fel vid hämtning: {error}
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-text-primary font-semibold">Kampanjer</h2>
-          <p className="text-xs text-gray-9000 mt-0.5">{MOCK_CAMPAIGNS.length} kampanjer totalt</p>
+          <p className="text-xs text-gray-9000 mt-0.5">{campaigns.length} kampanjer totalt</p>
         </div>
         <button
           onClick={() => setShowModal(true)}
@@ -232,43 +220,46 @@ export function CampaignView() {
         </button>
       </div>
 
-      <div className="space-y-3">
-        {MOCK_CAMPAIGNS.map(campaign => (
-          <div
-            key={campaign.id}
-            onClick={() => setSelected(campaign)}
-            className="rounded-xl border border-surface-border bg-white p-5 cursor-pointer hover:border-[#DDD5C5] hover:bg-[#EDE8DC] transition-all"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1 min-w-0">
-                {/* Status + Namn */}
-                <div className="flex items-center gap-2.5 mb-2">
-                  <div className={`h-2 w-2 rounded-full flex-shrink-0 ${STATUS_DOT[campaign.status]}`} />
-                  <span className="text-text-primary font-semibold text-sm truncate">{campaign.name}</span>
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium flex-shrink-0 ${STATUS_COLORS[campaign.status]}`}>
-                    {campaign.status}
-                  </span>
+      {campaigns.length === 0 ? (
+        <div className="text-center py-16 text-gray-9000 text-sm rounded-xl border border-surface-border bg-white">
+          Inga kampanjer — skapa din första kampanj ovan.
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {campaigns.map(campaign => (
+            <div
+              key={campaign.id}
+              onClick={() => setSelected(campaign)}
+              className="rounded-xl border border-surface-border bg-white p-5 cursor-pointer hover:border-[#DDD5C5] hover:bg-[#EDE8DC] transition-all"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2.5 mb-2">
+                    <div className={`h-2 w-2 rounded-full flex-shrink-0 ${STATUS_DOT[campaign.status]}`} />
+                    <span className="text-text-primary font-semibold text-sm truncate">{campaign.name}</span>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-medium flex-shrink-0 ${STATUS_COLORS[campaign.status]}`}>
+                      {campaign.status}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-9000 flex-wrap">
+                    <span className="px-1.5 py-0.5 rounded bg-[#F0EBE1] text-gray-9000">{OBJECTIVE_LABELS[campaign.objective]}</span>
+                    <span>·</span>
+                    <span>{GEO_SCOPE_LABELS[campaign.geo_scope]}</span>
+                    <span>·</span>
+                    <span className="font-mono">{campaign.start_date} → {campaign.end_date}</span>
+                  </div>
                 </div>
-                {/* Metadata */}
-                <div className="flex items-center gap-2 text-xs text-gray-9000 flex-wrap">
-                  <span className="px-1.5 py-0.5 rounded bg-[#F0EBE1] text-gray-9000">{OBJECTIVE_LABELS[campaign.objective]}</span>
-                  <span>·</span>
-                  <span>{GEO_SCOPE_LABELS[campaign.geo_scope]}</span>
-                  <span>·</span>
-                  <span className="font-mono">{campaign.start_date} → {campaign.end_date}</span>
+                <div className="text-right flex-shrink-0">
+                  <div className="text-text-primary font-semibold text-sm font-mono">
+                    {campaign.budget_total.toLocaleString()} <span className="text-gray-9000 text-xs font-sans">{campaign.currency}</span>
+                  </div>
+                  <div className="text-xs text-gray-9000 mt-0.5">0 spenderat</div>
                 </div>
-              </div>
-              {/* Budget */}
-              <div className="text-right flex-shrink-0">
-                <div className="text-text-primary font-semibold text-sm font-mono">
-                  {campaign.budget_total.toLocaleString()} <span className="text-gray-9000 text-xs font-sans">{campaign.currency}</span>
-                </div>
-                <div className="text-xs text-gray-9000 mt-0.5">0 spenderat</div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {showModal && <NewCampaignModal onClose={() => setShowModal(false)} />}
     </div>

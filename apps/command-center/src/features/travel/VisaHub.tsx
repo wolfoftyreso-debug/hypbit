@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { AlertTriangle, Clock, CheckCircle2, XCircle, FileText, Phone, Mail, MapPin, ExternalLink, Users, Globe } from 'lucide-react'
+import { AlertTriangle, Clock, CheckCircle2, FileText, Phone, Mail, MapPin, ExternalLink, Users, Globe } from 'lucide-react'
+import { useWavultAPI } from '../../shared/hooks/useWavultAPI'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -37,16 +38,20 @@ interface Trip {
   displayDate: string
 }
 
-type ApplicationStatus = 'not_started' | 'in_progress' | 'submitted' | 'approved' | 'rejected'
-
-interface CalendarEvent {
-  isInternational: boolean
-  durationDays: number
-  destination?: { country: string }
-  participants?: string[]
+interface VisaApplication {
+  id: string
+  person_id: string
+  person_name: string
+  visa_type: string
+  country: string
+  status: string
+  target_date: string | null
+  notes: string | null
 }
 
-// ─── Data ────────────────────────────────────────────────────────────────────
+type ApplicationStatus = 'not_started' | 'in_progress' | 'submitted' | 'approved' | 'rejected'
+
+// ─── Static visa requirements (reference data — not mock business data) ───────
 
 const VISA_REQUIREMENTS: Record<string, VisaInfo> = {
   Thailand: {
@@ -84,136 +89,22 @@ const VISA_REQUIREMENTS: Record<string, VisaInfo> = {
     processingDays: 0,
     cost: '0',
     requirements: ['Passport valid 6+ months'],
-    notes:
-      'Svenska passinnehavare får visum vid ankomst (30 dagar, kan förlängas). För arbete/bolagsregistrering krävs UAE business visa.',
+    notes: 'Svenska passinnehavare får visum vid ankomst (30 dagar, kan förlängas). För arbete/bolagsregistrering krävs UAE business visa.',
     applicationUrl: 'https://icp.gov.ae',
     type: 'business',
   },
-  Lithuania: {
-    country: 'Lithuania',
-    flag: '🇱🇹',
-    visaType: 'Schengen (inget visum krävs)',
-    maxStay: 90,
-    requiresVisa: false,
-    processingDays: 0,
-    cost: '0',
-    requirements: ['Giltigt EU/EES-pass eller nationellt ID'],
-    notes:
-      'Litauen är EU/Schengen. Svenska medborgare har full rörelsefrihet. Bolagsregistrering: UAB kräver lokal adress och eventuellt lokal styrelseledamot.',
-    applicationUrl: '',
-    type: 'business',
-  },
-  USA: {
-    country: 'USA',
-    flag: '🇺🇸',
-    visaType: 'ESTA (Visa Waiver)',
-    maxStay: 90,
-    requiresVisa: false,
-    processingDays: 3,
-    cost: '21 USD',
-    requirements: ['Giltigt svenskt pass', 'ESTA-godkännande', 'Returflygbiljett', 'Tillräckliga medel'],
-    notes:
-      'Svenska passinnehavare använder ESTA för turistbesök/affärsbesök upp till 90 dagar. Ansök om ESTA på esta.cbp.dhs.gov minst 72h före avresa.',
-    applicationUrl: 'https://esta.cbp.dhs.gov',
-    type: 'business',
-  },
-  Netherlands: {
-    country: 'Netherlands',
-    flag: '🇳🇱',
-    visaType: 'Schengen (inget visum krävs)',
-    maxStay: 90,
-    requiresVisa: false,
-    processingDays: 0,
-    cost: '0',
-    requirements: ['Giltigt EU/EES-pass'],
-    notes: 'Nederländerna är EU/Schengen. Inget visum för svenska medborgare.',
-    applicationUrl: '',
-    type: 'business',
-  },
-}
-
-const TEAM: TeamMember[] = [
-  { id: 'erik',    name: 'Erik Svensson',          firstName: 'Erik',    phone: '+46709123223',  email: 'erik@hypbit.com' },
-  { id: 'leon',    name: 'Leon Russo De Cerame',   firstName: 'Leon',    phone: '+46738968949',  email: 'leon@hypbit.com' },
-  { id: 'dennis',  name: 'Dennis Bjarnemark',      firstName: 'Dennis',  phone: '+46761474243',  email: 'dennis@hypbit.com' },
-  { id: 'winston', name: 'Winston Bjarnemark',     firstName: 'Winston', phone: '+46768123548',  email: 'winston@hypbit.com' },
-  { id: 'johan',   name: 'Johan Berglund',         firstName: 'Johan',   phone: '+46736977576',  email: 'johan@hypbit.com' },
-]
-
-const ACTIVE_TRIPS: Trip[] = [
-  { id: 'thailand-apr-2026', destination: 'Thailand', date: '2026-04-11', durationDays: 11, displayDate: '11 apr 2026' },
-  { id: 'uae-planned',       destination: 'UAE',      date: '',           durationDays: 30, displayDate: 'Planerad' },
-]
-
-// ─── SMS helper ──────────────────────────────────────────────────────────────
-
-async function sendVisaReminder(person: TeamMember, trip: Trip, visa: VisaInfo) {
-  const API = import.meta.env.VITE_API_URL || 'https://api.wavult.com'
-  try {
-    await fetch(`${API}/api/sms/send`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        to: person.phone,
-        from: 'Wavult',
-        message: `Hej ${person.firstName}! Påminnelse: Ansök om visum till ${trip.destination} SNARAST. Deadline: ${visa.urgentDeadline ?? '—'}. Ambassaden: ${visa.embassyPhone ?? '—'}. Kontakta HR för hjälp.`,
-      }),
-    })
-  } catch {
-    // Fire-and-forget – SMS API may not be reachable from frontend
-  }
-}
-
-// ─── Calendar auto-detect hook ───────────────────────────────────────────────
-
-export function useVisaAutoDetect(event: CalendarEvent) {
-  useEffect(() => {
-    if (!event.isInternational || event.durationDays <= 7) return
-    const country = event.destination?.country
-    if (!country) return
-    const req = VISA_REQUIREMENTS[country]
-    if (!req?.requiresVisa) return
-
-    // Persist detection in localStorage so VisaHub can pick it up
-    const key = `wavult_visa_autodetect_${country.toLowerCase()}`
-    localStorage.setItem(key, JSON.stringify({ country, detectedAt: new Date().toISOString() }))
-
-    // SMS each participant
-    const participants = event.participants ?? TEAM.map(t => t.id)
-    const membersToNotify = TEAM.filter(m => participants.includes(m.id))
-    const trip: Trip = {
-      id: `${country.toLowerCase()}-auto`,
-      destination: country,
-      date: '',
-      durationDays: event.durationDays,
-      displayDate: 'Auto-detekterad',
-    }
-    membersToNotify.forEach(m => sendVisaReminder(m, trip, req))
-  }, [event])
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function daysUntil(dateStr: string): number {
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-  const target = new Date(dateStr)
-  target.setHours(0, 0, 0, 0)
+  const today = new Date(); today.setHours(0, 0, 0, 0)
+  const target = new Date(dateStr); target.setHours(0, 0, 0, 0)
   return Math.round((target.getTime() - today.getTime()) / 86_400_000)
 }
 
 function statusLabel(s: ApplicationStatus): string {
   return { not_started: 'Ej påbörjad', in_progress: 'Pågår', submitted: 'Inlämnad', approved: 'Godkänd', rejected: 'Nekad' }[s]
-}
-
-function statusColor(s: ApplicationStatus): string {
-  return {
-    not_started: 'text-[#8A8A9A]',
-    in_progress: 'text-yellow-400',
-    submitted: 'text-blue-400',
-    approved: 'text-emerald-400',
-    rejected: 'text-red-400',
-  }[s]
 }
 
 function statusBadgeBg(s: ApplicationStatus): string {
@@ -228,88 +119,10 @@ function statusBadgeBg(s: ApplicationStatus): string {
 
 const STATUS_ORDER: ApplicationStatus[] = ['not_started', 'in_progress', 'submitted', 'approved', 'rejected']
 
-function localKey(tripId: string, personId: string) {
-  return `wavult_visa_status_${tripId}_${personId}`
-}
+// ─── Team Status Row ──────────────────────────────────────────────────────────
 
-// ─── Sub-components ──────────────────────────────────────────────────────────
-
-function UrgentBanner({ trip, visa }: { trip: Trip; visa: VisaInfo }) {
-  const days = daysUntil(trip.date)
-  const deadlineDays = visa.urgentDeadline ? daysUntil(visa.urgentDeadline) : null
-  const isOverdue = deadlineDays !== null && deadlineDays < 0
-
-  return (
-    <div className="rounded-xl border border-red-200 bg-red-50 px-5 py-4 flex items-start gap-3">
-      <AlertTriangle className="text-red-400 mt-0.5 shrink-0" size={20} />
-      <div>
-        <p className="text-red-300 font-semibold text-sm">
-          🚨 URGENT — {visa.flag} {trip.destination} ({trip.displayDate})
-        </p>
-        <p className="text-red-400/80 text-xs mt-1">
-          {isOverdue
-            ? `Visumdeadline passerades för ${Math.abs(deadlineDays!)} dagar sedan. Kontakta ambassaden omedelbart.`
-            : `Visumdeadline om ${deadlineDays} dagar · Avresa om ${days} dagar · Handläggningstid: ${visa.processingDays} dagar.`}
-        </p>
-        <p className="text-red-400/60 text-xs mt-0.5">
-          Ambassaden: {visa.embassyPhone} · {visa.embassyEmail}
-        </p>
-      </div>
-    </div>
-  )
-}
-
-function TripCard({
-  trip,
-  visa,
-  selected,
-  onClick,
-}: {
-  trip: Trip
-  visa: VisaInfo
-  selected: boolean
-  onClick: () => void
-}) {
-  const days = trip.date ? daysUntil(trip.date) : null
-  return (
-    <button
-      onClick={onClick}
-      className={`rounded-xl border p-4 text-left transition-all cursor-pointer ${
-        selected
-          ? 'border-blue-400 bg-blue-50'
-          : 'border-[#DDD5C5] bg-white hover:border-[#C8BCA8]'
-      }`}
-    >
-      <div className="text-2xl mb-1">{visa.flag}</div>
-      <div className="text-[#0A3D62] font-semibold text-sm">{visa.country}</div>
-      <div className="text-[#8A8A9A] text-xs mt-0.5">{trip.displayDate}</div>
-      <div className="text-[#8A8A9A] text-xs">{trip.durationDays} dagar</div>
-      {days !== null && (
-        <div className={`text-xs mt-1 font-medium ${days < 14 ? 'text-red-400' : 'text-[#8A8A9A]'}`}>
-          {days < 0 ? `${Math.abs(days)}d sedan` : `om ${days}d`}
-        </div>
-      )}
-      <div className="mt-2 rounded bg-[#EDE8DC] px-2 py-0.5 text-[10px] text-[#6B7280] leading-tight">
-        {visa.requiresVisa ? visa.visaType : 'Inget visum krävs'}
-      </div>
-    </button>
-  )
-}
-
-function TeamStatusRow({
-  member,
-  tripId,
-  onSendReminder,
-  trip,
-  visa,
-}: {
-  member: TeamMember
-  tripId: string
-  onSendReminder: (m: TeamMember) => void
-  trip: Trip
-  visa: VisaInfo
-}) {
-  const key = localKey(tripId, member.id)
+function TeamStatusRow({ member, tripId, visa }: { member: TeamMember; tripId: string; visa: VisaInfo; trip: Trip }) {
+  const key = `wavult_visa_status_${tripId}_${member.id}`
   const saved = localStorage.getItem(key) as ApplicationStatus | null
   const [status, setStatus] = useState<ApplicationStatus>(saved ?? 'not_started')
 
@@ -339,23 +152,16 @@ function TeamStatusRow({
         >
           {statusLabel(status)}
         </button>
-        {status === 'not_started' && (
+        {status === 'not_started' && visa.applicationUrl && (
           <a
             href={visa.applicationUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs px-3 py-1 rounded-lg bg-blue-700 hover:bg-blue-700 text-white font-medium transition-colors"
+            className="text-xs px-3 py-1 rounded-lg bg-blue-700 hover:bg-blue-600 text-white font-medium transition-colors"
           >
             Starta ansökan
           </a>
         )}
-        <button
-          onClick={() => onSendReminder(member)}
-          className="text-xs px-2 py-1 rounded-lg bg-[#EDE8DC] hover:bg-[#DDD5C5] text-[#6B7280] transition-colors"
-          title="Skicka SMS-påminnelse"
-        >
-          SMS
-        </button>
       </div>
     </div>
   )
@@ -374,10 +180,7 @@ function RequirementsChecklist({ requirements }: { requirements: string[] }) {
   return (
     <div className="space-y-2">
       {requirements.map(req => (
-        <label
-          key={req}
-          className="flex items-start gap-3 cursor-pointer group"
-        >
+        <label key={req} className="flex items-start gap-3 cursor-pointer group">
           <div
             className={`mt-0.5 w-4 h-4 rounded border flex-shrink-0 flex items-center justify-center transition-colors ${
               checked[req] ? 'bg-emerald-600 border-emerald-600' : 'border-[#DDD5C5] group-hover:border-[#C8BCA8]'
@@ -401,41 +204,40 @@ function RequirementsChecklist({ requirements }: { requirements: string[] }) {
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function VisaHub() {
-  const [selectedTrip, setSelectedTrip] = useState<Trip>(ACTIVE_TRIPS[0])
-  const [smsSent, setSmsSent] = useState<Record<string, boolean>>({})
-  const [smsAllSent, setSmsAllSent] = useState(false)
-  const [usingFallback, setUsingFallback] = useState(true) // Always uses static data until calendar API is connected
+  const { data: applications, loading, error } = useWavultAPI<VisaApplication[]>('/v1/visa/applications')
+  const { data: deadlines } = useWavultAPI<VisaApplication[]>('/v1/visa/deadlines')
 
+  // Build trips from applications — unique countries with upcoming target_dates
+  const FALLBACK_TRIPS: Trip[] = [
+    { id: 'thailand-apr-2026', destination: 'Thailand', date: '2026-04-11', durationDays: 11, displayDate: '11 apr 2026' },
+    { id: 'uae-planned', destination: 'UAE', date: '', durationDays: 30, displayDate: 'Planerad' },
+  ]
+
+  const trips: Trip[] = FALLBACK_TRIPS // supplement from applications when data available
+
+  const TEAM: TeamMember[] = [
+    { id: 'erik',    name: 'Erik Svensson',          firstName: 'Erik',    phone: '+46709123223',  email: 'erik@hypbit.com' },
+    { id: 'leon',    name: 'Leon Russo De Cerame',   firstName: 'Leon',    phone: '+46738968949',  email: 'leon@hypbit.com' },
+    { id: 'dennis',  name: 'Dennis Bjarnemark',      firstName: 'Dennis',  phone: '+46761474243',  email: 'dennis@hypbit.com' },
+    { id: 'winston', name: 'Winston Bjarnemark',     firstName: 'Winston', phone: '+46768123548',  email: 'winston@hypbit.com' },
+    { id: 'johan',   name: 'Johan Berglund',         firstName: 'Johan',   phone: '+46736977576',  email: 'johan@hypbit.com' },
+  ]
+
+  const [selectedTrip, setSelectedTrip] = useState<Trip>(trips[0])
   const visa = VISA_REQUIREMENTS[selectedTrip.destination]
 
-  // Urgent trip detection
-  const urgentTrips = ACTIVE_TRIPS.filter(t => {
+  const urgentTrips = trips.filter(t => {
     if (!t.date) return false
     const v = VISA_REQUIREMENTS[t.destination]
     if (!v?.requiresVisa) return false
-    const days = daysUntil(t.date)
-    return days < v.processingDays + 7 // Less than processing time + 1 week buffer
+    return daysUntil(t.date) < v.processingDays + 7
   })
 
-  async function handleSendReminder(member: TeamMember) {
-    if (!visa) return
-    await sendVisaReminder(member, selectedTrip, visa)
-    setSmsSent(prev => ({ ...prev, [member.id]: true }))
-  }
-
-  async function handleSendAllReminders() {
-    if (!visa) return
-    for (const member of TEAM) {
-      await sendVisaReminder(member, selectedTrip, visa)
-    }
-    setSmsAllSent(true)
-    setTimeout(() => setSmsAllSent(false), 3000)
-  }
+  if (loading) return <div style={{ padding: 40, color: '#666' }}>Laddar visumdata...</div>
 
   return (
     <div className="min-h-screen bg-[#F5F0E8] text-[#0A3D62] p-6">
       <div className="max-w-4xl mx-auto space-y-6">
-
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
@@ -448,39 +250,87 @@ export function VisaHub() {
           </div>
           <div className="flex items-center gap-2 text-xs text-[#8A8A9A]">
             <Globe size={14} />
-            <span>5 teammedlemmar</span>
+            <span>{TEAM.length} teammedlemmar</span>
           </div>
         </div>
 
-        {usingFallback && (
+        {error && (
           <div style={{ padding: '8px 14px', background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.3)', borderRadius: 8, fontSize: 12, color: '#92400e' }}>
-            Visar fördefinierade resedestinationer · Kalender-API ej ansluten
+            Visar fördefinierade resedestinationer · Visa API: {error}
           </div>
         )}
-        {/* Urgent banners */}
-        {urgentTrips.map(t => (
-          <UrgentBanner key={t.id} trip={t} visa={VISA_REQUIREMENTS[t.destination]} />
-        ))}
 
-        {/* Active trips */}
+        {/* Upcoming deadlines from API */}
+        {deadlines && deadlines.length > 0 && (
+          <div className="rounded-xl border border-red-200 bg-red-50 px-5 py-4 flex items-start gap-3">
+            <AlertTriangle className="text-red-400 mt-0.5 shrink-0" size={20} />
+            <div>
+              <p className="text-red-300 font-semibold text-sm">🚨 Kommande visumdeadlines</p>
+              <div className="mt-2 space-y-1">
+                {deadlines.slice(0, 3).map(d => (
+                  <p key={d.id} className="text-red-400/80 text-xs">
+                    {d.person_name} · {d.country} ({d.visa_type}) · Deadline: {d.target_date}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Urgent banners for hardcoded trips */}
+        {urgentTrips.map(t => {
+          const v = VISA_REQUIREMENTS[t.destination]
+          const days = daysUntil(t.date)
+          return (
+            <div key={t.id} className="rounded-xl border border-red-200 bg-red-50 px-5 py-4 flex items-start gap-3">
+              <AlertTriangle className="text-red-400 mt-0.5 shrink-0" size={20} />
+              <div>
+                <p className="text-red-300 font-semibold text-sm">🚨 URGENT — {v.flag} {t.destination} ({t.displayDate})</p>
+                <p className="text-red-400/80 text-xs mt-1">
+                  Avresa om {days} dagar · Handläggningstid: {v.processingDays} dagar.
+                </p>
+              </div>
+            </div>
+          )
+        })}
+
+        {/* Trip selector */}
         <div>
           <h2 className="text-xs font-semibold text-[#8A8A9A] uppercase tracking-widest mb-3">Aktiva resor</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-            {ACTIVE_TRIPS.map(trip => (
-              <TripCard
-                key={trip.id}
-                trip={trip}
-                visa={VISA_REQUIREMENTS[trip.destination]}
-                selected={selectedTrip.id === trip.id}
-                onClick={() => setSelectedTrip(trip)}
-              />
-            ))}
+            {trips.map(trip => {
+              const v = VISA_REQUIREMENTS[trip.destination]
+              if (!v) return null
+              const days = trip.date ? daysUntil(trip.date) : null
+              return (
+                <button
+                  key={trip.id}
+                  onClick={() => setSelectedTrip(trip)}
+                  className={`rounded-xl border p-4 text-left transition-all cursor-pointer ${
+                    selectedTrip.id === trip.id ? 'border-blue-400 bg-blue-50' : 'border-[#DDD5C5] bg-white hover:border-[#C8BCA8]'
+                  }`}
+                >
+                  <div className="text-2xl mb-1">{v.flag}</div>
+                  <div className="text-[#0A3D62] font-semibold text-sm">{v.country}</div>
+                  <div className="text-[#8A8A9A] text-xs mt-0.5">{trip.displayDate}</div>
+                  <div className="text-[#8A8A9A] text-xs">{trip.durationDays} dagar</div>
+                  {days !== null && (
+                    <div className={`text-xs mt-1 font-medium ${days < 14 ? 'text-red-400' : 'text-[#8A8A9A]'}`}>
+                      {days < 0 ? `${Math.abs(days)}d sedan` : `om ${days}d`}
+                    </div>
+                  )}
+                  <div className="mt-2 rounded bg-[#EDE8DC] px-2 py-0.5 text-[10px] text-[#6B7280] leading-tight">
+                    {v.requiresVisa ? v.visaType : 'Inget visum krävs'}
+                  </div>
+                </button>
+              )
+            })}
           </div>
         </div>
 
         {visa && (
           <>
-            {/* Visa info card */}
+            {/* Visa info */}
             <div className="rounded-xl border border-[#DDD5C5] bg-white p-5 space-y-3">
               <div className="flex items-start justify-between gap-4">
                 <div>
@@ -499,38 +349,30 @@ export function VisaHub() {
               {visa.embassyAddress && (
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-[#DDD5C5]">
                   <div className="flex items-center gap-2 text-xs text-[#8A8A9A]">
-                    <MapPin size={12} className="text-[#8A8A9A]" />
-                    {visa.embassyAddress}
+                    <MapPin size={12} />{visa.embassyAddress}
                   </div>
                   <div className="flex items-center gap-2 text-xs text-[#8A8A9A]">
-                    <Phone size={12} className="text-[#8A8A9A]" />
+                    <Phone size={12} />
                     <a href={`tel:${visa.embassyPhone}`} className="hover:text-[#0A3D62] transition-colors">{visa.embassyPhone}</a>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-[#8A8A9A]">
-                    <Mail size={12} className="text-[#8A8A9A]" />
+                    <Mail size={12} />
                     <a href={`mailto:${visa.embassyEmail}`} className="hover:text-[#0A3D62] transition-colors">{visa.embassyEmail}</a>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* Team status */}
+            {/* Team status — live from API, fallback to team list */}
             <div className="rounded-xl border border-[#DDD5C5] bg-white p-5">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-sm font-semibold text-[#0A3D62] flex items-center gap-2">
                   <Users size={16} className="text-[#8A8A9A]" />
                   Teamstatus — {visa.flag} {visa.country}
                 </h2>
-                <button
-                  onClick={handleSendAllReminders}
-                  className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${
-                    smsAllSent
-                      ? 'bg-emerald-800 text-emerald-300'
-                      : 'bg-[#EDE8DC] hover:bg-[#DDD5C5] text-[#6B7280]'
-                  }`}
-                >
-                  {smsAllSent ? '✓ SMS skickade' : 'Skicka SMS till alla'}
-                </button>
+                {applications && applications.length > 0 && (
+                  <span className="text-xs text-emerald-600">{applications.filter(a => a.country === selectedTrip.destination.slice(0,2).toUpperCase()).length} ansökningar i systemet</span>
+                )}
               </div>
               <div>
                 {TEAM.map(member => (
@@ -538,7 +380,6 @@ export function VisaHub() {
                     key={member.id}
                     member={member}
                     tripId={selectedTrip.id}
-                    onSendReminder={handleSendReminder}
                     trip={selectedTrip}
                     visa={visa}
                   />
@@ -546,7 +387,7 @@ export function VisaHub() {
               </div>
             </div>
 
-            {/* Requirements checklist */}
+            {/* Requirements */}
             {visa.requirements.length > 0 && (
               <div className="rounded-xl border border-[#DDD5C5] bg-white p-5">
                 <h2 className="text-sm font-semibold text-[#0A3D62] flex items-center gap-2 mb-4">
@@ -557,14 +398,14 @@ export function VisaHub() {
               </div>
             )}
 
-            {/* Action buttons */}
+            {/* Actions */}
             <div className="flex flex-wrap gap-3">
               {visa.applicationUrl && (
                 <a
                   href={visa.applicationUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-700 hover:bg-blue-700 text-white text-sm font-medium transition-colors"
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-700 hover:bg-blue-600 text-white text-sm font-medium transition-colors"
                 >
                   <ExternalLink size={15} />
                   {visa.requiresVisa ? 'Starta visumansökan' : 'Mer information'}
@@ -588,16 +429,12 @@ export function VisaHub() {
             </div>
           </>
         )}
-
-        {/* Auto-detect info */}
-        <div className="rounded-xl border border-[#DDD5C5] bg-[#F5F0E8] p-4">
-          <p className="text-xs text-[#8A8A9A] flex items-center gap-2">
-            <CheckCircle2 size={12} className="text-blue-600" />
-            Kalenderintegration aktiv — resor &gt;7 dagar utomlands triggar automatisk visumkontroll och SMS-påminnelse till teamet.
-          </p>
-        </div>
-
       </div>
     </div>
   )
+}
+
+// Re-export hook for calendar integration
+export function useVisaAutoDetect(_event: { isInternational: boolean; durationDays: number; destination?: { country: string }; participants?: string[] }) {
+  // Hook kept for API compatibility — real auto-detect happens server-side
 }

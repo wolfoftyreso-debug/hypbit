@@ -56,7 +56,7 @@ interface ProductRule {
   responsible_person: string
 }
 
-interface JurisdictionDetail extends Jurisdiction {
+interface JurisdictionDetail extends Omit<Jurisdiction, "open_events"> {
   regulations: Regulation[]
   product_rules: ProductRule[]
   open_events: any[]
@@ -386,7 +386,7 @@ function JurisdictionDetail({
 
   const regs = activeProduct
     ? detail.regulations.filter(r => {
-        const applies = r.applies_to as any
+        const applies = (r as any).applies_to as any
         if (!applies || !Array.isArray(applies)) return true
         return applies.includes(activeProduct) || applies.includes('all')
       })
@@ -415,8 +415,8 @@ function JurisdictionDetail({
             {detail.gap_count > 0 && (
               <Badge label={`${detail.gap_count} GAP`} color={C.red} bg={`${C.red}18`} />
             )}
-            {detail.open_events > 0 && (
-              <Badge label={`${detail.open_events} events`} color={C.amber} bg={`${C.amber}18`} />
+            {detail.open_events?.length > 0 && (
+              <Badge label={`${detail.open_events?.length ?? 0} events`} color={C.amber} bg={`${C.amber}18`} />
             )}
           </div>
         </div>

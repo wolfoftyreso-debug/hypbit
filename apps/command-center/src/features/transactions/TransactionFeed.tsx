@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Download, Search, ChevronRight } from 'lucide-react'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { TransactionDetail } from './TransactionDetail'
 import { exportToCSV, generateSIEFile, downloadSIE } from '../exports/ExportService'
+import { useApi } from '../../shared/auth/useApi'
 
 type TxStatus = 'paid' | 'pending' | 'overdue' | 'cancelled' | 'approved'
 type TxType = 'invoice' | 'payment' | 'salary' | 'expense' | 'transfer' | 'intercompany'
@@ -136,7 +137,40 @@ export function TransactionFeed() {
   const isGroup = activeEntity.layer === 0
   const isGroupView = isGroup || viewScope === 'group'
 
-  const filtered = TRANSACTIONS.filter(tx => {
+  // Live transactions from accounting API — merged with local data, API takes precedence
+  const { apiFetch } = useApi()
+  const [liveTransactions, setLiveTransactions] = useState<Transaction[]>([])
+  useEffect(() => {
+    const entityId = activeEntity.id ?? activeEntity.shortName ?? 'landvex-ab'
+    apiFetch(`/api/accounting/${encodeURIComponent(entityId)}/journal`)
+      .then(r => r.ok ? r.json() : null)
+      .then((rows: Array<{ id: string; date: string; description: string; credit_account?: string; debit_account?: string; amount: number; currency?: string }> | null) => {
+        if (!rows || rows.length === 0) return
+        const mapped: Transaction[] = rows.map(r => ({
+          id: r.id,
+          date: r.date,
+          title: r.description,
+          counterparty: r.credit_account ?? r.debit_account ?? '',
+          entity: activeEntity.name ?? activeEntity.shortName ?? '',
+          type: 'payment' as TxType,
+          amount: r.amount,
+          currency: r.currency ?? 'SEK',
+          status: 'paid' as TxStatus,
+          category: 'Redovisning',
+        }))
+        setLiveTransactions(mapped)
+      })
+      .catch(() => { /* backend unavailable — fall back to static data */ })
+  }, [apiFetch, activeEntity])
+
+  // Merge: live data first, then static fallback for entries not in live set
+  const liveIds = new Set(liveTransactions.map(t => t.id))
+  const allTransactions = [
+    ...liveTransactions,
+    ...TRANSACTIONS.filter(t => !liveIds.has(t.id)),
+  ]
+
+  const filtered = allTransactions.filter(tx => {
     const matchSearch = !search ||
       tx.title.toLowerCase().includes(search.toLowerCase()) ||
       tx.counterparty.toLowerCase().includes(search.toLowerCase()) ||

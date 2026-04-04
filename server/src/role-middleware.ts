@@ -13,13 +13,6 @@ export interface RolePermissions {
 }
 
 interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-    org_id: string;
-    role: string;
-    active_role?: string;
-    roles?: string[];
-  };
   allowedModules?: string[];
   allowedActions?: string[];
   dataFilter?: Record<string, any>;

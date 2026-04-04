@@ -14,12 +14,6 @@ interface JurisdictionContext {
 
 interface JurisdictionRequest extends Request {
   jurisdiction?: JurisdictionContext;
-  user?: {
-    id: string;
-    org_id: string;
-    role: string;
-    [key: string]: any;
-  };
 }
 
 // ---------------------------------------------------------------------------

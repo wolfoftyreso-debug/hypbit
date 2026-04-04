@@ -17,7 +17,7 @@ import { APIControlPanel } from './APIControlPanel'
 function StatusBadge({ status }: { status: APIIntegration['status'] }) {
   const config = {
     live:       { label: 'LIVE',       bg: 'bg-emerald-500/20', text: 'text-emerald-700', dot: 'bg-emerald-400' },
-    configured: { label: 'KONFIGURERAD', bg: 'bg-blue-500/20',   text: 'text-blue-700',    dot: 'bg-blue-400' },
+    configured: { label: 'KONFIGURERAD', bg: 'bg-[#E3EFF8]',   text: 'text-[#2C6EA6]',    dot: 'bg-[#2C6EA6]' },
     available:  { label: 'TILLGÄNGLIG', bg: 'bg-slate-500/20',   text: 'text-slate-400',   dot: 'bg-slate-400' },
     planned:    { label: 'PLANERAD',   bg: 'bg-amber-500/20',   text: 'text-amber-700',   dot: 'bg-amber-400' },
   }[status]
@@ -36,7 +36,7 @@ function PriceBadge({ price }: { price: APIIntegration['price'] }) {
     <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-emerald-900/40 text-emerald-700 font-medium">GRATIS</span>
   )
   if (price === 'usage-based') return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-blue-900/40 text-blue-700 font-medium">USAGE</span>
+    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-[#1A1A2E]/40 text-[#2C6EA6] font-medium">USAGE</span>
   )
   return (
     <span className="inline-flex items-center px-2 py-0.5 rounded text-xs bg-orange-900/40 text-orange-700 font-medium">BETALD</span>
@@ -61,7 +61,7 @@ function IntegrationCard({
         <StatusBadge status={integration.status} />
       </div>
       <div>
-        <div className="font-semibold text-text-primary text-sm group-hover:text-blue-300 transition-colors">{integration.name}</div>
+        <div className="font-semibold text-text-primary text-sm group-hover:text-[#5B9FD4] transition-colors">{integration.name}</div>
         <div className="text-xs text-gray-900/50 mt-0.5">{integration.provider}</div>
       </div>
       <p className="text-xs text-gray-900/60 leading-relaxed line-clamp-2">{integration.description}</p>
@@ -124,7 +124,7 @@ function IntegrationModal({
             href={integration.docsUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-text-primary text-sm rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#1A1A2E] hover:bg-[#12122A] text-text-primary text-sm rounded-lg transition-colors"
           >
             📖 Öppna dokumentation
           </a>
@@ -157,7 +157,7 @@ function LiveIntegrationRow({ integration }: { integration: APIIntegration }) {
             href={integration.docsUrl}
             target="_blank"
             rel="noreferrer"
-            className="block text-xs text-blue-700 hover:text-blue-300 mt-1"
+            className="block text-xs text-[#2C6EA6] hover:text-[#5B9FD4] mt-1"
           >
             Docs →
           </a>
@@ -171,7 +171,7 @@ function LiveIntegrationRow({ integration }: { integration: APIIntegration }) {
 function NewsCard({ news }: { news: ProviderNews }) {
   const typeConfig = {
     new:         { label: 'NY', color: 'text-emerald-700 bg-emerald-500/20' },
-    update:      { label: 'UPDATE', color: 'text-blue-700 bg-blue-500/20' },
+    update:      { label: 'UPDATE', color: 'text-[#2C6EA6] bg-[#E3EFF8]' },
     deprecation: { label: 'DEPRECATED', color: 'text-red-700 bg-red-500/20' },
     security:    { label: 'SÄKERHET', color: 'text-orange-700 bg-orange-500/20' },
   }[news.type]
@@ -266,7 +266,7 @@ export function APIHub() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   activeTab === tab.id
-                    ? 'bg-blue-600 text-gray-900'
+                    ? 'bg-[#1A1A2E] text-gray-900'
                     : 'text-gray-900/60 hover:text-text-primary hover:bg-[#EDE8DC]'
                 }`}
               >
@@ -295,7 +295,7 @@ export function APIHub() {
                 placeholder="Sök API, provider, kategori..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="flex-1 bg-[#F0EBE1] border border-surface-border rounded-xl px-4 py-2.5 text-sm text-text-primary placeholder:text-gray-900/30 focus:outline-none focus:border-blue-500 focus:bg-white"
+                className="flex-1 bg-[#F0EBE1] border border-surface-border rounded-xl px-4 py-2.5 text-sm text-text-primary placeholder:text-gray-900/30 focus:outline-none focus:border-accent focus:bg-white"
               />
               <div className="text-sm text-gray-900/40 flex items-center px-2">
                 {filteredIntegrations.length} integrationer
@@ -310,7 +310,7 @@ export function APIHub() {
                   onClick={() => setSelectedCategory(cat.id)}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
                     selectedCategory === cat.id
-                      ? 'bg-blue-600 border-blue-600 text-gray-900'
+                      ? 'bg-[#1A1A2E] border-[#1A1A2E] text-gray-900'
                       : 'border-gray-300 text-gray-900/60 hover:border-[#DDD5C5] hover:text-text-primary bg-[#F0EBE1]'
                   }`}
                 >
@@ -348,7 +348,7 @@ export function APIHub() {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
                 { label: 'Live', value: LIVE_INTEGRATIONS.filter(i => i.status === 'live').length, color: 'text-emerald-700', icon: '🟢' },
-                { label: 'Kategorier', value: [...new Set(LIVE_INTEGRATIONS.map(i => i.categoryId))].length, color: 'text-blue-700', icon: '📦' },
+                { label: 'Kategorier', value: [...new Set(LIVE_INTEGRATIONS.map(i => i.categoryId))].length, color: 'text-[#2C6EA6]', icon: '📦' },
                 { label: 'Paid', value: LIVE_INTEGRATIONS.filter(i => i.price === 'paid' || i.price === 'usage-based').length, color: 'text-orange-700', icon: '💳' },
                 { label: 'Free', value: LIVE_INTEGRATIONS.filter(i => i.price === 'free').length, color: 'text-emerald-700', icon: '✅' },
               ].map(stat => (
@@ -405,7 +405,7 @@ export function APIHub() {
             <div className="mt-4 p-4 rounded-xl border border-dashed border-gray-300 bg-white/2 text-center">
               <div className="text-2xl mb-2">📡</div>
               <div className="text-sm text-gray-900/50">
-                Live nyheter via uapix Supabase <code className="text-blue-700">provider_updates</code>-tabellen
+                Live nyheter via uapix Supabase <code className="text-[#2C6EA6]">provider_updates</code>-tabellen
               </div>
               <div className="text-xs text-gray-900/30 mt-1">
                 Kräver uapix Supabase-koppling — planeras i fas 2

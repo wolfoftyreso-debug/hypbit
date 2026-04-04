@@ -1,4 +1,5 @@
 import React, { useMemo, useState, useEffect } from 'react'
+import { WavultLogo } from '../components/WavultLogo'
 import { NavLink, useLocation } from 'react-router-dom'
 import {
   LayoutDashboard, AlertTriangle, GitBranch, Network,
@@ -54,113 +55,122 @@ const NAV_GROUPS: NavGroup[] = [
   {
     labelKey: null,
     items: [
-      { to: '/',        labelKey: 'nav.command', icon: LayoutDashboard },
-      { to: '/ops',     labelKey: 'nav.ops',     icon: LayoutGrid },
-      { to: '/person',  labelKey: 'nav.person',  icon: User },
-      { to: '/alerts',  labelKey: 'nav.alerts',  icon: AlertTriangle },
+      { to: '/',       labelKey: 'nav.command', icon: LayoutDashboard },
+      { to: '/ops',    labelKey: 'nav.ops',     icon: LayoutGrid },
+      { to: '/person', labelKey: 'nav.person',  icon: User },
+      { to: '/alerts', labelKey: 'nav.alerts',  icon: AlertTriangle },
     ],
   },
   {
-    labelKey: 'nav.platforms',
+    labelKey: 'BOLAG & JURIDIK',
     items: [
-      { to: '/zoomer-app',      labelKey: 'nav.zoomer_app',      icon: Smartphone },
-      { to: '/landvex-portal',  labelKey: 'nav.landvex_portal',  icon: MapPin },
-      { to: '/quixzoom-ads',    labelKey: 'nav.quixzoom_ads',    icon: Package },
-      { to: '/corpfitt',        labelKey: 'nav.corpfitt',        icon: Activity },
-      { to: '/venture-engine',  labelKey: 'nav.venture_engine',  icon: Rocket },
-      { to: '/uapix',           labelKey: 'nav.uapix',           icon: Shield },
-      { to: '/dissg',           labelKey: 'nav.dissg',           icon: Network },
-      { to: '/apifly',          labelKey: 'nav.apifly',          icon: Zap },
-      { to: '/mlcs',            labelKey: 'nav.mlcs',            icon: BookOpen },
+      { to: '/entities',       labelKey: 'Bolagsöversikt', icon: Building2 },
+      { to: '/company-launch', labelKey: 'Bolagsstart',    icon: Rocket },
+      { to: '/corporate',      labelKey: 'Corporate',      icon: Building2 },
+      { to: '/legal',          labelKey: 'Legal Hub',      icon: Scale },
+      { to: '/jurisdiction',   labelKey: 'Jurisdiktion',   icon: Globe },
+      { to: '/qms',            labelKey: 'QMS',            icon: ShieldCheck },
+      { to: '/tuv',            labelKey: 'TÜV Audit',      icon: Activity },
+      { to: '/governance',     labelKey: 'Governance',     icon: ShieldCheck },
     ],
   },
   {
-    labelKey: 'nav.money',
+    labelKey: 'ORGANISATION',
     items: [
-      { to: '/finance',         labelKey: 'nav.finance',         icon: DollarSign },
-      { to: '/transactions',    labelKey: 'nav.transactions',    icon: Receipt },
-      { to: '/causal-os',       labelKey: 'nav.simulation',      icon: GitBranch },
-      { to: '/procurement',     labelKey: 'nav.procurement',     icon: ShoppingCart },
-      { to: '/payroll',         labelKey: 'nav.payroll',         icon: CreditCard },
+      { to: '/org',                  labelKey: 'Organisationsöversikt', icon: Network },
+      { to: '/org/context',          labelKey: 'Kontext',               icon: Network },
+      { to: '/org/command',          labelKey: 'Kommandostruktur',      icon: GitBranch },
+      { to: '/people-governance',    labelKey: 'People',                icon: Users },
+      { to: '/people',               labelKey: 'Personalregister',      icon: Users },
+      { to: '/team-map',             labelKey: 'Team Map',              icon: MapPin },
+      { to: '/talent-radar',         labelKey: 'Talent Radar',          icon: Users },
+      { to: '/people-intelligence',  labelKey: 'People Intelligence',   icon: Users },
+      { to: '/crm',                  labelKey: 'CRM',                   icon: Briefcase },
     ],
   },
   {
-    labelKey: 'nav.people',
+    labelKey: 'EKONOMI',
     items: [
-      { to: '/people-governance', labelKey: 'nav.people',       icon: Users },
-      { to: '/org',               labelKey: 'nav.organization', icon: Network },
-      { to: '/crm',               labelKey: 'nav.crm',          icon: Briefcase },
+      { to: '/finance',      labelKey: 'Finance Hub',  icon: DollarSign },
+      { to: '/transactions', labelKey: 'Transaktioner', icon: Receipt },
+      { to: '/payroll',      labelKey: 'Lön',           icon: CreditCard },
+      { to: '/procurement',  labelKey: 'Inköp',         icon: ShoppingCart },
+      { to: '/causal-os',    labelKey: 'Simulering',    icon: GitBranch },
+      { to: '/insurance',    labelKey: 'Försäkring',    icon: ShieldCheck },
     ],
   },
   {
-    labelKey: 'nav.operations',
+    labelKey: 'OPERATIONS',
     items: [
-      { to: '/milestones',     labelKey: 'nav.milestones',     icon: Flag },
-      { to: '/campaigns',      labelKey: 'nav.campaigns',      icon: Megaphone },
-      { to: '/submissions',    labelKey: 'nav.submissions',    icon: Inbox },
-      { to: '/decisions',      labelKey: 'nav.decisions',      icon: Scale },
-      { to: '/projects',       labelKey: 'nav.projects',       icon: Layers },
-      { to: '/finance-flow',   labelKey: 'nav.finance_flow',   icon: ArrowRight },
-      { to: '/visa',           labelKey: 'nav.visa',           icon: Globe },
-      { to: '/flights',        labelKey: 'nav.flights',        icon: Plane },
-      { to: '/uber',           labelKey: 'nav.uber',           icon: Activity },
-      { to: '/insurance',      labelKey: 'nav.insurance',      icon: ShieldCheck },
-      { to: '/company-launch',  labelKey: 'nav.company_launch', icon: Building2 },
-      { to: '/corporate',      labelKey: 'nav.corporate',      icon: Building2 },
-      { to: '/legal',          labelKey: 'nav.legal',          icon: Scale },
-      { to: '/reports',        labelKey: 'nav.reports',        icon: FileText },
-      { to: '/communications', labelKey: 'nav.communications', icon: MessageSquare },
-      { to: '/phones', labelKey: 'nav.phones', icon: Phone },
+      { to: '/milestones',      labelKey: 'Milestones',       icon: Flag },
+      { to: '/projects',        labelKey: 'Projekt',          icon: Layers },
+      { to: '/tasks',           labelKey: 'Tasks',            icon: Layers },
+      { to: '/decisions',       labelKey: 'Beslut',           icon: Scale },
+      { to: '/meeting-cadence', labelKey: 'Möten',            icon: MessageSquare },
+      { to: '/campaigns',       labelKey: 'Kampanjer',        icon: Megaphone },
+      { to: '/submissions',     labelKey: 'Submissions',      icon: Inbox },
+      { to: '/reports',         labelKey: 'Rapporter',        icon: FileText },
+      { to: '/strategic-brief', labelKey: 'Strategisk Brief', icon: FileText },
+      { to: '/incidents',       labelKey: 'Incidents',        icon: AlertTriangle },
     ],
   },
   {
-    labelKey: 'nav.dev_ops',
+    labelKey: 'KOMMUNIKATION',
     items: [
-      { to: '/git',         labelKey: 'nav.git',         icon: GitMerge },
-      { to: '/database',    labelKey: 'nav.database',    icon: Database },
-      { to: '/domains',     labelKey: 'nav.domains',     icon: Globe },
-      { to: '/automation',  labelKey: 'nav.automation',  icon: Zap },
-      { to: '/infra-monitor',   labelKey: 'nav.infraMonitor',   icon: Server },
-      { to: '/media-pipeline',  labelKey: 'nav.mediaPipeline',  icon: Film },
+      { to: '/communications', labelKey: 'Kommunikation', icon: MessageSquare },
+      { to: '/media',          labelKey: 'Media',         icon: Film },
     ],
   },
   {
-    labelKey: 'nav.knowledge',
+    labelKey: 'MARKNADER',
     items: [
-      { to: '/knowledge',       labelKey: 'nav.knowledge',      icon: BookOpen },
-      { to: '/infrastructure',  labelKey: 'nav.infrastructure', icon: Server },
-      { to: '/terraform',       labelKey: 'nav.terraform',       icon: Server },
-      { to: '/wavult-id',       labelKey: 'nav.wavultId',       icon: ShieldCheck },
-      { to: '/system-graph',    labelKey: 'nav.systemGraph',    icon: Network },
-      { to: '/system-status',   labelKey: 'nav.systemStatus',   icon: Activity },
-      { to: '/system/audit',    labelKey: 'nav.systemAudit',    icon: Activity },
-      { to: '/ux-quality',      labelKey: 'nav.uxQuality',      icon: Activity },
-      { to: '/openclaw',        labelKey: 'nav.openclaw',        icon: Terminal },
-      
-      { to: '/settings',        labelKey: 'nav.settings',       icon: Settings },
+      { to: '/markets', labelKey: 'Marknader',  icon: Globe },
+      { to: '/markets', labelKey: 'MarketMap',  icon: MapPin },
     ],
   },
   {
-    labelKey: 'nav.dev',
+    labelKey: 'PLATTFORMAR',
     items: [
-      { to: '/travel',              labelKey: 'nav.travel',              icon: Plane },
-      { to: '/media',               labelKey: 'nav.media',               icon: Film },
-      { to: '/people',              labelKey: 'nav.people_view',         icon: Users },
-      { to: '/tasks',               labelKey: 'nav.tasks',               icon: Layers },
-      { to: '/whoop',               labelKey: 'nav.whoop',               icon: Activity },
-      { to: '/api-hub',             labelKey: 'nav.api_hub',             icon: Zap },
-      { to: '/llm-hub',             labelKey: 'nav.llm_hub',             icon: Terminal },
-      { to: '/team-map',            labelKey: 'nav.team_map',            icon: MapPin },
-      { to: '/governance',          labelKey: 'nav.governance',          icon: ShieldCheck },
-      { to: '/network-map',         labelKey: 'nav.network_map',         icon: Network },
-      { to: '/deployments',         labelKey: 'nav.deployments',         icon: GitBranch },
-      { to: '/strategic-brief',     labelKey: 'nav.strategic_brief',     icon: FileText },
-      { to: '/talent-radar',        labelKey: 'nav.talent_radar',        icon: Users },
-      { to: '/people-intelligence', labelKey: 'nav.people_intelligence', icon: Users },
-      { to: '/system-intelligence', labelKey: 'nav.system_intelligence', icon: Server },
-      { to: '/meeting-cadence',     labelKey: 'nav.meeting_cadence',     icon: Scale },
-      { to: '/bernt',               labelKey: 'nav.bernt',               icon: Terminal },
-      { to: '/agent',               labelKey: 'nav.agent',               icon: Terminal },
+      { to: '/zoomer-app',     labelKey: 'Zoomer-app',     icon: Smartphone },
+      { to: '/landvex-portal', labelKey: 'Landvex Portal', icon: MapPin },
+      { to: '/quixzoom-ads',   labelKey: 'Quixom Ads',     icon: Package },
+      { to: '/uapix',          labelKey: 'UAPIX',          icon: Shield },
+      { to: '/apifly',         labelKey: 'Apifly',         icon: Zap },
+      { to: '/dissg',          labelKey: 'DISSG',          icon: Network },
+      { to: '/corpfitt',       labelKey: 'Corp-Fitt',      icon: Activity },
+      { to: '/mlcs',           labelKey: 'MLCS',           icon: BookOpen },
+    ],
+  },
+  {
+    labelKey: 'DEV & INFRA',
+    items: [
+      { to: '/infrastructure',      labelKey: 'Infrastruktur',       icon: Server },
+      { to: '/terraform',           labelKey: 'Terraform',           icon: Server },
+      { to: '/system-graph',        labelKey: 'System Graph',        icon: Network },
+      { to: '/system-status',       labelKey: 'System Status',       icon: Activity },
+      { to: '/system-intelligence', labelKey: 'System Intelligence', icon: Server },
+      { to: '/git',                 labelKey: 'Gitea',               icon: GitMerge },
+      { to: '/database',            labelKey: 'Databas',             icon: Database },
+      { to: '/domains',             labelKey: 'Domäner',             icon: Globe },
+      { to: '/automation',          labelKey: 'Automation',          icon: Zap },
+      { to: '/deployments',         labelKey: 'Deployments',         icon: GitBranch },
+      { to: '/infra-monitor',       labelKey: 'Infra Monitor',       icon: Server },
+      { to: '/media-pipeline',      labelKey: 'Media Pipeline',      icon: Film },
+      { to: '/network-map',         labelKey: 'Network Map',         icon: Network },
+    ],
+  },
+  {
+    labelKey: 'VERKTYG',
+    items: [
+      { to: '/api-hub',    labelKey: 'API Hub',       icon: Zap },
+      { to: '/llm-hub',    labelKey: 'LLM Hub',       icon: Terminal },
+      { to: '/knowledge',  labelKey: 'Knowledge',     icon: BookOpen },
+      { to: '/wavult-id',  labelKey: 'Wavult ID',     icon: ShieldCheck },
+      { to: '/whoop',      labelKey: 'WHOOP',         icon: Activity },
+      { to: '/travel',     labelKey: 'Resor',         icon: Plane },
+      { to: '/openclaw',   labelKey: 'OpenClaw',      icon: Terminal },
+      { to: '/ux-quality', labelKey: 'UX Quality',    icon: Activity },
+      { to: '/settings',   labelKey: 'Inställningar', icon: Settings },
     ],
   },
 ]
@@ -193,7 +203,7 @@ function SidebarNav({ criticalAlertCount, onNavigate }: {
                 color: 'var(--sidebar-text, rgba(245,240,232,0.75))',
               }}
             >
-              {t(group.labelKey)}
+              {group.labelKey?.startsWith('nav.') ? t(group.labelKey) : group.labelKey}
             </div>
           )}
           <div className="space-y-0.5">
@@ -210,11 +220,13 @@ function SidebarNav({ criticalAlertCount, onNavigate }: {
                   className="flex items-center gap-3 min-w-0"
                   style={{
                     padding: '8px 12px',
+                    paddingLeft: isActive ? '9px' : '12px',
                     borderRadius: 'var(--radius-md)',
                     fontSize: 14,
                     fontWeight: isActive ? 600 : 400,
-                    color: isActive ? 'var(--sidebar-accent, #C9A84C)' : 'var(--sidebar-text, rgba(245,240,232,0.75))',
-                    background: isActive ? 'var(--sidebar-item-active, rgba(201,168,76,0.12))' : 'transparent',
+                    color: isActive ? 'var(--sidebar-text-active, #F5F0E8)' : 'var(--sidebar-text, #E5E5E1)',
+                    background: isActive ? 'var(--sidebar-item-active, #3A3530)' : 'transparent',
+                    borderLeft: isActive ? '3px solid var(--sidebar-accent, #8B7355)' : '3px solid transparent',
                     transition: 'all var(--transition-fast)',
                     textDecoration: 'none',
                   }}
@@ -223,7 +235,7 @@ function SidebarNav({ criticalAlertCount, onNavigate }: {
                   end={item.to === '/'}
                 >
                   <item.icon className="w-4 h-4 flex-shrink-0" />
-                  <span className="flex-1 min-w-0 truncate">{t(item.labelKey)}</span>
+                  <span className="flex-1 min-w-0 truncate">{item.labelKey?.startsWith('nav.') ? t(item.labelKey) : item.labelKey}</span>
                   {item.to === '/alerts' && criticalAlertCount > 0 && (
                     <span
                       className="flex-shrink-0"
@@ -298,12 +310,12 @@ export function Shell({ children }: ShellProps) {
         {/* Logo */}
         <div className="flex items-center px-4" style={{ height: 52, borderBottom: '1px solid var(--sidebar-border, rgba(201,168,76,0.15))' }}>
           <div className="flex items-center gap-2.5 min-w-0">
-            <img
-              src="/wavult-logo.svg"
-              alt="Wavult"
-              style={{ width: 38, height: 25, flexShrink: 0, filter: 'brightness(0) invert(1)' }}
+            <WavultLogo
+              size={36}
+              color="white"
+              bgColor="transparent"
+              showWordmark={true}
             />
-            <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--sidebar-text-active, #F5F0E8)', letterSpacing: '0.03em' }}>Wavult OS</span>
           </div>
           {/* Close btn (mobile) */}
           <button
@@ -336,8 +348,8 @@ export function Shell({ children }: ShellProps) {
         </div>
 
         {/* Footer */}
-        <div className="px-4 py-3 mt-2" style={{ borderTop: '1px solid var(--sidebar-border, rgba(201,168,76,0.15))' }}>
-          <p style={{ fontSize: 12, color: 'var(--sidebar-text, rgba(245,240,232,0.75))', fontFamily: 'var(--font-mono)' }}>Wavult Group 2026</p>
+        <div className="px-4 py-3 mt-2" style={{ borderTop: '1px solid var(--sidebar-border, rgba(139,115,85,0.20))' }}>
+          <p style={{ fontSize: 12, color: 'var(--sidebar-text, #E5E5E1)', fontFamily: 'var(--font-mono)', opacity: 0.5 }}>Wavult Group 2026</p>
         </div>
       </aside>
 
@@ -349,18 +361,19 @@ export function Shell({ children }: ShellProps) {
           className="flex-shrink-0 flex items-center justify-between px-6"
           style={{
             height: 52,
-            background: 'var(--color-topbar-bg, rgba(242,237,228,0.92))',
+            background: 'var(--color-topbar-bg, rgba(247,242,232,0.95))',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
-            borderBottom: '1px solid var(--color-border)',
+            borderBottom: '1px solid #DED9CC',
           }}
         >
 
-          {/* Left: hamburger + entity pill */}
+          {/* Left: hamburger + URL-bar */}
           <div className="flex items-center gap-3 min-w-0">
             {/* Hamburger — mobile only */}
             <button
-              className="md:hidden flex-shrink-0 p-1 -ml-1 text-gray-500 hover:text-gray-700"
+              className="md:hidden flex-shrink-0 p-1 -ml-1"
+              style={{ color: '#6B6560' }}
               onClick={() => setSidebarOpen(v => !v)}
               aria-label="Toggle menu"
             >
@@ -369,16 +382,17 @@ export function Shell({ children }: ShellProps) {
               </svg>
             </button>
 
-            {/* Entity pill */}
-            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gray-100 border border-gray-200">
-              <span className="h-1.5 w-1.5 rounded-full" style={{ background: scopeEntity.color }} />
-              <span className="text-xs font-medium text-gray-600 truncate max-w-[100px]">
-                {scopeEntity.shortName ?? scopeEntity.name}
-              </span>
+            {/* URL-bar pill */}
+            <div
+              className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg"
+              style={{ background: '#DED9CC', border: '1px solid #C4BFB2' }}
+            >
+              <span style={{ fontSize: 10, color: '#8A8278' }}>🔒</span>
+              <span style={{ fontSize: 12, fontWeight: 500, color: '#1A1A1A', fontFamily: 'var(--font-mono)' }}>os.wavult.com</span>
             </div>
           </div>
 
-          {/* Right: language toggle + role badge + bell + bernt */}
+          {/* Right: language toggle + role badge + logout + avatar */}
           <div className="flex items-center gap-2 flex-shrink-0">
 
             {/* Language toggle */}
@@ -394,7 +408,8 @@ export function Shell({ children }: ShellProps) {
                       const found = ROLES.find(r => r.id === e.target.value) ?? null
                       setViewAs(found)
                     }}
-                    className="hidden sm:block text-xs bg-purple-50 border border-purple-200 rounded-full px-3 py-1 font-medium text-purple-700 cursor-pointer focus:outline-none appearance-none"
+                    className="hidden sm:block text-xs rounded-full px-3 py-1 font-medium cursor-pointer focus:outline-none appearance-none"
+                    style={{ background: '#DED9CC', border: '1px solid #C4BFB2', color: '#1A1A1A' }}
                   >
                     <option value="">{t('auth.admin')}</option>
                     {ROLES.filter(r => r.id !== 'admin').map(r => (
@@ -404,17 +419,27 @@ export function Shell({ children }: ShellProps) {
                 ) : (
                   <span
                     className="hidden sm:block text-xs font-medium px-2.5 py-1 rounded-full"
-                    style={{ background: effectiveRole.color + '15', color: effectiveRole.color, border: `1px solid ${effectiveRole.color}30` }}
+                    style={{ background: '#DED9CC', color: '#1A1A1A', border: '1px solid #C4BFB2' }}
                   >
                     {effectiveRole.title}
                   </span>
                 )}
                 <button
                   onClick={() => signOut()}
-                  className="flex items-center gap-1 text-xs text-gray-500 hover:text-red-600 transition-colors font-medium"
+                  className="flex items-center gap-1 text-xs font-medium transition-colors"
+                  style={{ color: '#6B6560' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = '#C0392B')}
+                  onMouseLeave={e => (e.currentTarget.style.color = '#6B6560')}
                 >
                   Logga ut
                 </button>
+                {/* Avatar */}
+                <div
+                  className="hidden sm:flex h-7 w-7 rounded-full items-center justify-center text-xs font-bold flex-shrink-0"
+                  style={{ background: '#8B7355', color: '#F5F0E8' }}
+                >
+                  E
+                </div>
               </>
             )}
 
@@ -422,7 +447,8 @@ export function Shell({ children }: ShellProps) {
             <div className="relative">
               <button
                 onClick={() => setNotifOpen(v => !v)}
-                className="relative p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors rounded-lg"
+                className="relative p-2 transition-colors rounded-lg"
+                style={{ color: '#6B6560' }}
               >
                 <Bell className="w-4 h-4" />
                 {notificationCount > 0 && (

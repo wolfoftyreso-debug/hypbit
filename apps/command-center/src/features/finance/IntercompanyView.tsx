@@ -138,15 +138,15 @@ export function IntercompanyView() {
   filtered
     .filter(ic => ic.status !== 'settled')
     .forEach(ic => {
-      const key = [ic.fromEntityId, ic.toEntityId, ic.currency].sort().join('|')
+      const key = [ic.from_entity_id, ic.to_entity_id, ic.currency].sort().join('|')
       const existing = nettingMap.get(key)
       if (existing) {
         existing.netAmount += ic.amount
         existing.count += 1
       } else {
         nettingMap.set(key, {
-          fromId: ic.fromEntityId,
-          toId: ic.toEntityId,
+          fromId: ic.from_entity_id,
+          toId: ic.to_entity_id,
           netAmount: ic.amount,
           currency: ic.currency,
           count: 1,
@@ -372,13 +372,13 @@ Alla tre är 100% ägda av Wavult Group (Erik Svensson).
                 {nettingEntries.map((pair, i) => (
                   <div key={i} className="flex items-center gap-3 px-4 py-3 hover:bg-[#F0EBE1] transition-colors">
                     <div className="flex items-center gap-1.5">
-                      <span className="h-1.5 w-1.5 rounded-full" style={{ background: entityColor(pair.fromId) }} />
-                      <span className="text-xs text-text-primary font-semibold">{entityShortName(pair.fromId)}</span>
+                      <span className="h-1.5 w-1.5 rounded-full" style={{ background: entityColor(pair.fromId, entities) }} />
+                      <span className="text-xs text-text-primary font-semibold">{entityShortName(pair.fromId, entities)}</span>
                     </div>
                     <span className="text-gray-9000 text-sm">→</span>
                     <div className="flex items-center gap-1.5">
-                      <span className="h-1.5 w-1.5 rounded-full" style={{ background: entityColor(pair.toId) }} />
-                      <span className="text-xs text-text-primary font-semibold">{entityShortName(pair.toId)}</span>
+                      <span className="h-1.5 w-1.5 rounded-full" style={{ background: entityColor(pair.toId, entities) }} />
+                      <span className="text-xs text-text-primary font-semibold">{entityShortName(pair.toId, entities)}</span>
                     </div>
                     <span className="ml-auto text-xs font-bold text-amber-700 font-mono">{fmt(pair.netAmount, pair.currency)}</span>
                     <span className="text-[9px] text-gray-9000 font-mono">{pair.count} poster</span>
@@ -498,7 +498,7 @@ Alla tre är 100% ägda av Wavult Group (Erik Svensson).
       {/* ── Transaktioner (original entries) ──────────────────────────── */}
       {section === 'entries' && (
         <div className="space-y-3">
-          {(Object.entries(byType) as [ICType, IntercompanyEntry[]][]).map(([type, entries]) => {
+          {(Object.entries(byType) as [ICType, FinanceIntercompany[]][]).map(([type, entries]) => {
             if (entries.length === 0) return null
             const typeInfo = TYPE_CONFIG[type]
             return (
@@ -515,13 +515,13 @@ Alla tre är 100% ägda av Wavult Group (Erik Svensson).
                       <div key={ic.id} className="flex items-center gap-3 px-4 py-3 hover:bg-[#F0EBE1] transition-colors">
                         <div className="flex items-center gap-2 flex-1 min-w-0">
                           <div className="flex items-center gap-1.5">
-                            <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: entityColor(ic.fromEntityId) }} />
-                            <span className="text-xs text-text-primary font-semibold truncate">{entityShortName(ic.fromEntityId)}</span>
+                            <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: entityColor(ic.from_entity_id, entities) }} />
+                            <span className="text-xs text-text-primary font-semibold truncate">{entityShortName(ic.from_entity_id, entities)}</span>
                           </div>
                           <span className="text-gray-9000 text-sm flex-shrink-0">→</span>
                           <div className="flex items-center gap-1.5">
-                            <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: entityColor(ic.toEntityId) }} />
-                            <span className="text-xs text-text-primary font-semibold truncate">{entityShortName(ic.toEntityId)}</span>
+                            <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: entityColor(ic.to_entity_id, entities) }} />
+                            <span className="text-xs text-text-primary font-semibold truncate">{entityShortName(ic.to_entity_id, entities)}</span>
                           </div>
                         </div>
                         <div className="flex-1 min-w-0">

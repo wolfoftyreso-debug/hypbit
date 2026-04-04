@@ -23,7 +23,8 @@ export function EntitySwitcher() {
       {/* Trigger button */}
       <button
         onClick={() => setOpen(o => !o)}
-        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg bg-white hover:bg-muted border border-surface-border transition-colors text-left"
+        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg transition-colors text-left"
+        style={{ background: '#DED9CC', border: '1px solid #C4BFB2', color: '#1A1A1A' }}
       >
         <div
           className="h-6 w-6 rounded-md flex items-center justify-center text-xs font-bold text-text-primary flex-shrink-0"
@@ -32,10 +33,10 @@ export function EntitySwitcher() {
           {activeEntity.flag}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-xs font-semibold text-text-primary truncate">{activeEntity.shortName}</p>
-          <p className="text-[9px] text-text-muted font-mono">{activeEntity.jurisdiction} · L{activeEntity.layer}</p>
+          <p className="text-xs font-semibold truncate" style={{ color: '#1A1A1A' }}>{activeEntity.shortName}</p>
+          <p className="text-[9px] font-mono" style={{ color: '#6B6560' }}>{activeEntity.jurisdiction} · L{activeEntity.layer}</p>
         </div>
-        <span className="text-text-muted text-[9px]">{open ? '▲' : '▼'}</span>
+        <span className="text-[9px]" style={{ color: '#6B6560' }}>{open ? '▲' : '▼'}</span>
         <Tooltip
           content="Välj vilket bolag du vill titta på. 'Group' visar hela koncernen samlat. Alla moduler — Finance, Legal, People — filtreras automatiskt per valt bolag."
           title="Bolagsväxlaren"

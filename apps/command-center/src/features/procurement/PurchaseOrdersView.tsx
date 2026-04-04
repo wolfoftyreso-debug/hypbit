@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { usePurchaseOrders } from './hooks/useProcurement'
+import { useState, useEffect } from 'react'
+import { usePurchaseOrders, useSuppliers } from './hooks/useProcurement'
 import { PurchaseOrder, POStatus, Currency } from './types'
 import { useTranslation } from '../../shared/i18n/useTranslation'
 
@@ -17,10 +17,16 @@ function formatAmount(amount: number, currency: Currency) {
 const EMPTY_PO = { supplierId: '', description: '', amount: '', currency: 'SEK' as Currency }
 
 export function PurchaseOrdersView() {
-  const { orders: PURCHASE_ORDERS } = usePurchaseOrders()
+  const { orders: PURCHASE_ORDERS, loading: ordersLoading } = usePurchaseOrders()
+  const { suppliers: SUPPLIERS, loading: suppliersLoading } = useSuppliers()
   const { t: _t } = useTranslation() // ready for i18n
-  const [orders, setOrders] = useState<PurchaseOrder[]>(PURCHASE_ORDERS)
+  const [orders, setOrders] = useState<PurchaseOrder[]>([])
   const [showForm, setShowForm] = useState(false)
+
+  // Sync API orders into local state (allows optimistic local additions)
+  useEffect(() => {
+    if (!ordersLoading) setOrders(PURCHASE_ORDERS)
+  }, [PURCHASE_ORDERS, ordersLoading])
   const [form, setForm] = useState(EMPTY_PO)
   const [filterStatus, setFilterStatus] = useState<POStatus | 'Alla'>('Alla')
 

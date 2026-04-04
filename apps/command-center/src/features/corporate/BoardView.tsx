@@ -1,6 +1,10 @@
 import { useState } from 'react'
-import { BOARD_MEETINGS, COMPANIES, BoardMeeting, MeetingType, MeetingStatus, CompanyId } from './data'
 import { useTranslation } from '../../shared/i18n/useTranslation'
+import { useCorpBoardMeetings, useCorpEntities } from './hooks/useCorporate'
+import type { CorpBoardMeeting, CorpEntity } from '../../lib/supabase'
+
+type MeetingType = CorpBoardMeeting['type']
+type MeetingStatus = CorpBoardMeeting['status']
 
 const STATUS_STYLES: Record<MeetingStatus, string> = {
   'planerat':        'bg-blue-500/15 text-blue-700 border-blue-500/30',
@@ -18,8 +22,11 @@ function formatDate(d: string) {
   return new Date(d).toLocaleDateString('sv-SE', { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
-function MeetingDetail({ meeting, onClose }: { meeting: BoardMeeting; onClose: () => void }) {
-  const company = COMPANIES.find(c => c.id === meeting.companyId)!
+function MeetingDetail({ meeting, company, onClose }: {
+  meeting: CorpBoardMeeting
+  company?: CorpEntity
+  onClose: () => void
+}) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/70 backdrop-blur-sm p-4">
       <div className="bg-white border border-surface-border rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
@@ -33,26 +40,32 @@ function MeetingDetail({ meeting, onClose }: { meeting: BoardMeeting; onClose: (
               </span>
             </div>
             <div className="flex items-center gap-2 text-xs text-gray-9000">
-              <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: company.color }} />
-              <span style={{ color: company.color }}>{company.name}</span>
-              <span>·</span>
+              {company && (
+                <>
+                  <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: company.color }} />
+                  <span style={{ color: company.color }}>{company.name}</span>
+                  <span>·</span>
+                </>
+              )}
               <span>{formatDate(meeting.date)}</span>
             </div>
           </div>
           <button onClick={onClose} className="text-gray-9000 hover:text-text-primary text-xl leading-none mt-0.5">×</button>
         </div>
         <div className="p-6 space-y-5">
-          <div>
-            <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-2">Dagordning</h3>
-            <ul className="space-y-1.5">
-              {meeting.agenda.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                  <span className="text-gray-9000 font-mono mt-0.5 flex-shrink-0">{i + 1}.</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {meeting.agenda.length > 0 && (
+            <div>
+              <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-2">Dagordning</h3>
+              <ul className="space-y-1.5">
+                {meeting.agenda.map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                    <span className="text-gray-9000 font-mono mt-0.5 flex-shrink-0">{i + 1}.</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           {meeting.decisions.length > 0 && (
             <div>
               <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-2">Beslut</h3>
@@ -75,7 +88,7 @@ function MeetingDetail({ meeting, onClose }: { meeting: BoardMeeting; onClose: (
                     <span className="h-1.5 w-1.5 rounded-full bg-gray-600" />
                     {a}
                     {a === meeting.chairperson && <span className="text-[9px] text-yellow-700/80 font-mono ml-1">ordf.</span>}
-                    {a === meeting.minutesTaker && <span className="text-[9px] text-blue-700/80 font-mono ml-1">sekreterare</span>}
+                    {a === meeting.minutes_taker && <span className="text-[9px] text-blue-700/80 font-mono ml-1">sekreterare</span>}
                   </li>
                 ))}
               </ul>
@@ -84,7 +97,7 @@ function MeetingDetail({ meeting, onClose }: { meeting: BoardMeeting; onClose: (
               <h3 className="text-xs font-semibold text-gray-9000 uppercase tracking-wider mb-1.5">Info</h3>
               <div className="space-y-1 text-xs text-gray-9000">
                 <div><span className="text-gray-9000">Ordförande:</span> {meeting.chairperson}</div>
-                {meeting.minutesTaker && <div><span className="text-gray-9000">Sekreterare:</span> {meeting.minutesTaker}</div>}
+                {meeting.minutes_taker && <div><span className="text-gray-9000">Sekreterare:</span> {meeting.minutes_taker}</div>}
               </div>
             </div>
           </div>
@@ -94,37 +107,50 @@ function MeetingDetail({ meeting, onClose }: { meeting: BoardMeeting; onClose: (
   )
 }
 
-interface NewMeetingForm {
-  companyId: CompanyId
-  type: MeetingType
-  date: string
-  agenda: string
-  decisions: string
-}
-
-const EMPTY_FORM: NewMeetingForm = {
-  companyId: 'wavult-group',
-  type: 'styrelsemöte',
+const EMPTY_FORM = {
+  companyId: '',
+  type: 'styrelsemöte' as MeetingType,
   date: '',
   agenda: '',
   decisions: '',
 }
 
 export function BoardView() {
-  const { t: _t } = useTranslation() // ready for i18n
-  const [selected, setSelected] = useState<BoardMeeting | null>(null)
+  const { t: _t } = useTranslation()
+  const [selected, setSelected] = useState<CorpBoardMeeting | null>(null)
   const [showForm, setShowForm] = useState(false)
-  const [filterCompany, setFilterCompany] = useState<CompanyId | 'all'>('all')
-  const [form, setForm] = useState<NewMeetingForm>(EMPTY_FORM)
+  const [filterCompany, setFilterCompany] = useState<string>('all')
+  const [form, setForm] = useState(EMPTY_FORM)
 
-  const filtered = BOARD_MEETINGS
-    .filter(m => filterCompany === 'all' || m.companyId === filterCompany)
+  const { data: meetings = [], isLoading: meetingsLoading, isError: meetingsError } = useCorpBoardMeetings()
+  const { data: entities = [], isLoading: entitiesLoading } = useCorpEntities()
+
+  const isLoading = meetingsLoading || entitiesLoading
+
+  const filtered = meetings
+    .filter(m => filterCompany === 'all' || m.company_id === filterCompany)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   const counts = {
-    total: BOARD_MEETINGS.length,
-    planerat: BOARD_MEETINGS.filter(m => m.status === 'planerat').length,
-    klar: BOARD_MEETINGS.filter(m => m.status === 'protokoll klart').length,
+    total: meetings.length,
+    planerat: meetings.filter(m => m.status === 'planerat').length,
+    klar: meetings.filter(m => m.status === 'protokoll klart').length,
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-40 text-gray-9000 text-xs">
+        Laddar styrelsemöten...
+      </div>
+    )
+  }
+
+  if (meetingsError) {
+    return (
+      <div className="flex items-center justify-center h-40 text-red-500 text-xs">
+        Fel vid hämtning av styrelsemöten
+      </div>
+    )
   }
 
   return (
@@ -145,11 +171,11 @@ export function BoardView() {
         <div className="ml-auto flex items-center gap-2">
           <select
             value={filterCompany}
-            onChange={e => setFilterCompany(e.target.value as CompanyId | 'all')}
+            onChange={e => setFilterCompany(e.target.value)}
             className="text-xs bg-white border border-surface-border rounded-lg px-2.5 py-1.5 text-gray-9000 focus:outline-none"
           >
             <option value="all">Alla bolag</option>
-            {COMPANIES.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+            {entities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
           <button
             onClick={() => setShowForm(true)}
@@ -161,60 +187,72 @@ export function BoardView() {
       </div>
 
       {/* Table */}
+      {meetings.length === 0 ? (
+        <div className="text-center py-16 text-gray-9000 text-sm rounded-xl border border-surface-border bg-white">
+          Inga styrelsemöten registrerade ännu.
+        </div>
+      ) : (
       <div className="rounded-xl border border-surface-border overflow-hidden">
         <div className="overflow-x-auto">
-        <table className="w-full text-xs min-w-[560px]">
-          <thead>
-            <tr className="border-b border-surface-border bg-[#EDE8DC]">
-              <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Datum</th>
-              <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Bolag</th>
-              <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Typ</th>
-              <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Ärenden</th>
-              <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Status</th>
-              <th className="px-4 py-2.5" />
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((m, i) => {
-              const company = COMPANIES.find(c => c.id === m.companyId)!
-              return (
-                <tr
-                  key={m.id}
-                  className={`border-b border-surface-border/50 cursor-pointer hover:bg-[#EDE8DC] transition-colors ${i % 2 === 0 ? '' : 'bg-white/[0.01]'}`}
-                  onClick={() => setSelected(m)}
-                >
-                  <td className="px-4 py-3 text-gray-9000 whitespace-nowrap">{formatDate(m.date)}</td>
-                  <td className="px-4 py-3">
-                    <span className="flex items-center gap-1.5">
-                      <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: company.color }} />
-                      <span style={{ color: company.color }}>{company.shortName}</span>
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-gray-600">
-                    <span className="flex items-center gap-1.5">
-                      <span>{TYPE_ICONS[m.type]}</span>
-                      <span className="capitalize">{m.type}</span>
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-gray-9000 max-w-[240px] truncate">
-                    {m.agenda.join(', ')}
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className={`text-xs font-medium px-2 py-0.5 rounded border capitalize ${STATUS_STYLES[m.status]}`}>
-                      {m.status}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-gray-9000 text-right">→</td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-        </div>{/* /overflow-x-auto */}
+          <table className="w-full text-xs min-w-[560px]">
+            <thead>
+              <tr className="border-b border-surface-border bg-[#EDE8DC]">
+                <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Datum</th>
+                <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Bolag</th>
+                <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Typ</th>
+                <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Ärenden</th>
+                <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Status</th>
+                <th className="px-4 py-2.5" />
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((m, i) => {
+                const company = entities.find(c => c.id === m.company_id)
+                return (
+                  <tr
+                    key={m.id}
+                    className={`border-b border-surface-border/50 cursor-pointer hover:bg-[#EDE8DC] transition-colors ${i % 2 === 0 ? '' : 'bg-white/[0.01]'}`}
+                    onClick={() => setSelected(m)}
+                  >
+                    <td className="px-4 py-3 text-gray-9000 whitespace-nowrap">{formatDate(m.date)}</td>
+                    <td className="px-4 py-3">
+                      <span className="flex items-center gap-1.5">
+                        <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: company?.color ?? '#6B7280' }} />
+                        <span style={{ color: company?.color ?? '#6B7280' }}>{company?.short_name ?? m.company_id}</span>
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-gray-600">
+                      <span className="flex items-center gap-1.5">
+                        <span>{TYPE_ICONS[m.type]}</span>
+                        <span className="capitalize">{m.type}</span>
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-gray-9000 max-w-[240px] truncate">
+                      {m.agenda.join(', ')}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className={`text-xs font-medium px-2 py-0.5 rounded border capitalize ${STATUS_STYLES[m.status]}`}>
+                        {m.status}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-gray-9000 text-right">→</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
+      )}
 
       {/* Detail modal */}
-      {selected && <MeetingDetail meeting={selected} onClose={() => setSelected(null)} />}
+      {selected && (
+        <MeetingDetail
+          meeting={selected}
+          company={entities.find(c => c.id === selected.company_id)}
+          onClose={() => setSelected(null)}
+        />
+      )}
 
       {/* New decision form */}
       {showForm && (
@@ -230,10 +268,11 @@ export function BoardView() {
                   <label className="text-xs text-gray-9000 block mb-1">Bolag</label>
                   <select
                     value={form.companyId}
-                    onChange={e => setForm(f => ({ ...f, companyId: e.target.value as CompanyId }))}
-                    className="w-full text-xs bg-[#EDE8DC] border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-brand-accent/50"
+                    onChange={e => setForm(f => ({ ...f, companyId: e.target.value }))}
+                    className="w-full text-xs bg-[#EDE8DC] border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none"
                   >
-                    {COMPANIES.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                    <option value="">Välj bolag...</option>
+                    {entities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
                 </div>
                 <div>
@@ -241,7 +280,7 @@ export function BoardView() {
                   <select
                     value={form.type}
                     onChange={e => setForm(f => ({ ...f, type: e.target.value as MeetingType }))}
-                    className="w-full text-xs bg-[#EDE8DC] border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-brand-accent/50"
+                    className="w-full text-xs bg-[#EDE8DC] border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none"
                   >
                     <option value="styrelsemöte">Styrelsemöte</option>
                     <option value="extra styrelsemöte">Extra styrelsemöte</option>
@@ -255,7 +294,7 @@ export function BoardView() {
                   type="date"
                   value={form.date}
                   onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                  className="w-full text-xs bg-[#EDE8DC] border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-brand-accent/50"
+                  className="w-full text-xs bg-[#EDE8DC] border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none"
                 />
               </div>
               <div>
@@ -265,7 +304,7 @@ export function BoardView() {
                   value={form.agenda}
                   onChange={e => setForm(f => ({ ...f, agenda: e.target.value }))}
                   placeholder="Godkännande av budget&#10;Rekrytering av CTO"
-                  className="w-full text-xs bg-[#EDE8DC] border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-brand-accent/50 resize-none"
+                  className="w-full text-xs bg-[#EDE8DC] border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none resize-none"
                 />
               </div>
               <div>
@@ -275,7 +314,7 @@ export function BoardView() {
                   value={form.decisions}
                   onChange={e => setForm(f => ({ ...f, decisions: e.target.value }))}
                   placeholder="Budget om X kr godkänd.&#10;CTO-rekrytering inleds."
-                  className="w-full text-xs bg-[#EDE8DC] border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none focus:border-brand-accent/50 resize-none"
+                  className="w-full text-xs bg-[#EDE8DC] border border-surface-border rounded-lg px-3 py-2 text-text-primary focus:outline-none resize-none"
                 />
               </div>
             </div>

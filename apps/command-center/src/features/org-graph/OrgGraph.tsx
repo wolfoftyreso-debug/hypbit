@@ -39,7 +39,7 @@ const TOTAL_W     = CMD_X_START + CMD_NODE_W + 32  // full svg width with comman
 
 // ─── Layout engine ─────────────────────────────────────────────────────────────
 
-function layoutNodes(visibleLayers: number[]): Map<string, { x: number; y: number }> {
+function layoutNodes(visibleLayers: number[], liveEntities: Entity[]): Map<string, { x: number; y: number }> {
   const positions = new Map<string, { x: number; y: number }>()
   const byLayer: Record<number, Entity[]> = {}
   liveEntities.filter(e => visibleLayers.includes(e.layer)).forEach(e => {
@@ -443,11 +443,12 @@ function computeNextAction(entity: Entity, incidents: ReturnType<typeof generate
 }
 
 function DrillPanel({
-  entity, perms, onClose,
+  entity, perms, onClose, liveEntities,
 }: {
   entity: Entity
   perms: GraphPermissions
   onClose: () => void
+  liveEntities: Entity[]
 }) {
   const navigate  = useNavigate()
   const incidents = useMemo(() => generateIncidents(), [])
@@ -1017,7 +1018,7 @@ export function OrgGraph() {
     return ROLE_PERMISSIONS[roleId] ?? ROLE_PERMISSIONS['group-ceo']
   }, [effectiveRole])
 
-  const positions = useMemo(() => layoutNodes(perms.visibleLayers), [perms.visibleLayers])
+  const positions = useMemo(() => layoutNodes(perms.visibleLayers, liveEntities), [perms.visibleLayers, liveEntities])
   const visibleEntities = useMemo(() => {
     // Always show ALL entities in visible layers — scope dims rather than hides
     return liveEntities.filter(e => perms.visibleLayers.includes(e.layer))
@@ -1296,6 +1297,7 @@ export function OrgGraph() {
             entity={selectedEntity}
             perms={perms}
             onClose={() => setSelectedEntity(null)}
+            liveEntities={liveEntities}
           />
         </div>
       )}

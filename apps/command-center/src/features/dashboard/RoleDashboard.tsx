@@ -54,61 +54,66 @@ function VisaAlertBanner() {
   )
 }
 
-// ─── CEO Dashboard ─────────────────────────────────────────────────────────────
+// ─── CEO Dashboard — Earth & Stone ────────────────────────────────────────────
 function CeoDashboard() {
   return (
     <div className="space-y-8 max-w-6xl">
       <VisaAlertBanner />
       <WelcomeBanner />
+
+      {/* GROUP CEO Strategisk överblick (ID: G-01) */}
       <div>
-        <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Group CEO</h1>
-        <p style={{ color: "var(--color-text-secondary)", marginTop: 4, fontSize: 14 }}>Strategisk överblick — Wavult Ecosystem</p>
+        <div style={{ marginBottom: 4 }}>
+          <span style={{ fontSize: 10, fontWeight: 700, color: "var(--color-text-muted)", letterSpacing: "0.10em", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>G-01</span>
+        </div>
+        <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>GROUP CEO — Strategisk överblick</h1>
       </div>
 
+      {/* 4 overview cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Aktiva bolag', value: '6', delta: 'WGH, WOP, QZ UAB, QZ Inc, LVX AB, LVX Inc', color: '#2563EB' },
-          { label: 'Team online', value: '5', delta: 'Alla kärnroller bemannade', color: '#10B981' },
-          { label: 'Kapital allokerat', value: 'Q2', delta: 'Thailand workcamp — 11 april', color: '#F59E0B' },
-          { label: 'Marknadsfas', value: 'SE', delta: 'Sverige, mitten juni 2026', color: '#3B82F6' },
+          { id: 'C-01', label: 'AKTIVA BOLAG', value: '6', delta: 'WGH, WOH, OZ UAB, OZ Inc, LVX AC, LVX Inc' },
+          { id: 'K-02', label: 'TEAM ONLINE', value: '5', delta: 'Alla kärnroller bemannade' },
+          { id: 'P-03', label: 'KAPITAL ALLOKERAT', value: 'Q2', delta: 'Thailand workcamp - 11 april' },
+          { id: 'M-04', label: 'MARKNADSFAS', value: 'SE', delta: 'Sverige, mitten juni 2026' },
         ].map(s => (
-          <div key={s.label} style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-xl)", padding: 20 }}>
-            <div style={{ fontSize: 11, color: "var(--color-text-muted)", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
-            <div className="text-3xl font-bold" style={{ color: s.color }}>{s.value}</div>
+          <div key={s.id} style={{ background: "var(--color-surface)", border: "1px solid #DED9CC", borderRadius: "var(--radius-xl)", padding: 20, position: 'relative' }}>
+            <div style={{ fontSize: 9, fontWeight: 700, color: "var(--color-text-muted)", marginBottom: 4, fontFamily: "var(--font-mono)", letterSpacing: "0.08em" }}>{s.id}</div>
+            <div style={{ fontSize: 10, color: "var(--color-text-muted)", marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 600 }}>{s.label}</div>
+            <div className="text-3xl font-bold" style={{ color: "#1A1A1A" }}>{s.value}</div>
             <div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 8 }}>{s.delta}</div>
           </div>
         ))}
       </div>
 
+      {/* Strategiska prioriteringar (ID: S-01) + Kapitalallokering (ID: A-01) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Section title="Strategiska prioriteringar">
+        <EarthSection id="S-01" title="STRATEGISKA PRIORITERINGAR">
           {[
-            { text: 'Thailand workcamp — projektstart 11 april', status: 'active' },
-            { text: 'Bolagsstruktur Dubai — Wavult Group + Operations', status: 'active' },
-            { text: 'quiXzoom MVP — Sverige juni 2026', status: 'active' },
-            { text: 'Landvex enterprise launch — Q3 2026', status: 'planned' },
-            { text: 'Texas LLC incorporation (Landvex Inc)', status: 'in-progress' },
+            { text: 'Thailand workcamp', status: 'active' },
+            { text: 'Bolagsstruktur Dubai', status: 'planned' },
+            { text: 'quiXzoom MVP launch', status: 'in-progress' },
+            { text: 'Landvex enterprise launch - Q3 2026', status: 'planned' },
+            { text: 'Texas LLC incorporation', status: 'planned' },
           ]}
-        </Section>
-        <Section title="Kapitalallokering">
+        </EarthSection>
+        <EarthSection id="A-01" title="KAPITALALLOKERING">
           {[
-            { text: 'Wavult Operations — core team, system, drift', status: 'active' },
-            { text: 'quiXzoom — MVP build + launch Sverige', status: 'active' },
-            { text: 'Landvex — enterprise infrastruktur', status: 'planned' },
-            { text: 'Quixom Ads — fas 2 (efter quiXzoom)', status: 'planned' },
+            { text: 'Wavult Operations', status: 'active' },
+            { text: 'quiXzoom - MVP build', status: 'active' },
+            { text: 'Landvex - enterprise infrastruktur', status: 'planned' },
+            { text: 'Quixom Ads - fas 2', status: 'planned' },
           ]}
-        </Section>
+        </EarthSection>
       </div>
 
-      <Section title="Beslutslogg (senaste)">
+      {/* Beslutslogg (ID: L-01) */}
+      <EarthSection id="L-01" title="BESLUTSLOGG">
         {[
-          { text: 'Hypbit-bilverkstad skrotad — fokus internt system', status: 'done' },
-          { text: 'Landvex AB (Sverige) — registrerat och aktivt', status: 'done' },
-          { text: 'S3 multi-region bildlagring — EU + US live', status: 'done' },
-          { text: 'OI Regional Architecture — EU/US separata instanser', status: 'done' },
-          { text: 'Rollstruktur fastställd — 6 C-suite roller definierade', status: 'done' },
+          { text: 'Hypbit-bilverkstad skrotad', status: 'done' },
+          { text: 'Landvex AB (Sverige) - registrerat och aktivt', status: 'done' },
         ]}
-      </Section>
+      </EarthSection>
     </div>
   )
 }
@@ -355,11 +360,11 @@ function CpoDashboard() {
 
 // ─── Shared Section component ──────────────────────────────────────────────────
 const STATUS_COLORS: Record<string, string> = {
-  active: '#10B981',
-  done: '#6B7280',
-  planned: '#3B82F6',
-  'in-progress': '#F59E0B',
-  blocked: '#EF4444',
+  active: '#2D6A4F',      /* forest green — Aktiv */
+  done: '#2D6A4F',        /* forest green — Klar */
+  planned: '#2B5BA8',     /* medium blue — Planerad */
+  'in-progress': '#B8860B', /* warm ochre — Pågår */
+  blocked: '#C0392B',     /* alert röd — Blockerad */
 }
 const STATUS_LABELS: Record<string, string> = {
   active: 'Aktiv',
@@ -373,23 +378,60 @@ function Section({ title, children }: { title: string; children: { text: string;
   return (
     <div>
       <h2 style={{ fontSize: 11, fontWeight: 600, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 12 }}>{title}</h2>
-      <div style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
+      <div style={{ background: "var(--color-surface)", border: "1px solid #DED9CC", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
         {children.map((item, i) => (
           <div
             key={i}
             className="flex items-start gap-3 px-5 py-3.5"
-            style={{ borderBottom: i < children.length - 1 ? '1px solid var(--color-border)' : 'none' }}
+            style={{ borderBottom: i < children.length - 1 ? '1px solid #DED9CC' : 'none' }}
           >
             <span
               className="mt-1 h-2 w-2 rounded-full flex-shrink-0"
-              style={{ background: STATUS_COLORS[item.status] ?? '#6B7280' }}
+              style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }}
             />
             <span style={{ fontSize: 13, color: "var(--color-text-secondary)", flex: 1 }}>{item.text}</span>
             <span
               className="text-xs px-1.5 py-0.5 rounded flex-shrink-0"
               style={{
-                background: (STATUS_COLORS[item.status] ?? '#6B7280') + '18',
-                color: STATUS_COLORS[item.status] ?? '#6B7280',
+                background: (STATUS_COLORS[item.status] ?? '#8A8278') + '18',
+                color: STATUS_COLORS[item.status] ?? '#8A8278',
+              }}
+            >
+              {STATUS_LABELS[item.status] ?? item.status}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ─── Earth & Stone Section (for CEO dashboard with ID tags) ───────────────────
+function EarthSection({ id, title, children }: { id: string; title: string; children: { text: string; status: string }[] }) {
+  return (
+    <div>
+      <div className="flex items-center gap-2 mb-3">
+        <span style={{ fontSize: 9, fontWeight: 700, color: "var(--color-text-muted)", fontFamily: "var(--font-mono)", letterSpacing: "0.08em" }}>{id}</span>
+        <h2 style={{ fontSize: 11, fontWeight: 600, color: "var(--color-text-muted)", textTransform: "uppercase", letterSpacing: "0.08em" }}>{title}</h2>
+      </div>
+      <div style={{ background: "var(--color-surface)", border: "1px solid #DED9CC", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
+        {children.map((item, i) => (
+          <div
+            key={i}
+            className="flex items-start gap-3 px-5 py-3.5"
+            style={{ borderBottom: i < children.length - 1 ? '1px solid #DED9CC' : 'none' }}
+          >
+            <span
+              className="mt-1 h-2 w-2 rounded-full flex-shrink-0"
+              style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }}
+            />
+            <span style={{ fontSize: 13, color: "#1A1A1A", flex: 1 }}>{item.text}</span>
+            <span
+              className="text-xs px-2 py-0.5 rounded-full flex-shrink-0 font-medium"
+              style={{
+                background: (STATUS_COLORS[item.status] ?? '#8A8278') + '18',
+                color: STATUS_COLORS[item.status] ?? '#8A8278',
+                border: `1px solid ${(STATUS_COLORS[item.status] ?? '#8A8278')}30`,
               }}
             >
               {STATUS_LABELS[item.status] ?? item.status}
@@ -410,19 +452,19 @@ function ScopeBanner() {
     <div
       className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-medium mb-1 reveal card-interactive"
       style={{
-        background: activeEntity.color + '12',
-        border: `1px solid ${activeEntity.color}25`,
+        background: '#DED9CC',
+        border: '1px solid #C4BFB2',
       }}
     >
       <span
         className="h-2 w-2 rounded-full flex-shrink-0"
-        style={{ background: activeEntity.color, boxShadow: `0 0 6px ${activeEntity.color}60` }}
+        style={{ background: '#8B7355' }}
       />
-      <span style={{ color: activeEntity.color }}>
+      <span style={{ color: '#1A1A1A', fontWeight: 600 }}>
         {isRoot ? 'Viewing: Wavult Group (All entities)' : `Viewing: ${activeEntity.name}`}
       </span>
       {!isRoot && (
-        <span className="text-text-muted ml-1">— scoped view</span>
+        <span style={{ color: '#6B6560', marginLeft: 4 }}>— scoped view</span>
       )}
     </div>
   )

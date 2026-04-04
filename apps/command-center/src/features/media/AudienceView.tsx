@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useAudiences } from './hooks/useMedia'
 import { useTranslation } from '../../shared/i18n/useTranslation'
+import { MOCK_CAMPAIGNS, MOCK_AUDIENCES } from './mockData'
+import type { Audience } from './types'
 
 function NewAudienceModal({ onClose }: { onClose: () => void }) {
   const [form, setForm] = useState({

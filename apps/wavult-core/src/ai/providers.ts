@@ -194,6 +194,46 @@ export async function callGroq(model: ModelConfig, req: AIRequest): Promise<stri
   return content
 }
 
+/**
+ * Anropar xAI Grok API (OpenAI-kompatibelt format).
+ * Stöder grok-3 och grok-3-mini.
+ */
+export async function callXAI(model: ModelConfig, req: AIRequest): Promise<string> {
+  const key = process.env.GROK_API_KEY
+  if (!key || key === 'CONFIGURE_ME') throw new Error('GROK_API_KEY not configured — set in SSM /wavult/prod/GROK_API_KEY')
+
+  const modelName = model.id === 'grok-3-mini' ? 'grok-3-mini' : 'grok-3'
+  const messages: Array<{role: string; content: string}> = []
+  if (req.system) messages.push({ role: 'system', content: req.system })
+  messages.push({ role: 'user', content: req.prompt })
+
+  const res = await fetch(model.endpoint, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${key}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: modelName,
+      messages,
+      max_tokens: req.max_tokens ?? 4096,
+      temperature: req.temperature ?? 0.7,
+      stream: false,
+    }),
+    signal: AbortSignal.timeout(60_000),
+  })
+
+  if (!res.ok) {
+    const err = await res.text().catch(() => `HTTP ${res.status}`)
+    throw new Error(`xAI Grok error ${res.status}: ${err}`)
+  }
+
+  const data = await res.json() as any
+  const content = data.choices?.[0]?.message?.content
+  if (!content) throw new Error('Grok returned empty response')
+  return content
+}
+
 export async function callProvider(model: ModelConfig, req: AIRequest): Promise<string> {
   switch (model.provider) {
     case 'local':     return callLocal(model, req)
@@ -201,6 +241,7 @@ export async function callProvider(model: ModelConfig, req: AIRequest): Promise<
     case 'google':    return callGoogle(model, req)
     case 'deepseek':  return callDeepSeek(model, req)
     case 'groq':      return callGroq(model, req)
+    case 'xai':       return callXAI(model, req)
     case 'openai':
       throw new Error(`OpenAI text completion not implemented via orchestrator; use whisper-api for STT`)
     default:

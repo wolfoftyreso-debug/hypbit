@@ -5,9 +5,7 @@ import { supabase } from "./supabase";
 // Types
 // ---------------------------------------------------------------------------
 
-interface AuthenticatedRequest extends Request {
-  user?: { id: string; org_id: string; role: string; is_org_admin?: boolean };
-}
+type AuthenticatedRequest = Request;
 
 // ---------------------------------------------------------------------------
 // Middleware: checkOrgAdmin

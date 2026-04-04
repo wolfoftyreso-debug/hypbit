@@ -8,7 +8,7 @@ import { DealsView } from './DealsView'
 import { ActivityLog } from './ActivityLog'
 import { TargetsView } from './TargetsView'
 import { ApolloView } from './ApolloView'
-import { PROSPECTS, DEALS, ACTIVITIES } from './data'
+import { useCrmPipelineStats } from './hooks/useCRM'
 
 type Tab = 'pipeline' | 'prospects' | 'contacts' | 'deals' | 'activities' | 'targets' | 'apollo'
 
@@ -23,15 +23,11 @@ const TABS: { id: Tab; label: string }[] = [
 ]
 
 function QuickStats() {
-  const activeProspects = PROSPECTS.filter(p => !['Vunnen', 'Förlorad'].includes(p.stage)).length
-  const pipelineValue = PROSPECTS
-    .filter(p => !['Vunnen', 'Förlorad'].includes(p.stage))
-    .reduce((s, p) => s + p.valueSEK, 0)
-  const wonValue = PROSPECTS.filter(p => p.stage === 'Vunnen').reduce((s, p) => s + p.valueSEK, 0)
-  const pendingActivities = ACTIVITIES.filter(a => {
-    const d = new Date(a.date)
-    return d > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-  }).length
+  const { data: stats } = useCrmPipelineStats()
+
+  const activeProspects = stats?.totalCount ?? 0
+  const pipelineValue   = stats?.totalPipeline ?? 0
+  const wonValue        = stats?.wonValue ?? 0
 
   return (
     <div className="flex gap-4 flex-wrap text-xs">
@@ -53,16 +49,6 @@ function QuickStats() {
         <span className="text-text-primary font-semibold">
           {new Intl.NumberFormat('sv-SE', { notation: 'compact', maximumFractionDigits: 0 }).format(wonValue)} kr
         </span>
-      </div>
-      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EDE8DC] border border-surface-border">
-        <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
-        <span className="text-text-muted">Aktiviteter (7d):</span>
-        <span className="text-text-primary font-semibold">{pendingActivities}</span>
-      </div>
-      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EDE8DC] border border-surface-border">
-        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-        <span className="text-text-muted">Signerade avtal:</span>
-        <span className="text-text-primary font-semibold">{DEALS.filter(d => d.status === 'Signerad').length}</span>
       </div>
     </div>
   )

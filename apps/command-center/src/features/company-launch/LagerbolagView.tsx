@@ -179,7 +179,6 @@ export function LagerbolagView() {
   function handleSubmit() {
     setSubmitted(true)
     // In production: POST to CRM pipeline
-    console.log('Lagerbolagsköp påbörjat:', config)
   }
 
   const canProceedStep1 = !!config.providerId

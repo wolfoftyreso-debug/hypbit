@@ -6,6 +6,10 @@ export interface AuthUser {
   role: string
   email: string
   full_name: string | null
+  active_role?: string
+  roles?: string[]
+  is_org_admin?: boolean
+  is_system_admin?: boolean
 }
 
 // Extend Express Request globally

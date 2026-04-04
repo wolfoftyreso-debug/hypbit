@@ -45,13 +45,13 @@ function AgentInfoCard({ agent }: { agent: Agent }) {
       className="mb-4"
     >
       <div className="flex items-center gap-2 mb-1">
-        <Bot size={18} style={{ color: '#0A3D62' }} />
-        <span style={{ fontWeight: 700, color: '#0A3D62', fontSize: 15 }}>{agent.name}</span>
+        <Bot size={18} style={{ color: 'var(--color-brand, #1A1A2E)' }} />
+        <span style={{ fontWeight: 700, color: 'var(--color-brand, #1A1A2E)', fontSize: 15 }}>{agent.name}</span>
         {agent.domain && (
           <span
             style={{
               background: '#E8B84B',
-              color: '#0A3D62',
+              color: 'var(--color-brand, #1A1A2E)',
               borderRadius: 20,
               padding: '1px 10px',
               fontSize: 11,
@@ -67,7 +67,7 @@ function AgentInfoCard({ agent }: { agent: Agent }) {
         <p style={{ color: '#5a6474', fontSize: 13, margin: '4px 0 0' }}>{agent.description}</p>
       )}
       {agent.owner && (
-        <p style={{ color: '#0A3D62', fontSize: 12, marginTop: 4, opacity: 0.7 }}>
+        <p style={{ color: 'var(--color-brand, #1A1A2E)', fontSize: 12, marginTop: 4, opacity: 0.7 }}>
           Ägare: {agent.owner}
         </p>
       )}
@@ -84,7 +84,7 @@ function ModelBadge({ model }: { model: string }) {
   return (
     <span
       style={{
-        background: '#0A3D62',
+        background: 'var(--color-brand, #1A1A2E)',
         color: '#F5F0E8',
         borderRadius: 10,
         padding: '1px 8px',
@@ -122,7 +122,7 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
             width: 28,
             height: 28,
             borderRadius: '50%',
-            background: '#0A3D62',
+            background: 'var(--color-brand, #1A1A2E)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -138,7 +138,7 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
         {!isUser && (msg.agentName || msg.model || msg.confidence != null) && (
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             {msg.agentName && (
-              <span style={{ fontSize: 11, fontWeight: 700, color: '#0A3D62' }}>
+              <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--color-brand, #1A1A2E)' }}>
                 {msg.agentName}
               </span>
             )}
@@ -148,7 +148,7 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
         )}
         <div
           style={{
-            background: isUser ? '#0A3D62' : '#fff',
+            background: isUser ? 'var(--color-brand, #1A1A2E)' : '#fff',
             color: isUser ? '#F5F0E8' : '#1a2233',
             borderRadius: isUser ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
             padding: '10px 14px',
@@ -181,7 +181,7 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
             marginTop: 2,
           }}
         >
-          <User size={14} color="#0A3D62" />
+          <User size={14} color="var(--color-brand, #1A1A2E)" />
         </div>
       )}
     </div>
@@ -273,7 +273,7 @@ export function AgentHub() {
       {/* Header */}
       <div
         style={{
-          background: '#0A3D62',
+          background: 'var(--color-brand, #1A1A2E)',
           padding: '20px 28px',
           display: 'flex',
           alignItems: 'center',
@@ -292,7 +292,7 @@ export function AgentHub() {
             justifyContent: 'center',
           }}
         >
-          <Bot size={24} color="#0A3D62" />
+          <Bot size={24} color="var(--color-brand, #1A1A2E)" />
         </div>
         <div>
           <h1 style={{ color: '#F5F0E8', fontSize: 20, fontWeight: 800, margin: 0 }}>
@@ -352,7 +352,7 @@ export function AgentHub() {
                   }}
                 />
                 <div>
-                  <div style={{ fontSize: 13, fontWeight: selectedPersonId === p.id ? 700 : 400, color: '#0A3D62' }}>
+                  <div style={{ fontSize: 13, fontWeight: selectedPersonId === p.id ? 700 : 400, color: 'var(--color-brand, #1A1A2E)' }}>
                     {p.name.split(' ')[0]}
                   </div>
                   <div style={{ fontSize: 10, color: '#9ca3af' }}>{p.role}</div>
@@ -391,7 +391,7 @@ export function AgentHub() {
               >
                 <span style={{ fontSize: 14 }}>🪞</span>
                 <div>
-                  <div style={{ fontSize: 13, fontWeight: selectedJrId === jr.id ? 700 : 400, color: '#0A3D62' }}>
+                  <div style={{ fontSize: 13, fontWeight: selectedJrId === jr.id ? 700 : 400, color: 'var(--color-brand, #1A1A2E)' }}>
                     {jr.name}
                   </div>
                   <div style={{ fontSize: 10, color: '#9ca3af' }}>{jr.role}</div>
@@ -419,7 +419,7 @@ export function AgentHub() {
                   border: 'none',
                   cursor: 'pointer',
                   marginBottom: 2,
-                  background: selectedDomain === d.id ? '#0A3D6215' : 'transparent',
+                  background: selectedDomain === d.id ? 'rgba(26,26,46,0.08)' : 'transparent',
                   display: 'flex',
                   alignItems: 'center',
                   gap: 8,
@@ -430,11 +430,11 @@ export function AgentHub() {
                     width: 8,
                     height: 8,
                     borderRadius: '50%',
-                    background: selectedDomain === d.id ? '#0A3D62' : '#d1d5db',
+                    background: selectedDomain === d.id ? 'var(--color-brand, #1A1A2E)' : '#d1d5db',
                     flexShrink: 0,
                   }}
                 />
-                <span style={{ fontSize: 13, color: '#0A3D62', fontWeight: selectedDomain === d.id ? 700 : 400 }}>
+                <span style={{ fontSize: 13, color: 'var(--color-brand, #1A1A2E)', fontWeight: selectedDomain === d.id ? 700 : 400 }}>
                   {d.label}
                 </span>
               </button>
@@ -471,7 +471,7 @@ export function AgentHub() {
                     background: selectedAgentId === a.id ? '#FFF8E7' : '#f9f7f4',
                   }}
                 >
-                  <div style={{ fontSize: 12, fontWeight: 600, color: '#0A3D62', lineHeight: 1.3 }}>{a.name}</div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-brand, #1A1A2E)', lineHeight: 1.3 }}>{a.name}</div>
                   {a.domain && (
                     <span style={{ fontSize: 10, color: '#E8B84B', fontWeight: 700 }}>
                       {a.domain.toUpperCase()}
@@ -513,7 +513,7 @@ export function AgentHub() {
               >
                 <Bot size={18} style={{ color: '#9ca3af' }} />
                 <div>
-                  <span style={{ color: '#0A3D62', fontWeight: 600, fontSize: 14 }}>
+                  <span style={{ color: 'var(--color-brand, #1A1A2E)', fontWeight: 600, fontSize: 14 }}>
                     Auto-routing aktiv
                   </span>
                   <span style={{ color: '#9ca3af', fontSize: 12, marginLeft: 8 }}>
@@ -524,7 +524,7 @@ export function AgentHub() {
                   style={{
                     marginLeft: 'auto',
                     background: '#E8B84B',
-                    color: '#0A3D62',
+                    color: 'var(--color-brand, #1A1A2E)',
                     borderRadius: 20,
                     padding: '2px 12px',
                     fontSize: 11,
@@ -577,8 +577,8 @@ export function AgentHub() {
                   opacity: 0.5,
                 }}
               >
-                <Bot size={40} style={{ color: '#0A3D62' }} />
-                <p style={{ color: '#0A3D62', fontSize: 14, textAlign: 'center' }}>
+                <Bot size={40} style={{ color: 'var(--color-brand, #1A1A2E)' }} />
+                <p style={{ color: 'var(--color-brand, #1A1A2E)', fontSize: 14, textAlign: 'center' }}>
                   Skriv ett meddelande för att starta konversationen
                 </p>
               </div>
@@ -587,7 +587,7 @@ export function AgentHub() {
             )}
             {loading && (
               <div className="flex items-center gap-2" style={{ padding: '8px 0 4px 36px' }}>
-                <Loader2 size={16} style={{ color: '#0A3D62', animation: 'spin 1s linear infinite' }} />
+                <Loader2 size={16} style={{ color: 'var(--color-brand, #1A1A2E)', animation: 'spin 1s linear infinite' }} />
                 <span style={{ fontSize: 13, color: '#9ca3af', fontStyle: 'italic' }}>Agenten tänker...</span>
               </div>
             )}
@@ -634,7 +634,7 @@ export function AgentHub() {
               onClick={handleSend}
               disabled={loading || !input.trim()}
               style={{
-                background: loading || !input.trim() ? '#d1d5db' : '#0A3D62',
+                background: loading || !input.trim() ? '#d1d5db' : 'var(--color-brand, #1A1A2E)',
                 color: '#F5F0E8',
                 border: 'none',
                 borderRadius: 10,

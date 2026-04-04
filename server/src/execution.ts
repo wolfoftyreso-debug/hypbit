@@ -1,22 +1,6 @@
 import { Router, Request, Response } from "express";
 import { supabase } from "./supabase";
-
-// ---------------------------------------------------------------------------
-// Types – augment Express Request with auth middleware payload
-// ---------------------------------------------------------------------------
-interface AuthUser {
-  id: string;
-  org_id: string;
-  role: string;
-}
-
-declare global {
-  namespace Express {
-    interface Request {
-      user?: AuthUser;
-    }
-  }
-}
+import type { AuthUser } from "./shared/middleware/auth-types";
 
 // ---------------------------------------------------------------------------
 // Helpers

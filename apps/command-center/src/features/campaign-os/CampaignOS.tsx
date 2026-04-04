@@ -1,7 +1,7 @@
 // ─── Campaign Operating System ────────────────────────────────────────────────
 // Global execution engine: Plan → Budget → Asset → Deploy → Measure → Adjust
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   CAMPAIGN_ACTIVITIES,
@@ -23,6 +23,7 @@ import { COMMAND_CHAIN } from '../org-graph/commandChain'
 import { MARKET_SITES } from '../market-sites/data'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { useTranslation } from '../../shared/i18n/useTranslation'
+import { useApi } from '../../shared/auth/useApi'
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -636,7 +637,16 @@ function SwimlaneView({ activities }: { activities: CampaignActivity[] }) {
 
 export function CampaignOS() {
   const { t: _t } = useTranslation() // ready for i18n
+  const { apiFetch } = useApi()
+  const [liveActivities, setLiveActivities] = useState<CampaignActivity[]>(CAMPAIGN_ACTIVITIES)
   const [selectedId, setSelectedId] = useState<string | null>(null)
+
+  useEffect(() => {
+    apiFetch('/api/campaign/activities')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (Array.isArray(data) && data.length > 0) setLiveActivities(data) })
+      .catch(() => {}) // keep CAMPAIGN_ACTIVITIES as fallback
+  }, [])
   const [viewMode, setViewMode] = useState<'list' | 'swimlane'>('swimlane')
   const [filterBrand, setFilterBrand] = useState<string>('all')
   const [filterChannel, setFilterChannel] = useState<string>('all')
@@ -646,24 +656,24 @@ export function CampaignOS() {
   const { isInScope, activeEntity: scopeEntity } = useEntityScope()
 
   const brands = useMemo(() =>
-    Array.from(new Set(CAMPAIGN_ACTIVITIES.map(a => a.brand))).sort(),
+    Array.from(new Set(liveActivities.map(a => a.brand))).sort(),
     []
   )
   const channels = useMemo(() =>
-    Array.from(new Set(CAMPAIGN_ACTIVITIES.map(a => a.channel))).sort(),
+    Array.from(new Set(liveActivities.map(a => a.channel))).sort(),
     []
   )
   const statuses = useMemo(() =>
-    Array.from(new Set(CAMPAIGN_ACTIVITIES.map(a => a.status))).sort(),
+    Array.from(new Set(liveActivities.map(a => a.status))).sort(),
     []
   )
   const countries = useMemo(() =>
-    Array.from(new Set(CAMPAIGN_ACTIVITIES.map(a => a.country))).sort(),
+    Array.from(new Set(liveActivities.map(a => a.country))).sort(),
     []
   )
 
   const filtered = useMemo(() => {
-    return CAMPAIGN_ACTIVITIES.filter(a => {
+    return liveActivities.filter(a => {
       if (!isInScope(a.entity_id)) return false
       if (filterEntity !== 'all' && a.entity_id !== filterEntity) return false
       if (filterBrand !== 'all' && a.brand !== filterBrand) return false
@@ -698,7 +708,7 @@ export function CampaignOS() {
   // All calendar days in Q2 2026 (Apr 1 – Jun 30), only those with activities
   // We show months as headers with days that have activities
   const selectedActivity = selectedId
-    ? CAMPAIGN_ACTIVITIES.find(a => a.id === selectedId) ?? null
+    ? liveActivities.find(a => a.id === selectedId) ?? null
     : null
 
   const TODAY = '2026-03-25'

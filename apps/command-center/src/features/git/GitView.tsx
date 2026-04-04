@@ -445,7 +445,6 @@ const LIVE_URL_MAP: Record<string, string> = {
   'opticinsights.com': 'https://opticinsights.com',
   'luninafoundation.org': 'https://lunina-foundation.pages.dev',
   'corpfitt-app':      'https://corpfitt.com',
-  'wavult.com':        'https://wavult.com',
   'quixzoom-landing':  'https://quixzoom-landing-prod.pages.dev',
   'landvex-web':       'https://landvex-prod.s3.eu-north-1.amazonaws.com/index.html',
   'wavult-group':      'https://wavult.com',

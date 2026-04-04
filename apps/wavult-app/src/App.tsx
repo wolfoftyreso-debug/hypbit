@@ -3,6 +3,7 @@
 // Personal Runtime ↔ Policy Layer ↔ Institutional Runtime.
 
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { ChunkErrorBoundary } from './components/ChunkErrorBoundary'
 import { AuthProvider, useAuth } from './lib/AuthContext'
 import { AvatarProvider } from './lib/AvatarContext'
 import { IdentityProvider } from './core/identity/IdentityContext'
@@ -68,8 +69,10 @@ function AppRouter() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <AppRouter />
-    </AuthProvider>
+    <ChunkErrorBoundary>
+      <AuthProvider>
+        <AppRouter />
+      </AuthProvider>
+    </ChunkErrorBoundary>
   )
 }

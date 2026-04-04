@@ -93,18 +93,39 @@ function ConnectModal({ channel, onClose }: { channel: MediaChannel; onClose: ()
 }
 
 export function ChannelView() {
-  const { channels } = useChannels()
+  const { channels, loading, error } = useChannels()
   const [connectingChannel, setConnectingChannel] = useState<MediaChannel | null>(null)
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-40 text-gray-9000 text-xs">
+        Laddar kanaler...
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-40 text-red-500 text-xs">
+        Fel vid hämtning: {error}
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-4">
       <div>
         <h2 className="text-text-primary font-semibold">Kanaler</h2>
-        <p className="text-xs text-text-muted mt-0.5">7 kanaler konfigurerade · Inga aktiva ännu</p>
+        <p className="text-xs text-text-muted mt-0.5">{channels.length} kanaler konfigurerade</p>
       </div>
 
+      {channels.length === 0 ? (
+        <div className="text-center py-16 text-gray-9000 text-sm rounded-xl border border-surface-border bg-white">
+          Inga kanaler konfigurerade ännu.
+        </div>
+      ) : (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        {MOCK_CHANNELS.map(channel => (
+        {channels.map(channel => (
           <div
             key={channel.id}
             className="bg-white border border-surface-border rounded-xl p-4 flex flex-col gap-3"
@@ -137,10 +158,7 @@ export function ChannelView() {
           </div>
         ))}
       </div>
-
-      <div className="rounded-lg bg-blue-950/40 border border-blue-500/20 px-4 py-3 text-xs text-blue-300">
-        ℹ️ Fas 1 — Inga kanaler är live. Integrationer aktiveras i Fas 2 (Q2 2026).
-      </div>
+      )}
 
       {connectingChannel && (
         <ConnectModal channel={connectingChannel} onClose={() => setConnectingChannel(null)} />

@@ -9,6 +9,7 @@ export type TaskType =
   | 'classification' // Klassificering, routing
   | 'document'       // Dokumentbearbetning, lång kontext
   | 'reasoning'      // Komplex problemlösning
+  | 'creative'       // Brainstorming, namngivning, kreativa idéer, trender (→ Grok)
 
 export type ModelId =
   | 'llama4-scout'
@@ -22,11 +23,13 @@ export type ModelId =
   | 'whisper-local'
   | 'whisper-api'
   | 'groq-llama'
+  | 'grok-3'
+  | 'grok-3-mini'
 
 export interface ModelConfig {
   id: ModelId
   name: string
-  provider: 'local' | 'anthropic' | 'google' | 'openai' | 'deepseek' | 'groq'
+  provider: 'local' | 'anthropic' | 'google' | 'openai' | 'deepseek' | 'groq' | 'xai'
   endpoint: string
   costPer1kTokens: number  // USD
   maxContextTokens: number

@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import {
-  LEGAL_DOCUMENTS,
   SIGNING_LEVEL_LABELS,
   SIGN_METHOD_LABELS,
   DOC_TYPE_LABELS,
@@ -15,6 +14,8 @@ import {
 import { getTemplate } from './templates'
 import { ENTITIES } from '../org-graph/data'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
+import { useWavultAPI } from '../../shared/hooks/useWavultAPI'
+import { useApi } from '../../shared/auth/useApi'
 
 const STATUS_CONFIG: Record<DocStatus, { label: string; color: string; bg: string; description: string }> = {
   proposed:          {
@@ -425,10 +426,10 @@ export function LegalHub() {
   const [showNewDoc, setShowNewDoc] = useState(false)
   const [showTriggers, setShowTriggers] = useState(false)
   const [showStatusLegend, setShowStatusLegend] = useState(false)
-  const [localDocs, setLocalDocs] = useState<LegalDocument[]>([])
   const { activeEntity, scopedEntities } = useEntityScope()
 
-  const allDocs = [...LEGAL_DOCUMENTS, ...localDocs]
+  const { data: apiDocs, loading: docsLoading, error: docsError, refetch } = useWavultAPI<LegalDocument[]>('/v1/legal/documents')
+  const allDocs: LegalDocument[] = apiDocs ?? []
 
   // Scope: root entity (wavult-group, layer 0) → visa alla. Annars filtrera på party_a/party_b.
   const scopedIds = new Set(scopedEntities.map(e => e.id))
@@ -443,9 +444,10 @@ export function LegalHub() {
 
   const filtered = filter === 'all' ? scopedDocs : scopedDocs.filter(d => d.status === filter)
 
-  const handleNewDocSave = (partial: Partial<LegalDocument>) => {
-    const newDoc: LegalDocument = {
-      id: `local-${Date.now()}`,
+  const { apiFetch } = useApi()
+
+  const handleNewDocSave = async (partial: Partial<LegalDocument>) => {
+    const payload = {
       type: partial.type ?? 'nda',
       title: partial.title ?? 'Nytt dokument',
       party_a: partial.party_a ?? '',
@@ -458,8 +460,19 @@ export function LegalHub() {
       required: false,
       auto_proposed: false,
     }
-    setLocalDocs(prev => [...prev, newDoc])
+    try {
+      await apiFetch('/v1/legal/documents', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      })
+      refetch()
+    } catch {
+      // ignore — UI will show empty state on next load
+    }
   }
+
+  if (docsLoading) return <div style={{ padding: 40, color: '#666' }}>Laddar juridiska dokument...</div>
+  if (docsError) return <div style={{ padding: 40, color: '#c0392b' }}>Fel vid hämtning: {docsError}</div>
 
   return (
     <div className="flex flex-col h-full bg-white text-text-primary">

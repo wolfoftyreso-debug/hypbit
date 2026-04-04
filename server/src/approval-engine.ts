@@ -350,7 +350,7 @@ router.post('/capture', async (req: Request, res: Response) => {
   const customerLink = `https://wavult.com/approve?t=${approval.customer_token}`;
 
   // Log creation event
-  await logEvent(db, approval.id, 'created', {
+  await logEvent(pool, approval.id, 'created', {
     issue_category: body.issue_category,
     urgency: body.urgency,
     technician_id: technicianId,
@@ -370,7 +370,7 @@ router.post('/capture', async (req: Request, res: Response) => {
         `UPDATE approval_requests SET sms_sent_at = NOW() WHERE id = $1`,
         [approval.id]
       );
-      await logEvent(db, approval.id, 'sms_sent', { phone_masked: wo.phone.slice(0, -4) + '****' });
+      await logEvent(pool, approval.id, 'sms_sent', { phone_masked: wo.phone.slice(0, -4) + '****' });
     }
   }
 
@@ -503,7 +503,7 @@ router.post('/customer/:token/viewed', async (req: Request, res: Response) => {
     return res.status(404).json({ ok: false });
   }
 
-  await logEvent(db, result.rows[0].id, 'viewed', {}, ip, ua);
+  await logEvent(pool, result.rows[0].id, 'viewed', {}, ip, ua);
 
   res.json({ ok: true });
 });
@@ -541,7 +541,7 @@ router.post('/customer/:token/respond', async (req: Request, res: Response) => {
   const approval = result.rows[0];
 
   // Log decision event
-  await logEvent(db, approval.id, decision.toLowerCase(), { note }, ip, ua);
+  await logEvent(pool, approval.id, decision.toLowerCase(), { note }, ip, ua);
 
   // If approved → advance work order
   if (decision === 'APPROVED' && approval.work_order_id) {
@@ -550,7 +550,7 @@ router.post('/customer/:token/respond', async (req: Request, res: Response) => {
       [approval.work_order_id]
     ).catch(err => console.error('[Approval] Failed to advance work order:', err));
 
-    await logEvent(db, approval.id, 'work_order_advanced', {
+    await logEvent(pool, approval.id, 'work_order_advanced', {
       work_order_id: approval.work_order_id,
       new_status: 'IN_PROGRESS',
     });
@@ -595,7 +595,7 @@ router.post('/customer/:token/question', async (req: Request, res: Response) => 
   const approval = result.rows[0];
 
   // Log the question
-  await logEvent(db, approval.id, 'customer_question', { message });
+  await logEvent(pool, approval.id, 'customer_question', { message });
 
   // TODO: Push to service advisor's dashboard/phone
   // notifyServiceAdvisor(approval.org_id, approval.id, message);
@@ -781,7 +781,7 @@ router.post('/:id/escalate', async (req: Request, res: Response) => {
     );
   }
 
-  await logEvent(db, id, 'escalated', { reason, customer_phone: approval.customer_phone ? '****' : null });
+  await logEvent(pool, id, 'escalated', { reason, customer_phone: approval.customer_phone ? '****' : null });
 
   res.json({ escalated: true, reason });
 });

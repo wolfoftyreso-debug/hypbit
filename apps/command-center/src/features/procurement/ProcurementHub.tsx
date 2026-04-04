@@ -4,31 +4,37 @@ import { SuppliersView } from './SuppliersView'
 import { PurchaseOrdersView } from './PurchaseOrdersView'
 import { ProcurementContractsView } from './ProcurementContractsView'
 import { ApprovalView } from './ApprovalView'
-import { useApprovals } from './hooks/useProcurement'
-import { useContracts } from './hooks/useProcurement'
-import { APPROVAL_REQUESTS, CONTRACTS } from './mockData'
+import { useApprovals, useContracts } from './hooks/useProcurement'
 
 type Tab = 'suppliers' | 'orders' | 'contracts' | 'approvals'
 
 function daysUntil(dateStr: string): number {
   const end = new Date(dateStr)
-  const now = new Date('2026-03-26')
+  const now = new Date()
   return Math.floor((end.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
 }
 
-const pendingApprovals = APPROVAL_REQUESTS.filter(r => r.status === 'väntande').length
-const expiringContracts = CONTRACTS.filter(c => daysUntil(c.endDate) <= 90).length
-
-const TABS: Array<{ id: Tab; label: string; icon: string; badge?: number }> = [
+const BASE_TABS: Array<{ id: Tab; label: string; icon: string }> = [
   { id: 'suppliers', label: 'Leverantörer',  icon: '🏢' },
   { id: 'orders',    label: 'Inköpsordrar',  icon: '📋' },
-  { id: 'contracts', label: 'Kontrakt',      icon: '📄', badge: expiringContracts },
-  { id: 'approvals', label: 'Godkännanden',  icon: '✅', badge: pendingApprovals },
+  { id: 'contracts', label: 'Kontrakt',      icon: '📄' },
+  { id: 'approvals', label: 'Godkännanden',  icon: '✅' },
 ]
 
 export function ProcurementHub() {
   const [activeTab, setActiveTab] = useState<Tab>('suppliers')
   const { activeEntity } = useEntityScope()
+
+  const { approvals } = useApprovals()
+  const { contracts } = useContracts()
+
+  const pendingApprovals = approvals.filter(r => r.status === 'väntande').length
+  const expiringContracts = contracts.filter(c => c.endDate && daysUntil(c.endDate) <= 90).length
+
+  const tabs = BASE_TABS.map(t => ({
+    ...t,
+    badge: t.id === 'contracts' ? expiringContracts : t.id === 'approvals' ? pendingApprovals : undefined,
+  }))
 
   return (
     <div className="flex flex-col h-full bg-[#F0EBE1] text-text-primary">
@@ -45,7 +51,7 @@ export function ProcurementHub() {
 
       {/* Tab navigation */}
       <div className="flex gap-1 px-6 py-2 border-b border-surface-border flex-shrink-0 overflow-x-auto">
-        {TABS.map(tab => (
+        {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}

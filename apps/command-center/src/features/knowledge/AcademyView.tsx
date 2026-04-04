@@ -691,7 +691,7 @@ export function AcademyView() {
                         ? 'ring-2 ring-offset-1 ring-offset-surface-secondary bg-surface-primary'
                         : 'hover:bg-surface-primary/60'
                     }`}
-                    style={isSelected ? { outlineColor: l.color, ringColor: l.color } : {}}
+                    style={isSelected ? { outlineColor: l.color } : {}}
                   >
                     <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: CATEGORY_COLORS[l.category] }} />
                     <span className="text-[10px] text-[#8A8A9A] leading-none">{l.day}</span>

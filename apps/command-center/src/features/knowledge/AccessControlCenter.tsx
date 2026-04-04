@@ -6,11 +6,7 @@ const STATUSES: AccessStatus[] = ["ACTIVE", "MISSING", "PENDING", "RESTRICTED"]
 
 function handleAction(entry: SystemEntry, action: SystemAction) {
   if (entry.kafkaEvent) {
-    console.log("[kafka]", {
-      event: entry.kafkaEvent,
-      system_id: entry.id,
-      timestamp: new Date().toISOString(),
-    })
+    // Kafka event: entry.kafkaEvent for system_id: entry.id
   }
   if (action.action === "open") {
     const url = action.url ?? entry.url
