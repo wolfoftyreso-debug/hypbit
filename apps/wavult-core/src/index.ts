@@ -1,4 +1,9 @@
 import paymentsExtendedRouter from './routes/payments-extended'
+import paymentsBnplRouter from './routes/payments-bnpl'          // Klarna + Swish
+import aiVideoRouter from './routes/ai-video'                    // Stability + Runway + Groq
+import analyticsRouter from './routes/analytics'                  // Mixpanel + Hunter + Clearbit
+import legalSignRouter from './routes/legal-sign'                 // Scrive e-signering
+import monitoringRouter from './routes/monitoring'                // Sentry + DataDog
 import mediaExtendedRouter from './routes/media-extended'
 import commsRouter from './routes/comms'
 import perplexityRouter from './routes/perplexity'
@@ -91,6 +96,11 @@ const healthLimiter = rateLimit({
 
 // Routes
 app.use('/', paymentsExtendedRouter)    // Stripe + BankSign extended
+app.use('/', paymentsBnplRouter)        // Klarna + Swish BNPL
+app.use('/', aiVideoRouter)             // Stability AI + Runway + Groq
+app.use('/', analyticsRouter)           // Mixpanel + Hunter + Clearbit
+app.use('/', legalSignRouter)           // Scrive e-signering
+app.use('/', monitoringRouter)          // Sentry + DataDog
 app.use('/', mediaExtendedRouter)       // Pexels + Coverr media
 app.use('/', commsRouter)               // Resend email + Telegram
 app.use('/', perplexityRouter)          // Perplexity AI search

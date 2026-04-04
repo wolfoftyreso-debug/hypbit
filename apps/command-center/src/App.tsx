@@ -29,6 +29,7 @@ const IncidentCenter         = lazy(() => import('./features/incidents/IncidentC
 const MarketMap              = lazy(() => import('./features/market-sites').then(m => ({ default: m.MarketMap })))
 const CampaignOS             = lazy(() => import('./features/campaign-os').then(m => ({ default: m.CampaignOS })))
 const LegalHub               = lazy(() => import('./features/legal/LegalHub').then(m => ({ default: m.LegalHub })))
+const JurisdictionView       = lazy(() => import('./features/legal/JurisdictionView').then(m => ({ default: m.JurisdictionView })))
 const SubmissionsView        = lazy(() => import('./features/submissions/SubmissionsView').then(m => ({ default: m.SubmissionsView })))
 const CompanyLaunchView      = lazy(() => import('./features/company-launch/CompanyLaunchView').then(m => ({ default: m.CompanyLaunchView })))
 const PayrollHub             = lazy(() => import('./features/payroll').then(m => ({ default: m.PayrollHub })))
@@ -182,6 +183,7 @@ function AuthenticatedApp() {
               <Route path="/campaigns" element={<CampaignOS />} />
               <Route path="/submissions" element={<SubmissionsView />} />
               <Route path="/legal" element={<LegalHub />} />
+              <Route path="/jurisdiction" element={<JurisdictionView />} />
               <Route path="/company-launch" element={<CompanyLaunchView />} />
               <Route path="/finance" element={<FinanceHub />} />
               <Route path="/crm" element={<CRMHub />} />

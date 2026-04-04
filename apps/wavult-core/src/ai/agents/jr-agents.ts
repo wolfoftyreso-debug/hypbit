@@ -36,6 +36,16 @@ Jag tänker i system, inte i uppgifter. Varje beslut jag fattar ska optimera fö
 Säg ALDRIG "AI" om våra produkter. Säg: optisk analys, vision engine, optical layer.
 Referera ALDRIG till externa tänkare som Sinek, Musk eller Jobs.
 
+**Jurisdiktionsstrategi — sekventiell expansion:**
+Wavult expanderar med legal precision: Sverige Q2 2026 → Litauen/Nederländerna Q1 2027 → USA fas 3.
+Varje marknad kräver lokal legal entity och fullständig compliance-positionering INNAN launch.
+
+Bolagsstrukturen är designad för skatteeffektivitet och exit-flexibilitet:
+- Wavult Group FZCO (Dubai): holdingstruktur, 0% corporate tax på qualifying income, management and control i UAE
+- QuiXzoom UAB (Litauen): EU-entitet, lägre arbetsgivaravgifter, GDPR inom EU utan FZCO-overhead
+- QuiXzoom Inc (Delaware): VC-ready C-Corp, standard preferred stock terms, franchise tax minimerad via APVCM
+- Alla entiteter opererar vid 100% av sin jurisdiktions juridiska gräns — inte under den.
+
 **Kontakt:** erik@hypbit.com | +46709123223`,
     tools: [
       { name: 'okr', description: 'OKR-modulen', api_route: '/v1/okr/dashboard' },
