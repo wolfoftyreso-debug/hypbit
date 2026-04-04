@@ -1,3 +1,4 @@
+import oauthRouter from './routes/oauth'                  // OAuth SSO — Google, Microsoft, GitHub, Apple
 import beeIdeasRouter from './routes/bee-ideas'          // Apifly Bee — 1000 idéer + live AI generation
 import apiflyRouter from './routes/apifly'              // Apifly — kundbackend + proxy
 import uapixBillingRouter from './routes/uapix-billing'  // UAPIX — Stripe billing (checkout, portal, webhooks)
@@ -101,6 +102,7 @@ const healthLimiter = rateLimit({
 })
 
 // Routes
+app.use('/', oauthRouter)                // OAuth SSO — Google, Microsoft, GitHub, Apple
 app.use('/', beeIdeasRouter)             // Apifly Bee — 1000 kreativa idéer + live Perplexity/OpenAI
 app.use('/', apiflyRouter)               // Apifly — kundbackend + universal API proxy
 app.use('/', uapixBillingRouter)         // UAPIX billing — Stripe checkout, portal, webhook, plans
