@@ -7,6 +7,19 @@ import { randomUUID, createHash } from 'crypto'
 
 const router = Router()
 
+// ─── Provider tiers — vilka providers som är tillgängliga per plan ────────────
+export const PROVIDER_TIERS = {
+  free: ['mapbox', 'resend', 'apollo', 'stripe', 'pexels', 'coverr', 'hunter'],
+  pro: ['all'],        // alla 35+ providers
+  enterprise: ['all', 'custom'],
+}
+
+// AI-APIs och kommunikations-APIs exkluderas från Free-plan (kostar per anrop)
+const FREE_EXCLUDED_PROVIDERS = [
+  'openai', 'anthropic', 'elevenlabs', 'twilio', 'deepseek', 'groq', 'stability',
+  '46elks', 'perplexity',
+]
+
 const getDb = () => new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.DATABASE_URL?.includes('localhost') ? false : { rejectUnauthorized: false },
@@ -271,6 +284,21 @@ router.post('/v1/apifly/proxy', async (req, res) => {
 
     const { api_id, endpoint_id, params, query, body } = req.body
     if (!api_id || !endpoint_id) return res.status(400).json({ error: 'api_id och endpoint_id krävs' })
+
+    // Kontrollera provider-åtkomst baserat på plan
+    const { rows: customerRows } = await db.query(
+      'SELECT plan FROM apifly_customers WHERE id=$1',
+      [auth.customer_id]
+    )
+    const customerPlan: string = customerRows[0]?.plan || 'free'
+    if (customerPlan === 'free' && FREE_EXCLUDED_PROVIDERS.includes(api_id.toLowerCase())) {
+      return res.status(403).json({
+        error: 'Provider not available on Free plan',
+        provider: api_id,
+        upgrade_url: 'https://apifly.se/priser',
+        message: 'AI-APIs och kommunikations-APIs kräver Pro-plan (från 899 kr/mån)',
+      })
+    }
 
     const start = Date.now()
     const r = await fetch('https://api.wavult.com/v1/uapix/call', {
