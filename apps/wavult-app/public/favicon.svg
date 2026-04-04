@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80">
+  <!-- Wavult logotyp — kompakt favicon-version -->
+
+  <!-- Vänster arm (C-form) -->
+  <path d="M38 12 C38 12 17 17 13 38 C10 50 15 63 24 69 L30 61 C23 56 20 46 24 36 C28 24 40 20 40 20 Z" fill="#000"/>
+
+  <!-- Höger arm (spegelvänd) -->
+  <path d="M62 12 C62 12 83 17 87 38 C90 50 85 63 76 69 L70 61 C77 56 80 46 76 36 C72 24 60 20 60 20 Z" fill="#000"/>
+
+  <!-- Mitten bar -->
+  <rect x="38" y="9" width="24" height="5" rx="1" fill="#000"/>
+
+  <!-- Mitten triangel -->
+  <polygon points="38,14 62,14 53,62 47,62" fill="#000"/>
+
+  <!-- Skarp spets -->
+  <polygon points="47,58 53,58 50,73" fill="#000"/>
+</svg>

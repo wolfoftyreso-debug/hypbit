@@ -1,0 +1,8 @@
+{
+  "name": "Wavult OS",
+  "short_name": "Wavult",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }],
+  "theme_color": "#000000",
+  "background_color": "#F5F0E8",
+  "display": "standalone"
+}
