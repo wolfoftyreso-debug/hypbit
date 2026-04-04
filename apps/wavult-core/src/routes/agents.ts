@@ -9,6 +9,7 @@
 import { Router, Request, Response } from 'express'
 import { routeToAgent } from '../ai/agents/router'
 import { EXPERT_AGENTS } from '../ai/agents/definitions'
+import { JR_AGENTS } from '../ai/agents/jr-agents'
 import { ROLE_PROFILES, getRoleProfile } from '../ai/agents/roles'
 import type { AgentRequest } from '../ai/agents/types'
 
@@ -102,6 +103,42 @@ router.get('/v1/agents/roles', (_req: Request, res: Response) => {
     allowed_agents: p.allowed_agents,
   }))
   return res.json(roles)
+})
+
+// ─── GET /v1/agents/jr ───────────────────────────────────────────────────────
+// Lista alla JR-agenter (digitala tvillingar).
+router.get('/v1/agents/jr', (_req: Request, res: Response) => {
+  const agents = Object.values(JR_AGENTS).map(a => ({
+    id: a.id,
+    name: a.name,
+    owner: a.owner,
+    description: a.description,
+    preferred_model: a.preferred_model,
+    task_types: a.task_types,
+    badge: 'Digital Tvilling 🪞',
+  }))
+  return res.json(agents)
+})
+
+// ─── POST /v1/agents/jr/:personId ────────────────────────────────────────────
+// Chatta direkt med en persons JR-agent.
+// Body: { message, context?, user_id? }
+router.post('/v1/agents/jr/:personId', async (req: Request, res: Response) => {
+  try {
+    const agentId = `${req.params.personId}-jr`
+    const result = await routeToAgent({
+      message: req.body.message,
+      agent_id: agentId as AgentRequest['agent_id'],
+      context: req.body.context,
+      user_id: req.body.user_id,
+      session_id: req.body.session_id,
+    })
+    return res.json(result)
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Okänt fel'
+    console.error(`[agents/jr] /${req.params.personId} error:`, message)
+    return res.status(503).json({ error: 'JR agent failed', detail: message })
+  }
 })
 
 // ─── POST /v1/agents/:agentId/chat ───────────────────────────────────────────

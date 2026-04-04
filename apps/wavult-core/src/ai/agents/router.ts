@@ -5,8 +5,12 @@
 import { randomUUID } from 'crypto'
 import type { AgentId, AgentRequest, AgentResponse } from './types'
 import { EXPERT_AGENTS } from './definitions'
+import { JR_AGENTS } from './jr-agents'
 import { getRoleProfile, canAccessAgent } from './roles'
 import { orchestrate } from '../orchestrator'
+
+// Domänagenter + JR-agenter samlade
+const ALL_AGENTS = { ...EXPERT_AGENTS, ...JR_AGENTS }
 
 // ─── Intent klassificering via keyword-scoring ────────────────────────────────
 
@@ -14,7 +18,7 @@ function classifyIntent(message: string): { agentId: AgentId; confidence: number
   const lower = message.toLowerCase()
   const scores: Record<string, number> = {}
 
-  for (const [id, agent] of Object.entries(EXPERT_AGENTS)) {
+  for (const [id, agent] of Object.entries(ALL_AGENTS)) {
     let score = 0
     for (const keyword of agent.keywords) {
       if (lower.includes(keyword)) score++
@@ -66,7 +70,7 @@ export async function routeToAgent(req: AgentRequest): Promise<AgentResponse> {
   }
 
   // 3. Hämta agentdefinition
-  const agent = EXPERT_AGENTS[agentId]
+  const agent = ALL_AGENTS[agentId]
   if (!agent) throw new Error(`Okänd agent: ${agentId}`)
 
   // 4. Bygg systempromt — agentens promt + rollkontext

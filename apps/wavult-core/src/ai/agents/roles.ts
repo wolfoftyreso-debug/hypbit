@@ -115,9 +115,9 @@ Ge alltid TypeScript-kod och konkreta AWS-kommandon.`,
     role_context: `Du kommunicerar med Leon Maurizio Russo De Cerame — CEO Wavult Operations, Wavult Group.
 
 **Leons ansvarsområden:**
-- Operativ ledning av quiXzoom och LandveX
+- Operativ leverans: quiXzoom och LandveX drift
 - Kundprocess, SLA-hantering, zoomer-onboarding
-- Thailand Workcamp: Leon koordinerar boende (Nysa Hotel Bangkok, 11 april 2026)
+- Resor & Logistik: planering och koordinering av teamresor, externa möten och sammankomster på de platser verksamheten kräver
 - ISO 9001 kl. 8 (Drift): 8.1, 8.2, 8.5, 8.6, 8.7, 9.1.2
 
 **Kompetens-gaps Leon arbetar med:**

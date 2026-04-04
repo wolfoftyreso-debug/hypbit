@@ -15,6 +15,16 @@ const TEAM_MEMBERS = [
   { id: 'winston', name: 'Winston Bjarnemark',     role: 'CFO' },
 ]
 
+const JR_MEMBERS = [
+  { id: 'erik',    name: 'Erik JR',    role: 'Chairman & Group CEO' },
+  { id: 'dennis',  name: 'Dennis JR',  role: 'Chief Legal & Operations' },
+  { id: 'johan',   name: 'Johan JR',   role: 'Group CTO' },
+  { id: 'leon',    name: 'Leon JR',    role: 'CEO Wavult Operations' },
+  { id: 'winston', name: 'Winston JR', role: 'CFO' },
+]
+
+const API_BASE = (import.meta.env.VITE_API_URL as string | undefined) ?? 'https://api.wavult.com'
+
 const DOMAIN_FILTERS = [
   { id: 'auto',    label: 'Auto-routing' },
   { id: 'qms',     label: 'QMS' },
@@ -184,6 +194,8 @@ export function AgentHub() {
   const [selectedPersonId, setSelectedPersonId] = useState(TEAM_MEMBERS[0].id)
   const [selectedDomain, setSelectedDomain] = useState('auto')
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null)
+  const [selectedJrId, setSelectedJrId] = useState<string | null>(null)
+  const [jrLoading, setJrLoading] = useState(false)
   const [input, setInput] = useState('')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -213,9 +225,29 @@ export function AgentHub() {
 
   const handleSend = async () => {
     const msg = input.trim()
-    if (!msg || loading) return
+    if (!msg || loading || jrLoading) return
     setInput('')
-    await sendMessage(msg, selectedDomain === 'auto' ? undefined : (selectedAgentId ?? undefined), selectedPersonId)
+    if (selectedJrId) {
+      // JR-agent — direkt anrop till /v1/agents/jr/:personId
+      setJrLoading(true)
+      try {
+        const res = await fetch(`${API_BASE}/v1/agents/jr/${selectedJrId}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg }),
+        })
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        const data = await res.json()
+        // sendMessage hanterar UI — här kör vi manuell append via hook workaround
+        await sendMessage(msg, `${selectedJrId}-jr` as any, selectedPersonId)
+      } catch {
+        await sendMessage(msg, `${selectedJrId}-jr` as any, selectedPersonId)
+      } finally {
+        setJrLoading(false)
+      }
+    } else {
+      await sendMessage(msg, selectedDomain === 'auto' ? undefined : (selectedAgentId ?? undefined), selectedPersonId)
+    }
     inputRef.current?.focus()
   }
 
@@ -331,6 +363,45 @@ export function AgentHub() {
 
           <div style={{ borderTop: '1px solid #e9e4d8', margin: '8px 0' }} />
 
+          {/* JR-agenter — Digitala Tvillingar */}
+          <div style={{ padding: '8px 14px' }}>
+            <p style={{ fontSize: 10, fontWeight: 700, color: '#9ca3af', letterSpacing: 1, marginBottom: 8 }}>
+              DIGITALA TVILLINGAR 🪞
+            </p>
+            {JR_MEMBERS.map(jr => (
+              <button
+                key={jr.id}
+                onClick={() => {
+                  setSelectedJrId(selectedJrId === jr.id ? null : jr.id)
+                  setSelectedAgentId(null)
+                }}
+                style={{
+                  width: '100%',
+                  textAlign: 'left',
+                  padding: '8px 10px',
+                  borderRadius: 8,
+                  border: selectedJrId === jr.id ? '1.5px solid #E8B84B' : '1px solid transparent',
+                  cursor: 'pointer',
+                  marginBottom: 2,
+                  background: selectedJrId === jr.id ? '#FFF8E7' : 'transparent',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                }}
+              >
+                <span style={{ fontSize: 14 }}>🪞</span>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: selectedJrId === jr.id ? 700 : 400, color: '#0A3D62' }}>
+                    {jr.name}
+                  </div>
+                  <div style={{ fontSize: 10, color: '#9ca3af' }}>{jr.role}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          <div style={{ borderTop: '1px solid #e9e4d8', margin: '8px 0' }} />
+
           {/* Agent-filter */}
           <div style={{ padding: '8px 14px' }}>
             <p style={{ fontSize: 10, fontWeight: 700, color: '#9ca3af', letterSpacing: 1, marginBottom: 8 }}>
@@ -417,7 +488,15 @@ export function AgentHub() {
 
           {/* Agent-info card */}
           <div style={{ padding: '16px 20px 0', flexShrink: 0 }}>
-            {selectedAgent ? (
+            {selectedJrId ? (
+              <AgentInfoCard agent={{
+                id: `${selectedJrId}-jr`,
+                name: JR_MEMBERS.find(j => j.id === selectedJrId)?.name ?? '',
+                description: JR_MEMBERS.find(j => j.id === selectedJrId)?.role ?? '',
+                owner: selectedJrId,
+                domain: 'jr',
+              }} />
+            ) : selectedAgent ? (
               <AgentInfoCard agent={selectedAgent} />
             ) : (
               <div
@@ -455,7 +534,7 @@ export function AgentHub() {
                   {selectedPerson.name.split(' ')[0]}
                 </span>
               </div>
-            )}
+            ) }
           </div>
 
           {/* Error */}
