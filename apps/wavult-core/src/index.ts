@@ -37,6 +37,7 @@ import deploymentsRouter from './routes/deployments'
 import cockpitRouter from './routes/cockpit'
 import systemAuditRouter from './routes/system-audit'
 import okrRouter from './routes/okr'
+import llmRouter from './routes/llm'
 import { validateDbConfig } from './lib/db'
 
 // ── Database Guard: blockerar cloud Supabase ──────────────────────────────────
@@ -102,6 +103,7 @@ app.use('/api/tax-automation', taxAutomationRouter)
 app.use('/api/deployments', deploymentsRouter)   // Deployment gate — two-step approval, version history, rollback
 app.use('/api/cockpit', cockpitRouter)           // Cockpit — live metrics: latency, Gitea, DB, Cloudflare
 app.use('/v1/system', systemAuditRouter)        // System Audit — parallella health-checks, healthScore
+app.use('/', llmRouter)                         // Intern LLM-gateway — Llama 4 Scout via Ollama
 app.use('/', qmsRouter)                         // QMS — ISO 9001/27001/GDPR/NIS2 compliance tracking
 app.use('/', okrRouter)                         // OKR — Google-modellen: Objectives, Key Results, Check-ins
 app.use('/api/config', configRouter)
