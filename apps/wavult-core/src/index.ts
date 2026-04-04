@@ -1,3 +1,4 @@
+import beeIdeasRouter from './routes/bee-ideas'          // Apifly Bee — 1000 idéer + live AI generation
 import apiflyRouter from './routes/apifly'              // Apifly — kundbackend + proxy
 import uapixBillingRouter from './routes/uapix-billing'  // UAPIX — Stripe billing (checkout, portal, webhooks)
 import uapixCustomersRouter from './routes/uapix-customers'  // UAPIX — Customer auth, keys, usage, proxy
@@ -100,6 +101,7 @@ const healthLimiter = rateLimit({
 })
 
 // Routes
+app.use('/', beeIdeasRouter)             // Apifly Bee — 1000 kreativa idéer + live Perplexity/OpenAI
 app.use('/', apiflyRouter)               // Apifly — kundbackend + universal API proxy
 app.use('/', uapixBillingRouter)         // UAPIX billing — Stripe checkout, portal, webhook, plans
 app.use('/', uapixCustomersRouter)      // UAPIX customers — auth, keys, usage, proxy, admin
