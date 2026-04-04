@@ -298,13 +298,12 @@ export function Shell({ children }: ShellProps) {
         {/* Logo */}
         <div className="flex items-center px-4" style={{ height: 52, borderBottom: '1px solid var(--sidebar-border, rgba(201,168,76,0.15))' }}>
           <div className="flex items-center gap-2.5 min-w-0">
-            <div
-              className="flex items-center justify-center flex-shrink-0"
-              style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--sidebar-accent, #C9A84C)' }}
-            >
-              <span style={{ fontSize: 13, fontWeight: 700, color: '#1A1A2E' }}>W</span>
-            </div>
-            <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--sidebar-text-active, #F5F0E8)' }}>Wavult OS</span>
+            <img
+              src="/wavult-logo.svg"
+              alt="Wavult"
+              style={{ width: 38, height: 25, flexShrink: 0, filter: 'brightness(0) invert(1)' }}
+            />
+            <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--sidebar-text-active, #F5F0E8)', letterSpacing: '0.03em' }}>Wavult OS</span>
           </div>
           {/* Close btn (mobile) */}
           <button
