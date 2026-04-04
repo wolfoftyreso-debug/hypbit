@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../shared/auth/AuthContext'
 import { useRole } from '../../shared/auth/RoleContext'
 import { SESSION_ID } from '../../shared/audit/useAuditLog'
+import { useMyAnalytics, useTeamAnalytics } from '../../shared/audit/useTimeStudy'
+import type { TeamMemberAnalytics } from '../../shared/audit/useTimeStudy'
 
 const API = import.meta.env.VITE_API_URL ?? 'https://api.wavult.com'
 
@@ -280,6 +282,296 @@ function SessionTimeline({ session, isActive }: { session: AuditSession; isActiv
 
 // ─── ProfileView ──────────────────────────────────────────────────────────────
 
+// ─── Lean Analytics Section ───────────────────────────────────────────────────
+
+function LeanAnalyticsSection({ userId, roleId }: { userId: string | undefined; roleId: string | undefined }) {
+  const { data: analyticsData } = useMyAnalytics(userId)
+  const { data: teamData } = useTeamAnalytics()
+
+  const aggregate = analyticsData?.aggregate
+
+  return (
+    <>
+      {/* Arbetsinsatsanalys */}
+      <div style={{ marginTop: 32, marginBottom: 24 }}>
+        <h2
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            color: '#8A8278',
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            margin: '0 0 16px',
+          }}
+        >
+          📊 Arbetsinsatsanalys — senaste 30 dagar
+        </h2>
+
+        {/* Score cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 16 }}>
+          {/* Sessionseffektivitet */}
+          <div
+            style={{
+              background: '#FFFFFF',
+              border: '1px solid #E8E3DA',
+              borderRadius: 12,
+              padding: 16,
+              textAlign: 'center',
+            }}
+          >
+            <div style={{ fontSize: 36, fontWeight: 700, color: '#0A3D62', lineHeight: 1 }}>
+              {aggregate?.efficiency_score !== undefined ? `${aggregate.efficiency_score}%` : '—'}
+            </div>
+            <div style={{ fontSize: 12, color: '#6B7280', marginTop: 6 }}>Sessionseffektivitet</div>
+            <div style={{ fontSize: 10, color: '#9CA3AF', marginTop: 2 }}>value-adding / total tid</div>
+          </div>
+
+          {/* Kaizen-index */}
+          <div
+            style={{
+              background: '#FFFFFF',
+              border: '1px solid #E8E3DA',
+              borderRadius: 12,
+              padding: 16,
+              textAlign: 'center',
+            }}
+          >
+            <div style={{ fontSize: 36, fontWeight: 700, color: '#E8B84B', lineHeight: 1 }}>
+              {aggregate?.kaizen_score !== undefined ? aggregate.kaizen_score : '—'}
+            </div>
+            <div style={{ fontSize: 12, color: '#6B7280', marginTop: 6 }}>Kaizen-index</div>
+            <div style={{ fontSize: 10, color: '#9CA3AF', marginTop: 2 }}>förbättringsåtgärder / totalt</div>
+          </div>
+
+          {/* Arbetsinsatspoäng */}
+          <div
+            style={{
+              background: '#FFFFFF',
+              border: '1px solid #E8E3DA',
+              borderRadius: 12,
+              padding: 16,
+              textAlign: 'center',
+            }}
+          >
+            <div style={{ fontSize: 36, fontWeight: 700, color: '#2D7A4F', lineHeight: 1 }}>
+              {aggregate?.work_effort_score !== undefined ? aggregate.work_effort_score : '—'}
+            </div>
+            <div style={{ fontSize: 12, color: '#6B7280', marginTop: 6 }}>Arbetsinsatspoäng</div>
+            <div style={{ fontSize: 10, color: '#9CA3AF', marginTop: 2 }}>sammansatt score</div>
+          </div>
+        </div>
+
+        {/* Tid per modul */}
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid #E8E3DA',
+            borderRadius: 12,
+            padding: 16,
+            marginBottom: 12,
+          }}
+        >
+          <h3 style={{ fontSize: 11, fontWeight: 600, color: '#6B7280', margin: '0 0 12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            Tid per modul
+          </h3>
+          {aggregate?.touch_time_by_module && Object.keys(aggregate.touch_time_by_module).length > 0 ? (
+            Object.entries(aggregate.touch_time_by_module)
+              .sort(([, a], [, b]) => b - a)
+              .map(([module, ms]) => {
+                const total = aggregate.total_time_ms ?? 1
+                const pct = Math.round((ms / total) * 100)
+                return (
+                  <div key={module} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
+                    <span
+                      style={{
+                        fontSize: 12,
+                        color: '#4B5563',
+                        width: 96,
+                        flexShrink: 0,
+                        textTransform: 'capitalize',
+                      }}
+                    >
+                      {module}
+                    </span>
+                    <div
+                      style={{
+                        flex: 1,
+                        height: 8,
+                        background: '#F3F4F6',
+                        borderRadius: 999,
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: '100%',
+                          borderRadius: 999,
+                          background: '#0A3D62',
+                          width: `${pct}%`,
+                        }}
+                      />
+                    </div>
+                    <span style={{ fontSize: 11, fontFamily: 'monospace', color: '#6B7280', width: 36, textAlign: 'right' }}>
+                      {pct}%
+                    </span>
+                  </div>
+                )
+              })
+          ) : (
+            <p style={{ fontSize: 13, color: '#9CA3AF', textAlign: 'center', padding: '12px 0', margin: 0 }}>
+              Ingen moduldata tillgänglig ännu
+            </p>
+          )}
+        </div>
+
+        {/* Lean Waste-analys */}
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid #E8E3DA',
+            borderRadius: 12,
+            padding: 16,
+          }}
+        >
+          <h3 style={{ fontSize: 11, fontWeight: 600, color: '#6B7280', margin: '0 0 12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            Lean Waste-analys
+          </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
+            {[
+              { label: 'Motion', key: 'motion' as const, desc: 'Onödig navigering', color: '#F59E0B' },
+              { label: 'Waiting', key: 'waiting' as const, desc: 'Idle-tid', color: '#EF4444' },
+              { label: 'Overprocessing', key: 'overprocessing' as const, desc: 'Repeterade actions', color: '#8B5CF6' },
+            ].map(w => (
+              <div
+                key={w.key}
+                style={{
+                  textAlign: 'center',
+                  padding: 12,
+                  borderRadius: 12,
+                  border: '1px solid #E8E3DA',
+                }}
+              >
+                <div style={{ fontSize: 24, fontWeight: 700, color: w.color }}>
+                  {aggregate?.lean_waste_breakdown?.[w.key] !== undefined
+                    ? `${aggregate.lean_waste_breakdown[w.key]}%`
+                    : '0%'}
+                </div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: '#374151', marginTop: 4 }}>{w.label}</div>
+                <div style={{ fontSize: 10, color: '#9CA3AF', marginTop: 2 }}>{w.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Team-översikt (endast group-ceo och admin) */}
+      {(roleId === 'group-ceo' || roleId === 'admin') && (
+        <div style={{ marginBottom: 24 }}>
+          <h2
+            style={{
+              fontSize: 11,
+              fontWeight: 700,
+              color: '#8A8278',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              margin: '0 0 16px',
+            }}
+          >
+            👥 Teamöversikt
+          </h2>
+
+          {teamData && teamData.length > 0 ? (
+            <div
+              style={{
+                background: '#FFFFFF',
+                border: '1px solid #E8E3DA',
+                borderRadius: 12,
+                overflow: 'hidden',
+              }}
+            >
+              {/* Table header */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr',
+                  padding: '10px 16px',
+                  background: '#F9F6F0',
+                  borderBottom: '1px solid #E8E3DA',
+                }}
+              >
+                {['Namn / Roll', 'Effektivitet', 'Kaizen', 'Waste Index', 'Arbetsinsats'].map(h => (
+                  <span key={h} style={{ fontSize: 10, fontWeight: 700, color: '#8A8278', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    {h}
+                  </span>
+                ))}
+              </div>
+
+              {/* Rows sorted by work_effort_score desc */}
+              {[...teamData]
+                .sort((a: TeamMemberAnalytics, b: TeamMemberAnalytics) => b.avg_work_effort - a.avg_work_effort)
+                .map((member: TeamMemberAnalytics, idx: number) => (
+                  <div
+                    key={member.user_id}
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr',
+                      padding: '12px 16px',
+                      borderBottom: idx < teamData.length - 1 ? '1px solid #F0EBE2' : 'none',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: '#1A1A2E' }}>{member.name}</div>
+                      <div style={{ fontSize: 11, color: '#8A8278', marginTop: 1 }}>{member.role}</div>
+                    </div>
+                    <span style={{ fontSize: 14, fontWeight: 700, color: '#0A3D62' }}>
+                      {member.avg_efficiency}%
+                    </span>
+                    <span style={{ fontSize: 14, fontWeight: 700, color: '#E8B84B' }}>
+                      {member.kaizen_score}
+                    </span>
+                    <span
+                      style={{
+                        fontSize: 14,
+                        fontWeight: 700,
+                        color: member.waste_index < 30 ? '#2D7A4F' : member.waste_index < 60 ? '#E8B84B' : '#EF4444',
+                      }}
+                    >
+                      {member.waste_index}
+                    </span>
+                    <span style={{ fontSize: 14, fontWeight: 700, color: '#2D7A4F' }}>
+                      {member.avg_work_effort}
+                    </span>
+                  </div>
+                ))}
+            </div>
+          ) : (
+            <div
+              style={{
+                background: '#FFFFFF',
+                border: '1px solid #E8E3DA',
+                borderRadius: 12,
+                padding: '32px 24px',
+                textAlign: 'center',
+              }}
+            >
+              <div style={{ fontSize: 32, marginBottom: 8 }}>👥</div>
+              <p style={{ fontSize: 14, fontWeight: 600, color: '#1A1A2E', margin: '0 0 6px' }}>
+                Ingen teamdata tillgänglig
+              </p>
+              <p style={{ fontSize: 13, color: '#8A8278', margin: 0 }}>
+                Teamanalysen visas här när API:et är anslutet och teammedlemmar har aktiva sessioner.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+    </>
+  )
+}
+
+// ─── ProfileView ──────────────────────────────────────────────────────────────
+
 export function ProfileView() {
   const { user, getToken } = useAuth()
   const { effectiveRole } = useRole()
@@ -445,6 +737,12 @@ export function ProfileView() {
           isActive={idx === 0 && !session.ended_at}
         />
       ))}
+
+      {/* Lean/Kaizen Intelligence Layer */}
+      <LeanAnalyticsSection
+        userId={user?.email}
+        roleId={effectiveRole?.id}
+      />
     </div>
   )
 }
