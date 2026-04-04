@@ -17,6 +17,13 @@ interface Version {
   label?: string
 }
 
+interface RepoSite {
+  url: string
+  label: string
+  region?: string  // 'EU', 'US', 'SE', 'Global' etc
+  status: 'live' | 'dev' | 'offline'
+}
+
 interface Repo {
   id: string
   name: string
@@ -28,6 +35,7 @@ interface Repo {
   heroImage?: string
   isApp?: boolean
   fullName: string
+  sites?: RepoSite[]
 }
 
 // ── Mapping helpers ────────────────────────────────────────────────────────────
@@ -36,6 +44,77 @@ const slotMap: Record<string, 'live' | 'dev' | 'archive'> = {
   live: 'live', production: 'live',
   dev: 'dev', 'in-development': 'dev', 'pre-launch': 'dev',
   archive: 'archive', legacy: 'archive', offline: 'archive',
+}
+
+// ── Sites per repo — mapped from DNS data ─────────────────────────────────────
+const SITES_MAP: Record<string, RepoSite[]> = {
+  'wavult-os': [
+    { url: 'os.wavult.com', label: 'Wavult OS', region: 'Global', status: 'live' },
+  ],
+  'wavult.com': [
+    { url: 'wavult.com', label: 'Main', region: 'Global', status: 'live' },
+    { url: 'www.wavult.com', label: 'WWW', region: 'Global', status: 'live' },
+    { url: 'admin.wavult.com', label: 'Admin', region: 'Global', status: 'live' },
+    { url: 'app.wavult.com', label: 'App', region: 'Global', status: 'live' },
+    { url: 'developers.wavult.com', label: 'Developers', region: 'Global', status: 'live' },
+    { url: 'careers.wavult.com', label: 'Careers', region: 'Global', status: 'live' },
+    { url: 'invest.wavult.com', label: 'Invest', region: 'Global', status: 'live' },
+    { url: 'brief.wavult.com', label: 'Brief', region: 'Global', status: 'live' },
+    { url: 'docs.wavult.com', label: 'Docs', region: 'Global', status: 'live' },
+    { url: 'status.wavult.com', label: 'Status', region: 'Global', status: 'live' },
+  ],
+  'quixzoom.com': [
+    { url: 'quixzoom.com', label: 'Main', region: 'Global', status: 'live' },
+    { url: 'www.quixzoom.com', label: 'WWW', region: 'Global', status: 'live' },
+    { url: 'app.quixzoom.com', label: 'App', region: 'EU', status: 'live' },
+    { url: 'ads.quixzoom.com', label: 'Ads', region: 'Global', status: 'live' },
+    { url: 'api.quixzoom.com', label: 'API', region: 'EU', status: 'live' },
+    { url: 'portal.quixzoom.com', label: 'Portal', region: 'Global', status: 'live' },
+  ],
+  'landvex.com': [
+    { url: 'landvex.com', label: 'Main', region: 'Global', status: 'live' },
+    { url: 'www.landvex.com', label: 'WWW', region: 'Global', status: 'live' },
+    { url: 'landvex.se', label: 'SE', region: 'SE', status: 'live' },
+  ],
+  'apifly.com': [
+    { url: 'apifly.com', label: 'Main', region: 'Global', status: 'live' },
+    { url: 'www.apifly.com', label: 'WWW', region: 'Global', status: 'live' },
+    { url: 'portal.apifly.com', label: 'Portal', region: 'Global', status: 'live' },
+  ],
+  'dissg.com': [
+    { url: 'dissg.com', label: '.com', region: 'Global', status: 'live' },
+    { url: 'dissg.app', label: '.app', region: 'Global', status: 'live' },
+    { url: 'dissg.io', label: '.io', region: 'Global', status: 'live' },
+    { url: 'dissg.digital', label: '.digital', region: 'Global', status: 'live' },
+    { url: 'dissg.network', label: '.network', region: 'Global', status: 'live' },
+    { url: 'dissg.systems', label: '.systems', region: 'Global', status: 'live' },
+    { url: 'dissg.world', label: '.world', region: 'Global', status: 'live' },
+  ],
+  'uapix.com': [
+    { url: 'uapix.com', label: 'Main', region: 'Global', status: 'live' },
+    { url: 'www.uapix.com', label: 'WWW', region: 'Global', status: 'live' },
+    { url: 'api.uapix.com', label: 'API', region: 'EU', status: 'live' },
+    { url: 'portal.uapix.com', label: 'Portal', region: 'Global', status: 'live' },
+  ],
+  // wavult-core — API-infrastruktur
+  'wavult-core': [
+    { url: 'api.wavult.com', label: 'API', region: 'EU', status: 'live' },
+    { url: 'n8n.wavult.com', label: 'n8n', region: 'EU', status: 'live' },
+    { url: 'supabase.wavult.com', label: 'Supabase', region: 'EU', status: 'live' },
+  ],
+  // Gitea
+  'gitea': [
+    { url: 'git.wavult.com', label: 'Gitea', region: 'EU', status: 'live' },
+  ],
+  // Mobile
+  'quixzoom-mobile': [
+    { url: 'app.wavult.com', label: 'App', region: 'Global', status: 'live' },
+  ],
+  // hypbit/wavult-api (legacy domain)
+  'wavult-api': [
+    { url: 'api.wavult.com', label: 'API', region: 'EU', status: 'live' },
+    { url: 'api.hypbit.com', label: 'API (legacy)', region: 'EU', status: 'live' },
+  ],
 }
 
 function branchToSlot(branchName: string): 'live' | 'dev' | 'archive' | null {
@@ -57,6 +136,12 @@ function giteaToRepo(r: GiteaRepo): Repo {
   const slot = slotMap[statusTag] ?? 'dev'
   const liveUrl = r.website || (domainTag ? `https://${domainTag}` : undefined)
 
+  // Find sites from map — try repo name, domain tag, and common variations
+  const sites = SITES_MAP[r.name]
+    ?? SITES_MAP[domainTag]
+    ?? SITES_MAP[r.name.replace(/-/g, '.')]
+    ?? undefined
+
   return {
     id: `gitea-${r.id}`,
     name: r.name,
@@ -67,6 +152,7 @@ function giteaToRepo(r: GiteaRepo): Repo {
     repo_url: r.html_url,
     heroImage: liveUrl ? `https://image.thum.io/get/width/1200/${liveUrl}` : undefined,
     isApp: topics.includes('app') || r.name.includes('mobile') || r.name.includes('app'),
+    sites,
     versions: [
       {
         id: `${r.id}-${slot}`,
@@ -314,6 +400,39 @@ function RepoRow({ repo }: { repo: Repo }) {
         )}
         <span style={{ marginLeft: 'auto', fontSize: 12, color: 'rgba(10,61,98,.25)' }}>{open ? '▲' : '▼'}</span>
       </div>
+
+      {/* Sites */}
+      {repo.sites && repo.sites.length > 0 && (
+        <div style={{ padding: '8px 20px 10px', borderBottom: open ? '1px solid rgba(10,61,98,.07)' : 'none', display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {repo.sites.map(site => (
+            <a
+              key={site.url}
+              href={`https://${site.url}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={e => e.stopPropagation()}
+              className="text-[10px] font-mono px-2 py-1 rounded border flex items-center gap-1"
+              style={{
+                fontSize: 10,
+                fontFamily: 'monospace',
+                padding: '3px 8px',
+                borderRadius: 4,
+                border: `1px solid ${site.status === 'live' ? '#86EFAC' : '#E5E7EB'}`,
+                background: site.status === 'live' ? '#F0FDF4' : '#F9FAFB',
+                color: site.status === 'live' ? '#166534' : '#6B7280',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {site.status === 'live' ? '🟢' : '⚫'} {site.url}
+              {site.region && <span style={{ opacity: 0.5 }}>· {site.region}</span>}
+            </a>
+          ))}
+        </div>
+      )}
 
       {open && (
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 0, padding: '16px 20px', overflow: 'auto', paddingBottom: 20 }}>
