@@ -7,6 +7,41 @@ import { randomUUID, createHash } from 'crypto'
 
 const router = Router()
 
+// ─── Token-kostnader per provider ─────────────────────────────────────────────
+const TOKEN_COSTS: Record<string, number> = {
+  'mapbox': 1,
+  'resend': 2,
+  'apollo': 5,
+  'stripe': 0,
+  'pexels': 1,
+  'coverr': 1,
+  'hunter': 3,
+  'openai': 50,          // GPT-4o default
+  'openai-gpt4o': 50,
+  'openai-gpt4o-mini': 10,
+  'anthropic': 40,
+  'anthropic-sonnet': 40,
+  'anthropic-haiku': 8,
+  'deepseek': 5,
+  'deepseek-v3': 5,
+  'deepseek-r1': 15,
+  'groq': 8,
+  'perplexity': 10,
+  'gemini-flash': 6,
+  'gemini-pro': 25,
+  'elevenlabs': 80,
+  'stability': 100,
+  'runway': 500,
+  'shotstack': 200,
+  'twilio': 40,
+  'twilio-sms': 40,
+  'twilio-voice': 100,
+  '46elks': 35,
+  '46elks-sms': 35,
+  'telegram': 2,
+  'default': 5,
+}
+
 // ─── Provider tiers — vilka providers som är tillgängliga per plan ────────────
 export const PROVIDER_TIERS = {
   free: ['mapbox', 'resend', 'apollo', 'stripe', 'pexels', 'coverr', 'hunter'],
@@ -14,10 +49,10 @@ export const PROVIDER_TIERS = {
   enterprise: ['all', 'custom'],
 }
 
-// AI-APIs och kommunikations-APIs exkluderas från Free-plan (kostar per anrop)
+// AI-APIs och kommunikations-APIs exkluderas från Free-plan
 const FREE_EXCLUDED_PROVIDERS = [
   'openai', 'anthropic', 'elevenlabs', 'twilio', 'deepseek', 'groq', 'stability',
-  '46elks', 'perplexity',
+  '46elks', 'perplexity', 'runway', 'shotstack', 'gemini-pro',
 ]
 
 const getDb = () => new Pool({
@@ -40,6 +75,8 @@ async function ensureApiflySchema() {
         stripe_customer_id text,
         api_calls_this_month integer DEFAULT 0,
         api_calls_limit integer DEFAULT 10000,
+        tokens_remaining integer DEFAULT 5000,
+        tokens_used_total integer DEFAULT 0,
         created_at timestamptz DEFAULT now(),
         updated_at timestamptz DEFAULT now()
       );
@@ -63,8 +100,15 @@ async function ensureApiflySchema() {
         status_code integer,
         latency_ms integer,
         cost_usd numeric(10,6),
+        tokens_used integer DEFAULT 0,
         created_at timestamptz DEFAULT now()
       );
+      -- Migrera befintliga tabeller
+      ALTER TABLE apifly_customers
+        ADD COLUMN IF NOT EXISTS tokens_remaining integer DEFAULT 5000,
+        ADD COLUMN IF NOT EXISTS tokens_used_total integer DEFAULT 0;
+      ALTER TABLE apifly_usage_log
+        ADD COLUMN IF NOT EXISTS tokens_used integer DEFAULT 0;
       CREATE INDEX IF NOT EXISTS idx_apifly_keys_customer ON apifly_api_keys(customer_id);
       CREATE INDEX IF NOT EXISTS idx_apifly_usage_customer ON apifly_usage_log(customer_id);
       CREATE INDEX IF NOT EXISTS idx_apifly_usage_created ON apifly_usage_log(created_at);
@@ -287,7 +331,7 @@ router.post('/v1/apifly/proxy', async (req, res) => {
 
     // Kontrollera provider-åtkomst baserat på plan
     const { rows: customerRows } = await db.query(
-      'SELECT plan FROM apifly_customers WHERE id=$1',
+      'SELECT plan, tokens_remaining FROM apifly_customers WHERE id=$1',
       [auth.customer_id]
     )
     const customerPlan: string = customerRows[0]?.plan || 'free'
@@ -297,6 +341,21 @@ router.post('/v1/apifly/proxy', async (req, res) => {
         provider: api_id,
         upgrade_url: 'https://apifly.se/priser',
         message: 'AI-APIs och kommunikations-APIs kräver Pro-plan (från 899 kr/mån)',
+      })
+    }
+
+    // Token-kostnad för detta anrop
+    const tokenCost = TOKEN_COSTS[api_id.toLowerCase()] ?? TOKEN_COSTS['default']
+    const tokensRemaining: number = customerRows[0]?.tokens_remaining ?? 0
+
+    // Kontrollera token-balans (Stripe = 0 tokens, aldrig blockeras)
+    if (tokenCost > 0 && tokensRemaining < tokenCost) {
+      return res.status(429).json({
+        error: 'Insufficient tokens',
+        tokens_needed: tokenCost,
+        tokens_remaining: tokensRemaining,
+        upgrade_url: 'https://apifly.se/priser',
+        message: `Detta anrop kräver ${tokenCost} tokens. Du har ${tokensRemaining} kvar.`,
       })
     }
 
@@ -312,14 +371,23 @@ router.post('/v1/apifly/proxy', async (req, res) => {
     const data = await r.json() as any
     const latency = Date.now() - start
 
+    // Dra tokens och logga
+    if (tokenCost > 0) {
+      await db.query(
+        'UPDATE apifly_customers SET tokens_remaining=tokens_remaining-$1, tokens_used_total=tokens_used_total+$1, api_calls_this_month=api_calls_this_month+1 WHERE id=$2',
+        [tokenCost, auth.customer_id]
+      )
+    } else {
+      await db.query(
+        'UPDATE apifly_customers SET api_calls_this_month=api_calls_this_month+1 WHERE id=$1',
+        [auth.customer_id]
+      )
+    }
+
     await db.query(
-      `INSERT INTO apifly_usage_log (customer_id, api_key_id, api_provider, endpoint, status_code, latency_ms, cost_usd)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-      [auth.customer_id, auth.key_id, api_id, endpoint_id, r.status, latency, data.cost_usd || 0]
-    )
-    await db.query(
-      'UPDATE apifly_customers SET api_calls_this_month=api_calls_this_month+1 WHERE id=$1',
-      [auth.customer_id]
+      `INSERT INTO apifly_usage_log (customer_id, api_key_id, api_provider, endpoint, status_code, latency_ms, cost_usd, tokens_used)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [auth.customer_id, auth.key_id, api_id, endpoint_id, r.status, latency, data.cost_usd || 0, tokenCost]
     )
     res.status(r.status).json(data)
   } catch (err: any) {
