@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { supabase } from '../../../lib/supabase'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -88,6 +87,28 @@ export function fmtPeriod(period: string): string {
   return `${months[parseInt(m, 10) - 1]} ${y}`
 }
 
+// ─── API helpers ──────────────────────────────────────────────────────────────
+
+const API = import.meta.env.VITE_API_URL ?? 'https://api.wavult.com'
+
+function getToken(): string | null {
+  return localStorage.getItem('wavult_access_token')
+}
+
+async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
+  const token = getToken()
+  const res = await fetch(`${API}${path}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(options?.headers ?? {}),
+    },
+  })
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  return res.json()
+}
+
 // ─── Hook ─────────────────────────────────────────────────────────────────────
 
 export function usePayroll() {
@@ -99,50 +120,36 @@ export function usePayroll() {
   // ─── Fetch employees ────────────────────────────────────────────────────────
   const fetchEmployees = async () => {
     try {
-      const { data, error: fetchError } = await supabase
-        .from('employees')
-        .select('*')
-        .order('name', { ascending: true })
-
-      if (fetchError) throw fetchError
+      const data = await apiFetch<Employee[]>('/api/payroll/employees?order=name.asc')
       setEmployees(data || [])
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err))
-      console.error("Supabase fetch failed:", err)
+      console.error('Payroll employees fetch failed:', err)
     }
   }
 
   // ─── Fetch payroll runs ─────────────────────────────────────────────────────
   const fetchPayrollRuns = async () => {
     try {
-      const { data, error: fetchError } = await supabase
-        .from('payroll_runs')
-        .select('*')
-        .order('period', { ascending: false })
-
-      if (fetchError) throw fetchError
+      const data = await apiFetch<PayrollRun[]>('/api/payroll/runs?order=period.desc')
       setPayrollRuns(data || [])
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err))
-      console.error("Supabase fetch failed:", err)
+      console.error('Payroll runs fetch failed:', err)
     }
   }
 
   // ─── Create employee ────────────────────────────────────────────────────────
   const createEmployee = async (employee: Omit<Employee, 'created_at' | 'updated_at'>) => {
     try {
-      const { data, error: insertError } = await supabase
-        .from('employees')
-        .insert([employee])
-        .select()
-        .single()
-
-      if (insertError) throw insertError
+      const data = await apiFetch<Employee>('/api/payroll/employees', {
+        method: 'POST',
+        body: JSON.stringify(employee),
+      })
       setEmployees(prev => [...prev, data])
       return { success: true, data }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err))
-      console.error("Supabase fetch failed:", err)
       return { success: false, error: err instanceof Error ? err.message : String(err) }
     }
   }
@@ -150,19 +157,14 @@ export function usePayroll() {
   // ─── Update employee ────────────────────────────────────────────────────────
   const updateEmployee = async (id: string, updates: Partial<Employee>) => {
     try {
-      const { data, error: updateError } = await supabase
-        .from('employees')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single()
-
-      if (updateError) throw updateError
+      const data = await apiFetch<Employee>(`/api/payroll/employees/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(updates),
+      })
       setEmployees(prev => prev.map(emp => emp.id === id ? data : emp))
       return { success: true, data }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err))
-      console.error("Supabase fetch failed:", err)
       return { success: false, error: err instanceof Error ? err.message : String(err) }
     }
   }
@@ -170,17 +172,16 @@ export function usePayroll() {
   // ─── Delete employee ────────────────────────────────────────────────────────
   const deleteEmployee = async (id: string) => {
     try {
-      const { error: deleteError } = await supabase
-        .from('employees')
-        .delete()
-        .eq('id', id)
-
-      if (deleteError) throw deleteError
+      const token = getToken()
+      const res = await fetch(`${API}/api/payroll/employees/${id}`, {
+        method: 'DELETE',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
       setEmployees(prev => prev.filter(emp => emp.id !== id))
       return { success: true }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err))
-      console.error("Supabase fetch failed:", err)
       return { success: false, error: err instanceof Error ? err.message : String(err) }
     }
   }
@@ -188,18 +189,14 @@ export function usePayroll() {
   // ─── Create payroll run ─────────────────────────────────────────────────────
   const createPayrollRun = async (run: Omit<PayrollRun, 'created_at' | 'updated_at'>) => {
     try {
-      const { data, error: insertError } = await supabase
-        .from('payroll_runs')
-        .insert([run])
-        .select()
-        .single()
-
-      if (insertError) throw insertError
+      const data = await apiFetch<PayrollRun>('/api/payroll/runs', {
+        method: 'POST',
+        body: JSON.stringify(run),
+      })
       setPayrollRuns(prev => [data, ...prev])
       return { success: true, data }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err))
-      console.error("Supabase fetch failed:", err)
       return { success: false, error: err instanceof Error ? err.message : String(err) }
     }
   }
@@ -207,19 +204,14 @@ export function usePayroll() {
   // ─── Update payroll run ─────────────────────────────────────────────────────
   const updatePayrollRun = async (id: string, updates: Partial<PayrollRun>) => {
     try {
-      const { data, error: updateError } = await supabase
-        .from('payroll_runs')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single()
-
-      if (updateError) throw updateError
+      const data = await apiFetch<PayrollRun>(`/api/payroll/runs/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(updates),
+      })
       setPayrollRuns(prev => prev.map(run => run.id === id ? data : run))
       return { success: true, data }
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err))
-      console.error("Supabase fetch failed:", err)
       return { success: false, error: err instanceof Error ? err.message : String(err) }
     }
   }

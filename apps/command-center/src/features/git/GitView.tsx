@@ -104,7 +104,7 @@ const SITES_MAP: Record<string, RepoSite[]> = {
   'wavult-core': [
     { url: 'api.wavult.com', label: 'API', region: 'EU', status: 'live' },
     { url: 'n8n.wavult.com', label: 'n8n', region: 'EU', status: 'live' },
-    { url: 'supabase.wavult.com', label: 'Supabase', region: 'EU', status: 'live' },
+    { url: 'db.wavult.com', label: 'PostgreSQL', region: 'EU', status: 'live' },
   ],
   // Gitea
   'gitea': [

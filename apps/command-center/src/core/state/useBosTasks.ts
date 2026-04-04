@@ -1,88 +1,90 @@
-import { useEffect, useState } from 'react'
-import { createClient } from '@supabase/supabase-js'
+import { useEffect, useRef, useState } from 'react'
 import type { Task, ValidationInput } from './stateEngine'
 import { resolveTaskState, validateTaskInput } from './stateEngine'
 import { eventBus } from '../agent/eventBus'
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-)
+const API = import.meta.env.VITE_API_URL ?? 'https://api.wavult.com'
+const BYPASS_AUTH = import.meta.env.VITE_BYPASS_AUTH === 'true'
+const POLL_INTERVAL_MS = 5000
+
+async function getAuthToken(): Promise<string | null> {
+  if (BYPASS_AUTH) return 'bypass-token'
+  // Read token from localStorage/session — set by AuthContext
+  return localStorage.getItem('wavult_access_token')
+}
 
 export function useBosTasks() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
-  useEffect(() => {
-    async function init() {
-      // BLOCK 5 — AUTH GUARD: never fetch without authenticated session
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!session) {
-        setLoading(false)  // Stay empty — never show false "0 tasks" to unauthenticated user
-        return
-      }
-
-      fetchTasks()
+  async function fetchTasks() {
+    const token = await getAuthToken()
+    if (!token && !BYPASS_AUTH) {
+      setLoading(false) // Stay empty — never show false "0 tasks" to unauthenticated user
+      return
     }
 
-    // Initial fetch
-    async function fetchTasks() {
-      const { data, error } = await supabase
-        .from('bos_tasks')
-        .select('*')
-        .order('priority', { ascending: false })
-
-      if (error) {
-        setError(error.message)
-      } else {
-        setTasks(mapRows(data))
-      }
+    try {
+      const res = await fetch(`${API}/api/bos/tasks`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const data = await res.json()
+      setTasks(mapRows(Array.isArray(data) ? data : data.tasks ?? []))
+      setError(null)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err))
+    } finally {
       setLoading(false)
     }
+  }
 
-    init()
+  async function fetchEvents() {
+    const token = await getAuthToken()
+    if (!token && !BYPASS_AUTH) return
 
-    // BLOCK 1+4 — SINGLE SOURCE OF TRUTH: listen to bos_events (not bos_tasks) for refresh triggers
-    const eventsChannel = supabase
-      .channel('bos_events_stream')
-      .on('postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'bos_events' },
-        (payload) => {
-          // Any system event triggers task refresh
-          fetchTasks()
-          const eventType = (payload.new as { type?: string })?.type
-          const jobPayload = (payload.new as { payload?: Record<string, unknown> })?.payload
-          if (eventType && jobPayload) {
-            eventBus.publish({ type: 'TASK_UPDATED', taskId: String(jobPayload.taskId || jobPayload.jobId || '') })
-          }
+    try {
+      const res = await fetch(`${API}/api/bos/events?limit=1`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      })
+      if (!res.ok) return
+      const data = await res.json()
+      const events: Array<{ type?: string; payload?: Record<string, unknown> }> = Array.isArray(data)
+        ? data
+        : data.events ?? []
+
+      for (const evt of events) {
+        if (evt.type && evt.payload) {
+          eventBus.publish({
+            type: 'TASK_UPDATED',
+            taskId: String(evt.payload.taskId ?? evt.payload.jobId ?? ''),
+          })
         }
-      )
-      .subscribe()
+      }
+    } catch {
+      // Silently ignore events fetch errors — tasks poll is the source of truth
+    }
+  }
 
-    // Keep bos_tasks subscription for task-specific events
-    const tasksChannel = supabase
-      .channel('bos_tasks_changes')
-      .on('postgres_changes',
-        { event: '*', schema: 'public', table: 'bos_tasks' },
-        (payload) => {
-          fetchTasks()
-          const taskId = (payload.new as { id?: string })?.id || (payload.old as { id?: string })?.id
-          if (taskId) {
-            const newState = (payload.new as { state?: string })?.state
-            if (newState === 'DONE') {
-              eventBus.publish({ type: 'TASK_COMPLETED', taskId, ownerId: (payload.new as { owner_id?: string })?.owner_id || '' })
-            } else {
-              eventBus.publish({ type: 'TASK_UPDATED', taskId })
-            }
-          }
-        }
-      )
-      .subscribe()
+  useEffect(() => {
+    fetchTasks()
+
+    // Poll every 5 seconds instead of realtime subscription
+    intervalRef.current = setInterval(async () => {
+      await fetchTasks()
+      await fetchEvents()
+    }, POLL_INTERVAL_MS)
 
     return () => {
-      supabase.removeChannel(eventsChannel)
-      supabase.removeChannel(tasksChannel)
+      if (intervalRef.current) clearInterval(intervalRef.current)
     }
   }, [])
 
@@ -108,18 +110,26 @@ export function useBosTasks() {
       }
     }
 
-    // Apply state change
-    const { error } = await supabase
-      .from('bos_tasks')
-      .update({
-        state: newState,
-        updated_at: new Date().toISOString(),
-        completed_at: newState === 'DONE' ? new Date().toISOString() : null,
-        validation_value: input ? JSON.stringify(input) : null,
-      })
-      .eq('id', taskId)
+    const token = await getAuthToken()
 
-    if (error) return { success: false, error: error.message }
+    try {
+      const res = await fetch(`${API}/api/bos/tasks/${taskId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          state: newState,
+          updated_at: new Date().toISOString(),
+          completed_at: newState === 'DONE' ? new Date().toISOString() : null,
+          validation_value: input ? JSON.stringify(input) : null,
+        }),
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    } catch (err) {
+      return { success: false, error: err instanceof Error ? err.message : String(err) }
+    }
 
     // Publish event to bus after successful state change
     if (newState === 'DONE') {
@@ -129,13 +139,27 @@ export function useBosTasks() {
     }
 
     // Log audit event
-    await supabase.from('bos_task_events').insert({
-      task_id: taskId,
-      event_type: 'state_change',
-      to_state: newState,
-      note: note || null,
-      actor_id: 'current-user',
-    })
+    try {
+      await fetch(`${API}/api/bos/events`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          task_id: taskId,
+          event_type: 'state_change',
+          to_state: newState,
+          note: note || null,
+          actor_id: 'current-user',
+        }),
+      })
+    } catch {
+      // Audit log failure is non-fatal
+    }
+
+    // Refresh tasks after update
+    await fetchTasks()
 
     return { success: true }
   }

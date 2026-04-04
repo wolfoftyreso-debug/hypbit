@@ -1,6 +1,6 @@
 // ─── Wavult OS — Wavult ID · Identity Verification ───────────────────────────
 // Intern KYC-hantering för Wavult Group-teamet
-// Tabell: wavult_identity_verifications (Supabase wavult-os)
+// API: wavult-core /api/identity/*
 
 import { useState, useEffect, useMemo } from 'react'
 import {
@@ -8,12 +8,26 @@ import {
   Search, X, Plus, User, ChevronDown, ChevronUp,
   Calendar, Globe, Hash, Clock, CheckCircle,
 } from 'lucide-react'
-import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL as string,
-  import.meta.env.VITE_SUPABASE_ANON_KEY as string,
-)
+const API = import.meta.env.VITE_API_URL ?? 'https://api.wavult.com'
+
+function getToken(): string | null {
+  return localStorage.getItem('wavult_access_token')
+}
+
+async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
+  const token = getToken()
+  const res = await fetch(`${API}${path}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(options?.headers ?? {}),
+    },
+  })
+  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+  return res.json()
+}
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -216,25 +230,27 @@ function AddVerificationForm({ onClose, onSaved }: { onClose: () => void; onSave
     }
     setSaving(true)
     setError(null)
-    const { error: err } = await supabase
-      .from('wavult_identity_verifications')
-      .insert({
-        full_name: form.full_name,
-        passport_number: form.passport_number,
-        date_of_birth: form.date_of_birth || null,
-        place_of_birth: form.place_of_birth || null,
-        nationality: form.nationality || null,
-        passport_expiry: form.passport_expiry || null,
-        verified_by: 'manual',
-        status: 'verified',
-        raw_data: form.notes ? { notes: form.notes } : null,
+    try {
+      await apiFetch('/api/identity/verifications', {
+        method: 'POST',
+        body: JSON.stringify({
+          full_name: form.full_name,
+          passport_number: form.passport_number,
+          date_of_birth: form.date_of_birth || null,
+          place_of_birth: form.place_of_birth || null,
+          nationality: form.nationality || null,
+          passport_expiry: form.passport_expiry || null,
+          verified_by: 'manual',
+          status: 'verified',
+          raw_data: form.notes ? { notes: form.notes } : null,
+        }),
       })
-    setSaving(false)
-    if (err) {
-      setError(err.message)
-    } else {
       onSaved()
       onClose()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Fel vid sparande')
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -333,12 +349,15 @@ export function WavultIDView() {
 
   async function load() {
     setLoading(true)
-    const { data } = await supabase
-      .from('wavult_identity_verifications')
-      .select('*')
-      .order('created_at', { ascending: false })
-    setRecords((data as IdentityVerification[]) ?? [])
-    setLoading(false)
+    try {
+      const data = await apiFetch<IdentityVerification[]>('/api/identity/verifications?order=created_at.desc')
+      setRecords(data ?? [])
+    } catch {
+      // Empty state if API unavailable
+      setRecords([])
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => { load() }, [])

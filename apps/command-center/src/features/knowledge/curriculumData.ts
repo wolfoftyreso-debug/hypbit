@@ -811,7 +811,7 @@ export const CURRICULUM: Lesson[] = [
     technical:
       'Migration genomförd: Supabase cloud → AWS RDS PostgreSQL eu-north-1. Tre databaser: wavult_os, quixzoom, wavult_identity. Processen: 1) pg_dump från Supabase. 2) pg_restore till RDS. 3) Verifiera rowcounts och constraints. 4) Uppdatera ECS task definitions med ny DB connection string. 5) Cutover under lågtrafik. 6) Monitor 48h.',
     connection:
-      'Supabase används fortfarande för: Bernt:s direkta API-access (znmxtnxxjpmgtycmsqjv.supabase.co), company_launches-tabellen, historisk data. Ny data går till RDS. Hybrid under transition.',
+      'Migration klar: all data och API-access går nu via Wavult PostgreSQL (self-hosted, AWS RDS eu-north-1). Supabase är avvecklad.',
     tomorrow: 'Gitea vs GitHub — när vi använder vad och varför',
     wavult_specific: true,
     source_entities: ['wavult-os-api', 'quixzoom-api', 'identity-core'],

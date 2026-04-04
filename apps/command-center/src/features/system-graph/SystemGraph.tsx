@@ -107,17 +107,17 @@ const INITIAL_NODES: SystemNode[] = [
   },
   // DATA
   {
-    id: 'supabase-wavult', label: 'Supabase — Wavult', sublabel: 'znmxtnxx · eu-west-1',
+    id: 'postgres-wavult', label: 'PostgreSQL — Wavult', sublabel: 'RDS · eu-north-1',
     zone: 'data', status: 'live', critical: true,
     metrics: { latency: 24, load: 44, rps: 1800, errors: 0.1, uptime: 99.95 },
-    description: 'Wavult OS DB: bos_tasks, events, audit_log, team_locations.',
+    description: 'Wavult OS DB (self-hosted): bos_tasks, events, audit_log, team_locations.',
     dependencies: ['wavult-api', 'kafka'], logs: ['[INFO] Connections: 18/100', '[INFO] Replication lag: 0ms', '[INFO] Backup: 02:14 UTC'],
   },
   {
-    id: 'supabase-quixzoom', label: 'Supabase — quiXzoom', sublabel: 'lpeipzdm · eu-west-1',
+    id: 'postgres-quixzoom', label: 'PostgreSQL — quiXzoom', sublabel: 'RDS · eu-north-1',
     zone: 'data', status: 'live', critical: false,
     metrics: { latency: 26, load: 31, rps: 940, errors: 0.0, uptime: 99.9 },
-    description: 'quiXzoom DB: missions, assignments, submissions, payouts.',
+    description: 'quiXzoom DB (self-hosted): missions, assignments, submissions, payouts.',
     dependencies: ['quixzoom-api'], logs: ['[INFO] Connections: 11/100', '[INFO] 4821 missions in DB', '[INFO] Storage: 2.4 GB'],
   },
   {
@@ -154,7 +154,7 @@ const INITIAL_NODES: SystemNode[] = [
     zone: 'control', status: 'live', critical: false,
     metrics: { latency: 14, load: 8, rps: 120, errors: 0.0, uptime: 99.9 },
     description: 'Job queue: DEADLINE_CHECK (5m), RECONCILE (10m), FLOW (15m).',
-    dependencies: ['supabase-wavult'], logs: ['[INFO] DEADLINE_CHECK: 0 overdue', '[INFO] RECONCILE: pass', '[INFO] Loop: 500ms stable'],
+    dependencies: ['postgres-wavult'], logs: ['[INFO] DEADLINE_CHECK: 0 overdue', '[INFO] RECONCILE: pass', '[INFO] Loop: 500ms stable'],
   },
 ]
 
@@ -164,7 +164,7 @@ const EDGES: SystemEdge[] = [
   { id: 'e2', from: 'alb', to: 'wavult-api', critical: true, label: 'os.*' },
   { id: 'e3', from: 'alb', to: 'identity-core', critical: true, label: 'auth' },
   { id: 'e4', from: 'wavult-api', to: 'kafka', critical: true, label: 'publish' },
-  { id: 'e5', from: 'wavult-api', to: 'supabase-wavult', critical: true, label: 'write' },
+  { id: 'e5', from: 'wavult-api', to: 'postgres-wavult', critical: true, label: 'write' },
   { id: 'e6', from: 'identity-core', to: 'rds', critical: true },
   { id: 'e7', from: 'identity-core', to: 'dynamo', critical: true },
   // Secondary
@@ -172,12 +172,12 @@ const EDGES: SystemEdge[] = [
   { id: 'e9', from: 'alb', to: 'quixzoom-api', critical: false, label: 'qx' },
   { id: 'e10', from: 'alb', to: 'wavult-core', critical: false, label: 'fin' },
   { id: 'e11', from: 'alb', to: 'landvex-api', critical: false, label: 'lvx' },
-  { id: 'e12', from: 'quixzoom-api', to: 'supabase-quixzoom', critical: false },
+  { id: 'e12', from: 'quixzoom-api', to: 'postgres-quixzoom', critical: false },
   { id: 'e13', from: 'quixzoom-api', to: 's3', critical: false },
   { id: 'e14', from: 'kafka', to: 'n8n', critical: false, label: 'events' },
-  { id: 'e15', from: 'bos-scheduler', to: 'supabase-wavult', critical: false },
+  { id: 'e15', from: 'bos-scheduler', to: 'postgres-wavult', critical: false },
   { id: 'e16', from: 'landvex-api', to: 'kafka', critical: false },
-  { id: 'e17', from: 'wavult-core', to: 'supabase-wavult', critical: false },
+  { id: 'e17', from: 'wavult-core', to: 'postgres-wavult', critical: false },
 ]
 
 // ─── Zone config ──────────────────────────────────────────────────────────────

@@ -10,9 +10,9 @@ export const SUPPLIERS: Supplier[] = [
     cost: { avgMonthlySEK: 0, note: 'Usage-based — varierar per månad' }
   },
   {
-    id: 's2', name: 'Supabase', category: 'Tech/SaaS', country: 'USA',
-    contact: 'support@supabase.io', email: 'billing@supabase.io', status: 'aktiv',
-    cost: { avgMonthlySEK: 0, note: 'Self-hosted på ECS — ingen Supabase Cloud-avgift' }
+    id: 's2', name: 'Wavult PostgreSQL', category: 'Infrastruktur', country: 'Sweden',
+    contact: 'ops@wavult.com', email: 'ops@wavult.com', status: 'aktiv',
+    cost: { avgMonthlySEK: 0, note: 'Self-hosted på AWS RDS eu-north-1' }
   },
   {
     id: 's3', name: 'Cloudflare', category: 'Infrastruktur', country: 'USA',
