@@ -62,13 +62,28 @@ import llmRouter from './routes/llm'
 import rtmRouter from './routes/rtm'
 import jurisdictionRouter from './routes/jurisdiction'
 import { validateDbConfig } from './lib/db'
+import { supabaseCloudWriteGuard } from './middleware/supabase-guard'
 
 // ── Database Guard: blockerar cloud Supabase ──────────────────────────────────
 // MIGRATION 2026-04-04: Cloud Supabase (znmxtnxxjpmgtycmsqjv.supabase.co) → egna RDS
 // Kastar Error vid uppstart om SUPABASE_URL pekar mot cloud. Se lib/db.ts.
 validateDbConfig()
 
+// Supabase Cloud Shutdown Check
+const SUPABASE_URL_CHECK = process.env.SUPABASE_URL || ''
+if (SUPABASE_URL_CHECK.includes('supabase.co') && !SUPABASE_URL_CHECK.includes('supabase.wavult.com')) {
+  console.error('🚨🚨🚨 KRITISK KONFIGURATIONSFEL 🚨🚨🚨')
+  console.error('🚨 SUPABASE_URL pekar mot CLOUD-INSTANS som ska avvecklas!')
+  console.error(`🚨 Nuvarande: ${SUPABASE_URL_CHECK}`)
+  console.error('🚨 Korrekt:   http://supabase.wavult.com')
+  // Kraschar inte — loggar tydligt och blockerar skrivningar via middleware
+}
+
 const app = express()
+
+// ── Supabase Cloud Write Block ────────────────────────────────────────────────
+// Beslut: Erik Svensson 2026-04-04 09:00 — cloud Supabase avvecklas ikväll
+app.use(supabaseCloudWriteGuard())
 
 // Security: Strip problematic headers to prevent crashes
 app.use((req, _res, next) => {
