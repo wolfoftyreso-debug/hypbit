@@ -74,6 +74,7 @@ const FinanceFlow            = lazy(() => import('./features/finance-flow/Financ
 const FlightSearch           = lazy(() => import('./features/travel/FlightSearch').then(m => ({ default: m.FlightSearch })))
 const VisaHub                = lazy(() => import('./features/visa/VisaHub').then(m => ({ default: m.VisaHub })))
 const QmsDashboard           = lazy(() => import('./features/qms/QmsDashboard').then(m => ({ default: m.QmsDashboard })))
+const OkrDashboard           = lazy(() => import('./features/okr/OkrDashboard'))
 const TravelAutomationHub    = lazy(() => import('./features/travel/TravelAutomationHub').then(m => ({ default: m.TravelAutomationHub })))
 const UberHub                = lazy(() => import('./features/travel/UberHub').then(m => ({ default: m.UberHub })))
 const OpenClawHub            = lazy(() => import('./features/openclaw/OpenClawHub').then(m => ({ default: m.OpenClawHub })))
@@ -227,6 +228,7 @@ function AuthenticatedApp() {
               <Route path="/flights" element={<FlightSearch />} />
               <Route path="/visa" element={<VisaHub />} />
               <Route path="/qms" element={<QmsDashboard />} />
+              <Route path="/okr" element={<OkrDashboard />} />
               <Route path="/travel" element={<TravelAutomationHub />} />
               <Route path="/uber" element={<UberHub />} />
               <Route path="/phones" element={<TeamPhones />} />

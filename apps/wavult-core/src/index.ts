@@ -36,6 +36,7 @@ import taxAutomationRouter from './routes/tax-automation'
 import deploymentsRouter from './routes/deployments'
 import cockpitRouter from './routes/cockpit'
 import systemAuditRouter from './routes/system-audit'
+import okrRouter from './routes/okr'
 
 const app = express()
 
@@ -96,6 +97,7 @@ app.use('/api/deployments', deploymentsRouter)   // Deployment gate — two-step
 app.use('/api/cockpit', cockpitRouter)           // Cockpit — live metrics: latency, Gitea, DB, Cloudflare
 app.use('/v1/system', systemAuditRouter)        // System Audit — parallella health-checks, healthScore
 app.use('/', qmsRouter)                         // QMS — ISO 9001/27001/GDPR/NIS2 compliance tracking
+app.use('/', okrRouter)                         // OKR — Google-modellen: Objectives, Key Results, Check-ins
 app.use('/api/config', configRouter)
 app.use('/api/dgs', dgsRouter)
 app.use('/', accountsRouter)                    // Customer account ledger + invoice spool file
