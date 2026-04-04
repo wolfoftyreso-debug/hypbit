@@ -37,6 +37,12 @@ import deploymentsRouter from './routes/deployments'
 import cockpitRouter from './routes/cockpit'
 import systemAuditRouter from './routes/system-audit'
 import okrRouter from './routes/okr'
+import { validateDbConfig } from './lib/db'
+
+// ── Database Guard: blockerar cloud Supabase ──────────────────────────────────
+// MIGRATION 2026-04-04: Cloud Supabase (znmxtnxxjpmgtycmsqjv.supabase.co) → egna RDS
+// Kastar Error vid uppstart om SUPABASE_URL pekar mot cloud. Se lib/db.ts.
+validateDbConfig()
 
 const app = express()
 
