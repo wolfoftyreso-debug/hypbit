@@ -1,25 +1,35 @@
 import { useState } from 'react'
 import { COMPLIANCE_ITEMS, COMPANIES, ComplianceStatus, CompanyId } from './data'
 
-const STATUS_STYLES: Record<ComplianceStatus, { pill: string; dot: string; label: string }> = {
-  'ej påbörjad': { pill: 'bg-gray-500/15 text-gray-9000 border-gray-500/30', dot: 'bg-gray-500', label: 'Ej påbörjad' },
-  'pågår':       { pill: 'bg-blue-500/15 text-blue-700 border-blue-500/30', dot: 'bg-blue-400', label: 'Pågår' },
-  'klar':        { pill: 'bg-green-500/15 text-green-700 border-green-500/30', dot: 'bg-green-400', label: 'Klar' },
-  'förfallen':   { pill: 'bg-red-500/15 text-red-700 border-red-500/30', dot: 'bg-red-500', label: 'Förfallen' },
+const STATUS_STYLES: Record<ComplianceStatus, { pill: string; dot: string; label: string; icon: string }> = {
+  'ej påbörjad': { pill: 'bg-gray-100 text-gray-600 border-gray-200',         dot: 'bg-gray-400', label: 'Ej påbörjad', icon: '○' },
+  'pågår':       { pill: 'bg-blue-50 text-blue-700 border-blue-200',          dot: 'bg-blue-400', label: 'Pågår',       icon: '◑' },
+  'klar':        { pill: 'bg-green-50 text-green-700 border-green-200',       dot: 'bg-green-400',label: 'Klar',        icon: '✓' },
+  'förfallen':   { pill: 'bg-red-50 text-red-700 border-red-200',             dot: 'bg-red-500',  label: 'Förfallen',   icon: '!' },
+}
+
+const WHO_DOES_WHAT: Record<string, string> = {
+  'Winston Bjarnemark': 'Ansvarar för att lämna in, betala, arkivera',
+  'Dennis Bjarnemark':  'Ansvarar för juridisk granskning och inlämning',
+  'Erik Svensson':      'Godkänner och signerar',
 }
 
 function daysUntil(date: string) {
   return Math.ceil((new Date(date).getTime() - Date.now()) / (1000 * 60 * 60 * 24))
 }
 
+function formatDate(d: string) {
+  return new Date(d).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short', year: 'numeric' })
+}
+
 function DeadlineBadge({ date, status }: { date: string; status: ComplianceStatus }) {
-  if (status === 'klar') return <span className="text-xs text-green-500 font-mono">✓ klar</span>
+  if (status === 'klar') return <span className="text-xs text-green-600 font-semibold">✓ Klar</span>
   const days = daysUntil(date)
-  const formatted = new Date(date).toLocaleDateString('sv-SE', { day: 'numeric', month: 'short', year: 'numeric' })
-  if (days < 0)   return <span className="text-xs text-red-700 font-mono font-semibold">FÖRFALLEN</span>
-  if (days <= 7)  return <span className="text-xs text-red-700 font-mono font-semibold animate-pulse">{formatted} ({days}d)</span>
-  if (days <= 30) return <span className="text-xs text-yellow-700 font-mono">{formatted} ({days}d)</span>
-  return <span className="text-xs text-gray-9000 font-mono">{formatted}</span>
+  const formatted = formatDate(date)
+  if (days < 0)   return <span className="text-xs font-bold text-red-700">FÖRFALLEN {formatted}</span>
+  if (days <= 7)  return <span className="text-xs font-bold text-red-600 animate-pulse">{formatted} — {days} dagar kvar</span>
+  if (days <= 30) return <span className="text-xs font-semibold text-amber-700">{formatted} — {days} dagar kvar</span>
+  return <span className="text-xs text-gray-500">{formatted} — {days} dagar</span>
 }
 
 const ALL_STATUSES: ComplianceStatus[] = ['ej påbörjad', 'pågår', 'klar', 'förfallen']
@@ -27,12 +37,7 @@ const ALL_STATUSES: ComplianceStatus[] = ['ej påbörjad', 'pågår', 'klar', 'f
 export function ComplianceTracker() {
   const [selectedCompany, setSelectedCompany] = useState<CompanyId | 'all'>('all')
   const [selectedStatus, setSelectedStatus] = useState<ComplianceStatus | 'all'>('all')
-
-  // Upcoming: sort by deadline, exclude klar, take top 3
-  const upcoming = [...COMPLIANCE_ITEMS]
-    .filter(i => i.status !== 'klar' && daysUntil(i.deadline) > 0)
-    .sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime())
-    .slice(0, 3)
+  const [expandedId, setExpandedId] = useState<string | null>(null)
 
   const filtered = COMPLIANCE_ITEMS.filter(i =>
     (selectedCompany === 'all' || i.companyId === selectedCompany) &&
@@ -40,149 +45,256 @@ export function ComplianceTracker() {
   ).sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime())
 
   const totals = {
-    total:       COMPLIANCE_ITEMS.length,
-    klarCount:   COMPLIANCE_ITEMS.filter(i => i.status === 'klar').length,
-    pagarsCount: COMPLIANCE_ITEMS.filter(i => i.status === 'pågår').length,
-    overdue:     COMPLIANCE_ITEMS.filter(i => i.status !== 'klar' && daysUntil(i.deadline) < 0).length,
+    total:     COMPLIANCE_ITEMS.length,
+    klar:      COMPLIANCE_ITEMS.filter(i => i.status === 'klar').length,
+    pagar:     COMPLIANCE_ITEMS.filter(i => i.status === 'pågår').length,
+    ejPaborjad:COMPLIANCE_ITEMS.filter(i => i.status === 'ej påbörjad').length,
+    forfallen: COMPLIANCE_ITEMS.filter(i => i.status !== 'klar' && daysUntil(i.deadline) < 0).length,
   }
-  const progress = Math.round((totals.klarCount / totals.total) * 100)
+  const progress = Math.round((totals.klar / totals.total) * 100)
+
+  // Urgent — ej klar och deadline inom 30 dagar
+  const urgent = COMPLIANCE_ITEMS.filter(i =>
+    i.status !== 'klar' && daysUntil(i.deadline) <= 30
+  ).sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime())
 
   return (
     <div className="space-y-5">
-      {/* Summary cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="rounded-xl bg-[#EDE8DC] border border-surface-border p-4">
-          <div className="text-[28px] font-bold text-text-primary">{totals.klarCount}<span className="text-[16px] text-gray-9000">/{totals.total}</span></div>
-          <div className="text-xs text-gray-9000 mt-0.5">Krav uppfyllda</div>
-          <div className="mt-2 h-1 rounded-full bg-[#EDE8DC] overflow-hidden">
-            <div className="h-full rounded-full bg-green-400 transition-all" style={{ width: `${progress}%` }} />
-          </div>
-          <div className="text-xs text-gray-9000 mt-1">{progress}% klart</div>
-        </div>
-        <div className="rounded-xl bg-blue-500/[0.06] border border-blue-500/20 p-4">
-          <div className="text-[28px] font-bold text-blue-700">{totals.pagarsCount}</div>
-          <div className="text-xs text-blue-700/70 mt-0.5">Pågår</div>
-        </div>
-        <div className="rounded-xl bg-red-500/[0.06] border border-red-500/20 p-4">
-          <div className="text-[28px] font-bold text-red-700">{totals.overdue}</div>
-          <div className="text-xs text-red-700/70 mt-0.5">Förfallna</div>
-        </div>
-        <div className="rounded-xl bg-[#EDE8DC] border border-surface-border p-4">
-          <div className="text-[28px] font-bold text-text-primary">{upcoming.length}</div>
-          <div className="text-xs text-gray-9000 mt-0.5">Kommande (30d)</div>
+
+      {/* ── FÖRKLARING — vad är detta ─────────────────── */}
+      <div className="rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 flex gap-3 items-start">
+        <span className="text-lg flex-shrink-0">ℹ️</span>
+        <div>
+          <p className="text-xs font-semibold text-blue-800 mb-0.5">Vad är Compliance?</p>
+          <p className="text-xs text-blue-700 leading-relaxed">
+            Juridiska och skattemässiga krav varje bolag måste uppfylla — årsredovisningar, skattedeklarationer, licensförnyelser m.m.
+            <strong> Systemet håller koll. Ansvarig person i varje rad är den som ska agera.</strong>
+            {' '}Du som CEO behöver bara granska och godkänna — inget annat.
+          </p>
         </div>
       </div>
 
-      {/* Upcoming deadlines highlight */}
-      {upcoming.length > 0 && (
-        <div className="rounded-xl border border-yellow-500/20 bg-yellow-500/[0.04] p-4">
-          <h3 className="text-xs font-semibold text-yellow-700/80 uppercase tracking-wider mb-3">⚠ Nästa deadlines</h3>
+      {/* ── SUMMARY — tydliga siffror med förklaring ── */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="rounded-xl border border-surface-border bg-white p-4 shadow-card">
+          <div className="text-3xl font-bold text-text-primary">{totals.klar}<span className="text-base font-normal text-gray-400">/{totals.total}</span></div>
+          <div className="text-xs font-semibold text-gray-700 mt-1">Klara krav</div>
+          <div className="text-xs text-gray-400 mt-0.5">av totalt {totals.total} juridiska krav</div>
+          <div className="mt-2 h-1.5 rounded-full bg-gray-100 overflow-hidden">
+            <div className="h-full rounded-full bg-green-400" style={{ width: `${progress}%` }} />
+          </div>
+          <div className="text-[10px] text-gray-400 mt-1">{progress}% genomfört</div>
+        </div>
+
+        <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 shadow-card">
+          <div className="text-3xl font-bold text-blue-700">{totals.pagar}</div>
+          <div className="text-xs font-semibold text-blue-800 mt-1">Pågår just nu</div>
+          <div className="text-xs text-blue-600 mt-0.5">Ansvariga arbetar med dessa</div>
+        </div>
+
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 shadow-card">
+          <div className="text-3xl font-bold text-amber-700">{totals.ejPaborjad}</div>
+          <div className="text-xs font-semibold text-amber-800 mt-1">Ej påbörjade</div>
+          <div className="text-xs text-amber-600 mt-0.5">Väntar på att tilldelas/startas</div>
+        </div>
+
+        <div className={`rounded-xl border p-4 shadow-card ${totals.forfallen > 0 ? 'border-red-300 bg-red-50' : 'border-surface-border bg-white'}`}>
+          <div className={`text-3xl font-bold ${totals.forfallen > 0 ? 'text-red-700' : 'text-gray-400'}`}>{totals.forfallen}</div>
+          <div className={`text-xs font-semibold mt-1 ${totals.forfallen > 0 ? 'text-red-800' : 'text-gray-500'}`}>Förfallna</div>
+          <div className={`text-xs mt-0.5 ${totals.forfallen > 0 ? 'text-red-600' : 'text-gray-400'}`}>
+            {totals.forfallen > 0 ? '⚠️ Kräver omedelbar åtgärd' : 'Inget förfallet — bra!'}
+          </div>
+        </div>
+      </div>
+
+      {/* ── BRÅDSKANDE — synlig varning om det finns ── */}
+      {urgent.length > 0 && (
+        <div className="rounded-xl border border-amber-300 bg-amber-50 p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-base">⚡</span>
+            <span className="text-xs font-bold text-amber-900 uppercase tracking-wider">Kräver åtgärd inom 30 dagar</span>
+          </div>
           <div className="space-y-2">
-            {upcoming.map(item => {
-              const company = COMPANIES.find(c => c.id === item.companyId)!
+            {urgent.map(item => {
+              const company = COMPANIES.find(c => c.id === item.companyId)
+              const days = daysUntil(item.deadline)
               return (
-                <div key={item.id} className="flex items-center gap-3 text-xs">
-                  <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: company.color }} />
-                  <span className="text-gray-600 flex-1">{item.requirement}</span>
-                  <span style={{ color: company.color }} className="text-xs">{company.shortName}</span>
-                  <DeadlineBadge date={item.deadline} status={item.status} />
+                <div key={item.id} className="flex items-start justify-between gap-4 py-2 border-b border-amber-200 last:border-0">
+                  <div className="flex-1">
+                    <div className="text-xs font-semibold text-amber-900">{item.requirement}</div>
+                    <div className="text-xs text-amber-700 mt-0.5">
+                      <span style={{ color: company?.color }} className="font-medium">{company?.shortName}</span>
+                      {item.owner && <span className="ml-2">· Ansvarig: <strong>{item.owner}</strong></span>}
+                    </div>
+                  </div>
+                  <span className={`text-xs font-bold flex-shrink-0 ${days < 0 ? 'text-red-700' : days <= 7 ? 'text-red-600' : 'text-amber-700'}`}>
+                    {days < 0 ? `FÖRFALLEN` : `${days}d`}
+                  </span>
                 </div>
               )
             })}
           </div>
+          <p className="text-xs text-amber-700 mt-3 border-t border-amber-200 pt-3">
+            <strong>Vad händer om inget görs?</strong> Förseningsavgifter, böter, avregistrering eller skattetillägg beroende på land och kravtyp. Winston/Dennis hanterar — informera dem om de inte redan är på det.
+          </p>
         </div>
       )}
 
-      {/* Filters */}
-      <div className="flex gap-3 flex-wrap items-center">
+      {/* ── FILTER ────────────────────────────────────── */}
+      <div className="flex flex-wrap gap-3 items-center">
         <select
           value={selectedCompany}
           onChange={e => setSelectedCompany(e.target.value as CompanyId | 'all')}
-          className="text-xs bg-white border border-surface-border rounded-lg px-3 py-1.5 text-gray-600 focus:outline-none"
+          className="text-xs bg-white border border-surface-border rounded-lg px-3 py-1.5 text-gray-600 focus:outline-none shadow-sm"
         >
-          <option value="all">Alla bolag</option>
-          {COMPANIES.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+          <option value="all">Alla bolag ({COMPLIANCE_ITEMS.length} krav)</option>
+          {COMPANIES.map(c => {
+            const count = COMPLIANCE_ITEMS.filter(i => i.companyId === c.id).length
+            return <option key={c.id} value={c.id}>{c.name} ({count} krav)</option>
+          })}
         </select>
+
         <div className="flex gap-1.5 flex-wrap">
           <button
             onClick={() => setSelectedStatus('all')}
-            className={`px-3 py-1.5 rounded-lg text-xs border transition-colors ${selectedStatus === 'all' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-[#EDE8DC] text-gray-9000 border-surface-border hover:text-gray-900'}`}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${selectedStatus === 'all' ? 'bg-gray-900 text-white border-gray-900' : 'bg-white text-gray-600 border-surface-border hover:border-gray-400'}`}
           >Alla</button>
           {ALL_STATUSES.map(s => (
             <button
               key={s}
               onClick={() => setSelectedStatus(selectedStatus === s ? 'all' : s)}
-              className={`px-3 py-1.5 rounded-lg text-xs border capitalize transition-colors ${selectedStatus === s ? STATUS_STYLES[s].pill : 'bg-[#EDE8DC] text-gray-9000 border-surface-border hover:text-gray-900'}`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${selectedStatus === s ? STATUS_STYLES[s].pill + ' font-bold' : 'bg-white text-gray-600 border-surface-border hover:border-gray-400'}`}
             >
-              {STATUS_STYLES[s].label}
+              {STATUS_STYLES[s].icon} {STATUS_STYLES[s].label}
+              <span className="ml-1.5 opacity-60">
+                {COMPLIANCE_ITEMS.filter(i =>
+                  i.status === s &&
+                  (selectedCompany === 'all' || i.companyId === selectedCompany)
+                ).length}
+              </span>
             </button>
           ))}
         </div>
       </div>
 
-      {/* Checklist table */}
-      <div className="rounded-xl border border-surface-border overflow-hidden">
-        <div className="overflow-x-auto">
-        <table className="w-full text-xs min-w-[540px]">
-          <thead>
-            <tr className="border-b border-surface-border bg-[#EDE8DC]">
-              <th className="text-left px-4 py-2.5 text-gray-9000 font-medium w-6" />
-              <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Krav</th>
-              <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Bolag</th>
-              <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Kategori</th>
-              <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Ansvarig</th>
-              <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Deadline</th>
-              <th className="text-left px-4 py-2.5 text-gray-9000 font-medium">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((item, i) => {
-              const company = COMPANIES.find(c => c.id === item.companyId)!
-              const isOverdue = item.status !== 'klar' && daysUntil(item.deadline) < 0
-              return (
-                <tr
-                  key={item.id}
-                  className={`border-b border-[#DDD5C5] hover:bg-[#EDE8DC] transition-colors ${i % 2 === 0 ? '' : 'bg-white/[0.01]'} ${isOverdue ? 'border-l-2 border-l-red-500/50' : ''}`}
-                >
-                  <td className="px-4 py-3">
-                    <div className={`h-3 w-3 rounded-sm border flex items-center justify-center ${item.status === 'klar' ? 'bg-green-500/20 border-green-500/50' : 'border-[#DDD5C5]'}`}>
-                      {item.status === 'klar' && <span className="text-green-700 text-[9px]">✓</span>}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="text-gray-800">{item.requirement}</div>
-                    {item.notes && <div className="text-xs text-gray-9000 mt-0.5">{item.notes}</div>}
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="flex items-center gap-1.5">
-                      <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: company.color }} />
-                      <span style={{ color: company.color }}>{company.shortName}</span>
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="text-xs text-gray-9000 bg-[#EDE8DC] px-2 py-0.5 rounded border border-surface-border">
-                      {item.category}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-gray-9000">{item.owner || '—'}</td>
-                  <td className="px-4 py-3 whitespace-nowrap">
-                    <DeadlineBadge date={item.deadline} status={item.status} />
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-1.5">
-                      <span className={`h-1.5 w-1.5 rounded-full ${STATUS_STYLES[item.status].dot}`} />
-                      <span className={`text-xs font-medium px-2 py-0.5 rounded border ${STATUS_STYLES[item.status].pill}`}>
-                        {STATUS_STYLES[item.status].label}
-                      </span>
-                    </div>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-        </div>{/* /overflow-x-auto */}
+      {/* ── TABELL ────────────────────────────────────── */}
+      <div className="rounded-xl border border-surface-border overflow-hidden shadow-card">
+        {filtered.length === 0 ? (
+          <div className="px-6 py-12 text-center">
+            <div className="text-2xl mb-2">✓</div>
+            <div className="text-sm font-semibold text-gray-700">Inga krav matchar filtret</div>
+            <div className="text-xs text-gray-400 mt-1">Prova ett annat filter ovan</div>
+          </div>
+        ) : (
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="border-b border-surface-border bg-[#F5F0E8]">
+                <th className="text-left px-4 py-3 text-gray-500 font-semibold uppercase tracking-wider text-[10px]">Krav</th>
+                <th className="text-left px-4 py-3 text-gray-500 font-semibold uppercase tracking-wider text-[10px]">Bolag</th>
+                <th className="text-left px-4 py-3 text-gray-500 font-semibold uppercase tracking-wider text-[10px]">Ansvarig</th>
+                <th className="text-left px-4 py-3 text-gray-500 font-semibold uppercase tracking-wider text-[10px]">Deadline</th>
+                <th className="text-left px-4 py-3 text-gray-500 font-semibold uppercase tracking-wider text-[10px]">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((item, i) => {
+                const company = COMPANIES.find(c => c.id === item.companyId)
+                const st = STATUS_STYLES[item.status]
+                const isExpanded = expandedId === item.id
+                const days = daysUntil(item.deadline)
+                const isUrgent = item.status !== 'klar' && days <= 14 && days >= 0
+                const isOverdue = item.status !== 'klar' && days < 0
+                return (
+                  <>
+                    <tr
+                      key={item.id}
+                      onClick={() => setExpandedId(isExpanded ? null : item.id)}
+                      className={`border-b border-surface-border/60 cursor-pointer transition-colors ${
+                        isOverdue ? 'bg-red-50 hover:bg-red-100' :
+                        isUrgent  ? 'bg-amber-50/50 hover:bg-amber-50' :
+                        i % 2 === 0 ? 'bg-white hover:bg-[#F5F0E8]' : 'bg-[#FDFAF5] hover:bg-[#F5F0E8]'
+                      }`}
+                    >
+                      <td className="px-4 py-3">
+                        <div className="flex items-start gap-2">
+                          <span className={`mt-0.5 flex-shrink-0 text-[11px] font-bold ${st.label === 'Förfallen' ? 'text-red-500' : st.label === 'Klar' ? 'text-green-500' : 'text-gray-400'}`}>{st.icon}</span>
+                          <div>
+                            <div className="text-gray-900 font-medium">{item.requirement}</div>
+                            <div className="text-[10px] text-gray-400 mt-0.5 uppercase tracking-wider">{item.category}</div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="flex items-center gap-1.5">
+                          <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: company?.color }} />
+                          <span style={{ color: company?.color }} className="font-medium">{company?.shortName}</span>
+                        </span>
+                      </td>
+                      <td className="px-4 py-3">
+                        {item.owner ? (
+                          <span className="text-gray-700 font-medium">{item.owner}</span>
+                        ) : (
+                          <span className="text-amber-600 font-medium text-[10px] uppercase">⚠ Ej tilldelad</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        <DeadlineBadge date={item.deadline} status={item.status} />
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className={`text-[10px] font-semibold px-2.5 py-1 rounded-full border ${st.pill}`}>
+                          {st.label}
+                        </span>
+                      </td>
+                    </tr>
+                    {isExpanded && (
+                      <tr key={item.id + '-exp'} className="bg-[#F5F0E8] border-b border-surface-border">
+                        <td colSpan={5} className="px-6 py-4">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                            <div>
+                              <div className="font-semibold text-gray-700 mb-1">Vad ska göras?</div>
+                              <div className="text-gray-600 leading-relaxed">{item.requirement} — lämnas in till relevant myndighet för {company?.jurisdiction}.</div>
+                            </div>
+                            <div>
+                              <div className="font-semibold text-gray-700 mb-1">Vem gör det?</div>
+                              <div className="text-gray-600">
+                                {item.owner
+                                  ? <><strong>{item.owner}</strong><br /><span className="text-gray-400">{WHO_DOES_WHAT[item.owner] ?? 'Ansvarar för denna uppgift'}</span></>
+                                  : <span className="text-amber-600 font-semibold">Ingen tilldelad — behöver åtgärdas</span>
+                                }
+                              </div>
+                            </div>
+                            <div>
+                              <div className="font-semibold text-gray-700 mb-1">Din roll som CEO</div>
+                              <div className="text-gray-500">Granska och godkänn när {item.owner ?? 'ansvarig'} rapporterar klart. Inget annat krävs av dig.</div>
+                            </div>
+                            {item.notes && (
+                              <div className="md:col-span-3">
+                                <div className="font-semibold text-gray-700 mb-1">Anteckningar</div>
+                                <div className="text-gray-600">{item.notes}</div>
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </>
+                )
+              })}
+            </tbody>
+          </table>
+        )}
       </div>
+
+      {/* ── FÖRKLARING LÄNGST NER ─────────────────────── */}
+      <div className="rounded-xl border border-surface-border bg-[#F5F0E8] px-4 py-3">
+        <div className="text-xs font-semibold text-gray-700 mb-2">Hur funkar det? Vem gör vad?</div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs text-gray-600">
+          <div><strong className="text-gray-800">Winston</strong> — hanterar all ekonomi och skatt: deklarationer, årsredovisningar, betalningar</div>
+          <div><strong className="text-gray-800">Dennis</strong> — hanterar juridik och bolagsregistrering: ansökningar, inlämningar, licenser</div>
+          <div><strong className="text-gray-800">Du som CEO</strong> — godkänner och signerar när de rapporterar klart. Systemet pingar dig automatiskt.</div>
+        </div>
+      </div>
+
     </div>
   )
 }
