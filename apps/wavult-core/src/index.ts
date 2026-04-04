@@ -1,3 +1,8 @@
+import paymentsExtendedRouter from './routes/payments-extended'
+import mediaExtendedRouter from './routes/media-extended'
+import commsRouter from './routes/comms'
+import perplexityRouter from './routes/perplexity'
+import mapsRouter from './routes/maps'
 import dgsRouter from './routes/decisions-governance'
 import configRouter from './routes/config'
 import agentSchedulerRouter from './routes/agent-scheduler'
@@ -42,6 +47,7 @@ import systemAuditRouter from './routes/system-audit'
 import okrRouter from './routes/okr'
 import llmRouter from './routes/llm'
 import rtmRouter from './routes/rtm'
+import jurisdictionRouter from './routes/jurisdiction'
 import { validateDbConfig } from './lib/db'
 
 // ── Database Guard: blockerar cloud Supabase ──────────────────────────────────
@@ -84,6 +90,11 @@ const healthLimiter = rateLimit({
 })
 
 // Routes
+app.use('/', paymentsExtendedRouter)    // Stripe + BankSign extended
+app.use('/', mediaExtendedRouter)       // Pexels + Coverr media
+app.use('/', commsRouter)               // Resend email + Telegram
+app.use('/', perplexityRouter)          // Perplexity AI search
+app.use('/', mapsRouter)                // Mapbox geocoding
 app.use('/v1/task', taskRouter)
 app.use('/v1/payment', paymentRouter)
 app.use('/v1/payout', payoutRouter)
@@ -110,6 +121,7 @@ app.use('/v1/system', systemAuditRouter)        // System Audit — parallella h
 app.use('/', llmRouter)                         // Intern LLM-gateway — Llama 4 Scout via Ollama
 app.use('/', qmsRouter)                         // QMS — ISO 9001/27001/GDPR/NIS2 compliance tracking
 app.use('/', rtmRouter)                         // RTM — Release to Manufacturing gate
+app.use('/', jurisdictionRouter)                // Jurisdiction — Legal Boundary Intelligence per marknad
 app.use('/', academyRouter)                     // Academy — ISO/compliance-kurser + kompetensmatris-koppling
 app.use('/', okrRouter)                         // OKR — Google-modellen: Objectives, Key Results, Check-ins
 app.use('/api/config', configRouter)
@@ -147,8 +159,34 @@ app.get('/health', healthLimiter, (_req, res) => {
     status: 'ok',
     service: 'wavult-core',
     version: '2.0.0',
-    engines: ['state', 'financial', 'fraud', 'event'],
-    integrations: ['identity-core', 'revolut', 's3', 'rekognition', 'bernt', 'voice', 'nvidia-nim'],
+    providers: {
+      // AI
+      anthropic: !!process.env.ANTHROPIC_API_KEY,
+      deepseek: !!process.env.DEEPSEEK_API_KEY,
+      gemini: !!process.env.GEMINI_API_KEY,
+      openai: !!process.env.OPENAI_API_KEY,
+      nvidia: !!process.env.NVIDIA_API_KEY,
+      perplexity: !!process.env.PERPLEXITY_API_KEY,
+      elevenlabs: !!process.env.ELEVENLABS_API_KEY,
+      // Payments
+      revolut: !!process.env.REVOLUT_CLIENT_ID,
+      stripe: !!process.env.STRIPE_SECRET_KEY,
+      // Comms
+      resend: !!process.env.RESEND_API_KEY,
+      telegram: !!process.env.TELEGRAM_BOT_TOKEN,
+      fortysix_elks: !!process.env.FORTYSIX_ELKS_USERNAME,
+      twilio: !!process.env.TWILIO_ACCOUNT_SID,
+      // Data
+      apollo: !!process.env.APOLLO_API_KEY,
+      whoop: !!process.env.WHOOP_CLIENT_ID,
+      // Media
+      pexels: !!process.env.PEXELS_API_KEY,
+      coverr: !!process.env.COVERR_API_KEY,
+      mapbox: !!process.env.MAPBOX_PUBLIC_TOKEN,
+      duffel: !!process.env.DUFFEL_ACCESS_TOKEN,
+      did: !!process.env.DID_API_KEY,
+      shotstack: !!process.env.SHOTSTACK_PRODUCTION_KEY,
+    },
   })
 })
 
