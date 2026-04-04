@@ -160,12 +160,47 @@ export async function callDeepSeek(model: ModelConfig, req: AIRequest): Promise<
   return content
 }
 
+export async function callGroq(model: ModelConfig, req: AIRequest): Promise<string> {
+  const key = process.env.GROQ_API_KEY
+  if (!key) throw new Error('GROQ_API_KEY not set')
+
+  const messages: Array<{role: string; content: string}> = []
+  if (req.system) messages.push({ role: 'system', content: req.system })
+  messages.push({ role: 'user', content: req.prompt })
+
+  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${key}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'llama-3.3-70b-versatile',
+      messages,
+      max_tokens: req.max_tokens ?? 4096,
+      temperature: req.temperature ?? 0.7,
+    }),
+    signal: AbortSignal.timeout(30_000),
+  })
+
+  if (!res.ok) {
+    const err = await res.text().catch(() => `HTTP ${res.status}`)
+    throw new Error(`Groq error ${res.status}: ${err}`)
+  }
+
+  const data = await res.json() as any
+  const content = data.choices?.[0]?.message?.content
+  if (!content) throw new Error('Groq returned empty response')
+  return content
+}
+
 export async function callProvider(model: ModelConfig, req: AIRequest): Promise<string> {
   switch (model.provider) {
     case 'local':     return callLocal(model, req)
     case 'anthropic': return callAnthropic(model, req)
     case 'google':    return callGoogle(model, req)
     case 'deepseek':  return callDeepSeek(model, req)
+    case 'groq':      return callGroq(model, req)
     case 'openai':
       throw new Error(`OpenAI text completion not implemented via orchestrator; use whisper-api for STT`)
     default:

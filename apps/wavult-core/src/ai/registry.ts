@@ -8,6 +8,7 @@ const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY || ''
 const GEMINI_KEY = process.env.GEMINI_API_KEY || ''
 const OPENAI_KEY = process.env.OPENAI_API_KEY || ''
 const DEEPSEEK_KEY = process.env.DEEPSEEK_API_KEY || ''
+const GROQ_KEY = process.env.GROQ_API_KEY || ''
 
 export const MODEL_REGISTRY: Record<ModelId, ModelConfig> = {
   'llama4-scout': {
@@ -110,16 +111,26 @@ export const MODEL_REGISTRY: Record<ModelId, ModelConfig> = {
     strengths: ['reasoning', 'analysis', 'code'],
     available: !!DEEPSEEK_KEY,
   },
+  'groq-llama': {
+    id: 'groq-llama',
+    name: 'Groq Llama 3.3 70B (Ultra-fast)',
+    provider: 'groq',
+    endpoint: 'https://api.groq.com/openai/v1/chat/completions',
+    costPer1kTokens: 0.00059,
+    maxContextTokens: 128_000,
+    strengths: ['chat', 'reasoning', 'code', 'classification'],
+    available: !!GROQ_KEY,
+  },
 }
 
 // Routing-matris — DeepSeek V3 som billig/snabb fallback, R1 för reasoning
 export const ROUTING_MATRIX: Record<TaskType, ModelId[]> = {
-  chat:           ['llama4-scout', 'deepseek-v3', 'gemini-flash', 'claude-haiku', 'claude-sonnet'],
+  chat:           ['llama4-scout', 'groq-llama', 'deepseek-v3', 'gemini-flash', 'claude-haiku', 'claude-sonnet'],
   code:           ['claude-sonnet', 'deepseek-v3', 'claude-haiku', 'llama4-scout', 'gemini-pro'],
   analysis:       ['llama4-scout', 'deepseek-v3', 'gemini-pro', 'claude-sonnet', 'gemini-flash'],
   embedding:      ['llama4-scout', 'gemini-flash'],
   stt:            ['whisper-local', 'whisper-api'],
-  classification: ['llama4-scout', 'deepseek-v3', 'gemini-flash', 'claude-haiku'],
+  classification: ['llama4-scout', 'groq-llama', 'deepseek-v3', 'gemini-flash', 'claude-haiku'],
   document:       ['gemini-pro', 'llama4-maverick', 'claude-sonnet', 'deepseek-v3', 'llama4-scout'],
   reasoning:      ['deepseek-r1', 'claude-sonnet', 'gemini-pro', 'deepseek-v3', 'llama4-scout'],
 }

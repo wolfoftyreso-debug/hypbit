@@ -21,11 +21,12 @@ export type ModelId =
   | 'gemini-pro'
   | 'whisper-local'
   | 'whisper-api'
+  | 'groq-llama'
 
 export interface ModelConfig {
   id: ModelId
   name: string
-  provider: 'local' | 'anthropic' | 'google' | 'openai' | 'deepseek'
+  provider: 'local' | 'anthropic' | 'google' | 'openai' | 'deepseek' | 'groq'
   endpoint: string
   costPer1kTokens: number  // USD
   maxContextTokens: number
