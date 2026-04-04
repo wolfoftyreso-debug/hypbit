@@ -646,7 +646,7 @@ export function EntityView() {
         ${mobileShowDetail ? 'hidden md:flex' : 'flex'}
         w-full md:w-56 flex-shrink-0
         flex-col
-        border-r border-surface-border bg-[#07090F] overflow-y-auto
+        border-r border-surface-border bg-[var(--color-bg-subtle,#EDE8DC)] overflow-y-auto
       `}>
         <div className="px-3 py-3 border-b border-surface-border">
           <p className="text-xs font-semibold text-gray-9000 uppercase tracking-wider">Entities</p>
@@ -665,7 +665,7 @@ export function EntityView() {
               >
                 <span className="text-base flex-shrink-0">{ent.flag}</span>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm md:text-xs font-semibold truncate" style={{ color: active ? ent.color : '#9CA3AF' }}>
+                  <div className="text-sm md:text-xs font-semibold truncate" style={{ color: active ? ent.color : 'var(--color-text-secondary,#3A3530)' }}>
                     {ent.shortName}
                   </div>
                   <div className="flex items-center gap-1.5 mt-0.5">
