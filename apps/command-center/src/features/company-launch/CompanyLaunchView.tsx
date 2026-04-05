@@ -450,7 +450,7 @@ function LaunchCompanyModal({
 }
 
 export function CompanyLaunchView() {
-  const [activeTab, setActiveTab] = useState<'bolag' | 'tracker' | 'wizard' | 'sok-bolag' | 'lagerbolag' | 'certificates' | 'uae' | 'lithuania' | 'delaware'>('bolag')
+  const [activeTab, setActiveTab] = useState<'bolag' | 'tracker' | 'wizard' | 'sok-bolag' | 'lagerbolag' | 'certificates'>('bolag')
   const [companies, setCompanies] = useState<CompanyLaunch[]>(COMPANY_LAUNCHES)
   const [selectedId, setSelectedId] = useState<string>(COMPANY_LAUNCHES[0].id)
   const [apiLoading, setApiLoading] = useState(false)
@@ -641,36 +641,9 @@ export function CompanyLaunchView() {
         >
           📜 Certifikat
         </button>
-        <button
-          onClick={() => setActiveTab('uae')}
-          className={`px-4 py-2 text-xs font-semibold rounded-t-lg border-b-2 transition-colors ${
-            activeTab === 'uae'
-              ? 'border-amber-500 text-amber-400 bg-muted/30'
-              : 'border-transparent text-gray-9000 hover:text-gray-700'
-          }`}
-        >
-          🇦🇪 UAE
-        </button>
-        <button
-          onClick={() => setActiveTab('lithuania')}
-          className={`px-4 py-2 text-xs font-semibold rounded-t-lg border-b-2 transition-colors ${
-            activeTab === 'lithuania'
-              ? 'border-green-500 text-green-400 bg-muted/30'
-              : 'border-transparent text-gray-9000 hover:text-gray-700'
-          }`}
-        >
-          🇱🇹 Litauen
-        </button>
-        <button
-          onClick={() => setActiveTab('delaware')}
-          className={`px-4 py-2 text-xs font-semibold rounded-t-lg border-b-2 transition-colors ${
-            activeTab === 'delaware'
-              ? 'border-blue-400 text-blue-400 bg-muted/30'
-              : 'border-transparent text-gray-9000 hover:text-gray-700'
-          }`}
-        >
-          🇺🇸 Delaware
-        </button>
+        
+        
+        
 
         {/* Spacer + Launch button */}
         <div className="flex-1" />

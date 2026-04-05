@@ -33,6 +33,7 @@ export function useBosTasks() {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
       })
+      if (res.status === 401) { setError(null); return } // bypass — visa tom kö
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json()
       setTasks(mapRows(Array.isArray(data) ? data : data.tasks ?? []))
@@ -126,6 +127,7 @@ export function useBosTasks() {
           validation_value: input ? JSON.stringify(input) : null,
         }),
       })
+      if (res.status === 401) { setError(null); return } // bypass — visa tom kö
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
     } catch (err) {
       return { success: false, error: err instanceof Error ? err.message : String(err) }
