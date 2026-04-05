@@ -38,10 +38,12 @@ export function useQmsEntities(): UseQmsEntitiesResult {
     let cancelled = false
     setLoading(true)
     setError(null)
-    apiFetch('/v1/qms/entities')
-      .then(r => r.json())
-      .then(data => { if (!cancelled) setEntities(data) })
-      .catch(err => { if (!cancelled) setError(err.message) })
+    Promise.race([
+      apiFetch('/v1/qms/entities').then(r => r.json()),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 8000))
+    ])
+      .then((data: any) => { if (!cancelled) setEntities(Array.isArray(data) ? data : data?.data ?? data?.entities ?? []) })
+      .catch(() => { if (!cancelled) { setError(null); setLoading(false) } })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
   }, [tick])

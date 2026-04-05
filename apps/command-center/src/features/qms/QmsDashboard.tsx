@@ -62,7 +62,7 @@ export function QmsDashboard() {
   const [activeTab, setActiveTab] = useState<'controls' | 'timeline'>('controls')
 
   const { dashboard } = useQmsDashboard(selectedSlug)
-  const { controls, standards, loading: ctrlLoading } = useQmsControls(
+  const { controls: rawControlsData, standards: rawStandardsData, loading: ctrlLoading } = useQmsControls(
     selectedSlug,
     selectedStandard || undefined,
     selectedCategory || undefined
@@ -105,7 +105,7 @@ export function QmsDashboard() {
               {entLoading ? (
                 <option>Laddar...</option>
               ) : (
-                entities.map(e => <option key={e.slug} value={e.slug}>{e.name}</option>)
+                (Array.isArray(entities) ? entities : []).map(e => <option key={e.slug} value={e.slug}>{e.name}</option>)
               )}
             </select>
           </div>
@@ -127,7 +127,7 @@ export function QmsDashboard() {
         )}
 
         {/* Standards breakdown */}
-        {dashboard?.standards && dashboard.standards.length > 0 && (
+        {Array.isArray(dashboard?.standards) && dashboard.standards.length > 0 && (
           <div style={{ marginBottom: '24px' }}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
               {dashboard.standards.map(std => (
