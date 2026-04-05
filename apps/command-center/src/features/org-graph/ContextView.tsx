@@ -122,7 +122,7 @@ function TreeCard({
         width={NODE_W}
         height={NODE_H}
         rx={10}
-        fill="#0A0C14"
+        fill="#FDFAF5"
         stroke={borderColor}
         strokeWidth={borderWidth}
       />
@@ -522,7 +522,7 @@ export function ContextView() {
         <div className="flex-shrink-0 px-5 py-2 border-t border-surface-border bg-muted/30">
           <div className="flex items-center gap-6 text-xs text-gray-600">
             <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-white/20" />Above: governance chain</span>
-            <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full" style={{ background: effectiveRole?.color ?? '#2563EB' }} />Self: your role</span>
+            <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full" style={{ background: effectiveRole?.color ?? '#0A3D62' }} />Self: your role</span>
             <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-[#10B981]" />Below: your authority</span>
             <span className="ml-auto">Click any node to inspect · Click self node to open dashboard</span>
           </div>
