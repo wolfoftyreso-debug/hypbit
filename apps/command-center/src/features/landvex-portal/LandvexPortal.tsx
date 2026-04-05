@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import Map, { Marker, Popup } from 'react-map-gl/mapbox'
 import { Building2, AlertTriangle, Users, MapPin, RefreshCw, CheckCircle, Eye, Plus, Shield, Map as MapIcon } from 'lucide-react'
 
-const LANDVEX_API = 'https://api.wavult.com'
+const LandveX_API = 'https://api.wavult.com'
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || ''
 
 interface LandvexObject {
@@ -53,7 +53,7 @@ interface Stats {
 }
 
 async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(`${LANDVEX_API}${path}`, {
+  const res = await fetch(`${LandveX_API}${path}`, {
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     ...options,
   })

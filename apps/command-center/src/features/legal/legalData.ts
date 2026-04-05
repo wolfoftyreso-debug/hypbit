@@ -50,12 +50,12 @@ export const LEGAL_DOCUMENTS: LegalDocument[] = [
   { id: 'd5', title: 'Aktieägaravtal — Wavult Operations', type: 'avtal', entity_id: 'woh', status: 'aktiv', counterpart: 'Erik Svensson', signed_date: '2024-01-15', tags: ['aktieägaravtal'], created_at: '2024-01-15' },
 
   // OZ-LT — Litauen
-  { id: 'd6', title: 'Steigimo dokumentai — Optical Zoom UAB', type: 'bolagsordning', entity_id: 'oz-lt', status: 'aktiv', signed_date: '2025-03-01', tags: ['litauen', 'uab'], created_at: '2025-03-01' },
+  { id: 'd6', title: 'Steigimo dokumentai — quiXzoom UAB', type: 'bolagsordning', entity_id: 'oz-lt', status: 'aktiv', signed_date: '2025-03-01', tags: ['litauen', 'uab'], created_at: '2025-03-01' },
   { id: 'd7', title: 'EU Data Processing Agreement — GDPR', type: 'avtal', entity_id: 'oz-lt', status: 'aktiv', tags: ['gdpr', 'dpa'], created_at: '2025-03-01' },
 
   // OZ-US — Delaware
-  { id: 'd8', title: 'Certificate of Incorporation — Optical Zoom Inc', type: 'bolagsordning', entity_id: 'oz-us', status: 'aktiv', signed_date: '2026-03-27', tags: ['delaware', 'stripe-atlas'], created_at: '2026-03-27' },
-  { id: 'd9', title: 'Bylaws — Optical Zoom Inc', type: 'bolagsordning', entity_id: 'oz-us', status: 'aktiv', signed_date: '2026-03-27', tags: ['delaware', 'bylaws'], created_at: '2026-03-27' },
+  { id: 'd8', title: 'Certificate of Incorporation — quiXzoom Inc', type: 'bolagsordning', entity_id: 'oz-us', status: 'aktiv', signed_date: '2026-03-27', tags: ['delaware', 'stripe-atlas'], created_at: '2026-03-27' },
+  { id: 'd9', title: 'Bylaws — quiXzoom Inc', type: 'bolagsordning', entity_id: 'oz-us', status: 'aktiv', signed_date: '2026-03-27', tags: ['delaware', 'bylaws'], created_at: '2026-03-27' },
   { id: 'd10', title: '83(b) Election — Erik Svensson', type: 'övrigt', entity_id: 'oz-us', status: 'aktiv', signed_date: '2026-03-27', expiry_date: '2026-04-27', tags: ['irs', '83b', 'urgent'], created_at: '2026-03-27' },
 
   // LVX-AE

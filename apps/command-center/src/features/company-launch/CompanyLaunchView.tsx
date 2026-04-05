@@ -945,7 +945,7 @@ export function CompanyLaunchView() {
       <aside className="w-[280px] flex-shrink-0 border-r border-[#D4C9B8] flex flex-col overflow-hidden">
         <div className="px-4 py-4 border-b border-[#D4C9B8]">
           <h2 className="text-xs font-mono text-gray-9000 uppercase tracking-widest">Company Launch</h2>
-          <p className="text-xs text-gray-600 mt-0.5">Wavult Ecosystem · 5 bolag</p>
+          <p className="text-xs text-gray-600 mt-0.5">Wavult Ecosystem · {companies.length} bolag</p>
         </div>
 
         <div className="flex-1 overflow-y-auto py-2">

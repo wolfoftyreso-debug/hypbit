@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CORP_ENTITIES, TEAM_MEMBERS } from '../../shared/data/systemData'
 
 interface ContactPerson {
   name: string
@@ -24,135 +25,61 @@ interface EntityConfig {
   contacts: ContactPerson[]
 }
 
-const ENTITIES: EntityConfig[] = [
-  {
-    id: 'wavult-group-dmcc',
-    name: 'Wavult Group DMCC',
-    shortName: 'WG',
-    color: '#1E40AF',
-    country: '🇦🇪 Dubai, UAE',
-    currency: 'USD',
-    jurisdiction: 'DMCC Free Zone',
-    taxTable: '0% (UAE FZCO)',
-    orgNumber: 'WG-AE-HOLD-001',
-    address: 'DMCC Free Zone, Dubai, UAE',
-    vatNumber: '',
-    bankAccount: '',
-    invoiceLogoUrl: '',
-    contacts: [
-      { name: 'Erik Svensson', role: 'Chairman & Group CEO', email: 'erik@wavult.com', phone: '+46709123223' },
-      { name: 'Dennis Bjarnemark', role: 'Chief Legal & Operations', email: 'dennis@wavult.com', phone: '+46761474243' },
-    ],
+// Statiska metadata per bolag (org.nr, skattetabell, adress, valuta)
+// Id-nycklar matchar CORP_ENTITIES
+const ENTITY_META: Record<string, Partial<EntityConfig>> = {
+  'wgh': {
+    currency: 'USD', taxTable: '0% (UAE FZCO)', orgNumber: 'WG-AE-HOLD-001',
+    address: 'DMCC Free Zone, Dubai, UAE', vatNumber: '',
   },
-  {
-    id: 'financo-fzco',
-    name: 'FinanceCo FZCO',
-    shortName: 'FCO',
-    color: '#16A34A',
-    country: '🇦🇪 Dubai, UAE',
-    currency: 'USD',
-    jurisdiction: 'DMCC Free Zone',
-    taxTable: '0% (UAE FZCO)',
-    orgNumber: 'WG-AE-FIN-001',
-    address: 'DMCC Free Zone, Dubai, UAE',
-    vatNumber: '',
-    bankAccount: '',
-    invoiceLogoUrl: '',
-    contacts: [
-      { name: 'Winston Bjarnemark', role: 'CFO', email: 'winston@wavult.com', phone: '+46768123548' },
-    ],
+  'woh': {
+    currency: 'SEK', taxTable: '20,6%', orgNumber: '559365-XXXX',
+    address: 'Stockholm, Sverige', vatNumber: '',
   },
-  {
-    id: 'quixzoom-inc',
-    name: 'quiXzoom Inc.',
-    shortName: 'QZ-US',
-    color: '#0284C7',
-    country: '🇺🇸 Delaware, USA',
-    currency: 'USD',
-    jurisdiction: 'Delaware C-Corp',
-    taxTable: 'US Federal',
-    orgNumber: 'WG-US-DE-PROD-001',
-    address: 'Delaware, USA (Stripe Atlas)',
-    vatNumber: '',
-    bankAccount: '',
-    invoiceLogoUrl: '',
-    contacts: [
-      { name: 'Erik Svensson', role: 'Chairman & Group CEO', email: 'erik@wavult.com', phone: '+46709123223' },
-    ],
+  'oz-lt': {
+    currency: 'EUR', taxTable: '15% (Lithuania)', orgNumber: 'WG-LT-PROD-001',
+    address: 'Vilnius, Lithuania', vatNumber: '',
   },
-  {
-    id: 'quixzoom-uab',
-    name: 'QuiXzoom UAB',
-    shortName: 'QZ-EU',
-    color: '#10B981',
-    country: '🇱🇹 Litauen, EU',
-    currency: 'EUR',
-    jurisdiction: 'UAB (Lithuania)',
-    taxTable: '15% (Lithuania)',
-    orgNumber: 'WG-LT-PROD-001',
-    address: 'Vilnius, Lithuania (planned)',
-    vatNumber: '',
-    bankAccount: '',
-    invoiceLogoUrl: '',
-    contacts: [
-      { name: 'Leon Russo De Cerame', role: 'CEO Operations', email: 'leon@wavult.com', phone: '+46738968949' },
-    ],
+  'oz-us': {
+    currency: 'USD', taxTable: 'US Federal', orgNumber: 'WG-US-DE-PROD-001',
+    address: 'Delaware, USA (Stripe Atlas)', vatNumber: '',
   },
-  {
-    id: 'landvex-ab',
-    name: 'Landvex AB',
-    shortName: 'LNDVX',
-    color: '#D97706',
-    country: '🇸🇪 Sverige',
-    currency: 'SEK',
-    jurisdiction: 'Aktiebolag (SE)',
-    taxTable: '20,6%',
-    orgNumber: '559141-7042',
-    address: 'Sverige',
-    vatNumber: '',
-    bankAccount: '',
-    invoiceLogoUrl: '',
-    contacts: [
-      { name: 'Dennis Bjarnemark', role: 'Chief Legal & Operations', email: 'dennis@wavult.com', phone: '+46761474243' },
-    ],
+  'lvx-ae': {
+    currency: 'AED', taxTable: '0% (UAE DIFC)', orgNumber: 'WG-AE-LVX-001',
+    address: 'DIFC, Dubai, UAE (forming)', vatNumber: '',
   },
-  {
-    id: 'landvex-inc',
-    name: 'Landvex Inc.',
-    shortName: 'LVX-US',
-    color: '#F59E0B',
-    country: '🇺🇸 Texas, USA',
-    currency: 'USD',
-    jurisdiction: 'Texas LLC',
-    taxTable: 'US Federal + Texas',
-    orgNumber: 'WG-US-TX-PROD-001',
-    address: 'Houston, Texas, USA (forming)',
-    vatNumber: '',
-    bankAccount: '',
-    invoiceLogoUrl: '',
-    contacts: [
-      { name: 'Dennis Bjarnemark', role: 'Chief Legal & Operations', email: 'dennis@wavult.com', phone: '+46761474243' },
-    ],
+  'lvx-us': {
+    currency: 'USD', taxTable: 'US Federal + Texas', orgNumber: 'WG-US-TX-PROD-001',
+    address: 'Houston, Texas, USA', vatNumber: '',
   },
-  {
-    id: 'devops-fzco',
-    name: 'DevOps FZCO',
-    shortName: 'DVO',
-    color: '#7C3AED',
-    country: '🇦🇪 Dubai, UAE',
-    currency: 'USD',
-    jurisdiction: 'DMCC Free Zone',
-    taxTable: '0% (UAE FZCO)',
-    orgNumber: 'WG-AE-OPS-001',
-    address: 'DMCC Free Zone, Dubai, UAE',
-    vatNumber: '',
+}
+
+// Bygg ENTITIES från CORP_ENTITIES (single source of truth)
+const ENTITIES: EntityConfig[] = CORP_ENTITIES.map(e => {
+  const meta = ENTITY_META[e.id] ?? {}
+  // Hämta teammedlemmar kopplade till detta bolag
+  const contacts: ContactPerson[] = TEAM_MEMBERS
+    .filter(m => m.entityIds.includes(e.id) && m.roleId !== 'viewer' && m.email)
+    .slice(0, 3)
+    .map(m => ({ name: m.name, role: m.role, email: m.email, phone: m.phone }))
+
+  return {
+    id: e.id,
+    name: e.name,
+    shortName: e.shortName,
+    color: e.color,
+    country: `${e.flag} ${e.jurisdiction}`,
+    currency: meta.currency ?? 'USD',
+    jurisdiction: e.jurisdiction,
+    taxTable: meta.taxTable ?? '—',
+    orgNumber: meta.orgNumber ?? '',
+    address: meta.address ?? '',
+    vatNumber: meta.vatNumber ?? '',
     bankAccount: '',
     invoiceLogoUrl: '',
-    contacts: [
-      { name: 'Johan Berglund', role: 'Group CTO', email: 'johan@wavult.com', phone: '+46736977576' },
-    ],
+    contacts,
   }
-]
+})
 
 function EntityCard({ entity }: { entity: EntityConfig }) {
   const [showBank, setShowBank] = useState(false)

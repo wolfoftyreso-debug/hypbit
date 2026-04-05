@@ -950,7 +950,7 @@ De 10 000 första uppdragen i skärgården bygger databasen som Landvex behöver
   },
 
   // ─────────────────────────────────────────────────────────────────────────────
-  // LANDVEX
+  // LandveX
   // ─────────────────────────────────────────────────────────────────────────────
   {
     id: 'doc-lx-001',
@@ -4049,7 +4049,7 @@ Efter registrering: skicka 83(b) election till IRS inom **30 dagar**.
 5. Koppla Wavult DevOps FZCO som ägare när Dubai-bolagen bildas`,
   },
 
-  // ─── LANDVEX INC. JURIDISKA DOKUMENT (Texas, USA) ────────────────────────
+  // ─── LandveX INC. JURIDISKA DOKUMENT (Texas, USA) ────────────────────────
   {
     id: 'doc-legal-landvex-inc-001',
     title: 'Landvex Inc. — Certificate of Formation (Texas)',

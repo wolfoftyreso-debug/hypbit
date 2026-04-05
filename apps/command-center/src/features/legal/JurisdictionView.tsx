@@ -2,16 +2,14 @@ import { useState, useMemo } from 'react'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { JURISDICTIONS, type JurisdictionRule } from './jurisdictionData'
 
-// Entity-to-jurisdiction mapping
-// entity_ids in jurisdictionData use short numeric ids — map to actual entity ids
+// Entity-to-jurisdiction mapping — matchar CORP_ENTITIES ids
 const ENTITY_JURISDICTION_MAP: Record<string, string[]> = {
-  'wavult-group':   ['se', 'ae_difc', 'lt', 'us_de', 'us_tx'], // root sees all
-  'finance-co':     ['ae_difc'],
-  'devops-co':      ['se'],
-  'quixzoom-uab':   ['lt'],
-  'quixzoom-inc':   ['us_de'],
-  'landvex-ab':     ['se', 'ae_difc'],
-  'landvex-inc':    ['us_tx'],
+  'wgh':    ['ae_difc'],            // Wavult Group Holding DMCC
+  'woh':    ['se'],                 // Wavult Operations Holding AB (Sverige)
+  'oz-lt':  ['lt'],                 // quiXzoom UAB (Litauen)
+  'oz-us':  ['us_de'],              // quiXzoom Inc (Delaware)
+  'lvx-ae': ['ae_difc'],            // LandveX AC (UAE DIFC)
+  'lvx-us': ['us_tx'],              // LandveX Inc (Texas)
 }
 
 const CATEGORY_LABELS: Record<string, string> = {

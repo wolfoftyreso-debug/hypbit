@@ -91,8 +91,8 @@ export const CORP_ENTITIES: CorpEntity[] = [
   // ── LITAUEN ─────────────────────────────────────────────────────────────────
   {
     id: 'oz-lt',
-    shortName: 'OZ UAB',
-    name: 'Optical Zoom UAB',
+    shortName: 'QZ-LT',
+    name: 'quiXzoom UAB',
     jurisdiction: 'Litauen',
     jurisdictionCode: 'LT',
     flag: '🇱🇹',
@@ -102,14 +102,14 @@ export const CORP_ENTITIES: CorpEntity[] = [
     parentId: 'dvo-fzco',
     foundedDate: '2025-03-01',
     products: ['quiXzoom EU'],
-    description: 'EU tech-hub och quiXzoom-operatör för EU-marknaden.',
+    description: 'quiXzoom UAB — EU tech-hub. quiXzoom-plattformen för EU-marknaden.',
   },
 
   // ── USA DELAWARE ─────────────────────────────────────────────────────────────
   {
     id: 'oz-us',
-    shortName: 'OZ Inc',
-    name: 'Optical Zoom Inc',
+    shortName: 'QZ-US',
+    name: 'quiXzoom Inc',
     jurisdiction: 'Delaware, USA',
     jurisdictionCode: 'US-DE',
     flag: '🇺🇸',
@@ -119,7 +119,7 @@ export const CORP_ENTITIES: CorpEntity[] = [
     parentId: 'dvo-fzco',
     foundedDate: '2026-03-27',
     products: ['quiXzoom US'],
-    description: 'US-entitet (Delaware C-Corp) via Stripe Atlas. quiXzoom US-marknad.',
+    description: 'quiXzoom Inc — Delaware C-Corp via Stripe Atlas. quiXzoom US-marknad.',
   },
 
   // ── USA TEXAS ────────────────────────────────────────────────────────────────

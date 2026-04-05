@@ -39,7 +39,7 @@ const TRANSACTIONS: Transaction[] = [
 
   // Intercompany
   { id: 'ic-0302', date: '2026-03-31', title: 'IP Royalty Q1 2026', counterparty: 'Wavult Group FZCO', entity: 'Landvex AB', type: 'intercompany', amount: -12500, currency: 'SEK', status: 'pending', category: 'Intercompany', reference: 'IC-2026-0302' },
-  { id: 'ic-0301', date: '2026-03-31', title: 'Management Fee Q1 2026', counterparty: 'DevOps FZCO', entity: 'Landvex AB', type: 'intercompany', amount: -15000, currency: 'SEK', status: 'pending', category: 'Intercompany', reference: 'IC-2026-0301' },
+  { id: 'ic-0301', date: '2026-03-31', title: 'Management Fee Q1 2026', counterparty: 'Wavult Group Holding DMCC', entity: 'Landvex AB', type: 'intercompany', amount: -15000, currency: 'SEK', status: 'pending', category: 'Intercompany', reference: 'IC-2026-0301' },
 
   // USD
   { id: 'usd-001', date: '2026-03-20', title: 'Northwest Agent Fee', counterparty: 'Northwest Registered Agent', entity: 'Landvex Inc', type: 'payment', amount: -3060, currency: 'USD', status: 'paid', category: 'Juridik' },
@@ -51,7 +51,7 @@ const TRANSACTIONS: Transaction[] = [
   { id: 'priv-004', date: '2026-03-25', title: 'Stripe Atlas — QuiXzoom Inc bildningsavgift', counterparty: 'Stripe Atlas', entity: 'QuiXzoom Inc', type: 'payment', amount: -500, currency: 'USD', status: 'paid', category: 'Juridik', reference: 'STRIPE-ATLAS-1296-9493', receiptUrl: 'https://pay.stripe.com/receipts/acct_18I3iLLcbLlTohbM/rcpt_1296-9493', receiptStatus: 'attached' },
   { id: 'priv-005', date: '2026-03-25', title: 'refurbed — Hårdvara/utrustning', counterparty: 'refurbed GmbH', entity: 'Wavult Group', type: 'expense', amount: -6500, currency: 'SEK', status: 'paid', category: 'Hårdvara', reference: 'REFURBED-17332832' },
   { id: 'priv-006', date: '2026-03-25', title: 'Duix — AI-tjänst kvitto #2077-2547', counterparty: 'Duix', entity: 'Wavult Group', type: 'payment', amount: -59, currency: 'USD', status: 'paid', category: 'Mjukvara', reference: 'DUIX-2077-2547' },
-  { id: 'priv-007', date: '2026-03-25', title: 'Northwest — Landvex Inc agent fee', counterparty: 'Northwest Registered Agent LLC', entity: 'Landvex Inc', type: 'payment', amount: -3060, currency: 'USD', status: 'paid', category: 'Juridik', reference: 'NW-LANDVEX-TX' },
+  { id: 'priv-007', date: '2026-03-25', title: 'Northwest — Landvex Inc agent fee', counterparty: 'Northwest Registered Agent LLC', entity: 'Landvex Inc', type: 'payment', amount: -3060, currency: 'USD', status: 'paid', category: 'Juridik', reference: 'NW-LandveX-TX' },
 
   // ── Gmail-kvitton (jan-mars 2026, wolfoftyreso@gmail.com) ─────────────────
   // Totalt: ~99 000 SEK i utgifter — privatkortsutlägg mot bolaget

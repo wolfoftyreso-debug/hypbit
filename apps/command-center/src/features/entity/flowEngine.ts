@@ -34,7 +34,7 @@ export const FLOWS: Flow[] = [
     ],
     status: 'building',
   },
-  // ─── LANDVEX REVENUE ──────────────────────────────────────────────────────
+  // ─── LandveX REVENUE ──────────────────────────────────────────────────────
   {
     id: 'flow-money-001',
     name: 'Landvex Revenue — Customer → FinanceCo',

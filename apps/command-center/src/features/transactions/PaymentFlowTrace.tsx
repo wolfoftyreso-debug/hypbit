@@ -8,30 +8,28 @@ interface PaymentFlowTraceProps {
   title: string
 }
 
+// Transfer pricing split — Wavult Group Holding (WGH) tar royalty + management fee
+// FCO/DVO är avvecklade — ersatta av WGH (holding) som motpart
 const SPLIT_RULES: Record<string, Array<{ entity: string; short: string; percent: number; color: string }>> = {
   'Landvex AB': [
-    { entity: 'FinanceCo FZCO', short: 'FCO', percent: 2.5, color: '#10B981' },
-    { entity: 'DevOps FZCO', short: 'DVO', percent: 10, color: '#1E40AF' },
-    { entity: 'Wavult Group FZCO', short: 'WGH', percent: 8, color: '#6366F1' },
+    { entity: 'Wavult Group Holding DMCC', short: 'WGH', percent: 12.5, color: '#6366F1' },
+    { entity: 'LandveX AC (IP royalty)', short: 'LVX-AE', percent: 8, color: '#C9A84C' },
     { entity: 'Landvex AB (netto)', short: 'LVX-SE', percent: 79.5, color: '#3B82F6' },
   ],
   'Landvex Inc': [
-    { entity: 'FinanceCo FZCO', short: 'FCO', percent: 2.5, color: '#10B981' },
-    { entity: 'DevOps FZCO', short: 'DVO', percent: 10, color: '#1E40AF' },
-    { entity: 'Wavult Group FZCO', short: 'WGH', percent: 8, color: '#6366F1' },
+    { entity: 'Wavult Group Holding DMCC', short: 'WGH', percent: 12.5, color: '#6366F1' },
+    { entity: 'LandveX AC (IP royalty)', short: 'LVX-AE', percent: 8, color: '#C9A84C' },
     { entity: 'Landvex Inc (netto)', short: 'LVX-US', percent: 79.5, color: '#F59E0B' },
   ],
   'QuiXzoom UAB': [
-    { entity: 'FinanceCo FZCO', short: 'FCO', percent: 2.5, color: '#10B981' },
-    { entity: 'DevOps FZCO', short: 'DVO', percent: 10, color: '#1E40AF' },
-    { entity: 'Wavult Group FZCO', short: 'WGH', percent: 8, color: '#6366F1' },
-    { entity: 'QuiXzoom UAB (netto)', short: 'QZ-EU', percent: 79.5, color: '#EC4899' },
+    { entity: 'Wavult Group Holding DMCC', short: 'WGH', percent: 12.5, color: '#6366F1' },
+    { entity: 'quiXzoom Inc (IP royalty)', short: 'OZ-US', percent: 8, color: '#2D7A4F' },
+    { entity: 'QuiXzoom UAB (netto)', short: 'OZ-LT', percent: 79.5, color: '#EC4899' },
   ],
   'QuiXzoom Inc': [
-    { entity: 'FinanceCo FZCO', short: 'FCO', percent: 2.5, color: '#10B981' },
-    { entity: 'DevOps FZCO', short: 'DVO', percent: 10, color: '#1E40AF' },
-    { entity: 'Wavult Group FZCO', short: 'WGH', percent: 8, color: '#6366F1' },
-    { entity: 'QuiXzoom Inc (netto)', short: 'QZ-US', percent: 79.5, color: '#EC4899' },
+    { entity: 'Wavult Group Holding DMCC', short: 'WGH', percent: 12.5, color: '#6366F1' },
+    { entity: 'quiXzoom UAB (IP royalty)', short: 'OZ-LT', percent: 8, color: '#2D7A4F' },
+    { entity: 'QuiXzoom Inc (netto)', short: 'OZ-US', percent: 79.5, color: '#EC4899' },
   ],
 }
 

@@ -164,7 +164,7 @@ const CEO_ENTITY_DATA: Record<string, {
     marketNote: 'Sverige, mitten juni 2026',
     teamSize: 5,
   },
-  // OZ-LT — Optical Zoom UAB
+  // OZ-LT — quiXzoom UAB
   'oz-lt': {
     strategicPriorities: [
       { text: 'UAB registrering klar', status: 'done' },
@@ -178,7 +178,7 @@ const CEO_ENTITY_DATA: Record<string, {
     marketNote: 'Litauen — EU-bas',
     teamSize: 2,
   },
-  // OZ-US — Optical Zoom Inc
+  // OZ-US — quiXzoom Inc
   'oz-us': {
     strategicPriorities: [
       { text: 'Delaware franchise tax', status: 'planned' },
@@ -589,7 +589,7 @@ const CFO_ENTITY_DATA: Record<string, {
   },
   '3': {
     heading: 'OZ UAB — FINANSIELL KONTROLL',
-    subtitle: 'Optical Zoom UAB — Litauen',
+    subtitle: 'quiXzoom UAB — Litauen',
     financialStructure: [
       { text: 'VAT-registrering Litauen', status: 'planned' },
       { text: 'Corporate tax 15% — standard rate LT', status: 'planned' },
@@ -601,7 +601,7 @@ const CFO_ENTITY_DATA: Record<string, {
   },
   '4': {
     heading: 'OZ INC — FINANSIELL KONTROLL',
-    subtitle: 'Optical Zoom Inc — Delaware, USA',
+    subtitle: 'quiXzoom Inc — Delaware, USA',
     financialStructure: [
       { text: 'Delaware franchise tax — $50/år', status: 'planned' },
       { text: 'Federal corporate tax 21%', status: 'planned' },
