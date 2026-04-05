@@ -101,6 +101,7 @@ const ApiflyView             = lazy(() => import('./features/apifly/ApiflyView')
 const ApiflyAdminView        = lazy(() => import('./features/apifly/ApiflyAdminView').then(m => ({ default: m.ApiflyAdminView })))
 const MLCSPlatform           = lazy(() => import('./features/mlcs-platform/MLCSView'))
 const SystemAuditDashboard   = lazy(() => import('./features/system-audit/SystemAuditDashboard').then(m => ({ default: m.SystemAuditDashboard })))
+const SystemOversiktView     = lazy(() => import('./features/system/SystemOversiktView').then(m => ({ default: m.SystemOversiktView })))
 const UXQualityDashboard     = lazy(() => import('./features/ux-quality/UXQualityDashboard').then(m => ({ default: m.UXQualityDashboard })))
 const ProfileView            = lazy(() => import('./features/profile/ProfileView').then(m => ({ default: m.ProfileView })))
 
@@ -264,6 +265,7 @@ function AuthenticatedApp() {
               <Route path="/agent" element={<AgentHub />} />
               <Route path="/agent/legacy" element={<AgentCommandPanel />} />
               <Route path="/system/audit" element={<SystemAuditDashboard />} />
+              <Route path="/system" element={<SystemOversiktView />} />
               <Route path="/ux-quality" element={<UXQualityDashboard />} />
               <Route path="/profile" element={<ProfileView />} />
             </Routes>

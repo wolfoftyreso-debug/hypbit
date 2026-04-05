@@ -51,6 +51,7 @@ interface NavItem {
 interface NavGroup {
   labelKey: string | null
   items: NavItem[]
+  roles?: string[]  // if set, group is visible only for these role IDs
 }
 
 const NAV_GROUPS: NavGroup[] = [
@@ -144,6 +145,13 @@ const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
+    labelKey: 'System',
+    roles: ['group-ceo', 'cto', 'admin'],
+    items: [
+      { to: '/system', labelKey: 'Systemöversikt', icon: Activity },
+    ],
+  },
+  {
     labelKey: 'nav.group.devInfra',
     items: [
       { to: '/infrastructure',      labelKey: 'Infrastruktur',       icon: Server },
@@ -190,10 +198,16 @@ function SidebarNav({ criticalAlertCount, onNavigate, onAuditLog }: {
 }) {
   const { pathname } = useLocation()
   const { t } = useTranslation()
+  const { effectiveRole } = useRole()
+
+  const visibleGroups = NAV_GROUPS.filter(group => {
+    if (!group.roles) return true
+    return group.roles.includes(effectiveRole?.id ?? '')
+  })
 
   return (
     <nav className="flex-1 px-2 py-2 overflow-y-auto">
-      {NAV_GROUPS.map((group, gi) => (
+      {visibleGroups.map((group, gi) => (
         <div key={gi} className={gi > 0 ? 'mt-4' : ''}>
           {group.labelKey && (
             <div
