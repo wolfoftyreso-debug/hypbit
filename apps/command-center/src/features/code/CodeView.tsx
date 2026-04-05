@@ -9,8 +9,10 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import {
   Terminal, GitBranch, RefreshCw, ChevronRight, ChevronDown,
-  File, Folder, Send, Check, GitCommit, Play, AlertCircle, Loader2
+  File, Folder, Send, Check, GitCommit, Play, AlertCircle, Loader2,
+  Download, Upload
 } from 'lucide-react'
+import JSZip from 'jszip'
 import { useGiteaRepos, GiteaRepo } from '../git/useGiteaRepos'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -264,6 +266,63 @@ function FileTreeNode({
   )
 }
 
+// ─── ZIP helpers ─────────────────────────────────────────────────────────────
+
+async function downloadRepoAsZip(
+  repoFullName: string,
+  repoName: string,
+  onProgress: (msg: string) => void
+) {
+  onProgress('Hämtar filträd…')
+  const treeRes = await fetch(
+    `${GITEA_URL}/api/v1/repos/${repoFullName}/git/trees/HEAD?recursive=true`,
+    { headers: { Authorization: `token ${GITEA_TOKEN}` } }
+  )
+  const tree = await treeRes.json()
+  const zip = new JSZip()
+  const folder = zip.folder(repoName)!
+  const files = ((tree.tree ?? []) as { path: string; type: string }[]).filter(f => f.type === 'blob')
+
+  let done = 0
+  for (let i = 0; i < files.length; i += 10) {
+    const chunk = files.slice(i, i + 10)
+    await Promise.all(chunk.map(async file => {
+      try {
+        const res = await fetch(
+          `${GITEA_URL}/api/v1/repos/${repoFullName}/raw/${file.path}`,
+          { headers: { Authorization: `token ${GITEA_TOKEN}` } }
+        )
+        if (res.ok) {
+          const content = await res.arrayBuffer()
+          const pathParts = file.path.split('/')
+          if (pathParts.length > 1) {
+            let currentFolder = folder
+            for (let j = 0; j < pathParts.length - 1; j++) {
+              currentFolder = currentFolder.folder(pathParts[j])!
+            }
+            currentFolder.file(pathParts[pathParts.length - 1], content)
+          } else {
+            folder.file(file.path, content)
+          }
+        }
+      } catch { /* skippa filer som inte kan laddas */ }
+      done++
+      onProgress(`Laddar filer… ${done}/${files.length}`)
+    }))
+  }
+
+  onProgress('Genererar ZIP…')
+  const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `${repoName}-${new Date().toISOString().slice(0, 10)}.zip`
+  a.click()
+  URL.revokeObjectURL(url)
+  onProgress('Klar!')
+  setTimeout(() => onProgress(''), 2000)
+}
+
 // ─── Main CodeView ────────────────────────────────────────────────────────────
 
 export function CodeView() {
@@ -285,6 +344,11 @@ export function CodeView() {
   const [showCommitModal, setShowCommitModal] = useState(false)
   const [previewKey, setPreviewKey] = useState(0)
 
+  // ZIP state
+  const [zipProgress, setZipProgress] = useState<string | null>(null)
+  const [importStatus, setImportStatus] = useState<string | null>(null)
+  const importInputRef = useRef<HTMLInputElement>(null)
+
   // Chat state
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -299,7 +363,7 @@ export function CodeView() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   // File tree
-  const { data: fileTree = [], isLoading: treeLoading } = useQuery({
+  const { data: fileTree = [], isLoading: treeLoading, refetch: refetchFileTree } = useQuery({
     queryKey: ['code-tree', selectedRepo?.full_name],
     queryFn: () => getTreeRecursive(selectedRepo!.full_name),
     enabled: !!selectedRepo,
@@ -391,6 +455,81 @@ export function CodeView() {
     }
   }, [selectedRepo, appliedChanges, commitMsg])
 
+  const handleZipExport = useCallback(async () => {
+    if (!selectedRepo) return
+    try {
+      await downloadRepoAsZip(selectedRepo.full_name, selectedRepo.name, msg => setZipProgress(msg || null))
+    } catch (e) {
+      setZipProgress(`❌ ${e instanceof Error ? e.message : 'Fel vid ZIP-export'}`)
+      setTimeout(() => setZipProgress(null), 3000)
+    }
+  }, [selectedRepo])
+
+  const handleZipImport = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file || !selectedRepo) return
+
+    setImportStatus('Läser ZIP…')
+    try {
+      const zip = await JSZip.loadAsync(file)
+      const files: Array<{ path: string; content: string }> = []
+
+      for (const [relativePath, zipEntry] of Object.entries(zip.files)) {
+        if (zipEntry.dir) continue
+        const cleanPath = relativePath.includes('/')
+          ? relativePath.split('/').slice(1).join('/')
+          : relativePath
+        if (!cleanPath) continue
+        const content = await zipEntry.async('text')
+        files.push({ path: cleanPath, content })
+      }
+
+      setImportStatus(`Laddar upp ${files.length} filer till Gitea…`)
+      let uploaded = 0
+
+      for (const f of files) {
+        try {
+          const existing = await fetch(
+            `${GITEA_URL}/api/v1/repos/${selectedRepo.full_name}/contents/${f.path}`,
+            { headers: { Authorization: `token ${GITEA_TOKEN}` } }
+          ).then(r => r.json()).catch(() => null)
+
+          const payload: Record<string, unknown> = {
+            message: `Upload from ZIP: ${f.path}`,
+            content: btoa(unescape(encodeURIComponent(f.content))),
+            committer: { name: 'Wavult OS', email: 'os@wavult.com' },
+          }
+          if (existing?.sha) payload.sha = existing.sha
+
+          await fetch(
+            `${GITEA_URL}/api/v1/repos/${selectedRepo.full_name}/contents/${f.path}`,
+            {
+              method: existing?.sha ? 'PUT' : 'POST',
+              headers: {
+                Authorization: `token ${GITEA_TOKEN}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(payload),
+            }
+          )
+          uploaded++
+          setImportStatus(`Laddar upp ${uploaded}/${files.length}…`)
+        } catch { /* skippa filer med problem */ }
+      }
+
+      setImportStatus(`✅ ${uploaded} filer uppladdade till ${selectedRepo.name}`)
+      setTimeout(() => {
+        setImportStatus(null)
+        refetchFileTree()
+      }, 2000)
+    } catch (err) {
+      setImportStatus(`❌ ${err instanceof Error ? err.message : 'Fel vid import'}`)
+      setTimeout(() => setImportStatus(null), 3000)
+    }
+
+    e.target.value = ''
+  }, [selectedRepo, refetchFileTree])
+
   const handleSend = useCallback(async () => {
     if (!input.trim() || sending) return
     const userMsg: ChatMessage = {
@@ -480,6 +619,41 @@ export function CodeView() {
           </select>
           <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
         </div>
+
+        {/* ZIP Export */}
+        {selectedRepo && (
+          <button
+            onClick={handleZipExport}
+            disabled={!!zipProgress}
+            className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md bg-[#EDE8DF] text-[#0A3D62] border border-[#C8BFB4] hover:bg-[#D8CFC4] disabled:opacity-50 transition-colors"
+            title="Ladda ned projekt som ZIP"
+          >
+            <Download size={13} />
+            <span className="hidden sm:inline">Ladda ned projekt</span>
+          </button>
+        )}
+
+        {/* ZIP Import */}
+        {selectedRepo && (
+          <>
+            <input
+              type="file"
+              accept=".zip"
+              className="hidden"
+              ref={importInputRef}
+              onChange={handleZipImport}
+            />
+            <button
+              onClick={() => importInputRef.current?.click()}
+              disabled={!!importStatus}
+              className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md bg-[#EDE8DF] text-[#0A3D62] border border-[#C8BFB4] hover:bg-[#D8CFC4] disabled:opacity-50 transition-colors"
+              title="Ladda upp projekt från ZIP"
+            >
+              <Upload size={13} />
+              <span className="hidden sm:inline">Ladda upp projekt</span>
+            </button>
+          </>
+        )}
 
         {/* Commit button */}
         {appliedChanges.length > 0 && (
@@ -709,6 +883,14 @@ export function CodeView() {
           </div>
         </div>
       </div>
+
+      {/* ZIP progress toast */}
+      {(zipProgress || importStatus) && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#0A3D62] text-[#F5F0E8] text-xs px-5 py-3 rounded-xl shadow-floating flex items-center gap-3">
+          <span className="animate-pulse">⚙️</span>
+          <span>{zipProgress || importStatus}</span>
+        </div>
+      )}
 
       {/* Commit modal */}
       {showCommitModal && (
