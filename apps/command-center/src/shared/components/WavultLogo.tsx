@@ -28,13 +28,13 @@ const SVG_PATHS = {
 
 const COLORS = {
   navy:  '#0A3D62',
-  white: '#F5F0E8',
+  white: '#FFFFFF',
   black: '#0A0A0A',
 }
 
 const WORDMARK_COLORS = {
   navy:  '#0A3D62',
-  white: '#F5F0E8',
+  white: '#FFFFFF',
   black: '#0A0A0A',
 }
 
