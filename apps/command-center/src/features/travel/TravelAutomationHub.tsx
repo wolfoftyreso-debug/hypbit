@@ -61,7 +61,7 @@ const INITIAL_TRIPS: Trip[] = [
     departure: '2026-04-11',
     return: '2026-05-11',
     durationDays: 30,
-    participants: ['Erik Svensson', 'Leon Russo De Cemare', 'Dennis Bjarnemark', 'Winston Bjarnemark', 'Johan Berglund'],
+    participants: ['Erik Svensson', 'Tiffany Molly Catarina Svensson', 'Dennis Bjarnemark', 'Winston Bjarnemark', 'Johan Berglund'],
     overallStatus: 'processing',
     steps: {
       visa: {
