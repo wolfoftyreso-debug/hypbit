@@ -1,31 +1,124 @@
-<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wavult">
-  <!--
-    Wavult logotyp — manometer
-    Halvring (övre halvan), smalt gap i toppen (±7°)
-    Visare exakt rakt upp = MITT I toleransen
-  -->
+<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wavult">
   <defs>
-    <clipPath id="clip-upper">
-      <rect x="0" y="0" width="200" height="121"/>
-    </clipPath>
-    <mask id="gap-mask">
-      <!-- Allt vitt = synligt -->
-      <rect width="200" height="200" fill="white"/>
-      <!-- Gap: smal spalt rakt upp, ±7° → vid r=100: x=±12.2 -->
-      <polygon points="100,121 88,0 112,0" fill="black"/>
-    </mask>
+    <!-- Glossy gradient för vänster vinge -->
+    <linearGradient id="wingL-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2a2a2a;stop-opacity:1" />
+      <stop offset="40%" style="stop-color:#0a0a0a;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#050505;stop-opacity:1" />
+    </linearGradient>
+    <!-- Glossy gradient för höger vinge -->
+    <linearGradient id="wingR-grad" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2a2a2a;stop-opacity:1" />
+      <stop offset="40%" style="stop-color:#0a0a0a;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#050505;stop-opacity:1" />
+    </linearGradient>
+    <!-- Gradient för triangel -->
+    <linearGradient id="tri-grad" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#080808;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:1" />
+    </linearGradient>
+    <!-- Gloss highlight vänster vinge -->
+    <linearGradient id="gloss-L" x1="0%" y1="0%" x2="0%" y2="50%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.18" />
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0" />
+    </linearGradient>
+    <!-- Gloss highlight höger vinge -->
+    <linearGradient id="gloss-R" x1="0%" y1="0%" x2="0%" y2="50%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.18" />
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0" />
+    </linearGradient>
+    <!-- Glow vid triangelspets -->
+    <radialGradient id="glow" cx="50%" cy="100%" r="30%">
+      <stop offset="0%" style="stop-color:#E8B84B;stop-opacity:0.9" />
+      <stop offset="40%" style="stop-color:#E8B84B;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#E8B84B;stop-opacity:0" />
+    </radialGradient>
+    <!-- Glans längs triangelns topp -->
+    <linearGradient id="tri-gloss" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0" />
+      <stop offset="50%" style="stop-color:#ffffff;stop-opacity:0.25" />
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+    <filter id="glow-filter" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
   </defs>
 
-  <!-- Donut-ring, maskad med gap -->
-  <g clip-path="url(#clip-upper)" mask="url(#gap-mask)">
-    <circle cx="100" cy="121" r="100" fill="#0A3D62"/>
-    <circle cx="100" cy="121" r="65"  fill="white"/>
+  <!-- ── Vänster vinge ── -->
+  <!-- Arc-form: bred yttre kurva, smal inre, öppen mot höger -->
+  <g filter="url(#shadow)">
+    <path d="
+      M 28,40
+      C 10,50 0,80 8,118
+      C 14,145 32,162 52,170
+      C 60,173 70,174 76,172
+      L 68,152
+      C 58,154 46,148 38,134
+      C 28,116 28,88 40,68
+      C 46,58 55,50 64,46
+      L 52,28
+      C 42,30 34,34 28,40 Z
+    " fill="url(#wingL-grad)"/>
+    <!-- Gloss overlay vänster -->
+    <path d="
+      M 28,40
+      C 10,50 0,80 8,118
+      L 20,110
+      C 14,88 18,62 32,48
+      L 52,28
+      C 42,30 34,34 28,40 Z
+    " fill="url(#gloss-L)"/>
   </g>
 
-  <!-- Visare: rakt upp -->
-  <line x1="100" y1="121" x2="100" y2="24"
-        stroke="#0A3D62" stroke-width="9" stroke-linecap="round"/>
+  <!-- ── Höger vinge (spegelvänd) ── -->
+  <g filter="url(#shadow)">
+    <path d="
+      M 272,40
+      C 290,50 300,80 292,118
+      C 286,145 268,162 248,170
+      C 240,173 230,174 224,172
+      L 232,152
+      C 242,154 254,148 262,134
+      C 272,116 272,88 260,68
+      C 254,58 245,50 236,46
+      L 248,28
+      C 258,30 266,34 272,40 Z
+    " fill="url(#wingR-grad)"/>
+    <!-- Gloss overlay höger -->
+    <path d="
+      M 272,40
+      C 290,50 300,80 292,118
+      L 280,110
+      C 286,88 282,62 268,48
+      L 248,28
+      C 258,30 266,34 272,40 Z
+    " fill="url(#gloss-R)"/>
+  </g>
 
-  <!-- Pivot -->
-  <circle cx="100" cy="121" r="11" fill="#0A3D62"/>
+  <!-- ── Central triangel (nedåtpekande) ── -->
+  <g filter="url(#shadow)">
+    <path d="
+      M 150,196
+      L 88,28
+      L 212,28
+      Z
+    " fill="url(#tri-grad)"/>
+    <!-- Glans längs toppen av triangeln -->
+    <path d="
+      M 88,28 L 212,28 L 210,38 L 90,38 Z
+    " fill="url(#tri-gloss)"/>
+  </g>
+
+  <!-- ── Guldglöd vid spetsen ── -->
+  <g filter="url(#glow-filter)">
+    <ellipse cx="150" cy="193" rx="18" ry="8" fill="url(#glow)" opacity="0.85"/>
+    <circle cx="150" cy="196" r="2.5" fill="#E8B84B" opacity="0.95"/>
+  </g>
 </svg>
