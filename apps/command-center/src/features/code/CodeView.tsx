@@ -15,6 +15,7 @@ import {
 import JSZip from 'jszip'
 import { useGiteaRepos, GiteaRepo } from '../git/useGiteaRepos'
 import { useReleaseFlow } from './useReleaseFlow'
+import { useTimeMachine } from '../devos/TimeMachine'
 import { ReleasePipeline } from './ReleasePipeline'
 import { useProjectMemory } from './projectMemory'
 import { MemoryPanel } from './MemoryPanel'
@@ -359,6 +360,7 @@ export function CodeView() {
 
   // Memory Graph
   const { memory, loading: memoryLoading } = useProjectMemory(selectedRepo?.full_name ?? null)
+  const { createSnapshot } = useTimeMachine(selectedRepo?.full_name ?? null)
 
   // Release flow
   const {
@@ -462,6 +464,11 @@ export function CodeView() {
     setCommitting(true)
     try {
       const msg = commitMsg.trim() || 'feat: AI-generated changes via Wavult Code'
+      // Auto-snapshot före commit
+      createSnapshot(`Commit: ${msg}`, 'auto', {
+        commit_message: msg,
+        repo_full_name: selectedRepo.full_name,
+      })
       await commitFiles(selectedRepo.full_name, appliedChanges, msg)
       setAppliedChanges([])
       setCommitMsg('')
@@ -482,7 +489,7 @@ export function CodeView() {
     } finally {
       setCommitting(false)
     }
-  }, [selectedRepo, appliedChanges, commitMsg])
+  }, [selectedRepo, appliedChanges, commitMsg, createSnapshot])
 
   const handleZipExport = useCallback(async () => {
     if (!selectedRepo) return

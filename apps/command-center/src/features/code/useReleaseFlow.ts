@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import type { Release, ReleaseCheck, ProductionChecklist } from './releaseTypes'
 import { runExecutionPipeline } from './executionEngine'
+import { useTimeMachine } from '../devos/TimeMachine'
 
 const DEFAULT_CHECKS: ReleaseCheck[] = [
   { id: 'build',      label: 'Build lyckas',                    status: 'pending', required: true },
@@ -33,14 +34,22 @@ const DEFAULT_CHECKLIST: ProductionChecklist[] = [
 export function useReleaseFlow() {
   const [releases, setReleases] = useState<Release[]>([])
   const [activeRelease, setActiveRelease] = useState<Release | null>(null)
+  const { createSnapshot } = useTimeMachine(null)
 
   const createRelease = useCallback((repo: string, branch: string, commitMsg: string) => {
+    const commitSha = Math.random().toString(36).slice(2, 10)
+    // Auto-snapshot före release
+    createSnapshot(`Före release: ${commitMsg}`, 'pre_deploy', {
+      commit_sha: commitSha,
+      commit_message: commitMsg,
+      repo_full_name: `wavult/${repo}`,
+    })
     const release: Release = {
       id: `rel-${Date.now()}`,
       repo_full_name: `wavult/${repo}`,
       repo_name: repo,
       branch,
-      commit_sha: Math.random().toString(36).slice(2, 10),
+      commit_sha: commitSha,
       commit_message: commitMsg,
       version: `v${new Date().toISOString().slice(0, 10)}`,
       status: 'review',
@@ -54,7 +63,7 @@ export function useReleaseFlow() {
     setActiveRelease(release)
     runAutoChecks(release.id, release.repo_full_name, setReleases)
     return release
-  }, [])
+  }, [createSnapshot])
 
   const updateChecklist = useCallback((releaseId: string, itemId: string, checked: boolean) => {
     setReleases(prev => prev.map(r =>
@@ -106,12 +115,19 @@ export function useReleaseFlow() {
         body: JSON.stringify({ repo: release.repo_full_name, branch: release.branch }),
       })
     } catch { /* fire and forget */ }
+    // Auto-snapshot efter deploy live
+    createSnapshot(`Deploy live: ${release.repo_name}`, 'post_deploy', {
+      deployed_url: 'https://wavult-os.pages.dev',
+      commit_sha: release.commit_sha,
+      commit_message: release.commit_message,
+      repo_full_name: release.repo_full_name,
+    })
     setReleases(prev => prev.map(r =>
       r.id === releaseId
         ? { ...r, status: 'live', updated_at: new Date().toISOString() }
         : r
     ))
-  }, [releases])
+  }, [releases, createSnapshot])
 
   return {
     releases,

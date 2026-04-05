@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRole } from '../../shared/auth/RoleContext'
+import { TimeMachineView } from './TimeMachine'
 
 const API = import.meta.env.VITE_API_URL ?? 'https://api.wavult.com'
 
@@ -349,6 +350,7 @@ function GraphDetail({ graphId, onBack }: { graphId: string; onBack: () => void 
 export function DevOSView() {
   const [activeGraphId, setActiveGraphId] = useState<string | null>(null)
   const [recentGraphs, setRecentGraphs] = useState<TaskGraph[]>([])
+  const [showTimeMachine, setShowTimeMachine] = useState(false)
 
   useEffect(() => {
     const stored = localStorage.getItem('devos_recent_graphs')
@@ -377,12 +379,25 @@ export function DevOSView() {
       {/* Left: Create + History */}
       <div className="w-80 flex-shrink-0 border-r border-surface-border bg-[#FDFAF5] flex flex-col">
         <div className="px-4 py-3 border-b border-surface-border">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">🧠</span>
-            <div>
-              <h2 className="text-sm font-bold text-[#0A3D62]">DevOS Orchestrator</h2>
-              <p className="text-[10px] text-gray-400">AI genererar task graphs</p>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">🧠</span>
+              <div>
+                <h2 className="text-sm font-bold text-[#0A3D62]">DevOS Orchestrator</h2>
+                <p className="text-[10px] text-gray-400">AI genererar task graphs</p>
+              </div>
             </div>
+            <button
+              onClick={() => setShowTimeMachine(v => !v)}
+              title="Time Machine"
+              className={`text-lg px-2 py-1 rounded-lg transition-colors ${
+                showTimeMachine
+                  ? 'bg-[#E8B84B]/20 text-[#8B6914]'
+                  : 'text-gray-400 hover:text-[#8B6914] hover:bg-[#E8B84B]/10'
+              }`}
+            >
+              ⏪
+            </button>
           </div>
         </div>
 
@@ -441,9 +456,22 @@ export function DevOSView() {
                 </div>
               ))}
             </div>
+            <button
+              onClick={() => setShowTimeMachine(true)}
+              className="mt-6 text-xs px-4 py-2 rounded-lg border border-[#E8B84B] text-[#8B6914] hover:bg-[#E8B84B]/10 font-medium transition-colors"
+            >
+              ⏪ Öppna Time Machine
+            </button>
           </div>
         )}
       </div>
+
+      {/* Time Machine: Third column (slide-in) */}
+      {showTimeMachine && (
+        <div className="w-80 flex-shrink-0 border-l border-surface-border bg-[#FDFAF5] flex flex-col">
+          <TimeMachineView />
+        </div>
+      )}
     </div>
   )
 }
