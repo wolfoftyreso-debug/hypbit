@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { TRUST_JURISDICTIONS, WAVULT_RECOMMENDED_STRUCTURE, TrustJurisdiction, TrustSetupStep } from './trustData'
+import { ALL_TRUST_JURISDICTIONS, ADDITIONAL_TRUST_JURISDICTIONS, ALL_TRUST_JURISDICTIONS, WAVULT_RECOMMENDED_STRUCTURE, TrustJurisdiction, TrustSetupStep } from './trustData'
 
 // ─── Colours ──────────────────────────────────────────────────────────────────
 const CREAM  = '#F5F0E8'
@@ -64,7 +64,7 @@ function CreateTrustModal({ jurisdictionId, onClose, onCreated }: {
   onClose: () => void
   onCreated: (trust: Record<string, unknown>) => void
 }) {
-  const jurisdiction = TRUST_JURISDICTIONS.find(j => j.id === jurisdictionId)!
+  const jurisdiction = ALL_TRUST_JURISDICTIONS.find(j => j.id === jurisdictionId)!
   const [step, setStep] = useState(1)
   const [form, setForm] = useState<TrustFormData>({
     jurisdiction_id: jurisdictionId,
@@ -592,7 +592,7 @@ function CompareTable({ onSelect, onStartTrust }: { onSelect: (id: string) => vo
 
       {/* Mobile cards */}
       <div style={{ display: 'none' }} className="mobile-cards">
-        {TRUST_JURISDICTIONS.map(j => (
+        {ALL_TRUST_JURISDICTIONS.map(j => (
           <div key={j.id}
             style={{
               background: j.id === 'difc' ? `linear-gradient(135deg, ${NAVY}08, ${GOLD}15)` : 'white',
@@ -648,7 +648,7 @@ function CompareTable({ onSelect, onStartTrust }: { onSelect: (id: string) => vo
             </tr>
           </thead>
           <tbody>
-            {TRUST_JURISDICTIONS.map((j, i) => {
+            {ALL_TRUST_JURISDICTIONS.map((j, i) => {
               const isRec = j.id === 'difc'
               const isEven = i % 2 === 0
               return (
@@ -1002,8 +1002,8 @@ function JurisdictionDetail({ jurisdiction, onStartTrust }: { jurisdiction: Trus
 // ─── Recommendation View ──────────────────────────────────────────────────────
 function RecommendationView({ onSelect, onStartTrust }: { onSelect: (id: string) => void; onStartTrust: (id: string) => void }) {
   const rec = WAVULT_RECOMMENDED_STRUCTURE
-  const tier1 = TRUST_JURISDICTIONS.find(j => j.id === rec.tier1)!
-  const tier2 = TRUST_JURISDICTIONS.find(j => j.id === rec.tier2)!
+  const tier1 = ALL_TRUST_JURISDICTIONS.find(j => j.id === rec.tier1)!
+  const tier2 = ALL_TRUST_JURISDICTIONS.find(j => j.id === rec.tier2)!
 
   return (
     <div>
@@ -1167,7 +1167,7 @@ export function TrustView() {
     window.dispatchEvent(new Event('wavult_trusts_updated'))
   }
 
-  const activeJurisdiction = TRUST_JURISDICTIONS.find(j => j.id === activeTab)
+  const activeJurisdiction = ALL_TRUST_JURISDICTIONS.find(j => j.id === activeTab)
 
   return (
     <div style={{ background: CREAM, minHeight: '100vh', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
