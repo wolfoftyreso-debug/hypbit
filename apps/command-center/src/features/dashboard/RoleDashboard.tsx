@@ -104,11 +104,134 @@ function VisaAlertBanner() {
   )
 }
 
+// ─── Entity-specific data for CEO dashboard ────────────────────────────────────
+const CEO_ENTITY_DATA: Record<string, {
+  strategicPriorities: { text: string; status: string }[]
+  capitalItems: { text: string; status: string }[]
+  marketPhase: string
+  marketNote: string
+  teamSize: number
+}> = {
+  'all': {
+    strategicPriorities: [
+      { text: 'Thailand workcamp', status: 'active' },
+      { text: 'Bolagsstruktur Dubai', status: 'planned' },
+      { text: 'quiXzoom MVP launch', status: 'in-progress' },
+      { text: 'Landvex enterprise launch - Q3 2026', status: 'planned' },
+      { text: 'Texas LLC incorporation', status: 'planned' },
+    ],
+    capitalItems: [
+      { text: 'Wavult Operations', status: 'active' },
+      { text: 'quiXzoom - MVP build', status: 'active' },
+      { text: 'Landvex - enterprise infrastruktur', status: 'planned' },
+      { text: 'Quixom Ads - fas 2', status: 'planned' },
+    ],
+    marketPhase: 'Q2',
+    marketNote: 'Thailand workcamp - 11 april',
+    teamSize: 5,
+  },
+  '1': {
+    strategicPriorities: [
+      { text: 'DMCC License Renewal', status: 'active' },
+      { text: 'UAE Corporate Tax', status: 'planned' },
+      { text: 'Holdingstruktur optimering', status: 'planned' },
+      { text: 'Dubai banking setup', status: 'in-progress' },
+    ],
+    capitalItems: [
+      { text: 'Kapitalstruktur gruppen', status: 'active' },
+      { text: 'Internlån till dotterbolag', status: 'active' },
+    ],
+    marketPhase: 'AE',
+    marketNote: 'UAE DMCC fritt handelszon',
+    teamSize: 2,
+  },
+  '2': {
+    strategicPriorities: [
+      { text: 'Årsredovisning 2025', status: 'planned' },
+      { text: 'Momsdeklaration Q1', status: 'active' },
+      { text: 'quiXzoom Sverige-lansering juni', status: 'in-progress' },
+    ],
+    capitalItems: [
+      { text: 'quiXzoom Sverige ops', status: 'active' },
+      { text: 'Marketing Sverige', status: 'planned' },
+    ],
+    marketPhase: 'SE',
+    marketNote: 'Sverige, mitten juni 2026',
+    teamSize: 5,
+  },
+  '3': {
+    strategicPriorities: [
+      { text: 'UAB registrering klar', status: 'done' },
+      { text: 'Litauisk bankkonto', status: 'in-progress' },
+      { text: 'EU-expansion prep', status: 'planned' },
+    ],
+    capitalItems: [
+      { text: 'EU tech-hub', status: 'active' },
+    ],
+    marketPhase: 'EU',
+    marketNote: 'Litauen — EU-bas',
+    teamSize: 2,
+  },
+  '4': {
+    strategicPriorities: [
+      { text: 'Delaware franchise tax', status: 'planned' },
+      { text: 'Federal corporate tax', status: 'planned' },
+      { text: 'US market prep', status: 'planned' },
+    ],
+    capitalItems: [
+      { text: 'US market entry', status: 'planned' },
+    ],
+    marketPhase: 'US',
+    marketNote: 'Delaware Inc — US-bas',
+    teamSize: 1,
+  },
+  '5': {
+    strategicPriorities: [
+      { text: 'LandveX DIFC setup', status: 'in-progress' },
+      { text: 'Enterprise sales UAE', status: 'planned' },
+      { text: 'Infrastrukturintelligens demo', status: 'planned' },
+    ],
+    capitalItems: [
+      { text: 'LandveX UAE launch', status: 'planned' },
+    ],
+    marketPhase: 'AE',
+    marketNote: 'UAE DIFC — LandveX',
+    teamSize: 2,
+  },
+  '6': {
+    strategicPriorities: [
+      { text: 'Texas LLC formation klar', status: 'done' },
+      { text: 'EIN filing', status: 'in-progress' },
+      { text: 'US infrastrukturmarknad', status: 'planned' },
+    ],
+    capitalItems: [
+      { text: 'LandveX USA launch', status: 'planned' },
+    ],
+    marketPhase: 'TX',
+    marketNote: 'Texas LLC — LandveX US',
+    teamSize: 1,
+  },
+}
+
 // ─── CEO Dashboard — Earth & Stone ────────────────────────────────────────────
 function CeoDashboard() {
-  const corpEntities = STATIC_CORP_ENTITIES
-  const activeCount = corpEntities.filter(e => e.status === 'aktiv').length
+  const { activeEntity, scopedEntities } = useEntityScope()
   const { t } = useTranslation()
+  const isRoot = activeEntity.layer === 0
+
+  // Filtrera bolag baserat på activeEntity
+  const relevantEntities = isRoot
+    ? STATIC_CORP_ENTITIES
+    : STATIC_CORP_ENTITIES.filter(e =>
+        e.id === activeEntity.id ||
+        scopedEntities.some((se: { id: string }) => se.id === e.id)
+      )
+
+  const activeCount = relevantEntities.filter(e => e.status === 'aktiv').length
+
+  // Entity-specifik data med fallback till group
+  const entityKey = isRoot ? 'all' : activeEntity.id
+  const entityData = CEO_ENTITY_DATA[entityKey] ?? CEO_ENTITY_DATA['all']
 
   const [drawer, setDrawer] = useState<{ title: string; content: React.ReactNode } | null>(null)
 
@@ -118,13 +241,6 @@ function CeoDashboard() {
     { name: 'Winston Bjarnemark', role: 'CFO' },
     { name: 'Dennis Bjarnemark', role: 'Chief Legal & Operations (Interim)' },
     { name: 'Leon Russo De Cerame', role: 'CEO Wavult Operations' },
-  ]
-
-  const capitalItems = [
-    { text: 'Wavult Operations', status: 'active' },
-    { text: 'quiXzoom - MVP build', status: 'active' },
-    { text: 'Landvex - enterprise infrastruktur', status: 'planned' },
-    { text: 'Quixom Ads - fas 2', status: 'planned' },
   ]
 
   const openDrawer = (title: string, content: React.ReactNode) => setDrawer({ title, content })
@@ -142,18 +258,22 @@ function CeoDashboard() {
     fontWeight: 600,
   })
 
+  const headingLabel = isRoot
+    ? t('dashboard.ceo.overview')
+    : `${activeEntity.name.toUpperCase()} — OPERATIV ÖVERBLICK`
+
   return (
     <div className="space-y-8 max-w-6xl">
-      <Breadcrumbs crumbs={[{ label: 'Wavult OS', href: '/' }, { label: 'Dashboard' }, { label: 'Group CEO' }]} />
+      <Breadcrumbs crumbs={[{ label: 'Wavult OS', href: '/' }, { label: 'Dashboard' }, { label: isRoot ? 'Group CEO' : activeEntity.name }]} />
       <VisaAlertBanner />
       <WelcomeBanner />
 
-      {/* GROUP CEO Strategisk överblick (ID: G-01) */}
+      {/* GROUP CEO / Entity Strategisk överblick (ID: G-01) */}
       <div>
         <div style={{ marginBottom: 4 }}>
           <span style={{ fontSize: 10, fontWeight: 700, color: "var(--color-text-muted)", letterSpacing: "0.10em", textTransform: "uppercase", fontFamily: "var(--font-mono)" }}>G-01</span>
         </div>
-        <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{t('dashboard.ceo.overview')}</h1>
+        <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{headingLabel}</h1>
       </div>
 
       {/* 4 overview cards */}
@@ -163,7 +283,7 @@ function CeoDashboard() {
           className="card card-interactive p-5 text-left"
           onClick={() => openDrawer('Aktiva Bolag', (
             <div className="space-y-3">
-              {(corpEntities ?? []).map(e => (
+              {relevantEntities.map(e => (
                 <div key={e.id} className="flex items-center justify-between py-2 border-b border-[var(--color-border)] last:border-0">
                   <div>
                     <div className="text-sm font-medium text-[var(--color-text-primary)]">{e.name}</div>
@@ -174,7 +294,6 @@ function CeoDashboard() {
                   </span>
                 </div>
               ))}
-              
             </div>
           ))}
         >
@@ -182,7 +301,9 @@ function CeoDashboard() {
           <div className="text-3xl font-bold text-[var(--color-text-primary)] flex items-center gap-2">
             {activeCount}
           </div>
-          <div className="text-xs text-[var(--color-text-secondary)] mt-2">WGH, WOH, OZ UAB, OZ Inc, LVX AC, LVX Inc</div>
+          <div className="text-xs text-[var(--color-text-secondary)] mt-2">
+            {isRoot ? 'WGH, WOH, OZ UAB, OZ Inc, LVX AC, LVX Inc' : activeEntity.name}
+          </div>
         </button>
 
         {/* Team Online */}
@@ -190,7 +311,7 @@ function CeoDashboard() {
           className="card card-interactive p-5 text-left"
           onClick={() => openDrawer('Team Online', (
             <div className="space-y-3">
-              {teamMembers.map(m => (
+              {teamMembers.slice(0, entityData.teamSize).map(m => (
                 <div key={m.name} className="flex items-start gap-3 py-2 border-b border-[var(--color-border)] last:border-0">
                   <span className="mt-1 h-2 w-2 rounded-full bg-green-500 flex-shrink-0" />
                   <div>
@@ -199,13 +320,14 @@ function CeoDashboard() {
                   </div>
                 </div>
               ))}
-              
             </div>
           ))}
         >
           <div className="label-xs mb-2">K-02 · TEAM ONLINE</div>
-          <div className="text-3xl font-bold text-[var(--color-text-primary)]">5</div>
-          <div className="text-xs text-[var(--color-text-secondary)] mt-2">Alla kärnroller bemannade</div>
+          <div className="text-3xl font-bold text-[var(--color-text-primary)]">{entityData.teamSize}</div>
+          <div className="text-xs text-[var(--color-text-secondary)] mt-2">
+            {isRoot ? 'Alla kärnroller bemannade' : `${entityData.teamSize} person${entityData.teamSize !== 1 ? 'er' : ''} tilldelade`}
+          </div>
         </button>
 
         {/* Kapital Allokerat */}
@@ -213,7 +335,7 @@ function CeoDashboard() {
           className="card card-interactive p-5 text-left"
           onClick={() => openDrawer('Kapital Allokerat', (
             <div className="space-y-3">
-              {capitalItems.map((item, i) => (
+              {entityData.capitalItems.map((item, i) => (
                 <div key={i} className="flex items-center justify-between py-2 border-b border-[var(--color-border)] last:border-0">
                   <span className="text-sm text-[var(--color-text-secondary)]">{item.text}</span>
                   <span style={statusBadgeStyle(item.status)}>{tStatus(item.status)}</span>
@@ -223,8 +345,12 @@ function CeoDashboard() {
           ))}
         >
           <div className="label-xs mb-2">P-03 · KAPITAL ALLOKERAT</div>
-          <div className="text-3xl font-bold text-[var(--color-text-primary)]">Q2</div>
-          <div className="text-xs text-[var(--color-text-secondary)] mt-2">Thailand workcamp - 11 april</div>
+          <div className="text-3xl font-bold text-[var(--color-text-primary)]">
+            {entityData.capitalItems.filter(i => i.status === 'active').length}
+          </div>
+          <div className="text-xs text-[var(--color-text-secondary)] mt-2">
+            {entityData.capitalItems.filter(i => i.status === 'active').length} aktiva allokeringar
+          </div>
         </button>
 
         {/* Marknadsfas */}
@@ -233,27 +359,29 @@ function CeoDashboard() {
           onClick={() => openDrawer('Marknadsfas', (
             <div className="space-y-4">
               <div>
-                <div className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">Sverige-lansering</div>
-                <p className="text-sm text-[var(--color-text-secondary)]">
-                  Planerad lansering i Sverige mitten av <strong className="text-[var(--color-text-primary)]">juni 2026</strong>. Primärmarknad för Landvex och quiXzoom rollout.
-                </p>
+                <div className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">Marknadsfas</div>
+                <p className="text-sm text-[var(--color-text-secondary)]">{entityData.marketNote}</p>
               </div>
-              <div>
-                <div className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">Thailand Workcamp</div>
-                <p className="text-sm text-[var(--color-text-secondary)]">
-                  <strong className="text-[var(--color-text-primary)]">11 april 2026</strong> — Vecka 1: teambuilding + utbildning. Sedan: projekten sätts upp redo att rulla ut.
-                </p>
-              </div>
-              <div>
-                <div className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">Nästa marknader</div>
-                <p className="text-sm text-[var(--color-text-secondary)]">UAE (Dubai), USA (Texas), Litauen — bolagsstruktur under etablering.</p>
-              </div>
+              {isRoot && (
+                <>
+                  <div>
+                    <div className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">Thailand Workcamp</div>
+                    <p className="text-sm text-[var(--color-text-secondary)]">
+                      <strong className="text-[var(--color-text-primary)]">11 april 2026</strong> — Vecka 1: teambuilding + utbildning. Sedan: projekten sätts upp redo att rulla ut.
+                    </p>
+                  </div>
+                  <div>
+                    <div className="text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">Nästa marknader</div>
+                    <p className="text-sm text-[var(--color-text-secondary)]">UAE (Dubai), USA (Texas), Litauen — bolagsstruktur under etablering.</p>
+                  </div>
+                </>
+              )}
             </div>
           ))}
         >
           <div className="label-xs mb-2">M-04 · MARKNADSFAS</div>
-          <div className="text-3xl font-bold text-[var(--color-text-primary)]">SE</div>
-          <div className="text-xs text-[var(--color-text-secondary)] mt-2">Sverige, mitten juni 2026</div>
+          <div className="text-3xl font-bold text-[var(--color-text-primary)]">{entityData.marketPhase}</div>
+          <div className="text-xs text-[var(--color-text-secondary)] mt-2">{entityData.marketNote}</div>
         </button>
       </div>
 
@@ -273,13 +401,7 @@ function CeoDashboard() {
               </p>
             </div>
           ))}
-          items={[
-            { text: 'Thailand workcamp', status: 'active' },
-            { text: 'Bolagsstruktur Dubai', status: 'planned' },
-            { text: 'quiXzoom MVP launch', status: 'in-progress' },
-            { text: 'Landvex enterprise launch - Q3 2026', status: 'planned' },
-            { text: 'Texas LLC incorporation', status: 'planned' },
-          ]}
+          items={entityData.strategicPriorities}
         />
         <ClickableEarthSection
           id="A-01"
@@ -295,12 +417,7 @@ function CeoDashboard() {
               </p>
             </div>
           ))}
-          items={[
-            { text: 'Wavult Operations', status: 'active' },
-            { text: 'quiXzoom - MVP build', status: 'active' },
-            { text: 'Landvex - enterprise infrastruktur', status: 'planned' },
-            { text: 'Quixom Ads - fas 2', status: 'planned' },
-          ]}
+          items={entityData.capitalItems}
         />
       </div>
 
@@ -412,30 +529,147 @@ function Opsdashboard() {
   )
 }
 
+// ─── Entity-specific data for CFO dashboard ────────────────────────────────────
+const CFO_ENTITY_DATA: Record<string, {
+  heading: string
+  subtitle: string
+  financialStructure: { text: string; status: string }[]
+  infraCosts: { text: string; status: string }[]
+}> = {
+  'all': {
+    heading: 'CFO',
+    subtitle: 'Finansiell kontroll — Wavult Ecosystem',
+    financialStructure: [
+      { text: 'Intercompany service fee — WOP fakturerar dotterbolag', status: 'planned' },
+      { text: 'IP-royalty — Wavult Group tar 5–15% på omsättning', status: 'planned' },
+      { text: 'Transfer pricing-policy — kräver CLO + extern rådgivare', status: 'blocked' },
+      { text: 'Separat bankkonto per bolag — storbank varje jurisdiktion', status: 'planned' },
+      { text: 'Supabase US East — planerat (OI US expansion)', status: 'planned' },
+    ],
+    infraCosts: [
+      { text: 'AWS ECS eu-north-1 — wavult-api + quixzoom-api', status: 'active' },
+      { text: 'S3: 4 buckets (EU + US primär + backup)', status: 'active' },
+      { text: 'Supabase West EU — quixzoom-v2 + wavult-os projekt', status: 'active' },
+      { text: 'Cloudflare — 2 zoner, CF Pages (10/10 slots)', status: 'active' },
+      { text: 'CF Pages — quiXzoom landing, Wavult, OI portals', status: 'active' },
+    ],
+  },
+  '1': {
+    heading: 'WGH — FINANSIELL KONTROLL',
+    subtitle: 'Wavult Group Holding DMCC — UAE',
+    financialStructure: [
+      { text: 'DMCC License Renewal — årsavgift', status: 'planned' },
+      { text: 'UAE Corporate Tax 9% — gäller fr.o.m. 2023', status: 'active' },
+      { text: 'Internlån till dotterbolag — struktur ej satt', status: 'planned' },
+      { text: 'IP-royalty ingående — 5–15% på dotterbolags omsättning', status: 'planned' },
+    ],
+    infraCosts: [
+      { text: 'Kapitalstruktur gruppen', status: 'active' },
+      { text: 'Dubai banking setup — Mashreq / ADCB', status: 'in-progress' },
+    ],
+  },
+  '2': {
+    heading: 'WOH — FINANSIELL KONTROLL',
+    subtitle: 'Wavult Operations Holding AB — Sverige',
+    financialStructure: [
+      { text: 'Årsredovisning 2025 — Bolagsverket', status: 'planned' },
+      { text: 'Momsdeklaration Q1 2026', status: 'active' },
+      { text: 'F-skatt — löpande', status: 'active' },
+      { text: 'quiXzoom Sverige-lansering juni — budget sätts', status: 'in-progress' },
+    ],
+    infraCosts: [
+      { text: 'quiXzoom Sverige ops', status: 'active' },
+      { text: 'Marketing Sverige — budget ej satt', status: 'planned' },
+    ],
+  },
+  '3': {
+    heading: 'OZ UAB — FINANSIELL KONTROLL',
+    subtitle: 'Optical Zoom UAB — Litauen',
+    financialStructure: [
+      { text: 'VAT-registrering Litauen', status: 'planned' },
+      { text: 'Corporate tax 15% — standard rate LT', status: 'planned' },
+      { text: 'Litauisk bankkonto — Swedbank / SEB LT', status: 'in-progress' },
+    ],
+    infraCosts: [
+      { text: 'EU tech-hub driftkostnad', status: 'active' },
+    ],
+  },
+  '4': {
+    heading: 'OZ INC — FINANSIELL KONTROLL',
+    subtitle: 'Optical Zoom Inc — Delaware, USA',
+    financialStructure: [
+      { text: 'Delaware franchise tax — $50/år', status: 'planned' },
+      { text: 'Federal corporate tax 21%', status: 'planned' },
+      { text: 'EIN — Employer Identification Number', status: 'in-progress' },
+    ],
+    infraCosts: [
+      { text: 'US market entry budget', status: 'planned' },
+    ],
+  },
+  '5': {
+    heading: 'LVX AE — FINANSIELL KONTROLL',
+    subtitle: 'LandveX AC — UAE DIFC',
+    financialStructure: [
+      { text: 'DIFC setup fees', status: 'planned' },
+      { text: 'UAE Corporate Tax 9%', status: 'planned' },
+      { text: 'Enterprise sales pipeline UAE', status: 'planned' },
+    ],
+    infraCosts: [
+      { text: 'LandveX UAE launch budget', status: 'planned' },
+    ],
+  },
+  '6': {
+    heading: 'LVX US — FINANSIELL KONTROLL',
+    subtitle: 'LandveX Inc — Texas, USA',
+    financialStructure: [
+      { text: 'Texas state franchise tax', status: 'planned' },
+      { text: 'Federal corporate tax 21%', status: 'planned' },
+      { text: 'EIN filing Texas LLC', status: 'in-progress' },
+    ],
+    infraCosts: [
+      { text: 'LandveX USA launch budget', status: 'planned' },
+    ],
+  },
+}
+
 // ─── CFO Dashboard ─────────────────────────────────────────────────────────────
 function CfoDashboard() {
+  const { activeEntity } = useEntityScope()
+  const isRoot = activeEntity.layer === 0
+  const entityKey = isRoot ? 'all' : activeEntity.id
+  const cfoData = CFO_ENTITY_DATA[entityKey] ?? CFO_ENTITY_DATA['all']
+
   const [drawer, setDrawer] = useState<{ title: string; content: React.ReactNode } | null>(null)
   const openDrawer = (title: string, content: React.ReactNode) => setDrawer({ title, content })
   const closeDrawer = () => setDrawer(null)
 
   return (
     <div className="space-y-8 max-w-6xl">
-      <Breadcrumbs crumbs={[{ label: 'Wavult OS', href: '/' }, { label: 'Dashboard' }, { label: 'CFO' }]} />
+      <Breadcrumbs crumbs={[{ label: 'Wavult OS', href: '/' }, { label: 'Dashboard' }, { label: isRoot ? 'CFO' : activeEntity.name }]} />
       <div>
-        <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>CFO</h1>
-        <p style={{ color: "var(--color-text-secondary)", marginTop: 4, fontSize: 14 }}>Finansiell kontroll — Wavult Ecosystem</p>
+        <h1 style={{ fontSize: 13, fontWeight: 600, color: "var(--color-text-secondary)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{cfoData.heading}</h1>
+        <p style={{ color: "var(--color-text-secondary)", marginTop: 4, fontSize: 14 }}>{cfoData.subtitle}</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Bolag med ekonomi', value: '6', delta: 'WGH, WOP, QZ UAB, QZ Inc, LVX AB, LVX Inc', color: '#3B82F6',
-            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">6 bolag med ekonomisk redovisning: Wavult Group Holding, Wavult Operations, QuiXzoom UAB, QuiXzoom Inc, Landvex AB, Landvex Inc.</p> },
-          { label: 'Infrastruktur (AWS)', value: 'Live', delta: 'eu-north-1 · ECS · S3 multi-region', color: '#10B981',
-            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">AWS ECS eu-north-1 live med wavult-api och quixzoom-api. S3 multi-region CRR aktiv.</p> },
-          { label: 'Transfer pricing', value: 'Ej satt', delta: 'Kräver CLO + extern rådgivare', color: '#FF9500',
-            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Transfer pricing-policy är ej fastställd. Kräver samverkan mellan CFO, CLO och extern skatterådgivare.</p> },
-          { label: 'Dubai holding', value: 'Planerat', delta: 'Väntar på bolagsbildning', color: '#2563EB',
-            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Wavult Group (Dubai Free Zone) under bildning. Ska bli holdingbolag för IP och internprissättning.</p> },
+          isRoot
+            ? { label: 'Bolag med ekonomi', value: '6', delta: 'WGH, WOP, QZ UAB, QZ Inc, LVX AB, LVX Inc', color: '#3B82F6',
+                drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">6 bolag med ekonomisk redovisning: Wavult Group Holding, Wavult Operations, QuiXzoom UAB, QuiXzoom Inc, Landvex AB, Landvex Inc.</p> }
+            : { label: 'Bolag', value: activeEntity.short_name ?? activeEntity.name, delta: activeEntity.jurisdiction ?? '', color: '#3B82F6',
+                drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">{activeEntity.name} — aktiv entitet i Wavult Group.</p> },
+          { label: 'Struktur', value: cfoData.financialStructure.filter(i => i.status === 'active').length + '/' + cfoData.financialStructure.length, delta: `${cfoData.financialStructure.filter(i => i.status === 'planned' || i.status === 'blocked').length} återstår`, color: '#10B981',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">{cfoData.financialStructure.filter(i => i.status === 'active').length} aktiva finansstrukturer av {cfoData.financialStructure.length} totalt.</p> },
+          isRoot
+            ? { label: 'Transfer pricing', value: 'Ej satt', delta: 'Kräver CLO + extern rådgivare', color: '#FF9500',
+                drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Transfer pricing-policy är ej fastställd. Kräver samverkan mellan CFO, CLO och extern skatterådgivare.</p> }
+            : { label: 'Allokeringar', value: String(cfoData.infraCosts.length), delta: `${cfoData.infraCosts.filter(i => i.status === 'active').length} aktiva`, color: '#FF9500',
+                drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">{cfoData.infraCosts.length} allokeringar för {activeEntity.name}.</p> },
+          isRoot
+            ? { label: 'Dubai holding', value: 'Planerat', delta: 'Väntar på bolagsbildning', color: '#2563EB',
+                drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Wavult Group (Dubai Free Zone) under bildning. Ska bli holdingbolag för IP och internprissättning.</p> }
+            : { label: 'Jurisdiktion', value: cfoData.heading.split('—')[0].trim(), delta: activeEntity.jurisdiction ?? '', color: '#2563EB',
+                drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">{activeEntity.name} är registrerat i {activeEntity.jurisdiction ?? 'okänd jurisdiktion'}.</p> },
         ].map(s => (
           <button
             key={s.label}
@@ -451,42 +685,30 @@ function CfoDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <ClickableSection
-          title="Finansiell struktur (att implementera)"
+          title="Finansiell struktur"
           onRowClick={(item) => openDrawer(item.text, (
             <div className="space-y-3">
               <div className="flex items-center gap-2 mb-4">
                 <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
                 <span style={{ fontSize: 11, background: (STATUS_COLORS[item.status] ?? '#8A8278') + '18', color: STATUS_COLORS[item.status] ?? '#8A8278', padding: '1px 6px', borderRadius: 9999, fontWeight: 600 }}>{STATUS_LABELS[item.status] ?? item.status}</span>
               </div>
-              <p className="text-sm text-[var(--color-text-secondary)]">Finansiell strukturåtgärd inom Wavult Ecosystem.</p>
+              <p className="text-sm text-[var(--color-text-secondary)]">Finansiell strukturåtgärd inom {isRoot ? 'Wavult Ecosystem' : activeEntity.name}.</p>
             </div>
           ))}
-          items={[
-            { text: 'Intercompany service fee — WOP fakturerar dotterbolag', status: 'planned' },
-            { text: 'IP-royalty — Wavult Group tar 5–15% på omsättning', status: 'planned' },
-            { text: 'Transfer pricing-policy — kräver CLO + extern rådgivare', status: 'blocked' },
-            { text: 'Separat bankkonto per bolag — storbank varje jurisdiktion', status: 'planned' },
-            { text: 'Supabase US East — planerat (OI US expansion)', status: 'planned' },
-          ]}
+          items={cfoData.financialStructure}
         />
         <ClickableSection
-          title="Infrastrukturkostnader (aktiva)"
+          title="Kostnader & allokeringar"
           onRowClick={(item) => openDrawer(item.text, (
             <div className="space-y-3">
               <div className="flex items-center gap-2 mb-4">
                 <span className="h-2 w-2 rounded-full flex-shrink-0" style={{ background: STATUS_COLORS[item.status] ?? '#8A8278' }} />
                 <span style={{ fontSize: 11, background: (STATUS_COLORS[item.status] ?? '#8A8278') + '18', color: STATUS_COLORS[item.status] ?? '#8A8278', padding: '1px 6px', borderRadius: 9999, fontWeight: 600 }}>{STATUS_LABELS[item.status] ?? item.status}</span>
               </div>
-              <p className="text-sm text-[var(--color-text-secondary)]">Infrastrukturkostnad — löpande driftkostnad för Wavult Group.</p>
+              <p className="text-sm text-[var(--color-text-secondary)]">Kostnad — löpande för {isRoot ? 'Wavult Group' : activeEntity.name}.</p>
             </div>
           ))}
-          items={[
-            { text: 'AWS ECS eu-north-1 — wavult-api + quixzoom-api', status: 'active' },
-            { text: 'S3: 4 buckets (EU + US primär + backup)', status: 'active' },
-            { text: 'Supabase West EU — quixzoom-v2 + wavult-os projekt', status: 'active' },
-            { text: 'Cloudflare — 2 zoner, CF Pages (10/10 slots)', status: 'active' },
-            { text: 'CF Pages — quiXzoom landing, Wavult, OI portals', status: 'active' },
-          ]}
+          items={cfoData.infraCosts}
         />
       </div>
       {drawer && <InfoDrawer title={drawer.title} onClose={closeDrawer}>{drawer.content}</InfoDrawer>}
