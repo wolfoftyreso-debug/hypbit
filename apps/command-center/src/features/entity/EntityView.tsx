@@ -5,6 +5,7 @@
 import { useState, useMemo, Suspense } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ENTITIES } from '../org-graph/data'
+import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import {
   getEntityFinance, getEntityLegal, getEntitySystems,
   getEntityOps, getEntityPeople, getEntityRelationships,
@@ -592,21 +593,15 @@ export function EntityView() {
   const { entityId } = useParams<{ entityId: string }>()
   const navigate = useNavigate()
   const { effectiveRole } = useRole()
+  const { activeEntity } = useEntityScope()
 
   const roleId = effectiveRole?.id ?? 'group-ceo'
   const perms = ROLE_PERMISSIONS[roleId] ?? ROLE_PERMISSIONS['group-ceo']
 
-  const resolvedId = entityId ?? ENTITIES[0].id
+  // Använd activeEntity från global scope — INTE URL-param eller lokal lista
+  const resolvedId = activeEntity?.id ?? entityId ?? ENTITIES[0].id
   const entity = ENTITIES.find(e => e.id === resolvedId)
   const hs = useMemo(() => computeHealthScore(resolvedId), [resolvedId])
-
-  // On mobile: if no entityId in URL, show list; if entityId, show detail
-  const [mobileShowDetail, setMobileShowDetail] = useState(!!entityId)
-
-  // Keep in sync when URL changes
-  useMemo(() => {
-    setMobileShowDetail(!!entityId)
-  }, [entityId])
 
   const defaultTab: TabId =
     perms.overlayMode === 'financial' ? 'finance' :
@@ -632,72 +627,19 @@ export function EntityView() {
 
   const statusColor = { live: '#10B981', forming: '#F59E0B', planned: '#6B7280' }[entity.active_status]
 
-  const handleSelectEntity = (id: string) => {
-    navigate(`/entities/${id}`)
-    setActiveTab(defaultTab)
-    setMobileShowDetail(true)
-  }
-
   return (
     <div className="flex h-full overflow-hidden">
 
-      {/* ── Entity selector — hidden on mobile when detail shown ── */}
-      <div className={`
-        ${mobileShowDetail ? 'hidden md:flex' : 'flex'}
-        w-full md:w-56 flex-shrink-0
-        flex-col
-        border-r border-surface-border bg-[var(--color-bg-subtle,#EDE8DC)] overflow-y-auto
-      `}>
-        <div className="px-3 py-3 border-b border-surface-border">
-          <p className="text-xs font-semibold text-gray-9000 uppercase tracking-wider">Entities</p>
-        </div>
-        <div className="py-2">
-          {ENTITIES.map(ent => {
-            const active = ent.id === resolvedId
-            const sc = { live: '#10B981', forming: '#F59E0B', planned: '#6B7280' }[ent.active_status]
-            const ehs = computeHealthScore(ent.id)
-            return (
-              <button
-                key={ent.id}
-                onClick={() => handleSelectEntity(ent.id)}
-                className="w-full flex items-center gap-2.5 px-3 py-3 md:py-2.5 text-left transition-colors hover:bg-muted/30"
-                style={{ background: active ? ent.color + '12' : undefined }}
-              >
-                <span className="text-base flex-shrink-0">{ent.flag}</span>
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm md:text-xs font-semibold truncate" style={{ color: active ? ent.color : 'var(--color-text-secondary,#3A3530)' }}>
-                    {ent.shortName}
-                  </div>
-                  <div className="flex items-center gap-1.5 mt-0.5">
-                    <HealthBar score={ehs.overall} level={ehs.level} />
-                    <span className="text-[9px] font-mono" style={{ color: LEVEL_COLOR[ehs.level] }}>{ehs.overall}</span>
-                  </div>
-                </div>
-                <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: sc }} />
-              </button>
-            )
-          })}
-        </div>
-      </div>
+      {/* Entity-väljare borttagen — styrs uteslutande från sidebar-switcher */}
 
-      {/* ── Detail panel — full width on mobile ── */}
-      <div className={`
-        ${mobileShowDetail ? 'flex' : 'hidden md:flex'}
-        flex-1 flex-col min-w-0 overflow-hidden
-      `}>
+      <div className="flex-1 flex-col min-w-0 overflow-hidden flex">
 
         {/* Header */}
         <div className="flex-shrink-0 border-b border-surface-border bg-white">
           <div className="px-4 md:px-6 py-4">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3 min-w-0">
-                {/* Back button — mobile only */}
-                <button
-                  className="md:hidden flex-shrink-0 p-1 -ml-1 text-gray-9000 hover:text-gray-600"
-                  onClick={() => setMobileShowDetail(false)}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
-                </button>
+
                 <span className="text-2xl flex-shrink-0">{entity.flag}</span>
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
