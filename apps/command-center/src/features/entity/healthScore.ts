@@ -5,7 +5,7 @@
 import {
   getEntityFinance, getEntityLegal, getEntitySystems, getEntityOps, getEntityPeople,
 } from './entityData'
-import { ENTITIES } from '../org-graph/data'
+import { CORP_ENTITIES as ENTITIES } from '../../shared/data/systemData'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

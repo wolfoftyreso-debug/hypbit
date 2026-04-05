@@ -18,7 +18,7 @@ import {
   isActivityValid,
   getActivityAlerts,
 } from './data'
-import { ENTITIES } from '../org-graph/data'
+import { CORP_ENTITIES as ENTITIES } from '../../shared/data/systemData'
 import { COMMAND_CHAIN } from '../org-graph/commandChain'
 import { MARKET_SITES } from '../market-sites/data'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'

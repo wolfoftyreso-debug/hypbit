@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { useEvents } from '../events/EventContext'
 import { useOperator } from '../operator/OperatorContext'
 import { COMMAND_CHAIN, STATUS_COLOR } from '../../features/org-graph/commandChain'
-import { ENTITIES } from '../../features/org-graph/data'
+import { CORP_ENTITIES as ENTITIES } from '../../shared/data/systemData'
 import { getRoleKPIs, getKPIStatus } from '../../features/incidents/incidentEngine'
 
 function StatusSection({ title, children }: { title: string; children: React.ReactNode }) {

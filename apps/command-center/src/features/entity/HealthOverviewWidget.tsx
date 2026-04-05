@@ -4,7 +4,7 @@
 import { useNavigate } from 'react-router-dom'
 import { computeAllHealthScores } from './healthScore'
 import { ScoreGauge, LEVEL_COLOR, LEVEL_LABEL } from './HealthScoreWidget'
-import { ENTITIES } from '../org-graph/data'
+import { CORP_ENTITIES as ENTITIES } from '../../shared/data/systemData'
 
 export function HealthOverviewWidget() {
   const navigate = useNavigate()

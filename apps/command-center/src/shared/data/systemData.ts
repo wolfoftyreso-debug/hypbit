@@ -143,6 +143,52 @@ export const CORP_ENTITIES: CorpEntity[] = [
   },
 ]
 
+// ── BRAND GROUPS ─────────────────────────────────────────────────────────────
+
+export interface BrandGroup {
+  id: string
+  name: string
+  shortName: string
+  flag: string
+  color: string
+  entityIds: string[]    // vilka bolag ingår
+  description: string
+  products: string[]
+}
+
+export const BRAND_GROUPS: BrandGroup[] = [
+  {
+    id: 'quixzoom',
+    name: 'quiXzoom',
+    shortName: 'QZ',
+    flag: '📷',
+    color: '#2D7A4F',
+    entityIds: ['oz-lt', 'oz-us'],
+    description: 'Crowdsourcad kamerainfrastruktur — EU + US',
+    products: ['quiXzoom EU', 'quiXzoom US'],
+  },
+  {
+    id: 'landvex',
+    name: 'LandveX',
+    shortName: 'LVX',
+    flag: '🏗️',
+    color: '#C9A84C',
+    entityIds: ['lvx-ae', 'lvx-us'],
+    description: 'Infrastrukturintelligens — UAE + USA',
+    products: ['LandveX AE', 'LandveX US'],
+  },
+  {
+    id: 'wavult-holdings',
+    name: 'Wavult Holdings',
+    shortName: 'WHD',
+    flag: '🏛️',
+    color: '#0A3D62',
+    entityIds: ['wgh', 'woh'],
+    description: 'Holdingstruktur — Dubai + Sverige',
+    products: ['Wavult DS'],
+  },
+]
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 export function getChildren(entityId: string): CorpEntity[] {

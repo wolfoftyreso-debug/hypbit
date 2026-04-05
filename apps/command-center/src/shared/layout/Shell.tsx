@@ -227,7 +227,7 @@ function SidebarNav({ criticalAlertCount, onNavigate, onAuditLog, entityAccentCo
 export function Shell({ children }: ShellProps) {
   const { role, setRole: _setRole, isAdmin, viewAs, setViewAs, effectiveRole } = useRole()
   const { signOut } = useAuth()
-  const { activeEntity: scopeEntity } = useEntityScope()
+  const { activeEntity: scopeEntity, level: scopeLevel, brandGroup: scopeBrandGroup } = useEntityScope()
   const { pathname } = useLocation()
   const { t } = useTranslation()
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -294,34 +294,19 @@ export function Shell({ children }: ShellProps) {
               </svg>
             </button>
           </div>
-          {/* Active entity badge */}
-          {scopeEntity && (
-            <div className="flex items-center gap-1.5 mt-1.5">
-              <span
-                style={{
-                  display: 'inline-block',
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  background: scopeEntity.color ?? '#8B7355',
-                  flexShrink: 0,
-                }}
-              />
-              <span style={{
-                fontSize: 10,
-                fontWeight: 600,
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-                color: 'rgba(245,240,232,0.65)',
-                fontFamily: 'var(--font-mono, monospace)',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}>
-                {scopeEntity.name}
-              </span>
-            </div>
-          )}
+          {/* Active scope badge */}
+          {(() => {
+            const badgeColor = scopeLevel === 'group' ? '#E8B84B' : scopeLevel === 'brand' && scopeBrandGroup ? scopeBrandGroup.color : scopeEntity?.color ?? '#8B7355'
+            const badgeLabel = scopeLevel === 'group' ? 'Wavult Group' : scopeLevel === 'brand' && scopeBrandGroup ? scopeBrandGroup.name : scopeEntity?.name ?? ''
+            return (
+              <div className="flex items-center gap-1.5 mt-1.5">
+                <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: badgeColor, flexShrink: 0 }} />
+                <span style={{ fontSize: 10, fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.65)', fontFamily: 'var(--font-mono, monospace)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {badgeLabel}
+                </span>
+              </div>
+            )
+          })()}
         </div>
 
         {/* Entity Switcher — prominent at top of nav */}

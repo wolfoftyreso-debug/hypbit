@@ -4,7 +4,7 @@
 
 import { generateIncidents, getRoleKPIs, getKPIStatus } from '../../features/incidents/incidentEngine'
 import { COMMAND_CHAIN, getApexRole, getDirectReports } from '../../features/org-graph/commandChain'
-import { ENTITIES } from '../../features/org-graph/data'
+import { CORP_ENTITIES as ENTITIES } from '../../shared/data/systemData'
 import type {
   OperationalEvent, EventPriority, EventCategory,
   ResponseType, EventAction, GateDependency, AtmosphereState,

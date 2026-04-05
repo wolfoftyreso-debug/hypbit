@@ -4,7 +4,7 @@
 
 import { useState, useMemo, Suspense } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { ENTITIES } from '../org-graph/data'
+import { CORP_ENTITIES as ENTITIES } from '../../shared/data/systemData'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import {
   getEntityFinance, getEntityLegal, getEntitySystems,

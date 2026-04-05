@@ -1,21 +1,28 @@
-import React, { createContext, useContext, useState } from 'react'
-import { CORP_ENTITIES, CorpEntity } from '../data/systemData'
+import React, { createContext, useContext, useState, useMemo } from 'react'
+import { CORP_ENTITIES, BRAND_GROUPS, CorpEntity, BrandGroup } from '../data/systemData'
 
 // Re-export Entity type alias for backwards compatibility
 export type Entity = CorpEntity
 
 export type ViewScope = 'group' | 'entity'
 
+// Three-level scope
+export type ScopeLevel = 'group' | 'brand' | 'entity'
+
 interface EntityScopeContextValue {
+  // ── New 3-level API ──────────────────────────────────────────────────────
+  level: ScopeLevel
+  brandGroup: BrandGroup | null   // set when level === 'brand'
+  activeEntityId: string          // entity id OR brand-group id when level === 'brand'
+  setScope: (level: ScopeLevel, entityId: string, brandGroup: BrandGroup | null) => void
+  /** IDs of entities in scope based on current level */
+  scopedEntityIds: string[]
+
+  // ── Legacy API (backward compat) ─────────────────────────────────────────
   activeEntity: CorpEntity
   setActiveEntity: (e: CorpEntity) => void
-  // Returns true if the given entity_id is "in scope" for the active entity
-  // Logic: active entity is root (layer 0) → everything is in scope
-  // active entity layer 1+ → only entities in its subtree are in scope
   isInScope: (entityId: string) => boolean
-  // All entities that are in scope
   scopedEntities: CorpEntity[]
-  // View scope: 'group' = aggregate all entities, 'entity' = filter to activeEntity only
   viewScope: ViewScope
   setViewScope: (scope: ViewScope) => void
 }
@@ -33,17 +40,66 @@ function getSubtree(root: CorpEntity, all: CorpEntity[]): CorpEntity[] {
 const EntityScopeContext = createContext<EntityScopeContextValue | null>(null)
 
 export function EntityScopeProvider({ children }: { children: React.ReactNode }) {
-  // Default: root holding (wgh)
-  const defaultEntity = CORP_ENTITIES.find(e => e.layer === 0) ?? CORP_ENTITIES[0]
-  const [activeEntity, setActiveEntity] = useState<CorpEntity>(defaultEntity)
+  // Default: Wavult Group level (aggregate all)
+  const [level, setLevel] = useState<ScopeLevel>('group')
+  const [activeEntityId, setActiveEntityId] = useState<string>('wavult-group')
+  const [brandGroup, setBrandGroup] = useState<BrandGroup | null>(null)
   const [viewScope, setViewScope] = useState<ViewScope>('entity')
 
-  const scopedEntities = getSubtree(activeEntity, CORP_ENTITIES)
-  const scopedIds = new Set(scopedEntities.map(e => e.id))
+  // Derive the "active entity" for legacy consumers
+  const defaultEntity = CORP_ENTITIES.find(e => e.layer === 0) ?? CORP_ENTITIES[0]
+  const activeEntity: CorpEntity = useMemo(() => {
+    if (level === 'entity') {
+      return CORP_ENTITIES.find(e => e.id === activeEntityId) ?? defaultEntity
+    }
+    // group or brand → return root holding for legacy consumers
+    return defaultEntity
+  }, [level, activeEntityId, defaultEntity])
+
+  const setActiveEntity = (e: CorpEntity) => {
+    setScope('entity', e.id, null)
+  }
+
+  function setScope(newLevel: ScopeLevel, entityId: string, newBrandGroup: BrandGroup | null) {
+    setLevel(newLevel)
+    setActiveEntityId(entityId)
+    setBrandGroup(newBrandGroup)
+  }
+
+  const scopedEntityIds = useMemo(() => {
+    if (level === 'group') return CORP_ENTITIES.map(e => e.id)
+    if (level === 'brand' && brandGroup) return brandGroup.entityIds
+    return [activeEntityId]
+  }, [level, activeEntityId, brandGroup])
+
+  // Legacy: scoped entities (full objects)
+  const scopedEntities = useMemo(() => {
+    if (level === 'group') return CORP_ENTITIES
+    if (level === 'brand' && brandGroup) {
+      return CORP_ENTITIES.filter(e => brandGroup.entityIds.includes(e.id))
+    }
+    const found = CORP_ENTITIES.find(e => e.id === activeEntityId)
+    return found ? getSubtree(found, CORP_ENTITIES) : [defaultEntity]
+  }, [level, activeEntityId, brandGroup, defaultEntity])
+
+  const scopedIds = useMemo(() => new Set(scopedEntities.map(e => e.id)), [scopedEntities])
   const isInScope = (entityId: string) => scopedIds.has(entityId)
 
   return (
-    <EntityScopeContext.Provider value={{ activeEntity, setActiveEntity, scopedEntities, isInScope, viewScope, setViewScope }}>
+    <EntityScopeContext.Provider value={{
+      level,
+      brandGroup,
+      activeEntityId,
+      setScope,
+      scopedEntityIds,
+      // legacy
+      activeEntity,
+      setActiveEntity,
+      isInScope,
+      scopedEntities,
+      viewScope,
+      setViewScope,
+    }}>
       {children}
     </EntityScopeContext.Provider>
   )

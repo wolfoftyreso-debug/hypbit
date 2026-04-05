@@ -67,74 +67,19 @@ interface TeamMember {
   owns: string[]
 }
 
-const TEAM_COMMAND_CHAIN: TeamMember[] = [
-  {
-    id: 'erik',
-    name: 'Erik Svensson',
-    role: 'Chairman & Group CEO',
-    reportsTo: null,
-    entity: 'WGH',
-    avatar: '/avatars/erik.png',
-    owns: ['Group strategy', 'Capital allocation', 'IP & brand', 'System architecture', 'Vision'],
-    kpis: [
-      { label: 'Entiteter etablerade', value: '4/6', status: 'warning' },
-      { label: 'Sverige go-live', value: 'Juni 2026', status: 'on_track' },
-    ]
-  },
-  {
-    id: 'leon',
-    name: 'Leon Russo De Cerame',
-    role: 'CEO — Operations',
-    reportsTo: 'erik',
-    entity: 'WOH',
-    avatar: '/avatars/leon.png',
-    owns: ['Daglig exekvering', 'Resurshantering', 'Sales & revenue', 'Team-koordinering'],
-    kpis: [
-      { label: 'Aktiva projekt', value: '4', status: 'active' },
-      { label: 'First MRR', value: 'Pre-revenue', status: 'pending' },
-    ]
-  },
-  {
-    id: 'winston',
-    name: 'Winston Bjarnemark',
-    role: 'CFO',
-    reportsTo: 'erik',
-    entity: 'WOH',
-    avatar: '/avatars/winston.png',
-    owns: ['Finansiella flöden', 'Intercompany billing', 'Budget & forecast', 'Banking'],
-    kpis: [
-      { label: 'Bankkonton öppnade', value: '0', status: 'critical' },
-      { label: 'Intercompany avtal', value: '0 signerade', status: 'critical' },
-    ]
-  },
-  {
-    id: 'johan',
-    name: 'Johan Berglund',
-    role: 'Group CTO',
-    reportsTo: 'erik',
-    entity: 'WOH',
-    avatar: '/avatars/johan.png',
-    owns: ['Systemarkitektur', 'Infrastruktur', 'CI/CD & DevOps', 'Säkerhet'],
-    kpis: [
-      { label: 'ECS-tjänster live', value: '11/13', status: 'on_track' },
-      { label: 'System uptime', value: '99%', status: 'good' },
-    ]
-  },
-  {
-    id: 'dennis',
-    name: 'Dennis Bjarnemark',
-    role: 'Board / Chief Legal',
-    reportsTo: 'erik',
-    entity: 'WGH',
-    avatar: '/avatars/dennis.png',
-    owns: ['Bolagsstruktur', 'Avtal & juridik', 'IP-skydd', 'Compliance'],
-    kpis: [
-      { label: 'Entiteter inkorporerade', value: '4/6', status: 'warning' },
-      { label: 'Nyckelavtal signerade', value: '0', status: 'critical' },
-    ]
-  },
-]
-
+// Derived from systemData — NEVER edit directly here
+const TEAM_COMMAND_CHAIN: TeamMember[] = SYSTEM_TEAM_MEMBERS
+  .filter(m => m.roleId !== 'viewer') // exclude non-exec roles
+  .map(m => ({
+    id: m.id,
+    name: m.name,
+    role: m.role,
+    reportsTo: m.reportsTo ?? null,
+    entity: SYSTEM_CORP_ENTITIES.find(e => m.entityIds.includes(e.id) && e.layer <= 1)?.shortName ?? m.entityIds[0] ?? '',
+    avatar: m.avatar ?? '',
+    owns: m.owns ?? [],
+    kpis: m.kpis.map(k => ({ label: k.label, value: k.value, status: k.status as KPIStatus })),
+  }))
 // ─── Entity detail data ────────────────────────────────────────────────────────
 
 interface EntityKPI {
@@ -159,7 +104,7 @@ interface EntityDetail {
 }
 
 const ENTITY_DETAILS: Record<string, EntityDetail> = {
-  '1': {
+  'wgh': {
     incorporation: 'DMCC Free Zone LLC',
     bankStatus: 'Emirates NBD — pending',
     complianceStatus: 'Forming',
@@ -177,7 +122,7 @@ const ENTITY_DETAILS: Record<string, EntityDetail> = {
       { date: 'Q3 2026', event: 'IP-avtal med dotterbolag signerade', done: false },
     ],
   },
-  '2': {
+  'woh': {
     incorporation: 'AB (Aktiebolag)',
     bankStatus: 'Inte öppnat',
     complianceStatus: 'Planerat',
@@ -195,7 +140,7 @@ const ENTITY_DETAILS: Record<string, EntityDetail> = {
       { date: 'Q4 2026', event: 'Dotterbolag aktivt i prodution', done: false },
     ],
   },
-  '3': {
+  'oz-lt': {
     incorporation: 'UAB (Litauisk LLC)',
     bankStatus: 'Inte öppnat',
     complianceStatus: 'Planerat',
@@ -212,7 +157,7 @@ const ENTITY_DETAILS: Record<string, EntityDetail> = {
       { date: 'Q4 2026', event: 'Första kundfaktura (EU)', done: false },
     ],
   },
-  '4': {
+  'oz-us': {
     incorporation: 'Delaware C-Corp',
     bankStatus: 'Inte öppnat',
     complianceStatus: 'Planerat',
@@ -229,7 +174,7 @@ const ENTITY_DETAILS: Record<string, EntityDetail> = {
       { date: 'Q4 2026', event: 'US marknadsintroduktion', done: false },
     ],
   },
-  '5': {
+  'lvx-ae': {
     incorporation: 'DIFC FZCO',
     bankStatus: 'Emirates NBD — pågår',
     complianceStatus: 'Forming',
@@ -246,7 +191,7 @@ const ENTITY_DETAILS: Record<string, EntityDetail> = {
       { date: 'Q3 2026', event: 'Första MENA-kund', done: false },
     ],
   },
-  '6': {
+  'lvx-us': {
     incorporation: 'Texas LLC',
     bankStatus: 'JPMorgan Chase — pending',
     complianceStatus: 'Forming',
@@ -317,14 +262,14 @@ const CARD_W = 200
 const CARD_H = 110
 const SVG_MAIN_W = 880
 
-// Hardcoded positions for clarity
+// Hardcoded positions for clarity — keyed by systemData entity IDs
 const NODE_POSITIONS: Record<string, { x: number; y: number }> = {
-  '1': { x: 340, y: 70 },   // WGH — centered
-  '2': { x: 60,  y: 260 },  // WOH
-  '5': { x: 330, y: 260 },  // LVX-AE
-  '6': { x: 620, y: 260 },  // LVX-US
-  '3': { x: 20,  y: 450 },  // OZ-LT (under WOH)
-  '4': { x: 240, y: 450 },  // OZ-US (under WOH)
+  'wgh':    { x: 340, y: 70 },   // WGH — centered
+  'woh':    { x: 60,  y: 260 },  // WOH
+  'lvx-ae': { x: 330, y: 260 },  // LVX-AE
+  'lvx-us': { x: 620, y: 260 },  // LVX-US
+  'oz-lt':  { x: 20,  y: 450 },  // OZ-LT (under WOH)
+  'oz-us':  { x: 240, y: 450 },  // OZ-US (under WOH)
 }
 
 // Derived ownership edges from CORP_HIERARCHY
