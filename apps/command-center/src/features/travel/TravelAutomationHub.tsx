@@ -683,6 +683,51 @@ function TripCard({ trip, onUpdate }: { trip: Trip; onUpdate: (t: Trip) => void 
 export function TravelAutomationHub() {
   const [trips, setTrips] = useState<Trip[]>(INITIAL_TRIPS)
   const [usingFallback, setUsingFallback] = useState(false)
+  const [showNewTrip, setShowNewTrip] = useState(false)
+  const [newTrip, setNewTrip] = useState({
+    name: '',
+    destination: '',
+    flag: '✈️',
+    departure: '',
+    return: '',
+    participants: 'Erik Svensson, Leon Russo De Cemare, Dennis Bjarnemark, Winston Bjarnemark, Johan Berglund',
+  })
+
+  function handleCreateTrip() {
+    if (!newTrip.name || !newTrip.destination || !newTrip.departure || !newTrip.return) return
+    const dep = new Date(newTrip.departure)
+    const ret = new Date(newTrip.return)
+    const durationDays = Math.round((ret.getTime() - dep.getTime()) / 86400000)
+    const trip: Trip = {
+      id: `trip-${Date.now()}`,
+      name: newTrip.name,
+      destination: newTrip.destination,
+      flag: newTrip.flag,
+      departure: newTrip.departure,
+      return: newTrip.return,
+      durationDays,
+      participants: newTrip.participants.split(',').map(p => p.trim()).filter(Boolean),
+      overallStatus: 'pending',
+      steps: {
+        visa:          { status: 'pending', note: 'Kontrollera visumkrav för ' + newTrip.destination },
+        flights:       { status: 'pending', note: 'Sök flyg till ' + newTrip.destination },
+        accommodation: { status: 'pending', note: 'Boka boende' },
+        transport:     { status: 'pending', note: 'Lokal transport' },
+        wellness:      { status: 'pending', note: 'Gym / träning' },
+        insurance:     { status: 'pending', note: 'Reseförsäkring' },
+        documents:     { status: 'pending', note: 'Pass, försäkring, hotellbokningsbevis' },
+      },
+    }
+    setTrips(prev => [trip, ...prev])
+    setShowNewTrip(false)
+    setNewTrip({ name: '', destination: '', flag: '✈️', departure: '', return: '', participants: 'Erik Svensson, Leon Russo De Cemare, Dennis Bjarnemark, Winston Bjarnemark, Johan Berglund' })
+    // Spara till API (non-blocking)
+    fetch(`${API}/api/travel/trips`, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer bypass' }, body: JSON.stringify(trip) }).catch(() => {})
+  }
+
+  const inputStyle = { width: '100%', padding: '8px 12px', border: '1px solid #DDD5C5', borderRadius: 8, fontSize: 13, background: '#fff', color: '#1A1A2E', outline: 'none', boxSizing: 'border-box' as const }
+  const labelStyle = { fontSize: 11, fontWeight: 600, color: '#6B7280', textTransform: 'uppercase' as const, letterSpacing: '0.06em', marginBottom: 4, display: 'block' }
+  const flagOptions = ['✈️','🇸🇪','🇹🇭','🇨🇳','🇺🇸','🇦🇪','🇬🇧','🇩🇪','🇫🇷','🇯🇵','🇸🇬','🇮🇳','🇧🇷','🇿🇦','🇦🇺','🌍']
 
   useEffect(() => {
     fetch(`${API}/api/travel/trips`)
@@ -764,7 +809,7 @@ export function TravelAutomationHub() {
             alignItems: 'center',
             gap: 6,
           }}
-          onClick={() => alert('Ny resa — kommer i nästa version')}
+          onClick={() => setShowNewTrip(true)}
         >
           <Plus size={14} />
           Ny resa
@@ -795,6 +840,79 @@ export function TravelAutomationHub() {
         <Info size={12} />
         Webhook-automatisering via n8n · SMS via Wavult API · Dokument sparas lokalt per deltagare
       </div>
+
+      {/* ── Ny resa modal ── */}
+      {showNewTrip && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}
+          onClick={() => setShowNewTrip(false)}>
+          <div style={{ background: '#FDFAF5', borderRadius: 16, padding: 28, width: '100%', maxWidth: 480, maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}
+            onClick={e => e.stopPropagation()}>
+            {/* Header */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+              <div>
+                <h2 style={{ margin: 0, fontSize: 18, fontWeight: 800, color: '#0A3D62' }}>✈️ Ny resa</h2>
+                <p style={{ margin: '4px 0 0', fontSize: 12, color: '#8A8278' }}>Planera gruppress med automatisk bokningsstatus</p>
+              </div>
+              <button onClick={() => setShowNewTrip(false)} style={{ background: 'none', border: 'none', fontSize: 20, cursor: 'pointer', color: '#8A8278' }}>✕</button>
+            </div>
+
+            {/* Form */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {/* Namn */}
+              <div>
+                <label style={labelStyle}>Resenamn</label>
+                <input style={inputStyle} placeholder="t.ex. Bangkok Workcamp, Shenzhen Tech Tour" value={newTrip.name} onChange={e => setNewTrip(p => ({ ...p, name: e.target.value }))} />
+              </div>
+
+              {/* Destination + flagga */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 8 }}>
+                <div>
+                  <label style={labelStyle}>Destination</label>
+                  <input style={inputStyle} placeholder="t.ex. Shenzhen, Kina" value={newTrip.destination} onChange={e => setNewTrip(p => ({ ...p, destination: e.target.value }))} />
+                </div>
+                <div>
+                  <label style={labelStyle}>Flagga</label>
+                  <select style={{ ...inputStyle, width: 70 }} value={newTrip.flag} onChange={e => setNewTrip(p => ({ ...p, flag: e.target.value }))}>
+                    {flagOptions.map(f => <option key={f} value={f}>{f}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              {/* Datum */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div>
+                  <label style={labelStyle}>Avresedatum</label>
+                  <input type="date" style={inputStyle} value={newTrip.departure} onChange={e => setNewTrip(p => ({ ...p, departure: e.target.value }))} />
+                </div>
+                <div>
+                  <label style={labelStyle}>Hemkomst</label>
+                  <input type="date" style={inputStyle} value={newTrip.return} onChange={e => setNewTrip(p => ({ ...p, return: e.target.value }))} />
+                </div>
+              </div>
+
+              {/* Deltagare */}
+              <div>
+                <label style={labelStyle}>Deltagare (kommaseparerade)</label>
+                <textarea style={{ ...inputStyle, minHeight: 80, resize: 'vertical' }} value={newTrip.participants} onChange={e => setNewTrip(p => ({ ...p, participants: e.target.value }))} />
+              </div>
+
+              {/* Knappar */}
+              <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
+                <button onClick={() => setShowNewTrip(false)} style={{ flex: 1, padding: '10px 0', borderRadius: 8, border: '1px solid #DDD5C5', background: 'transparent', fontSize: 13, fontWeight: 600, color: '#6B7280', cursor: 'pointer' }}>
+                  Avbryt
+                </button>
+                <button
+                  onClick={handleCreateTrip}
+                  disabled={!newTrip.name || !newTrip.destination || !newTrip.departure || !newTrip.return}
+                  style={{ flex: 2, padding: '10px 0', borderRadius: 8, border: 'none', background: '#0A3D62', fontSize: 13, fontWeight: 700, color: '#F5F0E8', cursor: 'pointer', opacity: (!newTrip.name || !newTrip.destination || !newTrip.departure || !newTrip.return) ? 0.5 : 1 }}
+                >
+                  ✈️ Skapa resa
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
