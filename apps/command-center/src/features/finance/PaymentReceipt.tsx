@@ -151,7 +151,7 @@ export function PaymentReceipt({ receipt, onClose }: {
             <div className="flex items-center gap-2">
               <button
                 onClick={handleDownloadHTML}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-[#0A3D62] hover:bg-blue-500 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#0A3D62] text-[#0A3D62] hover:bg-[#0A3D62] transition-colors"
               >
                 ⬇ Download
               </button>

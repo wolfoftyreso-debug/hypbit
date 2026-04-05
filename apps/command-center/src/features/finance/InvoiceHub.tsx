@@ -9,7 +9,7 @@ type InvoiceStatus = FinanceInvoice['status']
 
 const STATUS_CONFIG: Record<InvoiceStatus, { label: string; color: string; bg: string }> = {
   draft:   { label: 'Utkast',   color: '#6B7280', bg: '#6B728015' },
-  sent:    { label: 'Skickad',  color: '#3B82F6', bg: '#3B82F615' },
+  sent:    { label: 'Skickad',  color: '#0A3D62', bg: '#0A3D6215' },
   paid:    { label: 'Betald',   color: '#10B981', bg: '#10B98115' },
   overdue: { label: 'Förfallen', color: '#EF4444', bg: '#EF444415' },
 }
@@ -151,7 +151,7 @@ export function InvoiceHub() {
         </div>
         <button
           onClick={() => setShowNewForm(s => !s)}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs font-semibold transition-colors border border-blue-200"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EDE8DC] hover:bg-[#EDE8DC] text-[#0A3D62] text-xs font-semibold transition-colors border border-[#0A3D62]/20"
         >
           + Ny faktura
         </button>
@@ -250,7 +250,7 @@ export function InvoiceHub() {
               className="px-4 py-2 rounded-lg border border-surface-border text-gray-9000 text-xs hover:text-text-primary transition-colors">
               Avbryt
             </button>
-            <button className="px-4 py-2 rounded-lg bg-blue-100 border border-blue-200 text-blue-700 text-xs font-semibold hover:bg-blue-200 transition-colors">
+            <button className="px-4 py-2 rounded-lg bg-[#EDE8DC] border border-[#0A3D62]/20 text-[#0A3D62] text-xs font-semibold hover:bg-[#EDE8DC] transition-colors">
               Spara utkast
             </button>
           </div>

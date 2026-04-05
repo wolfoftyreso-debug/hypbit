@@ -203,9 +203,9 @@ export function TaxView() {
 
       {/* OSS/special note */}
       {jurisdictionInfo?.ossNote && (
-        <div className="rounded-xl border border-blue-600/30 bg-blue-600/08 px-4 py-3">
-          <p className="text-xs font-semibold text-blue-400 mb-1">🌍 Notering</p>
-          <p className="text-xs text-blue-200/70 leading-relaxed">{jurisdictionInfo.ossNote}</p>
+        <div className="rounded-xl border border-[#0A3D62]/30 bg-[#0A3D62]/08 px-4 py-3">
+          <p className="text-xs font-semibold text-[#E8B84B] mb-1">🌍 Notering</p>
+          <p className="text-xs text-[#E8B84B]/70 leading-relaxed">{jurisdictionInfo.ossNote}</p>
         </div>
       )}
 

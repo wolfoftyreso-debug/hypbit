@@ -481,13 +481,13 @@ export const BUDGET_CATEGORY_META: Record<
   personal: {
     label: 'Personal',
     icon: '👥',
-    color: '#3B82F6',
+    color: '#0A3D62',
     budgetSEK: 2500000,
   },
   infrastruktur: {
     label: 'Infrastruktur',
     icon: '☁️',
-    color: '#60A5FA',
+    color: '#E8B84B',
     budgetSEK: 200000,
   },
   juridik: {

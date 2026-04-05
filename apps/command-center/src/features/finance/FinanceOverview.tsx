@@ -197,7 +197,7 @@ export function FinanceOverview() {
               <KpiCard label="Resultat" value={kpi.result ?? 0} currency={kpi.currency}
                 color={(kpi.result ?? 0) >= 0 ? '#10B981' : '#EF4444'} icon="💹"
                 sub={(kpi.result ?? 0) >= 0 ? 'Vinst (intäkter > kostnader)' : 'Förlust (kostnader > intäkter)'} />
-              <KpiCard label="Kassa" value={kpi.cash ?? 0} currency={kpi.currency} color="#3B82F6" icon="🏦"
+              <KpiCard label="Kassa" value={kpi.cash ?? 0} currency={kpi.currency} color="#0A3D62" icon="🏦"
                 sub="Tillgängliga pengar på konto" />
             </div>
 

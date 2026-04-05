@@ -7,8 +7,8 @@ const TYPE_LABELS: Record<string, { label: string; color: string; sign: string }
   subscription:     { label: 'Subscription',     color: '#EF4444', sign: '+' },
   credit_note:      { label: 'Credit Note',      color: '#10B981', sign: '−' },
   payment_received: { label: 'Payment Received', color: '#10B981', sign: '−' },
-  payment_sent:     { label: 'Payment Sent',     color: '#3B82F6', sign: '−' },
-  refund:           { label: 'Refund',           color: '#3B82F6', sign: '−' },
+  payment_sent:     { label: 'Payment Sent',     color: '#0A3D62', sign: '−' },
+  refund:           { label: 'Refund',           color: '#0A3D62', sign: '−' },
 }
 
 function fmt(amount: number, currency: string): string {
@@ -69,7 +69,7 @@ export function CustomerAccountView({ accountId }: { accountId: string }) {
             { label: 'Total Invoiced', value: fmt(account.total_debit, account.currency), color: '#EF4444' },
             { label: 'Total Credited', value: fmt(account.total_credit, account.currency), color: '#10B981' },
             { label: 'Net Balance', value: fmt(account.net_balance, account.currency),
-              color: account.net_balance > 0.01 ? '#EF4444' : account.net_balance < -0.01 ? '#3B82F6' : '#10B981' },
+              color: account.net_balance > 0.01 ? '#EF4444' : account.net_balance < -0.01 ? '#0A3D62' : '#10B981' },
           ].map(({ label, value, color }) => (
             <div key={label} style={{ background: 'rgba(255,255,255,.05)', borderRadius: 8, padding: '16px 20px' }}>
               <div style={{ fontSize: 11, color: 'rgba(245,240,232,.5)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>{label}</div>
@@ -80,7 +80,7 @@ export function CustomerAccountView({ accountId }: { accountId: string }) {
 
         {/* Auto-pay alert */}
         {account.net_balance < -account.credit_threshold && (
-          <div style={{ marginTop: 16, background: 'rgba(59,130,246,.15)', border: '1px solid rgba(59,130,246,.3)', borderRadius: 8, padding: '12px 16px', fontSize: 13, color: '#93C5FD' }}>
+          <div style={{ marginTop: 16, background: 'rgba(10,61,98,.12)', border: '1px solid rgba(10,61,98,.25)', borderRadius: 8, padding: '12px 16px', fontSize: 13, color: '#E8B84B' }}>
             ⚡ Auto-payment via Revolut triggered — {fmt(Math.abs(account.net_balance), account.currency)} will be sent to {account.email}
           </div>
         )}

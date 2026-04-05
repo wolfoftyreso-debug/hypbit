@@ -167,7 +167,7 @@ function SpoolModal({
                                   {new Date(ev.event_time).toLocaleString('sv-SE')}
                                 </div>
                                 <div>
-                                  <span style={{ fontSize: 11, fontWeight: 700, color: '#3B82F6', marginRight: 8 }}>{ev.event_type}</span>
+                                  <span style={{ fontSize: 11, fontWeight: 700, color: '#0A3D62', marginRight: 8 }}>{ev.event_type}</span>
                                   <span style={{ fontSize: 12, color: '#374151' }}>{ev.description}</span>
                                   {ev.device_id && <span style={{ fontSize: 11, color: '#9CA3AF', marginLeft: 8, fontFamily: 'monospace' }}>device: {ev.device_id}</span>}
                                 </div>

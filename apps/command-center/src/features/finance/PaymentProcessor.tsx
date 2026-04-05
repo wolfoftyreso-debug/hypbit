@@ -237,7 +237,7 @@ const PAYMENT_STATUS_CONFIG: Record<PaymentStatus, { color: string; bg: string; 
   SETTLED:    { color: 'text-gray-700',  bg: 'bg-[#F0EBE1] border-green-500/20', label: 'Avvecklad' },
   FAILED:     { color: 'text-red-700',    bg: 'bg-red-500/10 border-red-500/20',     label: 'Misslyckad' },
   CANCELLED:  { color: 'text-gray-9000',   bg: 'bg-gray-500/10 border-gray-500/20',   label: 'Avbruten' },
-  REFUNDED:   { color: 'text-blue-700', bg: 'bg-blue-600/10 border-blue-600/20', label: 'Återbetald' },
+  REFUNDED:   { color: 'text-[#0A3D62]', bg: 'bg-[#0A3D62]/10 border-[#0A3D62]/20', label: 'Återbetald' },
 }
 
 const PAYOUT_STATUS_CONFIG: Record<PayoutStatus, { color: string; bg: string; label: string }> = {
@@ -260,7 +260,7 @@ function PaymentIntentDetail({ intent, onClose, onRefund }: {
   const canRefund = intent.status === 'SETTLED' || intent.status === 'CAPTURED'
 
   return (
-    <div className="bg-white rounded-xl border border-blue-200 p-4 space-y-3">
+    <div className="bg-white rounded-xl border border-[#0A3D62]/20 p-4 space-y-3">
       <div className="flex items-center justify-between">
         <h4 className="text-xs font-semibold text-text-primary">Payment Intent</h4>
         <button onClick={onClose} className="text-gray-9000 hover:text-gray-600">×</button>
@@ -381,7 +381,7 @@ function PaymentIntentsSection() {
         <div className="flex items-center gap-1 p-0.5 bg-white rounded-lg border border-surface-border">
           <button
             onClick={() => setStatusFilter('all')}
-            className={`px-2 py-1 rounded-md text-xs font-medium transition-colors ${statusFilter === 'all' ? 'bg-blue-100 text-blue-700' : 'text-gray-9000 hover:text-gray-600'}`}
+            className={`px-2 py-1 rounded-md text-xs font-medium transition-colors ${statusFilter === 'all' ? 'bg-[#EDE8DC] text-[#0A3D62]' : 'text-gray-9000 hover:text-gray-600'}`}
           >
             Alla
           </button>
@@ -400,7 +400,7 @@ function PaymentIntentsSection() {
             <button
               key={p}
               onClick={() => setPspFilter(p)}
-              className={`px-2 py-1 rounded-md text-xs font-medium transition-colors ${pspFilter === p ? 'bg-blue-100 text-blue-700' : 'text-gray-9000 hover:text-gray-600'}`}
+              className={`px-2 py-1 rounded-md text-xs font-medium transition-colors ${pspFilter === p ? 'bg-[#EDE8DC] text-[#0A3D62]' : 'text-gray-9000 hover:text-gray-600'}`}
             >
               {p === 'all' ? 'Alla PSP' : p === 'revolut' ? 'Revolut' : 'Stripe'}
             </button>
@@ -449,7 +449,7 @@ function PaymentIntentsSection() {
               <button
                 key={intent.id}
                 onClick={() => setSelected(selected?.id === intent.id ? null : intent)}
-                className={`w-full text-left grid grid-cols-[1fr_100px_120px_90px_80px] gap-3 px-4 py-3 hover:bg-[#F0EBE1] transition-colors ${selected?.id === intent.id ? 'bg-blue-50' : ''}`}
+                className={`w-full text-left grid grid-cols-[1fr_100px_120px_90px_80px] gap-3 px-4 py-3 hover:bg-[#F0EBE1] transition-colors ${selected?.id === intent.id ? 'bg-[#F5F0E8]' : ''}`}
               >
                 <div>
                   <div className="text-xs text-gray-800 truncate">{intent.description}</div>
@@ -516,7 +516,7 @@ function PSPRouterSection() {
         </div>
 
         {/* Stripe card */}
-        <div className="bg-white rounded-xl border border-blue-600/20 p-4">
+        <div className="bg-white rounded-xl border border-[#0A3D62]/20 p-4">
           <div className="flex items-center gap-2 mb-3">
             <span className="text-xl">⚡</span>
             <div>
@@ -531,11 +531,11 @@ function PSPRouterSection() {
           <div className="space-y-2">
             {PSP_RULES.filter(r => r.psp === 'stripe').map((rule, i) => (
               <div key={i} className="bg-[#F0EBE1] rounded-lg p-2.5">
-                <div className="text-xs font-medium text-blue-400 mb-1">{rule.condition}</div>
+                <div className="text-xs font-medium text-[#E8B84B] mb-1">{rule.condition}</div>
                 <div className="text-xs text-gray-9000 mb-1.5">{rule.reason}</div>
                 <div className="flex flex-wrap gap-1">
                   {rule.examples.map(ex => (
-                    <span key={ex} className="text-[9px] px-1.5 py-0.5 rounded bg-blue-600/10 text-blue-700 border border-blue-600/20">
+                    <span key={ex} className="text-[9px] px-1.5 py-0.5 rounded bg-[#0A3D62]/10 text-[#0A3D62] border border-[#0A3D62]/20">
                       {ex}
                     </span>
                   ))}
@@ -572,7 +572,7 @@ function PSPRouterSection() {
                 <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
                   row.psp === 'revolut'
                     ? 'bg-[#F0EBE1] text-gray-600 border border-gray-200'
-                    : 'bg-blue-600/15 text-blue-700 border border-blue-600/20'
+                    : 'bg-[#0A3D62]/15 text-[#0A3D62] border border-[#0A3D62]/20'
                 }`}>
                   {row.psp === 'revolut' ? 'Revolut' : 'Stripe'}
                 </span>
@@ -706,7 +706,7 @@ export function PaymentProcessor() {
             onClick={() => setActiveSection(s.id)}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
               activeSection === s.id
-                ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                ? 'bg-[#F5F0E8] text-[#0A3D62] border border-[#0A3D62]/20'
                 : 'text-gray-9000 hover:text-gray-600 hover:bg-[#F0EBE1] border border-transparent'
             }`}
           >

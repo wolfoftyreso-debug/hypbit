@@ -22,7 +22,7 @@ const ENTITIES: Entity[] = [
     taxRate: 0.21,
     eurRate: 0.93,
     defaultRevenue: 40000,
-    color: '#3B82F6',
+    color: '#0A3D62',
   },
   {
     id: 'quixzoom-uab',
@@ -32,7 +32,7 @@ const ENTITIES: Entity[] = [
     taxRate: 0.15,
     eurRate: 1.0,
     defaultRevenue: 35000,
-    color: '#2563EB',
+    color: '#0A3D62',
   },
   {
     id: 'landvex-ab',
@@ -137,14 +137,14 @@ export function CashFlowOptimizer() {
             label: 'Skatt sparad/mån',
             value: fmtEur(totalTaxSavedMonthly),
             sub: 'vs. ingen Dubai-struktur',
-            color: '#3B82F6',
+            color: '#0A3D62',
             icon: '💰',
           },
           {
             label: 'Runway-boost',
             value: fmtEur(runwayExtra),
             sub: 'Extra kapital/år i Dubai',
-            color: '#2563EB',
+            color: '#0A3D62',
             icon: '🚀',
           },
         ].map(kpi => (
@@ -195,7 +195,7 @@ export function CashFlowOptimizer() {
           step={0.005}
           value={licenseRate}
           onChange={e => setLicenseRate(Number(e.target.value))}
-          className="w-full accent-blue-500"
+          className="w-full accent-[#0A3D62]"
         />
         <div className="flex justify-between text-[9px] text-gray-9000 font-mono mt-1">
           <span>1%</span>

@@ -8,7 +8,7 @@ type ICType = FinanceIntercompany['type']
 
 const STATUS_CONFIG: Record<ICStatus, { label: string; color: string; bg: string }> = {
   pending:  { label: 'Pågående',   color: '#F59E0B', bg: '#F59E0B15' },
-  invoiced: { label: 'Fakturerad', color: '#3B82F6', bg: '#3B82F615' },
+  invoiced: { label: 'Fakturerad', color: '#0A3D62', bg: '#0A3D6215' },
   settled:  { label: 'Reglerad',   color: '#10B981', bg: '#10B98115' },
 }
 
@@ -181,8 +181,8 @@ export function IntercompanyView() {
           {/* Subsidiaries row */}
           <div className="flex flex-wrap gap-2 justify-center">
             {[
-              { name: 'Landvex AB', flag: '🇸🇪', color: '#3B82F6', fee: '45k SEK/mån' },
-              { name: 'Landvex Inc', flag: '🇺🇸', color: '#2563EB', fee: '6k USD/mån' },
+              { name: 'Landvex AB', flag: '🇸🇪', color: '#0A3D62', fee: '45k SEK/mån' },
+              { name: 'Landvex Inc', flag: '🇺🇸', color: '#0A3D62', fee: '6k USD/mån' },
               { name: 'QuiXzoom Inc', flag: '🇺🇸', color: '#F59E0B', fee: '8.5k USD/mån' },
               { name: 'QuiXzoom UAB', flag: '🇱🇹', color: '#10B981', fee: '7.2k EUR/mån' },
             ].map(sub => (
@@ -417,8 +417,8 @@ Alla tre är 100% ägda av Wavult Group (Erik Svensson).
       {/* ── Sektion D — Skatteoptimering ──────────────────────────────── */}
       {section === 'tax' && (
         <div className="space-y-4">
-          <div className="rounded-xl border border-blue-600/20 bg-blue-600/05 p-4">
-            <p className="text-xs font-semibold text-blue-400 mb-1">📊 Skatteeffekt per jurisdiktion</p>
+          <div className="rounded-xl border border-[#0A3D62]/20 bg-[#0A3D62]/05 p-4">
+            <p className="text-xs font-semibold text-[#E8B84B] mb-1">📊 Skatteeffekt per jurisdiktion</p>
             <p className="text-xs text-gray-9000">
               Licensavgifterna minskar beskattningsbar vinst i högskatteländer och samlas i Dubai (0% skatt).
             </p>

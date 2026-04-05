@@ -73,7 +73,7 @@ function EntityCashFlow({ entity, allCashFlow }: { entity: FinanceEntity; allCas
             <p className="text-[8px] text-gray-600 mt-0.5">in minus ut</p>
           </div>
           <div className="px-3 py-2 rounded-lg border text-center"
-            style={{ background: '#3B82F608', borderColor: '#3B82F620' }}>
+            style={{ background: '#0A3D6208', borderColor: '#0A3D6220' }}>
             <p className="text-[9px] text-gray-600 font-mono uppercase">🛸 Runway</p>
             <p className="text-[14px] font-bold text-gray-600 mt-1">{runwayText}</p>
             <p className="text-[8px] text-gray-600 mt-0.5">burn: {fmt(burnRate)}/mån</p>

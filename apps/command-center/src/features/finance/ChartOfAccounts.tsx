@@ -6,9 +6,9 @@ import type { FinanceAccount } from '../../lib/supabase'
 const GROUPS = ['1xxx Tillgångar', '2xxx Skulder & Eget kapital', '3xxx Intäkter', '4-7xxx Kostnader']
 
 const TYPE_COLOR: Record<FinanceAccount['type'], string> = {
-  asset: '#3B82F6',
+  asset: '#0A3D62',
   liability: '#F59E0B',
-  equity: '#2563EB',
+  equity: '#0A3D62',
   revenue: '#10B981',
   expense: '#EF4444',
 }
