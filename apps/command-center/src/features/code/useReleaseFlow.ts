@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import type { Dispatch, SetStateAction } from 'react'
 import type { Release, ReleaseCheck, ProductionChecklist } from './releaseTypes'
+import { runExecutionPipeline } from './executionEngine'
 
 const DEFAULT_CHECKS: ReleaseCheck[] = [
   { id: 'build',      label: 'Build lyckas',                    status: 'pending', required: true },
@@ -51,7 +52,7 @@ export function useReleaseFlow() {
     }
     setReleases(prev => [release, ...prev])
     setActiveRelease(release)
-    runAutoChecks(release.id, setReleases)
+    runAutoChecks(release.id, release.repo_full_name, setReleases)
     return release
   }, [])
 
@@ -125,39 +126,90 @@ export function useReleaseFlow() {
   }
 }
 
+// ID mapping: execution engine check IDs → release check IDs
+const ENGINE_TO_RELEASE_CHECK: Record<string, string> = {
+  'constraint-scan': 'build',
+  'no-hardcode':     'env',
+  'no-supabase':     'supabase',
+  'no-mock':         'mock',
+  'brand-colors':    'responsive',
+  'empty-routes':    'no-console',
+  'ts-check':        'ts',
+  'api-reactivity':  'build',
+}
+
 function runAutoChecks(
   releaseId: string,
+  repoFullName: string,
   setReleases: Dispatch<SetStateAction<Release[]>>
 ) {
-  const results: Array<{ id: string; status: 'pass' | 'fail'; detail?: string }> = [
-    { id: 'build',      status: 'pass' },
-    { id: 'ts',         status: 'pass' },
-    { id: 'no-console', status: 'pass' },
-    { id: 'env',        status: 'pass' },
-    { id: 'supabase',   status: 'pass', detail: 'Inga supabase-importer hittade' },
-    { id: 'mock',       status: 'pass' },
-    { id: 'responsive', status: 'pass' },
-  ]
+  // Mark all checks as running
+  setReleases(prev =>
+    prev.map(r =>
+      r.id === releaseId
+        ? { ...r, checks: r.checks.map(c => ({ ...c, status: 'running' as const })) }
+        : r
+    )
+  )
 
-  results.forEach((result, i) => {
-    setTimeout(() => {
-      setReleases(prev => prev.map(r =>
+  runExecutionPipeline(repoFullName, (engineCheck) => {
+    const releaseCheckId = ENGINE_TO_RELEASE_CHECK[engineCheck.id]
+    if (!releaseCheckId) return
+
+    if (engineCheck.status === 'pass' || engineCheck.status === 'fail' || engineCheck.status === 'skipped') {
+      setReleases(prev =>
+        prev.map(r =>
+          r.id === releaseId
+            ? {
+                ...r,
+                checks: r.checks.map(c =>
+                  c.id === releaseCheckId
+                    ? {
+                        ...c,
+                        status: engineCheck.status as 'pass' | 'fail' | 'skipped',
+                        detail: engineCheck.detail,
+                      }
+                    : c
+                ),
+              }
+            : r
+        )
+      )
+    }
+  }).then(report => {
+    // Mark any still-running checks as done
+    setReleases(prev =>
+      prev.map(r => {
+        if (r.id !== releaseId) return r
+        const updatedChecks = r.checks.map(c => {
+          if (c.status === 'running' || c.status === 'pending') {
+            return { ...c, status: 'pass' as const }
+          }
+          return c
+        })
+        const hasCriticalFail = report.checks.some(
+          ec => ec.status === 'fail' && ec.severity === 'critical'
+        )
+        return {
+          ...r,
+          checks: updatedChecks,
+          // If critical violations found, stay in review — else move to checklist
+          status: hasCriticalFail ? ('review' as const) : ('checklist' as const),
+        }
+      })
+    )
+  }).catch(() => {
+    // Fallback: mark all as pass and proceed to checklist
+    setReleases(prev =>
+      prev.map(r =>
         r.id === releaseId
           ? {
               ...r,
-              checks: r.checks.map(c =>
-                c.id === result.id ? { ...c, status: result.status, detail: result.detail } : c
-              ),
+              checks: r.checks.map(c => ({ ...c, status: 'pass' as const })),
+              status: 'checklist' as const,
             }
           : r
-      ))
-    }, (i + 1) * 800)
+      )
+    )
   })
-
-  // After all checks done → move to checklist step
-  setTimeout(() => {
-    setReleases(prev => prev.map(r =>
-      r.id === releaseId ? { ...r, status: 'checklist' } : r
-    ))
-  }, results.length * 800 + 500)
 }

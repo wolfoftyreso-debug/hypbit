@@ -16,6 +16,10 @@ import JSZip from 'jszip'
 import { useGiteaRepos, GiteaRepo } from '../git/useGiteaRepos'
 import { useReleaseFlow } from './useReleaseFlow'
 import { ReleasePipeline } from './ReleasePipeline'
+import { useProjectMemory } from './projectMemory'
+import { MemoryPanel } from './MemoryPanel'
+import { ExecutionPanel } from './ExecutionPanel'
+import type { ExecutionReport } from './executionEngine'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -81,7 +85,7 @@ async function getFileContent(repoFullName: string, filePath: string): Promise<s
   return res.text()
 }
 
-async function sendCodeChat(message: string, context: CodeContext): Promise<CodeResponse> {
+async function sendCodeChat(message: string, context: CodeContext, aiContext?: string): Promise<CodeResponse> {
   const res = await fetch(`${API}/api/code/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: 'Bearer bypass' },
@@ -91,6 +95,7 @@ async function sendCodeChat(message: string, context: CodeContext): Promise<Code
       currentFile: context.currentFile,
       currentContent: context.currentContent,
       fileTree: context.fileTree,
+      ...(aiContext ? { projectMemory: aiContext } : {}),
     }),
   })
   if (!res.ok) throw new Error(`API ${res.status}`)
@@ -346,8 +351,14 @@ export function CodeView() {
   const [showCommitModal, setShowCommitModal] = useState(false)
   const [previewKey, setPreviewKey] = useState(0)
 
-  // View state: 'editor' | 'pipeline'
-  const [view, setView] = useState<'editor' | 'pipeline'>('editor')
+  // View state: 'editor' | 'pipeline' | 'scan'
+  const [view, setView] = useState<'editor' | 'pipeline' | 'scan'>('editor')
+
+  // Execution Engine scan state
+  const [scanPassed, setScanPassed] = useState<boolean | null>(null)
+
+  // Memory Graph
+  const { memory, loading: memoryLoading } = useProjectMemory(selectedRepo?.full_name ?? null)
 
   // Release flow
   const {
@@ -578,7 +589,7 @@ export function CodeView() {
         currentContent: fileContent,
         fileTree,
       }
-      const response = await sendCodeChat(userMsg.content, ctx)
+      const response = await sendCodeChat(userMsg.content, ctx, memory?.ai_context)
       setMessages(prev => [...prev, {
         id: `ai-${Date.now()}`,
         role: 'assistant',
@@ -684,6 +695,23 @@ export function CodeView() {
           </button>
         )}
 
+        {/* Scan button */}
+        {selectedRepo && (
+          <button
+            onClick={() => setView('scan')}
+            className={`flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-md border transition-colors ${
+              scanPassed === false
+                ? 'bg-red-50 border-red-300 text-red-700 hover:bg-red-100'
+                : scanPassed === true
+                  ? 'bg-green-50 border-green-300 text-green-700 hover:bg-green-100'
+                  : 'bg-[#EDE8DF] text-[#0A3D62] border-[#C8BFB4] hover:bg-[#D8CFC4]'
+            }`}
+            title="Kör Execution Engine — constraint scan + quality checks"
+          >
+            🔍 Scan{scanPassed === false ? ' ❌' : scanPassed === true ? ' ✓' : ''}
+          </button>
+        )}
+
         {/* Publicera button */}
         {selectedRepo && (
           <button
@@ -693,13 +721,47 @@ export function CodeView() {
               setActiveRelease(release)
               setView('pipeline')
             }}
-            className="flex items-center gap-1.5 text-xs px-4 py-1.5 rounded-md bg-[#E8B84B] text-[#0A3D62] font-bold hover:bg-[#D4A53A] transition-colors"
+            disabled={scanPassed === false}
+            title={scanPassed === false ? 'Åtgärda violations innan publicering' : ''}
+            className="flex items-center gap-1.5 text-xs px-4 py-1.5 rounded-md bg-[#E8B84B] text-[#0A3D62] font-bold hover:bg-[#D4A53A] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             <Rocket size={13} />
             Publicera
           </button>
         )}
       </div>
+
+      {/* Scan view overlay */}
+      {view === 'scan' && selectedRepo && (
+        <div className="absolute inset-0 z-20 bg-[#F5F0E8] flex flex-col">
+          <div className="flex items-center gap-3 px-4 py-2.5 border-b border-[#D8CFC4] bg-[#EDE8DF] shrink-0">
+            <button
+              onClick={() => setView('editor')}
+              className="flex items-center gap-1.5 text-xs text-[#0A3D62] hover:text-[#072E4A] font-medium"
+            >
+              ← Tillbaka
+            </button>
+            <div className="w-px h-4 bg-[#C8BFB4]" />
+            <span className="text-sm font-bold text-[#0A3D62]">🔍 Execution Engine</span>
+            <code className="text-xs font-mono text-[#444] bg-white px-2 py-0.5 rounded border border-[#D8CFC4]">
+              {selectedRepo.full_name}
+            </code>
+          </div>
+          <div className="flex-1 overflow-y-auto">
+            <div className="max-w-2xl mx-auto px-4 py-6">
+              <ExecutionPanel
+                repoFullName={selectedRepo.full_name}
+                onComplete={(report: ExecutionReport) => {
+                  const hasCritical = report.checks.some(
+                    (c) => c.status === 'fail' && c.severity === 'critical'
+                  )
+                  setScanPassed(!hasCritical)
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Pipeline view overlay */}
       {view === 'pipeline' && activeRelease && (
