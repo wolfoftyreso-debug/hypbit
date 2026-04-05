@@ -344,8 +344,7 @@ export function Shell({ children }: ShellProps) {
             <div className="flex items-center gap-2.5 min-w-0">
               <WavultLogo
                 size={32}
-                color="white"
-                bgColor="transparent"
+                variant="white"
                 showWordmark={true}
               />
             </div>
