@@ -1,157 +1,180 @@
 /**
- * Wavult DS — System Data Layer
- *
- * ENDA platsen där bolag, team och hierarki definieras.
- * Alla komponenter importerar härifrån eller använder hooks.
- *
- * När ett bolag läggs till/tas bort/byter namn → ändra HÄR.
- * Allt annat uppdateras automatiskt.
+ * Wavult DS — System Data Layer (KORRIGERAD 2026-04-06)
+ * Baserad på faktiska mail, bolagsverket-ärenden och registreringsbevis.
+ * 
+ * UPPDATERA HÄR → allt uppdateras automatiskt överallt
  */
-
-// ── BOLAG (source of truth) ───────────────────────────────────────────────────
 
 export interface CorpEntity {
   id: string
   shortName: string
   name: string
+  legalName?: string        // juridiskt namn om det skiljer sig
+  orgNumber?: string
   jurisdiction: string
   jurisdictionCode: string
   flag: string
   color: string
-  status: 'aktiv' | 'forming' | 'planerad' | 'avvecklad'
-  /** Maps to org-graph active_status: 'aktiv' → 'live', 'forming' → 'forming', 'planerad' → 'planned' */
-  active_status: 'live' | 'forming' | 'planned'
-  layer: number          // 0=holding, 1=sub-holding, 2=operative
+  status: 'aktiv' | 'forming' | 'planerad' | 'under_namnbyte' | 'avvecklad'
+  layer: number             // 0=koncerntopp, 1=sub-holding, 2=operativt
   parentId?: string
-  /** Alias for parentId — for compatibility with legacy ownedBy references */
-  ownedBy?: string
-  /** Alias for parentId — for compatibility with legacy parent_entity_id references */
-  parent_entity_id: string | null
   foundedDate?: string
-  products: string[]     // vilka produkter bolaget driver
+  products: string[]
   description: string
-  metadata?: Record<string, string>
+  registrationRef?: string  // Bolagsverket ärende, DMCC-ansökningsnr etc
 }
 
 export const CORP_ENTITIES: CorpEntity[] = [
+  // ── DUBAI (planerade/under registrering) ────────────────────────────────────
   {
-    id: 'wgh',
-    shortName: 'WGH',
-    name: 'Wavult Group Holding DMCC',
-    jurisdiction: 'UAE (DIFC)',
+    id: 'wg-dmcc',
+    shortName: 'WG DMCC',
+    name: 'Wavult Group DMCC',
+    jurisdiction: 'UAE (DMCC Free Zone)',
     jurisdictionCode: 'AE',
     flag: '🇦🇪',
     color: '#E8B84B',
-    status: 'aktiv',
-    active_status: 'live',
+    status: 'forming',
     layer: 0,
-    parentId: undefined,
-    ownedBy: undefined,
-    parent_entity_id: null,
-    foundedDate: '2025-06-01',
     products: [],
-    description: 'Moderbolag — Dubai DMCC. Äger alla dotterbolag.',
+    description: 'IP Holding — äger all koncernens IP (SaaS, plattformar, data). Royalties från dotterbolag.',
   },
   {
-    id: 'woh',
-    shortName: 'WOH',
-    name: 'Wavult Operations Holding AB',
+    id: 'fc-fzco',
+    shortName: 'FinanceCo',
+    name: 'Wavult FinanceCo FZCO',
+    jurisdiction: 'UAE (DMCC Free Zone)',
+    jurisdictionCode: 'AE',
+    flag: '🇦🇪',
+    color: '#C9A84C',
+    status: 'forming',
+    layer: 1,
+    parentId: 'wg-dmcc',
+    products: [],
+    description: 'Group treasury — intercompany-lån, kapitalallokering, finansiell hub.',
+  },
+  {
+    id: 'dvo-fzco',
+    shortName: 'DevOps FZCO',
+    name: 'Wavult DevOps FZCO',
+    jurisdiction: 'UAE (DMCC Free Zone)',
+    jurisdictionCode: 'AE',
+    flag: '🇦🇪',
+    color: '#0A3D62',
+    status: 'forming',
+    layer: 1,
+    parentId: 'wg-dmcc',
+    products: ['Wavult DS'],
+    description: 'Teknisk driftenhet — system, infrastruktur, plattformsutveckling.',
+  },
+
+  // ── SVERIGE ─────────────────────────────────────────────────────────────────
+  {
+    id: 'lvx-ab',
+    shortName: 'LandveX AB',
+    name: 'LandveX AB',
+    legalName: 'Sommarliden Holding AB (namnbyte pågår)',
+    orgNumber: '559141-7042',
     jurisdiction: 'Sverige',
     jurisdictionCode: 'SE',
     flag: '🇸🇪',
-    color: '#0A3D62',
-    status: 'aktiv',
-    active_status: 'live',
-    layer: 1,
-    parentId: 'wgh',
-    ownedBy: 'wgh',
-    parent_entity_id: 'wgh',
-    foundedDate: '2024-01-15',
-    products: ['Wavult DS'],
-    description: 'Operativt holdingbolag Sverige. Äger OZ-LT och OZ-US.',
+    color: '#2D7A4F',
+    status: 'under_namnbyte',
+    layer: 2,
+    parentId: 'fc-fzco',
+    foundedDate: '2024-03-15',
+    products: ['LandveX', 'Optical Insight'],
+    description: 'Operativt bolag Sverige. SaaS-abonnemang till kommuner och infrastrukturägare. Namnbyte till LandveX AB pågår (Bolagsverket ärendenr 178303/2026).',
+    registrationRef: 'Bolagsverket 178303/2026',
   },
+
+  // ── LITAUEN ─────────────────────────────────────────────────────────────────
   {
     id: 'oz-lt',
-    shortName: 'OZ-LT',
+    shortName: 'OZ UAB',
     name: 'Optical Zoom UAB',
     jurisdiction: 'Litauen',
     jurisdictionCode: 'LT',
     flag: '🇱🇹',
     color: '#2D7A4F',
     status: 'aktiv',
-    active_status: 'live',
     layer: 2,
-    parentId: 'woh',
-    ownedBy: 'woh',
-    parent_entity_id: 'woh',
+    parentId: 'dvo-fzco',
     foundedDate: '2025-03-01',
     products: ['quiXzoom EU'],
-    description: 'EU tech-hub. quiXzoom-plattformen för EU-marknaden.',
+    description: 'EU tech-hub och quiXzoom-operatör för EU-marknaden.',
   },
+
+  // ── USA DELAWARE ─────────────────────────────────────────────────────────────
   {
     id: 'oz-us',
-    shortName: 'OZ-US',
+    shortName: 'OZ Inc',
     name: 'Optical Zoom Inc',
     jurisdiction: 'Delaware, USA',
     jurisdictionCode: 'US-DE',
     flag: '🇺🇸',
     color: '#2C6EA6',
     status: 'aktiv',
-    active_status: 'live',
     layer: 2,
-    parentId: 'woh',
-    ownedBy: 'woh',
-    parent_entity_id: 'woh',
+    parentId: 'dvo-fzco',
     foundedDate: '2026-03-27',
     products: ['quiXzoom US'],
-    description: 'US-entitet (Delaware C-Corp) via Stripe Atlas.',
+    description: 'US-entitet (Delaware C-Corp) via Stripe Atlas. quiXzoom US-marknad.',
   },
-  {
-    id: 'lvx-ae',
-    shortName: 'LVX-AE',
-    name: 'LandveX AC',
-    jurisdiction: 'UAE (DIFC)',
-    jurisdictionCode: 'AE',
-    flag: '🇦🇪',
-    color: '#C9A84C',
-    status: 'forming',
-    active_status: 'forming',
-    layer: 1,
-    parentId: 'wgh',
-    ownedBy: 'wgh',
-    parent_entity_id: 'wgh',
-    products: ['LandveX AE'],
-    description: 'LandveX UAE/MENA. Under etablering.',
-  },
+
+  // ── USA TEXAS ────────────────────────────────────────────────────────────────
   {
     id: 'lvx-us',
-    shortName: 'LVX-US',
+    shortName: 'LandveX Inc',
     name: 'LandveX Inc',
     jurisdiction: 'Texas, USA',
     jurisdictionCode: 'US-TX',
     flag: '🇺🇸',
     color: '#4A7A5B',
     status: 'forming',
-    active_status: 'forming',
-    layer: 1,
-    parentId: 'wgh',
-    ownedBy: 'wgh',
-    parent_entity_id: 'wgh',
+    layer: 2,
+    parentId: 'fc-fzco',
     foundedDate: '2026-03-31',
     products: ['LandveX US'],
-    description: 'LandveX för USA-marknaden. Texas LLC via Northwest.',
+    description: 'Texas LLC via Northwest. US-marknad för LandveX infrastrukturintelligens.',
+  },
+
+  // ── UAE DIFC ─────────────────────────────────────────────────────────────────
+  {
+    id: 'lvx-ae',
+    shortName: 'LandveX AC',
+    name: 'LandveX AC',
+    jurisdiction: 'UAE (DIFC)',
+    jurisdictionCode: 'AE-DIFC',
+    flag: '🇦🇪',
+    color: '#C9A84C',
+    status: 'forming',
+    layer: 2,
+    parentId: 'fc-fzco',
+    products: ['LandveX AE'],
+    description: 'LandveX UAE och MENA-marknad. DIFC Free Zone. Under etablering.',
   },
 ]
 
-// ── BRAND GROUPS ─────────────────────────────────────────────────────────────
+// Helpers
+export function getChildren(entityId: string): CorpEntity[] {
+  return CORP_ENTITIES.filter(e => e.parentId === entityId)
+}
+export function getEntityById(id: string): CorpEntity | undefined {
+  return CORP_ENTITIES.find(e => e.id === id)
+}
+export function getActiveEntities(): CorpEntity[] {
+  return CORP_ENTITIES.filter(e => ['aktiv', 'under_namnbyte'].includes(e.status))
+}
 
+// Brand groups
 export interface BrandGroup {
   id: string
   name: string
   shortName: string
   flag: string
   color: string
-  entityIds: string[]    // vilka bolag ingår
+  entityIds: string[]
   description: string
   products: string[]
 }
@@ -164,7 +187,7 @@ export const BRAND_GROUPS: BrandGroup[] = [
     flag: '📷',
     color: '#2D7A4F',
     entityIds: ['oz-lt', 'oz-us'],
-    description: 'Crowdsourcad kamerainfrastruktur — EU + US',
+    description: 'Crowdsourcad kamerainfrastruktur — EU (Litauen) + US (Delaware)',
     products: ['quiXzoom EU', 'quiXzoom US'],
   },
   {
@@ -173,37 +196,21 @@ export const BRAND_GROUPS: BrandGroup[] = [
     shortName: 'LVX',
     flag: '🏗️',
     color: '#C9A84C',
-    entityIds: ['lvx-ae', 'lvx-us'],
-    description: 'Infrastrukturintelligens — UAE + USA',
-    products: ['LandveX AE', 'LandveX US'],
+    entityIds: ['lvx-ab', 'lvx-ae', 'lvx-us'],
+    description: 'Infrastrukturintelligens — Sverige + UAE + USA',
+    products: ['LandveX SE', 'LandveX AE', 'LandveX US'],
   },
   {
-    id: 'wavult-holdings',
-    name: 'Wavult Holdings',
-    shortName: 'WHD',
-    flag: '🏛️',
-    color: '#0A3D62',
-    entityIds: ['wgh', 'woh'],
-    description: 'Holdingstruktur — Dubai + Sverige',
-    products: ['Wavult DS'],
+    id: 'dubai-ops',
+    name: 'Dubai Operations',
+    shortName: 'DXB',
+    flag: '🇦🇪',
+    color: '#E8B84B',
+    entityIds: ['wg-dmcc', 'fc-fzco', 'dvo-fzco'],
+    description: 'Dubai-entiteter — IP Holding + FinanceCo + DevOps FZCO',
+    products: [],
   },
 ]
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-export function getChildren(entityId: string): CorpEntity[] {
-  return CORP_ENTITIES.filter(e => e.parentId === entityId)
-}
-export function getParent(entityId: string): CorpEntity | undefined {
-  const entity = CORP_ENTITIES.find(e => e.id === entityId)
-  return entity?.parentId ? CORP_ENTITIES.find(e => e.id === entity.parentId) : undefined
-}
-export function getEntityById(id: string): CorpEntity | undefined {
-  return CORP_ENTITIES.find(e => e.id === id)
-}
-export function getActiveEntities(): CorpEntity[] {
-  return CORP_ENTITIES.filter(e => e.status === 'aktiv')
-}
 
 // ── TEAM (source of truth) ────────────────────────────────────────────────────
 
@@ -211,20 +218,17 @@ export interface TeamMember {
   id: string
   name: string
   role: string
-  title: string           // formell titel
+  title: string
   email: string
   phone?: string
-  entityIds: string[]     // vilka bolag de är aktiva i
-  reportsTo: string | null
-  roleId: string          // matchar RoleContext: 'group-ceo' | 'cto' | etc
+  entityIds: string[]
+  reportsTo?: string
+  roleId: string
   avatar?: string
   location?: string
-  startDate?: string
-  /** Responsibility domains */
-  owns?: string[]
   kpis: Array<{
     label: string
-    value: string
+    value: string | (() => string)
     status: 'good' | 'warning' | 'critical' | 'pending' | 'on_track' | 'active'
   }>
 }
@@ -237,18 +241,15 @@ export const TEAM_MEMBERS: TeamMember[] = [
     title: 'Styrelseordförande och Group CEO',
     email: 'erik@hypbit.com',
     phone: '+46709123223',
-    entityIds: ['wgh', 'woh', 'oz-lt', 'oz-us', 'lvx-ae', 'lvx-us'],
-    reportsTo: null,
+    entityIds: ['wg-dmcc', 'fc-fzco', 'dvo-fzco', 'lvx-ab', 'oz-lt', 'oz-us', 'lvx-ae', 'lvx-us'],
     roleId: 'group-ceo',
     avatar: '/avatars/erik.png',
     location: 'Stockholm / Dubai',
-    startDate: '2024-01-01',
-    owns: ['Group strategy', 'Capital allocation', 'IP & brand ownership', 'System architecture', 'Market & vision'],
     kpis: [
-      { label: 'Bolag etablerade', value: '4/6', status: 'warning' },
+      { label: 'Dubai DMCC-ansökan', value: 'Pågår', status: 'warning' },
+      { label: 'LandveX AB namnbyte', value: 'Väntar Bolagsverket', status: 'warning' },
       { label: 'Sverige go-live', value: 'Juni 2026', status: 'on_track' },
-      { label: 'Thailand workcamp', value: '11 april', status: 'on_track' },
-      { label: 'Bankkonton öppnade', value: '0', status: 'critical' },
+      { label: '83(b) Election OZ-US', value: () => `${Math.max(0, Math.ceil((new Date('2026-04-27').getTime() - Date.now()) / 86400000))}d kvar`, status: 'critical' },
     ],
   },
   {
@@ -258,15 +259,14 @@ export const TEAM_MEMBERS: TeamMember[] = [
     title: 'Chief Executive Officer, Operations',
     email: 'leon@hypbit.com',
     phone: '+46738968949',
-    entityIds: ['woh'],
+    entityIds: ['dvo-fzco', 'lvx-ab'],
     reportsTo: 'erik',
     roleId: 'ceo-ops',
     avatar: '/avatars/leon.png',
     location: 'Stockholm',
-    owns: ['Daglig exekvering', 'Resurshantering', 'Sales & revenue', 'Team-koordinering'],
     kpis: [
       { label: 'Aktiva projekt', value: '4', status: 'active' },
-      { label: 'First MRR', value: 'Pre-revenue', status: 'pending' },
+      { label: 'First revenue', value: 'Pre-revenue', status: 'pending' },
     ],
   },
   {
@@ -276,16 +276,15 @@ export const TEAM_MEMBERS: TeamMember[] = [
     title: 'Chief Financial Officer',
     email: 'winston@hypbit.com',
     phone: '+46768123548',
-    entityIds: ['wgh', 'woh'],
+    entityIds: ['wg-dmcc', 'fc-fzco', 'lvx-ab'],
     reportsTo: 'erik',
     roleId: 'cfo',
     avatar: '/avatars/winston.png',
     location: 'Stockholm',
-    owns: ['Finansiella flöden', 'Intercompany billing', 'Budget & forecast', 'Banking'],
     kpis: [
-      { label: 'Bankkonton öppnade', value: '0', status: 'critical' },
-      { label: 'Intercompany avtal', value: '1 signerat', status: 'warning' },
-      { label: 'EIN-ansökan LandveX', value: 'Pågår', status: 'warning' },
+      { label: 'Bankkonton öppnade', value: '0/3 bolag', status: 'critical' },
+      { label: 'LandveX Inc EIN', value: 'Pågår via Northwest', status: 'warning' },
+      { label: 'Intercompany avtal', value: '1', status: 'warning' },
     ],
   },
   {
@@ -295,48 +294,45 @@ export const TEAM_MEMBERS: TeamMember[] = [
     title: 'Chief Technology Officer',
     email: 'johan@hypbit.com',
     phone: '+46736977576',
-    entityIds: ['wgh', 'woh'],
+    entityIds: ['wg-dmcc', 'dvo-fzco'],
     reportsTo: 'erik',
     roleId: 'cto',
     avatar: '/avatars/johan.png',
     location: 'Stockholm',
-    owns: ['Systemarkitektur', 'Infrastruktur', 'CI/CD & DevOps', 'Säkerhet'],
     kpis: [
       { label: 'ECS-tjänster live', value: '11/13', status: 'on_track' },
       { label: 'System uptime', value: '99%+', status: 'good' },
-      { label: 'Gitea repos', value: '50 (0 tomma)', status: 'good' },
+      { label: 'Gitea repos', value: '50', status: 'good' },
     ],
   },
   {
     id: 'dennis',
     name: 'Dennis Bjarnemark',
-    role: 'Board Member / Chief Legal',
+    role: 'Board / Chief Legal',
     title: 'Chief Legal & Operations Officer (Interim)',
     email: 'dennis@hypbit.com',
     phone: '+46761474243',
-    entityIds: ['wgh', 'woh', 'oz-us', 'lvx-us'],
+    entityIds: ['wg-dmcc', 'oz-us', 'lvx-us'],
     reportsTo: 'erik',
     roleId: 'clo',
     avatar: '/avatars/dennis.png',
     location: 'Stockholm',
-    owns: ['Bolagsstruktur', 'Avtal & juridik', 'IP-skydd', 'Compliance'],
     kpis: [
-      { label: 'Bolag inkorporerade', value: '4/6', status: 'warning' },
-      { label: '83(b) Election', value: '22d kvar', status: 'critical' },
-      { label: 'DMCC-förnyelse', value: '57d', status: 'warning' },
+      { label: 'Dubai FZCO-ansökan', value: '3 entiteter', status: 'warning' },
+      { label: '83(b) OZ-US', value: () => `${Math.max(0, Math.ceil((new Date('2026-04-27').getTime() - Date.now()) / 86400000))}d kvar`, status: 'critical' },
+      { label: 'FinCEN BOI report', value: 'Ej inlämnad', status: 'warning' },
     ],
   },
   {
     id: 'tiffany',
     name: 'Tiffany Molly Catarina Svensson',
-    role: 'Arvtagare',
-    title: "Founder's Heir",
+    role: 'Founder\'s Heir',
+    title: 'Designerad arvtagare',
     email: '',
-    entityIds: ['wgh'],
+    entityIds: ['wg-dmcc'],
     reportsTo: 'erik',
     roleId: 'viewer',
-    location: 'Stockholm / Thailand (from May 3)',
-    owns: [],
+    location: 'Stockholm → Thailand (3 maj)',
     kpis: [],
   },
 ]
@@ -350,3 +346,41 @@ export function getMembersForEntity(entityId: string): TeamMember[] {
 export function getDirectReports(managerId: string): TeamMember[] {
   return TEAM_MEMBERS.filter(m => m.reportsTo === managerId)
 }
+
+// ── LEGACY ENTITIES (bara synliga för group-ceo / systemadmin) ───────────────
+
+export interface LegacyEntity {
+  id: string
+  name: string
+  flag: string
+  status: 'avvecklad' | 'fusionerad' | 'bytt_namn'
+  successorId?: string
+  note: string
+  closedDate?: string
+}
+
+export const LEGACY_ENTITIES: LegacyEntity[] = [
+  {
+    id: 'sommarliden',
+    name: 'Sommarliden Holding AB',
+    flag: '🇸🇪',
+    status: 'bytt_namn',
+    successorId: 'lvx-ab',
+    note: 'Namnbyte till LandveX AB pågår (Bolagsverket 178303/2026). Org.nr 559141-7042 behålls.',
+    closedDate: '2026-03-25',
+  },
+  {
+    id: 'hypbit',
+    name: 'Hypbit (varumärke)',
+    flag: '🇸🇪',
+    status: 'avvecklad',
+    note: 'Gammalt produktnamn — avvecklat. Ersatt av Wavult Group. Hypbit.com-mailadresser temporärt kvar.',
+  },
+  {
+    id: 'pixdrift',
+    name: 'Pixdrift',
+    flag: '🇸🇪',
+    status: 'avvecklad',
+    note: 'Gammalt bolagsnamn — avvecklat. Ersatt av Wavult.',
+  },
+]

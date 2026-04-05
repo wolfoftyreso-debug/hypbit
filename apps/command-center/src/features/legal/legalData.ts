@@ -41,29 +41,29 @@ export interface IPAsset {
 
 export const LEGAL_DOCUMENTS: LegalDocument[] = [
   // WGH — Dubai
-  { id: 'd1', title: 'DMCC Trade License', type: 'bolagsordning', entity_id: '1', status: 'aktiv', signed_date: '2025-06-01', expiry_date: '2026-06-01', tags: ['dmcc', 'licens'], created_at: '2025-06-01' },
-  { id: 'd2', title: 'Memorandum of Association DMCC', type: 'bolagsordning', entity_id: '1', status: 'aktiv', signed_date: '2025-06-01', tags: ['dmcc', 'bolagsordning'], created_at: '2025-06-01' },
-  { id: 'd3', title: 'Intercompany Loan Agreement — WGH → LandveX AB', type: 'avtal', entity_id: '1', status: 'aktiv', counterpart: 'LandveX AB (559141-7042)', signed_date: '2025-11-01', value_sek: 2000000, tags: ['internlån', 'koncern'], created_at: '2025-11-01' },
+  { id: 'd1', title: 'DMCC Trade License', type: 'bolagsordning', entity_id: 'wgh', status: 'aktiv', signed_date: '2025-06-01', expiry_date: '2026-06-01', tags: ['dmcc', 'licens'], created_at: '2025-06-01' },
+  { id: 'd2', title: 'Memorandum of Association DMCC', type: 'bolagsordning', entity_id: 'wgh', status: 'aktiv', signed_date: '2025-06-01', tags: ['dmcc', 'bolagsordning'], created_at: '2025-06-01' },
+  { id: 'd3', title: 'Intercompany Loan Agreement — WGH → LandveX AB', type: 'avtal', entity_id: 'wgh', status: 'aktiv', counterpart: 'LandveX AB (559141-7042)', signed_date: '2025-11-01', value_sek: 2000000, tags: ['internlån', 'koncern'], created_at: '2025-11-01' },
 
   // WOH — Sverige
-  { id: 'd4', title: 'Bolagsordning — Wavult Operations Holding AB', type: 'bolagsordning', entity_id: '2', status: 'aktiv', signed_date: '2024-01-15', tags: ['bolagsordning', 'sverige'], created_at: '2024-01-15' },
-  { id: 'd5', title: 'Aktieägaravtal — Wavult Operations', type: 'avtal', entity_id: '2', status: 'aktiv', counterpart: 'Erik Svensson', signed_date: '2024-01-15', tags: ['aktieägaravtal'], created_at: '2024-01-15' },
+  { id: 'd4', title: 'Bolagsordning — Wavult Operations Holding AB', type: 'bolagsordning', entity_id: 'woh', status: 'aktiv', signed_date: '2024-01-15', tags: ['bolagsordning', 'sverige'], created_at: '2024-01-15' },
+  { id: 'd5', title: 'Aktieägaravtal — Wavult Operations', type: 'avtal', entity_id: 'woh', status: 'aktiv', counterpart: 'Erik Svensson', signed_date: '2024-01-15', tags: ['aktieägaravtal'], created_at: '2024-01-15' },
 
   // OZ-LT — Litauen
-  { id: 'd6', title: 'Steigimo dokumentai — Optical Zoom UAB', type: 'bolagsordning', entity_id: '3', status: 'aktiv', signed_date: '2025-03-01', tags: ['litauen', 'uab'], created_at: '2025-03-01' },
-  { id: 'd7', title: 'EU Data Processing Agreement — GDPR', type: 'avtal', entity_id: '3', status: 'aktiv', tags: ['gdpr', 'dpa'], created_at: '2025-03-01' },
+  { id: 'd6', title: 'Steigimo dokumentai — Optical Zoom UAB', type: 'bolagsordning', entity_id: 'oz-lt', status: 'aktiv', signed_date: '2025-03-01', tags: ['litauen', 'uab'], created_at: '2025-03-01' },
+  { id: 'd7', title: 'EU Data Processing Agreement — GDPR', type: 'avtal', entity_id: 'oz-lt', status: 'aktiv', tags: ['gdpr', 'dpa'], created_at: '2025-03-01' },
 
   // OZ-US — Delaware
-  { id: 'd8', title: 'Certificate of Incorporation — Optical Zoom Inc', type: 'bolagsordning', entity_id: '4', status: 'aktiv', signed_date: '2026-03-27', tags: ['delaware', 'stripe-atlas'], created_at: '2026-03-27' },
-  { id: 'd9', title: 'Bylaws — Optical Zoom Inc', type: 'bolagsordning', entity_id: '4', status: 'aktiv', signed_date: '2026-03-27', tags: ['delaware', 'bylaws'], created_at: '2026-03-27' },
-  { id: 'd10', title: '83(b) Election — Erik Svensson', type: 'övrigt', entity_id: '4', status: 'aktiv', signed_date: '2026-03-27', expiry_date: '2026-04-27', tags: ['irs', '83b', 'urgent'], created_at: '2026-03-27' },
+  { id: 'd8', title: 'Certificate of Incorporation — Optical Zoom Inc', type: 'bolagsordning', entity_id: 'oz-us', status: 'aktiv', signed_date: '2026-03-27', tags: ['delaware', 'stripe-atlas'], created_at: '2026-03-27' },
+  { id: 'd9', title: 'Bylaws — Optical Zoom Inc', type: 'bolagsordning', entity_id: 'oz-us', status: 'aktiv', signed_date: '2026-03-27', tags: ['delaware', 'bylaws'], created_at: '2026-03-27' },
+  { id: 'd10', title: '83(b) Election — Erik Svensson', type: 'övrigt', entity_id: 'oz-us', status: 'aktiv', signed_date: '2026-03-27', expiry_date: '2026-04-27', tags: ['irs', '83b', 'urgent'], created_at: '2026-03-27' },
 
   // LVX-AE
-  { id: 'd11', title: 'LandveX AC — DIFC Formation Documents', type: 'bolagsordning', entity_id: '5', status: 'utkast', tags: ['difc', 'forming'], created_at: '2026-04-01' },
+  { id: 'd11', title: 'LandveX AC — DIFC Formation Documents', type: 'bolagsordning', entity_id: 'lvx-ae', status: 'utkast', tags: ['difc', 'forming'], created_at: '2026-04-01' },
 
   // LVX-US
-  { id: 'd12', title: 'Certificate of Formation — LandveX Inc (TX)', type: 'bolagsordning', entity_id: '6', status: 'aktiv', signed_date: '2026-03-31', tags: ['texas', 'llc', 'northwest'], created_at: '2026-03-31' },
-  { id: 'd13', title: 'EIN Application — LandveX Inc', type: 'övrigt', entity_id: '6', status: 'under_förhandling', counterpart: 'IRS / Northwest Registered Agent', tags: ['ein', 'tax-id', 'pending'], created_at: '2026-03-29' },
+  { id: 'd12', title: 'Certificate of Formation — LandveX Inc (TX)', type: 'bolagsordning', entity_id: 'lvx-us', status: 'aktiv', signed_date: '2026-03-31', tags: ['texas', 'llc', 'northwest'], created_at: '2026-03-31' },
+  { id: 'd13', title: 'EIN Application — LandveX Inc', type: 'övrigt', entity_id: 'lvx-us', status: 'under_förhandling', counterpart: 'IRS / Northwest Registered Agent', tags: ['ein', 'tax-id', 'pending'], created_at: '2026-03-29' },
 ]
 
 export const LEGAL_TEMPLATES: LegalTemplate[] = [
@@ -78,11 +78,11 @@ export const LEGAL_TEMPLATES: LegalTemplate[] = [
 ]
 
 export const IP_ASSETS: IPAsset[] = [
-  { id: 'ip1', name: 'Wavult', type: 'varumärke', jurisdiction: 'Sverige', entity_id: '2', registered: false, status: 'under_ansökan' },
-  { id: 'ip2', name: 'quiXzoom', type: 'varumärke', jurisdiction: 'Sverige', entity_id: '2', registered: false, status: 'under_ansökan' },
-  { id: 'ip3', name: 'LandveX', type: 'varumärke', jurisdiction: 'Sverige', entity_id: '2', registered: false, status: 'under_ansökan' },
-  { id: 'ip4', name: 'wavult.com', type: 'domän', jurisdiction: 'Global', entity_id: '1', registered: true, registration_number: 'Ascio/2026', expiry_date: '2027-01-07', status: 'aktiv' },
-  { id: 'ip5', name: 'quixzoom.com', type: 'domän', jurisdiction: 'Global', entity_id: '1', registered: true, expiry_date: '2027-03-15', status: 'aktiv' },
-  { id: 'ip6', name: 'landvex.com', type: 'domän', jurisdiction: 'Global', entity_id: '1', registered: true, expiry_date: '2027-01-15', status: 'aktiv' },
-  { id: 'ip7', name: 'Wavult DS — Källkod', type: 'källkod', jurisdiction: 'Global', entity_id: '1', registered: false, status: 'aktiv' },
+  { id: 'ip1', name: 'Wavult', type: 'varumärke', jurisdiction: 'Sverige', entity_id: 'woh', registered: false, status: 'under_ansökan' },
+  { id: 'ip2', name: 'quiXzoom', type: 'varumärke', jurisdiction: 'Sverige', entity_id: 'woh', registered: false, status: 'under_ansökan' },
+  { id: 'ip3', name: 'LandveX', type: 'varumärke', jurisdiction: 'Sverige', entity_id: 'woh', registered: false, status: 'under_ansökan' },
+  { id: 'ip4', name: 'wavult.com', type: 'domän', jurisdiction: 'Global', entity_id: 'wgh', registered: true, registration_number: 'Ascio/2026', expiry_date: '2027-01-07', status: 'aktiv' },
+  { id: 'ip5', name: 'quixzoom.com', type: 'domän', jurisdiction: 'Global', entity_id: 'wgh', registered: true, expiry_date: '2027-03-15', status: 'aktiv' },
+  { id: 'ip6', name: 'landvex.com', type: 'domän', jurisdiction: 'Global', entity_id: 'wgh', registered: true, expiry_date: '2027-01-15', status: 'aktiv' },
+  { id: 'ip7', name: 'Wavult DS — Källkod', type: 'källkod', jurisdiction: 'Global', entity_id: 'wgh', registered: false, status: 'aktiv' },
 ]

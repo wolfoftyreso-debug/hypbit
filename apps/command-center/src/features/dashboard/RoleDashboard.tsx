@@ -5,7 +5,7 @@ import { CommandDashboard } from './CommandDashboard'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { useTranslation } from '../../shared/i18n/useTranslation'
 import { useVisaAlerts } from '../visa/useVisaAlerts'
-import { CORP_ENTITIES } from '../../shared/data/systemData'
+import { CORP_ENTITIES, TEAM_MEMBERS } from '../../shared/data/systemData'
 // Corp entities — från systemData (single source of truth)
 const STATIC_CORP_ENTITIES = CORP_ENTITIES.map(e => ({
   id: e.id,
@@ -244,13 +244,9 @@ function CeoDashboard() {
 
   const [drawer, setDrawer] = useState<{ title: string; content: React.ReactNode } | null>(null)
 
-  const teamMembers = [
-    { name: 'Erik Svensson', role: 'Chairman & Group CEO' },
-    { name: 'Johan Berglund', role: 'Group CTO' },
-    { name: 'Winston Bjarnemark', role: 'CFO' },
-    { name: 'Dennis Bjarnemark', role: 'Chief Legal & Operations (Interim)' },
-    { name: 'Leon Russo De Cerame', role: 'CEO Wavult Operations' },
-  ]
+  const teamMembers = TEAM_MEMBERS
+    .filter(m => m.roleId !== 'viewer')
+    .map(m => ({ name: m.name, role: m.role }))
 
   const openDrawer = (title: string, content: React.ReactNode) => setDrawer({ title, content })
   const closeDrawer = () => setDrawer(null)
@@ -826,6 +822,12 @@ function CloDashboard() {
   const openDrawer = (title: string, content: React.ReactNode) => setDrawer({ title, content })
   const closeDrawer = () => setDrawer(null)
 
+  const totalEntities = CORP_ENTITIES.length
+  const activeEntities = CORP_ENTITIES.filter(e => e.status === 'aktiv')
+  const formingEntities = CORP_ENTITIES.filter(e => e.status === 'forming')
+  const activeNames = activeEntities.map(e => e.name).join(', ')
+  const formingNames = formingEntities.map(e => e.shortName + ' (' + e.jurisdictionCode + ')').join(', ')
+
   return (
     <div className="space-y-8 max-w-6xl">
       <Breadcrumbs crumbs={[{ label: 'Wavult DS', href: '/' }, { label: 'Dashboard' }, { label: 'Chief Legal & Compliance' }]} />
@@ -836,12 +838,12 @@ function CloDashboard() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Bolag totalt', value: '6', delta: '2 Dubai · 2 EU · 2 US', color: '#F59E0B',
-            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">6 bolag totalt: 2 Dubai (Free Zone A), 2 EU (Litauen + Sverige), 2 US (Delaware + Texas).</p> },
-          { label: 'Aktiva bolag', value: '1', delta: 'Landvex AB (Sverige) live', color: '#10B981',
-            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Landvex AB är det enda fullt aktiva bolaget. Registrerat och operativt i Sverige.</p> },
-          { label: 'Under bildning', value: '5', delta: 'Dubai, Delaware, Texas, Litauen', color: '#FF9500',
-            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">5 bolag under bildning: Wavult Group Dubai, Wavult Operations Dubai, QuiXzoom UAB (LT), QuiXzoom Inc (DE), Landvex Inc (TX).</p> },
+          { label: 'Bolag totalt', value: String(totalEntities), delta: '2 Dubai · 2 EU · 2 US', color: '#F59E0B',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">{totalEntities} bolag totalt: {CORP_ENTITIES.map(e => e.name).join(', ')}.</p> },
+          { label: 'Aktiva bolag', value: String(activeEntities.length), delta: activeNames, color: '#10B981',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">{activeEntities.length} aktiva bolag: {activeNames}.</p> },
+          { label: 'Under bildning', value: String(formingEntities.length), delta: formingNames, color: '#FF9500',
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">{formingEntities.length} bolag under bildning: {formingNames}.</p> },
           { label: 'IP-skydd', value: 'Ej satt', delta: 'Ska ligga i Wavult Group Dubai', color: '#FF3B30',
             drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">IP-skydd är ej etablerat. Plan: all IP ska överlåtas till Wavult Group (Dubai Free Zone A) för optimal skattestruktur.</p> },
         ].map(s => (
