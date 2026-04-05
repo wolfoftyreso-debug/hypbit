@@ -1,327 +1,77 @@
-// ─── Entity & Relationship data model ─────────────────────────────────────────
-// Extends existing EntitySwitcher / PeopleView data — never replaces.
+/**
+ * org-graph/data.ts — RE-EXPORT från systemData
+ * 
+ * ENDA sanningskällan är: src/shared/data/systemData.ts
+ * Denna fil finns kvar för bakåtkompatibilitet med komponenter
+ * som importerar från './data' — men all data kommer från systemData.
+ */
 
-export type EntityType = 'holding' | 'operations' | 'product' | 'legal' | 'system' | 'financial'
-export type Jurisdiction = 'Dubai' | 'EU-LT' | 'US-DE' | 'US-TX' | 'SE' | 'Global'
-export type ActiveStatus = 'live' | 'forming' | 'planned'
+import {
+  CORP_ENTITIES,
+  TEAM_MEMBERS,
+  BRAND_GROUPS,
+  getChildren,
+  getEntityById,
+  getMembersForEntity,
+  getDirectReports,
+  type CorpEntity,
+  type TeamMember,
+  type BrandGroup,
+} from '../../shared/data/systemData'
 
-export interface Entity {
-  id: string
-  name: string
-  shortName: string
-  type: EntityType
-  jurisdiction: Jurisdiction
-  parent_entity_id: string | null
-  description: string
-  active_status: ActiveStatus
-  color: string
-  flag: string
-  layer: number // 0 = root, 1 = group, 2 = regional, 3 = product
-  metadata: Record<string, string>
-  wg_id?: string
-  parent_wg_id?: string | null
+// Re-export allt
+export {
+  CORP_ENTITIES,
+  CORP_ENTITIES as ENTITIES,     // bakåtkompatibilitet
+  TEAM_MEMBERS,
+  BRAND_GROUPS,
+  getChildren,
+  getEntityById,
+  getMembersForEntity,
+  getDirectReports,
+  type CorpEntity,
+  type TeamMember,
+  type BrandGroup,
 }
 
-export type RelationshipType = 'ownership' | 'control' | 'service' | 'licensing' | 'financial_flow'
-
-export interface EntityRelationship {
+// Bakåtkompatibilitet — RELATIONS (tom tills vidare)
+export const RELATIONS: Array<{
   id: string
   from_entity_id: string
   to_entity_id: string
-  type: RelationshipType
+  type: string
   label: string
-  bidirectional?: boolean
-  wg_id?: string
-  parent_wg_id?: string | null
-}
+}> = CORP_ENTITIES
+  .filter(e => e.parentId)
+  .map(e => ({
+    id: `r-${e.id}`,
+    from_entity_id: e.parentId!,
+    to_entity_id: e.id,
+    type: 'ownership',
+    label: 'Owns 100%',
+  }))
 
-export type RoleScope = 'group' | 'operations' | 'entity'
-
+// Bakåtkompatibilitet — ROLE_MAPPINGS och RELATIONSHIPS
 export interface RoleMapping {
-  person: string
-  initials: string
-  color: string
-  role_type: string
-  scope: RoleScope
+  role: string
   entity_ids: string[]
   permissions: string[]
 }
 
-// ─── ENTITIES ──────────────────────────────────────────────────────────────────
+export const ROLE_MAPPINGS: RoleMapping[] = TEAM_MEMBERS.map(m => ({
+  role: m.roleId,
+  entity_ids: m.entityIds,
+  permissions: m.roleId === 'group-ceo' ? ['read', 'write', 'admin'] :
+               m.roleId === 'cto' ? ['read', 'write', 'deploy'] :
+               ['read', 'write'],
+}))
 
-export const ENTITIES: Entity[] = [
-  // Layer 0 — Root holding
-  {
-    id: 'wavult-group',
-    wg_id: 'WG-AE-HOLD-001',
-    parent_wg_id: null,
-    name: 'Wavult Group',
-    shortName: 'WGH',
-    type: 'holding',
-    jurisdiction: 'Dubai',
-    parent_entity_id: null,
-    description: 'Dubai Free Zone IP Holding. Owns ALL software, trademarks, code and patents for the entire group. Licenses IP to operating entities via royalty agreements (5–15%). No direct operations.',
-    active_status: 'forming',
-    color: '#2563EB',
-    flag: '🇦🇪',
-    layer: 0,
-    metadata: {
-      'IP owner': 'QuiXzoom, Landvex, Optical Insight — ALL group IP',
-      'Revenue model': 'IP royalty 5–15% from all subsidiaries',
-      'Legal form': 'DMCC Free Zone LLC',
-      'Tax rate': '0% on royalty income (UAE)',
-      'Substance req': 'Board meetings, IP management in Dubai',
-      'Bank': 'ENBD / Emirates NBD',
-    },
-  },
-  // Layer 1 — Dubai FZCOs (Finance + DevOps)
-  {
-    id: 'financo-fzco',
-    wg_id: 'WG-AE-FIN-001',
-    parent_wg_id: 'WG-AE-HOLD-001',
-    name: 'FinanceCo FZCO',
-    shortName: 'FCO',
-    type: 'financial',
-    jurisdiction: 'Dubai',
-    parent_entity_id: 'wavult-group',
-    description: 'Dubai FZCO handling all payment processing, treasury management, intercompany settlements and zoomer payouts. All revenue flows through FinanceCo before distribution.',
-    active_status: 'live',
-    color: '#10B981',
-    flag: '🇦🇪',
-    layer: 1,
-    metadata: {
-      'Function': 'Payments, Treasury & Payouts',
-      'Revenue model': 'Intercompany service fee',
-      'Legal form': 'DMCC Free Zone LLC',
-      'Tax rate': '0% (UAE FZCO)',
-      'Role': 'Central payment hub for all group entities',
-    },
-  },
-  {
-    id: 'devops-fzco',
-    wg_id: 'WG-AE-OPS-001',
-    parent_wg_id: 'WG-AE-HOLD-001',
-    name: 'DevOps FZCO',
-    shortName: 'DVO',
-    type: 'operations',
-    jurisdiction: 'Dubai',
-    parent_entity_id: 'wavult-group',
-    description: 'Dubai FZCO for tech infrastructure and operations. Manages cloud services, CI/CD, and provides technical services to all product entities via management fee.',
-    active_status: 'live',
-    color: '#1E40AF',
-    flag: '🇦🇪',
-    layer: 1,
-    metadata: {
-      'Function': 'Tech & Operations',
-      'Revenue model': 'Management fee from subsidiaries',
-      'Legal form': 'DMCC Free Zone LLC',
-      'Tax rate': '0% (UAE FZCO)',
-      'Role': 'Technical services provider for all group entities',
-    },
-  },
-  // Layer 2 — Product entities
-  {
-    id: 'quixzoom-uab',
-    wg_id: 'WG-LT-PROD-001',
-    parent_wg_id: 'WG-AE-HOLD-001',
-    name: 'QuiXzoom UAB',
-    shortName: 'QZ-EU',
-    type: 'product',
-    jurisdiction: 'EU-LT',
-    parent_entity_id: 'wavult-group',
-    description: 'EU entity for quiXzoom and Quixom Ads platform. EU data residency. GDPR-compliant. Operates in all EU markets.',
-    active_status: 'planned',
-    color: '#10B981',
-    flag: '🇱🇹',
-    layer: 2,
-    metadata: {
-      'Products': 'quiXzoom, Quixom Ads',
-      'Market': 'EU, starting Sweden June 2026',
-      'Legal form': 'UAB (Lithuanian LLC)',
-      'Tax rate': '15% (lower than SE)',
-    },
-  },
-  {
-    id: 'quixzoom-inc',
-    wg_id: 'WG-US-DE-PROD-001',
-    parent_wg_id: 'WG-AE-HOLD-001',
-    name: 'QuiXzoom Inc',
-    shortName: 'QZ-US',
-    type: 'product',
-    jurisdiction: 'US-DE',
-    parent_entity_id: 'wavult-group',
-    description: 'US entity for quiXzoom platform. Delaware C-Corp, optimized for US investment and capital raising.',
-    active_status: 'planned',
-    color: '#22D3EE',
-    flag: '🇺🇸',
-    layer: 2,
-    metadata: {
-      'Products': 'quiXzoom (US market)',
-      'Legal form': 'Delaware C-Corp',
-      'Purpose': 'US capital raising + investment',
-      'Market': 'US municipalities, commercial',
-    },
-  },
-  {
-    id: 'landvex-inc',
-    wg_id: 'WG-US-TX-PROD-001',
-    parent_wg_id: 'WG-AE-HOLD-001',
-    name: 'Landvex Inc',
-    shortName: 'LVX-US',
-    type: 'product',
-    jurisdiction: 'US-TX',
-    parent_entity_id: 'wavult-group',
-    description: 'US entity for Landvex. Texas LLC, targeting US municipalities, port authorities, federal infrastructure operators.',
-    active_status: 'forming',
-    color: '#F59E0B',
-    flag: '🇺🇸',
-    layer: 2,
-    metadata: {
-      'Products': 'Landvex (US), Optical Insight Cloud US',
-      'Legal form': 'Texas LLC (Houston)',
-      'Market': 'US municipalities, port authorities',
-      'Bank': 'JPMorgan Chase / Bank of America',
-    },
-  },
-  {
-    id: 'landvex-ab',
-    wg_id: 'WG-SE-PROD-001',
-    parent_wg_id: 'WG-AE-HOLD-001',
-    name: 'Landvex AB',
-    shortName: 'LNDVX',
-    type: 'holding',
-    jurisdiction: 'SE',
-    parent_entity_id: 'wavult-group',
-    description: 'Operativt SE-bolag (Landvex AB, org. 559141-7042). Hanterar EU/SE-försäljning av Landvex-plattformen. Äger INTE IP — licensierar från Dubai-holdingen.',
-    active_status: 'forming',
-    color: '#EC4899',
-    flag: '🇸🇪',
-    layer: 2,
-    metadata: {
-      'Legal name': 'Landvex AB',
-      'Future name': 'Landvex AB (namnändring pågår)',
-      'Org. nummer': '559141-7042',
-      'Legal form': 'AB (Aktiebolag)',
-      'Jurisdiction': 'Sweden (SE)',
-      'IP owner': 'NEJ — licensieras från Wavult Group (Dubai)',
-      'Roll': 'Operativt SE-bolag, EU-försäljning',
-      'Produkter': 'Landvex SE/EU, Optical Insight Cloud EU',
-      'Marknad': 'Sverige → Nederländerna → EU',
-      'Lansering': 'Juni 2026 — svenska skärgården',
-    },
-  },
-]
-
-// ─── RELATIONSHIPS ─────────────────────────────────────────────────────────────
-
-export const RELATIONSHIPS: EntityRelationship[] = [
-  // Ownership — WGH → Product entities
-  { id: 'r2', from_entity_id: 'wavult-group', to_entity_id: 'quixzoom-uab', type: 'ownership', label: 'Owns 100%' },
-  { id: 'r3', from_entity_id: 'wavult-group', to_entity_id: 'quixzoom-inc', type: 'ownership', label: 'Owns 100%' },
-  { id: 'r4', from_entity_id: 'wavult-group', to_entity_id: 'landvex-inc', type: 'ownership', label: 'Owns 100%' },
-  { id: 'r5', from_entity_id: 'wavult-group', to_entity_id: 'landvex-ab', type: 'ownership', label: 'Owns 100%' },
-
-  // IP licensing — WGH → all product entities
-  { id: 'r6', from_entity_id: 'wavult-group', to_entity_id: 'quixzoom-uab', type: 'licensing', label: 'IP license 5–15%' },
-  { id: 'r7', from_entity_id: 'wavult-group', to_entity_id: 'quixzoom-inc', type: 'licensing', label: 'IP license 5–15%' },
-  { id: 'r8', from_entity_id: 'wavult-group', to_entity_id: 'landvex-inc', type: 'licensing', label: 'IP license 5–15%' },
-  { id: 'r9', from_entity_id: 'wavult-group', to_entity_id: 'landvex-ab', type: 'licensing', label: 'IP license 5–15%' },
-
-  // Financial flows — subsidiaries → WGH
-  { id: 'r14', from_entity_id: 'quixzoom-uab', to_entity_id: 'wavult-group', type: 'financial_flow', label: 'Royalty payment' },
-  { id: 'r15', from_entity_id: 'quixzoom-inc', to_entity_id: 'wavult-group', type: 'financial_flow', label: 'Royalty payment' },
-  { id: 'r16', from_entity_id: 'landvex-inc', to_entity_id: 'wavult-group', type: 'financial_flow', label: 'Royalty payment' },
-  { id: 'r17', from_entity_id: 'landvex-ab', to_entity_id: 'wavult-group', type: 'financial_flow', label: 'Royalty payment' },
-
-  // WGH owns FZCOs
-  { id: 'r21', from_entity_id: 'wavult-group', to_entity_id: 'financo-fzco', type: 'ownership', label: 'Owns 100%' },
-  { id: 'r22', from_entity_id: 'wavult-group', to_entity_id: 'devops-fzco', type: 'ownership', label: 'Owns 100%' },
-
-  // Intercompany flows
-  { id: 'r23', from_entity_id: 'wavult-group', to_entity_id: 'financo-fzco', type: 'financial_flow', label: 'Capital allocation' },
-  { id: 'r24', from_entity_id: 'wavult-group', to_entity_id: 'devops-fzco', type: 'financial_flow', label: 'Service fee' },
-
-  // FCO → Product Entities (payouts/splits)
-  { id: 'r25', from_entity_id: 'financo-fzco', to_entity_id: 'quixzoom-uab', type: 'financial_flow', label: 'Zoomer payouts' },
-  { id: 'r26', from_entity_id: 'financo-fzco', to_entity_id: 'quixzoom-inc', type: 'financial_flow', label: 'Zoomer payouts' },
-  { id: 'r27', from_entity_id: 'financo-fzco', to_entity_id: 'landvex-inc', type: 'financial_flow', label: 'Revenue distribution' },
-  { id: 'r28', from_entity_id: 'financo-fzco', to_entity_id: 'landvex-ab', type: 'financial_flow', label: 'Revenue distribution' },
-
-  // DVO → Product Entities (tech services)
-  { id: 'r29', from_entity_id: 'devops-fzco', to_entity_id: 'quixzoom-uab', type: 'service', label: 'Tech services' },
-  { id: 'r30', from_entity_id: 'devops-fzco', to_entity_id: 'quixzoom-inc', type: 'service', label: 'Tech services' },
-  { id: 'r31', from_entity_id: 'devops-fzco', to_entity_id: 'landvex-inc', type: 'service', label: 'Tech services' },
-  { id: 'r32', from_entity_id: 'devops-fzco', to_entity_id: 'landvex-ab', type: 'service', label: 'Tech services' },
-
-  // Hypbit serves all
-  { id: 'r19', from_entity_id: 'hypbit-system', to_entity_id: 'quixzoom-uab', type: 'service', label: 'Ops system' },
-  { id: 'r20', from_entity_id: 'hypbit-system', to_entity_id: 'landvex-ab', type: 'service', label: 'Ops system' },
-]
-
-// ─── ROLE MAPPINGS ─────────────────────────────────────────────────────────────
-
-export const ROLE_MAPPINGS: RoleMapping[] = [
-  {
-    person: 'Erik Svensson',
-    initials: 'ES',
-    color: '#2563EB',
-    role_type: 'Chairman & Group CEO',
-    scope: 'group',
-    entity_ids: ['wavult-group', 'devops-fzco', 'quixzoom-uab', 'quixzoom-inc', 'landvex-inc', 'landvex-ab'],
-    permissions: ['full'],
-  },
-  {
-    person: 'Leon Russo De Cerame',
-    initials: 'LR',
-    color: '#10B981',
-    role_type: 'CEO – Operations',
-    scope: 'operations',
-    entity_ids: ['devops-fzco'],
-    permissions: ['execution', 'strategy'],
-  },
-  {
-    person: 'Winston Bjarnemark',
-    initials: 'WB',
-    color: '#3B82F6',
-    role_type: 'CFO',
-    scope: 'group',
-    entity_ids: ['wavult-group', 'devops-fzco'],
-    permissions: ['finance'],
-  },
-  {
-    person: 'Dennis Bjarnemark',
-    initials: 'DB',
-    color: '#F59E0B',
-    role_type: 'Board / Chief Legal',
-    scope: 'group',
-    entity_ids: ['wavult-group', 'landvex-ab', 'landvex-inc'],
-    permissions: ['legal'],
-  },
-  {
-    person: 'Johan Berglund',
-    initials: 'JB',
-    color: '#06B6D4',
-    role_type: 'Group CTO',
-    scope: 'group',
-    entity_ids: ['devops-fzco', 'hypbit-system'],
-    permissions: ['tech'],
-  },
-]
-
-// ─── Helpers ───────────────────────────────────────────────────────────────────
-
-export function getEntityById(id: string): Entity | undefined {
-  return ENTITIES.find(e => e.id === id)
-}
-
-export function getChildren(parentId: string): Entity[] {
-  return ENTITIES.filter(e => e.parent_entity_id === parentId)
-}
-
-export function getRelationships(entityId: string): EntityRelationship[] {
-  return RELATIONSHIPS.filter(r => r.from_entity_id === entityId || r.to_entity_id === entityId)
-}
+export const RELATIONSHIPS = RELATIONS
 
 export function getRoleMappings(entityId: string): RoleMapping[] {
   return ROLE_MAPPINGS.filter(r => r.entity_ids.includes(entityId))
+}
+
+export function getRelationships(entityId: string) {
+  return RELATIONS.filter(r => r.from_entity_id === entityId || r.to_entity_id === entityId)
 }
