@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CORP_ENTITIES as SYSTEM_CORP_ENTITIES, TEAM_MEMBERS as SYSTEM_TEAM_MEMBERS } from '../../shared/data/systemData'
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -7,7 +8,7 @@ type SelectedNode = { type: 'entity'; id: string } | { type: 'person'; id: strin
 type KPIStatus = 'warning' | 'on_track' | 'active' | 'pending' | 'critical' | 'good'
 type EntityStatus = 'live' | 'forming' | 'planned'
 
-// ─── Corporate Hierarchy ───────────────────────────────────────────────────────
+// ─── Corporate Hierarchy — derived from systemData (single source of truth) ───
 
 interface CorpEntity {
   id: string
@@ -24,52 +25,30 @@ interface CorpEntity {
   description: string
 }
 
-const CORP_HIERARCHY: CorpEntity[] = [
-  {
-    id: '1', shortName: 'WGH', name: 'Wavult Group Holding DMCC',
-    jurisdiction: 'UAE (DIFC)', flag: '🇦🇪', layer: 0,
-    color: '#E8B84B', type: 'HOLDING',
-    children: ['2', '5', '6'], parent: null, status: 'forming',
-    description: 'Dubai Free Zone IP Holding. Äger ALL grupp-IP, varumärken och patent. Licensierar till dotterbolag via royalty 5–15%.',
-  },
-  {
-    id: '2', shortName: 'WOH', name: 'Wavult Operations Holding AB',
-    jurisdiction: 'Sverige', flag: '🇸🇪', layer: 1,
-    color: '#0A3D62', type: 'OPERATIONS',
-    children: ['3', '4'], parent: '1', status: 'planned',
-    description: 'Operativt holdingbolag i Sverige. Koordinerar EU-verksamhet och teamet.',
-  },
-  {
-    id: '3', shortName: 'OZ-LT', name: 'Optical Zoom UAB',
-    jurisdiction: 'Litauen', flag: '🇱🇹', layer: 2,
-    color: '#2D7A4F', type: 'PRODUCT',
-    children: [], parent: '2', status: 'planned',
-    description: 'EU-entitet för Optical Zoom. GDPR-kompatibel, täcker alla EU-marknader från Sverige.',
-  },
-  {
-    id: '4', shortName: 'OZ-US', name: 'Optical Zoom Inc',
-    jurisdiction: 'Delaware, USA', flag: '🇺🇸', layer: 2,
-    color: '#2C6EA6', type: 'PRODUCT',
-    children: [], parent: '2', status: 'planned',
-    description: 'US-entitet för Optical Zoom. Delaware C-Corp optimerad för US-investeringar och kapitalresning.',
-  },
-  {
-    id: '5', shortName: 'LVX-AE', name: 'LandveX AC',
-    jurisdiction: 'UAE (DIFC)', flag: '🇦🇪', layer: 1,
-    color: '#C9A84C', type: 'PRODUCT',
-    children: [], parent: '1', status: 'forming',
-    description: 'LandveX UAE-entitet. DIFC Free Zone för MENA-marknad. AI-analys av infrastrukturdata.',
-  },
-  {
-    id: '6', shortName: 'LVX-US', name: 'LandveX Inc',
-    jurisdiction: 'Texas, USA', flag: '🇺🇸', layer: 1,
-    color: '#4A7A5B', type: 'PRODUCT',
-    children: [], parent: '1', status: 'forming',
-    description: 'LandveX US-entitet. Texas LLC för US municipal och federal infrastruktur. Hamnar, flygplatser, kommuner.',
-  },
-]
+// Map layer → type label
+function layerToType(layer: number): string {
+  if (layer === 0) return 'HOLDING'
+  if (layer === 1) return 'OPERATIONS'
+  return 'PRODUCT'
+}
 
-// ─── Team Command Chain ────────────────────────────────────────────────────────
+// Derived from systemData — NEVER edit directly here
+const CORP_HIERARCHY: CorpEntity[] = SYSTEM_CORP_ENTITIES.map(e => ({
+  id: e.id,
+  shortName: e.shortName,
+  name: e.name,
+  jurisdiction: e.jurisdiction,
+  flag: e.flag,
+  layer: e.layer,
+  color: e.color,
+  type: layerToType(e.layer),
+  children: SYSTEM_CORP_ENTITIES.filter(c => c.parentId === e.id).map(c => c.id),
+  parent: e.parentId ?? null,
+  status: e.active_status,
+  description: e.description,
+}))
+
+// ─── Team Command Chain — derived from systemData ─────────────────────────────
 
 interface TeamKPI {
   label: string

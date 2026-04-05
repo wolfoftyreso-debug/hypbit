@@ -3,6 +3,7 @@ import { Entity, getChildren } from '../org-graph/data'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { JURISDICTIONS } from '../legal/jurisdictionData'
 import { TEAM_MEMBERS } from '../people-intelligence/peopleData'
+import './pdf-styles.css'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -452,8 +453,47 @@ export function CompendiumView() {
   const [audience, setAudience] = useState<Audience>('investor')
   const { activeEntity } = useEntityScope()
 
+  function handlePrint() {
+    // Sätt entity data-attribut på root för CI-färger
+    document.documentElement.setAttribute('data-entity', activeEntity.id)
+    // Öppna utskriftsdialog
+    window.print()
+    // Återställ
+    setTimeout(() => {
+      document.documentElement.removeAttribute('data-entity')
+    }, 1000)
+  }
+
   return (
     <div className="flex flex-col h-full overflow-hidden" style={{ background: '#F5F0E8' }}>
+
+      {/* ── Cover page (only visible in print) ── */}
+      <div className="pdf-cover" style={{ display: 'none' }} data-pdf-only>
+        <div className="confidential">Konfidentiellt</div>
+        <img src="/wavult-logo.svg" alt="Wavult" className="logo" />
+        <div className="gold-divider" />
+        <h1>Corporate Compendium</h1>
+        <p className="subtitle">
+          {activeEntity?.name ?? 'Wavult Group'} · Version 2.0 · {new Date().toLocaleDateString('sv-SE', { month: 'long', year: 'numeric' })} · Konfidentiellt
+        </p>
+        <div className="gold-divider" />
+      </div>
+
+      {/* ── PDF Header (shows on each printed page) ── */}
+      <div className="pdf-header">
+        <img src="/wavult-logo-black.svg" alt="Wavult" style={{ height: 20 }} />
+        <span style={{ fontSize: '8pt', color: '#8A8278', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+          {activeEntity?.name ?? 'Wavult Group'}
+        </span>
+        <span style={{ fontSize: '8pt', color: '#C4BFB2' }}>Konfidentiellt</span>
+      </div>
+
+      {/* ── PDF Footer ── */}
+      <div className="pdf-footer">
+        <span>https://os.wavult.com/corporate/compendium</span>
+        <span>{new Date().toLocaleDateString('sv-SE')}</span>
+        <span>Wavult Group DMCC · Alla rättigheter förbehållna</span>
+      </div>
 
       {/* ── Top bar ── */}
       <div
@@ -470,10 +510,10 @@ export function CompendiumView() {
           </div>
         </div>
         <button
-          onClick={() => window.print()}
-          className="px-4 py-2 bg-[#0A3D62] text-white text-sm font-bold rounded-xl hover:bg-[#072E4A] flex items-center gap-2 flex-shrink-0 transition-colors"
+          onClick={handlePrint}
+          className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#0A3D62] text-white hover:bg-[#072E4A] transition-colors"
         >
-          ↓ Exportera PDF
+          📄 Exportera PDF
         </button>
       </div>
 

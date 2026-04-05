@@ -5,15 +5,17 @@ import { CommandDashboard } from './CommandDashboard'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { useTranslation } from '../../shared/i18n/useTranslation'
 import { useVisaAlerts } from '../visa/useVisaAlerts'
-// Corp entities — statisk data, ingen Supabase
-const STATIC_CORP_ENTITIES = [
-  { id: '1', name: 'Wavult Group Holding DMCC',         short_name: 'WGH',  jurisdiction: 'UAE (DIFC)',     status: 'aktiv',    flag: '🇦🇪', color: '#E8B84B' },
-  { id: '2', name: 'Wavult Operations Holding AB',      short_name: 'WOH',  jurisdiction: 'Sverige',        status: 'aktiv',    flag: '🇸🇪', color: '#0A3D62' },
-  { id: '3', name: 'Optical Zoom UAB',                  short_name: 'OZ-LT', jurisdiction: 'Litauen',       status: 'aktiv',    flag: '🇱🇹', color: '#2D7A4F' },
-  { id: '4', name: 'Optical Zoom Inc',                  short_name: 'OZ-US', jurisdiction: 'Delaware, USA', status: 'aktiv',    flag: '🇺🇸', color: '#2C6EA6' },
-  { id: '5', name: 'LandveX AC',                        short_name: 'LVX-AE', jurisdiction: 'UAE (DIFC)',   status: 'forming',  flag: '🇦🇪', color: '#C9A84C' },
-  { id: '6', name: 'LandveX Inc',                       short_name: 'LVX-US', jurisdiction: 'Texas, USA',   status: 'forming',  flag: '🇺🇸', color: '#4A7A5B' },
-]
+import { CORP_ENTITIES } from '../../shared/data/systemData'
+// Corp entities — från systemData (single source of truth)
+const STATIC_CORP_ENTITIES = CORP_ENTITIES.map(e => ({
+  id: e.id,
+  name: e.name,
+  short_name: e.shortName,
+  jurisdiction: e.jurisdiction,
+  status: e.status === 'aktiv' ? 'aktiv' : 'forming',
+  flag: e.flag,
+  color: e.color,
+}))
 
 // ─── InfoDrawer ────────────────────────────────────────────────────────────────
 function InfoDrawer({ title, children, onClose }: { title: string; children: React.ReactNode; onClose: () => void }) {
@@ -112,6 +114,7 @@ const CEO_ENTITY_DATA: Record<string, {
   marketNote: string
   teamSize: number
 }> = {
+  // 'all' = group-wide view (root entity)
   'all': {
     strategicPriorities: [
       { text: 'Thailand workcamp', status: 'active' },
@@ -130,7 +133,8 @@ const CEO_ENTITY_DATA: Record<string, {
     marketNote: 'Thailand workcamp - 11 april',
     teamSize: 5,
   },
-  '1': {
+  // WGH — Wavult Group Holding DMCC
+  'wgh': {
     strategicPriorities: [
       { text: 'DMCC License Renewal', status: 'active' },
       { text: 'UAE Corporate Tax', status: 'planned' },
@@ -145,7 +149,8 @@ const CEO_ENTITY_DATA: Record<string, {
     marketNote: 'UAE DMCC fritt handelszon',
     teamSize: 2,
   },
-  '2': {
+  // WOH — Wavult Operations Holding AB
+  'woh': {
     strategicPriorities: [
       { text: 'Årsredovisning 2025', status: 'planned' },
       { text: 'Momsdeklaration Q1', status: 'active' },
@@ -159,7 +164,8 @@ const CEO_ENTITY_DATA: Record<string, {
     marketNote: 'Sverige, mitten juni 2026',
     teamSize: 5,
   },
-  '3': {
+  // OZ-LT — Optical Zoom UAB
+  'oz-lt': {
     strategicPriorities: [
       { text: 'UAB registrering klar', status: 'done' },
       { text: 'Litauisk bankkonto', status: 'in-progress' },
@@ -172,7 +178,8 @@ const CEO_ENTITY_DATA: Record<string, {
     marketNote: 'Litauen — EU-bas',
     teamSize: 2,
   },
-  '4': {
+  // OZ-US — Optical Zoom Inc
+  'oz-us': {
     strategicPriorities: [
       { text: 'Delaware franchise tax', status: 'planned' },
       { text: 'Federal corporate tax', status: 'planned' },
@@ -185,7 +192,8 @@ const CEO_ENTITY_DATA: Record<string, {
     marketNote: 'Delaware Inc — US-bas',
     teamSize: 1,
   },
-  '5': {
+  // LVX-AE — LandveX AC
+  'lvx-ae': {
     strategicPriorities: [
       { text: 'LandveX DIFC setup', status: 'in-progress' },
       { text: 'Enterprise sales UAE', status: 'planned' },
@@ -198,7 +206,8 @@ const CEO_ENTITY_DATA: Record<string, {
     marketNote: 'UAE DIFC — LandveX',
     teamSize: 2,
   },
-  '6': {
+  // LVX-US — LandveX Inc
+  'lvx-us': {
     strategicPriorities: [
       { text: 'Texas LLC formation klar', status: 'done' },
       { text: 'EIN filing', status: 'in-progress' },
