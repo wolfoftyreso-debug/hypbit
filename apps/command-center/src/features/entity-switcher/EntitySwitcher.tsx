@@ -1,12 +1,8 @@
 import { useState } from 'react'
-import { ENTITIES } from '../org-graph/data'
+import { CORP_ENTITIES } from '../../shared/data/systemData'
 import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { Tooltip } from '../../shared/ui/Tooltip'
 import { useTranslation } from '../../shared/i18n/useTranslation'
-
-const FLAG_MAP: Record<string, string> = {
-  Dubai: '🇦🇪', 'EU-LT': '🇱🇹', 'US-DE': '🇺🇸', 'US-TX': '🇺🇸', SE: '🇸🇪', Global: '🌐',
-}
 
 export function EntitySwitcher() {
   const { t: _t } = useTranslation() // ready for i18n
@@ -14,9 +10,9 @@ export function EntitySwitcher() {
   const [open, setOpen] = useState(false)
 
   // Sort entities by layer then name for hierarchy display
-  const sorted = [...ENTITIES].sort((a, b) => a.layer - b.layer || a.name.localeCompare(b.name))
+  const sorted = [...CORP_ENTITIES].sort((a, b) => a.layer - b.layer || a.name.localeCompare(b.name))
 
-  const statusDot: Record<string, string> = { live: '#10B981', forming: '#F59E0B', planned: '#6B7280' }
+  const statusDot: Record<string, string> = { live: '#10B981', forming: '#F59E0B', planned: '#6B7280', aktiv: '#10B981', planerad: '#6B7280', avvecklad: '#EF4444' }
 
   return (
     <div className="relative" data-tour="entity-switcher">
@@ -53,7 +49,7 @@ export function EntitySwitcher() {
           </div>
           {sorted.map((entity) => {
             const isActive = entity.id === activeEntity.id
-            const dot = statusDot[entity.active_status]
+            const dot = statusDot[entity.active_status] ?? statusDot[entity.status] ?? '#6B7280'
             return (
               <button
                 key={entity.id}
@@ -78,7 +74,7 @@ export function EntitySwitcher() {
                     <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: dot }} />
                   </div>
                   <p className="text-[9px] text-text-muted font-mono truncate">
-                    {FLAG_MAP[entity.jurisdiction] ?? ''} {entity.jurisdiction}
+                    {entity.flag} {entity.jurisdiction}
                   </p>
                 </div>
                 {isActive && (
