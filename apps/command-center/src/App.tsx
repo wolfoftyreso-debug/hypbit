@@ -26,6 +26,7 @@ const ContextView            = lazy(() => import('./features/org-graph/ContextVi
 const CommandHierarchyView   = lazy(() => import('./features/org-graph/CommandHierarchyView').then(m => ({ default: m.CommandHierarchyView })))
 const EntityView             = lazy(() => import('./features/entity/EntityView').then(m => ({ default: m.EntityView })))
 const IncidentCenter         = lazy(() => import('./features/incidents/IncidentCenter').then(m => ({ default: m.IncidentCenter })))
+const IncidentHub            = lazy(() => import('./features/incidents/IncidentHub').then(m => ({ default: m.IncidentHub })))
 const MarketMap              = lazy(() => import('./features/market-sites').then(m => ({ default: m.MarketMap })))
 const CampaignOS             = lazy(() => import('./features/campaign-os').then(m => ({ default: m.CampaignOS })))
 const LegalHub               = lazy(() => import('./features/legal/LegalHub').then(m => ({ default: m.LegalHub })))
@@ -191,7 +192,7 @@ function AuthenticatedApp() {
               <Route path="/org" element={<OrgGraph />} />
               <Route path="/org/context" element={<ContextView />} />
               <Route path="/org/command" element={<CommandHierarchyView />} />
-              <Route path="/incidents" element={<IncidentCenter />} />
+              <Route path="/incidents" element={<IncidentHub />} />
               <Route path="/alerts" element={<IncidentCenter />} />
               <Route path="/people-governance" element={<PeopleGovernance />} />
               <Route path="/entities" element={<EntityView />} />

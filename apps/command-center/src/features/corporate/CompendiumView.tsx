@@ -451,7 +451,18 @@ function CustomerView({ entity }: { entity: Entity }) {
 
 export function CompendiumView() {
   const [audience, setAudience] = useState<Audience>('investor')
-  const { activeEntity } = useEntityScope()
+  const { activeEntity, level, brandGroup, scopedEntities } = useEntityScope()
+
+  // Välj rätt entitet för Kompendium:
+  // - brand level → använd den primära entiteten i brand gruppen
+  // - entity level → använd activeEntity direkt
+  // - group level → använd moderbolaget (layer 0)
+  const compendiumEntity = (() => {
+    if (level === 'brand' && brandGroup && scopedEntities.length > 0) {
+      return scopedEntities[0] // primär entitet i brand group
+    }
+    return activeEntity
+  })()
 
   function handlePrint() {
     // Sätt entity data-attribut på root för CI-färger
@@ -474,7 +485,7 @@ export function CompendiumView() {
         <div className="gold-divider" />
         <h1>Corporate Compendium</h1>
         <p className="subtitle">
-          {activeEntity?.name ?? 'Wavult Group'} · Version 2.0 · {new Date().toLocaleDateString('sv-SE', { month: 'long', year: 'numeric' })} · Konfidentiellt
+          {compendiumEntity?.name ?? brandGroup?.name ?? 'Wavult Group'} · Version 2.0 · {new Date().toLocaleDateString('sv-SE', { month: 'long', year: 'numeric' })} · Konfidentiellt
         </p>
         <div className="gold-divider" />
       </div>
@@ -483,7 +494,7 @@ export function CompendiumView() {
       <div className="pdf-header">
         <img src="/wavult-logo-black.svg" alt="Wavult" style={{ height: 20 }} />
         <span style={{ fontSize: '8pt', color: '#8A8278', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-          {activeEntity?.name ?? 'Wavult Group'}
+          {compendiumEntity?.name ?? brandGroup?.name ?? 'Wavult Group'}
         </span>
         <span style={{ fontSize: '8pt', color: '#C4BFB2' }}>Konfidentiellt</span>
       </div>
@@ -505,7 +516,7 @@ export function CompendiumView() {
           <div>
             <h1 className="text-[15px] font-bold text-[#0A3D62]">Corporate Compendium</h1>
             <p className="text-xs text-[#9A8870] font-mono">
-              {activeEntity.name} · {new Date().toLocaleDateString('sv-SE', { month: 'long', year: 'numeric' })}
+              {compendiumEntity?.name ?? brandGroup?.name ?? 'Wavult Group'} · {new Date().toLocaleDateString('sv-SE', { month: 'long', year: 'numeric' })}
             </p>
           </div>
         </div>
@@ -544,12 +555,12 @@ export function CompendiumView() {
       {/* ── Content ── */}
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-4xl mx-auto px-4 md:px-6 py-6">
-          <HeroSection entity={activeEntity} />
-          {audience === 'investor' && <InvestorView  entity={activeEntity} />}
-          {audience === 'staff'    && <StaffView     entity={activeEntity} />}
-          {audience === 'supplier' && <SuppliersView entity={activeEntity} />}
+          <HeroSection entity={compendiumEntity} />
+          {audience === 'investor' && <InvestorView  entity={compendiumEntity} />}
+          {audience === 'staff'    && <StaffView     entity={compendiumEntity} />}
+          {audience === 'supplier' && <SuppliersView entity={compendiumEntity} />}
           {audience === 'partner'  && <PartnersView />}
-          {audience === 'customer' && <CustomerView  entity={activeEntity} />}
+          {audience === 'customer' && <CustomerView  entity={compendiumEntity} />}
         </div>
       </div>
     </div>
