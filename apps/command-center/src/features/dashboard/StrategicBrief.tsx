@@ -101,25 +101,56 @@ export function StrategicBrief() {
             {/* Koncernöversikt */}
             <div className="rounded-2xl border border-[#DDD5C5] bg-white p-6">
               <h3 className="text-sm font-bold text-[#0A3D62] mb-4">Koncernstruktur</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {CORP_ENTITIES.map(e => (
-                  <div key={e.id} className="rounded-xl border p-3" style={{ borderColor: e.color + '30', background: e.color + '08' }}>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span>{e.flag}</span>
-                      <span className="text-xs font-bold" style={{ color: e.color }}>{e.shortName}</span>
+              {/* Dubai-gruppen */}
+              <div className="mb-4">
+                <div className="text-[10px] font-bold text-[#8A8278] uppercase tracking-wider mb-2">🇦🇪 Dubai — IP Holding + Ops</div>
+                <div className="grid grid-cols-3 gap-2">
+                  {CORP_ENTITIES.filter(e => e.jurisdictionCode === 'AE' && e.layer <= 1).map(e => (
+                    <div key={e.id} className="rounded-xl border p-3" style={{ borderColor: e.color + '40', background: e.color + '08' }}>
+                      <div className="text-xs font-bold mb-0.5" style={{ color: e.color }}>{e.shortName}</div>
+                      <div className="text-[10px] text-gray-400">{e.name.split(' ').slice(0,2).join(' ')}</div>
+                      <span className="mt-1.5 inline-block text-[9px] px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-600 font-bold">⏳ Bildas</span>
                     </div>
-                    <div className="text-[10px] text-gray-500">{e.jurisdiction}</div>
-                    <div className="mt-1.5">
-                      <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold ${
-                        e.status === 'aktiv' ? 'bg-green-50 text-green-700' :
-                        e.status === 'under_namnbyte' ? 'bg-amber-50 text-amber-700' :
-                        'bg-gray-50 text-gray-500'
-                      }`}>
-                        {e.status === 'aktiv' ? '✓ Aktiv' : e.status === 'under_namnbyte' ? '⟳ Namnbyte' : '⏳ Bildas'}
+                  ))}
+                </div>
+              </div>
+
+              {/* quiXzoom */}
+              <div className="mb-4">
+                <div className="text-[10px] font-bold text-[#8A8278] uppercase tracking-wider mb-2">📷 quiXzoom</div>
+                <div className="grid grid-cols-2 gap-2">
+                  {CORP_ENTITIES.filter(e => e.products.some(p => p.toLowerCase().includes('quixzoom'))).map(e => (
+                    <div key={e.id} className="rounded-xl border p-3" style={{ borderColor: e.color + '40', background: e.color + '08' }}>
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span className="text-sm">{e.flag}</span>
+                        <span className="text-xs font-bold" style={{ color: e.color }}>{e.shortName}</span>
+                      </div>
+                      <div className="text-[10px] text-gray-400">{e.jurisdiction}</div>
+                      <span className={`mt-1.5 inline-block text-[9px] px-1.5 py-0.5 rounded-full font-bold ${e.status === 'aktiv' ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-600'}`}>
+                        {e.status === 'aktiv' ? '✓ Aktiv' : '⏳ Bildas'}
                       </span>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+              </div>
+
+              {/* LandveX */}
+              <div>
+                <div className="text-[10px] font-bold text-[#8A8278] uppercase tracking-wider mb-2">🏗️ LandveX</div>
+                <div className="grid grid-cols-3 gap-2">
+                  {CORP_ENTITIES.filter(e => e.products.some(p => p.toLowerCase().includes('landvex'))).map(e => (
+                    <div key={e.id} className="rounded-xl border p-3" style={{ borderColor: e.color + '40', background: e.color + '08' }}>
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span className="text-sm">{e.flag}</span>
+                        <span className="text-xs font-bold" style={{ color: e.color }}>{e.shortName}</span>
+                      </div>
+                      <div className="text-[10px] text-gray-400">{e.jurisdiction}</div>
+                      <span className={`mt-1.5 inline-block text-[9px] px-1.5 py-0.5 rounded-full font-bold ${e.status === 'aktiv' || e.status === 'under_namnbyte' ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-600'}`}>
+                        {e.status === 'under_namnbyte' ? '⟳ Namnbyte' : e.status === 'aktiv' ? '✓ Aktiv' : '⏳ Bildas'}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
@@ -334,7 +365,7 @@ export function StrategicBrief() {
         )}
 
         {/* MATERIAL */}
-        {activeTab === 'material' && (
+         (
           <div className="max-w-3xl space-y-3">
             <p className="text-xs text-gray-500 mb-4">Interna dokument och pitch-material. Uppdateras kontinuerligt.</p>
             {[
