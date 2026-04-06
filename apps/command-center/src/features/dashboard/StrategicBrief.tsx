@@ -235,10 +235,14 @@ export function StrategicBrief() {
               <h3 className="text-sm font-bold text-[#0A3D62] mb-4">Go-to-Market — Tidslinje</h3>
               <div className="space-y-3">
                 {[
-                  { date: 'April 2026', event: 'Thailand Workcamp', desc: 'Teamsamling. Projektstruktur. Kodbas klar.', status: 'nu', product: 'Alla' },
-                  { date: 'Maj 2026', event: 'quiXzoom Skärgårdstest', desc: 'Live-test med zoomers i Stockholms skärgård. Första bilddata.', status: 'nara', product: 'quiXzoom' },
-                  { date: 'Juni 2026', event: 'Sverige-lansering', desc: 'quiXzoom och LandveX live på svenska marknaden. Första kunder.', status: 'nara', product: 'Alla' },
-                  { date: 'Q1 2027', event: 'Internationell expansion', desc: 'Nederländerna som fas 2. PE-kapital söks.', status: 'framtid', product: 'quiXzoom' },
+                  { date: 'April 2026', event: 'Thailand Workcamp', desc: 'Teamsamling, produktstruktur, kodbas klar. Hela teamet på plats 11 april.', status: 'nu', product: 'Alla' },
+                  { date: 'Maj 2026', event: 'quiXzoom Skärgårdstest', desc: 'Live-test med zoomers i Stockholms skärgård. Första bilddata. Zoomer-app live.', status: 'nara', product: 'quiXzoom' },
+                  { date: 'Juni 2026', event: 'FAS 1 — Sverige-lansering', desc: 'quiXzoom och LandveX live. Mål: 3 kommunkontrakt, 500 aktiva zoomers. Referenskunder säkrade.', status: 'nara', product: 'Alla' },
+                  { date: 'Q3 2026', event: 'FAS 2A — Parallell EU + UK', desc: 'NL: pilotkontrakt Amsterdam + Rotterdam via OZ-LT. UK: Crown Commercial Service-ansökan. Ingen ny bolagsregistrering — OZ-LT täcker hela EU.', status: 'framtid', product: 'quiXzoom' },
+                  { date: 'Q3 2026', event: 'UAE — LandveX AC aktiveras', desc: 'Första säljkontakter RTA och DEWA Dubai. Dubai-närvaron ger direktaccess till GCC-marknaden. Nästan obegränsade infrastrukturbudgetar.', status: 'framtid', product: 'LandveX' },
+                  { date: 'Q1 2027', event: 'FAS 2B — Skalning', desc: 'UK fullt aktiverat om CCS-ramavtal klart (öppnar 333 kommuner på en gång). 3-4 NL-kommuner live. Account managers rekryterade lokalt.', status: 'framtid', product: 'Alla' },
+                  { date: 'Q2 2027', event: 'USA — Texas go-live', desc: 'LandveX Inc aktiveras. Texas = USA:s mest infrastructure-investerade stat (ERCOT-kris driver investeringar). Första US-kontrakt Texas.', status: 'framtid', product: 'LandveX' },
+                  { date: '2027-2028', event: 'FAS 3 — Global hävstång', desc: 'Asien via Singapore Trust-hub. Aktivera alla EU-marknader via OZ-LT. Series A kapital används för att parallellköra 8-10 marknader simultant.', status: 'framtid', product: 'Alla' },
                 ].map((item, i) => (
                   <div key={i} className="flex gap-4 items-start">
                     <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${

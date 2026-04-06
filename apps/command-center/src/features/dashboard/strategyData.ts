@@ -139,6 +139,11 @@ export const MARKET_METRICS: MarketMetric[] = [
   { id: 'm7', productId: 'landvex', label: 'SAM (Serviceable Addressable Market)', value: '~$2 Mdr', detail: 'Nordisk + UAE kommunal infrastrukturtillsyn', source: 'Intern uppskattning', asOf: '2026' },
   { id: 'm8', productId: 'landvex', label: 'Target: Sverige', value: '290 kommuner', detail: 'Alla svenska kommuner är potentiella kunder via LOU-upphandling', source: 'SKR 2024', asOf: '2024' },
   { id: 'm9', productId: 'landvex', label: 'ACV per kund (est.)', value: '250-500 TSEK', detail: 'Abonnemang per kommunkontrakt, beroende på geografi och volym', source: 'Intern uppskattning', asOf: '2026' },
+  // Expansion marknader
+  { id: 'm10', productId: 'quixzoom', label: 'UK — CCS Gateway', value: '333 kommuner', detail: 'Crown Commercial Service-ramavtal öppnar alla brittiska kommuner simultant. Engelska — noll anpassningskostnad.', source: 'HM Government 2024', asOf: '2024' },
+  { id: 'm11', productId: 'quixzoom', label: 'NRW, Tyskland', value: '396 kommuner', detail: 'Nordrhein-Westfalen: €2,4 Mdr/år infrastrukturbudget. NIS2-compliance driver adoption. Störst kommunaltäthet i EU.', source: 'Innenministerium NRW 2024', asOf: '2024' },
+  { id: 'm12', productId: 'landvex', label: 'UAE/GCC marknad', value: 'Obegränsad budget', detail: 'Dubai RTA + DEWA har praktiskt obegränsade infrastrukturbudgetar. LandveX AC ger direktaccess via Dubai-etableringen.', source: 'Dubai Smart City Initiative', asOf: '2024' },
+  { id: 'm13', productId: 'quixzoom', label: 'OZ-LT — EU Hävstång', value: '27 EU-länder', detail: 'Litauen-entiteten ger omedelbar juridisk närvaro i hela EU. Noll nya bolagsregistreringar behövs för NL, DE, FR, BE, SE.', source: 'Intern strategi', asOf: '2026' },
 ]
 
 // ── MISSION per bolag ──────────────────────────────────────────────────────────
