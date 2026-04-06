@@ -147,7 +147,7 @@ export function PipelineView() {
               }`}
               style={productFilter === p && p !== 'Alla'
                 ? { background: PRODUCT_COLORS[p as CRMProduct] + '22', border: `1px solid ${PRODUCT_COLORS[p as CRMProduct]}40`, color: PRODUCT_COLORS[p as CRMProduct] }
-                : productFilter === p ? { background: '#F3F4F6', border: '1px solid #4B5563' }
+                : productFilter === p ? { background: '#F3F4F6', border: '1px solid #4B5563' } : {}
             >
               {p}
             </button>
