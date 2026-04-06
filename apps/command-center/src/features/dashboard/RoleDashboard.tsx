@@ -182,18 +182,6 @@ const CEO_ENTITY_DATA: Record<string, {
     marketNote: 'Delaware Inc — US-bas',
     teamSize: 1,
   },
-  // LVX-AE — LandveX
-  : {
-    strategicPriorities: [
-      { text: 'LandveX DIFC setup', status: 'in-progress' },
-      { text: 'Enterprise sales UAE', status: 'planned' },
-      { text: 'Infrastrukturintelligens demo', status: 'planned' }],
-    capitalItems: [
-      { text: 'LandveX UAE launch', status: 'planned' }],
-    marketPhase: 'AE',
-    marketNote: 'UAE DIFC — LandveX',
-    teamSize: 2,
-  },
   // LVX-US — LandveX Inc
   'lvx-us': {
     strategicPriorities: [
