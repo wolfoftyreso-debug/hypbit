@@ -166,6 +166,21 @@ const ENTITY_DETAILS: Record<string, EntityDetail> = {
       { date: 'Q3 2026', event: 'US bankkonto (Silicon Valley Bank/Chase)', done: false },
       { date: 'Q4 2026', event: 'US marknadsintroduktion', done: false }],
   },
+  'lvx-ab': {
+    incorporation: 'AB (Aktiebolag)',
+    bankStatus: 'SEB — under ansökan',
+    complianceStatus: 'Under namnbyte',
+    teamIds: ['leon', 'winston'],
+    kpis: [
+      { label: 'Namnbyte', value: 'Pågår (178303/2026)', status: 'warning' },
+      { label: 'Sverige-lansering', value: 'Juni 2026', status: 'on_track' },
+      { label: 'Bankkonto', value: 'SEB-möte 9/4', status: 'warning' },
+      { label: 'Grant Thornton', value: 'Möte 7/4', status: 'on_track' }],
+    timeline: [
+      { date: 'Mars 2026', event: 'Namnbyte till LandveX AB inlämnat', done: true },
+      { date: 'April 2026', event: 'SEB-bankkonto öppnat', done: false },
+      { date: 'Juni 2026', event: 'Sverige-lansering', done: false }],
+  },
   'lvx-us': {
     incorporation: 'Texas LLC',
     bankStatus: 'JPMorgan Chase — pending',
@@ -206,7 +221,7 @@ function getKPILabel(status: KPIStatus): string {
     active: 'AKTIVT',
     good: 'BRA',
   }
-  return map[status] ?? status.toUpperCase()
+  return map[status] ?? (status ? status.toUpperCase() : 'OKÄND')
 }
 
 function getStatusColor(status: EntityStatus): string {
@@ -214,7 +229,7 @@ function getStatusColor(status: EntityStatus): string {
 }
 
 function getStatusLabel(status: EntityStatus): string {
-  return { live: 'LIVE', forming: 'FORMING', planned: 'PLANERAT' }[status] ?? status.toUpperCase()
+  return { live: 'LIVE', forming: 'FORMING', planned: 'PLANERAT', under_namnbyte: 'NAMNBYTE', aktiv: 'AKTIV', avvecklad: 'AVVECKLAD' }[status] ?? (status ? status.toUpperCase() : 'OKÄND')
 }
 
 function getEntity(id: string): CorpEntity | undefined {
@@ -238,10 +253,11 @@ const SVG_MAIN_W = 880
 // Hardcoded positions for clarity — keyed by systemData entity IDs
 const NODE_POSITIONS: Record<string, { x: number; y: number }> = {
   'wgh':    { x: 340, y: 70 },   // WGH — centered
-  'woh':    { x: 60,  y: 260 },  // WOH  // LVX-AE
-  'lvx-us': { x: 620, y: 260 },  // LVX-US
-  'oz-lt':  { x: 20,  y: 450 },  // OZ-LT (under WOH)
-  'oz-us':  { x: 240, y: 450 },  // OZ-US (under WOH)
+  'woh':    { x: 60,  y: 260 },  // WOH
+  'lvx-ab': { x: 200, y: 260 },  // LandveX AB Sverige
+  'lvx-us': { x: 620, y: 260 },  // LVX-US Houston
+  'oz-lt':  { x: 20,  y: 450 },  // OZ-LT
+  'oz-us':  { x: 240, y: 450 },  // OZ-US
 }
 
 // Derived ownership edges from CORP_HIERARCHY
