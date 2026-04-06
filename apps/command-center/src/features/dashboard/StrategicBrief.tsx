@@ -324,16 +324,100 @@ export function StrategicBrief() {
 
         {/* COMPLIANCE */}
         {activeTab === 'compliance' && (
-          <div className="max-w-3xl">
-            <p className="text-xs text-gray-500 mb-4">
-              Compliance-status hämtas från QMS-systemet. <a href="/qms" className="text-[#0A3D62] underline">Gå till QMS →</a>
-            </p>
-            <div className="rounded-2xl border border-[#DDD5C5] bg-white p-6 text-center">
-              <div className="text-3xl mb-3">📋</div>
-              <h3 className="text-sm font-bold text-[#0A3D62] mb-2">QMS & Compliance</h3>
-              <p className="text-xs text-gray-500">Full compliance-data finns i QMS-modulen. ISO 9001, ISO 27001, GDPR och NIS2.</p>
-              <a href="/qms" className="mt-4 inline-block px-4 py-2 bg-[#0A3D62] text-white text-xs font-bold rounded-lg hover:bg-[#072E4A]">
-                Öppna QMS →
+          <div className="max-w-4xl space-y-6">
+
+            {/* Strategisk rubrik */}
+            <div className="rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, #0A3D62 0%, #0d4d78 100%)' }}>
+              <div className="text-[#E8B84B] text-xs font-bold uppercase tracking-widest mb-3">Vår konkurrensfördel</div>
+              <h2 className="text-xl font-bold text-white mb-3">Compliance är inte en kostnad — det är vår säljpitch</h2>
+              <p className="text-[#F5F0E8]/80 text-sm leading-relaxed">
+                Wavult bygger compliance in i varje systemprocess från dag ett. Det innebär att vi kan sälja till myndigheter,
+                kommuner och enterprise-kunder som kräver ISO-certifiering och GDPR-efterlevnad — marknader våra konkurrenter
+                stängs ute från eftersom de inte klarar upphandlingskraven.
+              </p>
+            </div>
+
+            {/* Varför vi håller extremt hög nivå */}
+            <div className="rounded-2xl border border-[#DDD5C5] bg-white p-6">
+              <h3 className="text-sm font-bold text-[#0A3D62] mb-4">Varför vi håller extremt hög compliancenivå</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {[
+                  {
+                    icon: '🏛️',
+                    title: 'Offentlig sektor kräver det',
+                    desc: 'Svenska kommuner upphandlar via LOU. EU-myndigheter kräver ISO 27001. Utan compliance — ingen affär. Det är inte förhandlingsbart.',
+                  },
+                  {
+                    icon: '🔒',
+                    title: 'Kundernas data är känslig',
+                    desc: 'Infrastrukturdata, koordinater, bilddata av offentliga miljöer. GDPR, NIS2 och säkerhetskrav från dag ett — inte som eftertanke.',
+                  },
+                  {
+                    icon: '🚀',
+                    title: 'Snabbare enterprise-deals',
+                    desc: 'En ISO 27001-certifierad leverantör skippas förbi upphandlingsbyråkratin. Tid-till-kontrakt halveras. Det är direkt affärsvärde.',
+                  },
+                ].map(c => (
+                  <div key={c.title} className="rounded-xl bg-[#F5F0E8] p-4">
+                    <div className="text-2xl mb-2">{c.icon}</div>
+                    <div className="text-xs font-bold text-[#0A3D62] mb-1">{c.title}</div>
+                    <p className="text-[11px] text-gray-500 leading-relaxed">{c.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Ramverk vi följer */}
+            <div className="rounded-2xl border border-[#DDD5C5] bg-white p-6">
+              <h3 className="text-sm font-bold text-[#0A3D62] mb-4">Ramverk vi implementerar</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {[
+                  { standard: 'ISO 9001:2015', area: 'Kvalitetsledning', status: 'Implementeras', color: '#0A3D62' },
+                  { standard: 'ISO 27001:2022', area: 'Informationssäkerhet', status: 'Implementeras', color: '#0A3D62' },
+                  { standard: 'GDPR', area: 'Dataskydd (EU)', status: 'Aktivt', color: '#2D7A4F' },
+                  { standard: 'NIS2', area: 'Cybersäkerhet (EU)', status: 'Förbereder', color: '#B8760A' },
+                ].map(s => (
+                  <div key={s.standard} className="rounded-xl border border-[#DDD5C5] p-3 text-center">
+                    <div className="text-[11px] font-bold mb-1" style={{ color: s.color }}>{s.standard}</div>
+                    <div className="text-[10px] text-gray-500 mb-2">{s.area}</div>
+                    <span className="text-[9px] px-2 py-0.5 rounded-full font-bold" style={{
+                      background: s.status === 'Aktivt' ? '#E8F5ED' : s.status === 'Implementeras' ? '#EFF6FF' : '#FDF3E0',
+                      color: s.status === 'Aktivt' ? '#2D7A4F' : s.status === 'Implementeras' ? '#0A3D62' : '#B8760A',
+                    }}>
+                      {s.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Inbyggt i systemet */}
+            <div className="rounded-2xl border border-[#E8B84B]/30 bg-[#FDF3E0] p-6">
+              <h3 className="text-sm font-bold text-[#8B6914] mb-3">⚡ Compliance är inbyggt — inte påklistrat</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-[#5A4A20]">
+                {[
+                  'Varje deploy kräver godkännande av grundare — inget slip through',
+                  'All kod skannas automatiskt mot policy-regler före release',
+                  'Audit-logg på varje systemhändelse — bevisbar historik',
+                  'Veckovis automatisk compliancerapport med tekniska bevis',
+                  'ED25519-certifikatautentisering — inga statiska API-nycklar',
+                  'RBAC — varje roll ser bara det de får se, inget mer',
+                  'S3 multi-region med CRR — RPO 1h, RTO 4h',
+                  'Replay-logg med SHA-256-checksummor — tamper-proof',
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-2">
+                    <span className="text-[#E8B84B] font-bold flex-shrink-0">✓</span>
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Länk till QMS */}
+            <div className="text-center">
+              <p className="text-xs text-gray-400 mb-3">Detaljerad compliancestatus och bevisning finns i QMS-systemet</p>
+              <a href="/qms" className="inline-block px-6 py-2.5 bg-[#0A3D62] text-white text-xs font-bold rounded-xl hover:bg-[#072E4A]">
+                Öppna QMS & Compliance →
               </a>
             </div>
           </div>
