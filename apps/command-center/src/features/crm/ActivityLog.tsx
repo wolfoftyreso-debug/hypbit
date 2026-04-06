@@ -176,7 +176,6 @@ export function ActivityLog() {
                 ? { background: TEAM_COLORS[m as TeamMember] + '20', color: TEAM_COLORS[m as TeamMember], border: `1px solid ${TEAM_COLORS[m as TeamMember]}40` }
                 : byFilter === m
                 ? { background: '#F3F4F6', border: '1px solid #4B5563', color: 'white' }
-                : { background: 'transparent', border: '1px solid rgba(55,65,81,0.6)', color: '#6B7280' }
             }
           >
             {m}

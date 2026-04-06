@@ -650,7 +650,6 @@ export function AcademyView() {
                             borderColor: `${CATEGORY_COLORS[cat]}50`,
                             color: CATEGORY_COLORS[cat],
                           }
-                        : {}
                     }
                   >
                     {CATEGORY_LABELS[cat]} ({count})

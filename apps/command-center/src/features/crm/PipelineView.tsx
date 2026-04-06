@@ -148,7 +148,6 @@ export function PipelineView() {
               style={productFilter === p && p !== 'Alla'
                 ? { background: PRODUCT_COLORS[p as CRMProduct] + '22', border: `1px solid ${PRODUCT_COLORS[p as CRMProduct]}40`, color: PRODUCT_COLORS[p as CRMProduct] }
                 : productFilter === p ? { background: '#F3F4F6', border: '1px solid #4B5563' }
-                : {}}
             >
               {p}
             </button>
@@ -167,7 +166,6 @@ export function PipelineView() {
               style={assigneeFilter === a && a !== 'Alla'
                 ? { background: TEAM_COLORS[a as TeamMember] + '22', border: `1px solid ${TEAM_COLORS[a as TeamMember]}40`, color: TEAM_COLORS[a as TeamMember] }
                 : assigneeFilter === a ? { background: '#F3F4F6', border: '1px solid #4B5563' }
-                : {}}
             >
               {a}
             </button>

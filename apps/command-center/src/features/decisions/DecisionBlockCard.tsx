@@ -305,7 +305,6 @@ export function DecisionBlockCard({
     ? generateSystemActions(pendingChoice, block)
     : block.result
     ? generateSystemActions(block.result, block)
-    : []
 
   function handleConfirmVote() {
     if (!pendingChoice) return

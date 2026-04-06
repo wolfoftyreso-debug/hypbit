@@ -241,7 +241,6 @@ export function FoundingConfig({ onComplete }: Props) {
               completed_by: 'erik-svensson',
               locked: true,
             }
-          : {}),
       }
       const res = await apiFetch('/api/config/founding', {
         method: 'POST',

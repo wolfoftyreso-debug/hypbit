@@ -226,7 +226,6 @@ export function ThailandCalendarView() {
             className="text-xs px-3 py-1.5 rounded-lg border transition-colors font-mono"
             style={activeTheme === t
               ? { background: (THEME_COLORS[t] ?? '#ffffff') + '20', color: THEME_COLORS[t] ?? '#fff', borderColor: (THEME_COLORS[t] ?? '#ffffff') + '40' }
-              : { background: 'transparent', color: '#4B5563', borderColor: '#ffffff0a' }
             }
           >
             {t === 'all' ? '📅 Alla' : t === 'BANGKOK' ? '🏙️ Bangkok' : t === 'PHUKET' ? '🏖️ Phuket' : '🧘 Retreat'}

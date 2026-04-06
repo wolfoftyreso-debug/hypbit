@@ -144,7 +144,6 @@ export function PayslipView() {
               className="flex items-center gap-2 px-3 py-1.5 rounded-lg border text-xs transition-colors"
               style={selectedEmp.id === emp.id
                 ? { background: emp.color + '20', borderColor: emp.color + '60', color: emp.color }
-                : { borderColor: 'transparent', background: '#F0EBE1', color: '#8A8A9A' }
               }
             >
               <div

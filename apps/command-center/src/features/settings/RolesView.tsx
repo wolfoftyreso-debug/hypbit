@@ -97,7 +97,6 @@ export function RolesView() {
     const current = getModules(roleId)
     const updated = current.includes(moduleId)
       ? current.filter(m => m !== moduleId)
-      : [...current, moduleId]
     setEditedModules(prev => ({ ...prev, [roleId]: updated }))
   }
 

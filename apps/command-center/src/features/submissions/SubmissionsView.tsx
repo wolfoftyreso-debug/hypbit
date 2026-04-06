@@ -176,7 +176,6 @@ export function SubmissionsView() {
             className="text-xs px-3 py-1.5 rounded-lg border font-medium transition-all"
             style={filterStatus === s
               ? { background: (STATUS_COLORS[s] ?? '#ffffff') + '20', color: STATUS_COLORS[s] ?? '#fff', borderColor: (STATUS_COLORS[s] ?? '#ffffff') + '40' }
-              : { background: 'transparent', color: '#4B5563', borderColor: '#DDD5C5' }
             }
           >
             {s.charAt(0).toUpperCase() + s.slice(1)}

@@ -151,7 +151,6 @@ export function LagerbolagView() {
       ...prev,
       boardMembers: prev.boardMembers.includes(name)
         ? prev.boardMembers.filter(m => m !== name)
-        : [...prev.boardMembers, name],
     }))
   }
 
@@ -160,7 +159,6 @@ export function LagerbolagView() {
       ...prev,
       sniCodes: prev.sniCodes.includes(code)
         ? prev.sniCodes.filter(c => c !== code)
-        : [...prev.sniCodes, code],
     }))
   }
 

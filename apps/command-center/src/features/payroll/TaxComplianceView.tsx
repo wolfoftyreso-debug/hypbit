@@ -172,7 +172,6 @@ export function TaxComplianceView() {
               className="rounded-lg p-3 border"
               style={d.paid
                 ? { borderColor: '#34D39930', background: '#34D39910' }
-                : { borderColor: '#DDD5C5', background: '#F5F0E8' }
               }
             >
               <div className="text-xs text-text-muted">{d.month} 2026</div>

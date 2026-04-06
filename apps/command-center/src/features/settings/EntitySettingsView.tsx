@@ -44,7 +44,6 @@ const ENTITY_META: Record<string, Partial<EntityConfig>> = {
     currency: 'USD', taxTable: 'US Federal', orgNumber: 'WG-US-DE-PROD-001',
     address: 'Delaware, USA (Stripe Atlas)', vatNumber: '',
   },
-  : {
     currency: 'AED', taxTable: '0% (UAE DIFC)', orgNumber: 'WG-AE-LVX-001',
     address: 'DIFC, Dubai, UAE (forming)', vatNumber: '',
   },

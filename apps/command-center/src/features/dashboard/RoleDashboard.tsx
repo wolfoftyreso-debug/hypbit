@@ -617,19 +617,16 @@ function CfoDashboard() {
           isRoot
             ? { label: 'Bolag med ekonomi', value: '6', delta: 'WGH, WOP, QZ UAB, QZ Inc, LVX AB, LVX Inc', color: '#3B82F6',
                 drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">6 bolag med ekonomisk redovisning: Wavult Group Holding, Wavult Operations, QuiXzoom UAB, QuiXzoom Inc, Landvex AB, Landvex Inc.</p> }
-            : { label: 'Bolag', value: activeEntity.shortName ?? activeEntity.name, delta: activeEntity.jurisdiction ?? '', color: '#3B82F6',
                 drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">{activeEntity.name} — aktiv entitet i Wavult Group.</p> },
           { label: 'Struktur', value: cfoData.financialStructure.filter(i => i.status === 'active').length + '/' + cfoData.financialStructure.length, delta: `${cfoData.financialStructure.filter(i => i.status === 'planned' || i.status === 'blocked').length} återstår`, color: '#10B981',
             drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">{cfoData.financialStructure.filter(i => i.status === 'active').length} aktiva finansstrukturer av {cfoData.financialStructure.length} totalt.</p> },
           isRoot
             ? { label: 'Transfer pricing', value: 'Ej satt', delta: 'Kräver CLO + extern rådgivare', color: '#FF9500',
                 drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Transfer pricing-policy är ej fastställd. Kräver samverkan mellan CFO, CLO och extern skatterådgivare.</p> }
-            : { label: 'Allokeringar', value: String(cfoData.infraCosts.length), delta: `${cfoData.infraCosts.filter(i => i.status === 'active').length} aktiva`, color: '#FF9500',
                 drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">{cfoData.infraCosts.length} allokeringar för {activeEntity.name}.</p> },
           isRoot
             ? { label: 'Dubai holding', value: 'Planerat', delta: 'Väntar på bolagsbildning', color: '#2563EB',
                 drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Wavult Group (Dubai Free Zone) under bildning. Ska bli holdingbolag för IP och internprissättning.</p> }
-            : { label: 'Jurisdiktion', value: cfoData.heading.split('—')[0].trim(), delta: activeEntity.jurisdiction ?? '', color: '#2563EB',
                 drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">{activeEntity.name} är registrerat i {activeEntity.jurisdiction ?? 'okänd jurisdiktion'}.</p> }].map(s => (
           <button
             key={s.label}

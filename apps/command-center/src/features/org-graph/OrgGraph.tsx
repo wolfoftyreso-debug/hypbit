@@ -166,21 +166,6 @@ const ENTITY_DETAILS: Record<string, EntityDetail> = {
       { date: 'Q3 2026', event: 'US bankkonto (Silicon Valley Bank/Chase)', done: false },
       { date: 'Q4 2026', event: 'US marknadsintroduktion', done: false }],
   },
-  : {
-    incorporation: 'DIFC FZCO',
-    bankStatus: 'Emirates NBD — pågår',
-    complianceStatus: 'Forming',
-    teamIds: ['erik', 'dennis'],
-    kpis: [
-      { label: 'Formation', value: 'Pågår', status: 'warning' },
-      { label: 'MENA Pipeline', value: '2 leads', status: 'on_track' },
-      { label: 'Bankkonto', value: 'Ej öppnat', status: 'critical' },
-      { label: 'Produktlansering', value: 'Q3 2026', status: 'on_track' }],
-    timeline: [
-      { date: 'Q1 2026', event: 'DIFC-ansökan inlämnad', done: false },
-      { date: 'Q2 2026', event: 'Bankkonto (Emirates NBD)', done: false },
-      { date: 'Q3 2026', event: 'Första MENA-kund', done: false }],
-  },
   'lvx-us': {
     incorporation: 'Texas LLC',
     bankStatus: 'JPMorgan Chase — pending',
@@ -253,8 +238,7 @@ const SVG_MAIN_W = 880
 // Hardcoded positions for clarity — keyed by systemData entity IDs
 const NODE_POSITIONS: Record<string, { x: number; y: number }> = {
   'wgh':    { x: 340, y: 70 },   // WGH — centered
-  'woh':    { x: 60,  y: 260 },  // WOH
-  : { x: 330, y: 260 },  // LVX-AE
+  'woh':    { x: 60,  y: 260 },  // WOH  // LVX-AE
   'lvx-us': { x: 620, y: 260 },  // LVX-US
   'oz-lt':  { x: 20,  y: 450 },  // OZ-LT (under WOH)
   'oz-us':  { x: 240, y: 450 },  // OZ-US (under WOH)

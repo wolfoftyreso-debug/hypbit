@@ -107,7 +107,6 @@ function NewIncidentModal({ entityId, onClose, onCreated }: {
           personal_data_involved: form.personal_data_involved,
           affected_systems: form.affected_systems
             ? form.affected_systems.split(',').map(s => s.trim())
-            : [],
           affected_users_count: form.affected_users_count
             ? parseInt(form.affected_users_count)
             : null,
