@@ -46,6 +46,7 @@ export function ProspectList() {
     ? allActivities
         .filter(a => a.prospect_id === selected.id)
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    : []
 
   return (
     <div className="flex gap-4 h-full" style={{ minHeight: 0 }}>
@@ -87,6 +88,7 @@ export function ProspectList() {
                 style={
                   productFilter === p
                     ? { background: PRODUCT_COLORS[p as CRMProduct] + '20', color: PRODUCT_COLORS[p as CRMProduct], border: `1px solid ${PRODUCT_COLORS[p as CRMProduct]}40` }
+                    : {}
                 }
               >
                 {p}
@@ -101,6 +103,7 @@ export function ProspectList() {
                 style={
                   assigneeFilter === a
                     ? { background: TEAM_COLORS[a as TeamMember] + '20', color: TEAM_COLORS[a as TeamMember], border: `1px solid ${TEAM_COLORS[a as TeamMember]}40` }
+                    : {}
                 }
               >
                 {a}

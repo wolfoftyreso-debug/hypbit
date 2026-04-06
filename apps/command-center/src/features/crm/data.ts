@@ -1,6 +1,6 @@
 // ─── CRM Data Types ────────────────────────────────────────────────────────────
 
-export type CRMProduct = 'quiXzoom' | 'Landvex' | 'Wavult OS'
+export type CRMProduct = 'quiXzoom' | 'LandveX' | 'Wavult OS'
 export type CRMStage =
   | 'Lead'
   | 'Kvalificerad'
@@ -130,7 +130,7 @@ export const ACTIVITY_ICONS: Record<ActivityType, string> = {
 export const TEAM_COLORS: Record<TeamMember, string> = {
   Leon: '#10B981',
   Dennis: '#F59E0B',
-  Erik: '#2563EB',
+  Erik: '#0A3D62',
 }
 
 export function formatSEK(value: number): string {
