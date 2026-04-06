@@ -30,9 +30,7 @@ export function useGiteaRepos() {
   return useQuery({
     queryKey: ['gitea-repos'],
     queryFn: async () => {
-      const res = await fetch(`${GITEA_URL}/api/v1/repos/search?limit=50&sort=updated`, {
-        headers: { 'Authorization': `token ${GITEA_TOKEN}` }
-      })
+      const res = await fetch(`${GITEA_URL}/api/v1/repos/search?limit=50&sort=updated&token=${GITEA_TOKEN}`, {})
       if (!res.ok) throw new Error(`Gitea API ${res.status}`)
       const data = await res.json()
       return data.data as GiteaRepo[]
@@ -45,9 +43,7 @@ export function useGiteaBranches(repoFullName: string) {
   return useQuery({
     queryKey: ['gitea-branches', repoFullName],
     queryFn: async () => {
-      const res = await fetch(`${GITEA_URL}/api/v1/repos/${repoFullName}/branches`, {
-        headers: { 'Authorization': `token ${GITEA_TOKEN}` }
-      })
+      const res = await fetch(`${GITEA_URL}/api/v1/repos/${repoFullName}/branches?token=${GITEA_TOKEN}`, {})
       if (!res.ok) return []
       return await res.json() as GiteaBranch[]
     },

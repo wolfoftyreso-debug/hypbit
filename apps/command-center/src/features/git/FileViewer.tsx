@@ -28,9 +28,9 @@ interface GiteaEntry {
 // ── Fetch helpers ─────────────────────────────────────────────────────────────
 
 async function fetchContents(repo: string, path: string): Promise<GiteaEntry | GiteaEntry[]> {
-  const url = `${GITEA_URL}/api/v1/repos/${repo}/contents/${encodeURIPath(path)}`
+  const url = `${GITEA_URL}/api/v1/repos/${repo}/contents/${encodeURIPath(path)}?token=${GITEA_TOKEN}`
   const res = await fetch(url, {
-    headers: { 'Authorization': `token ${GITEA_TOKEN}` }
+    // token skickas som query param
   })
   if (!res.ok) throw new Error(`Gitea API ${res.status}`)
   return res.json()

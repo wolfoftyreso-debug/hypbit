@@ -375,7 +375,7 @@ async function validatePassword(password: string, token: string | null): Promise
 }
 
 async function archiveRepo(fullName: string): Promise<void> {
-  const res = await fetch(`${GITEA_URL}/api/v1/repos/${fullName}`, {
+  const res = await fetch(`${GITEA_URL}/api/v1/repos/${fullName}?token=${GITEA_TOKEN}`, {
     method: 'PATCH',
     headers: {
       'Authorization': `token ${GITEA_TOKEN}`,
