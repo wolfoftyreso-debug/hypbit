@@ -364,38 +364,6 @@ export function StrategicBrief() {
           </div>
         )}
 
-        {/* MATERIAL */}
-         (
-          <div className="max-w-3xl space-y-3">
-            <p className="text-xs text-gray-500 mb-4">Interna dokument och pitch-material. Uppdateras kontinuerligt.</p>
-            {[
-              { name: 'Investor One-Pager', desc: 'Komprimerad översikt för investerardialog', status: 'utkast', format: 'PDF' },
-              { name: 'Pitch Deck', desc: 'Fullständig presentationsdeck', status: 'pågår', format: 'Slides' },
-              { name: 'Corporate Compendium', desc: 'Fullständig bolagsdokumentation per mottagare', status: 'live', format: 'PDF', link: '/corporate/compendium' },
-              { name: 'Competitive Analysis', desc: 'Detaljerad konkurrentanalys per produkt', status: 'pågår', format: 'PDF' },
-              { name: 'Go-to-Market Playbook', desc: 'Sverige-lanseringsplan med milstolpar', status: 'utkast', format: 'PDF' },
-            ].map((item, i) => (
-              <div key={i} className="rounded-xl border border-[#DDD5C5] bg-white p-4 flex items-center gap-4">
-                <div className="text-2xl">{item.format === 'PDF' ? '📄' : item.format === 'Slides' ? '📊' : '📋'}</div>
-                <div className="flex-1">
-                  <div className="text-sm font-semibold text-[#0A3D62]">{item.name}</div>
-                  <div className="text-xs text-gray-500">{item.desc}</div>
-                </div>
-                <span className={`text-[10px] px-2.5 py-1 rounded-full font-bold ${
-                  item.status === 'live' ? 'bg-green-50 text-green-700' :
-                  item.status === 'pågår' ? 'bg-amber-50 text-amber-700' :
-                  'bg-gray-50 text-gray-400'
-                }`}>
-                  {item.status === 'live' ? '✓ Live' : item.status === 'pågår' ? '⟳ Pågår' : '✎ Utkast'}
-                </span>
-                {'link' in item && item.link && (
-                  <a href={item.link} className="text-xs text-[#0A3D62] underline hover:text-[#E8B84B]">Öppna →</a>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
         {/* COMPLIANCE */}
         {activeTab === 'compliance' && (
           <div className="max-w-4xl space-y-6">
