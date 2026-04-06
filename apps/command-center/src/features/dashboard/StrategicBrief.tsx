@@ -418,7 +418,7 @@ export function StrategicBrief() {
                   { standard: 'ISO 9001:2015', area: 'Kvalitetsledning', status: 'Implementeras', color: '#0A3D62' },
                   { standard: 'ISO 27001:2022', area: 'Informationssäkerhet', status: 'Implementeras', color: '#0A3D62' },
                   { standard: 'GDPR', area: 'Dataskydd (EU)', status: 'Aktivt', color: '#2D7A4F' },
-                  { standard: 'NIS2', area: 'Cybersäkerhet (EU)', status: 'Förbereder', color: '#B8760A' },
+                  { standard: 'NIS2', area: 'Cybersäkerhet (EU)', status: 'Förbereder', color: '#B8760A', tooltip: 'Art. 21: Riskanalys (QMS✓), Incidenthantering (rutiner saknas), Leverantörskedja (cert-auth✓), MFA/komm (cert-auth✓)' },
                 ].map(s => (
                   <div key={s.standard} className="rounded-xl border border-[#DDD5C5] p-3 text-center">
                     <div className="text-[11px] font-bold mb-1" style={{ color: s.color }}>{s.standard}</div>
