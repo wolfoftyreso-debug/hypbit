@@ -20,7 +20,7 @@ const STAGE_COLOR: Record<string, string> = {
 }
 const PRODUCT_COLOR: Record<string, string> = {
   'Optical Insight':  '#FF6B35',
-  'QuixZoom':         '#00C2FF',
+  'quiXzoom':         '#00C2FF',
   'Hypbit OS':        '#4CAF50',
   'Quixom Ads':       '#FF4081',
 }

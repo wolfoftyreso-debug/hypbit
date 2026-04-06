@@ -175,7 +175,7 @@ export function OperationalReport() {
 
       {/* Zoomer breakdown */}
       <div className="bg-[#F0EBE1] border border-[#DDD5C5] rounded-xl p-4">
-        <p className="text-xs font-bold text-gray-600 uppercase tracking-widest mb-4">QuixZoom — Photographer Network</p>
+        <p className="text-xs font-bold text-gray-600 uppercase tracking-widest mb-4">quiXzoom — Photographer Network</p>
         <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
           {[
             { label: 'Aktiva', value: ZOOMER_COUNT, color: '#10B981' },

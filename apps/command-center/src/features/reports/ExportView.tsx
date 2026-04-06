@@ -128,7 +128,7 @@ export function ExportView() {
   </table>
 </div>
 
-<div class="footer">Wavult Group · Konfidentiellt · Genererad av Wavult OS · ${ts}</div>
+<div class="footer">Wavult Group · Konfidentiellt · Genererad av Wavult DS · ${ts}</div>
 </body>
 </html>`
 
@@ -176,7 +176,7 @@ export function ExportView() {
                   onClick={() => setSelectedReport(opt.id)}
                   className={`w-full flex items-start gap-3 px-4 py-3 rounded-xl border text-left transition-all ${
                     selectedReport === opt.id
-                      ? 'border-[#6C63FF]/50 bg-[#6C63FF]/10'
+                      ? 'border-[#0A3D62]/50 bg-[#0A3D62]/10'
                       : 'border-surface-border bg-[#F0EBE1] hover:border-surface-border hover:bg-[#F0EBE1]'
                   }`}
                 >
@@ -191,7 +191,7 @@ export function ExportView() {
                     <p className="text-xs text-gray-9000 mt-0.5 leading-snug">{opt.description}</p>
                   </div>
                   {selectedReport === opt.id && (
-                    <span className="text-[#6C63FF] flex-shrink-0 mt-1"><CheckIcon /></span>
+                    <span className="text-[#0A3D62] flex-shrink-0 mt-1"><CheckIcon /></span>
                   )}
                 </button>
               ))}
@@ -208,7 +208,7 @@ export function ExportView() {
                   onClick={() => setSelectedPeriod(p.id)}
                   className={`px-3 py-2.5 rounded-lg border text-xs text-left transition-all ${
                     selectedPeriod === p.id
-                      ? 'border-[#6C63FF]/50 bg-[#6C63FF]/10 text-gray-900'
+                      ? 'border-[#0A3D62]/50 bg-[#0A3D62]/10 text-[#0A3D62]'
                       : 'border-surface-border bg-[#F0EBE1] text-gray-9000 hover:text-gray-800'
                   }`}
                 >
@@ -252,7 +252,7 @@ export function ExportView() {
                   onClick={() => setSelectedFormat(f.id)}
                   className={`flex-1 flex flex-col items-center gap-1 px-3 py-3 rounded-xl border transition-all ${
                     selectedFormat === f.id
-                      ? 'border-[#6C63FF]/50 bg-[#6C63FF]/10'
+                      ? 'border-[#0A3D62]/50 bg-[#0A3D62]/10'
                       : 'border-surface-border bg-[#F0EBE1] hover:border-gray-200'
                   }`}
                 >
@@ -314,10 +314,10 @@ export function ExportView() {
             disabled={generating}
             className={`w-full py-4 rounded-xl font-bold text-[14px] transition-all flex items-center justify-center gap-2 ${
               generating
-                ? 'bg-[#6C63FF]/30 text-[#6C63FF]/60 cursor-not-allowed'
+                ? 'bg-[#0A3D62]/30 text-[#0A3D62]/60 cursor-not-allowed'
                 : generated
                 ? 'bg-green-500/20 border border-green-500/30 text-green-700'
-                : 'bg-[#6C63FF] hover:bg-[#7C73FF] text-text-primary shadow-lg shadow-[#6C63FF]/30 active:scale-95'
+                : 'bg-[#0A3D62] hover:bg-[#072E4A] text-text-primary shadow-lg shadow-[#0A3D62]/30 active:scale-95'
             }`}
           >
             {generating ? (
@@ -370,7 +370,7 @@ export function ExportView() {
                 { label: 'Executive Summary', freq: 'Varje måndag 08:00', next: '30 mar' },
                 { label: 'Finansrapport Q2',  freq: 'Kvartalsvis',         next: '1 apr' }].map((r, i) => (
                 <div key={i} className="flex items-center gap-2 text-xs">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#6C63FF] flex-shrink-0" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#0A3D62] flex-shrink-0" />
                   <span className="flex-1 text-gray-9000">{r.label}</span>
                   <span className="text-gray-9000 font-mono">{r.freq}</span>
                   <span className="text-gray-9000">→ {r.next}</span>

@@ -44,7 +44,7 @@ export const ENTITY_FINANCIALS: EntityFinancials[] = [
   },
   {
     id: 'quixzoom',
-    name: 'QuixZoom AB',
+    name: 'quiXzoom',
     shortName: 'QZoom',
     color: '#00C2FF',
     country: 'SE',
@@ -60,7 +60,7 @@ export const ENTITY_FINANCIALS: EntityFinancials[] = [
   },
   {
     id: 'optical-insight',
-    name: 'Optical Insight AB',
+    name: 'LandveX AB',
     shortName: 'OptIn',
     color: '#FF6B35',
     country: 'SE',
@@ -92,7 +92,7 @@ export const ENTITY_FINANCIALS: EntityFinancials[] = [
   },
   {
     id: 'quixom-ads',
-    name: 'Quixom Ads LLC',
+    name: 'quiXzoom Ads',
     shortName: 'QAds',
     color: '#FF4081',
     country: 'US',
@@ -121,14 +121,14 @@ export interface PipelineDeal {
 }
 
 export const PIPELINE_DEALS: PipelineDeal[] = [
-  { id: 'D001', name: 'Sthlm Fastigheter — AI-övervakning', company: 'Stockholm Fastigheter AB', product: 'Optical Insight', value: 480_000, stage: 'Förhandling', probability: 65, owner: 'Leon Russo', createdDate: '2026-01-15', expectedClose: '2026-04-30' },
-  { id: 'D002', name: 'Trafikverket Pilot', company: 'Trafikverket', product: 'Optical Insight', value: 1_200_000, stage: 'Demo', probability: 40, owner: 'Erik Svensson', createdDate: '2026-02-01', expectedClose: '2026-06-30' },
-  { id: 'D003', name: 'QuixZoom — Nordic Expansion', company: 'Freelancer Pool Nordic', product: 'QuixZoom', value: 360_000, stage: 'Kvalificerad', probability: 55, owner: 'Leon Russo', createdDate: '2026-02-10', expectedClose: '2026-05-15' },
-  { id: 'D004', name: 'Hypbit SaaS — Bilverkstad', company: 'Bildoktorn Sverige AB', product: 'Hypbit OS', value: 144_000, stage: 'Stängd-Vann', probability: 100, owner: 'Johan Berglund', createdDate: '2026-01-05', expectedClose: '2026-03-01' },
-  { id: 'D005', name: 'Göteborg Stad — Kameraanalys', company: 'Göteborgs Stad', product: 'Optical Insight', value: 2_400_000, stage: 'Prospekt', probability: 15, owner: 'Erik Svensson', createdDate: '2026-03-01', expectedClose: '2026-09-30' },
-  { id: 'D006', name: 'Quixom Ads — Media Agency', company: 'Bonnier News', product: 'Quixom Ads', value: 600_000, stage: 'Demo', probability: 50, owner: 'Dennis Bjarnemark', createdDate: '2026-02-20', expectedClose: '2026-05-01' },
-  { id: 'D007', name: 'Hypbit SaaS — Däckfirma', company: 'Däckmaster AB', product: 'Hypbit OS', value: 96_000, stage: 'Stängd-Förlorad', probability: 0, owner: 'Johan Berglund', createdDate: '2025-12-10', expectedClose: '2026-02-28' },
-  { id: 'D008', name: 'QuixZoom — Försäkring', company: 'Folksam', product: 'QuixZoom', value: 900_000, stage: 'Kvalificerad', probability: 35, owner: 'Leon Russo', createdDate: '2026-03-05', expectedClose: '2026-07-01' }]
+  { id: 'D001', name: 'Sthlm Fastigheter — AI-övervakning', company: 'Stockholm Fastigheter AB', product: 'LandveX', value: 480_000, stage: 'Förhandling', probability: 65, owner: 'Leon Russo', createdDate: '2026-01-15', expectedClose: '2026-04-30' },
+  { id: 'D002', name: 'Trafikverket Pilot', company: 'Trafikverket', product: 'LandveX', value: 1_200_000, stage: 'Demo', probability: 40, owner: 'Erik Svensson', createdDate: '2026-02-01', expectedClose: '2026-06-30' },
+  { id: 'D003', name: 'quiXzoom — Nordic Expansion', company: 'Freelancer Pool Nordic', product: 'quiXzoom', value: 360_000, stage: 'Kvalificerad', probability: 55, owner: 'Leon Russo', createdDate: '2026-02-10', expectedClose: '2026-05-15' },
+  { id: 'D004', name: 'Wavult DS — Bilverkstad', company: 'Bildoktorn Sverige AB', product: 'Wavult DS', value: 144_000, stage: 'Stängd-Vann', probability: 100, owner: 'Johan Berglund', createdDate: '2026-01-05', expectedClose: '2026-03-01' },
+  { id: 'D005', name: 'Göteborg Stad — Kameraanalys', company: 'Göteborgs Stad', product: 'LandveX', value: 2_400_000, stage: 'Prospekt', probability: 15, owner: 'Erik Svensson', createdDate: '2026-03-01', expectedClose: '2026-09-30' },
+  { id: 'D006', name: 'quiXzoom Ads — Media Agency', company: 'Bonnier News', product: 'quiXzoom Ads', value: 600_000, stage: 'Demo', probability: 50, owner: 'Dennis Bjarnemark', createdDate: '2026-02-20', expectedClose: '2026-05-01' },
+  { id: 'D007', name: 'Wavult DS — Däckfirma', company: 'Däckmaster AB', product: 'Wavult DS', value: 96_000, stage: 'Stängd-Förlorad', probability: 0, owner: 'Johan Berglund', createdDate: '2025-12-10', expectedClose: '2026-02-28' },
+  { id: 'D008', name: 'quiXzoom — Försäkring', company: 'Folksam', product: 'quiXzoom', value: 900_000, stage: 'Kvalificerad', probability: 35, owner: 'Leon Russo', createdDate: '2026-03-05', expectedClose: '2026-07-01' }]
 
 export interface SalesActivity {
   owner: string
@@ -157,12 +157,12 @@ export interface SystemMetrics {
 
 export const SYSTEM_METRICS: SystemMetrics[] = [
   { service: 'Hypbit API', uptime: 99.7, deploysThisWeek: 4, apiErrorRate: 0.3, avgResponseMs: 142 },
-  { service: 'QuixZoom Backend', uptime: 98.9, deploysThisWeek: 2, apiErrorRate: 0.8, avgResponseMs: 210 },
-  { service: 'Optical Insight AI', uptime: 99.1, deploysThisWeek: 1, apiErrorRate: 0.5, avgResponseMs: 380 },
+  { service: 'quiXzoom Backend', uptime: 98.9, deploysThisWeek: 2, apiErrorRate: 0.8, avgResponseMs: 210 },
+  { service: 'LandveX AI', uptime: 99.1, deploysThisWeek: 1, apiErrorRate: 0.5, avgResponseMs: 380 },
   { service: 'Wavult Command Center', uptime: 99.9, deploysThisWeek: 6, apiErrorRate: 0.1, avgResponseMs: 95 },
   { service: 'Auth Service', uptime: 100, deploysThisWeek: 0, apiErrorRate: 0.0, avgResponseMs: 45 }]
 
-export const ZOOMER_COUNT = 127 // number of active QuixZoom photographers
+export const ZOOMER_COUNT = 127 // number of active quiXzoom zoomers
 
 export interface CriticalItem {
   id: string
@@ -176,7 +176,7 @@ export interface CriticalItem {
 
 export const CRITICAL_ITEMS: CriticalItem[] = [
   { id: 'C001', type: 'legal', severity: 'critical', title: 'Texas LLC — Registered Agent förnyelse', description: 'Annual registered agent fee due. Non-payment = dissolution.', deadline: '2026-04-15', owner: 'Dennis Bjarnemark' },
-  { id: 'C002', type: 'compliance', severity: 'high', title: 'GDPR DPA — Optical Insight', description: 'Data Processing Agreement saknas för kommunkontrakt.', deadline: '2026-04-30', owner: 'Dennis Bjarnemark' },
+  { id: 'C002', type: 'compliance', severity: 'high', title: 'GDPR DPA — LandveX', description: 'Data Processing Agreement saknas för kommunkontrakt.', deadline: '2026-04-30', owner: 'Dennis Bjarnemark' },
   { id: 'C003', type: 'financial', severity: 'high', title: 'Bolagsverket årsredovisning', description: 'Wavult Group — årsredovisning ska lämnas in.', deadline: '2026-06-30', owner: 'Winston Bjarnemark' },
   { id: 'C004', type: 'operational', severity: 'medium', title: 'Thailand Workcamp förberedelser', description: 'Hotellbokningar, reseförsäkringar och agenda klar senast 1 april.', deadline: '2026-04-01', owner: 'Erik Svensson' },
   { id: 'C005', type: 'compliance', severity: 'medium', title: 'ISO 27001 gap-analys', description: 'Krävs för enterprise-kundavtal med kommuner.', deadline: '2026-05-15', owner: 'Johan Berglund' }]
@@ -184,7 +184,7 @@ export const CRITICAL_ITEMS: CriticalItem[] = [
 export const NEXT_MILESTONES = [
   { date: '2026-04-01', label: 'Thailand-agenda klar' },
   { date: '2026-04-11', label: '🇹🇭 Thailand Workcamp startar' },
-  { date: '2026-04-30', label: 'QuixZoom Nordic Beta — 500 zoomers' },
-  { date: '2026-05-31', label: 'Optical Insight MVP till Trafikverket' },
-  { date: '2026-06-30', label: 'Hypbit OS v3.0 release' },
+  { date: '2026-04-30', label: 'quiXzoom Sverige Beta — 500 zoomers' },
+  { date: '2026-05-31', label: 'LandveX MVP till Trafikverket' },
+  { date: '2026-06-30', label: 'Wavult DS v3.0 release' },
   { date: '2026-09-30', label: 'Göteborg Stad-deal stängs (mål)' }]
