@@ -70,8 +70,7 @@ const VISA_REQUIREMENTS: Record<string, VisaInfo> = {
       'Return flight ticket',
       'Bank statement (min 20,000 THB equivalent)',
       'Travel insurance',
-      'Application form (available at embassy)',
-    ],
+      'Application form (available at embassy)'],
     notes:
       'Svenska passinnehavare kan få 30-dagars visumfrihet vid ankomst. För 90-dagars vistelse, ansök om Tourist Visa (TR-90) eller DEST Visa (Digital Nomad). Ansök minst 4 veckor före avresa.',
     embassyAddress: 'Lidingövägen 1, 115 25 Stockholm',
@@ -210,8 +209,7 @@ export function VisaHub() {
   // Build trips from applications — unique countries with upcoming target_dates
   const FALLBACK_TRIPS: Trip[] = [
     { id: 'thailand-apr-2026', destination: 'Thailand', date: '2026-04-11', durationDays: 11, displayDate: '11 apr 2026' },
-    { id: 'uae-planned', destination: 'UAE', date: '', durationDays: 30, displayDate: 'Planerad' },
-  ]
+    { id: 'uae-planned', destination: 'UAE', date: '', durationDays: 30, displayDate: 'Planerad' }]
 
   const trips: Trip[] = FALLBACK_TRIPS // supplement from applications when data available
 
@@ -220,8 +218,7 @@ export function VisaHub() {
     { id: 'leon',    name: 'Leon Russo De Cerame',   firstName: 'Leon',    phone: '+46738968949',  email: 'leon@wavult.com' },
     { id: 'dennis',  name: 'Dennis Bjarnemark',      firstName: 'Dennis',  phone: '+46761474243',  email: 'dennis@wavult.com' },
     { id: 'winston', name: 'Winston Bjarnemark',     firstName: 'Winston', phone: '+46768123548',  email: 'winston@wavult.com' },
-    { id: 'johan',   name: 'Johan Berglund',         firstName: 'Johan',   phone: '+46736977576',  email: 'johan@wavult.com' },
-  ]
+    { id: 'johan',   name: 'Johan Berglund',         firstName: 'Johan',   phone: '+46736977576',  email: 'johan@wavult.com' }]
 
   const [selectedTrip, setSelectedTrip] = useState<Trip>(trips[0])
   const visa = VISA_REQUIREMENTS[selectedTrip.destination]

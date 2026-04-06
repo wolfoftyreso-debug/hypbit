@@ -105,8 +105,7 @@ export const ENTITY_FINANCIALS: EntityFinancials[] = [
     equity: 400_000,
     headcount: 0,
     monthlySalaryCost: 0,
-  },
-]
+  }]
 
 export interface PipelineDeal {
   id: string
@@ -129,8 +128,7 @@ export const PIPELINE_DEALS: PipelineDeal[] = [
   { id: 'D005', name: 'Göteborg Stad — Kameraanalys', company: 'Göteborgs Stad', product: 'Optical Insight', value: 2_400_000, stage: 'Prospekt', probability: 15, owner: 'Erik Svensson', createdDate: '2026-03-01', expectedClose: '2026-09-30' },
   { id: 'D006', name: 'Quixom Ads — Media Agency', company: 'Bonnier News', product: 'Quixom Ads', value: 600_000, stage: 'Demo', probability: 50, owner: 'Dennis Bjarnemark', createdDate: '2026-02-20', expectedClose: '2026-05-01' },
   { id: 'D007', name: 'Hypbit SaaS — Däckfirma', company: 'Däckmaster AB', product: 'Hypbit OS', value: 96_000, stage: 'Stängd-Förlorad', probability: 0, owner: 'Johan Berglund', createdDate: '2025-12-10', expectedClose: '2026-02-28' },
-  { id: 'D008', name: 'QuixZoom — Försäkring', company: 'Folksam', product: 'QuixZoom', value: 900_000, stage: 'Kvalificerad', probability: 35, owner: 'Leon Russo', createdDate: '2026-03-05', expectedClose: '2026-07-01' },
-]
+  { id: 'D008', name: 'QuixZoom — Försäkring', company: 'Folksam', product: 'QuixZoom', value: 900_000, stage: 'Kvalificerad', probability: 35, owner: 'Leon Russo', createdDate: '2026-03-05', expectedClose: '2026-07-01' }]
 
 export interface SalesActivity {
   owner: string
@@ -147,8 +145,7 @@ export const SALES_ACTIVITIES: SalesActivity[] = [
   { owner: 'Leon Russo', calls: 48, emails: 120, meetings: 18, demos: 8, closedWon: 3, closedLost: 1, revenue: 984_000 },
   { owner: 'Erik Svensson', calls: 22, emails: 65, meetings: 12, demos: 5, closedWon: 1, closedLost: 0, revenue: 1_200_000 },
   { owner: 'Johan Berglund', calls: 15, emails: 40, meetings: 8, demos: 4, closedWon: 2, closedLost: 2, revenue: 240_000 },
-  { owner: 'Dennis Bjarnemark', calls: 12, emails: 55, meetings: 6, demos: 2, closedWon: 0, closedLost: 0, revenue: 0 },
-]
+  { owner: 'Dennis Bjarnemark', calls: 12, emails: 55, meetings: 6, demos: 2, closedWon: 0, closedLost: 0, revenue: 0 }]
 
 export interface SystemMetrics {
   service: string
@@ -163,8 +160,7 @@ export const SYSTEM_METRICS: SystemMetrics[] = [
   { service: 'QuixZoom Backend', uptime: 98.9, deploysThisWeek: 2, apiErrorRate: 0.8, avgResponseMs: 210 },
   { service: 'Optical Insight AI', uptime: 99.1, deploysThisWeek: 1, apiErrorRate: 0.5, avgResponseMs: 380 },
   { service: 'Wavult Command Center', uptime: 99.9, deploysThisWeek: 6, apiErrorRate: 0.1, avgResponseMs: 95 },
-  { service: 'Auth Service', uptime: 100, deploysThisWeek: 0, apiErrorRate: 0.0, avgResponseMs: 45 },
-]
+  { service: 'Auth Service', uptime: 100, deploysThisWeek: 0, apiErrorRate: 0.0, avgResponseMs: 45 }]
 
 export const ZOOMER_COUNT = 127 // number of active QuixZoom photographers
 
@@ -183,8 +179,7 @@ export const CRITICAL_ITEMS: CriticalItem[] = [
   { id: 'C002', type: 'compliance', severity: 'high', title: 'GDPR DPA — Optical Insight', description: 'Data Processing Agreement saknas för kommunkontrakt.', deadline: '2026-04-30', owner: 'Dennis Bjarnemark' },
   { id: 'C003', type: 'financial', severity: 'high', title: 'Bolagsverket årsredovisning', description: 'Wavult Group — årsredovisning ska lämnas in.', deadline: '2026-06-30', owner: 'Winston Bjarnemark' },
   { id: 'C004', type: 'operational', severity: 'medium', title: 'Thailand Workcamp förberedelser', description: 'Hotellbokningar, reseförsäkringar och agenda klar senast 1 april.', deadline: '2026-04-01', owner: 'Erik Svensson' },
-  { id: 'C005', type: 'compliance', severity: 'medium', title: 'ISO 27001 gap-analys', description: 'Krävs för enterprise-kundavtal med kommuner.', deadline: '2026-05-15', owner: 'Johan Berglund' },
-]
+  { id: 'C005', type: 'compliance', severity: 'medium', title: 'ISO 27001 gap-analys', description: 'Krävs för enterprise-kundavtal med kommuner.', deadline: '2026-05-15', owner: 'Johan Berglund' }]
 
 export const NEXT_MILESTONES = [
   { date: '2026-04-01', label: 'Thailand-agenda klar' },
@@ -192,5 +187,4 @@ export const NEXT_MILESTONES = [
   { date: '2026-04-30', label: 'QuixZoom Nordic Beta — 500 zoomers' },
   { date: '2026-05-31', label: 'Optical Insight MVP till Trafikverket' },
   { date: '2026-06-30', label: 'Hypbit OS v3.0 release' },
-  { date: '2026-09-30', label: 'Göteborg Stad-deal stängs (mål)' },
-]
+  { date: '2026-09-30', label: 'Göteborg Stad-deal stängs (mål)' }]

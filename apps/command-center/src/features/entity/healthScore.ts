@@ -233,8 +233,7 @@ export function computeHealthScore(entityId: string): EntityHealthScore {
     scoreFinance(entityId),
     scoreLegal(entityId),
     scoreActivity(entityId),
-    scoreSystems(entityId),
-  ]
+    scoreSystems(entityId)]
 
   const overall = Math.round(
     dims.reduce((sum, d) => sum + d.score * WEIGHTS[d.key], 0)

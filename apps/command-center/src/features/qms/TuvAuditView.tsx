@@ -361,8 +361,7 @@ function SessionDetail({ detail }: { detail: TuvSessionDetail }) {
             { label: 'PASS', count: detail.summary.pass, color: '#27AE60' },
             { label: 'WARNING', count: detail.summary.warning, color: '#F39C12' },
             { label: 'FAIL', count: detail.summary.fail, color: '#E74C3C' },
-            { label: 'CRITICAL', count: detail.summary.critical, color: '#8B0000' },
-          ].map(({ label, count, color }) => (
+            { label: 'CRITICAL', count: detail.summary.critical, color: '#8B0000' }].map(({ label, count, color }) => (
             <div key={label} style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 22, fontWeight: 800, color }}>{count}</div>
               <div style={{ fontSize: 10, color: '#7F8C8D', fontWeight: 600 }}>{label}</div>
@@ -463,8 +462,7 @@ function SupplierTable({ suppliers, summary }: { suppliers: TuvSupplier[]; summa
           { label: 'Godkända', count: summary.approved, color: '#27AE60', bg: '#EAFAF1' },
           { label: 'Villkorliga', count: summary.conditional, color: '#F39C12', bg: '#FEF9E7' },
           { label: 'Avvisade', count: summary.rejected, color: '#E74C3C', bg: '#FDEDEC' },
-          { label: 'Avg score', count: `${summary.avg_score}/100`, color: '#0A3D62', bg: '#EBF5FB' },
-        ].map(({ label, count, color, bg }) => (
+          { label: 'Avg score', count: `${summary.avg_score}/100`, color: '#0A3D62', bg: '#EBF5FB' }].map(({ label, count, color, bg }) => (
           <div key={label} style={{
             padding: '10px 16px', borderRadius: 8, background: bg, flex: 1, minWidth: 80, textAlign: 'center'
           }}>
@@ -511,8 +509,7 @@ function SupplierTable({ suppliers, summary }: { suppliers: TuvSupplier[]; summa
                       { label: 'DPA compliant', value: s.dpa_compliant ? '✅ Ja' : '❌ Nej' },
                       { label: 'Data i EU', value: s.data_residency_compliant ? '✅ Ja' : '⚠️ Nej' },
                       { label: 'Underlev. redovisas', value: s.sub_processor_disclosure ? '✅ Ja' : '⚠️ Nej' },
-                      { label: 'Breach SLA', value: s.breach_notification_sla },
-                    ].map(({ label, value }) => (
+                      { label: 'Breach SLA', value: s.breach_notification_sla }].map(({ label, value }) => (
                       <div key={label} style={{ fontSize: 12 }}>
                         <span style={{ color: '#95A5A6', marginRight: 4 }}>{label}:</span>
                         <span style={{ color: '#2C3E50', fontWeight: 600 }}>{value}</span>
@@ -697,8 +694,7 @@ export function TuvAuditView() {
   const tabs: { id: Tab; label: string; icon: string }[] = [
     { id: 'sessions', label: 'Audit Sessioner', icon: '🏛️' },
     { id: 'suppliers', label: 'Leverantörsaudit', icon: '🔍' },
-    { id: 'sprint', label: 'Thailand Sprint', icon: '🇹🇭' },
-  ]
+    { id: 'sprint', label: 'Thailand Sprint', icon: '🇹🇭' }]
 
   return (
     <div style={{ fontFamily: 'Inter, system-ui, sans-serif', color: '#2C3E50', maxWidth: 1400, margin: '0 auto' }}>

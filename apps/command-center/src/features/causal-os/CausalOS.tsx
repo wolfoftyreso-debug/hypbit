@@ -89,8 +89,7 @@ const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
   { id: 'scenario', label: 'Scenario', icon: <Sliders size={14} /> },
   { id: 'decision', label: 'Beslut', icon: <TrendingUp size={14} /> },
   { id: 'status', label: 'Systemstatus', icon: <AlertTriangle size={14} /> },
-  { id: 'graph', label: 'Kausalgraf', icon: <Network size={14} /> },
-]
+  { id: 'graph', label: 'Kausalgraf', icon: <Network size={14} /> }]
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
@@ -204,8 +203,7 @@ export function CausalOS() {
             { label: 'Saldo idag', value: SEK(500000), sub: 'Startkapital' },
             { label: 'Saldo 90d', value: SEK(summary.balanceIn90d), sub: '90 dagar', colored: true, n: summary.balanceIn90d },
             { label: 'Saldo 365d', value: SEK(summary.balanceIn365d), sub: '365 dagar', colored: true, n: summary.balanceIn365d },
-            { label: 'Runway', value: `${Math.round(runway)} dagar`, sub: `≈ ${(runway / 30).toFixed(1)} mån` },
-          ].map(card => (
+            { label: 'Runway', value: `${Math.round(runway)} dagar`, sub: `≈ ${(runway / 30).toFixed(1)} mån` }].map(card => (
             <div key={card.label} className="rounded-lg border border-surface-border bg-[#F0EBE1] p-4">
               <div className="text-xs text-gray-9000 mb-1">{card.label}</div>
               <div className={`font-mono text-lg font-semibold ${card.colored ? balanceColor(card.n ?? 0) : 'text-gray-800'}`}>
@@ -415,8 +413,7 @@ export function CausalOS() {
                 base: `${Math.round(baseRunway)} dagar`,
                 scenario: `${Math.round(scenarioRunway)} dagar`,
                 delta: `${scenarioRunway - baseRunway > 0 ? '+' : ''}${Math.round(scenarioRunway - baseRunway)} d`,
-              },
-            ].map(row => (
+              }].map(row => (
               <div key={row.label} className="flex items-center justify-between gap-2">
                 <span className="text-xs text-gray-9000 w-24">{row.label}</span>
                 <div className="flex items-center gap-2 text-xs font-mono">
@@ -539,8 +536,7 @@ export function CausalOS() {
                         { label: 'Runway', value: `${Math.round(computed.runway)} d`, delta: computed.runwayDelta },
                         { label: 'Kassa 90d', value: SEK(computed.cashIn90d), delta: computed.cash90Delta },
                         { label: 'Risk', value: computed.risk.toUpperCase(), colored: computed.risk },
-                        { label: 'Genomförbart', value: computed.feasible ? 'Ja' : 'Nej', bool: computed.feasible },
-                      ].map(card => (
+                        { label: 'Genomförbart', value: computed.feasible ? 'Ja' : 'Nej', bool: computed.feasible }].map(card => (
                         <div key={card.label} className="rounded border border-surface-border/50 bg-[#F0EBE1] p-3">
                           <div className="text-xs text-gray-9000 mb-1">{card.label}</div>
                           <div className={`font-mono text-sm font-semibold ${

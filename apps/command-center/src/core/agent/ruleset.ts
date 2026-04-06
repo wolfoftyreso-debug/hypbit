@@ -114,8 +114,7 @@ export const RULESET: AgentRule[] = [
     key: 'agent.task.completed',
     severity: 'info',
     score: 10,
-  },
-]
+  }]
 
 export interface MappedTask {
   key: string

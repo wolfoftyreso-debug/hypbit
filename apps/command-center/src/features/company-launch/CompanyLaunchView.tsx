@@ -803,8 +803,7 @@ export function CompanyLaunchView() {
                     { step: '1', label: 'Pay $325 formation fee', url: 'https://www.sos.state.tx.us/corp/forms/205_boc.pdf', cta: 'Open SOSDirect →' },
                     { step: '2', label: 'Apply for EIN (free, online, 10 min)', url: 'https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online', cta: 'IRS EIN Application →' },
                     { step: '3', label: 'Open Mercury Bank account', url: 'https://mercury.com', cta: 'Mercury →' },
-                    { step: '4', label: '83(b) election — 30-day deadline from formation', url: 'https://www.irs.gov/forms-pubs/about-form-8300', cta: 'IRS Form →', urgent: true },
-                  ].map(({ step, label, url, cta, urgent }) => (
+                    { step: '4', label: '83(b) election — 30-day deadline from formation', url: 'https://www.irs.gov/forms-pubs/about-form-8300', cta: 'IRS Form →', urgent: true }].map(({ step, label, url, cta, urgent }) => (
                     <div key={step} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #FEF3C7' }}>
                       <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                         <span style={{ width: 22, height: 22, borderRadius: '50%', background: urgent ? '#EF4444' : '#1a1a2e', color: '#fff', fontSize: 11, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{step}</span>

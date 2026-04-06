@@ -82,8 +82,7 @@ export const ROUTING_RULES: RoutingRule[] = [
     keywords: [
       'avtal', 'kontrakt', 'signatur', 'notarie', 'bolagsavtal',
       'uab', 'llc', 'fzco', 'bolagsverket', 'compliance', 'gdpr',
-      'texas', 'litauen', 'dubai', 'juridik', 'legal', 'lagen',
-    ],
+      'texas', 'litauen', 'dubai', 'juridik', 'legal', 'lagen'],
     department: 'juridik',
     responsible: TEAM.dennis,
     fallback: TEAM.erik,
@@ -99,8 +98,7 @@ export const ROUTING_RULES: RoutingRule[] = [
       'faktura', 'betalning', 'revolut', 'stripe', 'moms', 'vat',
       'f-skatt', 'skatteverket', 'sweeping', 'cashflow', 'ekonomi',
       'budget', 'q1', 'rapport', 'balansräkning', 'bokföring',
-      'mercury', 'konto', 'transfer', 'bank', 'kyc',
-    ],
+      'mercury', 'konto', 'transfer', 'bank', 'kyc'],
     department: 'ekonomi',
     responsible: TEAM.winston,
     fallback: TEAM.erik,
@@ -116,8 +114,7 @@ export const ROUTING_RULES: RoutingRule[] = [
       'ecs', 'aws', 'docker', 'deploy', 'server', 'api', 'bug',
       'crash', 'timeout', 'latency', 'ci', 'cd', 'github',
       'supabase', 'databas', 'ssl', 'https', 'cloudflare', 'dns',
-      'webhook', 'healthcheck', 'uptime', 'staging', 'production',
-    ],
+      'webhook', 'healthcheck', 'uptime', 'staging', 'production'],
     department: 'teknik',
     responsible: TEAM.johan,
     fallback: TEAM.erik,
@@ -132,8 +129,7 @@ export const ROUTING_RULES: RoutingRule[] = [
     keywords: [
       'zoomer', 'quixzoom', 'quiXzoom', 'fotouppdrag', 'uppdrag',
       'kamera', 'bild', 'foto', 'crowdsource', 'marketplace',
-      'optical insight', 'bildleverans', 'sensor', 'location',
-    ],
+      'optical insight', 'bildleverans', 'sensor', 'location'],
     department: 'zoomer',
     responsible: TEAM.leon,
     fallback: TEAM.johan,
@@ -148,8 +144,7 @@ export const ROUTING_RULES: RoutingRule[] = [
     keywords: [
       'partner', 'kund', 'demo', 'pitch', 'erbjudande', 'offert',
       'avtal kund', 'onboarding', 'leads', 'crm', 'prospekt',
-      'landvex', 'b2g', 'kommuner', 'myndighet',
-    ],
+      'landvex', 'b2g', 'kommuner', 'myndighet'],
     department: 'sälj',
     responsible: TEAM.leon,
     fallback: TEAM.erik,
@@ -163,8 +158,7 @@ export const ROUTING_RULES: RoutingRule[] = [
     id: 'support-general',
     keywords: [
       'hjälp', 'problem', 'support', 'fungerar inte', 'fel',
-      'issue', 'ticket', 'error', 'kraschar', 'loggar in inte',
-    ],
+      'issue', 'ticket', 'error', 'kraschar', 'loggar in inte'],
     department: 'support',
     responsible: TEAM.johan,
     fallback: TEAM.leon,
@@ -179,15 +173,13 @@ export const ROUTING_RULES: RoutingRule[] = [
     keywords: [
       'strategi', 'board', 'styrelse', 'investerare', 'thailand',
       'workcamp', 'vision', 'roadmap', 'launch', 'milestone',
-      'q2', 'q3', 'q4', 'halvår', 'årsplan',
-    ],
+      'q2', 'q3', 'q4', 'halvår', 'årsplan'],
     department: 'ledning',
     responsible: TEAM.erik,
     priority: 1,
     channel: ['email', 'telegram'],
     description: 'Strategiska frågor, board, investerare, roadmap',
-  },
-]
+  }]
 
 // ─── Routing Engine ────────────────────────────────────────────────────────────
 
@@ -312,8 +304,7 @@ const ROUTING_TEST_CASES: RoutingTestCase[] = [
     channel: 'email',
     expectedResponsible: 'Erik Svensson',
     expectedRuleId: 'leadership-strategy',
-  },
-]
+  }]
 
 /**
  * Run all routing test cases and return results.

@@ -98,8 +98,7 @@ const FORBIDDEN_PATTERNS: Array<{
     severity: 'critical',
     message: 'Supabase package import forbidden.',
     auto_fixable: false,
-  },
-]
+  }]
 
 export async function scanCode(content: string, filename: string): Promise<Violation[]> {
   const violations: Violation[] = []
@@ -195,8 +194,7 @@ export async function runExecutionPipeline(
     { id: 'brand-colors',    name: 'Wavult designriktlinjer',  status: 'pending', severity: 'warning' },
     { id: 'empty-routes',    name: 'Inga tomma routes',        status: 'pending', severity: 'error' },
     { id: 'ts-check',        name: 'TypeScript-kompilering',   status: 'pending', severity: 'critical' },
-    { id: 'api-reactivity',  name: 'Full backend-reaktivitet', status: 'pending', severity: 'error' },
-  ]
+    { id: 'api-reactivity',  name: 'Full backend-reaktivitet', status: 'pending', severity: 'error' }]
 
   const updateCheck = (id: string, updates: Partial<CheckResult>) => {
     const check = checks.find((c) => c.id === id)!

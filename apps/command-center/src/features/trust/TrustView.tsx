@@ -27,8 +27,7 @@ const SUMMARY_CARDS = [
   {
     label: `0% skatt på ${zeroTaxCount} av ${totalJurisdictions}`,
     sub: 'jurisdiktioner utan kapitalvinstskatt',
-  },
-]
+  }]
 
 // ─── Colours ──────────────────────────────────────────────────────────────────
 const CREAM  = '#F5F0E8'
@@ -55,8 +54,7 @@ const JURISDICTION_TABS = [
   { id: 'cayman',        label: '🌊 Cayman',         short: 'Cayman' },
   { id: 'liechtenstein', label: '🇱🇮 Liechtenstein', short: 'Liechtenstein' },
   { id: 'singapore',     label: '🇸🇬 Singapore',     short: 'Singapore' },
-  { id: 'recommendation',label: '💡 Rekommendation', short: 'Rekommendation' },
-]
+  { id: 'recommendation',label: '💡 Rekommendation', short: 'Rekommendation' }]
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 function fmtUSD(n: number) {
@@ -145,8 +143,7 @@ function CreateTrustModal({ jurisdictionId, onClose, onCreated }: {
     { value: 'discretionary', label: 'Discretionary Trust', desc: 'Trustee beslutar om utdelningar' },
     { value: 'purpose', label: 'Purpose Trust', desc: 'Specificerat syfte — t.ex. välgörenhet' },
     { value: 'foundation', label: 'Foundation', desc: 'Separat juridisk person' },
-    { value: 'vista', label: 'VISTA Trust (BVI)', desc: 'Aktieägarskydd i bolag' },
-  ]
+    { value: 'vista', label: 'VISTA Trust (BVI)', desc: 'Aktieägarskydd i bolag' }]
 
   const inputStyle: React.CSSProperties = {
     width: '100%', padding: '10px 12px', borderRadius: 8,
@@ -577,8 +574,7 @@ function MyTrustsTab({ onStartTrust }: { onStartTrust: (jurisdictionId: string) 
             ...data.trusts,
             ...local.filter((l: Record<string, unknown>) =>
               !data.trusts.find((d: Record<string, unknown>) => d.id === l.id)
-            ),
-          ]
+            )]
           setTrusts(merged)
         }
       })
@@ -936,8 +932,7 @@ function JurisdictionDetail({ jurisdiction, onStartTrust }: { jurisdiction: Trus
                 { label: 'Skattesats', val: jurisdiction.tax_rate, highlight: taxColor(jurisdiction.tax_rate) },
                 { label: 'Kapitalvinstskatt', val: jurisdiction.capital_gains_tax, highlight: taxColor(jurisdiction.capital_gains_tax) },
                 { label: 'Arvsskatt', val: jurisdiction.estate_tax, highlight: taxColor(jurisdiction.estate_tax) },
-                { label: 'Skatteavtal', val: jurisdiction.tax_treaty ? 'Ja ✓' : 'Nej', highlight: jurisdiction.tax_treaty ? GREEN : '#d97706' },
-              ].map(item => (
+                { label: 'Skatteavtal', val: jurisdiction.tax_treaty ? 'Ja ✓' : 'Nej', highlight: jurisdiction.tax_treaty ? GREEN : '#d97706' }].map(item => (
                 <div key={item.label} style={{
                   background: 'white', borderRadius: 8, padding: '10px 12px',
                   border: '1px solid #e2e8f0',
@@ -955,8 +950,7 @@ function JurisdictionDetail({ jurisdiction, onStartTrust }: { jurisdiction: Trus
               {[
                 { label: 'Lokal trustee krävs', val: jurisdiction.requires_local_trustee },
                 { label: 'Substance-krav', val: jurisdiction.requires_substance },
-                { label: 'Publikt register', val: jurisdiction.public_register },
-              ].map(item => (
+                { label: 'Publikt register', val: jurisdiction.public_register }].map(item => (
                 <div key={item.label} style={{
                   display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                   padding: '6px 0', borderBottom: '1px solid #e2e8f0',
@@ -990,8 +984,7 @@ function JurisdictionDetail({ jurisdiction, onStartTrust }: { jurisdiction: Trus
         {[
           { label: 'Uppskattad Setup-kostnad', val: fmtUSD(jurisdiction.setup_cost_usd), sub: 'engångskostnad inkl. juridik' },
           { label: 'Steg-kostnader (totalt)', val: fmtUSD(stepCostTotal), sub: 'specificerade kostnader i steg' },
-          { label: 'Löpande årsavgifter', val: fmtUSD(jurisdiction.annual_cost_usd) + '/år', sub: 'trustee + administration' },
-        ].map(c => (
+          { label: 'Löpande årsavgifter', val: fmtUSD(jurisdiction.annual_cost_usd) + '/år', sub: 'trustee + administration' }].map(c => (
           <div key={c.label} style={{
             background: 'white', border: `1.5px solid ${GOLD}60`,
             borderRadius: 12, padding: '16px 18px',
@@ -1232,8 +1225,7 @@ Royalty-flöde tillbaka till Foundation (0% skatt)`}
             'Ingen obligatorisk substance-krav',
             'Diskret — inget publikt register',
             'Banker tillgängliga: Emirates NBD, ADCB, Mashreq',
-            'Kan hålla equity i alla globala dotterbolag',
-          ].map((benefit, i) => (
+            'Kan hålla equity i alla globala dotterbolag'].map((benefit, i) => (
             <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', fontSize: 13 }}>
               <span style={{ color: GREEN, fontWeight: 700, marginTop: 1 }}>✓</span>
               <span style={{ color: '#374151', lineHeight: 1.5 }}>{benefit}</span>
@@ -1329,8 +1321,7 @@ export function TrustView() {
             const hasTrustsNow = JSON.parse(localStorage.getItem('wavult_trusts') ?? '[]').length
             return [
               { id: 'myTrusts', label: '🏛️ Mina Trusts', count: hasTrustsNow },
-              { id: 'jurisdictions', label: '🌍 Jurisdiktioner', count: 0 },
-            ].map(tab => {
+              { id: 'jurisdictions', label: '🌍 Jurisdiktioner', count: 0 }].map(tab => {
               const isActive = currentMainTab === tab.id
               return (
                 <button

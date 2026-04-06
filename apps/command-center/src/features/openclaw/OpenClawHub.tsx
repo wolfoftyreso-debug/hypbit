@@ -31,8 +31,7 @@ const STATUS_ITEMS: StatusItem[] = [
   { label: 'Telegram Channel', status: 'online' },
   { label: 'Memory System', status: 'online' },
   { label: 'Cron Scheduler', status: 'online' },
-  { label: 'Whisper Voice', status: 'online' },
-]
+  { label: 'Whisper Voice', status: 'online' }]
 
 const QUICK_REF: { phrase: string; action: string }[] = [
   { phrase: '"Kolla systemstatus"', action: 'Kontrollerar alla services och levererar rapport' },
@@ -42,8 +41,7 @@ const QUICK_REF: { phrase: string; action: string }[] = [
   { phrase: '"Bygg feature X i Wavult OS"', action: 'Spawnar coding agent (Claude Code/Codex)' },
   { phrase: '"Vad hände igår?"', action: 'Läser daglig loggfil och sammanfattar' },
   { phrase: '"Kolla e-posten"', action: 'Ansluter till mailservern och rapporterar olästa' },
-  { phrase: '"Uppdatera MEMORY.md"', action: 'Destillerar dagsloggar till långtidsminne' },
-]
+  { phrase: '"Uppdatera MEMORY.md"', action: 'Destillerar dagsloggar till långtidsminne' }]
 
 // ─── Arch Diagram ──────────────────────────────────────────────────────────────
 
@@ -184,8 +182,7 @@ const CHAPTERS: Chapter[] = [
             'Minnessystemet — långtidsminne och dagliga loggar',
             'Rösttranskribering via OpenAI Whisper',
             'Integration mot Wavult OS API och externa tjänster',
-            'Subagenter — spawnar coding agents (Codex, Claude Code) för större uppgifter',
-          ].map((item, i) => (
+            'Subagenter — spawnar coding agents (Codex, Claude Code) för större uppgifter'].map((item, i) => (
             <li key={i} className="flex items-start gap-2">
               <CheckCircle2 size={13} className="text-[#8A8A9A] mt-0.5 flex-shrink-0" />
               <span>{item}</span>
@@ -211,8 +208,7 @@ const CHAPTERS: Chapter[] = [
             ['Är det ett röstmeddelande?', 'Whisper (OpenAI) transkriberar till text automatiskt'],
             ['OpenClaw bygger kontexten', 'Läser MEMORY.md, dagsloggar, workspace-filer'],
             ['Bernt (Claude Sonnet) genererar svar', 'Med full organisations- och projektkontext'],
-            ['Svaret skickas tillbaka', 'Till Telegram, formaterat för kanalen'],
-          ].map(([step, detail], i) => (
+            ['Svaret skickas tillbaka', 'Till Telegram, formaterat för kanalen']].map(([step, detail], i) => (
             <li key={i} className="flex items-start gap-3">
               <span className="text-[#8A8A9A] text-xs font-mono mt-0.5 w-4 flex-shrink-0">{i + 1}.</span>
               <div>
@@ -282,8 +278,7 @@ const CHAPTERS: Chapter[] = [
                 ['Morning Brief', 'Varje dag 08:00', 'Bygger och skickar nyhetsbrev till teamet'],
                 ['Heartbeat', 'Var 30:e minut', 'Kontrollerar e-post, kalender, systemstatus'],
                 ['Memory Review', 'Periodiskt', 'Destillerar dagsloggar → MEMORY.md'],
-                ['Påminnelser', 'Ad hoc', 'Satta av Bernt på Eriks begäran'],
-              ].map(([job, schedule, desc], i) => (
+                ['Påminnelser', 'Ad hoc', 'Satta av Bernt på Eriks begäran']].map(([job, schedule, desc], i) => (
                 <tr key={i} className="hover:bg-[#EDE8DC] transition-colors">
                   <td className="px-3 py-2 text-[#6B7280] font-medium">{job}</td>
                   <td className="px-3 py-2 text-[#8A8A9A] font-mono">{schedule}</td>
@@ -349,8 +344,7 @@ const CHAPTERS: Chapter[] = [
               'Skicka mail via Wavult OS kommunikationsmodul',
               'Spawna coding agents för större bygguppgifter',
               'Sätta påminnelser och schemalagda jobb',
-              'Sammanfatta möten och beslut',
-            ].map((item, i) => (
+              'Sammanfatta möten och beslut'].map((item, i) => (
               <li key={i} className="flex items-start gap-2 text-xs">
                 <CheckCircle2 size={12} className="text-[#8A8A9A] mt-0.5 flex-shrink-0" />
                 <span>{item}</span>
@@ -363,8 +357,7 @@ const CHAPTERS: Chapter[] = [
               'Skicka mail eller offentliga poster',
               'Göra ekonomiska transaktioner',
               'Ändra infrastrukturkonfiguration i produktion',
-              'Dela privat information i gruppchattar',
-            ].map((item, i) => (
+              'Dela privat information i gruppchattar'].map((item, i) => (
               <li key={i} className="flex items-start gap-2 text-xs text-[#8A8A9A]">
                 <span className="text-[#8A8A9A] mt-0.5 flex-shrink-0">—</span>
                 <span>{item}</span>
@@ -402,8 +395,7 @@ const CHAPTERS: Chapter[] = [
             {
               title: 'Ingen självreplikering',
               desc: 'Bernt/OpenClaw söker inte aktivt utökad åtkomst eller resurser. Följer Anthropics konstitution.',
-            },
-          ].map((item, i) => (
+            }].map((item, i) => (
             <div key={i} className="p-3 rounded border border-[#DDD5C5]">
               <p className="text-[#6B7280] text-xs font-medium mb-1 flex items-center gap-2">
                 <Shield size={11} className="text-[#8A8A9A]" />
@@ -415,8 +407,7 @@ const CHAPTERS: Chapter[] = [
         </div>
       </div>
     ),
-  },
-]
+  }]
 
 // ─── Main Component ────────────────────────────────────────────────────────────
 

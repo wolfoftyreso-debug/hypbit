@@ -1387,5 +1387,4 @@ export const LEGAL_DOCUMENTS: LegalDocument[] = [
     description: 'Informationssäkerhetspolicy för hela koncernen. Baserad på ISO 27001-ramverket. Täcker: klassificering av information, åtkomstkontroll, krypteringskrav, incidenthantering, backup-policy, leverantörssäkerhet, säkerhetstestning. Krävs av offentliga kunder (Trafikverket, kommuner).',
     required: true,
     auto_proposed: true,
-  },
-]
+  }]

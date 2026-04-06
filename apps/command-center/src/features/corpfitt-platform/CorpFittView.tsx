@@ -13,8 +13,7 @@ function useCorpFittData() {
   useEffect(() => {
     Promise.all([
       fetch('/api/corpfitt/challenges').then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`)),
-      fetch('/api/corpfitt/leaderboard').then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`)),
-    ])
+      fetch('/api/corpfitt/leaderboard').then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))])
       .then(([c, l]) => { setChallenges(c.challenges ?? []); setLeaderboard(l.scores ?? []); setLoading(false) })
       .catch(e => { setError(String(e)); setLoading(false) })
   }, [])

@@ -376,7 +376,7 @@ function LeanAnalyticsSection({ userId, roleId }: { userId: string | undefined; 
           </h3>
           {aggregate?.touch_time_by_module && Object.keys(aggregate.touch_time_by_module).length > 0 ? (
             Object.entries(aggregate.touch_time_by_module)
-              .sort(([, a], [, b]) => b - a)
+              .sort(([ a], [ b]) => b - a)
               .map(([module, ms]) => {
                 const total = aggregate.total_time_ms ?? 1
                 const pct = Math.round((ms / total) * 100)
@@ -440,8 +440,7 @@ function LeanAnalyticsSection({ userId, roleId }: { userId: string | undefined; 
             {[
               { label: 'Motion', key: 'motion' as const, desc: 'Onödig navigering', color: '#F59E0B' },
               { label: 'Waiting', key: 'waiting' as const, desc: 'Idle-tid', color: '#EF4444' },
-              { label: 'Overprocessing', key: 'overprocessing' as const, desc: 'Repeterade actions', color: '#8B5CF6' },
-            ].map(w => (
+              { label: 'Overprocessing', key: 'overprocessing' as const, desc: 'Repeterade actions', color: '#8B5CF6' }].map(w => (
               <div
                 key={w.key}
                 style={{

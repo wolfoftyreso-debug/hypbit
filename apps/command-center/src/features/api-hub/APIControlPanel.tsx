@@ -33,8 +33,7 @@ const API_CATALOG = [
   { id: 'stripe-atlas', name: 'Stripe Atlas', category: 'Company Formation', tier: 'financial', status: 'active', cost_estimate: '$500/formation' },
   { id: 'duffel', name: 'Duffel', category: 'Travel/Flights', tier: 'general', status: 'pending', cost_estimate: 'Per booking' },
   { id: 'twilio', name: 'Twilio', category: 'SMS/Voice US', tier: 'general', status: 'pending', cost_estimate: '~$1/nr/mån' },
-  { id: 'openclaw', name: 'OpenClaw', category: 'AI Infrastructure', tier: 'general', status: 'active', cost_estimate: 'Subscription' },
-]
+  { id: 'openclaw', name: 'OpenClaw', category: 'AI Infrastructure', tier: 'general', status: 'active', cost_estimate: 'Subscription' }]
 
 const STATUS_STYLE: Record<string, { bg: string; color: string; label: string }> = {
   active:  { bg: '#DCFCE7', color: '#166534', label: 'Aktiv' },
@@ -57,8 +56,7 @@ export function APIControlPanel() {
         {[
           { label: 'Aktiva API:er', value: String(active),           icon: <Activity size={18} />,      color: '#16A34A' },
           { label: 'Väntar',        value: String(pending),           icon: <AlertTriangle size={18} />, color: '#D97706' },
-          { label: 'Totalt',        value: String(API_CATALOG.length),icon: <DollarSign size={18} />,    color: '#1E40AF' },
-        ].map(card => (
+          { label: 'Totalt',        value: String(API_CATALOG.length),icon: <DollarSign size={18} />,    color: '#1E40AF' }].map(card => (
           <div key={card.label} style={{ background: '#fff', border: '1px solid rgba(0,0,0,0.08)', borderRadius: 12, padding: '16px 20px' }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: '#8E8E93', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 6 }}>{card.label}</div>
             <div style={{ fontSize: 28, fontWeight: 700, color: '#1C1C1E' }}>{card.value}</div>

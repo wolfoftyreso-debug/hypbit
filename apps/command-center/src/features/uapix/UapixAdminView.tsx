@@ -64,8 +64,7 @@ export default function UapixAdminView() {
       try {
         const [s, c] = await Promise.all([
           fetch(`${API}/v1/uapix/admin/stats`).then(r => r.json()),
-          fetch(`${API}/v1/uapix/admin/customers`).then(r => r.json()),
-        ])
+          fetch(`${API}/v1/uapix/admin/customers`).then(r => r.json())])
         setStats(s)
         setCustomers(Array.isArray(c) ? c : [])
       } catch (e) {

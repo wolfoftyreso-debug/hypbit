@@ -8,8 +8,7 @@ const LINKS = [
   { label: 'Wavult OS', url: 'https://os.wavult.com', icon: '🖥️', sub: 'os.wavult.com' },
   { label: 'n8n', url: 'https://n8n.wavult.com', icon: '⚙️', sub: 'Automation' },
   { label: 'brief.wavult.com', url: 'https://d14gf6x22fx96q.cloudfront.net/brief/archive.html', icon: '🎬', sub: 'Morning Brief' },
-  { label: 'Gitea', url: 'https://git.wavult.com', icon: '🦊', sub: 'git.wavult.com' },
-]
+  { label: 'Gitea', url: 'https://git.wavult.com', icon: '🦊', sub: 'git.wavult.com' }]
 
 export function QuickLinksWidget() {
   const [filter, setFilter] = useState('')

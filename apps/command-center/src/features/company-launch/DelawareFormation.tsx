@@ -380,8 +380,7 @@ function generateHTMLPackage(data: FormationData): string {
     { title: '5. Restricted Stock Purchase Agreement', content: generateRestrictedStockAgreement(data) },
     { title: '6. Section 83(b) Election Letter', content: generate83bElection(data) },
     { title: '7. Indemnification Agreement', content: generateIndemnificationAgreement(data) },
-    { title: '8. IRS Form SS-4 Data (EIN Application)', content: generateSS4Data(data) },
-  ]
+    { title: '8. IRS Form SS-4 Data (EIN Application)', content: generateSS4Data(data) }]
 
   const sections = docs.map(doc => `
     <div class="doc-section">
@@ -487,8 +486,7 @@ const FILING_OPTIONS: FilingOption[] = [
     description: 'Full-service incorporation via Stripe. Includes Stripe account, equity documents, and intro to legal services.',
     url: 'https://stripe.com/atlas',
     available: true,
-  },
-]
+  }]
 
 function FilingOptionCard({ option }: { option: FilingOption }) {
   return (
@@ -601,8 +599,7 @@ export function DelawareFormation() {
     { title: 'Restricted Stock Purchase Agreement', content: generateRestrictedStockAgreement(form) },
     { title: 'Section 83(b) Election Letter', content: generate83bElection(form) },
     { title: 'Indemnification Agreement', content: generateIndemnificationAgreement(form) },
-    { title: 'IRS Form SS-4 Data (EIN)', content: generateSS4Data(form) },
-  ]
+    { title: 'IRS Form SS-4 Data (EIN)', content: generateSS4Data(form) }]
 
   const ss4Data = generateSS4Data(form)
   const agent = REGISTERED_AGENTS[form.registeredAgentKey]
@@ -968,8 +965,7 @@ export function DelawareFormation() {
                   { icon: '4️⃣', text: 'Apply for EIN at IRS.gov (or via phone if international)' },
                   { icon: '5️⃣', text: 'Open US bank account (Mercury, Relay, or Brex) using EIN + Certificate' },
                   { icon: '6️⃣', text: 'File BOI (Beneficial Ownership Information) report via FinCEN within 30 days' },
-                  { icon: '7️⃣', text: 'Set up payroll, Carta equity management, and accounting (QuickBooks/Bench)' },
-                ].map(item => (
+                  { icon: '7️⃣', text: 'Set up payroll, Carta equity management, and accounting (QuickBooks/Bench)' }].map(item => (
                   <div key={item.icon} className="flex items-start gap-3 text-xs text-[#6B7280]">
                     <span className="flex-shrink-0">{item.icon}</span>
                     <span>{item.text}</span>

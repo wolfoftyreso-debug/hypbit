@@ -39,8 +39,7 @@ const PARTNERS = [
     badge: 'Gov Backed',
     badgeColor: '#A78BFA',
     badgeBg: '#2e1065',
-  },
-]
+  }]
 
 // ─── Documents ────────────────────────────────────────────────────────────────
 const INITIAL_DOCS: DocItem[] = [
@@ -79,8 +78,7 @@ const INITIAL_DOCS: DocItem[] = [
     label: 'Director Resolution',
     description: 'Board resolution appointing director(s) — signed and notarised',
     checked: false,
-  },
-]
+  }]
 
 // ─── Cost breakdown ────────────────────────────────────────────────────────────
 const COST_ITEMS = [
@@ -88,8 +86,7 @@ const COST_ITEMS = [
   { label: 'Notary fees', amount: '~€100–200', note: 'For articles and director appointment' },
   { label: 'Registered address (1yr)', amount: '~€200–400', note: 'Virtual office in Vilnius' },
   { label: 'Setup service (Fondia)', amount: '~€800–1,500', note: 'Optional — full-service formation' },
-  { label: 'Minimum share capital', amount: '€2,500', note: 'UAB requirement — refundable after registration' },
-]
+  { label: 'Minimum share capital', amount: '€2,500', note: 'UAB requirement — refundable after registration' }]
 
 // ─── Name checker ─────────────────────────────────────────────────────────────
 function NameChecker() {
@@ -255,8 +252,7 @@ export function LithuaniaFormation() {
             { icon: '🇪🇺', label: 'EU Jurisdiction', sub: 'GDPR, Schengen area' },
             { icon: '💰', label: '15% Corp Tax', sub: 'vs 20.6% Sweden' },
             { icon: '⚡', label: 'Digital Setup', sub: 'Register fully online' },
-            { icon: '🎯', label: 'quiXzoom UAB', sub: 'EU operations base' },
-          ].map(item => (
+            { icon: '🎯', label: 'quiXzoom UAB', sub: 'EU operations base' }].map(item => (
             <div key={item.label} className="text-center p-3 rounded-lg bg-[#EDE8DC] border border-[#DDD5C5]">
               <span className="text-xl block mb-1">{item.icon}</span>
               <p className="text-xs font-semibold text-text-primary">{item.label}</p>
@@ -289,8 +285,7 @@ export function LithuaniaFormation() {
             { step: 'Share capital deposit', desc: 'Min €2,500 UAB — deposited before registration', days: 'Day 3–5', done: false },
             { step: 'Online registration (JAR)', desc: 'Submit via jadis.registrucentras.lt', days: 'Day 5–7', done: false },
             { step: 'Tax registration (VMI)', desc: 'Register as VAT payer if applicable', days: 'Day 7–10', done: false },
-            { step: 'Bank account opening', desc: 'Revolut Business, Paysera, or local bank', days: 'Day 10–14', done: false },
-          ].map((item, i) => (
+            { step: 'Bank account opening', desc: 'Revolut Business, Paysera, or local bank', days: 'Day 10–14', done: false }].map((item, i) => (
             <div key={i} className="flex items-start gap-3 p-3 rounded-lg border border-[#DDD5C5] bg-[#F0EBE1]">
               <span className="flex-shrink-0 w-5 h-5 rounded-full bg-green-900/40 text-green-400 text-[10px] font-bold flex items-center justify-center mt-0.5">
                 {i + 1}
@@ -443,8 +438,7 @@ export function LithuaniaFormation() {
             { label: 'Registrų centras (JAR)', url: 'https://www.registrucentras.lt/jar/', desc: 'Company registry search' },
             { label: 'JADIS Online Registration', url: 'https://jadis.registrucentras.lt', desc: 'Online entity registration portal' },
             { label: 'VMI — Tax Authority', url: 'https://www.vmi.lt/evmi/en/', desc: 'VAT registration and tax compliance' },
-            { label: 'StartLT.eu', url: 'https://startlt.eu', desc: 'Government startup support program' },
-          ].map(link => (
+            { label: 'StartLT.eu', url: 'https://startlt.eu', desc: 'Government startup support program' }].map(link => (
             <a
               key={link.label}
               href={link.url}

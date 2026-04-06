@@ -65,8 +65,7 @@ const LEVELS: ZoomerLevel[] = [
     minRating: 4.8,
     color: '#BF5FFF',
     description: '200+ uppdrag, 4.8+ rating',
-  },
-]
+  }]
 
 // ── Hämta stats från quiXzoom API ─────────────────────────
 async function fetchZoomerStats(): Promise<StatsResponse | null> {
@@ -255,8 +254,7 @@ export function ZoomerCert() {
             'Klara grundkursen i appen (30 min)',
             'Slutför 5 godkända testuppdrag',
             'Signera plattformsavtalet digitalt',
-            '→ Aktiv zoomer med tillgång till alla uppdrag',
-          ].map((step, i) => (
+            '→ Aktiv zoomer med tillgång till alla uppdrag'].map((step, i) => (
             <li key={i} className="flex gap-2">
               <span className="text-[#6B7280] flex-shrink-0">{i + 1}.</span>
               <span>{step}</span>

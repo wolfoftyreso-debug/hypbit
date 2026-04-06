@@ -67,8 +67,7 @@ function SpoolModal({
 
   useEffect(() => {
     Promise.all([
-      apiFetch(`/api/invoices/${invoiceId}/lines`).then(r => r.json()),
-    ]).then(([linesData]) => {
+      apiFetch(`/api/invoices/${invoiceId}/lines`).then(r => r.json())]).then(([linesData]) => {
       setLines(linesData ?? [])
       setLoading(false)
     }).catch(() => setLoading(false))

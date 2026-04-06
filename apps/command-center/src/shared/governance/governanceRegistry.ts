@@ -426,8 +426,7 @@ export const GOVERNANCE_REGISTRY: GovernanceItem[] = [
     nextAction: 'Leon påbörjar marknadskartläggning NL — researcha zoomer-marknaden och konkurrenter',
     deadline: '2026-12-01',
     linkedItems: ['WG-OPS-2026-001', 'WG-LEGAL-2026-001'],
-  },
-]
+  }]
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 

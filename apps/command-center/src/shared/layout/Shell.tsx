@@ -62,8 +62,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/strategic-brief', labelKey: 'Strategi',       icon: Flag },
       { to: '/decisions',       labelKey: 'Beslut',         icon: Zap },
       { to: '/okr',             labelKey: 'OKR & Mål',      icon: Target },
-      { to: '/milestones',      labelKey: 'Milstolpar',     icon: Rocket },
-    ],
+      { to: '/milestones',      labelKey: 'Milstolpar',     icon: Rocket }],
   },
   {
     labelKey: 'Bolag & Juridik',
@@ -74,8 +73,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/legal',                labelKey: 'Legal Hub',          icon: Scale },
       { to: '/jurisdiction',         labelKey: 'Jurisdiktion',       icon: Globe },
       { to: '/corporate/compendium', labelKey: 'Kompendium',         icon: BookOpen },
-      { to: '/qms',                  labelKey: 'QMS & Compliance',   icon: ShieldCheck },
-    ],
+      { to: '/qms',                  labelKey: 'QMS & Compliance',   icon: ShieldCheck }],
   },
   {
     labelKey: 'Ekonomi',
@@ -84,8 +82,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/payroll',      labelKey: 'Lön & Personal', icon: Receipt },
       { to: '/transactions', labelKey: 'Transaktioner',  icon: CreditCard },
       { to: '/reports',      labelKey: 'Rapporter',      icon: FileText },
-      { to: '/procurement',  labelKey: 'Inköp',          icon: ShoppingCart },
-    ],
+      { to: '/procurement',  labelKey: 'Inköp',          icon: ShoppingCart }],
   },
   {
     labelKey: 'Team & People',
@@ -94,8 +91,7 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/people-intelligence', labelKey: 'People Intelligence', icon: Activity },
       { to: '/talent-radar',        labelKey: 'Talent Radar',       icon: Zap },
       { to: '/wavult-id',           labelKey: 'Wavult ID',          icon: Shield },
-      { to: '/travel',              labelKey: 'Resor',              icon: Plane },
-    ],
+      { to: '/travel',              labelKey: 'Resor',              icon: Plane }],
   },
   {
     labelKey: 'Produkter',
@@ -104,16 +100,14 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/quixzoom-ads',   labelKey: 'quiXzoom Ads', icon: Megaphone },
       { to: '/landvex-portal', labelKey: 'LandveX',      icon: MapPin },
       { to: '/uapix',          labelKey: 'UAPIX',        icon: Package },
-      { to: '/apifly',         labelKey: 'Apifly',       icon: Zap },
-    ],
+      { to: '/apifly',         labelKey: 'Apifly',       icon: Zap }],
   },
   {
     labelKey: 'Marknad & CRM',
     items: [
       { to: '/crm',       labelKey: 'CRM',       icon: Briefcase },
       { to: '/campaigns', labelKey: 'Kampanjer', icon: Megaphone },
-      { to: '/media',     labelKey: 'Media',     icon: Film },
-    ],
+      { to: '/media',     labelKey: 'Media',     icon: Film }],
   },
   {
     labelKey: 'Drift & Infra',
@@ -123,18 +117,15 @@ const NAV_GROUPS: NavGroup[] = [
       { to: '/infrastructure', labelKey: 'Infrastruktur',  icon: Server },
       { to: '/terraform',      labelKey: 'Terraform',      icon: Database },
       { to: '/communications', labelKey: 'Kommunikation',  icon: MessageSquare },
-      { to: '/automation',     labelKey: 'Automation',     icon: Zap },
-    ],
+      { to: '/automation',     labelKey: 'Automation',     icon: Zap }],
   },
   {
     labelKey: 'Dev',
     roles: ['group-ceo', 'cto', 'admin'],
     items: [
       { to: '/code',  labelKey: 'Code',  icon: Terminal },
-      { to: '/devos', labelKey: 'DevOS', icon: Zap },
-    ],
-  },
-]
+      { to: '/devos', labelKey: 'DevOS', icon: Zap }],
+  }]
 
 // ─── Shell ────────────────────────────────────────────────────────────────────
 

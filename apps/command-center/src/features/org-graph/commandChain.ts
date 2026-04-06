@@ -43,19 +43,17 @@ export const COMMAND_CHAIN: CommandRole[] = [
     title: 'Chairman & Group CEO',
     reports_to: null,
     scope: 'group',
-    entity_ids: ['wgh', 'woh', 'oz-lt', 'oz-us', 'lvx-us', 'lvx-ae'],
+    entity_ids: ['wgh', 'woh', 'oz-lt', 'oz-us', 'lvx-us'],
     owns: [
       'Group strategy',
       'Capital allocation',
       'IP & brand ownership',
       'System architecture',
-      'Market & vision',
-    ],
+      'Market & vision'],
     kpis: [
       { label: 'Entities live',   value: '2 / 7',   trend: 'up',   good: true },
       { label: 'Go-live target',  value: 'Jun 2026', trend: 'flat', good: true },
-      { label: 'Systems built',   value: '3',        trend: 'up',   good: true },
-    ],
+      { label: 'Systems built',   value: '3',        trend: 'up',   good: true }],
     status: 'green',
   },
 
@@ -75,13 +73,11 @@ export const COMMAND_CHAIN: CommandRole[] = [
       'Resource management',
       'Sales & revenue',
       'Team coordination',
-      'Operational KPIs',
-    ],
+      'Operational KPIs'],
     kpis: [
       { label: 'Active projects',  value: '4',      trend: 'up',   good: true },
       { label: 'Thailand workcamp',value: 'Apr 11', trend: 'flat', good: true },
-      { label: 'Revenue (MRR)',    value: 'Pre-rev', trend: 'flat', good: false },
-    ],
+      { label: 'Revenue (MRR)',    value: 'Pre-rev', trend: 'flat', good: false }],
     status: 'yellow',
   },
 
@@ -100,8 +96,7 @@ export const COMMAND_CHAIN: CommandRole[] = [
       'Intercompany billing',
       'Budget & forecast',
       'Economic infrastructure',
-      'Banking relationships',
-    ],
+      'Banking relationships'],
     kpis: [
       {
         label: 'Intercompany setup', value: 'Pending', trend: 'flat', good: false,
@@ -117,8 +112,7 @@ export const COMMAND_CHAIN: CommandRole[] = [
         label: 'Cashflow status', value: 'Watch', trend: 'down', good: false,
         why: 'Utan aktiva bankkonton finns inget formellt kassaflöde att redovisa. Löpande kostnader betalas via Eriks privata medel.',
         action: 'Öppna bankkonton → sätt upp intercompany-flöden → flytta kapital till rätt entitet.',
-      },
-    ],
+      }],
     status: 'red',
   },
 
@@ -137,13 +131,11 @@ export const COMMAND_CHAIN: CommandRole[] = [
       'Infrastructure',
       'CI/CD & DevOps',
       'Security',
-      'API accounts & credentials',
-    ],
+      'API accounts & credentials'],
     kpis: [
       { label: 'Services live',   value: '2 ECS',    trend: 'up',   good: true },
       { label: 'Uptime',          value: '99%',      trend: 'flat', good: true },
-      { label: 'Open tech debt',  value: '3 items',  trend: 'flat', good: false },
-    ],
+      { label: 'Open tech debt',  value: '3 items',  trend: 'flat', good: false }],
     status: 'yellow',
   },
 
@@ -156,14 +148,13 @@ export const COMMAND_CHAIN: CommandRole[] = [
     title: 'Board / Chief Legal',
     reports_to: 'group-ceo',
     scope: 'function',
-    entity_ids: ['wgh', 'lvx-ae', 'lvx-us'],
+    entity_ids: ['wgh', 'lvx-us'],
     owns: [
       'Corporate structure',
       'Contracts & agreements',
       'IP protection',
       'Multi-jurisdiction compliance',
-      'Intercompany legal framework',
-    ],
+      'Intercompany legal framework'],
     kpis: [
       {
         label: 'Entities incorporated', value: '1 / 7', trend: 'up', good: false,
@@ -179,11 +170,9 @@ export const COMMAND_CHAIN: CommandRole[] = [
         label: 'Compliance status', value: 'Watch', trend: 'flat', good: false,
         why: 'Utan registrerade entiteter och signerade avtal är compliance-statusen oklar i samtliga jurisdiktioner.',
         action: 'Entitetsregistrering → avtal → compliance-genomgång per jurisdiktion (SE, UAE, US).',
-      },
-    ],
+      }],
     status: 'red',
-  },
-]
+  }]
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 

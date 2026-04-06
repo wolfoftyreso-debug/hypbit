@@ -64,15 +64,12 @@ async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
 const FALLBACK_OBJECTS: LandvexObject[] = [
   { id: 'fb-1', name: 'Strandvägsbryggan', type: 'pier', municipality: 'Stockholm', lat: 59.3293, lng: 18.0686, status: 'ok', inspection_count: 3, created_at: new Date().toISOString() },
   { id: 'fb-2', name: 'Nacka Hamnbrygga', type: 'quay', municipality: 'Nacka', lat: 59.3150, lng: 18.1600, status: 'monitoring', inspection_count: 1, created_at: new Date().toISOString() },
-  { id: 'fb-3', name: 'Värmdöbron', type: 'bridge', municipality: 'Värmdö', lat: 59.3000, lng: 18.3500, status: 'alert', inspection_count: 2, created_at: new Date().toISOString() },
-]
+  { id: 'fb-3', name: 'Värmdöbron', type: 'bridge', municipality: 'Värmdö', lat: 59.3000, lng: 18.3500, status: 'alert', inspection_count: 2, created_at: new Date().toISOString() }]
 const FALLBACK_ALERTS: LandvexAlert[] = [
-  { id: 'fa-1', object_id: 'fb-3', severity: 'warning', message: 'Reparation krävs — sprickor i bärande konstruktion', source: 'inspektion', acknowledged: false, resolved: false, created_at: new Date().toISOString() },
-]
+  { id: 'fa-1', object_id: 'fb-3', severity: 'warning', message: 'Reparation krävs — sprickor i bärande konstruktion', source: 'inspektion', acknowledged: false, resolved: false, created_at: new Date().toISOString() }]
 const FALLBACK_CLIENTS: LandvexClient[] = [
   { id: 'fc-1', name: 'Stockholms Stad', type: 'municipality', status: 'active', created_at: new Date().toISOString() },
-  { id: 'fc-2', name: 'Nacka Kommun', type: 'municipality', status: 'active', created_at: new Date().toISOString() },
-]
+  { id: 'fc-2', name: 'Nacka Kommun', type: 'municipality', status: 'active', created_at: new Date().toISOString() }]
 const FALLBACK_STATS: Stats = {
   objects: { total: 3, by_status: { ok: 1, monitoring: 1, alert: 1, critical: 0 } },
   alerts: { active: 1, by_severity: { warning: 1 } },
@@ -128,8 +125,7 @@ export function LandvexPortal() {
         apiFetch<{ data: LandvexObject[] }>('/v1/objects?limit=100'),
         apiFetch<{ data: LandvexAlert[] }>('/v1/alerts?resolved=false&limit=100'),
         apiFetch<LandvexClient[]>('/v1/clients?limit=100'),
-        apiFetch<Stats>('/v1/stats').catch(() => null),
-      ])
+        apiFetch<Stats>('/v1/stats').catch(() => null)])
       setObjects(objs.data || [])
       setAlerts(alts.data || [])
       setClients(cls)
@@ -214,8 +210,7 @@ export function LandvexPortal() {
     { id: 'objects',   label: `Objekt (${objects.length})`,      icon: <Building2 size={16} /> },
     { id: 'alerts',    label: `Larm (${activeAlerts.length})`,   icon: <AlertTriangle size={16} /> },
     { id: 'clients',   label: `Kunder (${clients.length})`,      icon: <Users size={16} /> },
-    { id: 'new-client',label: 'Ny kund',                         icon: <Plus size={16} /> },
-  ]
+    { id: 'new-client',label: 'Ny kund',                         icon: <Plus size={16} /> }]
 
   return (
     <div style={{ background: '#0F172A', minHeight: '100vh', color: '#F1F5F9', fontFamily: 'system-ui, sans-serif', display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -382,8 +377,7 @@ export function LandvexPortal() {
                 { label: 'Kunder',         value: stats?.clients.total ?? clients.length, icon: '🏛️', color: '#1E40AF' },
                 { label: 'Kritiska',       value: stats?.objects.by_status?.critical ?? objects.filter(o => o.status === 'critical').length, icon: '⛔', color: '#DC2626' },
                 { label: 'Bevakning',      value: stats?.objects.by_status?.monitoring ?? objects.filter(o => o.status === 'monitoring').length, icon: '👁️', color: '#D97706' },
-                { label: 'Okej',           value: stats?.objects.by_status?.ok ?? objects.filter(o => o.status === 'ok').length, icon: '✅', color: '#16A34A' },
-              ].map(s => (
+                { label: 'Okej',           value: stats?.objects.by_status?.ok ?? objects.filter(o => o.status === 'ok').length, icon: '✅', color: '#16A34A' }].map(s => (
                 <div key={s.label} style={{ background: '#1E293B', borderRadius: '12px', padding: '20px', border: '1px solid #334155' }}>
                   <div style={{ fontSize: '28px', marginBottom: '8px' }}>{s.icon}</div>
                   <div style={{ fontSize: '28px', fontWeight: 700, color: s.color }}>{s.value}</div>
@@ -575,8 +569,7 @@ export function LandvexPortal() {
                   { label: 'E-post', key: 'contact_email', placeholder: 'info@nacka.se', required: false, type: 'email' },
                   { label: 'Telefon', key: 'contact_phone', placeholder: '08-123 456', required: false, type: 'text' },
                   { label: 'Avtalsstart', key: 'contract_start', placeholder: '', required: false, type: 'date' },
-                  { label: 'Avtalsslut', key: 'contract_end', placeholder: '', required: false, type: 'date' },
-                ].map(field => (
+                  { label: 'Avtalsslut', key: 'contract_end', placeholder: '', required: false, type: 'date' }].map(field => (
                   <div key={field.key}>
                     <label style={{ fontSize: '12px', color: '#64748B', display: 'block', marginBottom: '4px' }}>{field.label}</label>
                     <input

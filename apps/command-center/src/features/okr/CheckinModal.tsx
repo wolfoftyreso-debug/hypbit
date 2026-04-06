@@ -12,8 +12,7 @@ const CONFIDENCE_OPTIONS: { value: Confidence; label: string; color: string }[] 
   { value: 'at_risk', label: '🔴 At Risk', color: '#ef4444' },
   { value: 'off_track', label: '🟠 Off Track', color: '#f97316' },
   { value: 'on_track', label: '🟢 On Track', color: '#22c55e' },
-  { value: 'achieved', label: '🏆 Achieved', color: '#E8B84B' },
-]
+  { value: 'achieved', label: '🏆 Achieved', color: '#E8B84B' }]
 
 export function CheckinModal({ kr, onClose, onSuccess }: Props) {
   const { checkin } = useOkrActions()

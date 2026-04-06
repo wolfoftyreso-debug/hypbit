@@ -19,8 +19,7 @@ const FALLBACK_RECORDS: UAPIXRecord[] = [
   { id: 'uap-004', designation: 'UAP-FI-2025-041', date: '2025-09-17', location: 'Finska viken, Helsingfors', classification: 'Okänd', confidence: 51, altitude: 'N/A', duration: '8 min' },
   { id: 'uap-005', designation: 'UAP-NO-2025-012', date: '2025-07-22', location: 'Nordsjön, Norge', classification: 'UAP-Alpha', confidence: 91, altitude: '6 500m', duration: '37 min' },
   { id: 'uap-006', designation: 'UAP-SE-2025-057', date: '2025-06-01', location: 'Malmö, Sverige', classification: 'Atmosfärisk Anomali', confidence: 44, altitude: '200m', duration: '1 min' },
-  { id: 'uap-007', designation: 'UAP-DK-2026-003', date: '2026-01-19', location: 'Bornholm, Danmark', classification: 'UAP-Gamma', confidence: 78, altitude: '9 100m', duration: '51 min' },
-]
+  { id: 'uap-007', designation: 'UAP-DK-2026-003', date: '2026-01-19', location: 'Bornholm, Danmark', classification: 'UAP-Gamma', confidence: 78, altitude: '9 100m', duration: '51 min' }]
 
 const CLASS_ICONS: Record<string, string> = {
   'UAP-Alpha': '🔴',

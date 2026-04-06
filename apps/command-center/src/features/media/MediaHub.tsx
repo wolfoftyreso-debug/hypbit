@@ -7,8 +7,7 @@ type Tab = 'campaigns' | 'channels'
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'campaigns', label: 'Kampanjer' },
-  { id: 'channels', label: 'Kanaler' },
-]
+  { id: 'channels', label: 'Kanaler' }]
 
 export function MediaHub() {
   const [activeTab, setActiveTab] = useState<Tab>('campaigns')

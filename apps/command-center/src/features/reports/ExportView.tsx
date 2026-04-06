@@ -18,21 +18,18 @@ const REPORT_OPTIONS: ReportOption[] = [
   { id: 'financial',         label: 'Finansrapport',      icon: '💰', description: 'Resultaträkning, balansräkning per entitet + konsoliderat.',  pages: '4–8 sidor' },
   { id: 'sales',             label: 'Säljrapport',         icon: '🎯', description: 'Pipeline, win rate, ARR per produkt, aktiviteter per säljare.', pages: '3–5 sidor' },
   { id: 'operational',       label: 'Operativ rapport',    icon: '⚙️', description: 'System-uptime, deploys, zoomers, API-felfrekvens.',             pages: '2–3 sidor' },
-  { id: 'full-pack',         label: 'Komplett rapport',    icon: '📦', description: 'Alla ovanstående kombinerade till ett dokument.',              pages: '10–20 sidor' },
-]
+  { id: 'full-pack',         label: 'Komplett rapport',    icon: '📦', description: 'Alla ovanstående kombinerade till ett dokument.',              pages: '10–20 sidor' }]
 
 const PERIOD_OPTIONS: Array<{ id: PeriodType; label: string }> = [
   { id: 'month',   label: 'Denna månad (mars 2026)' },
   { id: 'quarter', label: 'Q1 2026 (jan–mar)' },
   { id: 'ytd',     label: 'YTD 2026 (jan–mars)' },
-  { id: 'year',    label: 'Helår 2025' },
-]
+  { id: 'year',    label: 'Helår 2025' }]
 
 const FORMAT_OPTIONS: Array<{ id: FormatType; label: string; icon: string; desc: string }> = [
   { id: 'pdf',  label: 'PDF',   icon: '📄', desc: 'Presentationsfärdig' },
   { id: 'xlsx', label: 'Excel', icon: '📊', desc: 'Redigerbar data' },
-  { id: 'csv',  label: 'CSV',   icon: '🗂️', desc: 'Rådata export' },
-]
+  { id: 'csv',  label: 'CSV',   icon: '🗂️', desc: 'Rådata export' }]
 
 function CheckIcon() {
   return (
@@ -371,8 +368,7 @@ export function ExportView() {
             <div className="space-y-2">
               {[
                 { label: 'Executive Summary', freq: 'Varje måndag 08:00', next: '30 mar' },
-                { label: 'Finansrapport Q2',  freq: 'Kvartalsvis',         next: '1 apr' },
-              ].map((r, i) => (
+                { label: 'Finansrapport Q2',  freq: 'Kvartalsvis',         next: '1 apr' }].map((r, i) => (
                 <div key={i} className="flex items-center gap-2 text-xs">
                   <span className="h-1.5 w-1.5 rounded-full bg-[#6C63FF] flex-shrink-0" />
                   <span className="flex-1 text-gray-9000">{r.label}</span>

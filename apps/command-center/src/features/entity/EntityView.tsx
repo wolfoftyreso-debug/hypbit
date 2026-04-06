@@ -31,8 +31,7 @@ const ALL_TABS: Tab[] = [
   { id: 'ops',        label: 'Operations',      icon: '⚙️' },
   { id: 'systems',    label: 'Systems',         icon: '🖥', requiresScope: 'tech' },
   { id: 'relations',  label: 'Relationships',   icon: '🔗' },
-  { id: 'flows',      label: 'Flows',           icon: '🔀' },
-]
+  { id: 'flows',      label: 'Flows',           icon: '🔀' }]
 
 // ─── Risk helpers ─────────────────────────────────────────────────────────────
 

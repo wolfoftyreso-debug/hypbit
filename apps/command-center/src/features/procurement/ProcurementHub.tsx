@@ -18,8 +18,7 @@ const BASE_TABS: Array<{ id: Tab; label: string; icon: string }> = [
   { id: 'suppliers', label: 'Leverantörer',  icon: '🏢' },
   { id: 'orders',    label: 'Inköpsordrar',  icon: '📋' },
   { id: 'contracts', label: 'Kontrakt',      icon: '📄' },
-  { id: 'approvals', label: 'Godkännanden',  icon: '✅' },
-]
+  { id: 'approvals', label: 'Godkännanden',  icon: '✅' }]
 
 export function ProcurementHub() {
   const [activeTab, setActiveTab] = useState<Tab>('suppliers')

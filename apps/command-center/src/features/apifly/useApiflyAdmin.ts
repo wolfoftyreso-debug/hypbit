@@ -40,8 +40,7 @@ export function useApiflyAdmin() {
     try {
       const [sRes, cRes] = await Promise.all([
         fetch(`${API_BASE}/v1/apifly/admin/stats`),
-        fetch(`${API_BASE}/v1/apifly/admin/customers`),
-      ])
+        fetch(`${API_BASE}/v1/apifly/admin/customers`)])
       if (!sRes.ok || !cRes.ok) throw new Error('Hämtning misslyckades')
       const [s, c] = await Promise.all([sRes.json(), cRes.json()])
       setStats(s)

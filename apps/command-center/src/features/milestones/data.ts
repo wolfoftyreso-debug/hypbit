@@ -168,8 +168,7 @@ export const THAILAND_CHECKLIST: ThailandCheckItem[] = [
     owner: 'Winston Bjarnemark',
     deadline: '2026-04-10',
     notes: 'Mercury (QuiXzoom Inc) + Revolut Business (Landvex AB) prioritet',
-  },
-]
+  }]
 
 // ─── quiXzoom Launch ──────────────────────────────────────────────────────────
 export const QUIXZOOM_MILESTONES: QuixzoomMilestone[] = [
@@ -228,8 +227,7 @@ export const QUIXZOOM_MILESTONES: QuixzoomMilestone[] = [
     startDate: '2026-06-15',
     endDate: '2026-06-15',
     owner: 'Erik Svensson',
-  },
-]
+  }]
 
 // ─── Bolagsstruktur ──────────────────────────────────────────────────────────
 // Korrekt Wavult Group-struktur:
@@ -309,8 +307,7 @@ export const BOLAG_LIST: Bolag[] = [
     owner: 'Dennis Bjarnemark',
     blockers: ['Väntar på Delaware-klar för samordning'],
     progress: 20,
-  },
-]
+  }]
 
 // ─── Roadmap ─────────────────────────────────────────────────────────────────
 export const ROADMAP_ITEMS: RoadmapItem[] = [
@@ -335,8 +332,7 @@ export const ROADMAP_ITEMS: RoadmapItem[] = [
   { id: 'rm-14', project: 'landvex', title: 'Trafikverket — pilot-start', quarter: 'Q4-2026', status: 'pending', month: 'Okt', owner: 'Leon Russo' },
   { id: 'rm-15', project: 'quixzoom', title: 'Nederländerna — marknadsberedning', quarter: 'Q4-2026', status: 'pending', month: 'Nov', owner: 'Leon Russo' },
   { id: 'rm-16', project: 'quixzoom', title: 'Serie A-förberedelser', quarter: 'Q4-2026', status: 'pending', month: 'Dec', owner: 'Erik Svensson' },
-  { id: 'rm-17', project: 'wavult', title: 'Wavult OS — extern kund onboardad', quarter: 'Q4-2026', status: 'pending', month: 'Dec', owner: 'Johan Berglund' },
-]
+  { id: 'rm-17', project: 'wavult', title: 'Wavult OS — extern kund onboardad', quarter: 'Q4-2026', status: 'pending', month: 'Dec', owner: 'Johan Berglund' }]
 
 // ─── Helper functions ─────────────────────────────────────────────────────────
 export function getDaysUntil(dateStr: string): number {

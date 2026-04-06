@@ -27,10 +27,8 @@ function incidentToEvent(incident: ReturnType<typeof generateIncidents>[number])
   const actions: EventAction[] = action ? [
     { id: `${incident.id}-accept`, label: 'Accept Action', variant: 'primary' },
     { id: `${incident.id}-reject`, label: 'Reject', variant: 'danger' },
-    { id: `${incident.id}-defer`, label: 'Defer', variant: 'ghost' },
-  ] : [
-    { id: `${incident.id}-ack`, label: 'Acknowledged', variant: 'ghost' },
-  ]
+    { id: `${incident.id}-defer`, label: 'Defer', variant: 'ghost' }] : [
+    { id: `${incident.id}-ack`, label: 'Acknowledged', variant: 'ghost' }]
 
   const responseType: ResponseType = action ? 'binary' : 'acknowledge'
 
@@ -78,15 +76,13 @@ function entityGateEvents(): OperationalEvent[] {
       body: formingEntities.map(e => `${e.flag} ${e.shortName} (${e.jurisdiction}) — ${e.active_status}`).join('\n'),
       responseType: 'none',
       actions: [
-        { id: 'gate-entity-view', label: 'View Entities', variant: 'ghost', navigateTo: '/entities' },
-      ],
+        { id: 'gate-entity-view', label: 'View Entities', variant: 'ghost', navigateTo: '/entities' }],
       sourceRoleId: 'clo',
       relatedEntityIds: formingEntities.map(e => e.id),
       gateDependencies: [
         { label: 'Legal formation filings submitted', status: 'pending', ownerRoleId: 'clo' },
         { label: 'Bank accounts opened', status: 'blocked', ownerRoleId: 'cfo' },
-        { label: 'Intercompany agreements signed', status: 'blocked', ownerRoleId: 'cfo' },
-      ],
+        { label: 'Intercompany agreements signed', status: 'blocked', ownerRoleId: 'cfo' }],
       createdAt: new Date().toISOString(),
       contextDepth: 'detailed',
     })
@@ -116,8 +112,7 @@ function kpiWarningEvents(): OperationalEvent[] {
         responseType: 'binary',
         actions: [
           { id: `kpi-escalate-${role.id}`, label: 'Schedule Review', variant: 'primary' },
-          { id: `kpi-defer-${role.id}`, label: 'Defer 24h', variant: 'ghost' },
-        ],
+          { id: `kpi-defer-${role.id}`, label: 'Defer 24h', variant: 'ghost' }],
         sourceRoleId: role.id,
         targetRoleId: role.reports_to || undefined,
         relatedEntityIds: role.entity_ids,
@@ -149,8 +144,7 @@ function commandChainEvents(): OperationalEvent[] {
       responseType: 'multi',
       actions: [
         { id: 'cc-review', label: 'Review Org Hierarchy', variant: 'primary', navigateTo: '/org/command' },
-        { id: 'cc-incidents', label: 'View Incidents', variant: 'ghost', navigateTo: '/incidents' },
-      ],
+        { id: 'cc-incidents', label: 'View Incidents', variant: 'ghost', navigateTo: '/incidents' }],
       sourceRoleId: 'group-ceo',
       relatedEntityIds: redRoles.flatMap(r => r.entity_ids),
       createdAt: new Date().toISOString(),
@@ -170,8 +164,7 @@ export function generateEvents(): OperationalEvent[] {
     ...incidents.map(incidentToEvent),
     ...entityGateEvents(),
     ...kpiWarningEvents(),
-    ...commandChainEvents(),
-  ]
+    ...commandChainEvents()]
 
   // Deduplicate by role+category, keeping highest priority
   const seen = new Map<string, OperationalEvent>()

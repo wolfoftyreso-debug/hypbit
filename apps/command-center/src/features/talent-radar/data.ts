@@ -51,8 +51,7 @@ export const TALENT_TARGETS: TalentTarget[] = [
     repoStars: 36600,
     repoDescription: '🐈 nanobot: The Ultra-Lightweight OpenClaw — Python, 36.6k stars, updated 1h ago',
     signals: [
-      { date: '2026-03-27', description: 'Repo updated 1h ago — extremely active' },
-    ],
+      { date: '2026-03-27', description: 'Repo updated 1h ago — extremely active' }],
     notes: 'Built the most starred ultra-lightweight OpenClaw implementation. Python expert. High priority.',
     addedDate: '2026-03-27',
     lastActivity: '2026-03-27',
@@ -69,8 +68,7 @@ export const TALENT_TARGETS: TalentTarget[] = [
     repoStars: 42500,
     repoDescription: 'The awesome collection of OpenClaw skills — 5,400+ skills, 42.5k stars',
     signals: [
-      { date: '2026-03-27', description: 'Repo updated yesterday — massive community influence' },
-    ],
+      { date: '2026-03-27', description: 'Repo updated yesterday — massive community influence' }],
     notes: 'Biggest skills curator in the OpenClaw ecosystem. Community leader. Potential partnership or hire.',
     addedDate: '2026-03-27',
     lastActivity: '2026-03-26',
@@ -87,8 +85,7 @@ export const TALENT_TARGETS: TalentTarget[] = [
     repoStars: 27600,
     repoDescription: 'Community collection of OpenClaw use cases — 27.6k stars',
     signals: [
-      { date: '2026-03-27', description: 'Repo updated 3 days ago' },
-    ],
+      { date: '2026-03-27', description: 'Repo updated 3 days ago' }],
     notes: 'Deep knowledge of real-world OpenClaw applications. Strong community voice.',
     addedDate: '2026-03-27',
     lastActivity: '2026-03-24',
@@ -105,8 +102,7 @@ export const TALENT_TARGETS: TalentTarget[] = [
     repoStars: 3200,
     repoDescription: 'AI Agent Orchestration Dashboard — manage agents, assign tasks, multi-agent coordination via OpenClaw Gateway',
     signals: [
-      { date: '2026-03-27', description: 'Repo updated yesterday' },
-    ],
+      { date: '2026-03-27', description: 'Repo updated yesterday' }],
     notes: 'TypeScript builder, exactly our stack. Built a mission control dashboard — highly relevant for Wavult OS architecture.',
     addedDate: '2026-03-27',
     lastActivity: '2026-03-26',
@@ -123,8 +119,7 @@ export const TALENT_TARGETS: TalentTarget[] = [
     repoStars: 3000,
     repoDescription: 'OpenClaw: Use All Major AI Models NO API Token — Claude/ChatGPT/Gemini/DeepSeek/Grok etc',
     signals: [
-      { date: '2026-03-27', description: 'Updated 13h ago — very active' },
-    ],
+      { date: '2026-03-27', description: 'Updated 13h ago — very active' }],
     notes: 'Creative hacker who bypassed all API token requirements. TypeScript. Resourceful problem-solver.',
     addedDate: '2026-03-27',
     lastActivity: '2026-03-27',
@@ -141,8 +136,7 @@ export const TALENT_TARGETS: TalentTarget[] = [
     repoStars: 2500,
     repoDescription: 'OpenClaw for Teams — Python, updated 1h ago',
     signals: [
-      { date: '2026-03-27', description: 'Updated 1h ago — extremely active. Enterprise focus aligns with Wavult.' },
-    ],
+      { date: '2026-03-27', description: 'Updated 1h ago — extremely active. Enterprise focus aligns with Wavult.' }],
     notes: 'Building enterprise/team version of OpenClaw. Direct overlap with Wavult OS mission.',
     addedDate: '2026-03-27',
     lastActivity: '2026-03-27',
@@ -159,13 +153,11 @@ export const TALENT_TARGETS: TalentTarget[] = [
     repoStars: 2500,
     repoDescription: 'OpenClaw 101 — 7-day mastery guide, Chinese community hub, 2.5k stars',
     signals: [
-      { date: '2026-03-27', description: 'Updated 23h ago' },
-    ],
+      { date: '2026-03-27', description: 'Updated 23h ago' }],
     notes: 'Bridge to the Chinese OpenClaw community. Education-focused. Could be valuable for Asia expansion.',
     addedDate: '2026-03-27',
     lastActivity: '2026-03-27',
-  },
-]
+  }]
 
 export const STATUS_LABELS: Record<TalentStatus, string> = {
   spotted: 'Spotted',

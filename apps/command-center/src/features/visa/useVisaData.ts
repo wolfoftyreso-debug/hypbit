@@ -59,8 +59,7 @@ export function useVisaData(): UseVisaDataResult {
         const [appsRes, membersRes, deadlinesRes] = await Promise.all([
           apiFetch('/v1/visa/applications'),
           apiFetch('/v1/visa/members'),
-          apiFetch('/v1/visa/deadlines'),
-        ])
+          apiFetch('/v1/visa/deadlines')])
 
         if (cancelled) return
 

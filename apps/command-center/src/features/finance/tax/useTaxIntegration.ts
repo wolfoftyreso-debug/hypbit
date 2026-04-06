@@ -39,8 +39,7 @@ export function useTaxDeclarations(entityId: string) {
       const [dRes, uRes, cRes] = await Promise.allSettled([
         apiFetch(`/api/tax/${entityId}/declarations`),
         apiFetch(`/api/tax/${entityId}/upcoming`),
-        apiFetch(`/api/tax/${entityId}/calendar`),
-      ])
+        apiFetch(`/api/tax/${entityId}/calendar`)])
       if (dRes.status === 'fulfilled' && dRes.value.ok) setDeclarations(await dRes.value.json())
       if (uRes.status === 'fulfilled' && uRes.value.ok) setUpcoming(await uRes.value.json())
       if (cRes.status === 'fulfilled' && cRes.value.ok) {

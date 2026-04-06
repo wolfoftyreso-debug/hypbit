@@ -121,14 +121,12 @@ const CEO_ENTITY_DATA: Record<string, {
       { text: 'Bolagsstruktur Dubai', status: 'planned' },
       { text: 'quiXzoom MVP launch', status: 'in-progress' },
       { text: 'Landvex enterprise launch - Q3 2026', status: 'planned' },
-      { text: 'Texas LLC incorporation', status: 'planned' },
-    ],
+      { text: 'Texas LLC incorporation', status: 'planned' }],
     capitalItems: [
       { text: 'Wavult Operations', status: 'active' },
       { text: 'quiXzoom - MVP build', status: 'active' },
       { text: 'Landvex - enterprise infrastruktur', status: 'planned' },
-      { text: 'Quixom Ads - fas 2', status: 'planned' },
-    ],
+      { text: 'Quixom Ads - fas 2', status: 'planned' }],
     marketPhase: 'Q2',
     marketNote: 'Thailand workcamp - 11 april',
     teamSize: 5,
@@ -139,12 +137,10 @@ const CEO_ENTITY_DATA: Record<string, {
       { text: 'DMCC License Renewal', status: 'active' },
       { text: 'UAE Corporate Tax', status: 'planned' },
       { text: 'Holdingstruktur optimering', status: 'planned' },
-      { text: 'Dubai banking setup', status: 'in-progress' },
-    ],
+      { text: 'Dubai banking setup', status: 'in-progress' }],
     capitalItems: [
       { text: 'Kapitalstruktur gruppen', status: 'active' },
-      { text: 'Internlån till dotterbolag', status: 'active' },
-    ],
+      { text: 'Internlån till dotterbolag', status: 'active' }],
     marketPhase: 'AE',
     marketNote: 'UAE DMCC fritt handelszon',
     teamSize: 2,
@@ -154,12 +150,10 @@ const CEO_ENTITY_DATA: Record<string, {
     strategicPriorities: [
       { text: 'Årsredovisning 2025', status: 'planned' },
       { text: 'Momsdeklaration Q1', status: 'active' },
-      { text: 'quiXzoom Sverige-lansering juni', status: 'in-progress' },
-    ],
+      { text: 'quiXzoom Sverige-lansering juni', status: 'in-progress' }],
     capitalItems: [
       { text: 'quiXzoom Sverige ops', status: 'active' },
-      { text: 'Marketing Sverige', status: 'planned' },
-    ],
+      { text: 'Marketing Sverige', status: 'planned' }],
     marketPhase: 'SE',
     marketNote: 'Sverige, mitten juni 2026',
     teamSize: 5,
@@ -169,11 +163,9 @@ const CEO_ENTITY_DATA: Record<string, {
     strategicPriorities: [
       { text: 'UAB registrering klar', status: 'done' },
       { text: 'Litauisk bankkonto', status: 'in-progress' },
-      { text: 'EU-expansion prep', status: 'planned' },
-    ],
+      { text: 'EU-expansion prep', status: 'planned' }],
     capitalItems: [
-      { text: 'EU tech-hub', status: 'active' },
-    ],
+      { text: 'EU tech-hub', status: 'active' }],
     marketPhase: 'EU',
     marketNote: 'Litauen — EU-bas',
     teamSize: 2,
@@ -183,25 +175,21 @@ const CEO_ENTITY_DATA: Record<string, {
     strategicPriorities: [
       { text: 'Delaware franchise tax', status: 'planned' },
       { text: 'Federal corporate tax', status: 'planned' },
-      { text: 'US market prep', status: 'planned' },
-    ],
+      { text: 'US market prep', status: 'planned' }],
     capitalItems: [
-      { text: 'US market entry', status: 'planned' },
-    ],
+      { text: 'US market entry', status: 'planned' }],
     marketPhase: 'US',
     marketNote: 'Delaware Inc — US-bas',
     teamSize: 1,
   },
-  // LVX-AE — LandveX AC
-  'lvx-ae': {
+  // LVX-AE — LandveX
+  : {
     strategicPriorities: [
       { text: 'LandveX DIFC setup', status: 'in-progress' },
       { text: 'Enterprise sales UAE', status: 'planned' },
-      { text: 'Infrastrukturintelligens demo', status: 'planned' },
-    ],
+      { text: 'Infrastrukturintelligens demo', status: 'planned' }],
     capitalItems: [
-      { text: 'LandveX UAE launch', status: 'planned' },
-    ],
+      { text: 'LandveX UAE launch', status: 'planned' }],
     marketPhase: 'AE',
     marketNote: 'UAE DIFC — LandveX',
     teamSize: 2,
@@ -211,11 +199,9 @@ const CEO_ENTITY_DATA: Record<string, {
     strategicPriorities: [
       { text: 'Texas LLC formation klar', status: 'done' },
       { text: 'EIN filing', status: 'in-progress' },
-      { text: 'US infrastrukturmarknad', status: 'planned' },
-    ],
+      { text: 'US infrastrukturmarknad', status: 'planned' }],
     capitalItems: [
-      { text: 'LandveX USA launch', status: 'planned' },
-    ],
+      { text: 'LandveX USA launch', status: 'planned' }],
     marketPhase: 'TX',
     marketNote: 'Texas LLC — LandveX US',
     teamSize: 1,
@@ -443,8 +429,7 @@ function CeoDashboard() {
         ))}
         items={[
           { text: 'Hypbit-bilverkstad skrotad', status: 'done' },
-          { text: 'Landvex AB (Sverige) - registrerat och aktivt', status: 'done' },
-        ]}
+          { text: 'Landvex AB (Sverige) - registrerat och aktivt', status: 'done' }]}
       />
 
       {drawer && <InfoDrawer title={drawer.title} onClose={closeDrawer}>{drawer.content}</InfoDrawer>}
@@ -475,8 +460,7 @@ function Opsdashboard() {
           { label: 'Thailand nedräkning', value: '17d', delta: '11 april 2026', color: '#F59E0B',
             drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Thailand Workcamp startar 11 april 2026. Vecka 1: teambuilding + utbildning. Sedan: projekten sätts upp redo att rulla ut.</p> },
           { label: 'Delivery pace', value: 'Hög', delta: 'Q1 sprint aktiv', color: '#2563EB',
-            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Q1 sprint är aktiv med hög leveranstakt. Nästa review: Thailand workcamp.</p> },
-        ].map(s => (
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Q1 sprint är aktiv med hög leveranstakt. Nästa review: Thailand workcamp.</p> }].map(s => (
           <button
             key={s.label}
             className="card card-interactive p-5 text-left"
@@ -506,8 +490,7 @@ function Opsdashboard() {
             { text: 'quiXzoom API — ECS eu-north-1 live', status: 'active' },
             { text: 'Landvex sajt — CF Pages, senaste deploy live', status: 'active' },
             { text: 'Bolagsstruktur UAE — väntar på rättslig rådgivning', status: 'blocked' },
-            { text: 'Texas LLC — Dennis driver incorporation docs', status: 'in-progress' },
-          ]}
+            { text: 'Texas LLC — Dennis driver incorporation docs', status: 'in-progress' }]}
         />
         <ClickableSection
           title="Team — daglig status"
@@ -525,8 +508,7 @@ function Opsdashboard() {
             { text: 'Winston: Kassaflöde + budgetuppföljning', status: 'active' },
             { text: 'Dennis: Texas LLC docs + compliance', status: 'in-progress' },
             { text: 'Leon: Q1 execution koordinering', status: 'active' },
-            { text: 'Erik: Thailand workcamp + bolagsstruktur', status: 'active' },
-          ]}
+            { text: 'Erik: Thailand workcamp + bolagsstruktur', status: 'active' }]}
         />
       </div>
       {drawer && <InfoDrawer title={drawer.title} onClose={closeDrawer}>{drawer.content}</InfoDrawer>}
@@ -549,15 +531,13 @@ const CFO_ENTITY_DATA: Record<string, {
       { text: 'IP-royalty — Wavult Group tar 5–15% på omsättning', status: 'planned' },
       { text: 'Transfer pricing-policy — kräver CLO + extern rådgivare', status: 'blocked' },
       { text: 'Separat bankkonto per bolag — storbank varje jurisdiktion', status: 'planned' },
-      { text: 'Supabase US East — planerat (OI US expansion)', status: 'planned' },
-    ],
+      { text: 'Supabase US East — planerat (OI US expansion)', status: 'planned' }],
     infraCosts: [
       { text: 'AWS ECS eu-north-1 — wavult-api + quixzoom-api', status: 'active' },
       { text: 'S3: 4 buckets (EU + US primär + backup)', status: 'active' },
       { text: 'Supabase West EU — quixzoom-v2 + wavult-os projekt', status: 'active' },
       { text: 'Cloudflare — 2 zoner, CF Pages (10/10 slots)', status: 'active' },
-      { text: 'CF Pages — quiXzoom landing, Wavult, OI portals', status: 'active' },
-    ],
+      { text: 'CF Pages — quiXzoom landing, Wavult, OI portals', status: 'active' }],
   },
   '1': {
     heading: 'WGH — FINANSIELL KONTROLL',
@@ -566,12 +546,10 @@ const CFO_ENTITY_DATA: Record<string, {
       { text: 'DMCC License Renewal — årsavgift', status: 'planned' },
       { text: 'UAE Corporate Tax 9% — gäller fr.o.m. 2023', status: 'active' },
       { text: 'Internlån till dotterbolag — struktur ej satt', status: 'planned' },
-      { text: 'IP-royalty ingående — 5–15% på dotterbolags omsättning', status: 'planned' },
-    ],
+      { text: 'IP-royalty ingående — 5–15% på dotterbolags omsättning', status: 'planned' }],
     infraCosts: [
       { text: 'Kapitalstruktur gruppen', status: 'active' },
-      { text: 'Dubai banking setup — Mashreq / ADCB', status: 'in-progress' },
-    ],
+      { text: 'Dubai banking setup — Mashreq / ADCB', status: 'in-progress' }],
   },
   '2': {
     heading: 'WOH — FINANSIELL KONTROLL',
@@ -580,12 +558,10 @@ const CFO_ENTITY_DATA: Record<string, {
       { text: 'Årsredovisning 2025 — Bolagsverket', status: 'planned' },
       { text: 'Momsdeklaration Q1 2026', status: 'active' },
       { text: 'F-skatt — löpande', status: 'active' },
-      { text: 'quiXzoom Sverige-lansering juni — budget sätts', status: 'in-progress' },
-    ],
+      { text: 'quiXzoom Sverige-lansering juni — budget sätts', status: 'in-progress' }],
     infraCosts: [
       { text: 'quiXzoom Sverige ops', status: 'active' },
-      { text: 'Marketing Sverige — budget ej satt', status: 'planned' },
-    ],
+      { text: 'Marketing Sverige — budget ej satt', status: 'planned' }],
   },
   '3': {
     heading: 'OZ UAB — FINANSIELL KONTROLL',
@@ -593,11 +569,9 @@ const CFO_ENTITY_DATA: Record<string, {
     financialStructure: [
       { text: 'VAT-registrering Litauen', status: 'planned' },
       { text: 'Corporate tax 15% — standard rate LT', status: 'planned' },
-      { text: 'Litauisk bankkonto — Swedbank / SEB LT', status: 'in-progress' },
-    ],
+      { text: 'Litauisk bankkonto — Swedbank / SEB LT', status: 'in-progress' }],
     infraCosts: [
-      { text: 'EU tech-hub driftkostnad', status: 'active' },
-    ],
+      { text: 'EU tech-hub driftkostnad', status: 'active' }],
   },
   '4': {
     heading: 'OZ INC — FINANSIELL KONTROLL',
@@ -605,23 +579,19 @@ const CFO_ENTITY_DATA: Record<string, {
     financialStructure: [
       { text: 'Delaware franchise tax — $50/år', status: 'planned' },
       { text: 'Federal corporate tax 21%', status: 'planned' },
-      { text: 'EIN — Employer Identification Number', status: 'in-progress' },
-    ],
+      { text: 'EIN — Employer Identification Number', status: 'in-progress' }],
     infraCosts: [
-      { text: 'US market entry budget', status: 'planned' },
-    ],
+      { text: 'US market entry budget', status: 'planned' }],
   },
   '5': {
     heading: 'LVX AE — FINANSIELL KONTROLL',
-    subtitle: 'LandveX AC — UAE DIFC',
+    subtitle: 'LandveX — UAE DIFC',
     financialStructure: [
       { text: 'DIFC setup fees', status: 'planned' },
       { text: 'UAE Corporate Tax 9%', status: 'planned' },
-      { text: 'Enterprise sales pipeline UAE', status: 'planned' },
-    ],
+      { text: 'Enterprise sales pipeline UAE', status: 'planned' }],
     infraCosts: [
-      { text: 'LandveX UAE launch budget', status: 'planned' },
-    ],
+      { text: 'LandveX UAE launch budget', status: 'planned' }],
   },
   '6': {
     heading: 'LVX US — FINANSIELL KONTROLL',
@@ -629,11 +599,9 @@ const CFO_ENTITY_DATA: Record<string, {
     financialStructure: [
       { text: 'Texas state franchise tax', status: 'planned' },
       { text: 'Federal corporate tax 21%', status: 'planned' },
-      { text: 'EIN filing Texas LLC', status: 'in-progress' },
-    ],
+      { text: 'EIN filing Texas LLC', status: 'in-progress' }],
     infraCosts: [
-      { text: 'LandveX USA launch budget', status: 'planned' },
-    ],
+      { text: 'LandveX USA launch budget', status: 'planned' }],
   },
 }
 
@@ -674,8 +642,7 @@ function CfoDashboard() {
             ? { label: 'Dubai holding', value: 'Planerat', delta: 'Väntar på bolagsbildning', color: '#2563EB',
                 drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Wavult Group (Dubai Free Zone) under bildning. Ska bli holdingbolag för IP och internprissättning.</p> }
             : { label: 'Jurisdiktion', value: cfoData.heading.split('—')[0].trim(), delta: activeEntity.jurisdiction ?? '', color: '#2563EB',
-                drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">{activeEntity.name} är registrerat i {activeEntity.jurisdiction ?? 'okänd jurisdiktion'}.</p> },
-        ].map(s => (
+                drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">{activeEntity.name} är registrerat i {activeEntity.jurisdiction ?? 'okänd jurisdiktion'}.</p> }].map(s => (
           <button
             key={s.label}
             className="card card-interactive p-5 text-left"
@@ -744,8 +711,7 @@ function CtoDashboard() {
           { label: 'S3 Buckets', value: '4', delta: 'EU + US, CRR aktiv', color: '#FF9500',
             drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">4 S3-buckets: EU primär, EU backup, US primär, US backup. Cross-Region Replication (CRR) aktiv.</p> },
           { label: 'CF Pages', value: '10/10', delta: 'Max — behöver frigöra slots', color: '#FF3B30',
-            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Cloudflare Pages är maxat på 10/10 slots. Åtgärd: ta bort landvex-fr/nl/de/fi/be/it (6 projekt).</p> },
-        ].map(s => (
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">Cloudflare Pages är maxat på 10/10 slots. Åtgärd: ta bort landvex-fr/nl/de/fi/be/it (6 projekt).</p> }].map(s => (
           <button
             key={s.label}
             className="card card-interactive p-5 text-left"
@@ -775,8 +741,7 @@ function CtoDashboard() {
             { text: 'quixzoom-api — ECS cluster wavult, task def :2', status: 'active' },
             { text: 'quiXzoom frontend — S3 + CloudFront (dewrtqzc20flx)', status: 'active' },
             { text: 'Supabase lpeipzdm — 13 migrationer live', status: 'active' },
-            { text: 'S3 multi-region — CRR eu→eu + us→us', status: 'active' },
-          ]}
+            { text: 'S3 multi-region — CRR eu→eu + us→us', status: 'active' }]}
         />
         <ClickableSection
           title="Öppna tekniska TODO"
@@ -794,8 +759,7 @@ function CtoDashboard() {
             { text: 'Supabase US East — planerat (OI US expansion)', status: 'planned' },
             { text: 'ECS us-east-1 — ny service för OI US API', status: 'planned' },
             { text: 'optical-insight-eu + optical-insight-us — CF Pages deploy', status: 'planned' },
-            { text: 'CF Pages API-token — Erik skapar på dash.cloudflare.com', status: 'blocked' },
-          ]}
+            { text: 'CF Pages API-token — Erik skapar på dash.cloudflare.com', status: 'blocked' }]}
         />
       </div>
 
@@ -808,8 +772,7 @@ function CtoDashboard() {
           { text: 'TypeScript · Node.js/Express · React/Next.js', status: 'active' },
           { text: 'Supabase (PostgreSQL) · Docker · AWS ECS', status: 'active' },
           { text: 'Cloudflare · Wavult CI (Gitea) · CF Pages · Stripe · Revolut', status: 'active' },
-          { text: 'Trigger.dev · ECR: 155407238699.dkr.ecr.eu-north-1', status: 'active' },
-        ]}
+          { text: 'Trigger.dev · ECR: 155407238699.dkr.ecr.eu-north-1', status: 'active' }]}
       />
       {drawer && <InfoDrawer title={drawer.title} onClose={closeDrawer}>{drawer.content}</InfoDrawer>}
     </div>
@@ -845,8 +808,7 @@ function CloDashboard() {
           { label: 'Under bildning', value: String(formingEntities.length), delta: formingNames, color: '#FF9500',
             drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">{formingEntities.length} bolag under bildning: {formingNames}.</p> },
           { label: 'IP-skydd', value: 'Ej satt', delta: 'Ska ligga i Wavult Group Dubai', color: '#FF3B30',
-            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">IP-skydd är ej etablerat. Plan: all IP ska överlåtas till Wavult Group (Dubai Free Zone A) för optimal skattestruktur.</p> },
-        ].map(s => (
+            drawerContent: <p className="text-sm text-[var(--color-text-secondary)]">IP-skydd är ej etablerat. Plan: all IP ska överlåtas till Wavult Group (Dubai Free Zone A) för optimal skattestruktur.</p> }].map(s => (
           <button
             key={s.label}
             className="card card-interactive p-5 text-left"
@@ -877,8 +839,7 @@ function CloDashboard() {
             { text: 'QuiXzoom UAB (Litauen) — planerat', status: 'planned' },
             { text: 'QuiXzoom Inc (Delaware) — planerat', status: 'planned' },
             { text: 'Landvex Inc (Texas/Houston) — under bildning', status: 'in-progress' },
-            { text: 'Landvex AB (Sverige) — live', status: 'active' },
-          ]}
+            { text: 'Landvex AB (Sverige) — live', status: 'active' }]}
         />
         <ClickableSection
           title="Juridiska prioriteringar"
@@ -896,8 +857,7 @@ function CloDashboard() {
             { text: 'Intercompany-avtal — service fee + royalty-struktur', status: 'planned' },
             { text: 'Transfer pricing-policy — samverka med CFO + extern rådgivare', status: 'planned' },
             { text: 'GDPR-compliance — EU-data aldrig till US-buckets', status: 'active' },
-            { text: 'Texas LLC — incorporation docs pågår', status: 'in-progress' },
-          ]}
+            { text: 'Texas LLC — incorporation docs pågår', status: 'in-progress' }]}
         />
       </div>
       {drawer && <InfoDrawer title={drawer.title} onClose={closeDrawer}>{drawer.content}</InfoDrawer>}
@@ -942,8 +902,7 @@ function CpoDashboard() {
             { text: 'quiXzoom — crowdsourcad kamerainfrastruktur (zoomer-plattform)', status: 'active' },
             { text: 'Optical Insight / Landvex — B2G kontrollsystem', status: 'active' },
             { text: 'Wavult DS — internt operativsystem för Wavult Group', status: 'active' },
-            { text: 'Quixom Ads — fas 2, monetisering av quiXzoom-data', status: 'planned' },
-          ]}
+            { text: 'Quixom Ads — fas 2, monetisering av quiXzoom-data', status: 'planned' }]}
         />
         <ClickableSection
           title="Produktprinciper (låsta)"
@@ -959,8 +918,7 @@ function CpoDashboard() {
             { text: 'Säg aldrig "AI" — säg optisk analys, vision engine, optical layer', status: 'active' },
             { text: 'Zoomers — aldrig fotografer, operatörer, fältpersonal', status: 'active' },
             { text: 'Landvex: Right control. Right cost. Right interval.', status: 'active' },
-            { text: 'OI: Works on day one. Gets smarter every day you use it.', status: 'active' },
-          ]}
+            { text: 'OI: Works on day one. Gets smarter every day you use it.', status: 'active' }]}
         />
       </div>
       {drawer && <InfoDrawer title={drawer.title} onClose={closeDrawer}>{drawer.content}</InfoDrawer>}

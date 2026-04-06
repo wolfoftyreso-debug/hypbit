@@ -57,8 +57,7 @@ export const MOCK_RESTAURANTS: Restaurant[] = [
   { name: 'Som Tum Nua', cuisine: 'Thai', rating: 4.8, eta: '30-40 min', price: 'THB 150-250/person' },
   { name: 'Greyhound Café', cuisine: 'Thai Fusion', rating: 4.6, eta: '25-35 min', price: 'THB 200-350/person' },
   { name: 'The Pizza Company', cuisine: 'Pizza', rating: 4.3, eta: '20-30 min', price: 'THB 120-200/person' },
-  { name: 'MK Gold Shabu', cuisine: 'Japanese/Thai', rating: 4.7, eta: '35-45 min', price: 'THB 250-400/person' },
-]
+  { name: 'MK Gold Shabu', cuisine: 'Japanese/Thai', rating: 4.7, eta: '35-45 min', price: 'THB 250-400/person' }]
 
 export const LOCATIONS: Record<string, string> = {
   'Nysa Hotel Bangkok': 'Soi Sukhumvit 13, Khwaeng Khlong Toei Nuea, Bangkok',
@@ -68,8 +67,7 @@ export const LOCATIONS: Record<string, string> = {
 export const DELIVERY_TEMPLATES = [
   { name: 'Send contract to Dennis', from: 'Erik (Wavult)', to: 'Dennis Bjarnemark', type: 'Legal' },
   { name: 'Send docs to notary', from: 'Erik (Wavult)', to: 'Notary Office', type: 'Legal' },
-  { name: 'Send equipment to hotel', from: 'Erik (Wavult)', to: 'Nysa Hotel Bangkok', type: 'Equipment' },
-]
+  { name: 'Send equipment to hotel', from: 'Erik (Wavult)', to: 'Nysa Hotel Bangkok', type: 'Equipment' }]
 
 // ─── API Functions ─────────────────────────────────────────────────────────────
 

@@ -514,8 +514,7 @@ function PersonLayer({
     { id: 'halsa', label: 'Hälsa', emoji: '❤️' },
     { id: 'uppgifter', label: 'Uppgifter', emoji: '✅' },
     { id: 'kontakt', label: 'Kontakt', emoji: '📞' },
-    { id: 'psyk', label: 'Psykologi', emoji: '🧠' },
-  ]
+    { id: 'psyk', label: 'Psykologi', emoji: '🧠' }]
 
   const reportsToMember = member.reportsTo
     ? TEAM_MEMBERS.find(m => m.id === member.reportsTo)
@@ -980,8 +979,7 @@ export function PeopleIntelligenceHub() {
     try {
       const [myRes, teamRes] = await Promise.all([
         apiFetch('/whoop/me'),
-        apiFetch('/whoop/team'),
-      ])
+        apiFetch('/whoop/team')])
       if (myRes.ok) setWhoopMy(await myRes.json() as WhoopMyData)
       if (teamRes.ok) setWhoopTeam(await teamRes.json() as WhoopTeamData)
     } catch {

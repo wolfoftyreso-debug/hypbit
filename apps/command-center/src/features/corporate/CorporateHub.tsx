@@ -14,8 +14,7 @@ const TABS: Array<{ id: Tab; label: string; icon: string }> = [
   { id: 'jurisdictions', label: 'Jurisdiktioner',     icon: '🌍' },
   { id: 'documents',     label: 'Bolagsdokument',     icon: '📁' },
   { id: 'compliance',    label: 'Compliance',         icon: '✅' },
-  { id: 'ownership',     label: 'Ägarstruktur',       icon: '🔗' },
-]
+  { id: 'ownership',     label: 'Ägarstruktur',       icon: '🔗' }]
 
 function QuickStats() {
   const { data: entities = [] } = useCorpEntities()
@@ -36,8 +35,7 @@ function QuickStats() {
         { label: 'Planerade möten', value: upcomingMeetings, color: '#E8B84B' },
         { label: 'Compliance öppna', value: pendingCompliance, color: '#B8760A' },
         { label: 'Förfallna', value: overdue, color: '#C0392B' },
-        { label: 'Brådskande (30d)', value: urgentDeadlines, color: '#E67E22' },
-      ].map(s => (
+        { label: 'Brådskande (30d)', value: urgentDeadlines, color: '#E67E22' }].map(s => (
         <div key={s.label} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-muted/30 border border-surface-border">
           <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: s.color }} />
           <span className="text-gray-500">{s.label}:</span>

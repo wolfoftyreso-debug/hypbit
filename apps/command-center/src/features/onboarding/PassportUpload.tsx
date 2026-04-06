@@ -116,8 +116,7 @@ export function PassportUpload({ personName, personId, onComplete, onSkip }: Pas
             ['Namn', `${mrzData.given} ${mrzData.surname}`],
             ['Passnummer', mrzData.passportNumber],
             ['Nationalitet', mrzData.nationality],
-            ['Utgångsdatum', `20${mrzData.expiry.slice(0,2)}-${mrzData.expiry.slice(2,4)}-${mrzData.expiry.slice(4,6)}`],
-          ].map(([label, value]) => (
+            ['Utgångsdatum', `20${mrzData.expiry.slice(0,2)}-${mrzData.expiry.slice(2,4)}-${mrzData.expiry.slice(4,6)}`]].map(([label, value]) => (
             <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #F3F4F6', fontSize: 13 }}>
               <span style={{ color: '#6B7280' }}>{label}</span>
               <span style={{ fontWeight: 600, color: '#1C1C1E', fontFamily: 'monospace' }}>{value}</span>
@@ -210,8 +209,7 @@ export function PassportUpload({ personName, personId, onComplete, onSkip }: Pas
         { step: '1', text: 'Fotografera passportets bildsida' },
         { step: '2', text: 'Ta en selfie för matchning' },
         { step: '3', text: 'Systemet läser MRZ-koden automatiskt' },
-        { step: '4', text: 'Krypteras AES-256 och lagras i Identity Core' },
-      ].map(item => (
+        { step: '4', text: 'Krypteras AES-256 och lagras i Identity Core' }].map(item => (
         <div key={item.step} style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 12 }}>
           <div style={{ width: 24, height: 24, borderRadius: '50%', background: '#EDE9FE', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <span style={{ fontSize: 11, fontWeight: 700, color: '#3B82F6' }}>{item.step}</span>

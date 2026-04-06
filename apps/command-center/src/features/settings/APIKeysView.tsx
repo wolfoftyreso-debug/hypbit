@@ -91,8 +91,7 @@ const INTEGRATIONS: Integration[] = [
     lastTested: '2026-03-26 09:10',
     keyHint: '••••2f7a',
     scope: 'zone:read, dns:edit',
-  },
-]
+  }]
 
 const STATUS_CONFIG = {
   ok: { color: '#10B981', bg: '#10B98115', border: '#10B98130', icon: '✅', label: 'OK' },

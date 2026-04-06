@@ -15,8 +15,7 @@ const TEAM_MEMBERS = [
   { id: 'leon', name: 'Leon Russo', role: 'COO' },
   { id: 'dennis', name: 'Dennis Bjarnemark', role: 'CLO' },
   { id: 'winston', name: 'Winston Bjarnemark', role: 'CFO' },
-  { id: 'johan', name: 'Johan Berglund', role: 'CTO' },
-]
+  { id: 'johan', name: 'Johan Berglund', role: 'CTO' }]
 
 export function TeamPhones() {
   const [numbers, setNumbers] = useState<PhoneNumber[]>([])

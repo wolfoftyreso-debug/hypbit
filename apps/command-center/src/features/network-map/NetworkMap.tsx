@@ -111,8 +111,7 @@ const ALL_NODES: NetNode[] = [
 
   // ── Internal ──────────────────────────────────────────────────────────────
   { id: 'openclaw',     hostname: 'openclaw-local',        label: 'OpenClaw (Bernt)',   kind: 'service', zone: 'internal',     target: 'WSL2 · localhost:18789',            provider: 'OpenClaw',   status: 'unknown', description: 'OpenClaw runtime — Bernt AI, Telegram, cron, memory', critical: true },
-  { id: 'cf-tunnel',    hostname: 'CF Tunnel',             label: 'Cloudflare Tunnel',  kind: 'tunnel',  zone: 'internal',     target: 'bernt.wavult.com → OpenClaw',       provider: 'CF Tunnel',  status: 'unknown', description: 'Persistent CF tunnel — exponerar Bernt externt', critical: true },
-]
+  { id: 'cf-tunnel',    hostname: 'CF Tunnel',             label: 'Cloudflare Tunnel',  kind: 'tunnel',  zone: 'internal',     target: 'bernt.wavult.com → OpenClaw',       provider: 'CF Tunnel',  status: 'unknown', description: 'Persistent CF tunnel — exponerar Bernt externt', critical: true }]
 
 // ─── Zone config ──────────────────────────────────────────────────────────────
 
@@ -231,8 +230,7 @@ function DetailPanel({ node, onClose }: { node: NetNode; onClose: () => void }) 
         {[
           { label: statusLabel, color: statusColor },
           { label: zone.label.toUpperCase(), color: zone.color },
-          ...(node.critical ? [{ label: 'CRITICAL', color: '#EF4444' }] : []),
-        ].map(b => (
+          ...(node.critical ? [{ label: 'CRITICAL', color: '#EF4444' }] : [])].map(b => (
           <div key={b.label} style={{ padding: '3px 8px', borderRadius: 4, background: `${b.color}12`, border: `1px solid ${b.color}30`, fontSize: 9, fontWeight: 700, color: b.color, display: 'flex', alignItems: 'center', gap: 4 }}>
             <span style={{ width: 5, height: 5, borderRadius: '50%', background: b.color, flexShrink: 0 }} />
             {b.label}
@@ -259,8 +257,7 @@ function DetailPanel({ node, onClose }: { node: NetNode; onClose: () => void }) 
           { k: 'Provider', v: node.provider },
           { k: 'Kind', v: node.kind.toUpperCase() },
           { k: 'Zone', v: node.zone },
-          { k: 'Latency', v: node.latency !== undefined ? `${node.latency} ms` : '—' },
-        ].map(r => (
+          { k: 'Latency', v: node.latency !== undefined ? `${node.latency} ms` : '—' }].map(r => (
           <div key={r.k} style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--color-border, rgba(10,61,98,.08))', paddingBottom: 8, fontSize: 11 }}>
             <span style={{ color: 'var(--color-text-muted, rgba(10,61,98,.4))' }}>{r.k}</span>
             <span style={{ color: 'var(--color-text-primary, #0A3D62)', fontFamily: 'ui-monospace, monospace' }}>{r.v}</span>
@@ -345,8 +342,7 @@ export function NetworkMap() {
           { label: 'ENDPOINTS', value: String(nodes.filter(n => n.url).length) },
           { label: 'ONLINE',    value: String(upCount),   color: upCount > 0   ? '#10B981' : undefined },
           { label: 'OFFLINE',   value: String(downCount), color: downCount > 0 ? '#EF4444' : undefined },
-          { label: 'TOTAL',     value: String(nodes.length) },
-        ].map(s => (
+          { label: 'TOTAL',     value: String(nodes.length) }].map(s => (
           <div key={s.label} style={{ paddingLeft: 20, paddingRight: 20, borderRight: '1px solid var(--color-border, rgba(10,61,98,.1))' }}>
             <div style={{ fontSize: 7, color: 'var(--color-text-muted, rgba(10,61,98,.35))', letterSpacing: '0.1em', marginBottom: 2, fontFamily: 'ui-monospace' }}>{s.label}</div>
             <div style={{ fontSize: 15, fontWeight: 700, color: s.color ?? 'var(--color-text-primary, #0A3D62)', fontVariantNumeric: 'tabular-nums' }}>{s.value}</div>

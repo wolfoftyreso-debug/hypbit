@@ -81,8 +81,7 @@ export function useTimeMachine(repoFullName: string | null) {
           label: 'Redeploya',
           status: 'pending',
           details: extra?.deployed_url ?? '',
-        },
-      ],
+        }],
       state: {
         repo_full_name: repoFullName ?? '',
         branch: 'main',

@@ -90,8 +90,7 @@ const LICENSE_FEES: LicenseFee[] = [
     taxRate: 0.21,
     localTaxableProfit: 1000,
     localTax: 210,
-  },
-]
+  }]
 
 const TOTAL_DUBAI_EUR = LICENSE_FEES.reduce((sum, lf) => sum + lf.euroEquiv, 0)
 
@@ -100,8 +99,7 @@ const SECTION_TABS = [
   { id: 'mgmt',      label: 'B — Management Fees',  icon: '🏛️' },
   { id: 'netting',   label: 'C — Nettning',         icon: '⚖️' },
   { id: 'tax',       label: 'D — Skatteoptimering', icon: '📊' },
-  { id: 'entries',   label: 'Transaktioner',        icon: '↔️' },
-]
+  { id: 'entries',   label: 'Transaktioner',        icon: '↔️' }]
 
 export function IntercompanyView() {
   const { activeEntity, scopedEntities } = useEntityScope()
@@ -184,8 +182,7 @@ export function IntercompanyView() {
               { name: 'Landvex AB', flag: '🇸🇪', color: '#0A3D62', fee: '45k SEK/mån' },
               { name: 'Landvex Inc', flag: '🇺🇸', color: '#0A3D62', fee: '6k USD/mån' },
               { name: 'QuiXzoom Inc', flag: '🇺🇸', color: '#F59E0B', fee: '8.5k USD/mån' },
-              { name: 'QuiXzoom UAB', flag: '🇱🇹', color: '#10B981', fee: '7.2k EUR/mån' },
-            ].map(sub => (
+              { name: 'QuiXzoom UAB', flag: '🇱🇹', color: '#10B981', fee: '7.2k EUR/mån' }].map(sub => (
               <div key={sub.name}
                 className="flex flex-col items-center px-3 py-2 rounded-lg border text-center"
                 style={{ borderColor: sub.color + '40', background: sub.color + '10' }}>
@@ -322,8 +319,7 @@ Alla tre är 100% ägda av Wavult Group (Erik Svensson).
               { entity: 'QuiXzoom Inc',  revenue: 40000, currency: 'USD', rate: 0.15 },
               { entity: 'QuiXzoom UAB',  revenue: 35000, currency: 'EUR', rate: 0.15 },
               { entity: 'Landvex AB',    revenue: 220000, currency: 'SEK', rate: 0.15 },
-              { entity: 'Landvex Inc',   revenue: 28000, currency: 'USD', rate: 0.15 },
-            ].map(row => {
+              { entity: 'Landvex Inc',   revenue: 28000, currency: 'USD', rate: 0.15 }].map(row => {
               const fee = row.revenue * row.rate
               const taxSaving = fee * (row.currency === 'SEK' ? 0.206 : 0.21)
               return (
@@ -397,8 +393,7 @@ Alla tre är 100% ägda av Wavult Group (Erik Svensson).
               {[
                 { label: '/mån', value: TOTAL_DUBAI_EUR, suffix: '' },
                 { label: '/kvartal', value: TOTAL_DUBAI_EUR * 3, suffix: '' },
-                { label: '/år', value: TOTAL_DUBAI_EUR * 12, suffix: '' },
-              ].map(col => (
+                { label: '/år', value: TOTAL_DUBAI_EUR * 12, suffix: '' }].map(col => (
                 <div key={col.label} className="text-center rounded-lg bg-emerald-500/10 border border-emerald-500/20 p-3">
                   <p className="text-[9px] text-gray-9000 font-mono uppercase">{col.label}</p>
                   <p className="text-[15px] font-bold text-text-secondary font-mono mt-1">

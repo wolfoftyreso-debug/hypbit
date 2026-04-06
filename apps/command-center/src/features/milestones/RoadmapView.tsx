@@ -5,8 +5,7 @@ type Quarter = 'Q2-2026' | 'Q3-2026' | 'Q4-2026'
 const QUARTERS: { id: Quarter; label: string; months: string; color: string }[] = [
   { id: 'Q2-2026', label: 'Q2 2026', months: 'Apr – Jun', color: '#3B82F6' },
   { id: 'Q3-2026', label: 'Q3 2026', months: 'Jul – Sep', color: '#60A5FA' },
-  { id: 'Q4-2026', label: 'Q4 2026', months: 'Okt – Dec', color: '#F59E0B' },
-]
+  { id: 'Q4-2026', label: 'Q4 2026', months: 'Okt – Dec', color: '#F59E0B' }]
 
 const PROJECTS: ProjectKey[] = ['quixzoom', 'landvex', 'wavult']
 
@@ -75,8 +74,7 @@ export function RoadmapView() {
           {[
             { color: '#10B981', label: 'Klar' },
             { color: '#3B82F6', label: 'Pågår' },
-            { color: '#6B7280', label: 'Planerad' },
-          ].map(({ color, label }) => (
+            { color: '#6B7280', label: 'Planerad' }].map(({ color, label }) => (
             <div key={label} className="flex items-center gap-1">
               <div className="h-2 w-2 rounded-full" style={{ background: color }} />
               <span className="text-[9px] text-gray-9000 font-mono">{label}</span>

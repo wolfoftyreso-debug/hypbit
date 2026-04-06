@@ -30,8 +30,7 @@ export const FLOWS: Flow[] = [
       'Zoomer accepts and executes photo assignment',
       'Geo-tagged media uploaded to S3 (eu-north-1)',
       'Data validated and stored in Quixzoom database',
-      'Data available to Landvex and Quixzoom Ads',
-    ],
+      'Data available to Landvex and Quixzoom Ads'],
     status: 'building',
   },
   // ─── LandveX REVENUE ──────────────────────────────────────────────────────
@@ -46,8 +45,7 @@ export const FLOWS: Flow[] = [
       'Customer uses Landvex portal',
       'Optical insight data analysed, alerts generated',
       'Customer pays subscription to FinanceCo',
-      'FinanceCo distributes: revenue share to Landvex AB/Inc, tech fee to DevOps, profit to Wavult Group',
-    ],
+      'FinanceCo distributes: revenue share to Landvex AB/Inc, tech fee to DevOps, profit to Wavult Group'],
     status: 'planned',
     value: '4 900–49 000 SEK/mån',
   },
@@ -64,8 +62,7 @@ export const FLOWS: Flow[] = [
       'Package listed in Quixzoom Ads marketplace',
       'Business purchases lead package',
       'Payment received by FinanceCo',
-      'Revenue distributed: Quixzoom, DevOps, Wavult Group',
-    ],
+      'Revenue distributed: Quixzoom, DevOps, Wavult Group'],
     status: 'planned',
   },
   // ─── ZOOMER PAYOUTS ───────────────────────────────────────────────────────
@@ -81,8 +78,7 @@ export const FLOWS: Flow[] = [
       'Assignment verified by automated validation',
       'Payment trigger sent to FinanceCo',
       'FinanceCo initiates payout (Swish/SEPA/Wise)',
-      'Zoomer receives 75% of assignment value',
-    ],
+      'Zoomer receives 75% of assignment value'],
     status: 'building',
     value: '25–500 SEK per uppdrag (75% till zoomer)',
   },
@@ -97,8 +93,7 @@ export const FLOWS: Flow[] = [
     steps: [
       'DevOps provides platform, infrastructure, AI to all entities',
       'Monthly invoice issued to each entity',
-      'Entities pay via FinanceCo internal settlement',
-    ],
+      'Entities pay via FinanceCo internal settlement'],
     status: 'planned',
     value: '8–15% of revenue per entity',
   },
@@ -113,12 +108,10 @@ export const FLOWS: Flow[] = [
     steps: [
       'Wavult Group owns all trademarks, code, domains',
       'IP license agreement signed with each subsidiary',
-      'Royalty: 5–15% of revenue paid to Wavult Group',
-    ],
+      'Royalty: 5–15% of revenue paid to Wavult Group'],
     status: 'planned',
     value: '5–15% royalty per entity',
-  },
-]
+  }]
 
 export function getFlowsByEntity(entityId: string): Flow[] {
   return FLOWS.filter(f => f.from === entityId || f.to === entityId)

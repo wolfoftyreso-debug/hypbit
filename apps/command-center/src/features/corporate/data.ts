@@ -91,8 +91,7 @@ export const COMPANIES: Company[] = [
     founded: '2025-03-01',
     status: 'aktiv',
     color: '#ec4899',
-  },
-]
+  }]
 
 // ─── Board meetings ──────────────────────────────────────────────────────────
 
@@ -123,8 +122,7 @@ export const BOARD_MEETINGS: BoardMeeting[] = [
     decisions: [
       'Årsredovisning 2025 godkänd och undertecknad.',
       'Investering i QuiXzoom produktutveckling om 500 000 AED godkänd.',
-      'Bolagsstruktur oförändrad, nytt holdingbolag utreds.',
-    ],
+      'Bolagsstruktur oförändrad, nytt holdingbolag utreds.'],
     attendees: ['Erik Svensson', 'Dennis Bjarnemark', 'Winston Bjarnemark'],
     chairperson: 'Erik Svensson',
     minutesTaker: 'Dennis Bjarnemark',
@@ -139,8 +137,7 @@ export const BOARD_MEETINGS: BoardMeeting[] = [
     decisions: [
       'Resultat balanseras i ny räkning.',
       'Nyemission om 500 000 SEK godkänd, teckningskurs 1 kr/aktie.',
-      'VD ges fullmakt att teckna avtal med Bolagsverket.',
-    ],
+      'VD ges fullmakt att teckna avtal med Bolagsverket.'],
     attendees: ['Erik Svensson', 'Dennis Bjarnemark'],
     chairperson: 'Erik Svensson',
     minutesTaker: 'Dennis Bjarnemark',
@@ -165,8 +162,7 @@ export const BOARD_MEETINGS: BoardMeeting[] = [
     agenda: ['Godkännande av ny VD-instruktion', 'Firmateckning'],
     decisions: [
       'VD-instruktion fastställd per 2026-02-14.',
-      'Firmateckning: VD ensam upp till 100 000 SEK, styrelse gemensamt däröver.',
-    ],
+      'Firmateckning: VD ensam upp till 100 000 SEK, styrelse gemensamt däröver.'],
     attendees: ['Erik Svensson', 'Dennis Bjarnemark'],
     chairperson: 'Erik Svensson',
     minutesTaker: 'Dennis Bjarnemark',
@@ -181,8 +177,7 @@ export const BOARD_MEETINGS: BoardMeeting[] = [
     decisions: [
       'Budgetram 2026 om 3,2 MAED godkänd.',
       'Thailand workcamp 11 april 2026 godkänt.',
-      'CEO ges fullmakt att ingå avtal upp till 200 000 AED.',
-    ],
+      'CEO ges fullmakt att ingå avtal upp till 200 000 AED.'],
     attendees: ['Erik Svensson', 'Dennis Bjarnemark', 'Leon Russo De Cerame'],
     chairperson: 'Erik Svensson',
     minutesTaker: 'Dennis Bjarnemark',
@@ -219,8 +214,7 @@ export const BOARD_MEETINGS: BoardMeeting[] = [
     decisions: [],
     attendees: ['Erik Svensson', 'Dennis Bjarnemark', 'Johan Berglund'],
     chairperson: 'Erik Svensson',
-  },
-]
+  }]
 
 // ─── Jurisdiction requirements ───────────────────────────────────────────────
 
@@ -369,8 +363,7 @@ export const JURISDICTION_REQUIREMENTS: JurisdictionRequirement[] = [
     deadline: '2026-04-28',
     status: 'ej inlämnad',
     notes: 'VAT 5%, registrering vid omsättning >375k AED',
-  },
-]
+  }]
 
 // ─── Documents ───────────────────────────────────────────────────────────────
 
@@ -423,9 +416,7 @@ export const DOCUMENTS: Document[] = [
   { id: 'doc-023', companyId: 'quixzoom-inc', name: 'Stripe Atlas — 83(b) election filed', category: 'Kvittens', date: '2026-03-27', status: 'arkiverat', fileType: 'pdf', size: '—', },
   // Northwest — Landvex Inc (Texas LLC)
   { id: 'doc-024', companyId: 'landvex-inc', name: 'Northwest — Landvex Inc. formation documents submitted (TX)', category: 'Kvittens', date: '2026-03-26', status: 'arkiverat', fileType: 'pdf', size: '—', },
-  { id: 'doc-025', companyId: 'landvex-inc', name: 'Northwest — EIN filing initiated (Non-US Citizens)', category: 'Kvittens', date: '2026-03-29', status: 'utkast', fileType: 'pdf', size: '—', },
-
-]
+  { id: 'doc-025', companyId: 'landvex-inc', name: 'Northwest — EIN filing initiated (Non-US Citizens)', category: 'Kvittens', date: '2026-03-29', status: 'utkast', fileType: 'pdf', size: '—', }]
 
 // ─── Compliance ──────────────────────────────────────────────────────────────
 
@@ -462,5 +453,4 @@ export const COMPLIANCE_ITEMS: ComplianceItem[] = [
   // Wavult Group
   { id: 'ci-013', companyId: 'wavult-group', category: 'Licens', requirement: 'DMCC License Renewal 2026', deadline: '2026-06-01', status: 'pågår', owner: 'Dennis Bjarnemark' },
   { id: 'ci-014', companyId: 'wavult-group', category: 'Skattedeklaration', requirement: 'UAE Corporate Tax Registration', deadline: '2026-05-31', status: 'klar', owner: 'Winston Bjarnemark' },
-  { id: 'ci-015', companyId: 'wavult-group', category: 'Skattedeklaration', requirement: 'VAT Return Q1 2026', deadline: '2026-04-28', status: 'ej påbörjad', owner: 'Winston Bjarnemark' },
-]
+  { id: 'ci-015', companyId: 'wavult-group', category: 'Skattedeklaration', requirement: 'VAT Return Q1 2026', deadline: '2026-04-28', status: 'ej påbörjad', owner: 'Winston Bjarnemark' }]

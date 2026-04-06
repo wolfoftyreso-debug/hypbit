@@ -192,8 +192,7 @@ export function ProfileSettings() {
           <div style={sectionLabel}>Identitet & KYC</div>
         </div>
         {[
-          { icon: <ShieldCheck size={16} />, title: 'Passverifiering', desc: 'Ladda upp passportets bildsida + selfie för KYC-verifiering', action: 'Ladda upp', status: 'Saknas' },
-        ].map(item => (
+          { icon: <ShieldCheck size={16} />, title: 'Passverifiering', desc: 'Ladda upp passportets bildsida + selfie för KYC-verifiering', action: 'Ladda upp', status: 'Saknas' }].map(item => (
           <div key={item.title} style={rowStyle}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{ color: 'var(--color-text-tertiary)' }}>{item.icon}</div>
@@ -216,8 +215,7 @@ export function ProfileSettings() {
           <div style={sectionLabel}>Hälsa & Välmående</div>
         </div>
         {[
-          { icon: <Activity size={16} />, title: 'WHOOP-integration', desc: 'Koppla din WHOOP för sömndata, återhämtning och belastning', action: 'Koppla', status: 'Ej kopplad' },
-        ].map(item => (
+          { icon: <Activity size={16} />, title: 'WHOOP-integration', desc: 'Koppla din WHOOP för sömndata, återhämtning och belastning', action: 'Koppla', status: 'Ej kopplad' }].map(item => (
           <div key={item.title} style={{ ...rowStyle, borderBottom: 'none' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               <div style={{ color: 'var(--color-text-tertiary)' }}>{item.icon}</div>

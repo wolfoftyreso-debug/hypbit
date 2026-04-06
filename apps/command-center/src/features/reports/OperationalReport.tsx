@@ -183,8 +183,7 @@ export function OperationalReport() {
             { label: 'Danmark', value: 18, color: '#00C2FF' },
             { label: 'Norge', value: 24, color: '#FF6B35' },
             { label: 'Finland', value: 13, color: '#FF4081' },
-            { label: 'Övriga', value: 10, color: '#6B7280' },
-          ].map(item => (
+            { label: 'Övriga', value: 10, color: '#6B7280' }].map(item => (
             <div key={item.label} className="text-center">
               <p className="text-xl font-black" style={{ color: item.color }}>{item.value}</p>
               <p className="text-[9px] text-gray-9000 font-mono mt-0.5">{item.label}</p>

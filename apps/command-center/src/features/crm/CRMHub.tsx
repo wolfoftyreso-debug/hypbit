@@ -19,8 +19,7 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'deals',       label: 'Avtal' },
   { id: 'activities',  label: 'Aktiviteter' },
   { id: 'targets',     label: 'Targets' },
-  { id: 'apollo',      label: '🎯 Apollo' },
-]
+  { id: 'apollo',      label: '🎯 Apollo' }]
 
 function QuickStats() {
   const { data: stats } = useCrmPipelineStats()

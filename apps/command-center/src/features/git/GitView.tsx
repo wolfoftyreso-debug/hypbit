@@ -53,8 +53,7 @@ const slotMap: Record<string, 'live' | 'dev' | 'archive'> = {
 // ── Sites per repo — mapped from DNS data ─────────────────────────────────────
 const SITES_MAP: Record<string, RepoSite[]> = {
   'wavult-os': [
-    { url: 'os.wavult.com', label: 'Wavult OS', region: 'Global', status: 'live' },
-  ],
+    { url: 'os.wavult.com', label: 'Wavult OS', region: 'Global', status: 'live' }],
   'wavult.com': [
     { url: 'wavult.com', label: 'Main', region: 'Global', status: 'live' },
     { url: 'www.wavult.com', label: 'WWW', region: 'Global', status: 'live' },
@@ -65,26 +64,22 @@ const SITES_MAP: Record<string, RepoSite[]> = {
     { url: 'invest.wavult.com', label: 'Invest', region: 'Global', status: 'live' },
     { url: 'brief.wavult.com', label: 'Brief', region: 'Global', status: 'live' },
     { url: 'docs.wavult.com', label: 'Docs', region: 'Global', status: 'live' },
-    { url: 'status.wavult.com', label: 'Status', region: 'Global', status: 'live' },
-  ],
+    { url: 'status.wavult.com', label: 'Status', region: 'Global', status: 'live' }],
   'quixzoom.com': [
     { url: 'quixzoom.com', label: 'Main', region: 'Global', status: 'live' },
     { url: 'www.quixzoom.com', label: 'WWW', region: 'Global', status: 'live' },
     { url: 'app.quixzoom.com', label: 'App', region: 'EU', status: 'live' },
     { url: 'ads.quixzoom.com', label: 'Ads', region: 'Global', status: 'live' },
     { url: 'api.quixzoom.com', label: 'API', region: 'EU', status: 'live' },
-    { url: 'portal.quixzoom.com', label: 'Portal', region: 'Global', status: 'live' },
-  ],
+    { url: 'portal.quixzoom.com', label: 'Portal', region: 'Global', status: 'live' }],
   'landvex.com': [
     { url: 'landvex.com', label: 'Main', region: 'Global', status: 'live' },
     { url: 'www.landvex.com', label: 'WWW', region: 'Global', status: 'live' },
-    { url: 'landvex.se', label: 'SE', region: 'SE', status: 'live' },
-  ],
+    { url: 'landvex.se', label: 'SE', region: 'SE', status: 'live' }],
   'apifly.com': [
     { url: 'apifly.com', label: 'Main', region: 'Global', status: 'live' },
     { url: 'www.apifly.com', label: 'WWW', region: 'Global', status: 'live' },
-    { url: 'portal.apifly.com', label: 'Portal', region: 'Global', status: 'live' },
-  ],
+    { url: 'portal.apifly.com', label: 'Portal', region: 'Global', status: 'live' }],
   'dissg.com': [
     { url: 'dissg.com', label: '.com', region: 'Global', status: 'live' },
     { url: 'dissg.app', label: '.app', region: 'Global', status: 'live' },
@@ -92,33 +87,27 @@ const SITES_MAP: Record<string, RepoSite[]> = {
     { url: 'dissg.digital', label: '.digital', region: 'Global', status: 'live' },
     { url: 'dissg.network', label: '.network', region: 'Global', status: 'live' },
     { url: 'dissg.systems', label: '.systems', region: 'Global', status: 'live' },
-    { url: 'dissg.world', label: '.world', region: 'Global', status: 'live' },
-  ],
+    { url: 'dissg.world', label: '.world', region: 'Global', status: 'live' }],
   'uapix.com': [
     { url: 'uapix.com', label: 'Main', region: 'Global', status: 'live' },
     { url: 'www.uapix.com', label: 'WWW', region: 'Global', status: 'live' },
     { url: 'api.uapix.com', label: 'API', region: 'EU', status: 'live' },
-    { url: 'portal.uapix.com', label: 'Portal', region: 'Global', status: 'live' },
-  ],
+    { url: 'portal.uapix.com', label: 'Portal', region: 'Global', status: 'live' }],
   // wavult-core — API-infrastruktur
   'wavult-core': [
     { url: 'api.wavult.com', label: 'API', region: 'EU', status: 'live' },
     { url: 'n8n.wavult.com', label: 'n8n', region: 'EU', status: 'live' },
-    { url: 'db.wavult.com', label: 'PostgreSQL', region: 'EU', status: 'live' },
-  ],
+    { url: 'db.wavult.com', label: 'PostgreSQL', region: 'EU', status: 'live' }],
   // Gitea
   'gitea': [
-    { url: 'git.wavult.com', label: 'Gitea', region: 'EU', status: 'live' },
-  ],
+    { url: 'git.wavult.com', label: 'Gitea', region: 'EU', status: 'live' }],
   // Mobile
   'quixzoom-mobile': [
-    { url: 'app.wavult.com', label: 'App', region: 'Global', status: 'live' },
-  ],
+    { url: 'app.wavult.com', label: 'App', region: 'Global', status: 'live' }],
   // hypbit/wavult-api (legacy domain)
   'wavult-api': [
     { url: 'api.wavult.com', label: 'API', region: 'EU', status: 'live' },
-    { url: 'api.hypbit.com', label: 'API (legacy)', region: 'EU', status: 'live' },
-  ],
+    { url: 'api.hypbit.com', label: 'API (legacy)', region: 'EU', status: 'live' }],
 }
 
 function branchToSlot(branchName: string): 'live' | 'dev' | 'archive' | null {
@@ -200,8 +189,7 @@ const LockIcon = () => (
 const VIEWPORTS = [
   { id: 'desktop', label: '🖥 Desktop', width: '100%', height: '100%' },
   { id: 'ipad', label: '⬜ iPad', width: '768px', height: '1024px' },
-  { id: 'mobile', label: '📱 Mobile', width: '390px', height: '844px' },
-]
+  { id: 'mobile', label: '📱 Mobile', width: '390px', height: '844px' }]
 
 // ── Cockpit overlay ───────────────────────────────────────────────────────────
 function CockpitOverlay({
@@ -780,8 +768,7 @@ const STATUS_FILTERS: { key: RepoStatus | 'all'; label: string; color: string }[
   { key: 'live', label: '🟢 Live', color: '#2D7A4F' },
   { key: 'dev', label: '🔵 Dev', color: '#2C3E6B' },
   { key: 'offline', label: '🟡 Offline', color: '#B8760A' },
-  { key: 'archive', label: '⚪ Archive', color: 'rgba(10,61,98,.3)' },
-]
+  { key: 'archive', label: '⚪ Archive', color: 'rgba(10,61,98,.3)' }]
 
 // ── Main View ─────────────────────────────────────────────────────────────────
 export function GitView() {

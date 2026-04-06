@@ -121,15 +121,13 @@ const JURISDICTIONS: Jurisdiction[] = [
       'Minimum capital: CHF 50,000',
       'At least one Swiss-resident board member',
       'Defined public benefit purpose',
-      'Notarisation by Swiss notary',
-    ],
+      'Notarisation by Swiss notary'],
     nextSteps: [
       'Draft foundation charter with Swiss lawyer',
       'Notarise with cantonal notary',
       'Register with Handelsregister (3 weeks)',
       'Apply for tax-exempt status Art. 56 DBG (2–3 months)',
-      'Open account at Swiss cantonal bank (Cantonal Bank of Geneva recommended)',
-    ],
+      'Open account at Swiss cantonal bank (Cantonal Bank of Geneva recommended)'],
     taxAdvantage: 'Tax-exempt on donations and income under Art. 56 DBG. Global credibility for institutional fundraising. Swiss Development Cooperation (SDC) grant access.',
     category: 'nonprofit',
   },
@@ -148,19 +146,16 @@ const JURISDICTIONS: Jurisdiction[] = [
       'Articles of Incorporation (nonprofit)',
       'Mission statement (charitable purpose)',
       'Board of directors (minimum 3)',
-      'Registered agent in Delaware',
-    ],
+      'Registered agent in Delaware'],
     nextSteps: [
       'File Articles of Incorporation in Delaware ($89)',
       'Draft bylaws and conflict of interest policy',
       'Apply for EIN from IRS',
       'File Form 1023 with IRS for 501(c)(3) status ($600)',
-      'Register to solicit donations in operating states',
-    ],
+      'Register to solicit donations in operating states'],
     taxAdvantage: 'Tax-deductible donations for US donors. Access to $100B+ in US foundation grants. Required for most US corporate CSR giving.',
     category: 'nonprofit',
-  },
-]
+  }]
 
 // Pre-filled data for Wavult entities
 const WAVULT_PREFILL: Record<string, Record<string, string>> = {
@@ -219,8 +214,7 @@ export function CompanyLaunchWizard() {
     { title: 'Bolagsinfo', icon: Building2 },
     { title: 'Granska', icon: FileText },
     { title: 'Betala & Signera', icon: CreditCard },
-    { title: 'Klart', icon: CheckCircle },
-  ]
+    { title: 'Klart', icon: CheckCircle }]
 
   function copyToClipboard(text: string, key: string) {
     navigator.clipboard.writeText(text)
@@ -387,8 +381,7 @@ export function CompanyLaunchWizard() {
           <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
             {([
               { id: 'commercial', label: '🏢 Commercial', desc: 'LLC, Inc, AB, UAB, FZCO' },
-              { id: 'nonprofit', label: '🤝 Non-profit / Foundation', desc: 'Foundation, 501(c)(3)' },
-            ] as { id: EntityCategory; label: string; desc: string }[]).map(cat => (
+              { id: 'nonprofit', label: '🤝 Non-profit / Foundation', desc: 'Foundation, 501(c)(3)' }] as { id: EntityCategory; label: string; desc: string }[]).map(cat => (
               <button
                 key={cat.id}
                 onClick={() => {
@@ -532,8 +525,7 @@ export function CompanyLaunchWizard() {
               ['Registered Agent', form.useRegisteredAgent ? 'Ja — adress privat' : 'Nej — din adress används'],
               ['Organizer', form.ownerName],
               ['Kostnad', selectedJurisdiction.cost],
-              ['Beräknad tid', selectedJurisdiction.timeframe],
-            ].map(([label, value]) => (
+              ['Beräknad tid', selectedJurisdiction.timeframe]].map(([label, value]) => (
               <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 16px', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                 <span style={{ fontSize: 13, color: '#6B7280' }}>{label}</span>
                 <span style={{ fontSize: 13, fontWeight: 500, color: '#1C1C1E' }}>{value}</span>
@@ -691,8 +683,7 @@ export function CompanyLaunchWizard() {
               ['Phone', form.ownerPhone],
               ['Address', form.useRegisteredAgent ? 'Use our address (registered agent)' : form.personalAddress],
               ['Fiscal Year End', 'December 31'],
-              ['Employees', 'No (lämna omarkerat)'],
-            ].map(([label, value]) => (
+              ['Employees', 'No (lämna omarkerat)']].map(([label, value]) => (
               <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
                 <span style={{ fontSize: 12, color: '#047857', minWidth: 120 }}>{label}:</span>
                 <div style={{ display: 'flex', gap: 6, flex: 1, justifyContent: 'flex-end', alignItems: 'flex-start' }}>

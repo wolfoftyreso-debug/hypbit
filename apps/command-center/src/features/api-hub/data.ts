@@ -160,8 +160,7 @@ export const LIVE_INTEGRATIONS: APIIntegration[] = [
     icon: '📧',
     wavultUsage: 'Transaktionsmejl från erik@wavult.com (port 587 STARTTLS)',
     docsUrl: 'https://www.loopia.se/loopiamail/',
-  },
-]
+  }]
 
 // ─── ALL INTEGRATIONS (extracted from uapix categories) ──────────────────────
 export const API_INTEGRATIONS: APIIntegration[] = [
@@ -347,8 +346,7 @@ export const API_INTEGRATIONS: APIIntegration[] = [
 
   // ── PAID: Blockchain ────────────────────────────────────────────
   { id: 'alchemy', name: 'Alchemy', provider: 'Alchemy', category: 'Blockchain & Crypto', categoryId: 'blockchain-crypto', description: 'Most reliable blockchain infrastructure', status: 'available', price: 'paid', icon: '⛓️' },
-  { id: 'coinbase-commerce', name: 'Coinbase Commerce', provider: 'Coinbase', category: 'Blockchain & Crypto', categoryId: 'blockchain-crypto', description: 'Easiest crypto payment integration', status: 'available', price: 'paid', icon: '💰' },
-]
+  { id: 'coinbase-commerce', name: 'Coinbase Commerce', provider: 'Coinbase', category: 'Blockchain & Crypto', categoryId: 'blockchain-crypto', description: 'Easiest crypto payment integration', status: 'available', price: 'paid', icon: '💰' }]
 
 // ─── Category metadata ─────────────────────────────────────────────────────
 export const API_CATEGORIES: APICategory[] = [
@@ -382,8 +380,7 @@ export const API_CATEGORIES: APICategory[] = [
   { id: 'identity-verification', name: 'Identity & Verification', icon: '🪪', description: 'KYC, identity verification, fraud prevention', price: 'paid', basePrice: 690, count: 4 },
   { id: 'finance-data', name: 'Finance & Banking', icon: '🏦', description: 'Banking APIs and open banking', price: 'paid', basePrice: 990, count: 3 },
   { id: 'travel-booking', name: 'Travel & Booking', icon: '✈️', description: 'Flights, hotels and car rentals', price: 'paid', basePrice: 890, count: 3 },
-  { id: 'blockchain-crypto', name: 'Blockchain & Crypto', icon: '⛓️', description: 'Wallet APIs and crypto payments', price: 'paid', basePrice: 590, count: 2 },
-]
+  { id: 'blockchain-crypto', name: 'Blockchain & Crypto', icon: '⛓️', description: 'Wallet APIs and crypto payments', price: 'paid', basePrice: 590, count: 2 }]
 
 // ─── Static provider news (fallback) ──────────────────────────────────────
 export interface ProviderNews {
@@ -497,5 +494,4 @@ export const STATIC_PROVIDER_NEWS: ProviderNews[] = [
     category: 'Infrastructure & Cloud',
     icon: '☁️',
     type: 'new',
-  },
-]
+  }]

@@ -136,8 +136,7 @@ export const ENTITIES: Entity[] = [
     receivesFrom: ['finance-co'],
     jurisdiction: 'State of Texas, USA',
     status: 'forming',
-  },
-]
+  }]
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -200,8 +199,7 @@ export const ENTITY_FINANCE: EntityFinance[] = [
     open_items: [
       { label: 'IP transfer: code + trademarks → WGH', status: 'risk' },
       { label: 'Transfer pricing policy — external advisor needed', status: 'risk' },
-      { label: 'Emirates NBD account setup', status: 'watch' },
-    ],
+      { label: 'Emirates NBD account setup', status: 'watch' }],
   },
   {
     entity_id: 'wavult-operations',
@@ -214,8 +212,7 @@ export const ENTITY_FINANCE: EntityFinance[] = [
     billing_notes: 'WOP employs core team. Charges service fee to all opcos. Pays royalty to WGH.',
     open_items: [
       { label: 'Intercompany service agreement drafts', status: 'watch' },
-      { label: 'Team payroll structure (AED vs SEK)', status: 'watch' },
-    ],
+      { label: 'Team payroll structure (AED vs SEK)', status: 'watch' }],
   },
   {
     entity_id: 'quixzoom-uab',
@@ -228,8 +225,7 @@ export const ENTITY_FINANCE: EntityFinance[] = [
     billing_notes: 'Launch Sverige juni 2026. Revenue phase 1: quiXzoom commissions. Phase 2: Quixom Ads.',
     open_items: [
       { label: 'Stripe EU merchant account', status: 'watch' },
-      { label: 'Supabase EU GDPR compliance docs', status: 'ok' },
-    ],
+      { label: 'Supabase EU GDPR compliance docs', status: 'ok' }],
   },
   {
     entity_id: 'quixzoom-inc',
@@ -242,8 +238,7 @@ export const ENTITY_FINANCE: EntityFinance[] = [
     billing_notes: 'Delaware C-Corp for US investment readiness. No revenue yet.',
     open_items: [
       { label: 'Delaware incorporation', status: 'watch' },
-      { label: 'US Stripe + bank account', status: 'watch' },
-    ],
+      { label: 'US Stripe + bank account', status: 'watch' }],
   },
   {
     entity_id: 'landvex-inc',
@@ -256,8 +251,7 @@ export const ENTITY_FINANCE: EntityFinance[] = [
     billing_notes: 'Texas LLC. B2G pricing model. Annual subscriptions + event-based alerts.',
     open_items: [
       { label: 'Texas LLC incorporation — Dennis driving', status: 'watch' },
-      { label: 'US pilot customer pipeline', status: 'watch' },
-    ],
+      { label: 'US pilot customer pipeline', status: 'watch' }],
   },
   {
     entity_id: 'landvex-ab',
@@ -270,8 +264,7 @@ export const ENTITY_FINANCE: EntityFinance[] = [
     billing_notes: 'Landvex AB är befintligt bolag. Sverige-marknad. Pilot Q3 2026.',
     open_items: [
       { label: 'Bolags-konvertering till Landvex-varumärke', status: 'watch' },
-      { label: 'Trafikverket / kommunpipeline', status: 'watch' },
-    ],
+      { label: 'Trafikverket / kommunpipeline', status: 'watch' }],
   },
   {
     entity_id: "wavult-system",
@@ -283,10 +276,8 @@ export const ENTITY_FINANCE: EntityFinance[] = [
     intercompany_out: ['wavult-operations'],
     billing_notes: 'Wavult OS är internt. Kostnads-center under WOP.',
     open_items: [
-      { label: 'AWS cost tracking per module', status: 'watch' },
-    ],
-  },
-]
+      { label: 'AWS cost tracking per module', status: 'watch' }],
+  }]
 
 // ─── Legal data per entity ────────────────────────────────────────────────────
 
@@ -300,13 +291,11 @@ export const ENTITY_LEGAL: EntityLegal[] = [
     contracts: [
       { name: 'IP Assignment Agreement', status: 'risk', note: 'Not executed. Code must transfer to WGH.' },
       { name: 'Shareholder Agreement', status: 'watch', note: 'Drafting in progress.' },
-      { name: 'Trademark registrations', status: 'watch', note: 'quiXzoom, Wavult OS, Landvex pending.' },
-    ],
+      { name: 'Trademark registrations', status: 'watch', note: 'quiXzoom, Wavult OS, Landvex pending.' }],
     open_items: [
       { label: 'DIFC incorporation completion', status: 'watch' },
       { label: 'IP transfer from Erik personally → WGH', status: 'risk' },
-      { label: 'Transfer pricing policy', status: 'risk' },
-    ],
+      { label: 'Transfer pricing policy', status: 'risk' }],
   },
   {
     entity_id: 'wavult-operations',
@@ -316,12 +305,10 @@ export const ENTITY_LEGAL: EntityLegal[] = [
     compliance_status: 'watch',
     contracts: [
       { name: 'Intercompany Service Agreement (× 4)', status: 'watch', note: 'Service fee + SLA to all opcos.' },
-      { name: 'Employment contracts', status: 'watch', note: 'Team formalization pending structure completion.' },
-    ],
+      { name: 'Employment contracts', status: 'watch', note: 'Team formalization pending structure completion.' }],
     open_items: [
       { label: 'Intercompany agreements drafting', status: 'watch' },
-      { label: 'UAE employment law compliance', status: 'watch' },
-    ],
+      { label: 'UAE employment law compliance', status: 'watch' }],
   },
   {
     entity_id: 'quixzoom-uab',
@@ -332,12 +319,10 @@ export const ENTITY_LEGAL: EntityLegal[] = [
     contracts: [
       { name: 'Royalty Agreement (WGH ← QZ-EU)', status: 'watch', note: 'Not drafted. Part of IC package.' },
       { name: 'Zoomer T&C', status: 'watch', note: 'Consumer-facing. Needs legal review.' },
-      { name: 'GDPR Data Processing Policy', status: 'ok', note: 'Supabase EU — compliant infrastructure.' },
-    ],
+      { name: 'GDPR Data Processing Policy', status: 'ok', note: 'Supabase EU — compliant infrastructure.' }],
     open_items: [
       { label: 'UAB incorporation (Litauen)', status: 'watch' },
-      { label: 'EU VAT registration', status: 'watch' },
-    ],
+      { label: 'EU VAT registration', status: 'watch' }],
   },
   {
     entity_id: 'quixzoom-inc',
@@ -346,12 +331,10 @@ export const ENTITY_LEGAL: EntityLegal[] = [
     incorporation_status: 'not-started',
     compliance_status: 'ok',
     contracts: [
-      { name: 'Royalty Agreement (WGH ← QZ-US)', status: 'watch', note: 'Not drafted.' },
-    ],
+      { name: 'Royalty Agreement (WGH ← QZ-US)', status: 'watch', note: 'Not drafted.' }],
     open_items: [
       { label: 'Delaware C-Corp filing', status: 'watch' },
-      { label: 'US EIN + bank account', status: 'watch' },
-    ],
+      { label: 'US EIN + bank account', status: 'watch' }],
   },
   {
     entity_id: 'landvex-inc',
@@ -361,12 +344,10 @@ export const ENTITY_LEGAL: EntityLegal[] = [
     compliance_status: 'watch',
     contracts: [
       { name: 'Texas LLC Operating Agreement', status: 'watch', note: 'Dennis driving docs.' },
-      { name: 'Municipal SaaS contract template', status: 'watch', note: 'B2G contract pending.' },
-    ],
+      { name: 'Municipal SaaS contract template', status: 'watch', note: 'B2G contract pending.' }],
     open_items: [
       { label: 'Texas LLC filing — Dennis', status: 'watch' },
-      { label: 'US pilot contract template', status: 'watch' },
-    ],
+      { label: 'US pilot contract template', status: 'watch' }],
   },
   {
     entity_id: 'landvex-ab',
@@ -377,11 +358,9 @@ export const ENTITY_LEGAL: EntityLegal[] = [
     contracts: [
       { name: 'Varumärkesregistrering Landvex AB', status: 'watch', note: 'Pågår.' },
       { name: 'Kommunavtal — pilotmall', status: 'watch', note: 'Ej klar.' },
-      { name: 'Royalty Agreement (WGH ← LVX-SE)', status: 'watch', note: 'Ingår i IC-paketet.' },
-    ],
+      { name: 'Royalty Agreement (WGH ← LVX-SE)', status: 'watch', note: 'Ingår i IC-paketet.' }],
     open_items: [
-      { label: 'Namnbyte till Landvex AB formaliserat', status: 'watch' },
-    ],
+      { label: 'Namnbyte till Landvex AB formaliserat', status: 'watch' }],
   },
   {
     entity_id: "wavult-system",
@@ -391,8 +370,7 @@ export const ENTITY_LEGAL: EntityLegal[] = [
     compliance_status: 'ok',
     contracts: [],
     open_items: [],
-  },
-]
+  }]
 
 // ─── Systems data per entity ──────────────────────────────────────────────────
 
@@ -400,26 +378,21 @@ export const ENTITY_SYSTEMS: EntitySystem[] = [
   {
     entity_id: 'wavult-group',
     systems: [
-      { name: 'Wavult Group Landing', type: 'frontend', status: 'building', note: 'wolfoftyreso-debug/wavult-group → CF Pages (token pending)' },
-    ],
+      { name: 'Wavult Group Landing', type: 'frontend', status: 'building', note: 'wolfoftyreso-debug/wavult-group → CF Pages (token pending)' }],
     pipelines: [
-      { name: 'wavult-group / CF Pages Deploy', status: 'pending', last_run: 'Never — token pending' },
-    ],
+      { name: 'wavult-group / CF Pages Deploy', status: 'pending', last_run: 'Never — token pending' }],
     open_items: [
-      { label: 'CF Pages API token — Erik must create', status: 'risk' },
-    ],
+      { label: 'CF Pages API token — Erik must create', status: 'risk' }],
   },
   {
     entity_id: 'wavult-operations',
     systems: [
       { name: 'Wavult OS API', type: 'api', url: 'https://api.wavult.com', status: 'live', note: 'ECS eu-north-1 · wavult cluster' },
       { name: 'Wavult OS DB', type: 'database', status: 'live', note: 'Supabase znmxtnxx · EU West' },
-      { name: 'Wavult OS Command Center', type: 'frontend', url: 'http://localhost:5175', status: 'live', note: 'This app — local dev' },
-    ],
+      { name: 'Wavult OS Command Center', type: 'frontend', url: 'http://localhost:5175', status: 'live', note: 'This app — local dev' }],
     pipelines: [
       { name: 'Deploy API to ECS', status: 'passing', last_run: '14 min ago' },
-      { name: 'TypeScript Check', status: 'passing', last_run: '1h ago' },
-    ],
+      { name: 'TypeScript Check', status: 'passing', last_run: '1h ago' }],
     open_items: [],
   },
   {
@@ -428,52 +401,42 @@ export const ENTITY_SYSTEMS: EntitySystem[] = [
       { name: 'quiXzoom API', type: 'api', status: 'live', note: 'ECS cluster wavult · quixzoom-api · task :2' },
       { name: 'quiXzoom Frontend', type: 'frontend', url: 'https://dewrtqzc20flx.cloudfront.net', status: 'live', note: 'S3 + CloudFront · quixzoom-app-prod' },
       { name: 'quiXzoom DB', type: 'database', status: 'live', note: 'Supabase lpeipzdm · EU West · 13 migrationer' },
-      { name: 'quiXzoom Landing', type: 'frontend', status: 'building', note: 'wolfoftyreso-debug/quixzoom-landing → CF Pages' },
-    ],
+      { name: 'quiXzoom Landing', type: 'frontend', status: 'building', note: 'wolfoftyreso-debug/quixzoom-landing → CF Pages' }],
     pipelines: [
       { name: 'quixzoom-api / ECS Deploy', status: 'passing', last_run: '2h ago' },
-      { name: 'quixzoom-landing / CF Pages', status: 'passing', last_run: '5h ago' },
-    ],
+      { name: 'quixzoom-landing / CF Pages', status: 'passing', last_run: '5h ago' }],
     open_items: [
-      { label: 'Supabase US East — planerat (OI US)', status: 'watch' },
-    ],
+      { label: 'Supabase US East — planerat (OI US)', status: 'watch' }],
   },
   {
     entity_id: 'quixzoom-inc',
     systems: [
       { name: 'US API (ECS us-east-1)', type: 'api', status: 'planned', note: 'New ECS service needed in us-east-1' },
       { name: 'US Supabase instance', type: 'database', status: 'planned', note: 'Separate from EU — zero cross-region data' },
-      { name: 'US S3 storage', type: 'infra', status: 'live', note: 'wavult-images-us-primary · us-east-1 · CRR to us-west-2' },
-    ],
+      { name: 'US S3 storage', type: 'infra', status: 'live', note: 'wavult-images-us-primary · us-east-1 · CRR to us-west-2' }],
     pipelines: [],
     open_items: [
       { label: 'ECS us-east-1 service creation', status: 'watch' },
-      { label: 'Supabase US East project (planerat)', status: 'watch' },
-    ],
+      { label: 'Supabase US East project (planerat)', status: 'watch' }],
   },
   {
     entity_id: 'landvex-inc',
     systems: [
-      { name: 'OI Cloud US', type: 'frontend', url: 'https://optical-insight-us.pages.dev', status: 'planned', note: 'CF Pages — US deployment' },
-    ],
+      { name: 'OI Cloud US', type: 'frontend', url: 'https://optical-insight-us.pages.dev', status: 'planned', note: 'CF Pages — US deployment' }],
     pipelines: [],
     open_items: [
-      { label: 'optical-insight-us CF Pages deploy', status: 'watch' },
-    ],
+      { label: 'optical-insight-us CF Pages deploy', status: 'watch' }],
   },
   {
     entity_id: 'landvex-ab',
     systems: [
       { name: 'OI Cloud EU', type: 'frontend', url: 'https://optical-insight-eu.pages.dev', status: 'building', note: 'wolfoftyreso-debug/optic-insights-web → CF Pages' },
-      { name: 'OI API (ECS eu-north-1)', type: 'api', status: 'planned', note: 'Shares wavult cluster' },
-    ],
+      { name: 'OI API (ECS eu-north-1)', type: 'api', status: 'planned', note: 'Shares wavult cluster' }],
     pipelines: [
-      { name: 'optic-insights-web / CF Pages', status: 'pending', last_run: 'Token pending' },
-    ],
+      { name: 'optic-insights-web / CF Pages', status: 'pending', last_run: 'Token pending' }],
     open_items: [
       { label: 'optical-insight-eu CF Pages deploy', status: 'risk' },
-      { label: 'CF Pages token — blocks all CF Pages deploys', status: 'risk' },
-    ],
+      { label: 'CF Pages token — blocks all CF Pages deploys', status: 'risk' }],
   },
   {
     entity_id: "wavult-system",
@@ -482,18 +445,14 @@ export const ENTITY_SYSTEMS: EntitySystem[] = [
       { name: 'Supabase wavult-os', type: 'database', status: 'live', note: 'znmxtnxx · 13 tables' },
       { name: 'S3 EU Primary', type: 'infra', status: 'live', note: 'wavult-images-eu-primary · CRR → eu-backup' },
       { name: 'CloudFront', type: 'infra', status: 'live', note: 'E2QUO7HIHWWP18 · quiXzoom' },
-      { name: 'CF Pages (10 slots)', type: 'frontend', status: 'building', note: '10/10 used — cleanup needed' },
-    ],
+      { name: 'CF Pages (10 slots)', type: 'frontend', status: 'building', note: '10/10 used — cleanup needed' }],
     pipelines: [
       { name: 'wavult-os / Deploy API to ECS', status: 'passing', last_run: '14 min ago' },
-      { name: 'wavult-os / TypeScript Check', status: 'passing', last_run: '1h ago' },
-    ],
+      { name: 'wavult-os / TypeScript Check', status: 'passing', last_run: '1h ago' }],
     open_items: [
       { label: 'CF Pages slot cleanup (remove unused country variants)', status: 'risk' },
-      { label: 'CF Pages API token creation', status: 'risk' },
-    ],
-  },
-]
+      { label: 'CF Pages API token creation', status: 'risk' }],
+  }]
 
 // ─── Ops data per entity ──────────────────────────────────────────────────────
 
@@ -503,111 +462,89 @@ export const ENTITY_OPS: EntityOps[] = [
     active_work: [
       { label: 'Dubai holding — DIFC incorporation', owner: 'Dennis', status: 'active' },
       { label: 'IP ownership transfer plan', owner: 'Dennis + Erik', status: 'active' },
-      { label: 'Bolagsstruktur Dubai/EU/US', owner: 'Erik', status: 'active' },
-    ],
+      { label: 'Bolagsstruktur Dubai/EU/US', owner: 'Erik', status: 'active' }],
     deliverables: [
       { label: 'WGH legal entity complete', due: 'Q2 2026', status: 'at-risk' },
-      { label: 'Transfer pricing policy', due: 'Q2 2026', status: 'at-risk' },
-    ],
+      { label: 'Transfer pricing policy', due: 'Q2 2026', status: 'at-risk' }],
     kpis: [
       { label: 'Entities incorporated', value: '1/6', delta: '', good: false },
-      { label: 'IC agreements signed', value: '0/4', delta: '', good: false },
-    ],
+      { label: 'IC agreements signed', value: '0/4', delta: '', good: false }],
   },
   {
     entity_id: 'wavult-operations',
     active_work: [
       { label: 'Thailand Workcamp prep', owner: 'Leon', status: 'active' },
       { label: 'Team onboarding to Wavult OS', owner: 'Johan', status: 'active' },
-      { label: 'Q1 execution plan', owner: 'Leon', status: 'active' },
-    ],
+      { label: 'Q1 execution plan', owner: 'Leon', status: 'active' }],
     deliverables: [
       { label: 'Thailand Workcamp', due: '11 april 2026', status: 'on-track' },
-      { label: 'All systems live in Wavult OS', due: 'april 2026', status: 'on-track' },
-    ],
+      { label: 'All systems live in Wavult OS', due: 'april 2026', status: 'on-track' }],
     kpis: [
       { label: 'Team active', value: '5/5', delta: '', good: true },
-      { label: 'Systems live', value: '4/7', delta: '+1 this week', good: true },
-    ],
+      { label: 'Systems live', value: '4/7', delta: '+1 this week', good: true }],
   },
   {
     entity_id: 'quixzoom-uab',
     active_work: [
       { label: 'quiXzoom MVP — final features', owner: 'Erik', status: 'active' },
       { label: 'Zoomer onboarding flow', owner: 'Erik', status: 'active' },
-      { label: 'Sverige GTM — skärgård juni 2026', owner: 'Erik + Leon', status: 'active' },
-    ],
+      { label: 'Sverige GTM — skärgård juni 2026', owner: 'Erik + Leon', status: 'active' }],
     deliverables: [
       { label: 'Sverige launch', due: 'Juni 2026', status: 'on-track' },
       { label: 'Netherlands expansion', due: 'Q1 2027', status: 'on-track' },
-      { label: 'Zoomer app stores (iOS + Android)', due: 'Maj 2026', status: 'at-risk' },
-    ],
+      { label: 'Zoomer app stores (iOS + Android)', due: 'Maj 2026', status: 'at-risk' }],
     kpis: [
       { label: 'MVP progress', value: '72%', delta: '+4.2 pp/v', good: true },
       { label: 'Zoomers signed up', value: '0', delta: 'Pre-launch', good: false },
-      { label: 'Markets ready', value: '1', delta: 'Sverige', good: true },
-    ],
+      { label: 'Markets ready', value: '1', delta: 'Sverige', good: true }],
   },
   {
     entity_id: 'quixzoom-inc',
     active_work: [
-      { label: 'Delaware incorporation', owner: 'Dennis', status: 'planned' },
-    ],
+      { label: 'Delaware incorporation', owner: 'Dennis', status: 'planned' }],
     deliverables: [
-      { label: 'US entity live', due: 'Q3 2026', status: 'on-track' },
-    ],
+      { label: 'US entity live', due: 'Q3 2026', status: 'on-track' }],
     kpis: [
-      { label: 'Status', value: 'Planned', delta: '', good: false },
-    ],
+      { label: 'Status', value: 'Planned', delta: '', good: false }],
   },
   {
     entity_id: 'landvex-inc',
     active_work: [
       { label: 'Texas LLC — Dennis driving docs', owner: 'Dennis', status: 'active' },
-      { label: 'US municipal pilot pipeline', owner: 'Leon', status: 'planned' },
-    ],
+      { label: 'US municipal pilot pipeline', owner: 'Leon', status: 'planned' }],
     deliverables: [
       { label: 'Landvex Inc incorporated', due: 'Q2 2026', status: 'at-risk' },
-      { label: 'First US enterprise pilot', due: 'Q4 2026', status: 'on-track' },
-    ],
+      { label: 'First US enterprise pilot', due: 'Q4 2026', status: 'on-track' }],
     kpis: [
       { label: 'Status', value: 'Forming', delta: '', good: false },
-      { label: 'Pilot prospects', value: '0', delta: 'Pre-pipeline', good: false },
-    ],
+      { label: 'Pilot prospects', value: '0', delta: 'Pre-pipeline', good: false }],
   },
   {
     entity_id: 'landvex-ab',
     active_work: [
       { label: 'Optical Insight EU portal', owner: 'Erik', status: 'active' },
       { label: 'Landvex brand rollout', owner: 'Dennis', status: 'active' },
-      { label: 'Kommunpipeline — pilot Q3 2026', owner: 'Leon', status: 'planned' },
-    ],
+      { label: 'Kommunpipeline — pilot Q3 2026', owner: 'Leon', status: 'planned' }],
     deliverables: [
       { label: 'OI EU portal live', due: 'April 2026', status: 'at-risk' },
-      { label: 'First municipality pilot', due: 'Q3 2026', status: 'on-track' },
-    ],
+      { label: 'First municipality pilot', due: 'Q3 2026', status: 'on-track' }],
     kpis: [
       { label: 'OI progress', value: '35%', delta: '+2.1 pp/v', good: true },
-      { label: 'Pilot customers', value: '0', delta: 'Pre-launch', good: false },
-    ],
+      { label: 'Pilot customers', value: '0', delta: 'Pre-launch', good: false }],
   },
   {
     entity_id: "wavult-system",
     active_work: [
       { label: 'Command Center v2 — live build', owner: 'Erik', status: 'active' },
       { label: 'ECS multi-service setup', owner: 'Johan', status: 'active' },
-      { label: 'S3 multi-region replication', owner: 'Johan', status: 'done' },
-    ],
+      { label: 'S3 multi-region replication', owner: 'Johan', status: 'done' }],
     deliverables: [
       { label: 'All 6 modules live', due: 'April 2026', status: 'on-track' },
-      { label: 'CF Pages token + deploy pipeline', due: 'ASAP', status: 'at-risk' },
-    ],
+      { label: 'CF Pages token + deploy pipeline', due: 'ASAP', status: 'at-risk' }],
     kpis: [
       { label: 'Infrastructure', value: '85%', delta: '+1.3 pp/v', good: true },
-      { label: 'CF Pages slots free', value: '0/10', delta: 'Cleanup needed', good: false },
-    ],
-  },
-]
+      { label: 'CF Pages slots free', value: '0/10', delta: 'Cleanup needed', good: false }],
+  }]
 
 // ─── Lookup helpers ───────────────────────────────────────────────────────────
 

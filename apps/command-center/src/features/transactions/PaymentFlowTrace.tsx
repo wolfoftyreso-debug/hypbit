@@ -13,24 +13,20 @@ interface PaymentFlowTraceProps {
 const SPLIT_RULES: Record<string, Array<{ entity: string; short: string; percent: number; color: string }>> = {
   'Landvex AB': [
     { entity: 'Wavult Group Holding DMCC', short: 'WGH', percent: 12.5, color: '#6366F1' },
-    { entity: 'LandveX AC (IP royalty)', short: 'LVX-AE', percent: 8, color: '#C9A84C' },
-    { entity: 'Landvex AB (netto)', short: 'LVX-SE', percent: 79.5, color: '#3B82F6' },
-  ],
+    { entity: 'LandveX (IP royalty)', short: 'LVX-AE', percent: 8, color: '#C9A84C' },
+    { entity: 'Landvex AB (netto)', short: 'LVX-SE', percent: 79.5, color: '#3B82F6' }],
   'Landvex Inc': [
     { entity: 'Wavult Group Holding DMCC', short: 'WGH', percent: 12.5, color: '#6366F1' },
-    { entity: 'LandveX AC (IP royalty)', short: 'LVX-AE', percent: 8, color: '#C9A84C' },
-    { entity: 'Landvex Inc (netto)', short: 'LVX-US', percent: 79.5, color: '#F59E0B' },
-  ],
+    { entity: 'LandveX (IP royalty)', short: 'LVX-AE', percent: 8, color: '#C9A84C' },
+    { entity: 'Landvex Inc (netto)', short: 'LVX-US', percent: 79.5, color: '#F59E0B' }],
   'QuiXzoom UAB': [
     { entity: 'Wavult Group Holding DMCC', short: 'WGH', percent: 12.5, color: '#6366F1' },
     { entity: 'quiXzoom Inc (IP royalty)', short: 'OZ-US', percent: 8, color: '#2D7A4F' },
-    { entity: 'QuiXzoom UAB (netto)', short: 'OZ-LT', percent: 79.5, color: '#EC4899' },
-  ],
+    { entity: 'QuiXzoom UAB (netto)', short: 'OZ-LT', percent: 79.5, color: '#EC4899' }],
   'QuiXzoom Inc': [
     { entity: 'Wavult Group Holding DMCC', short: 'WGH', percent: 12.5, color: '#6366F1' },
     { entity: 'quiXzoom UAB (IP royalty)', short: 'OZ-LT', percent: 8, color: '#2D7A4F' },
-    { entity: 'QuiXzoom Inc (netto)', short: 'OZ-US', percent: 79.5, color: '#EC4899' },
-  ],
+    { entity: 'QuiXzoom Inc (netto)', short: 'OZ-US', percent: 79.5, color: '#EC4899' }],
 }
 
 function formatAmount(amount: number, currency: string): string {

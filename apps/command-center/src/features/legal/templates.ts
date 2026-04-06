@@ -33,8 +33,7 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Ange royalty-sats (% av nettointäkt)',
       'Specificera territorium och exklusivitet',
       'Inkludera sublicensieringsförbud',
-      'Reglera äganderätt vid vidareutveckling',
-    ],
+      'Reglera äganderätt vid vidareutveckling'],
   },
   {
     type: 'management_agreement',
@@ -50,8 +49,7 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Ange månadsarvode och valuta',
       'Definiera KPI:er och leveranser',
       'Inkludera uppsägningstid (minst 3 månader)',
-      'Reglera ansvarsförsäkring',
-    ],
+      'Reglera ansvarsförsäkring'],
   },
   {
     type: 'service_agreement',
@@ -67,8 +65,7 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Ange SLA-nivåer (uptime, svarstider)',
       'Definiera prisjusteringsklausul (t.ex. KPI-indexering)',
       'Inkludera dataskyddsklausul',
-      'Reglera ansvarsbegränsning och force majeure',
-    ],
+      'Reglera ansvarsbegränsning och force majeure'],
   },
   {
     type: 'shareholder_agreement',
@@ -85,8 +82,7 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Inkludera pre-emption rights (förköpsrätt)',
       'Specificera beslutsregler (enkel/kvalificerad majoritet)',
       'Reglera lock-up period och vesting för grundare',
-      'Inkludera anti-dilution-skydd',
-    ],
+      'Inkludera anti-dilution-skydd'],
   },
   {
     type: 'intercompany_loan',
@@ -102,8 +98,7 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Specificera ränta (armlängdsprincipen)',
       'Definiera amorteringsplan',
       'Inkludera events of default',
-      'Reglera skattemässig behandling',
-    ],
+      'Reglera skattemässig behandling'],
   },
   {
     type: 'employment_contract',
@@ -120,8 +115,7 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Inkludera konkurrensklausul (max 12 månader)',
       'IP-överlåtelse — allt arbetsrelaterat IP tillfaller bolaget',
       'Sekretessåtagande under och efter anställning',
-      'Reglera uppsägningstid enligt LAS',
-    ],
+      'Reglera uppsägningstid enligt LAS'],
   },
   {
     type: 'nda',
@@ -137,8 +131,7 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Ange löptid för sekretessåtagandet',
       'Inkludera undantag (offentlig info, lagstadgat krav)',
       'Reglera vad som händer vid avtalsbrott',
-      'Specificera tillämplig lag och jurisdiktion',
-    ],
+      'Specificera tillämplig lag och jurisdiktion'],
   },
   {
     type: 'data_processing_agreement',
@@ -155,8 +148,7 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Inkludera tekniska och organisatoriska säkerhetsåtgärder',
       'Reglera underbiträden och deras godkännande',
       'Inkludera standardavtalsklausuler (SCCs) vid tredjelandsöverföringar',
-      'Definiera rutiner för personuppgiftsincidenter',
-    ],
+      'Definiera rutiner för personuppgiftsincidenter'],
   },
   {
     type: 'board_resolution',
@@ -172,8 +164,7 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Dokumentera beslutet klart och entydigt',
       'Inkludera eventuella bilagor (avtal, beräkningar)',
       'Alla styrelseledamöter skriver under',
-      'Arkiveras i bolagets protokollpärm',
-    ],
+      'Arkiveras i bolagets protokollpärm'],
   },
   {
     type: 'founder_agreement',
@@ -190,8 +181,7 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Specificera vesting-schema (typiskt 4 år, 1-årig cliff)',
       'Reglera "bad leaver" och "good leaver"-scenarier',
       'Inkludera non-compete och IP-överlåtelse',
-      'Definiera dispute resolution-mekanism',
-    ],
+      'Definiera dispute resolution-mekanism'],
   },
   {
     type: 'option_agreement',
@@ -208,8 +198,7 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Specificera vesting-schema och cliff',
       'Reglera vad som händer vid exit (M&A, IPO)',
       'Inkludera "good leaver" / "bad leaver"-definitioner',
-      'Klargör skattemässig behandling (QESO i Sverige)',
-    ],
+      'Klargör skattemässig behandling (QESO i Sverige)'],
   },
   {
     type: 'consulting_agreement',
@@ -226,8 +215,7 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Inkludera sekretessåtagande',
       'Reglera IP-äganderätt till leverabler',
       'Definiera uppsägningstid',
-      'Inkludera ansvarsbegränsning',
-    ],
+      'Inkludera ansvarsbegränsning'],
   },
   {
     type: 'vendor_contract',
@@ -244,8 +232,7 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Definiera leveransvillkor (Incoterms om tillämpligt)',
       'Inkludera garantier och reklamationsrätt',
       'Reglera force majeure',
-      'Inkludera dataskyddsklausul om personuppgifter hanteras',
-    ],
+      'Inkludera dataskyddsklausul om personuppgifter hanteras'],
   },
   {
     type: 'gdpr_policy',
@@ -262,8 +249,7 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Specificera lagringstid per kategori',
       'Inkludera användarens rättigheter (tillgång, radering, portabilitet)',
       'Ange kontaktuppgifter till DPO eller ansvarig',
-      'Inkludera cookiepolicy',
-    ],
+      'Inkludera cookiepolicy'],
   },
   {
     type: 'terms_of_service',
@@ -280,8 +266,7 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Specificera betalningsvillkor och återbetalningspolicy',
       'Inkludera ansvarsbegränsning',
       'Definiera rutiner för kontostängning',
-      'Ange tillämplig lag och jurisdiktion',
-    ],
+      'Ange tillämplig lag och jurisdiktion'],
   },
   {
     type: 'investment_agreement',
@@ -298,10 +283,8 @@ export const DOCUMENT_TEMPLATES: DocumentTemplate[] = [
       'Inkludera anti-dilution-skydd (weighted average eller full ratchet)',
       'Definiera informationsrättigheter och styrelserepresentation',
       'Reglera likvidationspreferens',
-      'Inkludera drag-along och tag-along-rättigheter',
-    ],
-  },
-]
+      'Inkludera drag-along och tag-along-rättigheter'],
+  }]
 
 /** Hämta mall för given dokumenttyp */
 export function getTemplate(type: LegalDocType): DocumentTemplate | undefined {

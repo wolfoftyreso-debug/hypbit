@@ -43,8 +43,7 @@ export function AttributionView() {
         {[
           { label: 'Impressioner', value: '0' },
           { label: 'Klick', value: '0' },
-          { label: 'Konverteringar', value: '0' },
-        ].map(stat => (
+          { label: 'Konverteringar', value: '0' }].map(stat => (
           <div key={stat.label} className="bg-white border border-surface-border rounded-xl p-4 text-center">
             <div className="text-2xl font-mono text-gray-600">{stat.value}</div>
             <div className="text-xs text-gray-9000 mt-1">{stat.label}</div>

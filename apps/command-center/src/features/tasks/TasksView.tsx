@@ -154,15 +154,13 @@ const INITIAL_TASKS: Task[] = [
     column: 'done',
     tags: ['produkt'],
     entity_id: projectToEntityId('quiXzoom'),
-  },
-]
+  }]
 
 const COLUMNS: { id: Column; label: string; color: string }[] = [
   { id: 'backlog',     label: 'Backlog',    color: '#6B7280' },
   { id: 'in-progress', label: 'Pågår',      color: '#3B82F6' },
   { id: 'review',     label: 'Review',     color: '#F59E0B' },
-  { id: 'done',       label: 'Klart',      color: '#10B981' },
-]
+  { id: 'done',       label: 'Klart',      color: '#10B981' }]
 
 const PRIORITY_COLORS: Record<Priority, string> = {
   high:   '#EF4444',

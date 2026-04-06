@@ -170,8 +170,7 @@ function ChatTab() {
           content: 'Systemet är tillfälligt otillgängligt. Vi arbetar på det.',
           provider: 'error',
           fallbackUsed: true,
-        },
-      ])
+        }])
     } finally {
       setLoading(false)
     }
@@ -396,8 +395,7 @@ export function LLMHub() {
 
   const tabs = [
     { id: 'chat' as const, label: 'Chat', icon: '💬' },
-    { id: 'playground' as const, label: 'Playground', icon: '🧪' },
-  ]
+    { id: 'playground' as const, label: 'Playground', icon: '🧪' }]
 
   return (
     <div className="min-h-screen bg-[#F0EBE1] text-text-primary">

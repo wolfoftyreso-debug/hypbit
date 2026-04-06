@@ -160,8 +160,7 @@ export function BoardView() {
         {[
           { label: 'Totalt', value: counts.total, dotColor: '#6B7280' },
           { label: 'Planerade', value: counts.planerat, dotColor: '#E8B84B' },
-          { label: 'Protokoll klart', value: counts.klar, dotColor: '#22C55E' },
-        ].map(s => (
+          { label: 'Protokoll klart', value: counts.klar, dotColor: '#22C55E' }].map(s => (
           <div key={s.label} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#EDE8DC] border border-surface-border text-xs">
             <span className="h-1.5 w-1.5 rounded-full flex-shrink-0" style={{ background: s.dotColor }} />
             <span className="text-gray-9000">{s.label}:</span>

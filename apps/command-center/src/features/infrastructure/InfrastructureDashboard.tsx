@@ -299,8 +299,7 @@ function ServiceDrawer({
                 ['Kritikalitet', critLabel(service.criticalityLevel)] as [string, string],
                 ['Ägare', service.owner] as [string, string],
                 service.uptime30d !== undefined ? ['Uptime 30d', `${service.uptime30d}%`] as [string, string] : null,
-                service.endpoint ? ['Endpoint', service.endpoint] as [string, string] : null,
-              ].filter((x): x is [string, string] => x !== null).map(([k, v]) => (
+                service.endpoint ? ['Endpoint', service.endpoint] as [string, string] : null].filter((x): x is [string, string] => x !== null).map(([k, v]) => (
                 <div key={k} className="flex items-center justify-between px-3 py-2">
                   <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{k}</span>
                   <span className="text-xs font-mono text-right" style={{ color: 'var(--color-text-secondary)' }}>{v}</span>
@@ -345,8 +344,7 @@ function ServiceDrawer({
                   ['Faktura-e-post', service.billing.billingEmail],
                   service.billing.cardLastFour ? ['Kort', `****${service.billing.cardLastFour}`] : null,
                   service.billing.nextBillingDate ? ['Nästa faktura', service.billing.nextBillingDate] : null,
-                  ['Status', service.billing.status],
-                ] as ([string, string] | null)[]).filter((x): x is [string, string] => x !== null).map(([k, v]) => (
+                  ['Status', service.billing.status]] as ([string, string] | null)[]).filter((x): x is [string, string] => x !== null).map(([k, v]) => (
                   <div key={k} className="flex items-center justify-between px-3 py-2">
                     <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{k}</span>
                     <span
@@ -378,8 +376,7 @@ function ServiceDrawer({
                   service.failover.tertiary ? ['Tertiary', service.failover.tertiary] : null,
                   ['Auto-failover', service.failover.autoFailover ? 'Aktivt' : 'Manuellt'],
                   ['RTO', service.failover.rto],
-                  ['RPO', service.failover.rpo],
-                ] as ([string, string] | null)[]).filter((x): x is [string, string] => x !== null).map(([k, v]) => (
+                  ['RPO', service.failover.rpo]] as ([string, string] | null)[]).filter((x): x is [string, string] => x !== null).map(([k, v]) => (
                   <div key={k} className="flex items-center justify-between px-3 py-2">
                     <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>{k}</span>
                     <span className="text-xs font-mono" style={{ color: 'var(--color-text-secondary)' }}>{v}</span>
@@ -806,8 +803,7 @@ function Tabs({ active, onChange }: { active: Tab; onChange: (t: Tab) => void })
     { id: 'table',     label: 'Alla tjänster' },
     { id: 'alerts',    label: 'Larm' },
     { id: 'billing',   label: 'Fakturering' },
-    { id: 'failover',  label: 'Failover' },
-  ]
+    { id: 'failover',  label: 'Failover' }]
 
   return (
     <div className="flex gap-1 border-b mb-6" style={{ borderColor: 'var(--color-border)' }}>
@@ -906,8 +902,7 @@ export function InfrastructureDashboard() {
               { label: 'Operational',  value: counts.operational,       color: 'var(--color-success)',  bg: 'var(--color-success-bg)' },
               { label: 'Degraded',     value: counts.degraded,          color: 'var(--color-warning)',  bg: 'var(--color-warning-bg)' },
               { label: 'Down',         value: counts.down,              color: 'var(--color-danger)',   bg: 'var(--color-danger-bg)'  },
-              { label: 'Unknown',      value: counts.unknown,           color: 'var(--color-neutral)',  bg: 'var(--color-neutral-bg)' },
-            ] as const
+              { label: 'Unknown',      value: counts.unknown,           color: 'var(--color-neutral)',  bg: 'var(--color-neutral-bg)' }] as const
           ).map(item => (
             <div
               key={item.label}

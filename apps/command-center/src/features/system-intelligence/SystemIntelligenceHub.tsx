@@ -557,20 +557,17 @@ function StrategicOverview() {
     { event: 'zoomer_assigned', desc: 'Zoomer accepterar uppdrag och påbörjar det', color: '#3B82F6' },
     { event: 'image_captured', desc: 'Bild tagen och uppladdad — leverans sker', color: '#E8B84B' },
     { event: 'submission_reviewed', desc: 'Kvalitetsgodkänd av systemet — zoomer valideras', color: '#10B981' },
-    { event: 'payment_triggered', desc: 'Zoomer betalas — uppdragscykeln avslutas', color: '#0A3D62' },
-  ]
+    { event: 'payment_triggered', desc: 'Zoomer betalas — uppdragscykeln avslutas', color: '#0A3D62' }]
 
   const products = [
     { name: 'quiXzoom', tagline: 'Last Mile Intelligence Capture', status: 'Launch Q2 2026, Sverige', color: '#E8B84B' },
     { name: 'LandveX', tagline: 'Right control. Right cost. Right interval.', status: 'Fas 3 efter quiXzoom', color: '#0A3D62' },
-    { name: 'Quixom Ads', tagline: 'B2B dataplattform', status: 'Fas 2 monetisering', color: '#10B981' },
-  ]
+    { name: 'Quixom Ads', tagline: 'B2B dataplattform', status: 'Fas 2 monetisering', color: '#10B981' }]
 
   const gtmSteps = [
     { step: '1', label: 'quiXzoom', desc: 'Crowdsourcad bildplattform — zoomers tar uppdrag och bygger databasen', color: '#E8B84B' },
     { step: '2', label: 'Quixom Ads', desc: 'B2B dataplattform monetiserar bilddata och hyperlokal intelligens', color: '#F59E0B' },
-    { step: '3', label: 'LandveX', desc: 'Enterprise-försäljning av larm, händelserapporter och analysabonnemang till kommuner och Trafikverket', color: '#0A3D62' },
-  ]
+    { step: '3', label: 'LandveX', desc: 'Enterprise-försäljning av larm, händelserapporter och analysabonnemang till kommuner och Trafikverket', color: '#0A3D62' }]
 
   return (
     <div className="flex flex-col gap-8">
@@ -702,8 +699,7 @@ export function SystemIntelligenceHub() {
     { id: 'risker', label: 'Riskmatris', icon: '⚠️' },
     { id: 'beslut', label: 'Beslutslogg', icon: '📋' },
     { id: 'marknad', label: 'Marknadssignaler', icon: '📈' },
-    { id: 'pix', label: 'Strategi', icon: '🎯' },
-  ]
+    { id: 'pix', label: 'Strategi', icon: '🎯' }]
 
   return (
     <div className="h-full flex flex-col bg-[#F0EBE1] text-text-primary overflow-hidden">

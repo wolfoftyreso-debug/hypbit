@@ -172,8 +172,7 @@ export function QuixzoomAds() {
                   description: 'Fotgängartrafik nära butiker och handelsplatser. Identifiera potentiella kunder baserat på rörelsedata.',
                   contacts: 200,
                   price: 2490,
-                },
-              ].map(tmpl => (
+                }].map(tmpl => (
                 <div key={tmpl.name} style={{
                   background: '#FFFFFF', borderRadius: 14, padding: 20,
                   boxShadow: '0 2px 8px rgba(0,0,0,0.06)', border: '1px solid rgba(0,0,0,0.06)',
@@ -207,8 +206,7 @@ export function QuixzoomAds() {
             {[
               { label: 'Pakettitel', placeholder: 'Ex: Bryggägare Nacka 2026' },
               { label: 'Beskrivning', placeholder: 'Beskriv datasetet och vad det innehåller' },
-              { label: 'Geografiskt område', placeholder: 'Ex: Nacka, Stockholm, Sverige' },
-            ].map(field => (
+              { label: 'Geografiskt område', placeholder: 'Ex: Nacka, Stockholm, Sverige' }].map(field => (
               <div key={field.label} style={{ marginBottom: 16 }}>
                 <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: '#3C3C43CC', marginBottom: 6 }}>{field.label}</label>
                 <input placeholder={field.placeholder} style={{

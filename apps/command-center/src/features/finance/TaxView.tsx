@@ -28,8 +28,7 @@ const JURISDICTION_INFO: Record<string, JurisdictionInfo> = {
       { rate: '25%', desc: 'Standardmoms', examples: 'De flesta varor och tjänster', color: '#EF4444' },
       { rate: '12%', desc: 'Reducerad sats', examples: 'Mat, restaurang, hotell, böcker', color: '#F59E0B' },
       { rate: '6%',  desc: 'Lägsta sats', examples: 'Tidningar, persontransport, konst', color: '#10B981' },
-      { rate: '0%',  desc: 'Momsfri', examples: 'Export, finansiella tjänster, sjukvård, utbildning', color: '#6B7280' },
-    ],
+      { rate: '0%',  desc: 'Momsfri', examples: 'Export, finansiella tjänster, sjukvård, utbildning', color: '#6B7280' }],
     nextDeadlineLabel: 'Nästa momsdeadline (SE)',
     nextDeadline: (() => {
       const d = new Date(); d.setMonth(d.getMonth() + 1); d.setDate(26);
@@ -44,8 +43,7 @@ const JURISDICTION_INFO: Record<string, JurisdictionInfo> = {
     rates: [
       { rate: '5%', desc: 'Standard VAT', examples: 'De flesta varor och tjänster', color: '#F59E0B' },
       { rate: '0%', desc: 'Zero-rated', examples: 'Export, internationella tjänster, vissa livsmedel', color: '#10B981' },
-      { rate: '0%', desc: 'Exempt', examples: 'Finansiella tjänster, bostadshyra, hälso- & sjukvård', color: '#6B7280' },
-    ],
+      { rate: '0%', desc: 'Exempt', examples: 'Finansiella tjänster, bostadshyra, hälso- & sjukvård', color: '#6B7280' }],
     nextDeadlineLabel: 'Nästa VAT-retur (UAE)',
     nextDeadline: (() => {
       const d = new Date(); d.setMonth(d.getMonth() + 1); d.setDate(28);
@@ -61,8 +59,7 @@ const JURISDICTION_INFO: Record<string, JurisdictionInfo> = {
       { rate: '21%', desc: 'Standardsats', examples: 'De flesta varor och tjänster', color: '#EF4444' },
       { rate: '9%',  desc: 'Reducerad sats', examples: 'Böcker, periodiska publikationer, hotell', color: '#F59E0B' },
       { rate: '5%',  desc: 'Reducerad sats', examples: 'Läkemedel, medicinsk utrustning', color: '#10B981' },
-      { rate: '0%',  desc: 'Nollsats',  examples: 'Export utanför EU, internationell transport', color: '#6B7280' },
-    ],
+      { rate: '0%',  desc: 'Nollsats',  examples: 'Export utanför EU, internationell transport', color: '#6B7280' }],
     nextDeadlineLabel: 'Nästa momsdeadline (LT)',
     nextDeadline: (() => {
       const d = new Date(); d.setMonth(d.getMonth() + 1); d.setDate(25);
@@ -77,8 +74,7 @@ const JURISDICTION_INFO: Record<string, JurisdictionInfo> = {
     rates: [
       { rate: '6.25%', desc: 'State tax', examples: 'Tangible personal property & taxable services', color: '#EF4444' },
       { rate: '2%',    desc: 'Local tax (max)', examples: 'City/county/transit — varierar per område', color: '#F59E0B' },
-      { rate: '0%',    desc: 'Exempt', examples: 'SaaS (delvis), professionella tjänster, export', color: '#6B7280' },
-    ],
+      { rate: '0%',    desc: 'Exempt', examples: 'SaaS (delvis), professionella tjänster, export', color: '#6B7280' }],
     nextDeadlineLabel: 'Nästa sales tax-retur (TX)',
     nextDeadline: (() => {
       const d = new Date(); d.setMonth(d.getMonth() + 1); d.setDate(20);
@@ -91,8 +87,7 @@ const JURISDICTION_INFO: Record<string, JurisdictionInfo> = {
     flag: '🇺🇸',
     vatLabel: 'Delaware — ingen moms',
     rates: [
-      { rate: '0%', desc: 'Ingen moms', examples: 'Delaware har ingen statlig sales tax — en av anledningarna till att bolag registreras här', color: '#10B981' },
-    ],
+      { rate: '0%', desc: 'Ingen moms', examples: 'Delaware har ingen statlig sales tax — en av anledningarna till att bolag registreras här', color: '#10B981' }],
     nextDeadlineLabel: 'Gross Receipts Tax (DE)',
     nextDeadline: (() => {
       const d = new Date(); d.setMonth(d.getMonth() + 1); d.setDate(20);
@@ -214,8 +209,7 @@ export function TaxView() {
         {[
           { label: 'Ej rapporterade', value: unreported.length, color: '#EF4444', icon: '⚠️' },
           { label: 'Inlämnade',       value: submitted.length,  color: '#F59E0B', icon: '📤' },
-          { label: 'Betalda',         value: paid.length,       color: '#10B981', icon: '✅' },
-        ].map(s => (
+          { label: 'Betalda',         value: paid.length,       color: '#10B981', icon: '✅' }].map(s => (
           <div key={s.label} className="rounded-xl p-4 border text-center"
             style={{ background: s.color + '08', borderColor: s.color + '20' }}>
             <span className="text-xl">{s.icon}</span>

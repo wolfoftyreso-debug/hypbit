@@ -66,10 +66,8 @@ const OWNERSHIP_TREE: OwnerNode = {
           status: 'aktiv',
           color: '#ec4899',
           ownership: '100%',
-        },
-      ],
-    },
-  ],
+        }],
+    }],
 }
 
 function NodeCard({ node, depth = 0 }: { node: OwnerNode; depth?: number }) {

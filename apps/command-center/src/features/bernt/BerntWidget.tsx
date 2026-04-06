@@ -11,8 +11,7 @@ const BERNT_STARTERS = [
   'Vad är nästa prioritet?',
   'Hur ser ekonomin ut?',
   'Vad händer med quiXzoom?',
-  'Visa systemstatus',
-]
+  'Visa systemstatus']
 
 // ─── Speech Recognition ───────────────────────────────────────────────────────
 
@@ -98,8 +97,7 @@ export function BerntWidget() {
             role: 'assistant' as const,
             content: 'Hej! Vad kan jag hjälpa dig med?',
             timestamp: new Date().toISOString(),
-          },
-        ]
+          }]
       : messages
 
   useEffect(() => {

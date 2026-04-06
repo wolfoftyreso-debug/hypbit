@@ -125,8 +125,7 @@ export function GitHub() {
     try {
       const [commitsRes, actionsRes] = await Promise.all([
         fetch(`/api/git/repos/${encodeURIComponent(repo.fullName)}/commits?source=${source}`),
-        fetch(`/api/git/actions/${encodeURIComponent(repo.fullName)}?source=${source}`),
-      ])
+        fetch(`/api/git/actions/${encodeURIComponent(repo.fullName)}?source=${source}`)])
       const commits = commitsRes.ok ? (await commitsRes.json()).commits ?? [] : []
       const runs = actionsRes.ok ? (await actionsRes.json()).runs ?? [] : []
       setDetail({ repo, commits, runs, loading: false, error: null })

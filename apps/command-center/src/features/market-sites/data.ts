@@ -171,8 +171,7 @@ export const MARKET_SITES: MarketSite[] = [
           budget_monthly: 500,
           spend_to_date: 700,
           leads_generated: 54,
-        },
-      ],
+        }],
     },
     operations: {
       team_size: 3,
@@ -183,8 +182,7 @@ export const MARKET_SITES: MarketSite[] = [
       entity_linkage: 'QuiXzoom UAB (EU-LT)',
       contracts: [
         { name: 'Zoomer platform agreement', status: 'signed' },
-        { name: 'Data processing agreement (GDPR)', status: 'signed' },
-      ],
+        { name: 'Data processing agreement (GDPR)', status: 'signed' }],
     },
     rollout: {
       stages: [
@@ -193,8 +191,7 @@ export const MARKET_SITES: MarketSite[] = [
           completed: true,
           checklist: [
             { item: 'Market research completed', done: true },
-            { item: 'Entity identified (QuiXzoom UAB)', done: true },
-          ],
+            { item: 'Entity identified (QuiXzoom UAB)', done: true }],
           kpi_targets: 'N/A — planning phase',
           responsible_role_id: 'group-ceo',
         },
@@ -204,8 +201,7 @@ export const MARKET_SITES: MarketSite[] = [
           checklist: [
             { item: 'Payment rails active', done: true },
             { item: 'App configured for SE market', done: true },
-            { item: 'Legal review complete', done: true },
-          ],
+            { item: 'Legal review complete', done: true }],
           kpi_targets: 'N/A — setup phase',
           responsible_role_id: 'clo',
         },
@@ -216,8 +212,7 @@ export const MARKET_SITES: MarketSite[] = [
             { item: 'First 100 zoomers onboarded', done: true },
             { item: 'First paying customers', done: true },
             { item: '200 leads / month', done: false },
-            { item: 'Revenue target 15k USD/mo', done: false },
-          ],
+            { item: 'Revenue target 15k USD/mo', done: false }],
           kpi_targets: 'Rev: 15k/mo · Leads: 200 · Conv: 6%',
           responsible_role_id: 'ceo-ops',
         },
@@ -226,8 +221,7 @@ export const MARKET_SITES: MarketSite[] = [
           completed: false,
           checklist: [
             { item: 'Gothenburg & Malmö coverage', done: false },
-            { item: '500+ active zoomers', done: false },
-          ],
+            { item: '500+ active zoomers', done: false }],
           kpi_targets: 'Rev: 40k/mo · Growth: 30% MoM',
           responsible_role_id: 'ceo-ops',
         },
@@ -235,12 +229,10 @@ export const MARKET_SITES: MarketSite[] = [
           stage: 'mature',
           completed: false,
           checklist: [
-            { item: 'Market self-sustaining', done: false },
-          ],
+            { item: 'Market self-sustaining', done: false }],
           kpi_targets: 'Rev: 80k/mo · Churn <5%',
           responsible_role_id: 'ceo-ops',
-        },
-      ],
+        }],
     },
     alerts: [
       {
@@ -250,8 +242,7 @@ export const MARKET_SITES: MarketSite[] = [
         message: 'Lead volume 29% below monthly target',
         escalated: false,
         action_required: 'Increase paid social budget or add outbound channel',
-      },
-    ],
+      }],
     x_pct: 52,
     y_pct: 22,
   },
@@ -302,8 +293,7 @@ export const MARKET_SITES: MarketSite[] = [
           checklist: [
             { item: 'Market research', done: false },
             { item: 'Partner identification', done: false },
-            { item: 'Entity check (EU coverage ok)', done: true },
-          ],
+            { item: 'Entity check (EU coverage ok)', done: true }],
           kpi_targets: 'N/A — planning phase',
           responsible_role_id: 'group-ceo',
         },
@@ -312,8 +302,7 @@ export const MARKET_SITES: MarketSite[] = [
           completed: false,
           checklist: [
             { item: 'NL payment rails', done: false },
-            { item: 'Local compliance review', done: false },
-          ],
+            { item: 'Local compliance review', done: false }],
           kpi_targets: 'N/A — setup phase',
           responsible_role_id: 'clo',
         },
@@ -322,8 +311,7 @@ export const MARKET_SITES: MarketSite[] = [
           completed: false,
           checklist: [
             { item: 'First 50 zoomers', done: false },
-            { item: 'Initial marketing live', done: false },
-          ],
+            { item: 'Initial marketing live', done: false }],
           kpi_targets: 'Rev: 8k/mo · Leads: 100',
           responsible_role_id: 'ceo-ops',
         },
@@ -331,8 +319,7 @@ export const MARKET_SITES: MarketSite[] = [
           stage: 'scale',
           completed: false,
           checklist: [
-            { item: '200+ zoomers', done: false },
-          ],
+            { item: '200+ zoomers', done: false }],
           kpi_targets: 'Rev: 25k/mo',
           responsible_role_id: 'ceo-ops',
         },
@@ -340,12 +327,10 @@ export const MARKET_SITES: MarketSite[] = [
           stage: 'mature',
           completed: false,
           checklist: [
-            { item: 'Self-sustaining market', done: false },
-          ],
+            { item: 'Self-sustaining market', done: false }],
           kpi_targets: 'Rev: 60k/mo',
           responsible_role_id: 'ceo-ops',
-        },
-      ],
+        }],
     },
     alerts: [],
     x_pct: 48,
@@ -388,8 +373,7 @@ export const MARKET_SITES: MarketSite[] = [
           budget_monthly: 1500,
           spend_to_date: 2200,
           leads_generated: 12,
-        },
-      ],
+        }],
     },
     operations: {
       team_size: 2,
@@ -400,8 +384,7 @@ export const MARKET_SITES: MarketSite[] = [
       entity_linkage: 'Wavult Group (Dubai Free Zone LLC)',
       contracts: [
         { name: 'Smart city pilot MOU', status: 'draft' },
-        { name: 'Wavult Group operating license', status: 'signed' },
-      ],
+        { name: 'Wavult Group operating license', status: 'signed' }],
     },
     rollout: {
       stages: [
@@ -410,8 +393,7 @@ export const MARKET_SITES: MarketSite[] = [
           completed: true,
           checklist: [
             { item: 'Market identification', done: true },
-            { item: 'Government contact list built', done: true },
-          ],
+            { item: 'Government contact list built', done: true }],
           kpi_targets: 'N/A',
           responsible_role_id: 'group-ceo',
         },
@@ -422,8 +404,7 @@ export const MARKET_SITES: MarketSite[] = [
             { item: 'First government meeting', done: true },
             { item: 'MOU / pilot agreement signed', done: false },
             { item: 'Local partner identified', done: false },
-            { item: 'Entity banking active', done: true },
-          ],
+            { item: 'Entity banking active', done: true }],
           kpi_targets: 'Leads: 50 · 1 signed pilot',
           responsible_role_id: 'group-ceo',
         },
@@ -432,8 +413,7 @@ export const MARKET_SITES: MarketSite[] = [
           completed: false,
           checklist: [
             { item: 'First paid contract', done: false },
-            { item: 'Pilot deployment live', done: false },
-          ],
+            { item: 'Pilot deployment live', done: false }],
           kpi_targets: 'Rev: 30k/mo',
           responsible_role_id: 'ceo-ops',
         },
@@ -441,8 +421,7 @@ export const MARKET_SITES: MarketSite[] = [
           stage: 'scale',
           completed: false,
           checklist: [
-            { item: '3+ government contracts', done: false },
-          ],
+            { item: '3+ government contracts', done: false }],
           kpi_targets: 'Rev: 100k/mo',
           responsible_role_id: 'ceo-ops',
         },
@@ -450,12 +429,10 @@ export const MARKET_SITES: MarketSite[] = [
           stage: 'mature',
           completed: false,
           checklist: [
-            { item: 'Regional MENA expansion', done: false },
-          ],
+            { item: 'Regional MENA expansion', done: false }],
           kpi_targets: 'Rev: 200k/mo',
           responsible_role_id: 'ceo-ops',
-        },
-      ],
+        }],
     },
     alerts: [],
     x_pct: 62,
@@ -499,8 +476,7 @@ export const MARKET_SITES: MarketSite[] = [
     legal: {
       entity_linkage: 'Landvex Inc (US-TX)',
       contracts: [
-        { name: 'Texas LLC formation docs', status: 'draft' },
-      ],
+        { name: 'Texas LLC formation docs', status: 'draft' }],
     },
     rollout: {
       stages: [
@@ -510,8 +486,7 @@ export const MARKET_SITES: MarketSite[] = [
           checklist: [
             { item: 'Texas LLC formation', done: false },
             { item: 'US bank account', done: false },
-            { item: 'Federal contracting registration (SAM.gov)', done: false },
-          ],
+            { item: 'Federal contracting registration (SAM.gov)', done: false }],
           kpi_targets: 'N/A — planning',
           responsible_role_id: 'clo',
         },
@@ -520,8 +495,7 @@ export const MARKET_SITES: MarketSite[] = [
           completed: false,
           checklist: [
             { item: 'US sales rep hired', done: false },
-            { item: 'First RFP responses submitted', done: false },
-          ],
+            { item: 'First RFP responses submitted', done: false }],
           kpi_targets: 'Leads: 20',
           responsible_role_id: 'ceo-ops',
         },
@@ -529,8 +503,7 @@ export const MARKET_SITES: MarketSite[] = [
           stage: 'launch',
           completed: false,
           checklist: [
-            { item: 'First paid US contract', done: false },
-          ],
+            { item: 'First paid US contract', done: false }],
           kpi_targets: 'Rev: 50k/mo',
           responsible_role_id: 'ceo-ops',
         },
@@ -538,8 +511,7 @@ export const MARKET_SITES: MarketSite[] = [
           stage: 'scale',
           completed: false,
           checklist: [
-            { item: '5+ municipalities', done: false },
-          ],
+            { item: '5+ municipalities', done: false }],
           kpi_targets: 'Rev: 200k/mo',
           responsible_role_id: 'ceo-ops',
         },
@@ -547,12 +519,10 @@ export const MARKET_SITES: MarketSite[] = [
           stage: 'mature',
           completed: false,
           checklist: [
-            { item: 'National expansion', done: false },
-          ],
+            { item: 'National expansion', done: false }],
           kpi_targets: 'Rev: 500k/mo',
           responsible_role_id: 'ceo-ops',
-        },
-      ],
+        }],
     },
     alerts: [],
     x_pct: 20,
@@ -604,8 +574,7 @@ export const MARKET_SITES: MarketSite[] = [
           budget_monthly: 400,
           spend_to_date: 600,
           leads_generated: 33,
-        },
-      ],
+        }],
     },
     operations: {
       team_size: 4,
@@ -617,8 +586,7 @@ export const MARKET_SITES: MarketSite[] = [
       contracts: [
         { name: 'UAB operating agreement', status: 'signed' },
         { name: 'EU data residency DPA', status: 'signed' },
-        { name: 'Team employment contracts', status: 'signed' },
-      ],
+        { name: 'Team employment contracts', status: 'signed' }],
     },
     rollout: {
       stages: [
@@ -627,8 +595,7 @@ export const MARKET_SITES: MarketSite[] = [
           completed: true,
           checklist: [
             { item: 'UAB structure selected', done: true },
-            { item: 'Tax optimization confirmed', done: true },
-          ],
+            { item: 'Tax optimization confirmed', done: true }],
           kpi_targets: 'N/A',
           responsible_role_id: 'group-ceo',
         },
@@ -638,8 +605,7 @@ export const MARKET_SITES: MarketSite[] = [
           checklist: [
             { item: 'UAB incorporated', done: true },
             { item: 'Banking operational', done: true },
-            { item: 'Team hired', done: true },
-          ],
+            { item: 'Team hired', done: true }],
           kpi_targets: 'N/A',
           responsible_role_id: 'clo',
         },
@@ -648,8 +614,7 @@ export const MARKET_SITES: MarketSite[] = [
           completed: true,
           checklist: [
             { item: 'First paying clients', done: true },
-            { item: 'Hypbit deployed internally', done: true },
-          ],
+            { item: 'Hypbit deployed internally', done: true }],
           kpi_targets: 'Rev: 2k/mo',
           responsible_role_id: 'ceo-ops',
         },
@@ -659,8 +624,7 @@ export const MARKET_SITES: MarketSite[] = [
           checklist: [
             { item: 'External client onboarding', done: true },
             { item: '8k MRR target', done: false },
-            { item: 'Team expanded to 6', done: false },
-          ],
+            { item: 'Team expanded to 6', done: false }],
           kpi_targets: 'Rev: 8k/mo · Leads: 120',
           responsible_role_id: 'ceo-ops',
         },
@@ -668,12 +632,10 @@ export const MARKET_SITES: MarketSite[] = [
           stage: 'mature',
           completed: false,
           checklist: [
-            { item: 'EU market fully served from LT', done: false },
-          ],
+            { item: 'EU market fully served from LT', done: false }],
           kpi_targets: 'Rev: 20k/mo',
           responsible_role_id: 'ceo-ops',
-        },
-      ],
+        }],
     },
     alerts: [],
     x_pct: 55,
@@ -716,8 +678,7 @@ export const MARKET_SITES: MarketSite[] = [
           budget_monthly: 1000,
           spend_to_date: 0,
           leads_generated: 0,
-        },
-      ],
+        }],
     },
     operations: {
       team_size: 0,
@@ -728,8 +689,7 @@ export const MARKET_SITES: MarketSite[] = [
       entity_linkage: 'QuiXzoom UAB (EU-LT) — operating license TBD',
       contracts: [
         { name: 'Workcamp venue contract', status: 'signed' },
-        { name: 'TH operating license', status: 'draft' },
-      ],
+        { name: 'TH operating license', status: 'draft' }],
     },
     rollout: {
       stages: [
@@ -739,8 +699,7 @@ export const MARKET_SITES: MarketSite[] = [
           checklist: [
             { item: 'Workcamp dates confirmed (Apr 11)', done: true },
             { item: 'Venue booked', done: true },
-            { item: 'Team travel arranged', done: true },
-          ],
+            { item: 'Team travel arranged', done: true }],
           kpi_targets: 'N/A',
           responsible_role_id: 'group-ceo',
         },
@@ -751,8 +710,7 @@ export const MARKET_SITES: MarketSite[] = [
             { item: 'Team on-ground (Apr 11)', done: false },
             { item: 'Week 1 training complete', done: false },
             { item: 'TH operating license obtained', done: false },
-            { item: 'First 10 zoomers recruited', done: false },
-          ],
+            { item: 'First 10 zoomers recruited', done: false }],
           kpi_targets: 'Leads: 10 · Zoomers: 10',
           responsible_role_id: 'ceo-ops',
         },
@@ -761,8 +719,7 @@ export const MARKET_SITES: MarketSite[] = [
           completed: false,
           checklist: [
             { item: 'App live in TH market', done: false },
-            { item: 'First paying bookings', done: false },
-          ],
+            { item: 'First paying bookings', done: false }],
           kpi_targets: 'Rev: 5k/mo · Leads: 30',
           responsible_role_id: 'ceo-ops',
         },
@@ -770,8 +727,7 @@ export const MARKET_SITES: MarketSite[] = [
           stage: 'scale',
           completed: false,
           checklist: [
-            { item: 'Bangkok + Phuket coverage', done: false },
-          ],
+            { item: 'Bangkok + Phuket coverage', done: false }],
           kpi_targets: 'Rev: 15k/mo',
           responsible_role_id: 'ceo-ops',
         },
@@ -779,15 +735,12 @@ export const MARKET_SITES: MarketSite[] = [
           stage: 'mature',
           completed: false,
           checklist: [
-            { item: 'APAC hub operational', done: false },
-          ],
+            { item: 'APAC hub operational', done: false }],
           kpi_targets: 'Rev: 40k/mo',
           responsible_role_id: 'ceo-ops',
-        },
-      ],
+        }],
     },
     alerts: [],
     x_pct: 76,
     y_pct: 46,
-  },
-]
+  }]

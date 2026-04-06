@@ -4137,8 +4137,7 @@ eller investerare rekommenderas anpassade bylaws upprättade av advokat.
 
 ## Fil
 \`legal/landvex-inc/bylaws.pdf\``,
-  },
-]
+  }]
 
 // ─── Knowledge Graph Nodes ────────────────────────────────────────────────────
 
@@ -4498,5 +4497,4 @@ export const IDEA_PORTFOLIO = [
     potential: 'Referensdokument för Thailand-workcamp-bygge',
     tags: ['Dokumentation', 'Devteam', 'RFP', 'Moduler'],
     repo: 'projekt-q',
-  },
-]
+  }]

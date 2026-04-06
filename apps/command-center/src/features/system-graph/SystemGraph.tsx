@@ -155,8 +155,7 @@ const INITIAL_NODES: SystemNode[] = [
     metrics: { latency: 14, load: 8, rps: 120, errors: 0.0, uptime: 99.9 },
     description: 'Job queue: DEADLINE_CHECK (5m), RECONCILE (10m), FLOW (15m).',
     dependencies: ['postgres-wavult'], logs: ['[INFO] DEADLINE_CHECK: 0 overdue', '[INFO] RECONCILE: pass', '[INFO] Loop: 500ms stable'],
-  },
-]
+  }]
 
 const EDGES: SystemEdge[] = [
   // Critical path
@@ -177,8 +176,7 @@ const EDGES: SystemEdge[] = [
   { id: 'e14', from: 'kafka', to: 'n8n', critical: false, label: 'events' },
   { id: 'e15', from: 'bos-scheduler', to: 'postgres-wavult', critical: false },
   { id: 'e16', from: 'landvex-api', to: 'kafka', critical: false },
-  { id: 'e17', from: 'wavult-core', to: 'postgres-wavult', critical: false },
-]
+  { id: 'e17', from: 'wavult-core', to: 'postgres-wavult', critical: false }]
 
 // ─── Zone config ──────────────────────────────────────────────────────────────
 
@@ -300,8 +298,7 @@ function NodeCard({
           { label: 'LATENCY', value: `${Math.round(node.metrics.latency)}ms`, color: node.metrics.latency > 200 ? '#F59E0B' : '#8A8A9A' },
           { label: 'RPS', value: fmtRps(node.metrics.rps), color: '#8A8A9A' },
           { label: 'LOAD', value: `${Math.round(node.metrics.load)}%`, color: lc },
-          { label: 'ERRORS', value: `${node.metrics.errors.toFixed(1)}%`, color: node.metrics.errors > 1 ? '#EF4444' : '#8A8A9A' },
-        ].map(m => (
+          { label: 'ERRORS', value: `${node.metrics.errors.toFixed(1)}%`, color: node.metrics.errors > 1 ? '#EF4444' : '#8A8A9A' }].map(m => (
           <div key={m.label}>
             <div style={{ fontSize: 7, color: '#8A8A9A', letterSpacing: '0.1em', marginBottom: 1 }}>{m.label}</div>
             <div style={{ fontSize: 11, fontWeight: 700, color: m.color, fontVariantNumeric: 'tabular-nums' }}>{m.value}</div>
@@ -465,8 +462,7 @@ function DetailPanel({ node, onClose }: { node: SystemNode; onClose: () => void 
             { k: 'Throughput', v: `${fmtRps(node.metrics.rps)} rps` },
             { k: 'Load', v: `${Math.round(node.metrics.load)}%`, c: loadColor(node.metrics.load) },
             { k: 'Errors', v: `${node.metrics.errors.toFixed(2)}%`, c: node.metrics.errors > 1 ? '#EF4444' : undefined },
-            { k: 'Uptime 30d', v: `${node.metrics.uptime.toFixed(2)}%` },
-          ].map(m => (
+            { k: 'Uptime 30d', v: `${node.metrics.uptime.toFixed(2)}%` }].map(m => (
             <div key={m.k}>
               <div style={{ fontSize: 8, color: '#8A8A9A', letterSpacing: '0.08em', marginBottom: 3 }}>{m.k.toUpperCase()}</div>
               <div style={{ fontSize: 14, fontWeight: 700, color: m.c ?? '#8A8A9A', fontVariantNumeric: 'tabular-nums' }}>{m.v}</div>
@@ -601,8 +597,7 @@ export function SystemGraph() {
           { label: 'DEGRADED', value: String(degradedCount), color: degradedCount > 0 ? '#F59E0B' : '#3F3F46' },
           { label: 'CRITICAL ALERTS', value: String(criticalAlerts), color: criticalAlerts > 0 ? '#EF4444' : '#3F3F46' },
           { label: 'THROUGHPUT', value: `${fmtRps(totalRps)} req/s`, color: '#8A8A9A' },
-          { label: 'AVG LATENCY', value: `${avgLatency} ms`, color: avgLatency > 100 ? '#F59E0B' : '#8A8A9A' },
-        ].map(s => (
+          { label: 'AVG LATENCY', value: `${avgLatency} ms`, color: avgLatency > 100 ? '#F59E0B' : '#8A8A9A' }].map(s => (
           <div key={s.label} style={{ paddingLeft: 24, paddingRight: 24, borderRight: '1px solid #1A1A1A' }}>
             <div style={{ fontSize: 7, color: '#8A8A9A', letterSpacing: '0.1em', marginBottom: 2 }}>{s.label}</div>
             <div style={{ fontSize: 13, fontWeight: 700, color: s.color, fontVariantNumeric: 'tabular-nums' }}>{s.value}</div>
@@ -684,8 +679,7 @@ export function SystemGraph() {
         <div style={{ display: 'flex', gap: 16 }}>
           {[
             { color: '#10B981', dash: false, label: 'Critical path' },
-            { color: '#DDD5C5', dash: true, label: 'Secondary' },
-          ].map(e => (
+            { color: '#DDD5C5', dash: true, label: 'Secondary' }].map(e => (
             <div key={e.label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <svg width="20" height="8">
                 <line x1="0" y1="4" x2="20" y2="4"

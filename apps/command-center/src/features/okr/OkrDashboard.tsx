@@ -11,8 +11,7 @@ const ENTITIES = [
   { value: 'wavult-os', label: 'Wavult OS' },
   { value: 'quixzoom', label: 'quiXzoom' },
   { value: 'landvex', label: 'Landvex' },
-  { value: 'holding', label: 'Holding' },
-]
+  { value: 'holding', label: 'Holding' }]
 
 const CONFIDENCE_CONFIG: Record<Confidence, { label: string; color: string }> = {
   at_risk:  { label: 'At Risk',   color: '#ef4444' },

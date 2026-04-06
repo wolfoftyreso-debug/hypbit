@@ -15,8 +15,7 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: 'payslips',   label: 'Lönespecar',              icon: '📄' },
   { id: 'run',        label: 'Lönekörning',             icon: '▶' },
   { id: 'tax',        label: 'Skatt & Arbetsgivaravg.', icon: '🏛' },
-  { id: 'leave',      label: 'Semester & Ledighet',     icon: '🌴' },
-]
+  { id: 'leave',      label: 'Semester & Ledighet',     icon: '🌴' }]
 
 export function PayrollHub() {
   const [activeTab, setActiveTab] = useState<Tab>('overview')

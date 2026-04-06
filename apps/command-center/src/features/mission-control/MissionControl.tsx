@@ -207,8 +207,7 @@ export function MissionControl() {
       value: '333 dagar',
       status: 'yellow',
       icon: TrendingUp,
-    },
-  ]
+    }]
 
   const statusConfig = {
     red: {

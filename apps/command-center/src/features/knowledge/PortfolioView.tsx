@@ -16,8 +16,7 @@ const DOMAIN_GROUPS = [
   { label: 'Data & Samhälle', ids: ['dissg', 'strimdev'] },
   { label: 'Fintech & Affär', ids: ['vision-kredit-byggare', 'lucid-bridge-build', 'smart-founder-engine'] },
   { label: 'E-handel & Hälsa', ids: ['honest-shelves-builder'] },
-  { label: 'Verktyg & Content', ids: ['it-insight-weaver', 'story-weaver-ai', 'projekt-q'] },
-]
+  { label: 'Verktyg & Content', ids: ['it-insight-weaver', 'story-weaver-ai', 'projekt-q'] }]
 
 export function PortfolioView() {
   const [selected, setSelected] = useState<string | null>(null)

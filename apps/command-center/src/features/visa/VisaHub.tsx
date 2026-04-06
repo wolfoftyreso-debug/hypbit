@@ -77,8 +77,7 @@ function getInitials(name: string): string {
 
 const AVATAR_COLORS = [
   'bg-blue-200', 'bg-purple-200', 'bg-amber-200',
-  'bg-emerald-200', 'bg-rose-200', 'bg-teal-200', 'bg-indigo-200',
-]
+  'bg-emerald-200', 'bg-rose-200', 'bg-teal-200', 'bg-indigo-200']
 
 function avatarColor(personId: string): string {
   let hash = 0
@@ -122,8 +121,7 @@ function StatsRow({ apps }: { apps: VisaApplication[] }) {
       value: `${complete}/${totalMembers}`,
       sub:   'teammedlemmar klara',
       accent: 'text-emerald-400',
-    },
-  ]
+    }]
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -611,8 +609,7 @@ export function VisaHub() {
     { key: 'UAE',      label: '🇦🇪 UAE' },
     { key: 'TH',       label: '🇹🇭 Thailand' },
     { key: 'active',   label: 'Aktiva' },
-    { key: 'approved', label: 'Godkända' },
-  ]
+    { key: 'approved', label: 'Godkända' }]
 
   // Thailand deadline banner (baserat på live-data, inte hårdkodat)
   const thApps = applications.filter(a => a.country === 'TH' && a.status !== 'approved')

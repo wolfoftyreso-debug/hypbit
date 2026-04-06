@@ -40,8 +40,7 @@ export function useAccounting(entityId: string) {
     try {
       const [jRes, aRes] = await Promise.allSettled([
         apiFetch(`/api/accounting/${entityId}/journal`),
-        apiFetch(`/api/accounting/${entityId}/accounts`),
-      ])
+        apiFetch(`/api/accounting/${entityId}/accounts`)])
       if (jRes.status === 'fulfilled' && jRes.value.ok) setJournal(await jRes.value.json())
       if (aRes.status === 'fulfilled' && aRes.value.ok) setAccounts(await aRes.value.json())
     } catch {} finally { setLoading(false) }

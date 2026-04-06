@@ -251,8 +251,7 @@ export const TASKS: Task[] = [
     assignedAt: '2026-03-28',
     completedAt: null,
     validationRequired: false,
-  },
-]
+  }]
 
 export const FLOWS: Flow[] = [
   {
@@ -326,8 +325,7 @@ export const FLOWS: Flow[] = [
     description: 'IP-licens och management fee fakturering',
     tasks: ['finance-002', 'finance-003'],
     state: 'blocked',
-  },
-]
+  }]
 
 // Person registry for display purposes
 export const PERSONS: Record<string, { name: string; role: string }> = {

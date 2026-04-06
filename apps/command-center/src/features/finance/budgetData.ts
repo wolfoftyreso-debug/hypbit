@@ -469,8 +469,7 @@ export const BUDGET_LINES_2026: BudgetLine[] = [
     owner: 'Johan Berglund',
     type: 'engangskostnad',
     entity: 'Wavult DevOps FZCO',
-  },
-]
+  }]
 
 // ─── Category meta ────────────────────────────────────────────────────────────
 
@@ -778,5 +777,4 @@ export const ACTIVITY_PLAN: ActivityItem[] = [
     owner: 'Erik Svensson',
     project: 'Övrigt',
     status: 'planerad',
-  },
-]
+  }]

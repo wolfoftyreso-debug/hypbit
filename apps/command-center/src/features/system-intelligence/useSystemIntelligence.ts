@@ -122,8 +122,7 @@ export function useSystemIntelligence(): SystemIntelligenceData {
           apiFetch('/v1/qms/entities'),
           apiFetch('/v1/qms/wavult-os/controls'),
           apiFetch('/api/intelligence/signals'),
-          apiFetch('/api/decisions/meetings'),
-        ])
+          apiFetch('/api/decisions/meetings')])
 
         if (cancelled) return
 

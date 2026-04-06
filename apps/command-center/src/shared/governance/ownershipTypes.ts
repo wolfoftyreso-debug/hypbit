@@ -103,5 +103,4 @@ export const DOMAIN_META: DomainMeta[] = [
   { code: 'OPS',   label: 'Operations',  description: 'Operativ styrning & lansering' },
   { code: 'TECH',  label: 'Teknik',      description: 'Infrastruktur & deployment' },
   { code: 'STRAT', label: 'Strategi',    description: 'Go-to-market & expansion' },
-  { code: 'HR',    label: 'HR',          description: 'Personal & organisation' },
-]
+  { code: 'HR',    label: 'HR',          description: 'Personal & organisation' }]

@@ -96,25 +96,21 @@ const EMPTY_CONFIG: FoundingConfigData = {
     'Hiring decisions',
     'Press releases',
     'Social media posts',
-    'Bank transfers > 10k SEK',
-  ],
+    'Bank transfers > 10k SEK'],
 
   core_values: [
     'No shortcuts',
     'Enterprise from day one',
     'Own your infrastructure',
-    'Friction removal is the product',
-  ],
+    'Friction removal is the product'],
   decision_principles: [
     'Every dollar must save at least two in friction',
     'Build for production always',
-    'No mock data ever in production',
-  ],
+    'No mock data ever in production'],
   non_negotiables: [
     'Never expose PII directly',
     'CEO approves all production deploys',
-    'Audit trail on every financial transaction',
-  ],
+    'Audit trail on every financial transaction'],
 }
 
 // ── Section components ────────────────────────────────────────────────────────
@@ -577,8 +573,7 @@ export function FoundingConfig({ onComplete }: Props) {
                   { key: 'can_book_meetings', label: 'Book meetings in your calendar' },
                   { key: 'can_deploy_to_staging', label: 'Deploy to staging / dev' },
                   { key: 'can_deploy_to_production', label: 'Deploy to production' },
-                  { key: 'can_post_social_media', label: 'Post on social media' },
-                ].map(({ key, label }) => (
+                  { key: 'can_post_social_media', label: 'Post on social media' }].map(({ key, label }) => (
                   <label
                     key={key}
                     style={{

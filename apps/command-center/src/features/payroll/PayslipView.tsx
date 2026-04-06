@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { usePayroll, type Employee } from './hooks/usePayroll'
 
 const MONTHS = [
-  '2026-03', '2026-02', '2026-01', '2025-12', '2025-11', '2025-10',
-]
+  '2026-03', '2026-02', '2026-01', '2025-12', '2025-11', '2025-10']
 
 function PayslipDetail({ emp, period, calcSalary, fmt, fmtPeriod, EMPLOYER_TAX_RATE }: {
   emp: Employee;

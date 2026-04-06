@@ -20,8 +20,7 @@ const AUDIENCE_TABS: AudienceTab[] = [
   { id: 'staff',    label: 'Personal',    icon: '👤' },
   { id: 'supplier', label: 'Leverantörer', icon: '🏭' },
   { id: 'partner',  label: 'Partners',    icon: '🤝' },
-  { id: 'customer', label: 'Kunder',      icon: '📋' },
-]
+  { id: 'customer', label: 'Kunder',      icon: '📋' }]
 
 // ─── Products per entity ──────────────────────────────────────────────────────
 
@@ -215,8 +214,7 @@ function InvestorView({ entity }: { entity: Entity }) {
             {[
               { label: 'Revenue',    value: '—',                              sub: 'Pre-revenue' },
               { label: 'Entiteter', value: `${1 + children.length}`,          sub: 'inkl dotterbolag' },
-              { label: 'Compliance', value: '—',                              sub: 'Hämtas från API' },
-            ].map(kpi => (
+              { label: 'Compliance', value: '—',                              sub: 'Hämtas från API' }].map(kpi => (
               <div key={kpi.label} className="flex items-center justify-between p-3 rounded-xl bg-[#F5F0E8]">
                 <div>
                   <div className="text-xs text-gray-500">{kpi.label}</div>
@@ -353,8 +351,7 @@ function PartnersView() {
             {
               title: 'Teknikpartner',
               desc: 'Bygg tillägg och tjänster ovanpå Wavult-plattformen med fullständig API-access.',
-            },
-          ].map(item => (
+            }].map(item => (
             <div key={item.title} className="rounded-xl bg-[#F5F0E8] p-4 border border-[#DDD5C5]">
               <div className="font-bold text-[#0A3D62] text-sm mb-1">{item.title}</div>
               <div className="text-xs text-[#5A5245]">{item.desc}</div>
@@ -369,8 +366,7 @@ function PartnersView() {
             { step: '1', title: 'Inledande dialog',   desc: 'Kontakta oss för att utforska partnerskap' },
             { step: '2', title: 'NDA & LOI',           desc: 'Sekretessavtal och avsiktsförklaring' },
             { step: '3', title: 'Partneravtal',        desc: 'Villkor, scope och kommersiella termer' },
-            { step: '4', title: 'Teknisk onboarding',  desc: 'API-nyckel, sandbox och dokumentation' },
-          ].map(s => (
+            { step: '4', title: 'Teknisk onboarding',  desc: 'API-nyckel, sandbox och dokumentation' }].map(s => (
             <div key={s.step} className="flex items-start gap-3 rounded-xl border border-[#DDD5C5] bg-white px-4 py-3">
               <div className="w-6 h-6 rounded-full bg-[#E8B84B] text-white text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
                 {s.step}

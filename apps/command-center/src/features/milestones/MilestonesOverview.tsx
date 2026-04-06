@@ -166,8 +166,7 @@ export function MilestonesOverview() {
       status: r.status,
       deadline: r.deadline as string,
       owner: r.owner ?? '',
-    })),
-  ]
+    }))]
 
   const total = allMilestones.length
   const done = allMilestones.filter(m => m.status === 'done').length

@@ -11,8 +11,7 @@ const FALLBACK_ROUTES: ApiRoute[] = [
   { method: 'GET',  path: '/v1/objects', description: 'LandveX-objekt', status: 'live' },
   { method: 'POST', path: '/api/voice/inbound', description: 'Röstsamtal webhook', status: 'live' },
   { method: 'GET',  path: '/identity/verify', description: 'KYC-verifiering', status: 'draft' },
-  { method: 'POST', path: '/revolut/webhook', description: 'Betalningshändelser', status: 'draft' },
-]
+  { method: 'POST', path: '/revolut/webhook', description: 'Betalningshändelser', status: 'draft' }]
 
 function useApiflyRoutes() {
   const [routes, setRoutes] = useState<ApiRoute[]>([])

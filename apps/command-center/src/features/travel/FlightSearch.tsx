@@ -21,8 +21,7 @@ const QUICK_ROUTES = [
   { label: 'BKK → Surat Thani', from: 'BKK', to: 'URT' },
   { label: 'HKT → Shenzhen',    from: 'HKT', to: 'SZX' },
   { label: 'HKT → Arlanda',     from: 'HKT', to: 'ARN' },
-  { label: 'ARN → Bangkok',     from: 'ARN', to: 'BKK' },
-]
+  { label: 'ARN → Bangkok',     from: 'ARN', to: 'BKK' }]
 
 export function FlightSearch() {
   const [origin, setOrigin]           = useState('BKK')

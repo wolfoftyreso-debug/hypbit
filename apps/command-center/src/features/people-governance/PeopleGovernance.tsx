@@ -126,8 +126,7 @@ const PEOPLE: Person[] = [
     startDate: '2024-02-01',
     certifications: [],
     isActive: true,
-  },
-]
+  }]
 
 // ─── Icons (inline SVG — no lucide-react dependency issues) ───────────────────
 
@@ -222,8 +221,7 @@ function PersonDetail({ person, discProfile, onClose }: {
                 ['📧', person.email],
                 ['📱', person.phone ?? '—'],
                 ['🏢', person.entityId],
-                ['📅', `Startdatum: ${person.startDate}`],
-              ] as [string, string][]
+                ['📅', `Startdatum: ${person.startDate}`]] as [string, string][]
             ).map(([icon, value]) => (
               <div key={`${icon}-${value}`} style={{ display: 'flex', gap: 10, alignItems: 'center', fontSize: 13, color: '#374151' }}>
                 <span style={{ width: 18, textAlign: 'center' }}>{icon}</span>
@@ -318,8 +316,7 @@ function PersonDetail({ person, discProfile, onClose }: {
                   { label: 'Recovery', value: '—', unit: '/100', color: '#6B7280' },
                   { label: 'Sömn', value: '—', unit: '%', color: '#6B7280' },
                   { label: 'HRV', value: '—', unit: 'ms', color: '#6B7280' },
-                  { label: 'Strain', value: '—', unit: '/21', color: '#6B7280' },
-                ].map(m => (
+                  { label: 'Strain', value: '—', unit: '/21', color: '#6B7280' }].map(m => (
                   <div key={m.label} style={{ textAlign: 'center', padding: '10px', background: 'white', borderRadius: 8 }}>
                     <div style={{ fontSize: 20, fontWeight: 700, color: m.color }}>{m.value}</div>
                     <div style={{ fontSize: 10, color: '#8E8E93' }}>{m.label} {m.unit}</div>
@@ -626,8 +623,7 @@ export function PeopleGovernance() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
         {[
           { label: 'Teamstorlek', value: String(PEOPLE.length) },
-          { label: 'Hälsosnaps', value: String(HEALTH_DATA.length) },
-        ].map(stat => (
+          { label: 'Hälsosnaps', value: String(HEALTH_DATA.length) }].map(stat => (
           <div key={stat.label} style={{
             background: '#FFFFFF', border: '1px solid rgba(0,0,0,0.08)',
             borderRadius: 12, padding: '14px 18px',
@@ -705,8 +701,7 @@ export function PeopleGovernance() {
                   ['Passnummer', selectedPassport.passportNumber || '—'],
                   ['Giltigt till', selectedPassport.expiry || '—'],
                   ['Nationalitet', 'Sverige'],
-                  ['KYC-status', selectedPassport.hasPassport ? '✅ Verifierat' : '❌ Saknas'],
-                ] as [string, string][]
+                  ['KYC-status', selectedPassport.hasPassport ? '✅ Verifierat' : '❌ Saknas']] as [string, string][]
               ).map(([label, value]) => (
                 <div key={label} style={{ background: '#F9FAFB', borderRadius: 8, padding: '10px 14px' }}>
                   <div style={{ fontSize: 10, fontWeight: 600, color: '#8E8E93', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4 }}>{label}</div>

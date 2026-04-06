@@ -114,8 +114,7 @@ function OperationalMetrics() {
     { label: 'Resolved Today', value: String(resolvedEvents.length), color: '#4A7A5B' },
     { label: 'Avg Response', value: `${momentum.averageResponseMinutes}m`, color: '#4A7A9B' },
     { label: 'Escalated', value: String(momentum.escalatedCount), color: momentum.escalatedCount > 0 ? '#D94040' : '#3D4452' },
-    { label: 'Streak', value: String(momentum.streakLength), color: momentum.velocity === 'high' ? '#4A7A5B' : '#C4961A' },
-  ]
+    { label: 'Streak', value: String(momentum.streakLength), color: momentum.velocity === 'high' ? '#4A7A5B' : '#C4961A' }]
 
   return (
     <StatusSection title="Operational Metrics">
@@ -142,8 +141,7 @@ function NavigationGrid() {
     { label: 'Alerts', route: '/incidents', desc: 'KPI anomalies & actions' },
     { label: 'Market Map', route: '/markets', desc: 'Geographic deployment' },
     { label: 'Campaign OS', route: '/campaigns', desc: 'Growth operations' },
-    { label: 'Legal Hub', route: '/legal', desc: 'Contracts & compliance' },
-  ]
+    { label: 'Legal Hub', route: '/legal', desc: 'Contracts & compliance' }]
 
   return (
     <StatusSection title="Status Surfaces">

@@ -51,8 +51,7 @@ const TABS: Array<{ id: Tab; label: string; icon: string }> = [
   { id: 'invoices',     label: 'Fakturor',      icon: '🧾' },
   { id: 'payments',     label: 'Betalningar',   icon: '💸' },
   { id: 'intercompany', label: 'Internprisning', icon: '🌍' },
-  { id: 'tax',          label: 'Skatt & Moms',  icon: '🏦' },
-]
+  { id: 'tax',          label: 'Skatt & Moms',  icon: '🏦' }]
 
 export function FinanceHub() {
   const { t: _t } = useTranslation()

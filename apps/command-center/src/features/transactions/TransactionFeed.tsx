@@ -103,9 +103,7 @@ const TRANSACTIONS: Transaction[] = [
   // Lovable Labs — feb 2026 extra (ej inlagda tidigare)
   { id: 'hist-011', date: '2026-02-01', title: 'Lovable Labs — kvitto #2068 (€1125)', counterparty: 'Lovable Labs Inc.', entity: 'Wavult Group', type: 'expense', amount: -12938, currency: 'SEK', status: 'pending', category: 'Mjukvara', reference: 'LOV-2068-FEB' },
   { id: 'hist-012', date: '2026-02-13', title: 'Lovable Labs — prenumeration feb (€2250)', counterparty: 'Lovable Labs Inc.', entity: 'Wavult Group', type: 'expense', amount: -25875, currency: 'SEK', status: 'pending', category: 'Mjukvara', reference: 'LOV-2494-FEB' },
-  { id: 'hist-013', date: '2026-02-15', title: 'Lovable Labs — kvitto #2605 ($100)', counterparty: 'Lovable Labs Inc.', entity: 'Wavult Group', type: 'expense', amount: -1050, currency: 'SEK', status: 'pending', category: 'Mjukvara', reference: 'LOV-2605-FEB' },
-
-]
+  { id: 'hist-013', date: '2026-02-15', title: 'Lovable Labs — kvitto #2605 ($100)', counterparty: 'Lovable Labs Inc.', entity: 'Wavult Group', type: 'expense', amount: -1050, currency: 'SEK', status: 'pending', category: 'Mjukvara', reference: 'LOV-2605-FEB' }]
 
 const STATUS_LABELS: Record<TxStatus, { label: string; color: string; bg: string }> = {
   paid:      { label: 'Betald',     color: '#374151', bg: '#F3F4F6' },
@@ -167,8 +165,7 @@ export function TransactionFeed() {
   const liveIds = new Set(liveTransactions.map(t => t.id))
   const allTransactions = [
     ...liveTransactions,
-    ...TRANSACTIONS.filter(t => !liveIds.has(t.id)),
-  ]
+    ...TRANSACTIONS.filter(t => !liveIds.has(t.id))]
 
   const filtered = allTransactions.filter(tx => {
     const matchSearch = !search ||
@@ -207,8 +204,7 @@ export function TransactionFeed() {
         { key: 'belopp', label: 'Belopp' },
         { key: 'valuta', label: 'Valuta' },
         { key: 'status', label: 'Status' },
-        { key: 'referens', label: 'Referens' },
-      ],
+        { key: 'referens', label: 'Referens' }],
       `transaktioner_${new Date().toISOString().slice(0, 10)}`
     )
   }
@@ -280,8 +276,7 @@ export function TransactionFeed() {
               <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: 4, background: '#fff', border: '1px solid #E5E7EB', borderRadius: 8, boxShadow: '0 4px 16px rgba(0,0,0,0.1)', zIndex: 50, minWidth: 160, overflow: 'hidden' }}>
                 {[
                   { label: 'CSV (Excel)', action: handleExportCSV },
-                  { label: 'SIE4 (Ekonomisystem)', action: handleExportSIE },
-                ].map(item => (
+                  { label: 'SIE4 (Ekonomisystem)', action: handleExportSIE }].map(item => (
                   <button key={item.label} onClick={() => { item.action(); setExportMenuOpen(false) }}
                     style={{ display: 'block', width: '100%', padding: '10px 16px', textAlign: 'left', fontSize: 13, color: '#374151', background: 'none', border: 'none', cursor: 'pointer' }}
                     onMouseEnter={e => (e.currentTarget.style.background = '#F9FAFB')}
@@ -299,8 +294,7 @@ export function TransactionFeed() {
           {[
             { label: 'Inkomster (filtrerat)', value: `+${(totalIn / 1000).toFixed(0)}k SEK`, sub: `${filtered.filter(t => t.amount > 0).length} transaktioner` },
             { label: 'Utgifter (filtrerat)', value: `-${Math.abs(totalOut / 1000).toFixed(0)}k SEK`, sub: `${filtered.filter(t => t.amount < 0).length} transaktioner` },
-            { label: 'Netto', value: `${((totalIn + totalOut) / 1000).toFixed(0)}k SEK`, sub: 'Balans' },
-          ].map(card => (
+            { label: 'Netto', value: `${((totalIn + totalOut) / 1000).toFixed(0)}k SEK`, sub: 'Balans' }].map(card => (
             <div key={card.label} style={{ background: '#F9FAFB', borderRadius: 10, padding: '12px 16px', border: '1px solid rgba(0,0,0,0.06)' }}>
               <div style={{ fontSize: 10, fontWeight: 600, color: '#8E8E93', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 4 }}>{card.label}</div>
               <div style={{ fontSize: 18, fontWeight: 700, color: '#1C1C1E', fontFamily: 'monospace' }}>{card.value}</div>

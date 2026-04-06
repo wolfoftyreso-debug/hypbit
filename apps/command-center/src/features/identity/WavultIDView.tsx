@@ -116,8 +116,7 @@ function IdentityDrawer({ v, onClose }: { v: IdentityVerification; onClose: () =
     ['Passgiltig till', formatDate(v.passport_expiry)],
     ['Verifierat', formatDate(v.verified_at)],
     ['Verifierat av', v.verified_by ?? '—'],
-    ['Skapad', formatDate(v.created_at)],
-  ]
+    ['Skapad', formatDate(v.created_at)]]
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end" onClick={onClose}>
@@ -261,8 +260,7 @@ function AddVerificationForm({ onClose, onSaved }: { onClose: () => void; onSave
     { key: 'date_of_birth',   label: 'Födelsedag',          type: 'date' },
     { key: 'place_of_birth',  label: 'Födelseort',          placeholder: 'Stockholm' },
     { key: 'passport_expiry', label: 'Passgiltig till',     type: 'date' },
-    { key: 'notes',           label: 'Anteckningar',        placeholder: 'Valfri notering' },
-  ]
+    { key: 'notes',           label: 'Anteckningar',        placeholder: 'Valfri notering' }]
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20" onClick={onClose}>
@@ -417,8 +415,7 @@ export function WavultIDView() {
     { value: 'verified', label: 'Verified' },
     { value: 'pending',  label: 'Pending' },
     { value: 'expired',  label: 'Expired' },
-    { value: 'rejected', label: 'Rejected' },
-  ]
+    { value: 'rejected', label: 'Rejected' }]
 
   return (
     <div className="h-full overflow-auto" style={{ background: 'var(--color-bg)', color: 'var(--color-text-primary)' }}>
@@ -453,8 +450,7 @@ export function WavultIDView() {
             { label: 'Verified',  count: counts.verified,  color: 'var(--color-success)', bg: 'var(--color-success-bg)' },
             { label: 'Pending',   count: counts.pending,   color: 'var(--color-warning)', bg: 'var(--color-warning-bg)' },
             { label: 'Expired',   count: counts.expired,   color: 'var(--color-danger)',  bg: 'var(--color-danger-bg)'  },
-            { label: 'Rejected',  count: counts.rejected,  color: 'var(--color-neutral)', bg: 'var(--color-neutral-bg)' },
-          ] as const).map(item => (
+            { label: 'Rejected',  count: counts.rejected,  color: 'var(--color-neutral)', bg: 'var(--color-neutral-bg)' }] as const).map(item => (
             <div
               key={item.label}
               className="rounded-lg border px-4 py-3 text-center cursor-pointer transition-opacity hover:opacity-80"

@@ -21,8 +21,7 @@ const BLANKETT_GUIDE = [
   { nr: '901', title: 'Ändring av styrelse', desc: 'Anmälan om ändring av styrelseledamöter', icon: '👥' },
   { nr: '902', title: 'Ändring av firmatecknare', desc: 'Anmälan om ändring av firmateckningsrätt', icon: '✍️' },
   { nr: '903', title: 'Adressändring', desc: 'Anmälan om ny registrerad adress', icon: '📍' },
-  { nr: '831', title: 'Anmälan om likvidation', desc: 'Anmälan om frivillig likvidation', icon: '🔒' },
-]
+  { nr: '831', title: 'Anmälan om likvidation', desc: 'Anmälan om frivillig likvidation', icon: '🔒' }]
 
 function formatOrgNr(value: string): string {
   // Strip all non-digits
@@ -410,5 +409,4 @@ export const CERTIFICATE_PROVIDERS = [
     description: 'Direct Delaware Secretary of State certificates.',
     useCases: ['Bank account opening', 'Legal documentation'],
     contact: 'info@delawareinc.com',
-  },
-]
+  }]

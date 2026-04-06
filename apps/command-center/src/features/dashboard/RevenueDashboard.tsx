@@ -33,8 +33,7 @@ export function RevenueDashboard() {
       try {
         const [missRes, zoomerRes] = await Promise.all([
           window.fetch('https://api.wavult.com/v1/missions', { signal: controller.signal }),
-          window.fetch('https://api.wavult.com/v1/zoomers', { signal: controller.signal }),
-        ])
+          window.fetch('https://api.wavult.com/v1/zoomers', { signal: controller.signal })])
 
         const missions = missRes.ok ? await missRes.json() : []
         const zoomers = zoomerRes.ok ? await zoomerRes.json() : []
@@ -94,8 +93,7 @@ export function RevenueDashboard() {
           { label: 'MRR', value: `${fmt(metrics.mrr)} SEK`, sub: 'denna månad', icon: <DollarSign size={14} /> },
           { label: 'Aktiva uppdrag', value: String(metrics.activeMissions), sub: `${metrics.completedThisMonth} klara`, icon: <TrendingUp size={14} /> },
           { label: 'Zoomers', value: `${metrics.activeZoomers}/${metrics.totalZoomers}`, sub: 'aktiva/totalt', icon: <TrendingUp size={14} /> },
-          { label: 'Utbetalningar', value: `${fmt(metrics.pendingPayouts)} SEK`, sub: 'väntande', icon: <TrendingDown size={14} /> },
-        ].map(card => (
+          { label: 'Utbetalningar', value: `${fmt(metrics.pendingPayouts)} SEK`, sub: 'väntande', icon: <TrendingDown size={14} /> }].map(card => (
           <div key={card.label}>
             <div style={{ fontSize: 11, color: '#8E8E93', marginBottom: 4 }}>{card.label}</div>
             <div style={{ fontSize: 22, fontWeight: 700, color: '#1C1C1E', fontVariantNumeric: 'tabular-nums' }}>{card.value}</div>

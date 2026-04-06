@@ -26,8 +26,7 @@ const BUSINESS_ACTIVITIES = [
   'Holding Company',
   'Intellectual Property Holding',
   'Import & Export',
-  'Photography & Videography',
-]
+  'Photography & Videography']
 
 // ─── DMCC Agents ─────────────────────────────────────────────────────────────
 const DMCC_AGENTS = [
@@ -57,8 +56,7 @@ const DMCC_AGENTS = [
     badge: 'Value',
     badgeColor: '#FBBF24',
     badgeBg: '#451a03',
-  },
-]
+  }]
 
 // ─── IFZA Agents ──────────────────────────────────────────────────────────────
 const IFZA_AGENTS = [
@@ -79,8 +77,7 @@ const IFZA_AGENTS = [
     badge: 'Direct',
     badgeColor: '#34D399',
     badgeBg: '#064e3b',
-  },
-]
+  }]
 
 const INITIAL_DOCS: DocItem[] = [
   {
@@ -112,8 +109,7 @@ const INITIAL_DOCS: DocItem[] = [
     label: 'Proof of Address',
     description: 'Utility bill or bank statement showing residential address',
     checked: false,
-  },
-]
+  }]
 
 // ─── Compare card ─────────────────────────────────────────────────────────────
 function CompareCard({

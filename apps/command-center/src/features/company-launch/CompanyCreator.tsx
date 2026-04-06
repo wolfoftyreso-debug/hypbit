@@ -28,8 +28,7 @@ const JURISDICTIONS = [
   { id: 'lithuania-uab', label: 'UAB (Litauen)', flag: '🇱🇹', days: 7, cost: '~300 EUR' },
   { id: 'dubai-dmcc', label: 'DMCC Free Zone (Dubai)', flag: '🇦🇪', days: 14, cost: '~15 000 AED' },
   { id: 'dubai-ifza', label: 'IFZA Free Zone (Dubai)', flag: '🇦🇪', days: 10, cost: '~12 000 AED' },
-  { id: 'texas-llc', label: 'Texas LLC (USA)', flag: '🇺🇸', days: 3, cost: '$300' },
-]
+  { id: 'texas-llc', label: 'Texas LLC (USA)', flag: '🇺🇸', days: 3, cost: '$300' }]
 
 // ─── Default steps per jurisdiction ──────────────────────────────────────────
 function getDefaultSteps(jurisdiction: string): CompanyStep[] {
@@ -42,50 +41,43 @@ function getDefaultSteps(jurisdiction: string): CompanyStep[] {
         { id: 'ein', label: 'EIN received from IRS', done: false, requires: 'ss4', eta: '~4–6 weeks' },
         { id: 'bank', label: 'Business bank account', done: false, requires: 'EIN' },
         { id: 'stripe', label: 'Stripe live payments', done: false, requires: 'EIN + bank' },
-        { id: 'good-standing', label: 'Certificate of Good Standing', done: false, requires: 'EIN' },
-      ]
+        { id: 'good-standing', label: 'Certificate of Good Standing', done: false, requires: 'EIN' }]
     case 'sweden-ab':
       return [
         { id: 'registration', label: 'Registrerat hos Bolagsverket', done: false },
         { id: 'bankgiro', label: 'Bankgiro öppnat', done: false, requires: 'registration' },
         { id: 'vat', label: 'Momsregistrering', done: false, requires: 'registration' },
-        { id: 'operational', label: 'Operativt aktiv', done: false, requires: 'bankgiro + vat' },
-      ]
+        { id: 'operational', label: 'Operativt aktiv', done: false, requires: 'bankgiro + vat' }]
     case 'lithuania-uab':
       return [
         { id: 'registration', label: 'Registrerat hos Registrų centras', done: false },
         { id: 'address', label: 'Registered address set', done: false, requires: 'registration' },
         { id: 'bank', label: 'Bank account (Paysera/Revolut LT)', done: false, requires: 'registration' },
-        { id: 'vat', label: 'VAT registration (EU)', done: false, requires: 'bank' },
-      ]
+        { id: 'vat', label: 'VAT registration (EU)', done: false, requires: 'bank' }]
     case 'dubai-dmcc':
       return [
         { id: 'application', label: 'DMCC application submitted', done: false },
         { id: 'approval', label: 'DMCC approval', done: false, requires: 'application' },
         { id: 'license', label: 'Business license issued', done: false, requires: 'approval' },
         { id: 'bank', label: 'Emirates NBD account', done: false, requires: 'license' },
-        { id: 'ip-transfer', label: 'IP ownership transfer', done: false, requires: 'license' },
-      ]
+        { id: 'ip-transfer', label: 'IP ownership transfer', done: false, requires: 'license' }]
     case 'dubai-ifza':
       return [
         { id: 'application', label: 'IFZA application submitted', done: false },
         { id: 'approval', label: 'IFZA approval', done: false, requires: 'application' },
         { id: 'license', label: 'Business license issued', done: false, requires: 'approval' },
-        { id: 'bank', label: 'Bank account opened', done: false, requires: 'license' },
-      ]
+        { id: 'bank', label: 'Bank account opened', done: false, requires: 'license' }]
     case 'texas-llc':
       return [
         { id: 'formation', label: 'LLC formation filed (Texas SOS)', done: false },
         { id: 'ein', label: 'EIN received from IRS', done: false, requires: 'formation' },
         { id: 'bank', label: 'Business bank account', done: false, requires: 'EIN' },
-        { id: 'stripe', label: 'Stripe live payments', done: false, requires: 'EIN + bank' },
-      ]
+        { id: 'stripe', label: 'Stripe live payments', done: false, requires: 'EIN + bank' }]
     default:
       return [
         { id: 'registration', label: 'Company registered', done: false },
         { id: 'bank', label: 'Bank account opened', done: false, requires: 'registration' },
-        { id: 'operational', label: 'Operationally active', done: false, requires: 'bank' },
-      ]
+        { id: 'operational', label: 'Operationally active', done: false, requires: 'bank' }]
   }
 }
 
@@ -105,8 +97,7 @@ const WAVULT_COMPANIES: Company[] = [
       { id: 'ein', label: 'EIN received from IRS', done: false, eta: '~April 8–15' },
       { id: 'bank', label: 'Business bank account', done: false, requires: 'EIN' },
       { id: 'stripe', label: 'Stripe live payments', done: false, requires: 'EIN + bank' },
-      { id: 'good-standing', label: 'Certificate of Good Standing', done: false, requires: 'EIN' },
-    ],
+      { id: 'good-standing', label: 'Certificate of Good Standing', done: false, requires: 'EIN' }],
   },
   {
     id: 'landvex-ab',
@@ -119,8 +110,7 @@ const WAVULT_COMPANIES: Company[] = [
       { id: 'registration', label: 'Registrerat hos Bolagsverket', done: true },
       { id: 'bankgiro', label: 'Bankgiro öppnat', done: false },
       { id: 'vat', label: 'Momsregistrering', done: false },
-      { id: 'operational', label: 'Operativt aktiv', done: false },
-    ],
+      { id: 'operational', label: 'Operativt aktiv', done: false }],
   },
   {
     id: 'wavult-group-dmcc',
@@ -133,8 +123,7 @@ const WAVULT_COMPANIES: Company[] = [
       { id: 'approval', label: 'DMCC approval', done: false },
       { id: 'license', label: 'Business license issued', done: false },
       { id: 'bank', label: 'Emirates NBD account', done: false },
-      { id: 'ip-transfer', label: 'IP ownership transfer', done: false },
-    ],
+      { id: 'ip-transfer', label: 'IP ownership transfer', done: false }],
   },
   {
     id: 'devops-fzco',
@@ -146,8 +135,7 @@ const WAVULT_COMPANIES: Company[] = [
       { id: 'application', label: 'DMCC application submitted', done: false },
       { id: 'approval', label: 'DMCC approval', done: false },
       { id: 'license', label: 'Business license issued', done: false },
-      { id: 'bank', label: 'Bank account opened', done: false },
-    ],
+      { id: 'bank', label: 'Bank account opened', done: false }],
   },
   {
     id: 'quixzoom-uab',
@@ -159,10 +147,8 @@ const WAVULT_COMPANIES: Company[] = [
       { id: 'registration', label: 'Registrerat hos Registrų centras', done: false },
       { id: 'address', label: 'Registered address set', done: false },
       { id: 'bank', label: 'Bank account (Paysera/Revolut LT)', done: false },
-      { id: 'vat', label: 'VAT registration (EU)', done: false },
-    ],
-  },
-]
+      { id: 'vat', label: 'VAT registration (EU)', done: false }],
+  }]
 
 const STORAGE_KEY = 'wavult_companies'
 

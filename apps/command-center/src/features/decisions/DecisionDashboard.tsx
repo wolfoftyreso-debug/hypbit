@@ -427,8 +427,7 @@ export function DecisionDashboard() {
             value: meetings.filter(m => m.status === 'blocked').length,
             icon: <AlertTriangle size={16} color="var(--color-danger)" />,
             bg: 'var(--color-danger-bg)',
-          },
-        ].map(kpi => (
+          }].map(kpi => (
           <div key={kpi.label} style={{
             background: 'var(--color-surface)',
             border: '1px solid var(--color-border)',

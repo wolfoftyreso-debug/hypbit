@@ -12,16 +12,14 @@ const TEAM_MEMBERS = [
   { id: 'dennis',  name: 'Dennis Bjarnemark',     role: 'Legal & Ops' },
   { id: 'johan',   name: 'Johan Berglund',         role: 'CTO' },
   { id: 'leon',    name: 'Leon Russo De Cerame',   role: 'CEO Operations' },
-  { id: 'winston', name: 'Winston Bjarnemark',     role: 'CFO' },
-]
+  { id: 'winston', name: 'Winston Bjarnemark',     role: 'CFO' }]
 
 const JR_MEMBERS = [
   { id: 'erik',    name: 'Erik JR',    role: 'Chairman & Group CEO' },
   { id: 'dennis',  name: 'Dennis JR',  role: 'Chief Legal & Operations' },
   { id: 'johan',   name: 'Johan JR',   role: 'Group CTO' },
   { id: 'leon',    name: 'Leon JR',    role: 'CEO Wavult Operations' },
-  { id: 'winston', name: 'Winston JR', role: 'CFO' },
-]
+  { id: 'winston', name: 'Winston JR', role: 'CFO' }]
 
 const API_BASE = (import.meta.env.VITE_API_URL as string | undefined) ?? 'https://api.wavult.com'
 
@@ -33,8 +31,7 @@ const DOMAIN_FILTERS = [
   { id: 'code',    label: 'Code' },
   { id: 'infra',   label: 'Infra' },
   { id: 'hr',      label: 'HR' },
-  { id: 'sales',   label: 'Sales' },
-]
+  { id: 'sales',   label: 'Sales' }]
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 

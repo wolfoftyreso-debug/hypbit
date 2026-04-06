@@ -89,8 +89,7 @@ const INITIAL_SERVICES: APIService[] = [
     configured: true,
     endpoint: 'api.cloudflare.com',
     description: 'CDN, DNS & DDoS-skydd',
-  },
-]
+  }]
 
 const STATUS_CONFIG = {
   ok: { label: '✅ OK', color: 'text-green-700', bg: 'bg-green-500/10 border-green-500/20', dot: 'bg-green-400' },

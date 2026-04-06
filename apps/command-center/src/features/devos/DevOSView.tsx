@@ -478,8 +478,7 @@ export function DevOSView() {
                 { icon: '🔒', label: 'Security', desc: 'Policy scan' },
                 { icon: '👁', label: 'Reviewer', desc: 'Kvalitetsgranskning' },
                 { icon: '🚀', label: 'DevOps',   desc: 'Build & deploy' },
-                { icon: '📋', label: 'Replay',   desc: 'Full audit trail' },
-              ].map(a => (
+                { icon: '📋', label: 'Replay',   desc: 'Full audit trail' }].map(a => (
                 <div key={a.label} className="rounded-lg border border-surface-border bg-white p-3 text-center">
                   <div className="text-lg mb-1">{a.icon}</div>
                   <div className="font-semibold text-gray-700">{a.label}</div>

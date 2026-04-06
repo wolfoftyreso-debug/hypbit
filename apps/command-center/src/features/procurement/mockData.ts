@@ -48,8 +48,7 @@ export const SUPPLIERS: Supplier[] = [
     id: 's9', name: 'GitHub', category: 'Tech/SaaS', country: 'USA',
     contact: 'support@github.com', email: 'billing@github.com', status: 'aktiv',
     cost: { avgMonthlySEK: 0 }
-  },
-]
+  }]
 
 // ─── Inköpsordrar — tomma tills konfigurerat ─────────────────────────────────
 // Registrera verkliga POs via procurement-modulen

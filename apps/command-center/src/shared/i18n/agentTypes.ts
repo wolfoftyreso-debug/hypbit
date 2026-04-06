@@ -35,7 +35,7 @@ export function renderAgentMessage(
 ): string {
   const safeParams = msg.params
     ? Object.fromEntries(
-        Object.entries(msg.params).filter(([, v]) => v !== undefined)
+        Object.entries(msg.params).filter(([ v]) => v !== undefined)
       ) as Record<string, string | number>
     : undefined
   return t(msg.key, safeParams)

@@ -191,8 +191,7 @@ export function generateMinutes(
     '---',
     '',
     '## Beslutspunkter',
-    '',
-  ]
+    '']
 
   meeting.agenda.forEach((block, i) => {
     lines.push(`### ${i + 1}. ${block.title}`)

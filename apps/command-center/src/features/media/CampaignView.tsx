@@ -163,8 +163,7 @@ function CampaignDetail({ campaign, onBack }: { campaign: Campaign; onBack: () =
           { label: 'Budget', value: `${campaign.budget_total.toLocaleString()} ${campaign.currency}` },
           { label: 'Spend', value: '0 ' + campaign.currency },
           { label: 'ROI', value: '—' },
-          { label: 'Mål', value: OBJECTIVE_LABELS[campaign.objective] },
-        ].map(stat => (
+          { label: 'Mål', value: OBJECTIVE_LABELS[campaign.objective] }].map(stat => (
           <div key={stat.label} className="bg-white border border-surface-border rounded-xl p-4">
             <div className="text-xs text-gray-9000 mb-1">{stat.label}</div>
             <div className="text-xl font-mono text-text-primary">{stat.value}</div>

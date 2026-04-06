@@ -141,8 +141,7 @@ export const FINANCE_ENTITIES: FinanceEntity[] = [
     currency: 'EUR',
     jurisdiction: 'Litauen',
     color: '#EF4444',
-  },
-]
+  }]
 
 // ─── KPI Data — ej konfigurerat ─────────────────────────────────────────────
 // Ersätt med riktiga värden via Supabase (finance_kpis-tabellen)

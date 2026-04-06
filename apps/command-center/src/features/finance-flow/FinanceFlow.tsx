@@ -62,8 +62,7 @@ export default function FinanceFlow() {
           <div style={{ display: 'flex', gap: 12, marginBottom: 20 }}>
             {[
               { label: 'Totalt in', value: totalIn,  color: '#16a34a', sign: '+' },
-              { label: 'Totalt ut', value: totalOut, color: 'var(--color-brand)', sign: '-' },
-            ].map(({ label, value, color, sign }, i) => (
+              { label: 'Totalt ut', value: totalOut, color: 'var(--color-brand)', sign: '-' }].map(({ label, value, color, sign }, i) => (
               <div
                 key={label}
                 className={`wv-card-enter wv-stagger-${i + 1}`}

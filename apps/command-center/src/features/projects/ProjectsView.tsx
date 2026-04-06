@@ -55,19 +55,16 @@ const PROJECTS = [
       { label: 'Aktiva fotografer', value: '0', note: 'Pre-launch' },
       { label: 'Uppdrag idag', value: '0', note: 'Pre-launch' },
       { label: 'Bilder insamlade', value: '0', note: 'Pre-launch' },
-      { label: 'Plattform ETA', value: 'Q3 2026', note: 'Post-Thailand' },
-    ],
+      { label: 'Plattform ETA', value: 'Q3 2026', note: 'Post-Thailand' }],
     links: [
       { label: 'GitHub', url: 'https://github.com/wolfoftyreso-debug/wavult-os' },
-      { label: 'AWS ECS', url: 'https://console.aws.amazon.com/ecs/home?region=eu-north-1' },
-    ],
+      { label: 'AWS ECS', url: 'https://console.aws.amazon.com/ecs/home?region=eu-north-1' }],
     milestones: [
       { done: true, text: 'Konceptdesign klar' },
       { done: true, text: 'Tech-stack vald (Node + React + Supabase)' },
       { done: false, text: 'MVP photographer-app' },
       { done: false, text: 'Kartintegration (uppdrag-pin)' },
-      { done: false, text: 'Beta-lansering' },
-    ],
+      { done: false, text: 'Beta-lansering' }],
   },
   {
     id: 'optic-insights',
@@ -82,18 +79,15 @@ const PROJECTS = [
       { label: 'B2B-kunder', value: '0', note: 'Pre-launch' },
       { label: 'Aktiva alerter', value: '0', note: 'Pre-launch' },
       { label: 'MRR', value: 'SEK 0', note: 'Pre-launch' },
-      { label: 'ETA', value: 'Q4 2026', note: 'Post-quiXzoom MVP' },
-    ],
+      { label: 'ETA', value: 'Q4 2026', note: 'Post-quiXzoom MVP' }],
     links: [
-      { label: 'Affärsplan', url: '#' },
-    ],
+      { label: 'Affärsplan', url: '#' }],
     milestones: [
       { done: true, text: 'Affärsplan klar' },
       { done: false, text: 'Första pilot-kund identifierad' },
       { done: false, text: 'AI-analysmotor (PoC)' },
       { done: false, text: 'Portal MVP' },
-      { done: false, text: 'Kommersiell lansering' },
-    ],
+      { done: false, text: 'Kommersiell lansering' }],
   },
   {
     id: 'quixom-ads',
@@ -108,15 +102,13 @@ const PROJECTS = [
       { label: 'Annonsörer', value: '0', note: 'Pre-launch' },
       { label: 'Ad-impressions', value: '0', note: 'Pre-launch' },
       { label: 'CPM (est.)', value: 'TBD', note: 'Fastställs i GTM' },
-      { label: 'ETA', value: '2027', note: 'Beroende av quiXzoom scale' },
-    ],
+      { label: 'ETA', value: '2027', note: 'Beroende av quiXzoom scale' }],
     links: [],
     milestones: [
       { done: true, text: 'Konceptbeslut fattat' },
       { done: false, text: 'Ad-format definierade' },
       { done: false, text: 'Marketplace-spec klar' },
-      { done: false, text: 'Pilot med annonsör' },
-    ],
+      { done: false, text: 'Pilot med annonsör' }],
   },
   {
     id: 'dissg',
@@ -131,12 +123,10 @@ const PROJECTS = [
       { label: 'Registrerade användare', value: '0', note: 'Pre-launch' },
       { label: 'Pro-prenumeranter', value: '0', note: 'Pre-launch' },
       { label: 'MRR', value: 'SEK 0', note: 'Pre-launch' },
-      { label: 'Länder täckta', value: '190+', note: 'Live data' },
-    ],
+      { label: 'Länder täckta', value: '190+', note: 'Live data' }],
     links: [
       { label: 'GitHub', url: 'https://github.com/wolfoftyreso-debug/dissg' },
-      { label: 'Live', url: 'https://dissg.pages.dev' },
-    ],
+      { label: 'Live', url: 'https://dissg.pages.dev' }],
     milestones: [
       { done: true, text: 'Prototyp klar (Lovable)' },
       { done: true, text: 'Domäner registrerade (.de, .org, .net, .io)' },
@@ -144,10 +134,8 @@ const PROJECTS = [
       { done: false, text: 'Auth via Identity Core' },
       { done: false, text: 'Revolut Pro-betalning' },
       { done: false, text: 'Live datakällor (WorldBank, OECD, UN)' },
-      { done: false, text: 'Offentlig lansering' },
-    ],
-  },
-]
+      { done: false, text: 'Offentlig lansering' }],
+  }]
 const STATUS_STYLE: Record<string, { bg: string; color: string }> = {
   'in-dev':  { bg: 'rgba(59,130,246,0.12)',   color: '#3B82F6' },
   planning:  { bg: 'rgba(6,182,212,0.12)',    color: '#06B6D4' },

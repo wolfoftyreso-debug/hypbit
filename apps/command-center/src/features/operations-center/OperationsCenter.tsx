@@ -10,8 +10,7 @@ const FALLBACK_TASKS: Task[] = [
   { id: 'legal-002', title: 'Bilda Wavult DevOps FZCO', owner: 'erik-svensson', module: 'legal', flow: 'dubai-structure', state: 'BLOCKED' as const, priority: 'critical' as const, deadline: '2026-04-10', dependencies: ['legal-001'], requiredInputs: [], outputValidation: '', assignedAt: '2026-03-28', completedAt: null, description: '', blockedReason: 'Wavult Group FZCO måste bildas först', validationRequired: false },
   { id: 'legal-004', title: 'Välj bokföringsbyrå — Landvex AB', owner: 'dennis-bjarnemark', module: 'legal', flow: 'landvex-compliance', state: 'REQUIRED' as const, priority: 'critical' as const, deadline: '2026-04-01', dependencies: [], requiredInputs: [], outputValidation: '', assignedAt: '2026-03-28', completedAt: null, description: '', validationRequired: false },
   { id: 'tech-001', title: 'Byt NS på Loopia — aktivera wavult.com', owner: 'johan-berglund', module: 'tech', flow: 'dns-activation', state: 'REQUIRED' as const, priority: 'high' as const, deadline: '2026-04-01', dependencies: [], requiredInputs: [], outputValidation: '', assignedAt: '2026-03-28', completedAt: null, description: '', validationRequired: false },
-  { id: 'ops-002', title: 'Thailand Workcamp — hotellbokning', owner: 'leon-russo', module: 'operations', flow: 'thailand-workcamp', state: 'IN_PROGRESS' as const, priority: 'critical' as const, deadline: '2026-04-01', dependencies: [], requiredInputs: [], outputValidation: '', assignedAt: '2026-03-28', completedAt: null, description: '', validationRequired: false },
-]
+  { id: 'ops-002', title: 'Thailand Workcamp — hotellbokning', owner: 'leon-russo', module: 'operations', flow: 'thailand-workcamp', state: 'IN_PROGRESS' as const, priority: 'critical' as const, deadline: '2026-04-01', dependencies: [], requiredInputs: [], outputValidation: '', assignedAt: '2026-03-28', completedAt: null, description: '', validationRequired: false }]
 
 const OWNER_NAMES: Record<string, string> = {
   'erik-svensson': 'Erik',
@@ -110,8 +109,7 @@ export function OperationsCenter() {
     { time: '15:10', actor: 'System', action: 'Audit genomförd', type: 'system' },
     { time: '14:55', actor: 'Bernt', action: 'Design uppdaterad — light theme', type: 'success' },
     { time: '14:35', actor: 'Bernt', action: 'State Engine byggd', type: 'success' },
-    { time: '06:13', actor: 'Erik', action: 'Knowledge Hub utvidgad — 21 kurser', type: 'success' },
-  ]
+    { time: '06:13', actor: 'Erik', action: 'Knowledge Hub utvidgad — 21 kurser', type: 'success' }]
 
   const panelClass = 'bg-white border border-[#DDD5C5] rounded-xl shadow-sm'
   const panelHeader = 'flex items-center justify-between px-4 py-3 border-b border-[#DDD5C5]'

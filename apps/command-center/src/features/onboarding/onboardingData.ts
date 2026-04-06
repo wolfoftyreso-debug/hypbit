@@ -87,8 +87,7 @@ export const TOURS: OnboardingTour[] = [
           'Realtidsövervakning av alla 9 backend-tjänster',
           'Ekonomi, CRM, juridik och HR i ett system',
           'Apollo.io-integration för försäljning och prospektering',
-          'Automatiserade reseflöden och bokningar',
-        ],
+          'Automatiserade reseflöden och bokningar'],
       },
       {
         id: 'entities',
@@ -110,8 +109,7 @@ export const TOURS: OnboardingTour[] = [
           'Zoomers (aldrig "fotografer") tar geo-lokaliserade uppdrag',
           'Quixom Ads: leads-paket och kartreklam för företag',
           'LandveX: optisk intelligence till kommuner och infrastrukturägare',
-          'Separata produkter — blanda dem aldrig i kommunikation',
-        ],
+          'Separata produkter — blanda dem aldrig i kommunikation'],
         callout: {
           type: 'warning',
           text: 'Regel: Kalla dem alltid Zoomers, aldrig fotografer eller fältpersonal.',
@@ -128,8 +126,7 @@ export const TOURS: OnboardingTour[] = [
           'Kafka event-streaming för all systemkommunikation',
           'Automatisk eskalering vid KPI-avvikelse',
           'n8n workflow-automation för repetitiva processer',
-          'ECS Fargate — 9 tjänster, all upptime-monitoring i realtid',
-        ],
+          'ECS Fargate — 9 tjänster, all upptime-monitoring i realtid'],
       },
       {
         id: 'travel',
@@ -142,13 +139,10 @@ export const TOURS: OnboardingTour[] = [
           'Visum-kontroll per destination och pass-typ',
           'Uber for Business — centralbetalt för hela teamet',
           'Wellhub (Gympass) — hälsa är en del av arbetet',
-          'Boende: Nysa Hotel Bangkok, Sukhumvit 13',
-        ],
+          'Boende: Nysa Hotel Bangkok, Sukhumvit 13'],
         callout: {
           type: 'info',
           text: `${BANGKOK} — Visum: 30 dagar visumfritt för svenska pass. >30 dagar kräver TR-90.`,
         },
-      },
-    ],
-  },
-]
+      }],
+  }]

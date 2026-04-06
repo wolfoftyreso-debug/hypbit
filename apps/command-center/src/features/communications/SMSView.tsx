@@ -17,8 +17,7 @@ const TEAM_CONTACTS = [
   { name: 'Winston Bjarnemark', number: '+46768123548', role: 'CFO' },
   { name: 'Johan Berglund', number: '+46736977576', role: 'Group CTO' },
   { name: 'Dennis Bjarnemark', number: '+46761474243', role: 'Chief Legal' },
-  { name: 'Erik Svensson', number: '+46709123223', role: 'Chairman & Group CEO' },
-]
+  { name: 'Erik Svensson', number: '+46709123223', role: 'Chairman & Group CEO' }]
 
 export function SMSView() {
   const [log, setLog] = useState<SMSLog[]>([])

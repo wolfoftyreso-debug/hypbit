@@ -107,8 +107,7 @@ export const COMPANY_LAUNCHES: CompanyLaunch[] = [
         evidence_required: 'Signerat revisionsavtal med GT',
         external_url: 'https://www.grantthornton.se',
         status: 'in_progress',
-      },
-    ],
+      }],
   },
 
   // ─────────────────────────────────────────────
@@ -196,8 +195,7 @@ export const COMPANY_LAUNCHES: CompanyLaunch[] = [
         evidence_required: 'Webfile Number (XT... eller FQ...) + registrering i Texas Webfile-systemet',
         external_url: 'https://mycpa.cpa.state.tx.us/coa/',
         status: 'in_progress',
-      },
-    ],
+      }],
   },
 
   // ─────────────────────────────────────────────
@@ -271,8 +269,7 @@ export const COMPANY_LAUNCHES: CompanyLaunch[] = [
         prerequisites: ['qxz-lt-02'],
         evidence_required: 'Signerat licensavtal',
         status: 'pending',
-      },
-    ],
+      }],
   },
 
   // ─────────────────────────────────────────────
@@ -345,8 +342,7 @@ export const COMPANY_LAUNCHES: CompanyLaunch[] = [
         prerequisites: ['qxz-de-01'],
         evidence_required: 'Signerat licensavtal',
         status: 'blocked',
-      },
-    ],
+      }],
   },
 
   // ─────────────────────────────────────────────
@@ -432,7 +428,5 @@ export const COMPANY_LAUNCHES: CompanyLaunch[] = [
         prerequisites: ['wg-ae-02'],
         evidence_required: 'Signerat IP Assignment Agreement',
         status: 'pending',
-      },
-    ],
-  },
-]
+      }],
+  }]

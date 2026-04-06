@@ -85,8 +85,7 @@ export function QuixzoomApp() {
     try {
       const [missionsData, zoomersData] = await Promise.all([
         apiFetch<Mission[]>('/v1/missions?limit=100'),
-        apiFetch<Zoomer[]>('/v1/zoomers?limit=100'),
-      ])
+        apiFetch<Zoomer[]>('/v1/zoomers?limit=100')])
       setMissions(missionsData)
       setZoomers(zoomersData)
       setStats({
@@ -270,8 +269,7 @@ export function QuixzoomApp() {
               { label: 'Godkända', value: stats.completed_missions, icon: <CheckCircle size={18} />, color: '#16A34A' },
               { label: 'Zoomers totalt', value: stats.total_zoomers, icon: <Users size={18} />, color: '#2563EB' },
               { label: 'Aktiva zoomers', value: stats.active_zoomers, icon: <TrendingUp size={18} />, color: '#0891B2' },
-              { label: 'Totala utbetalningar', value: `${stats.total_payouts.toLocaleString('sv-SE')} kr`, icon: <Camera size={18} />, color: '#DC2626' },
-            ].map(card => (
+              { label: 'Totala utbetalningar', value: `${stats.total_payouts.toLocaleString('sv-SE')} kr`, icon: <Camera size={18} />, color: '#DC2626' }].map(card => (
               <div key={card.label} style={{ background: '#FFFFFF', borderRadius: 12, padding: '16px 20px', border: '1px solid rgba(0,0,0,0.08)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <div>
@@ -354,8 +352,7 @@ export function QuixzoomApp() {
               {[
                 { label: 'Titel', key: 'title', placeholder: 'Fotografera brygga vid Värmdö hamn' },
                 { label: 'Plats', key: 'location', placeholder: 'Värmdö, Stockholm' },
-                { label: 'Beskrivning', key: 'description', placeholder: 'Instruktioner till zoomern...' },
-              ].map(field => (
+                { label: 'Beskrivning', key: 'description', placeholder: 'Instruktioner till zoomern...' }].map(field => (
                 <div key={field.key} style={{ marginBottom: 14 }}>
                   <label style={{ fontSize: 12, fontWeight: 600, color: '#374151', display: 'block', marginBottom: 5 }}>{field.label}</label>
                   <input value={(newMission as any)[field.key]} onChange={e => setNewMission(p => ({ ...p, [field.key]: e.target.value }))}

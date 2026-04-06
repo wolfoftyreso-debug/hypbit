@@ -84,8 +84,7 @@ const BASE_NOTIFICATIONS: SystemNotification[] = [
     source: 'PostgreSQL',
     timestamp: '2026-03-24T03:00:00Z',
     read: true,
-  },
-]
+  }]
 
 const LEVEL_CONFIG: Record<NotifLevel, { label: string; color: string; bg: string; dot: string }> = {
   info: { label: 'Info', color: 'text-blue-700', bg: 'bg-blue-500/10 border-blue-500/20', dot: 'bg-blue-400' },

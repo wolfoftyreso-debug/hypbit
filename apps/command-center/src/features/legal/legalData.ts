@@ -59,12 +59,11 @@ export const LEGAL_DOCUMENTS: LegalDocument[] = [
   { id: 'd10', title: '83(b) Election — Erik Svensson', type: 'övrigt', entity_id: 'oz-us', status: 'aktiv', signed_date: '2026-03-27', expiry_date: '2026-04-27', tags: ['irs', '83b', 'urgent'], created_at: '2026-03-27' },
 
   // LVX-AE
-  { id: 'd11', title: 'LandveX AC — DIFC Formation Documents', type: 'bolagsordning', entity_id: 'lvx-ae', status: 'utkast', tags: ['difc', 'forming'], created_at: '2026-04-01' },
+  { id: 'd11', title: 'LandveX — DIFC Formation Documents', type: 'bolagsordning', entity_id: , status: 'utkast', tags: ['difc', 'forming'], created_at: '2026-04-01' },
 
   // LVX-US
   { id: 'd12', title: 'Certificate of Formation — LandveX Inc (TX)', type: 'bolagsordning', entity_id: 'lvx-us', status: 'aktiv', signed_date: '2026-03-31', tags: ['texas', 'llc', 'northwest'], created_at: '2026-03-31' },
-  { id: 'd13', title: 'EIN Application — LandveX Inc', type: 'övrigt', entity_id: 'lvx-us', status: 'under_förhandling', counterpart: 'IRS / Northwest Registered Agent', tags: ['ein', 'tax-id', 'pending'], created_at: '2026-03-29' },
-]
+  { id: 'd13', title: 'EIN Application — LandveX Inc', type: 'övrigt', entity_id: 'lvx-us', status: 'under_förhandling', counterpart: 'IRS / Northwest Registered Agent', tags: ['ein', 'tax-id', 'pending'], created_at: '2026-03-29' }]
 
 export const LEGAL_TEMPLATES: LegalTemplate[] = [
   { id: 't1', name: 'NDA — Standard (SV)', description: 'Sekretessavtal för interna och externa parter', category: 'nda', language: 'sv' },
@@ -74,8 +73,7 @@ export const LEGAL_TEMPLATES: LegalTemplate[] = [
   { id: 't5', name: 'Aktieägaravtal — Enkelt', description: 'Grundläggande aktieägaravtal för startup', category: 'aktieägaravtal', language: 'sv' },
   { id: 't6', name: 'IP Assignment Agreement', description: 'Transfer of intellectual property rights', category: 'ip', language: 'en' },
   { id: 't7', name: 'GDPR Data Processing Agreement', description: 'DPA for EU data processors', category: 'kund', language: 'en' },
-  { id: 't8', name: 'SaaS Customer Agreement', description: 'Standard terms for SaaS customers', category: 'kund', language: 'en' },
-]
+  { id: 't8', name: 'SaaS Customer Agreement', description: 'Standard terms for SaaS customers', category: 'kund', language: 'en' }]
 
 export const IP_ASSETS: IPAsset[] = [
   { id: 'ip1', name: 'Wavult', type: 'varumärke', jurisdiction: 'Sverige', entity_id: 'woh', registered: false, status: 'under_ansökan' },
@@ -84,5 +82,4 @@ export const IP_ASSETS: IPAsset[] = [
   { id: 'ip4', name: 'wavult.com', type: 'domän', jurisdiction: 'Global', entity_id: 'wgh', registered: true, registration_number: 'Ascio/2026', expiry_date: '2027-01-07', status: 'aktiv' },
   { id: 'ip5', name: 'quixzoom.com', type: 'domän', jurisdiction: 'Global', entity_id: 'wgh', registered: true, expiry_date: '2027-03-15', status: 'aktiv' },
   { id: 'ip6', name: 'landvex.com', type: 'domän', jurisdiction: 'Global', entity_id: 'wgh', registered: true, expiry_date: '2027-01-15', status: 'aktiv' },
-  { id: 'ip7', name: 'Wavult DS — Källkod', type: 'källkod', jurisdiction: 'Global', entity_id: 'wgh', registered: false, status: 'aktiv' },
-]
+  { id: 'ip7', name: 'Wavult DS — Källkod', type: 'källkod', jurisdiction: 'Global', entity_id: 'wgh', registered: false, status: 'aktiv' }]

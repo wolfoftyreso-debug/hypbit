@@ -101,8 +101,7 @@ const PRESETS = [
   { id: 'eu-cto', label: '🇪🇺 EU Enterprise CTO/CIO', desc: 'Tech decision makers for UAPIX',
     body: { person_titles: ['CTO', 'CIO', 'VP Engineering', 'Head of Technology'], person_locations: ['Germany', 'France', 'Netherlands', 'Belgium'], person_seniorities: ['vp', 'c_suite'], per_page: 25 } },
   { id: 'se-startups', label: '🚀 Swedish Startups', desc: 'Founders & CEOs of SE tech startups',
-    body: { person_titles: ['CEO', 'Founder', 'Co-Founder', 'CTO'], person_locations: ['Sweden'], q_organization_name: '', per_page: 25 } },
-]
+    body: { person_titles: ['CEO', 'Founder', 'Co-Founder', 'CTO'], person_locations: ['Sweden'], q_organization_name: '', per_page: 25 } }]
 
 const SENIORITY_COLOR: Record<string, string> = {
   c_suite: '#2563EB', vp: '#3B82F6', director: '#06B6D4',
@@ -195,8 +194,7 @@ export function ApolloView() {
     { id: 'enrich', label: 'Enrichment', icon: '⚡' },
     { id: 'orgs', label: 'Organizations', icon: '🏢' },
     { id: 'news', label: 'News & Intent', icon: '📰' },
-    { id: 'sequences', label: 'Sequences', icon: '📧' },
-  ]
+    { id: 'sequences', label: 'Sequences', icon: '📧' }]
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: 'var(--color-bg)' }}>
@@ -476,8 +474,7 @@ export function ApolloView() {
                 { name: 'LandveX — Swedish Municipality Outreach', steps: 7, status: 'draft', target: 'Infrastructure Directors, SE municipalities' },
                 { name: 'UAPIX — EU Enterprise CTO', steps: 5, status: 'draft', target: 'CTO/CIO, Germany/France/Netherlands' },
                 { name: 'Quixom Ads — NYC Local Business', steps: 4, status: 'draft', target: 'Restaurant/Retail owners, New York' },
-                { name: 'quiXzoom — Zoomer Recruitment', steps: 3, status: 'draft', target: '18-35, Sweden, gig economy interest' },
-              ].map(seq => (
+                { name: 'quiXzoom — Zoomer Recruitment', steps: 3, status: 'draft', target: '18-35, Sweden, gig economy interest' }].map(seq => (
                 <div key={seq.name} style={{ padding: '14px 16px', border: '1px solid var(--color-border)', borderRadius: 10, background: 'var(--color-surface)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <div>

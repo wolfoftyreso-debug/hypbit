@@ -59,8 +59,7 @@ export const SYSTEM_REGISTRY: SystemEntry[] = [
     isInternal: false,
     actions: [
       { label: "GitHub", variant: "primary", action: "open", url: "https://github.com/wolfoftyreso-debug" },
-      { label: "CF Pages", variant: "secondary", action: "open", url: "https://dash.cloudflare.com" },
-    ],
+      { label: "CF Pages", variant: "secondary", action: "open", url: "https://dash.cloudflare.com" }],
   },
   {
     id: "aws-console",
@@ -132,8 +131,7 @@ export const SYSTEM_REGISTRY: SystemEntry[] = [
     isInternal: false,
     actions: [
       { label: "Logga in", variant: "primary", action: "open" },
-      { label: "Fyll i EIN-data", variant: "danger", action: "fix" },
-    ],
+      { label: "Fyll i EIN-data", variant: "danger", action: "fix" }],
   },
   {
     id: "identity-core",
@@ -204,5 +202,4 @@ export const SYSTEM_REGISTRY: SystemEntry[] = [
     status: "ACTIVE",
     isInternal: true,
     actions: [{ label: "Senaste brief", variant: "secondary", action: "open" }],
-  },
-]
+  }]

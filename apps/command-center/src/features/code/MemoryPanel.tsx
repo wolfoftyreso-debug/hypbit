@@ -51,8 +51,7 @@ export function MemoryPanel({ memory, loading }: MemoryPanelProps) {
                 { label: 'Komponenter', value: memory.components.length },
                 { label: 'Routes', value: memory.routes.length, warn: emptyRoutes.length > 0 },
                 { label: 'Beslut', value: memory.decisions.length },
-                { label: 'Öppna issues', value: memory.open_issues.length, warn: memory.open_issues.filter(i => i.priority === 'high').length > 0 },
-              ].map(s => (
+                { label: 'Öppna issues', value: memory.open_issues.length, warn: memory.open_issues.filter(i => i.priority === 'high').length > 0 }].map(s => (
                 <div key={s.label} className={`rounded-lg p-2.5 border ${s.warn ? 'border-amber-200 bg-amber-50' : 'border-surface-border bg-white'}`}>
                   <div className={`text-lg font-bold ${s.warn ? 'text-amber-700' : 'text-[#0A3D62]'}`}>{s.value}</div>
                   <div className="text-[10px] text-gray-500">{s.label}</div>

@@ -11,8 +11,7 @@ const DEFAULT_CHECKS: ReleaseCheck[] = [
   { id: 'env',        label: 'Inga hårdkodade credentials',     status: 'pending', required: true },
   { id: 'supabase',   label: 'Inga Supabase-anrop',             status: 'pending', required: true },
   { id: 'mock',       label: 'Inga mock-data i produktion',     status: 'pending', required: true },
-  { id: 'responsive', label: 'Responsiv design verifierad',     status: 'pending', required: false },
-]
+  { id: 'responsive', label: 'Responsiv design verifierad',     status: 'pending', required: false }]
 
 const DEFAULT_CHECKLIST: ProductionChecklist[] = [
   // Quality
@@ -28,8 +27,7 @@ const DEFAULT_CHECKLIST: ProductionChecklist[] = [
   { id: 'readme',       label: 'README uppdaterad',              description: 'Ny funktionalitet dokumenterad',   checked: false, required: false, category: 'documentation' },
   // Legal
   { id: 'gdpr',         label: 'Ingen persondata i loggar',      description: 'GDPR-compliance',                  checked: false, required: true,  category: 'legal' },
-  { id: 'brand',        label: 'Varumärkesriktlinjer följda',    description: 'Cream/beige, navy, gold',           checked: false, required: true,  category: 'legal' },
-]
+  { id: 'brand',        label: 'Varumärkesriktlinjer följda',    description: 'Cream/beige, navy, gold',           checked: false, required: true,  category: 'legal' }]
 
 export function useReleaseFlow() {
   const [releases, setReleases] = useState<Release[]>([])

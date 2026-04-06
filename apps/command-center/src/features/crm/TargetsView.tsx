@@ -112,8 +112,7 @@ export function TargetsView() {
         { label: 'Signerade kunder', current: wonCount('Leon'), goal: 5, unit: 'kunder', color: TEAM_COLORS.Leon },
         { label: 'Total ARR', current: signedARR('Leon'), goal: 1200000, unit: 'SEK', color: '#3B82F6' },
         { label: 'Demos utförda', current: demoCount('Leon'), goal: 8, unit: 'demos', color: '#2563EB' },
-        { label: 'Prospects kvalificerade', current: PROSPECTS.filter(p => p.assignee === 'Leon' && p.stage !== 'Lead').length, goal: 6, unit: 'st', color: '#F59E0B' },
-      ],
+        { label: 'Prospects kvalificerade', current: PROSPECTS.filter(p => p.assignee === 'Leon' && p.stage !== 'Lead').length, goal: 6, unit: 'st', color: '#F59E0B' }],
     },
     {
       member: 'Dennis',
@@ -121,8 +120,7 @@ export function TargetsView() {
         { label: 'Avtal under hantering', current: DEALS.filter(d => d.assignee === 'Dennis').length, goal: 3, unit: 'avtal', color: TEAM_COLORS.Dennis },
         { label: 'Signerade avtal', current: signedDeals.filter(d => d.assignee === 'Dennis').length, goal: 2, unit: 'st', color: '#10B981' },
         { label: 'Total ARR', current: signedARR('Dennis'), goal: 500000, unit: 'SEK', color: '#3B82F6' },
-        { label: 'Demos utförda', current: demoCount('Dennis'), goal: 3, unit: 'demos', color: '#2563EB' },
-      ],
+        { label: 'Demos utförda', current: demoCount('Dennis'), goal: 3, unit: 'demos', color: '#2563EB' }],
     },
     {
       member: 'Erik',
@@ -130,10 +128,8 @@ export function TargetsView() {
         { label: 'Strategiska prospects', current: PROSPECTS.filter(p => p.assignee === 'Erik').length, goal: 4, unit: 'st', color: TEAM_COLORS.Erik },
         { label: 'Deals i förhandling', current: PROSPECTS.filter(p => p.assignee === 'Erik' && (p.stage === 'Förhandling' || p.stage === 'Offert')).length, goal: 3, unit: 'st', color: '#F59E0B' },
         { label: 'Total ARR (pipeline)', current: PROSPECTS.filter(p => p.assignee === 'Erik').reduce((s, p) => s + p.valueSEK, 0), goal: 1500000, unit: 'SEK', color: '#3B82F6' },
-        { label: 'Demos utförda', current: demoCount('Erik'), goal: 4, unit: 'demos', color: '#10B981' },
-      ],
-    },
-  ]
+        { label: 'Demos utförda', current: demoCount('Erik'), goal: 4, unit: 'demos', color: '#10B981' }],
+    }]
 
   // Team totals
   const totalSignedARR = signedDeals.reduce((s, d) => s + d.valueSEK, 0)

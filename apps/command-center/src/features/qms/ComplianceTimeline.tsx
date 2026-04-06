@@ -47,8 +47,7 @@ const CLAUSE_OPTIONS = [
   { value: '9.2', label: '9.2 — Intern revision' },
   { value: '9.3', label: '9.3 — Ledningsgenomgång' },
   { value: '10.2', label: '10.2 — Avvikelser & CAPA' },
-  { value: '10.3', label: '10.3 — Ständig förbättring' },
-]
+  { value: '10.3', label: '10.3 — Ständig förbättring' }]
 
 const MEETING_TYPE_OPTIONS = [
   { value: '', label: 'Alla typer' },
@@ -56,8 +55,7 @@ const MEETING_TYPE_OPTIONS = [
   { value: 'qbr', label: 'QBR (Kvartal)' },
   { value: 'management-review', label: 'Ledningsgenomgång' },
   { value: 'monthly', label: 'Månadsvis' },
-  { value: 'kpi-review', label: 'KPI-uppföljning' },
-]
+  { value: 'kpi-review', label: 'KPI-uppföljning' }]
 
 const TYPE_COLORS: Record<string, { bg: string; border: string; icon: string; label: string }> = {
   meeting: { bg: '#EBF5FB', border: '#AED6F1', icon: '📅', label: 'Möte' },

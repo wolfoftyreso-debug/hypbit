@@ -67,8 +67,7 @@ export const DISC_PROFILES: DISCProfile[] = [
     teamRole: 'Teknisk arkitekt — bygger och håller systemen levande',
     completedAt: '2026-03-29',
     source: 'manual',
-  },
-]
+  }]
 
 export const HEALTH_DATA: HealthSnapshot[] = [
   // Placeholder — populeras via WHOOP OAuth
@@ -82,5 +81,4 @@ export const HEALTH_DATA: HealthSnapshot[] = [
     motivationLevel: 5,
     note: 'Koppla WHOOP för automatisk hälsodata',
     source: 'self-report',
-  },
-]
+  }]

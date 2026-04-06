@@ -70,20 +70,17 @@ const DEMO_TRANSACTIONS: Record<string, TransactionDetailData> = {
     vatTotal: 25000,
     invoiceLines: [
       { description: 'Landvex Standard abonnemang — mars 2026', quantity: 1, unitPrice: 84900, total: 84900, vatRate: 25 },
-      { description: 'Onboarding och konfiguration', quantity: 1, unitPrice: 15100, total: 15100, vatRate: 25 },
-    ],
+      { description: 'Onboarding och konfiguration', quantity: 1, unitPrice: 15100, total: 15100, vatRate: 25 }],
     createdBy: 'Erik Svensson',
     approvedBy: 'Dennis Bjarnemark',
     log: [
       { id: 'l1', timestamp: '2026-03-24T09:15:00Z', action: 'Faktura skapad', actor: 'Erik Svensson', actorRole: 'CEO', type: 'created' },
       { id: 'l2', timestamp: '2026-03-24T11:30:00Z', action: 'Skickad till kund', actor: 'System', actorRole: 'Automation', note: 'Email till Nacka Kommun, ref: kund@nacka.se', type: 'system' },
       { id: 'l3', timestamp: '2026-03-24T14:00:00Z', action: 'Godkänd för bokföring', actor: 'Dennis Bjarnemark', actorRole: 'CLO', type: 'approved' },
-      { id: 'l4', timestamp: '2026-03-24T14:01:00Z', action: 'Bokförd i redovisning', actor: 'System', actorRole: 'Automation', note: 'Konto 3001 Konsultintäkter + 2610 Moms', type: 'system' },
-    ],
+      { id: 'l4', timestamp: '2026-03-24T14:01:00Z', action: 'Bokförd i redovisning', actor: 'System', actorRole: 'Automation', note: 'Konto 3001 Konsultintäkter + 2610 Moms', type: 'system' }],
     relatedDocuments: [
       { name: 'Offert #2026-047', type: 'PDF' },
-      { name: 'Serviceavtal Nacka Kommun', type: 'PDF' },
-    ],
+      { name: 'Serviceavtal Nacka Kommun', type: 'PDF' }],
   },
   'loneutbetalning': {
     id: 'loneutbetalning',
@@ -104,8 +101,7 @@ const DEMO_TRANSACTIONS: Record<string, TransactionDetailData> = {
       { id: 'l1', timestamp: '2026-03-25T08:00:00Z', action: 'Lönekörning initierad', actor: 'Winston Bjarnemark', actorRole: 'CFO', type: 'created' },
       { id: 'l2', timestamp: '2026-03-25T09:00:00Z', action: 'Godkänd', actor: 'Erik Svensson', actorRole: 'CEO', type: 'approved' },
       { id: 'l3', timestamp: '2026-03-26T06:00:00Z', action: 'Utbetald via Revolut Business', actor: 'Winston Bjarnemark', actorRole: 'CFO', note: 'SEPA-betalning genomförd', type: 'paid' },
-      { id: 'l4', timestamp: '2026-03-26T06:01:00Z', action: 'Bokförd', actor: 'System', actorRole: 'Automation', type: 'system' },
-    ],
+      { id: 'l4', timestamp: '2026-03-26T06:01:00Z', action: 'Bokförd', actor: 'System', actorRole: 'Automation', type: 'system' }],
   },
 }
 
@@ -196,8 +192,7 @@ export function TransactionDetail({ transactionId, onClose }: { transactionId: s
                 ['Kategori', tx.category],
                 ['Skapad av', tx.createdBy],
                 ['Godkänd av', tx.approvedBy || '—'],
-                ...(tx.paidBy ? [['Betalad av', tx.paidBy]] : []),
-              ] as [string, string][]).map(([label, value]) => (
+                ...(tx.paidBy ? [['Betalad av', tx.paidBy]] : [])] as [string, string][]).map(([label, value]) => (
                 <div key={label} style={{ background: '#F9FAFB', borderRadius: 10, padding: '10px 14px' }}>
                   <div style={{ fontSize: 10, fontWeight: 600, color: '#8E8E93', marginBottom: 3, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
                   <div style={{ fontSize: 13, fontWeight: 500, color: '#1C1C1E' }}>{value}</div>

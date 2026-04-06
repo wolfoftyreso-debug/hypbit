@@ -128,8 +128,7 @@ export function PaymentReceipt({ receipt, onClose }: {
     ...(receipt.fromName ? [['From', `${receipt.fromName}${receipt.fromEmail ? ` <${receipt.fromEmail}>` : ''}`] as [string, string]] : []),
     ...(receipt.toName || receipt.toEntity ? [['To', receipt.toName ?? receipt.toEntity ?? ''] as [string, string]] : []),
     ['Status', receipt.status.toUpperCase()],
-    ...Object.entries(receipt.metadata ?? {}) as Array<[string, string]>,
-  ]
+    ...Object.entries(receipt.metadata ?? {}) as Array<[string, string]>]
 
   return (
     <>

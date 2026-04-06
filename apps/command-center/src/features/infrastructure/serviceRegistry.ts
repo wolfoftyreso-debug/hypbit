@@ -468,8 +468,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
         message: 'STRIPE_SECRET_KEY inte konfigurerat — betalfunktioner inaktiva',
         createdAt: '2026-03-28T00:00:00Z',
         resolvedAt: null,
-      },
-    ],
+      }],
     billing: {
       provider: 'stripe',
       monthlyEstimate: 0,
@@ -562,8 +561,7 @@ export const SERVICE_REGISTRY: ServiceDefinition[] = [
       'repo': 'wolfoftyreso-debug/wavult-os',
       'branch': 'main',
     },
-  },
-]
+  }]
 
 export const HEALTH_CHECKS: InfraHealthCheck[] = [
   {
@@ -589,8 +587,7 @@ export const HEALTH_CHECKS: InfraHealthCheck[] = [
     expectedStatus: 200,
     timeout: 5000,
     interval: 300,
-  },
-]
+  }]
 
 // ─── Totalt månadsestimering ──────────────────────────────────────────────────
 

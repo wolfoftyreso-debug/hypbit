@@ -79,8 +79,7 @@ export function generateSIEFile(transactions: {
     `#SIETYP 4`,
     `#FNAMN "${companyName}"`,
     `#ORGNR ${orgNr}`,
-    '',
-  ]
+    '']
 
   // Verifikationer
   transactions.forEach((tx, i) => {

@@ -113,14 +113,12 @@ const ENTITY_DETAILS: Record<string, EntityDetail> = {
       { label: 'Entiteter etablerade', value: '4/6', status: 'warning' },
       { label: 'IP-avtal signerade', value: '0', status: 'critical' },
       { label: 'Bankkonto öppnat', value: 'Nej', status: 'critical' },
-      { label: 'Royalty-avtal', value: '0 aktiva', status: 'pending' },
-    ],
+      { label: 'Royalty-avtal', value: '0 aktiva', status: 'pending' }],
     timeline: [
       { date: '2025 Q4', event: 'Bolagsstruktur beslutad', done: true },
       { date: 'Q1 2026', event: 'DMCC-ansökan inlämnad', done: false },
       { date: 'Q2 2026', event: 'Bankkonto öppnat (ENBD)', done: false },
-      { date: 'Q3 2026', event: 'IP-avtal med dotterbolag signerade', done: false },
-    ],
+      { date: 'Q3 2026', event: 'IP-avtal med dotterbolag signerade', done: false }],
   },
   'woh': {
     incorporation: 'AB (Aktiebolag)',
@@ -131,14 +129,12 @@ const ENTITY_DETAILS: Record<string, EntityDetail> = {
       { label: 'Inkorporering', value: 'Ej påbörjad', status: 'critical' },
       { label: 'Aktiva projekt', value: '4', status: 'active' },
       { label: 'Bankkonto', value: 'Saknas', status: 'critical' },
-      { label: 'Intercompany-avtal', value: '0', status: 'critical' },
-    ],
+      { label: 'Intercompany-avtal', value: '0', status: 'critical' }],
     timeline: [
       { date: 'Q2 2026', event: 'AB registreras hos Bolagsverket', done: false },
       { date: 'Q2 2026', event: 'Bankkonto öppnat (Revolut/Handelsbanken)', done: false },
       { date: 'Q3 2026', event: 'Intercompany-avtal med WGH signerade', done: false },
-      { date: 'Q4 2026', event: 'Dotterbolag aktivt i prodution', done: false },
-    ],
+      { date: 'Q4 2026', event: 'Dotterbolag aktivt i prodution', done: false }],
   },
   'oz-lt': {
     incorporation: 'UAB (Litauisk LLC)',
@@ -149,13 +145,11 @@ const ENTITY_DETAILS: Record<string, EntityDetail> = {
       { label: 'Formation', value: 'Ej startad', status: 'pending' },
       { label: 'MRR', value: 'Pre-revenue', status: 'pending' },
       { label: 'Lanseringsmarknad', value: 'Sverige jun 2026', status: 'on_track' },
-      { label: 'EU-compliance', value: 'GDPR redo', status: 'on_track' },
-    ],
+      { label: 'EU-compliance', value: 'GDPR redo', status: 'on_track' }],
     timeline: [
       { date: 'Q2 2026', event: 'UAB registrering i Vilnius', done: false },
       { date: 'Q3 2026', event: 'Bankkonto öppnat', done: false },
-      { date: 'Q4 2026', event: 'Första kundfaktura (EU)', done: false },
-    ],
+      { date: 'Q4 2026', event: 'Första kundfaktura (EU)', done: false }],
   },
   'oz-us': {
     incorporation: 'Delaware C-Corp',
@@ -166,15 +160,13 @@ const ENTITY_DETAILS: Record<string, EntityDetail> = {
       { label: 'Formation', value: 'Ej startad', status: 'pending' },
       { label: 'US expansion', value: 'Fas 2', status: 'pending' },
       { label: 'Investeringsförberedelse', value: 'Ej startad', status: 'pending' },
-      { label: 'US marknadsintro', value: 'H2 2026', status: 'on_track' },
-    ],
+      { label: 'US marknadsintro', value: 'H2 2026', status: 'on_track' }],
     timeline: [
       { date: 'Q3 2026', event: 'Delaware C-Corp formation', done: false },
       { date: 'Q3 2026', event: 'US bankkonto (Silicon Valley Bank/Chase)', done: false },
-      { date: 'Q4 2026', event: 'US marknadsintroduktion', done: false },
-    ],
+      { date: 'Q4 2026', event: 'US marknadsintroduktion', done: false }],
   },
-  'lvx-ae': {
+  : {
     incorporation: 'DIFC FZCO',
     bankStatus: 'Emirates NBD — pågår',
     complianceStatus: 'Forming',
@@ -183,13 +175,11 @@ const ENTITY_DETAILS: Record<string, EntityDetail> = {
       { label: 'Formation', value: 'Pågår', status: 'warning' },
       { label: 'MENA Pipeline', value: '2 leads', status: 'on_track' },
       { label: 'Bankkonto', value: 'Ej öppnat', status: 'critical' },
-      { label: 'Produktlansering', value: 'Q3 2026', status: 'on_track' },
-    ],
+      { label: 'Produktlansering', value: 'Q3 2026', status: 'on_track' }],
     timeline: [
       { date: 'Q1 2026', event: 'DIFC-ansökan inlämnad', done: false },
       { date: 'Q2 2026', event: 'Bankkonto (Emirates NBD)', done: false },
-      { date: 'Q3 2026', event: 'Första MENA-kund', done: false },
-    ],
+      { date: 'Q3 2026', event: 'Första MENA-kund', done: false }],
   },
   'lvx-us': {
     incorporation: 'Texas LLC',
@@ -200,13 +190,11 @@ const ENTITY_DETAILS: Record<string, EntityDetail> = {
       { label: 'Formation', value: 'Pågår', status: 'warning' },
       { label: 'US Pipeline', value: '3 leads', status: 'on_track' },
       { label: 'Bankkonto', value: 'JPMorgan — pågår', status: 'warning' },
-      { label: 'Kommunal-pipeline', value: 'Q3 2026', status: 'on_track' },
-    ],
+      { label: 'Kommunal-pipeline', value: 'Q3 2026', status: 'on_track' }],
     timeline: [
       { date: 'Q1 2026', event: 'Texas LLC formation (Houston)', done: true },
       { date: 'Q2 2026', event: 'Bankkonto öppnat', done: false },
-      { date: 'Q3 2026', event: 'Första municipal-kontrakt', done: false },
-    ],
+      { date: 'Q3 2026', event: 'Första municipal-kontrakt', done: false }],
   },
 }
 
@@ -266,7 +254,7 @@ const SVG_MAIN_W = 880
 const NODE_POSITIONS: Record<string, { x: number; y: number }> = {
   'wgh':    { x: 340, y: 70 },   // WGH — centered
   'woh':    { x: 60,  y: 260 },  // WOH
-  'lvx-ae': { x: 330, y: 260 },  // LVX-AE
+  : { x: 330, y: 260 },  // LVX-AE
   'lvx-us': { x: 620, y: 260 },  // LVX-US
   'oz-lt':  { x: 20,  y: 450 },  // OZ-LT (under WOH)
   'oz-us':  { x: 240, y: 450 },  // OZ-US (under WOH)
@@ -1052,8 +1040,7 @@ export function OrgGraph() {
   const viewButtons = [
     { id: 'dynasty' as ViewLevel, label: '🏛 Dynasty', desc: 'Hela koncernen' },
     { id: 'entity' as ViewLevel, label: '🏢 Bolag', desc: 'Valt bolag' },
-    { id: 'individual' as ViewLevel, label: '👤 Person', desc: 'Vald person' },
-  ]
+    { id: 'individual' as ViewLevel, label: '👤 Person', desc: 'Vald person' }]
 
   return (
     <div className="flex flex-col h-full overflow-hidden bg-[#F5F0E8]">

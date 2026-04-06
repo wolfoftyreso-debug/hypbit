@@ -111,8 +111,7 @@ export const COMPETITORS: Competitor[] = [
     ourAdvantage: 'LandveX ersätter Excel med ett levande system som automatiserar hela rapportkedjan.',
     ourStrategy: 'Demo är vår starkaste pitch. Visa hur det ser ut. "Varje timme du lägger på Excel är slöseri."',
     threat: 'inaktivt',
-  },
-]
+  }]
 
 // ── MARKNAD ────────────────────────────────────────────────────────────────────
 
@@ -142,9 +141,8 @@ export const MARKET_METRICS: MarketMetric[] = [
   // Expansion marknader
   { id: 'm10', productId: 'quixzoom', label: 'UK — CCS Gateway', value: '333 kommuner', detail: 'Crown Commercial Service-ramavtal öppnar alla brittiska kommuner simultant. Engelska — noll anpassningskostnad.', source: 'HM Government 2024', asOf: '2024' },
   { id: 'm11', productId: 'quixzoom', label: 'NRW, Tyskland', value: '396 kommuner', detail: 'Nordrhein-Westfalen: €2,4 Mdr/år infrastrukturbudget. NIS2-compliance driver adoption. Störst kommunaltäthet i EU.', source: 'Innenministerium NRW 2024', asOf: '2024' },
-  { id: 'm12', productId: 'landvex', label: 'UAE/GCC marknad', value: 'Obegränsad budget', detail: 'Dubai RTA + DEWA har praktiskt obegränsade infrastrukturbudgetar. LandveX AC ger direktaccess via Dubai-etableringen.', source: 'Dubai Smart City Initiative', asOf: '2024' },
-  { id: 'm13', productId: 'quixzoom', label: 'OZ-LT — EU Hävstång', value: '27 EU-länder', detail: 'Litauen-entiteten ger omedelbar juridisk närvaro i hela EU. Noll nya bolagsregistreringar behövs för NL, DE, FR, BE, SE.', source: 'Intern strategi', asOf: '2026' },
-]
+  { id: 'm12', productId: 'landvex', label: 'UAE/GCC marknad', value: 'Obegränsad budget', detail: 'Dubai RTA + DEWA har praktiskt obegränsade infrastrukturbudgetar. LandveX ger direktaccess via Dubai-etableringen.', source: 'Dubai Smart City Initiative', asOf: '2024' },
+  { id: 'm13', productId: 'quixzoom', label: 'OZ-LT — EU Hävstång', value: '27 EU-länder', detail: 'Litauen-entiteten ger omedelbar juridisk närvaro i hela EU. Noll nya bolagsregistreringar behövs för NL, DE, FR, BE, SE.', source: 'Intern strategi', asOf: '2026' }]
 
 // ── MISSION per bolag ──────────────────────────────────────────────────────────
 

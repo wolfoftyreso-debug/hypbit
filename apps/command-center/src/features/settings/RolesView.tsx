@@ -33,8 +33,7 @@ const ALL_MODULES: Module[] = [
   { id: 'campaigns',      label: 'Campaign OS',       icon: '⚡' },
   { id: 'submissions',    label: 'Submissions',       icon: '📥' },
   { id: 'settings',       label: 'Inställningar',     icon: '⚙️' },
-  { id: 'company-launch', label: 'Company Launch',    icon: '🏢' },
-]
+  { id: 'company-launch', label: 'Company Launch',    icon: '🏢' }]
 
 const ROLES: RoleDef[] = [
   {
@@ -81,8 +80,7 @@ const ROLES: RoleDef[] = [
     emoji: '⚙️',
     description: 'Teknisk ledning — system settings, deployments, infrastruktur.',
     modules: ['dashboard', 'settings', 'incidents', 'projects', 'tasks', 'entities', 'org'],
-  },
-]
+  }]
 
 export function RolesView() {
   const [selectedRole, setSelectedRole] = useState<string | null>(null)

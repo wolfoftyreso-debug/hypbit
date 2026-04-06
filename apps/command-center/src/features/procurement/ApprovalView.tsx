@@ -104,8 +104,7 @@ export function ApprovalView() {
         {[
           { label: 'Väntande', value: pending.length,  color: '#f59e0b' },
           { label: 'Godkända', value: resolved.filter(r => r.status === 'godkänd').length,  color: '#10b981' },
-          { label: 'Avslagna', value: resolved.filter(r => r.status === 'avslagen').length, color: '#ef4444' },
-        ].map(stat => (
+          { label: 'Avslagna', value: resolved.filter(r => r.status === 'avslagen').length, color: '#ef4444' }].map(stat => (
           <div
             key={stat.label}
             className="rounded-xl border border-surface-border bg-[#F0EBE1] p-4"

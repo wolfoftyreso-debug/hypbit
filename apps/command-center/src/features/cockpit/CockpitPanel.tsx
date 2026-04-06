@@ -368,8 +368,7 @@ export function CockpitPanel({
             { id: 'logs',        label: '📋 Logs',        color: '#888' },
             { id: 'workers',     label: '⚙️ Workers',     color: '#3B9BF5' },
             { id: 'alerts',      label: `🔔 Alerts${metrics?.alerts?.length ? ` (${metrics.alerts.length})` : ''}`, color: metrics?.alerts?.length ? '#FF3333' : '#888' },
-            { id: 'scaling',     label: '📈 Scaling',     color: '#00FF88' },
-          ] as { id: string; label: string; color: string }[]).map(ctrl => (
+            { id: 'scaling',     label: '📈 Scaling',     color: '#00FF88' }] as { id: string; label: string; color: string }[]).map(ctrl => (
             <button
               key={ctrl.id}
               onClick={() => setActiveControl(activeControl === ctrl.id ? null : ctrl.id)}

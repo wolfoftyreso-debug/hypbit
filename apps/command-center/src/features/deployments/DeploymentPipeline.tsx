@@ -346,8 +346,7 @@ export function DeploymentPipeline() {
       dev:        { version: '', commit: '', deployed_at: null, status: 'empty', url: '', is_locked: false },
       staging:    { version: '', commit: '', deployed_at: null, status: 'empty', url: '', is_locked: false },
       production: { version: 'live', commit: '', deployed_at: null, status: 'live', url: 'https://lunina-foundation.pages.dev', is_locked: true },
-    },
-  ]
+    }]
 
   useEffect(() => {
     // Try to get real data, fall back to defaults
@@ -404,8 +403,7 @@ export function DeploymentPipeline() {
           { color: '#E8B84B', label: 'Awaiting approval' },
           { color: '#2C3E6B', label: 'Building' },
           { color: '#C0392B', label: 'Failed' },
-          { color: 'rgba(10,61,98,.2)', label: 'Empty / not deployed' },
-        ].map(({ color, label }) => (
+          { color: 'rgba(10,61,98,.2)', label: 'Empty / not deployed' }].map(({ color, label }) => (
           <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <div style={{ width: 8, height: 8, borderRadius: '50%', background: color }} />
             <span style={{ fontSize: 11, color: 'rgba(10,61,98,.6)' }}>{label}</span>

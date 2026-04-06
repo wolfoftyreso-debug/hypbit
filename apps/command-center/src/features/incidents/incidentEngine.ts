@@ -220,8 +220,7 @@ export const KPI_DEFINITIONS: KPIDefinition[] = [
     current: 'Watch', current_value: 0.5,
     unit: 'status', trend: 'flat',
     deadline: '2026-06-01', weight: 'primary',
-  },
-]
+  }]
 
 // ─── KPI Status engine ────────────────────────────────────────────────────────
 
@@ -342,8 +341,7 @@ const ACTION_TEMPLATES: Record<string, ProposedAction[]> = {
         time_bound: '3 days after formation complete',
       },
       state: 'proposed',
-    },
-  ],
+    }],
   'clo-incorporated': [
     {
       id: 'act-clo-inc-1',
@@ -372,8 +370,7 @@ const ACTION_TEMPLATES: Record<string, ProposedAction[]> = {
         time_bound: '30 days',
       },
       state: 'proposed',
-    },
-  ],
+    }],
   'ceo-ops-mrr': [
     {
       id: 'act-ceo-mrr-1',
@@ -388,8 +385,7 @@ const ACTION_TEMPLATES: Record<string, ProposedAction[]> = {
         time_bound: '30 days post Thailand (by May 11)',
       },
       state: 'proposed',
-    },
-  ],
+    }],
   'cfo-cashflow': [
     {
       id: 'act-cfo-cf-1',
@@ -404,8 +400,7 @@ const ACTION_TEMPLATES: Record<string, ProposedAction[]> = {
         time_bound: '7 days',
       },
       state: 'proposed',
-    },
-  ],
+    }],
 }
 
 function buildActions(kpi: KPIDefinition): ProposedAction[] {
@@ -505,8 +500,7 @@ export function computePropagation(incidents: PerformanceIncident[]): Propagatio
 
   const escalationRoles = [...new Set([
     ...primaryFailures,
-    ...incidents.filter(i => i.escalated).flatMap(i => i.rca.affected_roles),
-  ])]
+    ...incidents.filter(i => i.escalated).flatMap(i => i.rca.affected_roles)])]
 
   return { primary_failures: primaryFailures, cascade_failures: cascadeFailures, escalation_roles: escalationRoles }
 }

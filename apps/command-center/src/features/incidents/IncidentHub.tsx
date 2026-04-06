@@ -251,8 +251,7 @@ function IncidentRoutine() {
         'Bekräfta att en incident faktiskt har inträffat (inte ett falskt alarm)',
         'Klassificera allvarlighetsgrad: Kritisk / Hög / Medel / Låg',
         'Dokumentera i Wavult DS: /incidents → "Rapportera incident"',
-        `Om Kritisk: Ring omedelbart ${ceo?.name ?? 'Erik'} (+46709123223)`,
-      ],
+        `Om Kritisk: Ring omedelbart ${ceo?.name ?? 'Erik'} (+46709123223)`],
       color: '#C0392B',
     },
     {
@@ -262,8 +261,7 @@ function IncidentRoutine() {
         'Isolera berörda system (stäng ned tjänst om nödvändigt)',
         'Ändra komprometterade credentials omedelbart',
         'Dokumentera alla åtgärder i incidentloggen',
-        'Bevara loggfiler och bevis — rör inget utan godkännande',
-      ],
+        'Bevara loggfiler och bevis — rör inget utan godkännande'],
       color: '#E67E22',
     },
     {
@@ -273,8 +271,7 @@ function IncidentRoutine() {
         'GDPR Art. 33: Anmäl till MSB om personuppgifter berörs (24h)',
         'NIS2: Anmäl kritiska incidenter till MSB (72h)',
         'MSB-portal: https://www.msb.se/nis2 | Tel: 020-120 13 13',
-        'Generera MSB-rapport via Wavult DS: Incident → "Generera MSB-rapport"',
-      ],
+        'Generera MSB-rapport via Wavult DS: Incident → "Generera MSB-rapport"'],
       color: '#0A3D62',
     },
     {
@@ -284,8 +281,7 @@ function IncidentRoutine() {
         'Identifiera grundorsak (root cause analysis)',
         'Implementera permanent åtgärd',
         'Verifiera att incidenten är åtgärdad',
-        'Uppdatera status i Wavult DS',
-      ],
+        'Uppdatera status i Wavult DS'],
       color: '#B8760A',
     },
     {
@@ -295,11 +291,9 @@ function IncidentRoutine() {
         'Post-mortem inom 5 dagar efter stängning',
         'Dokumentera lärdomar i incidentloggen',
         'Uppdatera rutiner om brister identifierades',
-        'Godkänn och stäng incidenten i Wavult DS',
-      ],
+        'Godkänn och stäng incidenten i Wavult DS'],
       color: '#2D7A4F',
-    },
-  ]
+    }]
 
   return (
     <div className="space-y-4 max-w-3xl">
@@ -373,8 +367,7 @@ export function IncidentHub() {
         fetch(`${API}/api/incidents/dashboard/stats?entityId=${activeEntity.id}`, {
           headers: { Authorization: 'Bearer bypass' },
           signal: controller.signal,
-        }),
-      ])
+        })])
       if (incRes.ok) setIncidents(await incRes.json())
       if (statsRes.ok) setStats(await statsRes.json())
     } catch { /* empty state */ } finally {
@@ -424,8 +417,7 @@ export function IncidentHub() {
               { label: 'Kritiska', value: stats.critical_open, color: parseInt(stats.critical_open) > 0 ? '#C0392B' : '#2D7A4F' },
               { label: 'MSB-förfallna', value: stats.msb_overdue, color: parseInt(stats.msb_overdue) > 0 ? '#C0392B' : '#2D7A4F' },
               { label: 'Medel MTTR', value: stats.avg_mttr_hours ? `${Math.round(parseFloat(stats.avg_mttr_hours))}h` : '—', color: '#0A3D62' },
-              { label: 'Senaste 30 dagar', value: stats.last_30_days, color: '#8A8278' },
-            ].map(s => (
+              { label: 'Senaste 30 dagar', value: stats.last_30_days, color: '#8A8278' }].map(s => (
               <div key={s.label} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#DDD5C5]">
                 <span className="font-bold" style={{ color: s.color }}>{s.value}</span>
                 <span className="text-gray-500">{s.label}</span>
@@ -438,8 +430,7 @@ export function IncidentHub() {
         <div className="flex gap-0 mt-4 -mb-px">
           {[
             { id: 'incidents' as const, label: '📋 Incidenter' },
-            { id: 'routine' as const, label: '📖 Incidentrutin (NIS2)' },
-          ].map(tab => (
+            { id: 'routine' as const, label: '📖 Incidentrutin (NIS2)' }].map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}

@@ -11,8 +11,7 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: 'competitors', label: 'Konkurrenter', icon: '⚔️' },
   { id: 'market',      label: 'Marknad',      icon: '📈' },
   { id: 'material',    label: 'Material',     icon: '📋' },
-  { id: 'compliance',  label: 'Compliance',   icon: '✅' },
-]
+  { id: 'compliance',  label: 'Compliance',   icon: '✅' }]
 
 const THREAT_CONFIG = {
   hög:      { color: '#C0392B', bg: '#FDECEA', label: '🔴 Hög' },
@@ -259,14 +258,11 @@ export function StrategicBrief() {
                   { phase: 'FAS 2A', status: 'förbereder', markets: [
                     { flag:'🇳🇱', name:'Nederländerna', note:'Amsterdam + Rotterdam pilot. OZ-LT täcker juridiken.', owner:'TBD' },
                     { flag:'🇬🇧', name:'UK', note:'Crown Commercial Service — 333 kommuner med ett ramavtal.', owner:'TBD' },
-                    { flag:'🇦🇪', name:'UAE via LandveX AC', note:'RTA + DEWA Dubai. Obegränsad infrastrukturbudget.', owner:'Erik' },
-                  ], color: '#0A3D62' },
+                    { flag:'🇦🇪', name:'UAE via LandveX', note:'RTA + DEWA Dubai. Obegränsad infrastrukturbudget.', owner:'Erik' }], color: '#0A3D62' },
                   { phase: 'FAS 3', status: 'planerat', markets: [
                     { flag:'🇩🇪', name:'NRW, Tyskland', note:'396 kommuner, €2.4 Mdr/år. NIS2-driven adoption.', owner:'' },
                     { flag:'🇺🇸', name:'Texas, USA', note:'LandveX Inc. ERCOT-driven infrastrukturinvesteringar.', owner:'' },
-                    { flag:'🌏', name:'Asien', note:'Singapore Trust som hub. 2027-2028.', owner:'' },
-                  ], color: '#8A8278' },
-                ].map(phase => (
+                    { flag:'🌏', name:'Asien', note:'Singapore Trust som hub. 2027-2028.', owner:'' }], color: '#8A8278' }].map(phase => (
                   <div key={phase.phase} className="rounded-xl border p-4" style={{ borderColor: phase.color + '30', background: phase.color + '05' }}>
                     <div className="flex items-center gap-3 mb-3">
                       <span className="text-xs font-bold px-2.5 py-1 rounded-full text-white" style={{ background: phase.color }}>{phase.phase}</span>
@@ -309,11 +305,10 @@ export function StrategicBrief() {
                   { date: 'Maj 2026', event: 'quiXzoom Skärgårdstest', desc: 'Live-test med zoomers i Stockholms skärgård. Första bilddata. Zoomer-app live.', status: 'nara', product: 'quiXzoom' },
                   { date: 'Juni 2026', event: 'FAS 1 — Sverige-lansering', desc: 'quiXzoom och LandveX live. Mål: 3 kommunkontrakt, 500 aktiva zoomers. Referenskunder säkrade.', status: 'nara', product: 'Alla' },
                   { date: 'Q3 2026', event: 'FAS 2A — Parallell EU + UK', desc: 'NL: pilotkontrakt Amsterdam + Rotterdam via OZ-LT. UK: Crown Commercial Service-ansökan. Ingen ny bolagsregistrering — OZ-LT täcker hela EU.', status: 'framtid', product: 'quiXzoom' },
-                  { date: 'Q3 2026', event: 'UAE — LandveX AC aktiveras', desc: 'Första säljkontakter RTA och DEWA Dubai. Dubai-närvaron ger direktaccess till GCC-marknaden. Nästan obegränsade infrastrukturbudgetar.', status: 'framtid', product: 'LandveX' },
+                  { date: 'Q3 2026', event: 'UAE — LandveX aktiveras', desc: 'Första säljkontakter RTA och DEWA Dubai. Dubai-närvaron ger direktaccess till GCC-marknaden. Nästan obegränsade infrastrukturbudgetar.', status: 'framtid', product: 'LandveX' },
                   { date: 'Q1 2027', event: 'FAS 2B — Skalning', desc: 'UK fullt aktiverat om CCS-ramavtal klart (öppnar 333 kommuner på en gång). 3-4 NL-kommuner live. Account managers rekryterade lokalt.', status: 'framtid', product: 'Alla' },
                   { date: 'Q2 2027', event: 'USA — Texas go-live', desc: 'LandveX Inc aktiveras. Texas = USA:s mest infrastructure-investerade stat (ERCOT-kris driver investeringar). Första US-kontrakt Texas.', status: 'framtid', product: 'LandveX' },
-                  { date: '2027-2028', event: 'FAS 3 — Global hävstång', desc: 'Asien via Singapore Trust-hub. Aktivera alla EU-marknader via OZ-LT. Series A kapital används för att parallellköra 8-10 marknader simultant.', status: 'framtid', product: 'Alla' },
-                ].map((item, i) => (
+                  { date: '2027-2028', event: 'FAS 3 — Global hävstång', desc: 'Asien via Singapore Trust-hub. Aktivera alla EU-marknader via OZ-LT. Series A kapital används för att parallellköra 8-10 marknader simultant.', status: 'framtid', product: 'Alla' }].map((item, i) => (
                   <div key={i} className="flex gap-4 items-start">
                     <div className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${
                       item.status === 'nu' ? 'bg-[#E8B84B] ring-4 ring-[#E8B84B]/20' :
@@ -398,8 +393,7 @@ export function StrategicBrief() {
                     icon: '🚀',
                     title: 'Snabbare enterprise-deals',
                     desc: 'En ISO 27001-certifierad leverantör skippas förbi upphandlingsbyråkratin. Tid-till-kontrakt halveras. Det är direkt affärsvärde.',
-                  },
-                ].map(c => (
+                  }].map(c => (
                   <div key={c.title} className="rounded-xl bg-[#F5F0E8] p-4">
                     <div className="text-2xl mb-2">{c.icon}</div>
                     <div className="text-xs font-bold text-[#0A3D62] mb-1">{c.title}</div>
@@ -417,8 +411,7 @@ export function StrategicBrief() {
                   { standard: 'ISO 9001:2015', area: 'Kvalitetsledning', status: 'Implementeras', color: '#0A3D62' },
                   { standard: 'ISO 27001:2022', area: 'Informationssäkerhet', status: 'Implementeras', color: '#0A3D62' },
                   { standard: 'GDPR', area: 'Dataskydd (EU)', status: 'Aktivt', color: '#2D7A4F' },
-                  { standard: 'NIS2', area: 'Cybersäkerhet (EU)', status: 'Förbereder', color: '#B8760A', tooltip: 'Art. 21: Riskanalys (QMS✓), Incidenthantering (rutiner saknas), Leverantörskedja (cert-auth✓), MFA/komm (cert-auth✓)' },
-                ].map(s => (
+                  { standard: 'NIS2', area: 'Cybersäkerhet (EU)', status: 'Förbereder', color: '#B8760A', tooltip: 'Art. 21: Riskanalys (QMS✓), Incidenthantering (rutiner saknas), Leverantörskedja (cert-auth✓), MFA/komm (cert-auth✓)' }].map(s => (
                   <div key={s.standard} className="rounded-xl border border-[#DDD5C5] p-3 text-center">
                     <div className="text-[11px] font-bold mb-1" style={{ color: s.color }}>{s.standard}</div>
                     <div className="text-[10px] text-gray-500 mb-2">{s.area}</div>
@@ -445,8 +438,7 @@ export function StrategicBrief() {
                   'ED25519-certifikatautentisering — inga statiska API-nycklar',
                   'RBAC — varje roll ser bara det de får se, inget mer',
                   'S3 multi-region med CRR — RPO 1h, RTO 4h',
-                  'Replay-logg med SHA-256-checksummor — tamper-proof',
-                ].map((item, i) => (
+                  'Replay-logg med SHA-256-checksummor — tamper-proof'].map((item, i) => (
                   <div key={i} className="flex items-start gap-2">
                     <span className="text-[#E8B84B] font-bold flex-shrink-0">✓</span>
                     <span>{item}</span>

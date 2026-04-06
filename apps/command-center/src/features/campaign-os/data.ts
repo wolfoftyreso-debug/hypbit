@@ -119,8 +119,7 @@ export const ENTITY_FILTER_OPTIONS: Array<{ id: string; label: string; region: '
   { id: 'all', label: 'Alla', region: 'Global' },
   { id: 'wavult-group', label: 'Wavult Group', region: 'Global' },
   { id: 'quixzoom-uab', label: 'QuiXzoom (EU)', region: 'EU' },
-  { id: 'landvex-inc', label: 'Landvex (US)', region: 'US' },
-]
+  { id: 'landvex-inc', label: 'Landvex (US)', region: 'US' }]
 
 export const ENTITY_COLOR: Record<string, string> = {
   'wavult-group': '#2563EB',

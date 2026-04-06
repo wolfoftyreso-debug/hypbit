@@ -183,8 +183,7 @@ export function QuixzoomLaunchView() {
             {[
               { color: '#10B981', label: 'Klar' },
               { color: '#3B82F6', label: 'Pågår' },
-              { color: '#6B7280', label: 'Planerad' },
-            ].map(({ color, label }) => (
+              { color: '#6B7280', label: 'Planerad' }].map(({ color, label }) => (
               <div key={label} className="flex items-center gap-1.5">
                 <div className="h-2 w-6 rounded-full" style={{ background: color }} />
                 <span className="text-[9px] text-gray-9000 font-mono">{label}</span>

@@ -8,9 +8,8 @@ const CORP_ENTITIES: CorpEntity[] = [
   { id: '2', name: 'Wavult Operations Holding AB', short_name: 'WOH',  jurisdiction: 'Sverige',        jurisdiction_code: 'SE', org_nr: '', founded: null, status: 'aktiv',           color: '#0A3D62', created_at: '2024-01-01', updated_at: '2024-01-01' },
   { id: '3', name: 'quiXzoom UAB',           short_name: 'OZ-LT',  jurisdiction: 'Litauen',        jurisdiction_code: 'LT', org_nr: '', founded: null, status: 'aktiv',           color: '#2D7A4F', created_at: '2024-01-01', updated_at: '2024-01-01' },
   { id: '4', name: 'quiXzoom Inc',           short_name: 'OZ-US',  jurisdiction: 'Delaware, USA',  jurisdiction_code: 'US', org_nr: '', founded: null, status: 'aktiv',           color: '#2C6EA6', created_at: '2024-01-01', updated_at: '2024-01-01' },
-  { id: '5', name: 'LandveX AC',                 short_name: 'LVX-AE', jurisdiction: 'UAE (DIFC)',     jurisdiction_code: 'AE', org_nr: '', founded: null, status: 'under bildning',  color: '#C9A84C', created_at: '2024-01-01', updated_at: '2024-01-01' },
-  { id: '6', name: 'LandveX Inc',                short_name: 'LVX-US', jurisdiction: 'Texas, USA',     jurisdiction_code: 'US', org_nr: '', founded: null, status: 'under bildning',  color: '#4A7A5B', created_at: '2024-01-01', updated_at: '2024-01-01' },
-]
+  { id: '5', name: 'LandveX',                 short_name: 'LVX-AE', jurisdiction: 'UAE (DIFC)',     jurisdiction_code: 'AE', org_nr: '', founded: null, status: 'under bildning',  color: '#C9A84C', created_at: '2024-01-01', updated_at: '2024-01-01' },
+  { id: '6', name: 'LandveX Inc',                short_name: 'LVX-US', jurisdiction: 'Texas, USA',     jurisdiction_code: 'US', org_nr: '', founded: null, status: 'under bildning',  color: '#4A7A5B', created_at: '2024-01-01', updated_at: '2024-01-01' }]
 
 const CORP_BOARD_MEETINGS: CorpBoardMeeting[] = []
 const CORP_COMPLIANCE_ITEMS: any[] = []

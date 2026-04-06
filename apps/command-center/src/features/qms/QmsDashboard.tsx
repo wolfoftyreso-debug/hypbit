@@ -32,8 +32,7 @@ const STANDARD_OPTIONS = [
   { code: 'ISO_9001_2015', label: 'ISO 9001:2015' },
   { code: 'ISO_27001_2022', label: 'ISO 27001:2022' },
   { code: 'GDPR_2018', label: 'GDPR' },
-  { code: 'NIS2_2022', label: 'NIS2' },
-]
+  { code: 'NIS2_2022', label: 'NIS2' }]
 
 const CATEGORY_OPTIONS = [
   { code: '', label: 'Alla kategorier' },
@@ -47,8 +46,7 @@ const CATEGORY_OPTIONS = [
   { code: 'organizational', label: 'Organisatorisk' },
   { code: 'people', label: 'Personal' },
   { code: 'physical', label: 'Fysisk' },
-  { code: 'technological', label: 'Teknologisk' },
-]
+  { code: 'technological', label: 'Teknologisk' }]
 
 export function QmsDashboard() {
   const { entities, loading: entLoading } = useQmsEntities()
@@ -218,8 +216,7 @@ export function QmsDashboard() {
                   {[
                     { label: '🇹🇭 Thailand Workcamp', date: readiness.target_dates.thailand },
                     { label: '📋 Pre-assessment', date: readiness.target_dates.pre_assessment },
-                    { label: '🏆 Fullcertifikat', date: readiness.target_dates.full_certification },
-                  ].map(m => (
+                    { label: '🏆 Fullcertifikat', date: readiness.target_dates.full_certification }].map(m => (
                     <div key={m.label} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                       <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#E8B84B', flexShrink: 0 }} />
                       <div>

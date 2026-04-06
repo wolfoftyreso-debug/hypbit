@@ -52,8 +52,7 @@ export function TaxComplianceView() {
           { label: 'Månatlig arb.avg.', value: fmt(monthlyEmployerTax), color: '#FBBF24', sub: '31.42% av bruttolöner' },
           { label: 'F-skatt (bolaget)', value: 'Beräknas', color: '#60A5FA', sub: 'Kontakta revisor' },
           { label: 'Nästa deklaration', value: upcoming?.deadline ?? '—', color: days !== null && days <= 7 ? '#F87171' : '#60A5FA', sub: days !== null ? `Om ${days} dagar` : '' },
-          { label: 'Årsavgifter (est.)', value: fmt(monthlyEmployerTax * 12), color: '#C084FC', sub: '12 månader' },
-        ].map(k => (
+          { label: 'Årsavgifter (est.)', value: fmt(monthlyEmployerTax * 12), color: '#C084FC', sub: '12 månader' }].map(k => (
           <div key={k.label} className="bg-white border border-surface-border rounded-xl px-5 py-4">
             <div className="text-xs text-text-muted mb-1">{k.label}</div>
             <div className="text-xl font-bold tabular-nums" style={{ color: k.color }}>{k.value}</div>
@@ -140,8 +139,7 @@ export function TaxComplianceView() {
               amount: 'Se revisor',
               color: '#60A5FA',
               icon: '📊',
-            },
-          ].map(acc => (
+            }].map(acc => (
             <div key={acc.title} className="border border-surface-border rounded-xl p-4">
               <div className="flex items-start gap-3">
                 <span className="text-2xl">{acc.icon}</span>
@@ -168,8 +166,7 @@ export function TaxComplianceView() {
             { month: 'Maj', deadline: '12 jun', paid: false },
             { month: 'Jun', deadline: '12 jul', paid: false },
             { month: 'Jul', deadline: '12 aug', paid: false },
-            { month: 'Aug', deadline: '12 sep', paid: false },
-          ].map(d => (
+            { month: 'Aug', deadline: '12 sep', paid: false }].map(d => (
             <div
               key={d.month}
               className="rounded-lg p-3 border"

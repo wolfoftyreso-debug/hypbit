@@ -189,8 +189,7 @@ export function PayrollRun() {
                     { label: 'Totalt att utbetala (netto)', value: fmt(totalNet), color: '#34D399' },
                     { label: 'Arbetsgivaravgifter (31.42%)', value: fmt(totalEmployerTax), color: '#FBBF24' },
                     { label: 'Total kostnad för bolaget', value: fmt(totalCost), color: '#C084FC' },
-                    { label: 'Antal anställda', value: String(active.length), color: '#60A5FA' },
-                  ].map(s => (
+                    { label: 'Antal anställda', value: String(active.length), color: '#60A5FA' }].map(s => (
                     <div key={s.label} className="bg-[#F0EBE1] rounded-xl p-4">
                       <div className="text-xs text-text-muted mb-1">{s.label}</div>
                       <div className="text-lg font-bold tabular-nums" style={{ color: s.color }}>{s.value}</div>

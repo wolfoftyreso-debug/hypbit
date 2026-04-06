@@ -122,8 +122,7 @@ export function useQmsControls(
 
     Promise.all([
       apiFetch(`/v1/qms/${entitySlug}/controls${qs}`).then(r => r.json()),
-      apiFetch(`/v1/qms/${entitySlug}/standards`).then(r => r.json()),
-    ])
+      apiFetch(`/v1/qms/${entitySlug}/standards`).then(r => r.json())])
       .then(([ctrlData, stdData]) => {
         if (!cancelled) {
           setControls(ctrlData)

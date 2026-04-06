@@ -45,8 +45,7 @@ function SimpleCalendar({ month, year, employees }: { month: number; year: numbe
 
   const cells: (number | null)[] = [
     ...Array(startOffset).fill(null),
-    ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
-  ]
+    ...Array.from({ length: daysInMonth }, (_, i) => i + 1)]
   // Pad to full weeks
   while (cells.length % 7 !== 0) cells.push(null)
 

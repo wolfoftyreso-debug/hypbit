@@ -28,8 +28,7 @@ const ECS_SERVICES = [
   { name: 'n8n', detail: 'Workflow automation', taskDef: 'n8n:8', endpoint: null },
   { name: 'landvex-api', detail: 'LandveX Backend', taskDef: 'landvex-api:2', endpoint: null },
   { name: 'bos-scheduler', detail: 'Job Scheduler', taskDef: 'bos-scheduler:2', endpoint: null },
-  { name: 'team-pulse', detail: 'HR / Engagement', taskDef: 'team-pulse:3', endpoint: null },
-]
+  { name: 'team-pulse', detail: 'HR / Engagement', taskDef: 'team-pulse:3', endpoint: null }]
 
 const DOMAINS = [
   { name: 'wavult.com', status: 'active' as const, type: 'core' },
@@ -39,8 +38,7 @@ const DOMAINS = [
   { name: 'uapix.com', status: 'pending' as const, type: 'product' },
   { name: 'apifly.com', status: 'pending' as const, type: 'product' },
   { name: 'landvex.com', status: 'pending' as const, type: 'product' },
-  { name: 'api.hypbit.com', status: 'active' as const, type: 'infra' },
-]
+  { name: 'api.hypbit.com', status: 'active' as const, type: 'infra' }]
 
 const INTEGRATIONS = [
   { name: '46elks', detail: 'SMS · 12 224 SEK kredit', status: 'ok' as const },
@@ -52,8 +50,7 @@ const INTEGRATIONS = [
   { name: 'Uber API', detail: 'Scope approval pending', status: 'warn' as const },
   { name: 'Duffel', detail: 'Flights · Key pending', status: 'warn' as const },
   { name: 'Gemini', detail: 'Image gen · Active', status: 'ok' as const },
-  { name: 'ElevenLabs', detail: 'TTS · Active', status: 'ok' as const },
-]
+  { name: 'ElevenLabs', detail: 'TTS · Active', status: 'ok' as const }]
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -173,8 +170,7 @@ export function TerraformMapView() {
           { n: '2', l: 'RDS Postgres', c: '#2563EB' },
           { n: '10', l: 'S3 Buckets', c: '#2563EB' },
           { n: `${intOk}/${INTEGRATIONS.length}`, l: 'Integrations', c: intOk === INTEGRATIONS.length ? '#16A34A' : '#D97706' },
-          { n: '14', l: 'NS Pending', c: '#D97706' },
-        ].map(k => (
+          { n: '14', l: 'NS Pending', c: '#D97706' }].map(k => (
           <div key={k.l} style={{ background: 'var(--color-surface)', padding: '12px 14px' }}>
             <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: '-.04em', color: k.c }}>{k.n}</div>
             <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--color-text-muted)', marginTop: 2 }}>{k.l}</div>
@@ -209,8 +205,7 @@ export function TerraformMapView() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
             {[
               { name: 'wavult-identity-core', detail: 'db.t4g.micro · Auth · KYC', status: 'ok' as const },
-              { name: 'wavult-identity-ecs', detail: 'db.t4g.micro · Identity isolation', status: 'ok' as const },
-            ].map(db => (
+              { name: 'wavult-identity-ecs', detail: 'db.t4g.micro · Identity isolation', status: 'ok' as const }].map(db => (
               <div key={db.name} style={{ border: '1px solid var(--color-border)', borderRadius: 4, padding: '10px 12px', background: 'var(--color-surface)', display: 'flex', alignItems: 'center', gap: 10 }}>
                 <StatusDot status={db.status} />
                 <div>
@@ -232,8 +227,7 @@ export function TerraformMapView() {
               { name: 'Zookeeper', detail: 'port 2181', status: 'ok' as const },
               { name: 'Kafka Broker', detail: '9092/9093 · 3 partitions', status: 'ok' as const },
               { name: 'Kafka Connect', detail: 'planned', status: 'unknown' as const },
-              { name: 'Control Center', detail: 'planned', status: 'unknown' as const },
-            ].map(k => (
+              { name: 'Control Center', detail: 'planned', status: 'unknown' as const }].map(k => (
               <div key={k.name} style={{ border: '1px solid var(--color-border)', borderRadius: 4, padding: '8px 10px', background: k.status === 'unknown' ? 'transparent' : 'var(--color-surface)', display: 'flex', alignItems: 'center', gap: 8 }}>
                 <StatusDot status={k.status} />
                 <div>

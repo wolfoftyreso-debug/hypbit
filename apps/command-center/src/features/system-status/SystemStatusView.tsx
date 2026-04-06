@@ -80,8 +80,7 @@ export function SystemStatusView() {
             label: MATURITY_LABELS[level].toUpperCase(),
             value: String(countByLevel(level)),
             color: countByLevel(level) > 0 ? LEVEL_CONFIG[level].color : 'var(--color-text-muted, rgba(10,61,98,.3))',
-          })).filter(s => parseInt(s.value) > 0),
-        ].map(s => (
+          })).filter(s => parseInt(s.value) > 0)].map(s => (
           <div key={s.label} style={{ paddingLeft: 24, paddingRight: 24, borderRight: '1px solid var(--color-border, rgba(10,61,98,.1))' }}>
             <div style={{ fontSize: 8, color: 'var(--color-text-muted, rgba(10,61,98,.4))', letterSpacing: '0.1em', marginBottom: 2 }}>{s.label}</div>
             <div style={{ fontSize: 15, fontWeight: 700, color: s.color ?? 'var(--color-text-primary, #0A3D62)', fontVariantNumeric: 'tabular-nums' }}>

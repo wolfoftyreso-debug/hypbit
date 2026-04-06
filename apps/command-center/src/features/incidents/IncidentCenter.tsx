@@ -232,8 +232,7 @@ function IncidentCard({
               {([
                 { label: 'Problem',         value: incident.rca.problem },
                 { label: 'Root Cause',      value: incident.rca.root_cause },
-                { label: 'Impact',          value: incident.rca.impact },
-              ] as const).map(({ label, value }) => (
+                { label: 'Impact',          value: incident.rca.impact }] as const).map(({ label, value }) => (
                 <div key={label} className={`rounded-xl px-4 py-3 ${label === 'Root Cause' ? 'col-span-2' : ''}`}
                   style={{ border: '1px solid var(--color-border)', background: 'var(--color-bg-muted)' }}>
                   <div className="text-xs font-mono uppercase mb-1" style={{ color: 'rgba(60,60,67,0.8)' }}>{label}</div>
@@ -522,8 +521,7 @@ export function IncidentCenter() {
           <div className="flex gap-5 mt-4 -mb-px">
             {([
               { id: 'incidents', label: `Incidents (${openCount})` },
-              { id: 'kpis',      label: 'KPI Overview' },
-            ] as const).map(t => (
+              { id: 'kpis',      label: 'KPI Overview' }] as const).map(t => (
               <button key={t.id} onClick={() => setTab(t.id)}
                 className="text-xs pb-2 border-b-2 transition-colors font-medium"
                 style={{

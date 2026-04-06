@@ -70,8 +70,7 @@ const ROLE_SUBORDINATES: Partial<Record<RoleId, SubNode[]>> = {
       status: 'active', expandable: true,
       children: [
         { id: 'sub-ceo-s1', type: 'individual', label: 'Erik Svensson', sublabel: 'Chairman & Group CEO', color: '#2563EB', flag: '👑', status: 'active', expandable: false },
-        { id: 'sub-ceo-s2', type: 'individual', label: 'Dennis Bjarnemark', sublabel: 'Board / Chief Legal', color: '#F59E0B', flag: '⚖️', status: 'active', expandable: false },
-      ],
+        { id: 'sub-ceo-s2', type: 'individual', label: 'Dennis Bjarnemark', sublabel: 'Board / Chief Legal', color: '#F59E0B', flag: '⚖️', status: 'active', expandable: false }],
     },
     {
       id: 'sub-ceo-ent', type: 'team', label: 'Portfolio Entities',
@@ -82,10 +81,8 @@ const ROLE_SUBORDINATES: Partial<Record<RoleId, SubNode[]>> = {
         { id: 'quixzoom-uab', type: 'entity', label: 'QuiXzoom UAB', sublabel: 'Litauen · EU product', color: '#10B981', flag: '🇱🇹', status: 'planned', expandable: false, entityId: 'quixzoom-uab' },
         { id: 'quixzoom-inc', type: 'entity', label: 'QuiXzoom Inc', sublabel: 'Delaware · US product', color: '#22D3EE', flag: '🇺🇸', status: 'planned', expandable: false, entityId: 'quixzoom-inc' },
         { id: 'landvex-inc', type: 'entity', label: 'Landvex Inc', sublabel: 'Texas · US enterprise', color: '#F59E0B', flag: '🇺🇸', status: 'forming', expandable: false, entityId: 'landvex-inc' },
-        { id: 'landvex-ab', type: 'entity', label: 'Landvex AB', sublabel: 'Sweden · EU enterprise', color: '#EC4899', flag: '🇸🇪', status: 'live', expandable: false, entityId: 'landvex-ab' },
-      ],
-    },
-  ],
+        { id: 'landvex-ab', type: 'entity', label: 'Landvex AB', sublabel: 'Sweden · EU enterprise', color: '#EC4899', flag: '🇸🇪', status: 'live', expandable: false, entityId: 'landvex-ab' }],
+    }],
 
   'ceo-ops': [
     {
@@ -95,8 +92,7 @@ const ROLE_SUBORDINATES: Partial<Record<RoleId, SubNode[]>> = {
       children: [
         { id: 'sub-ops-t1', type: 'individual', label: 'Leon Russo De Cerame', sublabel: 'CEO Operations', color: '#10B981', flag: '⚙️', status: 'active', expandable: false },
         { id: 'sub-ops-t2', type: 'individual', label: 'Winston Bjarnemark', sublabel: 'CFO', color: '#3B82F6', flag: '💰', status: 'active', expandable: false },
-        { id: 'sub-ops-t3', type: 'individual', label: 'Johan Berglund', sublabel: 'Group CTO', color: '#06B6D4', flag: '🧠', status: 'active', expandable: false },
-      ],
+        { id: 'sub-ops-t3', type: 'individual', label: 'Johan Berglund', sublabel: 'Group CTO', color: '#06B6D4', flag: '🧠', status: 'active', expandable: false }],
     },
     {
       id: 'sub-ops-sys', type: 'system', label: 'Hypbit OS',
@@ -107,10 +103,8 @@ const ROLE_SUBORDINATES: Partial<Record<RoleId, SubNode[]>> = {
         { id: 'sub-ops-sys-db', type: 'system', label: 'Dashboard', sublabel: 'Role-based overview', color: '#60A5FA', flag: '📊', status: 'live', expandable: false },
         { id: 'sub-ops-sys-cg', type: 'system', label: 'Corporate Graph', sublabel: 'Entity map & relations', color: '#60A5FA', flag: '🏗', status: 'live', expandable: false },
         { id: 'sub-ops-sys-fi', type: 'system', label: 'Transactions', sublabel: 'Financial flows', color: '#60A5FA', flag: '↕', status: 'live', expandable: false },
-        { id: 'sub-ops-sys-pr', type: 'system', label: 'Projects & KPI', sublabel: 'Roadmap tracking', color: '#60A5FA', flag: '🚀', status: 'live', expandable: false },
-      ],
-    },
-  ],
+        { id: 'sub-ops-sys-pr', type: 'system', label: 'Projects & KPI', sublabel: 'Roadmap tracking', color: '#60A5FA', flag: '🚀', status: 'live', expandable: false }],
+    }],
 
   'cfo': [
     {
@@ -121,16 +115,14 @@ const ROLE_SUBORDINATES: Partial<Record<RoleId, SubNode[]>> = {
         { id: 'sub-cfo-f1', type: 'system', label: 'QuiXzoom UAB → WGH', sublabel: 'EU royalty + dividends', color: '#10B981', flag: '↑', status: 'planned', expandable: false },
         { id: 'sub-cfo-f2', type: 'system', label: 'Landvex AB → WGH', sublabel: 'SE royalty + dividends', color: '#EC4899', flag: '↑', status: 'forming', expandable: false },
         { id: 'sub-cfo-f3', type: 'system', label: 'Landvex Inc → WGH', sublabel: 'US royalty + dividends', color: '#F59E0B', flag: '↑', status: 'forming', expandable: false },
-        { id: 'sub-cfo-f4', type: 'system', label: 'WOP service fee', sublabel: 'All entities → Operations', color: '#0EA5E9', flag: '→', status: 'planned', expandable: false },
-      ],
+        { id: 'sub-cfo-f4', type: 'system', label: 'WOP service fee', sublabel: 'All entities → Operations', color: '#0EA5E9', flag: '→', status: 'planned', expandable: false }],
     },
     {
       id: 'sub-cfo-budget', type: 'team', label: 'Budget Control',
       sublabel: 'AWS · Supabase · Cloudflare · Stripe', color: '#3B82F6', flag: '📊',
       status: 'active', expandable: false,
       metadata: { 'AWS ECS': 'eu-north-1 — wavult-api, quixzoom-api', 'Supabase': '2 projects — EU West', 'CF Pages': '10/10 slots (limit reached)' },
-    },
-  ],
+    }],
 
   'cto': [
     {
@@ -141,8 +133,7 @@ const ROLE_SUBORDINATES: Partial<Record<RoleId, SubNode[]>> = {
         { id: 'sub-cto-i1', type: 'system', label: 'wavult-api', sublabel: 'ECS eu-north-1 · api.wavult.com', color: '#06B6D4', flag: '🟢', status: 'live', expandable: false },
         { id: 'sub-cto-i2', type: 'system', label: 'quixzoom-api', sublabel: 'ECS cluster hypbit · task :2', color: '#06B6D4', flag: '🟢', status: 'live', expandable: false },
         { id: 'sub-cto-i3', type: 'system', label: 'S3 multi-region', sublabel: 'EU + US primary + backup · CRR', color: '#06B6D4', flag: '🪣', status: 'live', expandable: false },
-        { id: 'sub-cto-i4', type: 'system', label: 'CloudFront', sublabel: 'dewrtqzc20flx · quiXzoom frontend', color: '#06B6D4', flag: '🌐', status: 'live', expandable: false },
-      ],
+        { id: 'sub-cto-i4', type: 'system', label: 'CloudFront', sublabel: 'dewrtqzc20flx · quiXzoom frontend', color: '#06B6D4', flag: '🌐', status: 'live', expandable: false }],
     },
     {
       id: 'sub-cto-db', type: 'team', label: 'Database Layer',
@@ -151,8 +142,7 @@ const ROLE_SUBORDINATES: Partial<Record<RoleId, SubNode[]>> = {
       children: [
         { id: 'sub-cto-db1', type: 'system', label: 'quixzoom-v2', sublabel: 'lpeipzdm · EU West · 13 migrations', color: '#3ECF8E', flag: '🟢', status: 'live', expandable: false },
         { id: 'sub-cto-db2', type: 'system', label: 'wavult', sublabel: 'znmxtnxx · EU West · internal OS', color: '#3ECF8E', flag: '🟢', status: 'live', expandable: false },
-        { id: 'sub-cto-db3', type: 'system', label: 'Supabase US East', sublabel: 'Planerat — OI US expansion', color: '#6B7280', flag: '⚪', status: 'planned', expandable: false },
-      ],
+        { id: 'sub-cto-db3', type: 'system', label: 'Supabase US East', sublabel: 'Planerat — OI US expansion', color: '#6B7280', flag: '⚪', status: 'planned', expandable: false }],
     },
     {
       id: 'sub-cto-todo', type: 'team', label: 'Open Technical TODO',
@@ -162,10 +152,8 @@ const ROLE_SUBORDINATES: Partial<Record<RoleId, SubNode[]>> = {
         { id: 'sub-cto-t1', type: 'system', label: 'CF Pages slots', sublabel: 'Remove landvex-fr/nl/de/fi/be/it', color: '#EF4444', flag: '🔴', status: 'blocked', expandable: false },
         { id: 'sub-cto-t2', type: 'system', label: 'optical-insight-eu', sublabel: 'CF Pages deploy pending', color: '#F59E0B', flag: '🟡', status: 'planned', expandable: false },
         { id: 'sub-cto-t3', type: 'system', label: 'ECS us-east-1', sublabel: 'New service for OI US API', color: '#F59E0B', flag: '🟡', status: 'planned', expandable: false },
-        { id: 'sub-cto-t4', type: 'system', label: 'CF Pages API token', sublabel: 'Erik must create on dash.cloudflare.com', color: '#EF4444', flag: '🔴', status: 'blocked', expandable: false },
-      ],
-    },
-  ],
+        { id: 'sub-cto-t4', type: 'system', label: 'CF Pages API token', sublabel: 'Erik must create on dash.cloudflare.com', color: '#EF4444', flag: '🔴', status: 'blocked', expandable: false }],
+    }],
 
   'clo': [
     {
@@ -178,8 +166,7 @@ const ROLE_SUBORDINATES: Partial<Record<RoleId, SubNode[]>> = {
         { id: 'sub-clo-s3', type: 'entity', label: 'Landvex AB', sublabel: 'Sweden · Live', color: '#EC4899', flag: '🇸🇪', status: 'live', expandable: false, entityId: 'landvex-ab' },
         { id: 'sub-clo-s4', type: 'entity', label: 'Landvex Inc', sublabel: 'Texas · Forming', color: '#F59E0B', flag: '🇺🇸', status: 'forming', expandable: false, entityId: 'landvex-inc' },
         { id: 'sub-clo-s5', type: 'entity', label: 'QuiXzoom UAB', sublabel: 'Litauen · Planned', color: '#10B981', flag: '🇱🇹', status: 'planned', expandable: false, entityId: 'quixzoom-uab' },
-        { id: 'sub-clo-s6', type: 'entity', label: 'QuiXzoom Inc', sublabel: 'Delaware · Planned', color: '#22D3EE', flag: '🇺🇸', status: 'planned', expandable: false, entityId: 'quixzoom-inc' },
-      ],
+        { id: 'sub-clo-s6', type: 'entity', label: 'QuiXzoom Inc', sublabel: 'Delaware · Planned', color: '#22D3EE', flag: '🇺🇸', status: 'planned', expandable: false, entityId: 'quixzoom-inc' }],
     },
     {
       id: 'sub-clo-prio', type: 'team', label: 'Legal Priorities',
@@ -189,10 +176,8 @@ const ROLE_SUBORDINATES: Partial<Record<RoleId, SubNode[]>> = {
         { id: 'sub-clo-p1', type: 'system', label: 'IP Transfer', sublabel: 'Code + trademarks → Wavult Group Dubai', color: '#EF4444', flag: '🔴', status: 'planned', expandable: false },
         { id: 'sub-clo-p2', type: 'system', label: 'Intercompany agreements', sublabel: 'Service fee + royalty structure', color: '#F59E0B', flag: '🟡', status: 'planned', expandable: false },
         { id: 'sub-clo-p3', type: 'system', label: 'Texas LLC incorporation', sublabel: 'Dennis driving docs', color: '#F59E0B', flag: '🟡', status: 'in-progress', expandable: false },
-        { id: 'sub-clo-p4', type: 'system', label: 'Transfer pricing policy', sublabel: 'CFO + external advisor needed', color: '#EF4444', flag: '🔴', status: 'blocked', expandable: false },
-      ],
-    },
-  ],
+        { id: 'sub-clo-p4', type: 'system', label: 'Transfer pricing policy', sublabel: 'CFO + external advisor needed', color: '#EF4444', flag: '🔴', status: 'blocked', expandable: false }],
+    }],
 
   'cpo': [
     {
@@ -203,10 +188,8 @@ const ROLE_SUBORDINATES: Partial<Record<RoleId, SubNode[]>> = {
         { id: 'sub-cpo-p1', type: 'system', label: 'quiXzoom', sublabel: 'Crowdsourced camera · Zoomer platform · Sverige juni 2026', color: '#10B981', flag: '📸', status: 'active', expandable: false },
         { id: 'sub-cpo-p2', type: 'system', label: 'Optical Insight / Landvex', sublabel: 'B2G control system · Right control. Right cost.', color: '#F59E0B', flag: '🔭', status: 'active', expandable: false },
         { id: 'sub-cpo-p3', type: 'system', label: 'Hypbit OS', sublabel: 'Internal operating system · All Wavult entities', color: '#60A5FA', flag: '⚙️', status: 'active', expandable: false },
-        { id: 'sub-cpo-p4', type: 'system', label: 'Quixom Ads', sublabel: 'Data monetization · Phase 2 after quiXzoom', color: '#6B7280', flag: '📢', status: 'planned', expandable: false },
-      ],
-    },
-  ],
+        { id: 'sub-cpo-p4', type: 'system', label: 'Quixom Ads', sublabel: 'Data monetization · Phase 2 after quiXzoom', color: '#6B7280', flag: '📢', status: 'planned', expandable: false }],
+    }],
 }
 
 // ─── Build upward path from role to root ───────────────────────────────────────

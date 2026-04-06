@@ -53,8 +53,7 @@ const ENTITIES: Entity[] = [
     eurRate: 0.93,
     defaultRevenue: 28000,
     color: '#10B981',
-  },
-]
+  }]
 
 const OPTIMAL_RATE = { min: 0.08, max: 0.15, recommended: 0.12 }
 const MGMT_FEE_RATE = 0.15
@@ -146,8 +145,7 @@ export function CashFlowOptimizer() {
             sub: 'Extra kapital/år i Dubai',
             color: '#0A3D62',
             icon: '🚀',
-          },
-        ].map(kpi => (
+          }].map(kpi => (
           <div
             key={kpi.label}
             className="rounded-xl border p-4 text-center"
@@ -262,8 +260,7 @@ export function CashFlowOptimizer() {
                     { label: 'Lokal beskattningsbar vinst', value: `${calc.taxableProfit.toLocaleString(undefined, { maximumFractionDigits: 0 })} ${e.currency}` },
                     { label: `Lokal skatt (${(e.taxRate * 100).toFixed(1)}%)`, value: `${calc.taxPaid.toLocaleString(undefined, { maximumFractionDigits: 0 })} ${e.currency}` },
                     { label: 'Skatt utan Dubai-struktur', value: fmtEur(calc.taxWithoutDubaiEur) },
-                    { label: 'Skattebesparning', value: fmtEur(calc.taxSavedEur), highlight: true },
-                  ].map(row => (
+                    { label: 'Skattebesparning', value: fmtEur(calc.taxSavedEur), highlight: true }].map(row => (
                     <div key={row.label} className="flex justify-between gap-2">
                       <span className="text-gray-9000">{row.label}</span>
                       <span className={`font-mono font-semibold ${row.highlight ? 'text-gray-9000' : 'text-gray-900'}`}>

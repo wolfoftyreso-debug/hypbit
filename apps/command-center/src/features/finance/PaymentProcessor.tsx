@@ -130,8 +130,7 @@ const PAYMENT_INTENTS: PaymentIntent[] = [
     createdAt: '2026-03-24T10:00:00Z',
     updatedAt: '2026-03-25T11:00:00Z',
     metadata: { reason: 'customer_request' },
-  },
-]
+  }]
 
 const PSP_RULES: PSPRule[] = [
   {
@@ -163,8 +162,7 @@ const PSP_RULES: PSPRule[] = [
     psp: 'revolut',
     reason: 'Revolut Business-plan ger bättre rates vid höga volymer',
     examples: ['Storkunder enterprise', 'Government contracts'],
-  },
-]
+  }]
 
 const PAYOUTS: Payout[] = [
   {
@@ -224,8 +222,7 @@ const PAYOUTS: Payout[] = [
     scheduledAt: '2026-03-20T00:00:00Z',
     description: 'Cloudflare Pro plan + Workers — mars',
     approvedBy: 'Johan Berglund',
-  },
-]
+  }]
 
 // ─── Status configs ──────────────────────────────────────────────────────────────
 
@@ -562,8 +559,7 @@ function PSPRouterSection() {
             { typ: 'Kundbetalning', valuta: 'SEK', belopp: '<500k/mån', psp: 'stripe' as PSP },
             { typ: 'Prenumeration', valuta: 'SEK / EUR', belopp: 'Alla', psp: 'stripe' as PSP },
             { typ: 'Enterprise', valuta: 'Alla', belopp: '>500k/mån', psp: 'revolut' as PSP },
-            { typ: 'Faktura', valuta: 'SEK', belopp: 'Alla', psp: 'stripe' as PSP },
-          ].map((row, i) => (
+            { typ: 'Faktura', valuta: 'SEK', belopp: 'Alla', psp: 'stripe' as PSP }].map((row, i) => (
             <>
               <div key={`${i}-typ`} className={`px-4 py-2.5 text-xs text-gray-600 border-b border-surface-border/50 ${i % 2 === 0 ? '' : 'bg-white/[0.01]'}`}>{row.typ}</div>
               <div key={`${i}-val`} className={`px-4 py-2.5 text-xs text-gray-9000 font-mono border-b border-surface-border/50 ${i % 2 === 0 ? '' : 'bg-white/[0.01]'}`}>{row.valuta}</div>
@@ -676,8 +672,7 @@ type Section = 'intents' | 'router' | 'payouts'
 const SECTIONS: Array<{ id: Section; label: string; icon: string }> = [
   { id: 'intents', label: 'Payment Intents', icon: '💫' },
   { id: 'router',  label: 'PSP-router',      icon: '🔀' },
-  { id: 'payouts', label: 'Utbetalningar',   icon: '📤' },
-]
+  { id: 'payouts', label: 'Utbetalningar',   icon: '📤' }]
 
 export function PaymentProcessor() {
   const [activeSection, setActiveSection] = useState<Section>('intents')

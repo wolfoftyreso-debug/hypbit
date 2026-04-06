@@ -1169,5 +1169,4 @@ export const CURRICULUM: Lesson[] = [
     tomorrow: 'Kursen börjar om på nästa nivå — vi har gått igenom hela Wavult Groups system',
     wavult_specific: true,
     source_entities: ['wavult-core', 'wavult-os-api'],
-  },
-]
+  }]

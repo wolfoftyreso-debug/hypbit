@@ -235,8 +235,7 @@ export function APIHub() {
     { id: 'catalog', label: 'Integrationer', icon: '🔌', count: totalCount },
     { id: 'active', label: 'Aktiva', icon: '🟢', count: LIVE_INTEGRATIONS.length },
     { id: 'news', label: 'Nyheter', icon: '📰', count: STATIC_PROVIDER_NEWS.length },
-    { id: 'control', label: 'Control Panel', icon: '⚙️', count: 12 },
-  ] as const
+    { id: 'control', label: 'Control Panel', icon: '⚙️', count: 12 }] as const
 
   return (
     <div className="min-h-screen bg-[#F5F0E8] text-text-primary">
@@ -350,8 +349,7 @@ export function APIHub() {
                 { label: 'Live', value: LIVE_INTEGRATIONS.filter(i => i.status === 'live').length, color: 'text-emerald-700', icon: '🟢' },
                 { label: 'Kategorier', value: [...new Set(LIVE_INTEGRATIONS.map(i => i.categoryId))].length, color: 'text-[#2C6EA6]', icon: '📦' },
                 { label: 'Paid', value: LIVE_INTEGRATIONS.filter(i => i.price === 'paid' || i.price === 'usage-based').length, color: 'text-orange-700', icon: '💳' },
-                { label: 'Free', value: LIVE_INTEGRATIONS.filter(i => i.price === 'free').length, color: 'text-emerald-700', icon: '✅' },
-              ].map(stat => (
+                { label: 'Free', value: LIVE_INTEGRATIONS.filter(i => i.price === 'free').length, color: 'text-emerald-700', icon: '✅' }].map(stat => (
                 <div key={stat.label} className="bg-[#F0EBE1] border border-surface-border rounded-xl p-4 text-center">
                   <div className="text-2xl mb-1">{stat.icon}</div>
                   <div className={`text-2xl font-bold ${stat.color}`}>{stat.value}</div>

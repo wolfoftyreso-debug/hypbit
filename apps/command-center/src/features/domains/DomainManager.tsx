@@ -29,8 +29,7 @@ const CF_NS_DYLAN = 'dylan.ns.cloudflare.com'
 const CF_NS_PAIRS: string[][] = [
   [CF_NS_AMY, CF_NS_DYLAN],
   ['arch.ns.cloudflare.com', 'gina.ns.cloudflare.com'],
-  ['adam.ns.cloudflare.com', 'olga.ns.cloudflare.com'],
-]
+  ['adam.ns.cloudflare.com', 'olga.ns.cloudflare.com']]
 
 function daysUntilExpiry(expires: string | null): number | null {
   if (!expires) return null

@@ -93,8 +93,7 @@ const KEYWORDS = new Set([
   'def', 'lambda', 'in', 'not', 'and', 'or', 'pass', 'with', 'as', 'yield',
   'fn', 'mut', 'use', 'mod', 'impl', 'struct', 'pub', 'self',
   'SELECT', 'FROM', 'WHERE', 'INSERT', 'UPDATE', 'DELETE', 'CREATE', 'TABLE',
-  'func', 'package', 'go', 'defer', 'chan', 'make', 'range', 'map',
-])
+  'func', 'package', 'go', 'defer', 'chan', 'make', 'range', 'map'])
 
 function tokenizeLine(line: string): Token[] {
   const tokens: Token[] = []

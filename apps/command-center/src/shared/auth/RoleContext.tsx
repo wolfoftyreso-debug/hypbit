@@ -101,8 +101,7 @@ export const ROLES: RoleProfile[] = [
     initials: 'CP',
     emoji: '🧩',
     access: ['product'],
-  },
-]
+  }]
 
 // ─── Context ───────────────────────────────────────────────────────────────────
 

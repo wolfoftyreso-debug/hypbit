@@ -8,7 +8,7 @@ const ENTITY_JURISDICTION_MAP: Record<string, string[]> = {
   'woh':    ['se'],                 // Wavult Operations Holding AB (Sverige)
   'oz-lt':  ['lt'],                 // quiXzoom UAB (Litauen)
   'oz-us':  ['us_de'],              // quiXzoom Inc (Delaware)
-  'lvx-ae': ['ae_difc'],            // LandveX AC (UAE DIFC)
+  : ['ae_difc'],            // LandveX (UAE DIFC)
   'lvx-us': ['us_tx'],              // LandveX Inc (Texas)
 }
 

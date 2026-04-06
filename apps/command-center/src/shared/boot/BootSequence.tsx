@@ -42,8 +42,7 @@ const LATEST_RELEASE: Release = {
     { tag: 'SECURITY', text: 'CORS updated to include uapix.com and apifly.com' },
     { tag: 'SECURITY', text: 'API key generation upgraded to cryptographically secure random' },
     { tag: 'FIXED',    text: 'Dark mode renders immediately (no white flash on load)' },
-    { tag: 'FIXED',    text: 'Portal auth callback handles expired magic links with clear error' },
-  ],
+    { tag: 'FIXED',    text: 'Portal auth callback handles expired magic links with clear error' }],
 }
 
 // ─── Boot sequence steps ──────────────────────────────────────────────────────
@@ -61,8 +60,7 @@ const BOOT_STEPS: BootStep[] = [
   { label: 'Loading command modules',            duration: 240 },
   { label: 'Applying security policies',         duration: 160 },
   { label: 'Syncing entity registry',            duration: 200 },
-  { label: 'System ready',                       duration: 140 },
-]
+  { label: 'System ready',                       duration: 140 }]
 
 const TAG_STYLE: Record<ChangeEntry['tag'], { bg: string; text: string; label: string }> = {
   NEW:      { bg: 'rgba(16,185,129,0.12)', text: '#10B981', label: 'NEW' },

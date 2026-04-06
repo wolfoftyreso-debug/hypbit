@@ -43,8 +43,7 @@ const PROGRAM: DayProgram[] = [
     events: [
       { time: 'Dag',     activity: 'Ankomst Bangkok — incheckning hotell', type: 'travel' },
       { time: '18:00',   activity: 'Teamdinner — hela gänget samlas', type: 'social' },
-      { time: '20:00',   activity: 'Kickoff-möte: mål, roller, spelregler för workcamp', type: 'work' },
-    ],
+      { time: '20:00',   activity: 'Kickoff-möte: mål, roller, spelregler för workcamp', type: 'work' }],
     notes: 'Officiell projektstart. Thailand Workcamp börjar.',
   },
   {
@@ -60,8 +59,7 @@ const PROGRAM: DayProgram[] = [
       { time: '12:00', activity: 'Lunch + kortpaus', type: 'free' },
       { time: '13:00', activity: 'QuiXzoom-plattformen: roadmap & MVP-scope', type: 'work' },
       { time: '17:00', activity: 'Promenad Bangkok + team-mingel', type: 'social' },
-      { time: '20:00', activity: 'Fasta inleds (inför hälsokontroll)', type: 'health' },
-    ],
+      { time: '20:00', activity: 'Fasta inleds (inför hälsokontroll)', type: 'health' }],
   },
   {
     date: '2026-04-13',
@@ -75,8 +73,7 @@ const PROGRAM: DayProgram[] = [
       { time: '08:30', activity: 'Full hälsokontroll: blod, hjärta, organ, DNA-analys (5 pers)', type: 'health' },
       { time: '12:00', activity: 'Resultatgenomgång med läkare', type: 'health' },
       { time: '14:00', activity: 'Landvex-strategi workshop: B2G pitchdeck', type: 'work' },
-      { time: '18:00', activity: 'Dinner + jubel för hälsodata', type: 'social' },
-    ],
+      { time: '18:00', activity: 'Dinner + jubel för hälsodata', type: 'social' }],
     notes: 'Bokningsförfrågan skickad till checkup@bumrungrad.com den 27 mars.',
   },
   {
@@ -90,8 +87,7 @@ const PROGRAM: DayProgram[] = [
       { time: '09:00', activity: 'Dennis: juridik-session — IP-avtal, Texas LLC, DMCC', type: 'work' },
       { time: '11:00', activity: 'Winston: finansiell infrastruktur & Revolut setup', type: 'work' },
       { time: '14:00', activity: 'Erik + Leon: sälj-strategi quiXzoom Sverige launch', type: 'work' },
-      { time: '17:00', activity: 'Fri tid Bangkok', type: 'free' },
-    ],
+      { time: '17:00', activity: 'Fri tid Bangkok', type: 'free' }],
   },
   {
     date: '2026-04-15',
@@ -104,8 +100,7 @@ const PROGRAM: DayProgram[] = [
       { time: '09:00', activity: 'Johan: quiXzoom API — final sprint', type: 'work' },
       { time: '12:00', activity: 'Deploy & testning i produktion', type: 'work' },
       { time: '15:00', activity: 'Zoomer-onboarding flöde genomgång', type: 'work' },
-      { time: '18:00', activity: 'Team-middag: halvtidsfirande', type: 'social' },
-    ],
+      { time: '18:00', activity: 'Team-middag: halvtidsfirande', type: 'social' }],
   },
   {
     date: '2026-04-16',
@@ -118,8 +113,7 @@ const PROGRAM: DayProgram[] = [
       { time: '10:00', activity: 'Flyg Bangkok → Phuket (ca 1h 20min)', type: 'travel' },
       { time: '13:00', activity: 'Incheckning Kamala Beach-huset', type: 'travel' },
       { time: '15:00', activity: 'Beach-paus — swim, relax', type: 'free' },
-      { time: '19:00', activity: 'Sunset dinner vid stranden', type: 'social' },
-    ],
+      { time: '19:00', activity: 'Sunset dinner vid stranden', type: 'social' }],
   },
   {
     date: '2026-04-17',
@@ -133,8 +127,7 @@ const PROGRAM: DayProgram[] = [
       { time: '09:30', activity: 'Erik: vision-session — Wavult Group 3-årsplan', type: 'work' },
       { time: '12:00', activity: 'Lunch + pool', type: 'free' },
       { time: '14:00', activity: 'Landvex enterprise-demo walkthrough', type: 'work' },
-      { time: '17:00', activity: 'Fri tid', type: 'free' },
-    ],
+      { time: '17:00', activity: 'Fri tid', type: 'free' }],
   },
   {
     date: '2026-04-18',
@@ -148,8 +141,7 @@ const PROGRAM: DayProgram[] = [
       { time: '10:00', activity: 'Incheckning. Inlämning av mobiltelefoner.', type: 'retreat' },
       { time: '11:00', activity: 'Introduktion: regler, program, buddhistisk filosofi', type: 'retreat' },
       { time: '15:00', activity: 'Sittande meditation + yoga', type: 'retreat' },
-      { time: '18:00', activity: 'Aftonbön + tystnad', type: 'retreat' },
-    ],
+      { time: '18:00', activity: 'Aftonbön + tystnad', type: 'retreat' }],
     notes: '📵 MOBILFRITT. Ingen kontakt med omvärlden.',
   },
   {
@@ -165,8 +157,7 @@ const PROGRAM: DayProgram[] = [
       { time: '07:00', activity: 'Alms-round, frukost i tystnad', type: 'retreat' },
       { time: '09:00', activity: 'Dharma-undervisning + gångmeditation', type: 'retreat' },
       { time: '14:00', activity: 'Fri kontemplation i djungeln', type: 'retreat' },
-      { time: '18:00', activity: 'Aftonmeditation', type: 'retreat' },
-    ],
+      { time: '18:00', activity: 'Aftonmeditation', type: 'retreat' }],
     notes: '📵 MOBILFRITT. Full tystnad.',
   },
   {
@@ -180,8 +171,7 @@ const PROGRAM: DayProgram[] = [
       { time: '03:30', activity: 'Sista morgonmeditation', type: 'retreat' },
       { time: '09:00', activity: 'Avslutningsceremoni + utcheckning', type: 'retreat' },
       { time: '11:00', activity: 'Mobiler tillbaka. Resa tillbaka till Kamala.', type: 'travel' },
-      { time: '15:00', activity: 'Pool + debrief i gruppen: vad tog ni med er?', type: 'social' },
-    ],
+      { time: '15:00', activity: 'Pool + debrief i gruppen: vad tog ni med er?', type: 'social' }],
     notes: 'Återanslutning till världen. Integration av retreat-upplevelsen.',
   },
   {
@@ -196,10 +186,8 @@ const PROGRAM: DayProgram[] = [
       { time: '12:00', activity: 'Lunch-celebration', type: 'social' },
       { time: '14:00', activity: 'QuiXzoom Sverige-launch: datum låst, campaign satt', type: 'work' },
       { time: '17:00', activity: 'Sista solnedgång vid Kamala Beach', type: 'free' },
-      { time: '20:00', activity: 'Avslutningsdinner — Thailand Workcamp v1 avklarat', type: 'social' },
-    ],
-  },
-]
+      { time: '20:00', activity: 'Avslutningsdinner — Thailand Workcamp v1 avklarat', type: 'social' }],
+  }]
 
 const THEME_COLORS: Record<string, string> = {
   BANGKOK: '#3B82F6',
@@ -342,8 +330,7 @@ export function ThailandCalendarView() {
           { label: 'Work-dagar', value: PROGRAM.filter(d => d.events.some(e => e.type === 'work')).length, color: '#3B82F6', icon: '💻' },
           { label: 'Retreat-dagar', value: PROGRAM.filter(d => d.theme === 'RETREAT').length, color: '#EC4899', icon: '🧘' },
           { label: 'Hälsoaktiviteter', value: PROGRAM.flatMap(d => d.events).filter(e => e.type === 'health').length, color: '#10B981', icon: '🏥' },
-          { label: 'Sociala event', value: PROGRAM.flatMap(d => d.events).filter(e => e.type === 'social').length, color: '#F59E0B', icon: '🎉' },
-        ].map(s => (
+          { label: 'Sociala event', value: PROGRAM.flatMap(d => d.events).filter(e => e.type === 'social').length, color: '#F59E0B', icon: '🎉' }].map(s => (
           <div key={s.label} className="bg-white border border-surface-border rounded-xl p-4 text-center">
             <div className="text-2xl mb-1">{s.icon}</div>
             <div className="text-2xl font-bold" style={{ color: s.color }}>{s.value}</div>

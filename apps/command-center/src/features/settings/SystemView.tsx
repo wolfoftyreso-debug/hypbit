@@ -13,8 +13,7 @@ const SERVICES_DEFAULT: ServiceStatus[] = [
   { name: 'Wavult OS (Cloudflare Pages)', uptime: '100%',   status: 'running',  latency: '31ms'  },
   { name: 'Wavult CI/CD (Gitea)',         uptime: '99.9%',  status: 'running',  latency: '—'     },
   { name: 'Cloudflare CDN',               uptime: '99.8%',  status: 'running',  latency: '22ms'  },
-  { name: 'Cloudflare DNS',               uptime: '100%',   status: 'running',  latency: '1ms'   },
-]
+  { name: 'Cloudflare DNS',               uptime: '100%',   status: 'running',  latency: '1ms'   }]
 
 const SERVICE_STATUS = {
   running:  { color: '#10B981', label: 'Running',  bg: '#10B98115', border: '#10B98130' },
@@ -39,8 +38,7 @@ const SYSTEM_INFO_BASE: InfoRow[] = [
   { label: 'Migrationer',    value: '—',                                       mono: true, liveKey: 'migrations' },
   { label: 'Git repo',       value: 'git.wavult.com/wavult/wavult-os',         mono: true },
   { label: 'AWS Region',     value: 'eu-north-1',                              mono: true },
-  { label: 'ECS Cluster',    value: 'wavult / wavult-os-api',                  mono: true },
-]
+  { label: 'ECS Cluster',    value: 'wavult / wavult-os-api',                  mono: true }]
 
 interface LiveMetrics {
   last_deploy?: string

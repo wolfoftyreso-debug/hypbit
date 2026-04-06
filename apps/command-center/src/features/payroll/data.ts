@@ -16,8 +16,7 @@ export const TAX_TABLE = 33             // Skattetabell Stockholm
 export const FOUNDER_SALARY_SCHEDULE = [
   { fromMonth: 1,  toMonth: 6,  grossMonthly: 20_000 },
   { fromMonth: 7,  toMonth: 12, grossMonthly: 50_000 },
-  { fromMonth: 13, toMonth: Infinity, grossMonthly: 100_000 },
-] as const
+  { fromMonth: 13, toMonth: Infinity, grossMonthly: 100_000 }] as const
 
 // Beräkna aktuell grundarlön baserat på startmånad
 export function founderCurrentSalary(startDate: string): number {
@@ -138,8 +137,7 @@ export const EMPLOYEES: Employee[] = [
     taxTable: 33,
     color: '#F59E0B',
     location: 'Stockholm',
-  },
-]
+  }]
 
 // ─── Salary calculations ──────────────────────────────────────────────────────
 export interface SalaryCalc {
@@ -191,8 +189,7 @@ export const SWEDISH_HOLIDAYS_2026: { date: string; name: string }[] = [
   { date: '2026-12-24', name: 'Julafton' },
   { date: '2026-12-25', name: 'Juldagen' },
   { date: '2026-12-26', name: 'Annandag jul' },
-  { date: '2026-12-31', name: 'Nyårsafton' },
-]
+  { date: '2026-12-31', name: 'Nyårsafton' }]
 
 // ─── Leave records — tomma tills konfigurerat ────────────────────────────────
 export interface LeaveRecord {

@@ -50,8 +50,7 @@ const TEAM: {
       'Allokera kapital, resurser och fokus till maximal hävstång',
       'Bygga bolagsstrukturen (Dubai/EU/US) och säkra investerarrelationer',
       'Äga produkt- och systemarkitekturen för hela ekosystemet',
-      'Representera Wavult Ecosystem externt',
-    ],
+      'Representera Wavult Ecosystem externt'],
     kpis: ['Kapitalflöde optimerat', 'Alla bolag i rörelse mot plan', 'Systemet byggt som planerat'],
     notThisRole: ['Operativ daglig drift', 'Manuell uppgiftshantering', 'Teknisk debug'],
     tuckmanPhase: 'performing',
@@ -75,8 +74,7 @@ const TEAM: {
       'Säkerställa att team, resurser och processer är rätt kalibrerade',
       'Driva sälj och kundrelationer som CEO Wavult Operations',
       'Vara länken mellan Erik (strategi) och teamet (execution)',
-      'Prioritera och eskalera rätt saker i rätt tid',
-    ],
+      'Prioritera och eskalera rätt saker i rätt tid'],
     kpis: ['Leveranskapacitet i team', 'Sälj-pipeline aktiv', 'Drift utan flaskhalsar'],
     notThisRole: ['Bolagsstruktur och juridik', 'Systemarkitektur', 'Finansiell planering'],
     tuckmanPhase: 'norming',
@@ -100,8 +98,7 @@ const TEAM: {
       'Kontrollera kassaflöde och betalningar över alla bolag',
       'Hantera intercompany-flöden, skattstruktur och rapportering',
       'Koppla ihop ekonomisystem med Hypbit',
-      'Debugga och förfina betafärdiga ekonomifunktioner',
-    ],
+      'Debugga och förfina betafärdiga ekonomifunktioner'],
     kpis: ['Bankkonton öppnade per bolag', 'Intercompany-avtal signerade', 'Kassaflöde positivt'],
     notThisRole: ['Operativ drift', 'Produktbeslut', 'Teknikarkitektur'],
     tuckmanPhase: 'forming',
@@ -125,8 +122,7 @@ const TEAM: {
       'Upprätta alla intercompany-avtal (IP-licens, management, service)',
       'Säkerställa compliance per jurisdiktion (GDPR, LOU/LUF, Delaware)',
       'Hålla styrelseprotokoll, fullmakter och bolagshandlingar uppdaterade',
-      'Hantera operativ logistik under uppbyggnadsfas (tillfällig)',
-    ],
+      'Hantera operativ logistik under uppbyggnadsfas (tillfällig)'],
     kpis: ['Bolag registrerade enligt plan', 'Avtal signerade', 'Compliance-status grön'],
     notThisRole: ['Teknik', 'Sälj', 'Finansiell förvaltning'],
     tuckmanPhase: 'norming',
@@ -150,13 +146,11 @@ const TEAM: {
       'Debugga och lösa tekniska problem i hela stacken',
       'Hålla koll på uppdateringar, rapporter, felanmälningar, supportärenden',
       'Drifta och stärka befintlig infrastruktur (AWS, Supabase, CF)',
-      'Säkerställa att teknik är skalbar, säker och välintegrerad',
-    ],
+      'Säkerställa att teknik är skalbar, säker och välintegrerad'],
     kpis: ['Infrastruktur stabil', 'Inga kritiska buggar öppna', 'Deploy-pipeline grön'],
     notThisRole: ['Juridik', 'Sälj', 'Finansiell rapportering'],
     tuckmanPhase: 'storming',
-  },
-]
+  }]
 
 // ─── Tuckman Team Phases ──────────────────────────────────────────────────────
 type TuckmanPhase = 'forming' | 'storming' | 'norming' | 'performing' | 'adjourning'
@@ -432,8 +426,7 @@ export function PeopleView() {
         {[
           { label: 'Totalt team', value: String(visibleTeam.length), color: '#3B82F6' },
           { label: 'Aktiva nu', value: String(visibleTeam.filter(t => t.status === 'active').length), color: '#10B981' },
-          { label: 'Enheter', value: String(new Set(visibleTeam.map(t => t.entity)).size), color: '#2563EB' },
-        ].map(s => (
+          { label: 'Enheter', value: String(new Set(visibleTeam.map(t => t.entity)).size), color: '#2563EB' }].map(s => (
           <div key={s.label} className="bg-white border border-surface-border rounded-xl px-5 py-4">
             <div className="text-xs text-text-muted mb-1">{s.label}</div>
             <div className="text-3xl font-bold tabular-nums" style={{ color: s.color }}>{s.value}</div>

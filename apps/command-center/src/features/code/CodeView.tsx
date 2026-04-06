@@ -144,8 +144,7 @@ const KEYWORDS = new Set([
   'async','await','try','catch','finally','throw','extends','implements',
   'public','private','protected','static','readonly','abstract','override',
   'default','null','undefined','true','false','void','never','any',
-  'string','number','boolean','object','symbol','bigint',
-])
+  'string','number','boolean','object','symbol','bigint'])
 
 function tokenizeLine(line: string): Token[] {
   const tokens: Token[] = []
@@ -387,8 +386,7 @@ export function CodeView() {
       role: 'system',
       content: 'Välj ett repo för att börja. Sedan kan du beskriva vad du vill ändra så redigerar AI:n filerna.',
       timestamp: new Date().toISOString(),
-    },
-  ])
+    }])
   const [input, setInput] = useState('')
   const [sending, setSending] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)

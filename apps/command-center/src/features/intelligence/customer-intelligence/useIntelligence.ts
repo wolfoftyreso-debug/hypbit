@@ -14,8 +14,7 @@ export function useCustomerIntelligence(customerId?: string) {
     try {
       const [profileRes, signalsRes] = await Promise.allSettled([
         apiFetch(`/api/intelligence/profile/${customerId}`),
-        apiFetch(`/api/intelligence/signals?customer_id=${customerId}&days=30`),
-      ])
+        apiFetch(`/api/intelligence/signals?customer_id=${customerId}&days=30`)])
       if (profileRes.status === 'fulfilled' && profileRes.value.ok)
         setProfile(await profileRes.value.json())
       if (signalsRes.status === 'fulfilled' && signalsRes.value.ok)

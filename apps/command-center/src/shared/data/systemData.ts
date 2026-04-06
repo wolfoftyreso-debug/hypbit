@@ -140,10 +140,7 @@ export const CORP_ENTITIES: CorpEntity[] = [
   },
 
   // ── UAE DIFC ─────────────────────────────────────────────────────────────────
-  {
-    id: 'lvx-ae',
-    shortName: 'LandveX AC',
-    name: 'LandveX Dubai (planerad)',
+    
     jurisdiction: 'UAE (DIFC)' ,
     jurisdictionCode: 'AE-DIFC',
     flag: '🇦🇪',
@@ -153,8 +150,7 @@ export const CORP_ENTITIES: CorpEntity[] = [
     parentId: 'fc-fzco',
     products: ['LandveX AE'],
     description: 'LandveX UAE och MENA-marknad. DIFC Free Zone. Under etablering.',
-  },
-]
+  }]
 
 // Helpers
 export function getChildren(entityId: string): CorpEntity[] {
@@ -196,7 +192,7 @@ export const BRAND_GROUPS: BrandGroup[] = [
     shortName: 'LVX',
     flag: '🏗️',
     color: '#C9A84C',
-    entityIds: ['lvx-ab', 'lvx-ae', 'lvx-us'],
+    entityIds: ['lvx-ab', 'lvx-us'],
     description: 'Infrastrukturintelligens — Sverige + UAE + USA',
     products: ['LandveX SE', 'LandveX AE', 'LandveX US'],
   },
@@ -209,8 +205,7 @@ export const BRAND_GROUPS: BrandGroup[] = [
     entityIds: ['wg-dmcc', 'fc-fzco', 'dvo-fzco'],
     description: 'Dubai-entiteter — IP Holding + FinanceCo + DevOps FZCO',
     products: [],
-  },
-]
+  }]
 
 // ── TEAM (source of truth) ────────────────────────────────────────────────────
 
@@ -241,7 +236,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     title: 'Styrelseordförande och Group CEO',
     email: 'erik@hypbit.com',
     phone: '+46709123223',
-    entityIds: ['wg-dmcc', 'fc-fzco', 'dvo-fzco', 'lvx-ab', 'oz-lt', 'oz-us', 'lvx-ae', 'lvx-us'],
+    entityIds: ['wg-dmcc', 'fc-fzco', 'dvo-fzco', 'lvx-ab', 'oz-lt', 'oz-us', 'lvx-us'],
     roleId: 'group-ceo',
     avatar: '/avatars/erik.png',
     location: 'Stockholm / Dubai',
@@ -249,8 +244,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
       { label: 'Dubai DMCC-ansökan', value: 'Pågår', status: 'warning' },
       { label: 'LandveX AB namnbyte', value: 'Väntar Bolagsverket', status: 'warning' },
       { label: 'Sverige go-live', value: 'Juni 2026', status: 'on_track' },
-      { label: '83(b) Election OZ-US', value: () => `${Math.max(0, Math.ceil((new Date('2026-04-27').getTime() - Date.now()) / 86400000))}d kvar`, status: 'critical' },
-    ],
+      { label: '83(b) Election OZ-US', value: () => `${Math.max(0, Math.ceil((new Date('2026-04-27').getTime() - Date.now()) / 86400000))}d kvar`, status: 'critical' }],
   },
   {
     id: 'leon',
@@ -266,8 +260,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     location: 'Stockholm',
     kpis: [
       { label: 'Aktiva projekt', value: '4', status: 'active' },
-      { label: 'First revenue', value: 'Pre-revenue', status: 'pending' },
-    ],
+      { label: 'First revenue', value: 'Pre-revenue', status: 'pending' }],
   },
   {
     id: 'winston',
@@ -284,8 +277,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     kpis: [
       { label: 'Bankkonton öppnade', value: '0/3 bolag', status: 'critical' },
       { label: 'LandveX Inc EIN', value: 'Pågår via Northwest', status: 'warning' },
-      { label: 'Intercompany avtal', value: '1', status: 'warning' },
-    ],
+      { label: 'Intercompany avtal', value: '1', status: 'warning' }],
   },
   {
     id: 'johan',
@@ -302,8 +294,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     kpis: [
       { label: 'ECS-tjänster live', value: '11/13', status: 'on_track' },
       { label: 'System uptime', value: '99%+', status: 'good' },
-      { label: 'Gitea repos', value: '50', status: 'good' },
-    ],
+      { label: 'Gitea repos', value: '50', status: 'good' }],
   },
   {
     id: 'dennis',
@@ -320,8 +311,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     kpis: [
       { label: 'Dubai FZCO-ansökan', value: '3 entiteter', status: 'warning' },
       { label: '83(b) OZ-US', value: () => `${Math.max(0, Math.ceil((new Date('2026-04-27').getTime() - Date.now()) / 86400000))}d kvar`, status: 'critical' },
-      { label: 'FinCEN BOI report', value: 'Ej inlämnad', status: 'warning' },
-    ],
+      { label: 'FinCEN BOI report', value: 'Ej inlämnad', status: 'warning' }],
   },
   {
     id: 'tiffany',
@@ -334,8 +324,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     roleId: 'viewer',
     location: 'Stockholm → Thailand (3 maj)',
     kpis: [],
-  },
-]
+  }]
 
 export function getMemberById(id: string): TeamMember | undefined {
   return TEAM_MEMBERS.find(m => m.id === id)
@@ -382,5 +371,4 @@ export const LEGACY_ENTITIES: LegacyEntity[] = [
     flag: '🇸🇪',
     status: 'avvecklad',
     note: 'Gammalt bolagsnamn — avvecklat. Ersatt av Wavult.',
-  },
-]
+  }]

@@ -16,8 +16,7 @@ const TABS: Array<{ id: Tab; label: string; icon: string }> = [
   { id: 'roles',          label: 'Roller & Behörigheter', icon: '🛡' },
   { id: 'entities',       label: 'Entitetsinställningar', icon: '🏢' },
   { id: 'notifications',  label: 'Notiser',               icon: '🔔' },
-  { id: 'system',         label: 'System',                icon: '⚙️' },
-]
+  { id: 'system',         label: 'System',                icon: '⚙️' }]
 
 export function SettingsHub() {
   const [activeTab, setActiveTab] = useState<Tab>('profile')

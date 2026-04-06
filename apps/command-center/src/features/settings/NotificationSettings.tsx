@@ -70,8 +70,7 @@ const INITIAL_RULES: NotificationRule[] = [
     icon: '⚖️',
     category: 'incident',
     channels: { email: true, sms: false, intern: true },
-  },
-]
+  }]
 
 const CATEGORY_CONFIG = {
   finance:  { label: 'Finans',    color: '#10B981', bg: '#10B98115' },

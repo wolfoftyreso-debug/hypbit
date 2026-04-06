@@ -13,8 +13,7 @@ const TABS: Array<{ id: Tab; label: string; icon: string }> = [
   { id: 'financial',   label: 'Finansrapport',      icon: '💰' },
   { id: 'sales',       label: 'Säljrapport',         icon: '🎯' },
   { id: 'operational', label: 'Operativ rapport',    icon: '⚙️' },
-  { id: 'export',      label: 'Exportera',           icon: '📥' },
-]
+  { id: 'export',      label: 'Exportera',           icon: '📥' }]
 
 export function ReportsHub() {
   const [activeTab, setActiveTab] = useState<Tab>('executive')

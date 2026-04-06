@@ -487,8 +487,7 @@ function SwimlaneView({ activities }: { activities: CampaignActivity[] }) {
     { id: 'quixzoom',    label: 'QuiXzoom EU',  flag: '🇪🇺', color: '#2563EB' },
     { id: 'quixzoom-us', label: 'QuiXzoom US',  flag: '🇺🇸', color: '#0EA5E9' },
     { id: 'landvex',     label: 'Landvex SE',   flag: '🇸🇪', color: '#059669' },
-    { id: 'landvex-us',  label: 'Landvex US',   flag: '🇺🇸', color: '#F59E0B' },
-  ]
+    { id: 'landvex-us',  label: 'Landvex US',   flag: '🇺🇸', color: '#F59E0B' }]
 
   // Map brand + region → company column
   const activityToCompany = (a: CampaignActivity): string => {

@@ -237,8 +237,7 @@ interface HealthCheck { url: string; label: string; status: 'ok' | 'error' | 'lo
 function APIHealthCard() {
   const ENDPOINTS: Array<{ url: string; label: string }> = [
     { url: `${API_BASE}/api/health`, label: 'Wavult OS API' },
-    { url: 'https://api.quixzoom.com/health', label: 'quiXzoom API' },
-  ]
+    { url: 'https://api.quixzoom.com/health', label: 'quiXzoom API' }]
 
   const [checks, setChecks] = useState<HealthCheck[]>(ENDPOINTS.map(e => ({ ...e, status: 'loading' })))
 
@@ -305,8 +304,7 @@ function VenturesCard() {
   const kpis = [
     { label: 'Aktiva ventures', value: stats?.active ?? '—', icon: <TrendingUp size={12} className="text-blue-400" /> },
     { label: 'Entiteter', value: stats?.entities ?? '—', icon: <Database size={12} className="text-purple-400" /> },
-    { label: 'Totalt', value: stats?.total ?? '—', icon: <Zap size={12} className="text-yellow-400" /> },
-  ]
+    { label: 'Totalt', value: stats?.total ?? '—', icon: <Zap size={12} className="text-yellow-400" /> }]
 
   return (
     <div className="bg-white border border-[#DDD5C5] rounded-xl p-5">
@@ -341,8 +339,7 @@ const QUICK_LINKS = [
   { name: 'Gitea', url: 'https://git.wavult.com/wavult', icon: '🐙', sub: 'git.wavult.com/wavult' },
   { name: 'Cloudflare', url: 'https://dash.cloudflare.com', icon: '🔥', sub: '6 zoner' },
   { name: 'Loopia Mail', url: 'https://webmail.loopia.se', icon: '✉️', sub: 'erik@wavult.com' },
-  { name: 'n8n', url: 'https://n8n.wavult.com', icon: '⚡', sub: 'Workflows' },
-]
+  { name: 'n8n', url: 'https://n8n.wavult.com', icon: '⚡', sub: 'Workflows' }]
 
 // ─── Main Dashboard ────────────────────────────────────────────────────────────
 
@@ -421,8 +418,7 @@ export function CommandDashboard() {
           {[
             { name: 'Wavult Group Holding', code: 'WGH', jurisdiction: '🇦🇪 DIFC, Dubai', type: 'Holding', color: '#2563EB', products: ['Capital structure', 'IP ownership'] },
             { name: 'Wavult Technologies LLC', code: 'WTL', jurisdiction: '🇺🇸 Texas, USA', type: 'Operating', color: '#3B82F6', products: ['quiXzoom platform'] },
-            { name: 'Wavult Intelligence UAB', code: 'WIU', jurisdiction: '🇱🇹 Vilnius, LT', type: 'Operating', color: '#06B6D4', products: ['Optic Insights Group'] },
-          ].map((entity) => (
+            { name: 'Wavult Intelligence UAB', code: 'WIU', jurisdiction: '🇱🇹 Vilnius, LT', type: 'Operating', color: '#06B6D4', products: ['Optic Insights Group'] }].map((entity) => (
             <div key={entity.code} className="bg-white border border-[#DDD5C5] rounded-xl p-5">
               <div className="flex items-start gap-3 mb-4">
                 <div

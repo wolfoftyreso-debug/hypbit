@@ -45,8 +45,7 @@ export interface AuditRecommendation {
 export const INSURANCE_ENTITIES = [
   { id: 'wavult-group',      name: 'Wavult Group',      shortName: 'WG' },
   { id: 'wavult-operations', name: 'Wavult Operations', shortName: 'WO' },
-  { id: 'landvex-ab',        name: 'LandveX AB',        shortName: 'LX' },
-]
+  { id: 'landvex-ab',        name: 'LandveX AB',        shortName: 'LX' }]
 
 // ─── Policies ─────────────────────────────────────────────────────────────────
 
@@ -167,8 +166,7 @@ export const POLICIES: InsurancePolicy[] = [
     why: 'Startupfas med hög personberoende. En nyckelmedlems bortfall kan hota verksamhetens kontinuitet.',
     recommendation: 'Teckna inför extern kapitalresa — investerare kräver ofta nyckelmannaförsäkring.',
     lastReviewed: new Date().toISOString().split('T')[0],
-  },
-]
+  }]
 
 // ─── Week number utility ──────────────────────────────────────────────────────
 
@@ -275,8 +273,7 @@ export const MOCK_AUDIT_HISTORY: { date: string; week: number; score: number }[]
   { date: '2026-03-02', week: 10, score: 0 },
   { date: '2026-03-09', week: 11, score: 0 },
   { date: '2026-03-16', week: 12, score: 0 },
-  { date: '2026-03-23', week: 13, score: 0 },
-]
+  { date: '2026-03-23', week: 13, score: 0 }]
 
 // ─── Category labels ──────────────────────────────────────────────────────────
 

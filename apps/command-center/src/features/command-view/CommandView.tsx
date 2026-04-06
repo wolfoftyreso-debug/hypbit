@@ -5,8 +5,7 @@ interface CommandResult { id: string; command: string; output: string; status: '
 
 const FALLBACK_HISTORY: CommandResult[] = [
   { id: 'f1', command: 'openclaw status', output: 'OpenClaw v2.1.0 — online\nBernt tunnel: connected\nMemory: 3 active contexts', status: 'success', timestamp: new Date().toISOString() },
-  { id: 'f2', command: 'docker ps --format "{{.Names}}"', output: 'wavult-api\nquixzoom-api\nidentity-core\nn8n\nkafka', status: 'success', timestamp: new Date().toISOString() },
-]
+  { id: 'f2', command: 'docker ps --format "{{.Names}}"', output: 'wavult-api\nquixzoom-api\nidentity-core\nn8n\nkafka', status: 'success', timestamp: new Date().toISOString() }]
 
 export function CommandView() {
   const [history, setHistory] = useState<CommandResult[]>([])

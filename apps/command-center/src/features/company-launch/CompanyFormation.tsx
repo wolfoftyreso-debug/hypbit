@@ -108,8 +108,7 @@ export function CompanyFormation() {
         ['Metod', jur.method],
         ['Handläggningstid', jur.time],
         ['Ägare', config.owner_name],
-        ['E-post', config.owner_email],
-      ].map(([k, v]) => (
+        ['E-post', config.owner_email]].map(([k, v]) => (
         <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #F3F4F6', fontSize: 13 }}>
           <span style={{ color: '#6B7280' }}>{k}</span>
           <span style={{ color: '#1C1C1E', fontWeight: 500 }}>{v}</span>

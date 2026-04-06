@@ -78,8 +78,7 @@ export const GLOBAL_CONSTRAINTS: Constraint[] = [
   { id: 'gc-4', rule: 'BRAND_COLORS', description: 'Use Wavult design tokens: #F5F0E8, #0A3D62, #E8B84B.', severity: 'warning', source: 'wavult-global' },
   { id: 'gc-5', rule: 'FULL_REACTIVITY', description: 'All data must come from API. No static data.', severity: 'error', source: 'wavult-global' },
   { id: 'gc-6', rule: 'NO_EMPTY_ROUTES', description: 'All routes must be wired. Empty routes = CRITICAL.', severity: 'critical', source: 'wavult-global' },
-  { id: 'gc-7', rule: 'USE_WAVULT_SDK', description: 'Use @wavult/sdk for all API calls.', severity: 'error', source: 'wavult-global' },
-]
+  { id: 'gc-7', rule: 'USE_WAVULT_SDK', description: 'Use @wavult/sdk for all API calls.', severity: 'error', source: 'wavult-global' }]
 
 // ── MEMORY PERSISTENCE ─────────────────────────────────────────────────────
 
@@ -281,8 +280,7 @@ export function useProjectMemory(repoFullName: string | null) {
       ...memory,
       decisions: [
         { ...decision, id: `dec-${Date.now()}`, timestamp: new Date().toISOString() },
-        ...memory.decisions,
-      ],
+        ...memory.decisions],
       last_updated: new Date().toISOString(),
     }
     setMemory(updated)

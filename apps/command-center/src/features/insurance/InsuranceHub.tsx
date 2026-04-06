@@ -29,8 +29,7 @@ const COVERAGE = {
       'Per-mission premium calculation',
       'Automatic claim trigger on incident',
       'Coverage: bodily injury, property damage, third-party liability',
-      'Jurisdictions: SE, NL, DE, GB, US',
-    ],
+      'Jurisdictions: SE, NL, DE, GB, US'],
     stats: { zoomers: '50 000+', missions: '1M+/year', target: 'Q3 2026' },
   },
   infrastructure: {
@@ -45,8 +44,7 @@ const COVERAGE = {
       'Optical evidence package auto-attached',
       'Municipality and port authority coverage',
       'Infrastructure: roads, bridges, harbors, buildings',
-      'SLA: claim acknowledgement < 4 hours',
-    ],
+      'SLA: claim acknowledgement < 4 hours'],
     stats: { clients: '100+ target', alertTypes: '12', responseTime: '< 4h' },
   },
   group: {
@@ -61,8 +59,7 @@ const COVERAGE = {
       'Cyber: AWS infrastructure, Cloudflare, databases',
       'Professional indemnity: UAPIX, LandveX, Apifly data products',
       'Travel: SE, UAE, US, Thailand (active from April 11, 2026)',
-      'Jurisdictions: Sweden, UAE (Dubai), USA (Delaware)',
-    ],
+      'Jurisdictions: Sweden, UAE (Dubai), USA (Delaware)'],
     stats: { directors: '5', jurisdictions: '4+', urgency: 'April 11' },
   },
 }

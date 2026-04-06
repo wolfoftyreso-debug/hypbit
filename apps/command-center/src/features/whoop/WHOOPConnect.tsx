@@ -56,8 +56,7 @@ export function WHOOPConnect() {
     try {
       const [statusRes, meRes] = await Promise.all([
         apiFetch('/whoop/status'),
-        apiFetch('/whoop/me'),
-      ])
+        apiFetch('/whoop/me')])
       if (statusRes.ok) setStatus(await statusRes.json())
       if (meRes.ok) setData(await meRes.json())
     } catch (err) {

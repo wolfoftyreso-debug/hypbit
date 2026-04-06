@@ -226,8 +226,7 @@ const CONTACTS: Contact[] = [
     category: 'external',
     tags: ['Privat', 'Kompis'],
     notes: 'Eriks polare. Intresserad av AI/bot-setup. Inga känsliga Wavult-uppgifter.',
-  },
-]
+  }]
 
 // ─── Category Labels ──────────────────────────────────────────────────────────
 

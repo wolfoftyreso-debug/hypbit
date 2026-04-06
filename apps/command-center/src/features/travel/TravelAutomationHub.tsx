@@ -93,8 +93,7 @@ const INITIAL_TRIPS: Trip[] = [
         note: 'Pass, försäkring, hotellbekräftelse, SIM',
       },
     },
-  },
-]
+  }]
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -168,8 +167,7 @@ const STEPS: Array<{
   { key: 'transport',     icon: Car,       label: '🚗 Transport', actionLabel: 'Boka Uber' },
   { key: 'wellness',      icon: Dumbbell,  label: '🏋️ Gym',       actionLabel: 'Hitta gym' },
   { key: 'insurance',     icon: Shield,    label: '🛡️ Försäkring', actionLabel: 'Verifiera' },
-  { key: 'documents',     icon: ClipboardList, label: '📄 Dokument', actionLabel: 'Ladda upp' },
-]
+  { key: 'documents',     icon: ClipboardList, label: '📄 Dokument', actionLabel: 'Ladda upp' }]
 
 // ─── StepCard ─────────────────────────────────────────────────────────────────
 
@@ -291,8 +289,7 @@ function IntegrationStatus() {
             status: 'partial',
             message: 'Verifiera befintlig täckning (Eurocard / Hedvig)',
             action: { label: 'Öppna Hedvig', href: 'https://hedvig.com' },
-          },
-        ].map(i => (
+          }].map(i => (
           <div key={i.name} style={{
             background: '#FFFFFF',
             border: '1px solid #DDD5C5',
@@ -341,8 +338,7 @@ function ParticipantRow({
     { key: 'insurance',        label: 'Reseförsäkring' },
     { key: 'hotelConfirmation', label: 'Hotellbekräftelse' },
     { key: 'visa',             label: 'Visum / ESTA' },
-    { key: 'simCard',          label: 'SIM-kort' },
-  ]
+    { key: 'simCard',          label: 'SIM-kort' }]
 
   return (
     <div style={{ borderBottom: '1px solid #DDD5C5' }}>

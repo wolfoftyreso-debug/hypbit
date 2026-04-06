@@ -89,8 +89,7 @@ export function MediaPipelineView() {
             { label: 'Totalt', value: stats.total, color: '#9CA3AF' },
             { label: 'Klart', value: stats.done, color: '#34D399' },
             { label: 'Bearbetar', value: stats.processing, color: '#FBBF24' },
-            { label: 'Fel', value: stats.error, color: '#F87171' },
-          ].map(s => (
+            { label: 'Fel', value: stats.error, color: '#F87171' }].map(s => (
             <div key={s.label} className="bg-[#F5F0E8] border border-[#DDD5C5] rounded-xl p-4 text-center">
               <div className="text-2xl font-bold font-mono" style={{ color: s.color }}>{s.value}</div>
               <div className="text-[10px] text-[#8A8A9A] mt-1">{s.label}</div>

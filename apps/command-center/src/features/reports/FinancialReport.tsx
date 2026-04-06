@@ -12,8 +12,7 @@ const QUARTERS: Array<{ label: string; months: Month[] }> = [
   { label: 'Q1', months: ['jan','feb','mar'] },
   { label: 'Q2', months: ['apr','may','jun'] },
   { label: 'Q3', months: ['jul','aug','sep'] },
-  { label: 'Q4', months: ['oct','nov','dec'] },
-]
+  { label: 'Q4', months: ['oct','nov','dec'] }]
 
 function fmt(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(2)} MSEK`

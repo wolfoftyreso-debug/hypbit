@@ -17,8 +17,7 @@ const STATUS_BADGE: Record<SupplierStatus, { label: string; color: string; bg: s
 }
 
 const ALL_CATEGORIES: Array<SupplierCategory | 'Alla'> = [
-  'Alla', 'Tech/SaaS', 'Juridik', 'Redovisning', 'Infrastruktur', 'Marknadsföring',
-]
+  'Alla', 'Tech/SaaS', 'Juridik', 'Redovisning', 'Infrastruktur', 'Marknadsföring']
 
 // Hjälpare: formatera SEK-belopp
 function fmtSEK(amount: number): string {
@@ -76,8 +75,7 @@ export function SuppliersView() {
           { label: 'Per vecka',   value: fmtSEKFull(totals.monthly / 4.33) },
           { label: 'Per månad',   value: fmtSEKFull(totals.monthly) },
           { label: 'Årsackum.',   value: fmtSEKFull(totals.ytd) },
-          { label: 'Helår (est)', value: fmtSEKFull(totals.yearly) },
-        ].map(({ label, value }) => (
+          { label: 'Helår (est)', value: fmtSEKFull(totals.yearly) }].map(({ label, value }) => (
           <div key={label} className="flex-1 min-w-[100px] bg-[#F0EBE1] border border-surface-border rounded-xl px-3 py-2.5">
             <div className="text-[10px] text-[#8A8A9A] font-medium uppercase tracking-wider mb-1">{label}</div>
             <div className="text-sm font-semibold text-text-primary">{value}</div>

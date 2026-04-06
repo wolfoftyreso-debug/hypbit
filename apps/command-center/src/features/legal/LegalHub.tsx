@@ -9,8 +9,7 @@ const TABS = [
   { id: 'contracts' as Tab,  label: 'Avtal',         icon: '⚖️' },
   { id: 'templates' as Tab,  label: 'Mallar',        icon: '📋' },
   { id: 'ip' as Tab,         label: 'IP & Licenser', icon: '🔐' },
-  { id: 'reminders' as Tab,  label: 'Påminnelser',   icon: '📬' },
-]
+  { id: 'reminders' as Tab,  label: 'Påminnelser',   icon: '📬' }]
 
 const STATUS_CONFIG = {
   aktiv:             { label: 'Aktiv',             color: '#2D7A4F', bg: '#E8F5ED' },
@@ -82,8 +81,7 @@ export function LegalHub() {
               { label: 'Dokument',       value: totalDocs,        color: '#0A3D62' },
               { label: 'Aktiva avtal',   value: activeContracts,  color: '#2D7A4F' },
               { label: 'Löper ut (90d)', value: expiringDocs,     color: expiringDocs > 0 ? '#C0392B' : '#8A8278' },
-              { label: 'Väntande',       value: pendingDocs,      color: '#B8760A' },
-            ].map(s => (
+              { label: 'Väntande',       value: pendingDocs,      color: '#B8760A' }].map(s => (
               <div key={s.label} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#DDD5C5] shadow-sm">
                 <span className="h-1.5 w-1.5 rounded-full" style={{ background: s.color }} />
                 <span className="text-gray-500">{s.label}:</span>

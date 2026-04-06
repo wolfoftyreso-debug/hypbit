@@ -212,8 +212,7 @@ export const BASE_CASH_FLOW_ENTRIES: CashFlowEntry[] = [
     isRecurring: true,
     recurrenceInterval: 'monthly',
     confidence: 'speculative'
-  },
-]
+  }]
 
 export const PRESET_SCENARIOS: Scenario[] = [
   { id: 'base', name: 'Basfall', adjustments: [] },
@@ -223,18 +222,15 @@ export const PRESET_SCENARIOS: Scenario[] = [
     adjustments: [
       { variableId: 'zoomer_count', deltaPercent: 100 },
       { variableId: 'landvex_customers', deltaPercent: 200 },
-      { variableId: 'monthly_marketing_spend', deltaPercent: 50 },
-    ],
+      { variableId: 'monthly_marketing_spend', deltaPercent: 50 }],
   },
   {
     id: 'bear',
     name: 'Pessimistiskt',
     adjustments: [
       { variableId: 'monthly_fixed_cost', deltaPercent: 30 },
-      { variableId: 'monthly_marketing_spend', deltaPercent: -50 },
-    ],
-  },
-]
+      { variableId: 'monthly_marketing_spend', deltaPercent: -50 }],
+  }]
 
 export const DECISION_OPTIONS: DecisionOption[] = [
   {
@@ -243,8 +239,7 @@ export const DECISION_OPTIONS: DecisionOption[] = [
     description: 'Heltidssäljare för Landvex B2G. Lön 45 000 SEK/mån.',
     impacts: [
       { variableId: 'monthly_salary_cost', deltaPercent: 100, timeframe: 'Omedelbart' },
-      { variableId: 'landvex_customers', deltaPercent: 20, timeframe: '6 månader' },
-    ],
+      { variableId: 'landvex_customers', deltaPercent: 20, timeframe: '6 månader' }],
   },
   {
     id: 'double-marketing',
@@ -252,15 +247,12 @@ export const DECISION_OPTIONS: DecisionOption[] = [
     description: 'Zoomer-rekrytering från 15k till 30k/mån.',
     impacts: [
       { variableId: 'monthly_marketing_spend', deltaPercent: 100, timeframe: 'Omedelbart' },
-      { variableId: 'zoomer_count', deltaPercent: 80, timeframe: '60 dagar' },
-    ],
+      { variableId: 'zoomer_count', deltaPercent: 80, timeframe: '60 dagar' }],
   },
   {
     id: 'cut-fixed-costs',
     label: 'Skär fasta kostnader 20%',
     description: 'Optimera infra och verktyg, spara ca 6 000 SEK/mån.',
     impacts: [
-      { variableId: 'monthly_fixed_cost', deltaPercent: -20, timeframe: 'Omedelbart' },
-    ],
-  },
-]
+      { variableId: 'monthly_fixed_cost', deltaPercent: -20, timeframe: 'Omedelbart' }],
+  }]

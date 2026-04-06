@@ -12,8 +12,7 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'kunskapsbas',    label: '📚 Kunskapsbas' },
   { id: 'zoomer-cert',    label: '🏆 Zoomer-cert' },
   { id: 'systemöversikt', label: '🖥️ Systemöversikt' },
-  { id: 'portfolio',      label: '💡 Portfolio' },
-]
+  { id: 'portfolio',      label: '💡 Portfolio' }]
 
 export function KnowledgeHub() {
   const [activeTab, setActiveTab] = useState<Tab>('systemskola')

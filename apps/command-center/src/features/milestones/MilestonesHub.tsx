@@ -23,8 +23,7 @@ const TABS: Array<{ id: Tab; label: string; icon: string; badge?: () => string |
   { id: 'thailand-calendar', label: 'Program & Kalender', icon: '📅' },
   { id: 'quixzoom', label: 'quiXzoom Launch', icon: '📷' },
   { id: 'bolag', label: 'Bolagsstruktur', icon: '🏛️' },
-  { id: 'roadmap', label: 'Roadmap', icon: '🗺️' },
-]
+  { id: 'roadmap', label: 'Roadmap', icon: '🗺️' }]
 
 export function MilestonesHub() {
   const [activeTab, setActiveTab] = useState<Tab>('overview')

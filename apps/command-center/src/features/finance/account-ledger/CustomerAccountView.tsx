@@ -69,8 +69,7 @@ export function CustomerAccountView({ accountId }: { accountId: string }) {
             { label: 'Total Invoiced', value: fmt(account.total_debit, account.currency), color: '#EF4444' },
             { label: 'Total Credited', value: fmt(account.total_credit, account.currency), color: '#10B981' },
             { label: 'Net Balance', value: fmt(account.net_balance, account.currency),
-              color: account.net_balance > 0.01 ? '#EF4444' : account.net_balance < -0.01 ? '#0A3D62' : '#10B981' },
-          ].map(({ label, value, color }) => (
+              color: account.net_balance > 0.01 ? '#EF4444' : account.net_balance < -0.01 ? '#0A3D62' : '#10B981' }].map(({ label, value, color }) => (
             <div key={label} style={{ background: 'rgba(255,255,255,.05)', borderRadius: 8, padding: '16px 20px' }}>
               <div style={{ fontSize: 11, color: 'rgba(245,240,232,.5)', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 6 }}>{label}</div>
               <div style={{ fontSize: 22, fontWeight: 800, color }}>{value}</div>

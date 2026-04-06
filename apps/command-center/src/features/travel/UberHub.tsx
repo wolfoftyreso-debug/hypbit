@@ -647,8 +647,7 @@ export function UberHub() {
       { name: 'Dennis Bjarnemark', role: 'Legal & Operations', phone: '+46761474243' },
       { name: 'Leon Russo',        role: 'CEO Operations',     phone: '+46738968949' },
       { name: 'Winston Bjarnemark',role: 'CFO',                phone: '+46768123548' },
-      { name: 'Johan Berglund',    role: 'Group CTO',          phone: '+46736977576' },
-    ]
+      { name: 'Johan Berglund',    role: 'Group CTO',          phone: '+46736977576' }]
     return (
       <div className="space-y-5">
         <div className="p-4 rounded-xl border border-[#DDD5C5] bg-[#F5F0E8]">
@@ -713,8 +712,7 @@ export function UberHub() {
     { id: 'business', label: 'For Business', icon: Car },
     { id: 'eats',     label: 'Team Lunch',   icon: UtensilsCrossed },
     { id: 'team',     label: 'Team Onboard', icon: Users },
-    { id: 'direct',   label: 'Direct',       icon: Package },
-  ]
+    { id: 'direct',   label: 'Direct',       icon: Package }]
 
   return (
     <div className="min-h-screen bg-[#F5F0E8] text-[#0A3D62]">

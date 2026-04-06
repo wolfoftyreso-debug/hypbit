@@ -14,8 +14,7 @@ const INDUSTRY_TABS: { value: Industry | ''; label: string }[] = [
   { value: 'Government', label: 'Government' },
   { value: 'Logistics', label: 'Logistics' },
   { value: 'Finance', label: 'Finance' },
-  { value: 'Education', label: 'Education' },
-]
+  { value: 'Education', label: 'Education' }]
 
 const INDUSTRY_COLORS: Record<Industry, { bg: string; text: string; dot: string }> = {
   Healthcare:  { bg: 'bg-rose-50', text: 'text-rose-600', dot: 'bg-rose-400' },

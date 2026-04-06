@@ -50,8 +50,7 @@ export const MOCK_CAMPAIGNS: Campaign[] = [
     entity_id: 'entity-wavult-ops',
     created_by: 'leon@wavult.com',
     created_at: '2026-03-25T00:00:00Z',
-  },
-]
+  }]
 
 // ─── Channels ─────────────────────────────────────────────────────────────────
 
@@ -111,8 +110,7 @@ export const MOCK_CHANNELS: MediaChannel[] = [
     api_adapter: 'ManualAdapter',
     status: 'pending',
     daily_budget: 0,
-  },
-]
+  }]
 
 // ─── Creatives ────────────────────────────────────────────────────────────────
 
@@ -126,8 +124,7 @@ export const MOCK_CREATIVES: Creative[] = [
     cta: 'Läs mer på landvex.se',
     variants: [
       { id: 'v-001a', label: 'Version A — Direkt' },
-      { id: 'v-001b', label: 'Version B — Berättande' },
-    ],
+      { id: 'v-001b', label: 'Version B — Berättande' }],
     status: 'draft',
   },
   {
@@ -149,8 +146,7 @@ export const MOCK_CREATIVES: Creative[] = [
     cta: 'wavult.com',
     variants: [
       { id: 'v-003a', label: 'Dark theme' },
-      { id: 'v-003b', label: 'Light theme' },
-    ],
+      { id: 'v-003b', label: 'Light theme' }],
     status: 'draft',
   },
   {
@@ -172,8 +168,7 @@ export const MOCK_CREATIVES: Creative[] = [
     cta: 'Se mer',
     variants: [{ id: 'v-005a', label: 'Bild A — Stad' }],
     status: 'draft',
-  },
-]
+  }]
 
 // ─── Audiences ────────────────────────────────────────────────────────────────
 
@@ -201,8 +196,7 @@ export const MOCK_AUDIENCES: Audience[] = [
     age_range: [32, 58],
     interests: ['B2B SaaS', 'enterprise tech', 'data platforms'],
     custom_data: 'CRM-segment: Nordic B2B',
-  },
-]
+  }]
 
 // ─── Budget Allocations (Fas 1 — alla 0) ─────────────────────────────────────
 

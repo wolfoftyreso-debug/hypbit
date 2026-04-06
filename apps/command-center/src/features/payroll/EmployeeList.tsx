@@ -64,8 +64,7 @@ function EmployeePanel({ emp, onClose, calcSalary, fmt }: { emp: Employee; onClo
                 ['Anställd sedan', emp.start_date],
                 ['Sysselsättningsgrad', `${(emp.employment_rate * 100).toFixed(0)}%`],
                 ['Skattetabell', `Tabell ${emp.tax_table} (${emp.location})`],
-                ['Status', emp.status === 'active' ? 'Aktiv' : 'Tjänstledig'],
-              ].map(([label, value]) => (
+                ['Status', emp.status === 'active' ? 'Aktiv' : 'Tjänstledig']].map(([label, value]) => (
                 <div key={label} className="flex justify-between items-center text-xs">
                   <span className="text-text-muted">{label}</span>
                   <span className="text-gray-800">{value}</span>
@@ -83,8 +82,7 @@ function EmployeePanel({ emp, onClose, calcSalary, fmt }: { emp: Employee; onClo
                 ['Skatteavdrag (tabell 33)', `−${fmt(calc.taxDeduction)}`, 'text-red-700'],
                 ['Nettolön', fmt(calc.net), 'text-green-700 font-semibold'],
                 ['Arbetsgivaravgift (31.42%)', fmt(calc.employerTax), 'text-amber-700'],
-                ['Total kostnad för arbetsgivare', fmt(calc.totalCost), 'text-blue-700 font-semibold'],
-              ].map(([label, value, cls]) => (
+                ['Total kostnad för arbetsgivare', fmt(calc.totalCost), 'text-blue-700 font-semibold']].map(([label, value, cls]) => (
                 <div key={label} className={`flex justify-between text-xs ${label === 'Nettolön' || label === 'Total kostnad för arbetsgivare' ? 'border-t border-surface-border pt-2' : ''}`}>
                   <span className="text-text-muted">{label}</span>
                   <span className={cls}>{value}</span>
@@ -118,8 +116,7 @@ function EmployeePanel({ emp, onClose, calcSalary, fmt }: { emp: Employee; onClo
                   {[
                     { label: 'Berättigad', value: leave.daysEntitled, color: '#3B82F6' },
                     { label: 'Uttaget', value: leave.daysUsed, color: '#F59E0B' },
-                    { label: 'Kvar', value: daysRemaining, color: '#10B981' },
-                  ].map(s => (
+                    { label: 'Kvar', value: daysRemaining, color: '#10B981' }].map(s => (
                     <div key={s.label} className="bg-white rounded-lg p-3 text-center">
                       <div className="text-xl font-bold" style={{ color: s.color }}>{s.value}</div>
                       <div className="text-xs text-text-muted mt-0.5">{s.label}</div>

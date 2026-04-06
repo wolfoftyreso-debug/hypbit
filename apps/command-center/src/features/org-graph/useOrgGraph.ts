@@ -32,8 +32,7 @@ export function useOrgGraph(): OrgGraphData {
       const [entRes, relRes, roleRes] = await Promise.allSettled([
         apiFetch('/api/org-graph/entities'),
         apiFetch('/api/org-graph/relationships'),
-        apiFetch('/api/org-graph/roles'),
-      ])
+        apiFetch('/api/org-graph/roles')])
 
       if (entRes.status === 'fulfilled' && entRes.value.ok) {
         const data = await entRes.value.json() as Entity[]

@@ -35,8 +35,7 @@ const PROJECTS = [
     icon: '🇹🇭',
     velocity: 6.8,
     history: [30, 38, 46, 54, 60],
-  },
-]
+  }]
 
 // ─── Mini sparkline SVG ────────────────────────────────────────────────────────
 function Sparkline({ data, color }: { data: number[]; color: string }) {

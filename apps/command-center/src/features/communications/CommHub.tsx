@@ -17,8 +17,7 @@ const TABS: Array<{ id: Tab; label: string; icon: string }> = [
   { id: 'routing',       label: 'Routing',     icon: '🔀' },
   { id: 'notifications', label: 'Systemlarm',  icon: '🔔' },
   { id: 'webhooks',      label: 'Webhooks',    icon: '🔗' },
-  { id: 'api-status',    label: 'API-status',  icon: '🟢' },
-]
+  { id: 'api-status',    label: 'API-status',  icon: '🟢' }]
 
 export function CommHub() {
   const [activeTab, setActiveTab] = useState<Tab>('contacts')

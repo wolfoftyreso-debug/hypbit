@@ -49,8 +49,7 @@ const budgetBlock: DecisionBlock = {
       timeframe: 'Q1–Q4 2026',
       operationalImpact:
         'Minimal risk. Kassaflödspositiv från dag 1. Begränsad tillväxt men solid bas för 2027.',
-    },
-  ],
+    }],
   votes: {},
   result: null,
   overriddenBy: null,
@@ -107,8 +106,7 @@ const expansionBlock: DecisionBlock = {
       timeframe: 'Q1–Q4 2026',
       operationalImpact:
         'Kräver 8+ nya hires, multi-language support, lokal legal i varje land. Hög exekveringsrisk vid parallell produktutveckling.',
-    },
-  ],
+    }],
   votes: {},
   result: null,
   overriddenBy: null,
@@ -252,7 +250,6 @@ export const mockMeetings: Meeting[] = [
     createdBy: 'dennis@wavult.com',
     entity: 'wavult-group',
     required_docs: ['Compliance-rapport', 'GDPR-logg', 'Legal memo'],
-  },
-]
+  }]
 
 export const mockDecisionBlocks: DecisionBlock[] = [budgetBlock, expansionBlock]

@@ -160,8 +160,7 @@ export const COMPANY_DESCRIPTIONS: CompanyDescription[] = [
     marknader: ['USA'],
     startDatum: '2026-04-08',
     refCode: 'WG-LEGAL-2026-005',
-  },
-]
+  }]
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 

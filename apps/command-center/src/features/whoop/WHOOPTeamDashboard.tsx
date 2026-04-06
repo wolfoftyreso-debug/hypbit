@@ -593,8 +593,7 @@ function SetupAndConnectTab({ onConnected }: { onConnected: () => void }) {
       emoji: '🏢',
       title: 'Koppla till Wavult OS',
       body: 'Logga in med ditt WHOOP-konto och godkänn att Wavult OS får läsa din recovery-, sömn- och träningsdata. Det tar under en minut.',
-    },
-  ]
+    }]
 
   return (
     <div className="max-w-2xl mx-auto space-y-4 pb-8">
@@ -703,8 +702,7 @@ export function WHOOPTeamDashboard() {
 
   const tabs: { id: ActiveTab; label: string }[] = [
     { id: 'team', label: 'Team Pulse' },
-    { id: 'setup', label: 'Koppla & Kom igång' },
-  ]
+    { id: 'setup', label: 'Koppla & Kom igång' }]
 
   return (
     <div className="h-full flex flex-col bg-[#F0EBE1] text-text-primary overflow-hidden">

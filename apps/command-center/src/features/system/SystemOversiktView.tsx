@@ -29,8 +29,7 @@ const ECS_SERVICES = [
   { name: 'bos-scheduler',  label: 'BOS Scheduler',        critical: false, deprecated: false },
   { name: 'landvex-api',    label: 'LandveX API',          critical: false, deprecated: false },
   { name: 'team-pulse',     label: 'Team Pulse',           critical: false, deprecated: false },
-  { name: 'supabase',       label: 'Supabase (STÄNGS AV)', critical: false, deprecated: true  },
-] as const
+  { name: 'supabase',       label: 'Supabase (STÄNGS AV)', critical: false, deprecated: true  }] as const
 
 const MIGRATION_CHECKLIST = [
   { id: 'frontend-auth',        label: 'Frontend Auth → wavult-core',              done: true },
@@ -44,14 +43,12 @@ const MIGRATION_CHECKLIST = [
   { id: 'backend-auth',         label: 'Backend supabase_client borttagen',        done: false },
   { id: 'ecs-supabase-off',     label: 'Supabase ECS desired=0',                   done: true },
   { id: 'github-deleted',       label: 'GitHub-repos raderade',                    done: false },
-  { id: 'gitea-all-pushed',     label: 'Alla repos pushade till Gitea',            done: false },
-]
+  { id: 'gitea-all-pushed',     label: 'Alla repos pushade till Gitea',            done: false }]
 
 const GITHUB_REPOS_REMAINING = [
   'wolfoftyreso-debug/hypbit',
   'wolfoftyreso-debug/quixzoom-v2',
-  'wolfoftyreso-debug/evasvensson-site',
-]
+  'wolfoftyreso-debug/evasvensson-site']
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -376,8 +373,7 @@ function GiteaSection() {
               { label: '⚠️ Tomma', value: empty.length, color: C.red },
               { label: '🟢 Live', value: live.length, color: C.green },
               { label: '🔵 Dev', value: dev.length, color: C.blue },
-              { label: '⬜ Arkiv', value: archive.length, color: C.gray },
-            ].map(stat => (
+              { label: '⬜ Arkiv', value: archive.length, color: C.gray }].map(stat => (
               <div key={stat.label} style={{
                 padding: '8px 14px', borderRadius: 8,
                 background: `${stat.color}10`,

@@ -91,8 +91,7 @@ export const STAGE_ORDER: CRMStage[] = [
   'Offert',
   'Förhandling',
   'Vunnen',
-  'Förlorad',
-]
+  'Förlorad']
 
 export const STAGE_COLORS: Record<CRMStage, string> = {
   Lead: '#6B7280',

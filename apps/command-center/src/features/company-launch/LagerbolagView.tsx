@@ -7,8 +7,7 @@ const WAVULT_TEAM = [
   { name: 'Dennis Bjarnemark', role: 'Ledamot / Legal & Operations', email: 'dennis@wavult.com', phone: '0761474243' },
   { name: 'Winston Gustav Bjarnemark', role: 'CFO / Ledamot', email: 'winston@wavult.com', phone: '0768123548' },
   { name: 'Leon Maurizio Russo De Cerame', role: 'VD (operativt)', email: 'leon@wavult.com', phone: '+46738968949' },
-  { name: 'Johan Putte Berglund', role: 'CTO / Ledamot', email: 'johan@wavult.com', phone: '+46736977576' },
-]
+  { name: 'Johan Putte Berglund', role: 'CTO / Ledamot', email: 'johan@wavult.com', phone: '+46736977576' }]
 
 // ─── Providers ────────────────────────────────────────────────────────────────
 const PROVIDERS = [
@@ -50,8 +49,7 @@ const PROVIDERS = [
     description: 'Prisvärt alternativ med bra grundpaket för nya entreprenörer.',
     url: 'https://www.startaeget.se/lagerbolag',
     features: ['Lägst pris', 'Enkel process', 'E-post support'],
-  },
-]
+  }]
 
 // ─── SNI presets ──────────────────────────────────────────────────────────────
 const SNI_PRESETS: Record<string, string[]> = {
@@ -481,8 +479,7 @@ export function LagerbolagView() {
               ['Aktiekapital', `${config.shareCapital.toLocaleString('sv-SE')} SEK`],
               ['Styrelse', config.boardMembers.join(', ')],
               ['Adress', config.address],
-              ['Verksamhet', config.sniCodes.length > 0 ? config.sniCodes.join('; ') : '(ej vald)'],
-            ].map(([label, value]) => (
+              ['Verksamhet', config.sniCodes.length > 0 ? config.sniCodes.join('; ') : '(ej vald)']].map(([label, value]) => (
               <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '11px 16px', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                 <span style={{ fontSize: 13, color: '#6B7280', flexShrink: 0 }}>{label}</span>
                 <span style={{ fontSize: 13, fontWeight: 500, color: '#1C1C1E', textAlign: 'right', maxWidth: '60%' }}>{value}</span>
@@ -495,8 +492,7 @@ export function LagerbolagView() {
             <div style={{ fontSize: 12, fontWeight: 700, color: '#0369A1', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Kostnadskalkyl</div>
             {[
               [`${provider.name} — lagerbolagsavgift`, `${provider.priceNum.toLocaleString('sv-SE')} SEK`],
-              ['Bolagsverket — registreringsavgift', '2 200 SEK'],
-            ].map(([label, amount]) => (
+              ['Bolagsverket — registreringsavgift', '2 200 SEK']].map(([label, amount]) => (
               <div key={label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
                 <span style={{ fontSize: 12, color: '#0369A1' }}>{label}</span>
                 <span style={{ fontSize: 12, fontWeight: 600, color: '#0369A1' }}>{amount}</span>
@@ -573,8 +569,7 @@ export function LagerbolagView() {
                   ['Styrelseordförande', config.boardMembers[0] ?? '—'],
                   ['Övriga ledamöter', config.boardMembers.slice(1).join(', ') || '—'],
                   ['Adress', config.address],
-                  ['Kontaktperson', 'Erik Svensson · +46709123223'],
-                ].map(([label, value]) => (
+                  ['Kontaktperson', 'Erik Svensson · +46709123223']].map(([label, value]) => (
                   <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '7px 0', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
                     <span style={{ fontSize: 12, color: '#6B7280' }}>{label}</span>
                     <span style={{ fontSize: 12, fontWeight: 500, color: '#1C1C1E' }}>{value}</span>

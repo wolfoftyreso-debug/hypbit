@@ -73,8 +73,7 @@ const DEFAULT_PARTICIPANTS: Participant[] = [
   { id: 'leon-russo', name: 'Leon Russo', role: 'CEO Ops', joinedAt: new Date().toISOString(), isPresent: true },
   { id: 'dennis-bjarnemark', name: 'Dennis Bjarnemark', role: 'CLO', joinedAt: new Date().toISOString(), isPresent: false },
   { id: 'winston-bjarnemark', name: 'Winston Bjarnemark', role: 'CFO', joinedAt: new Date().toISOString(), isPresent: true },
-  { id: 'johan-berglund', name: 'Johan Berglund', role: 'CTO', joinedAt: new Date().toISOString(), isPresent: false },
-]
+  { id: 'johan-berglund', name: 'Johan Berglund', role: 'CTO', joinedAt: new Date().toISOString(), isPresent: false }]
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
@@ -95,8 +94,7 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
       { id: 'a3', title: 'Beslut: Thailand Workcamp Budget', duration: 10, type: 'vote', status: 'pending' },
       { id: 'a4', title: 'Landvex — Pipeline Update (Leon)', duration: 15, type: 'discussion', status: 'pending' },
       { id: 'a5', title: 'Teknisk status (Johan)', duration: 10, type: 'info', status: 'pending' },
-      { id: 'a6', title: 'Åtgärdspunkter & Stängning', duration: 10, type: 'decision', status: 'pending' },
-    ],
+      { id: 'a6', title: 'Åtgärdspunkter & Stängning', duration: 10, type: 'decision', status: 'pending' }],
     votes: [],
     actions: [],
     notes: '',
@@ -305,8 +303,7 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
             { id: 'vote', label: `Röstning${openVotes.length > 0 ? ` (${openVotes.length})` : ''}` },
             { id: 'actions', label: `Åtgärder (${meeting.actions.length})` },
             { id: 'notes', label: 'Anteckningar' },
-            { id: 'history', label: `Historik${meetingsData ? ` (${meetingsData.length})` : ''}` },
-          ].map(tab => (
+            { id: 'history', label: `Historik${meetingsData ? ` (${meetingsData.length})` : ''}` }].map(tab => (
             <button key={tab.id} onClick={() => setActiveTab(tab.id as typeof activeTab)} style={tabStyle(tab.id)}>
               {tab.label}
             </button>
@@ -434,8 +431,7 @@ export function LiveMeetingRoom({ meetingId = 'meeting-001' }: { meetingId?: str
                       {[
                         { choice: 'yes' as const, label: 'Ja', color: '#34C759', bg: '#34C75915' },
                         { choice: 'no' as const, label: 'Nej', color: '#FF3B30', bg: '#FF3B3015' },
-                        { choice: 'abstain' as const, label: 'Avstår', color: '#FF9500', bg: '#FF950015' },
-                      ].map(btn => (
+                        { choice: 'abstain' as const, label: 'Avstår', color: '#FF9500', bg: '#FF950015' }].map(btn => (
                         <button key={btn.choice} onClick={() => castVote(vote.id, btn.choice)} style={{
                           flex: 1, padding: '10px', borderRadius: 10,
                           border: `2px solid ${myVote === btn.choice ? btn.color : 'transparent'}`,

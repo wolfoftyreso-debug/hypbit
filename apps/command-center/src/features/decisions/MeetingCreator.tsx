@@ -51,8 +51,7 @@ function emptyAlternatives(): [DraftAlternative, DraftAlternative, DraftAlternat
   return [
     { id: 'A', title: '', description: '', revenueImpact: '0', costImpact: '0', riskLevel: 'low', timeframe: '', operationalImpact: '' },
     { id: 'B', title: '', description: '', revenueImpact: '0', costImpact: '0', riskLevel: 'medium', timeframe: '', operationalImpact: '' },
-    { id: 'C', title: '', description: '', revenueImpact: '0', costImpact: '0', riskLevel: 'high', timeframe: '', operationalImpact: '' },
-  ]
+    { id: 'C', title: '', description: '', revenueImpact: '0', costImpact: '0', riskLevel: 'high', timeframe: '', operationalImpact: '' }]
 }
 
 function emptyBlock(_meetingId: string): DraftBlock {
@@ -78,8 +77,7 @@ const RISK_OPTIONS: { value: RiskLevel; label: string }[] = [
   { value: 'low', label: 'Låg' },
   { value: 'medium', label: 'Medel' },
   { value: 'high', label: 'Hög' },
-  { value: 'critical', label: 'Kritisk' },
-]
+  { value: 'critical', label: 'Kritisk' }]
 
 // ─── Steg-header ─────────────────────────────────────────────────────────────
 
