@@ -139,18 +139,7 @@ export const CORP_ENTITIES: CorpEntity[] = [
     description: 'LandveX Inc — Texas LLC. Houston-baserat. US-marknad för LandveX infrastrukturintelligens.',
   },
 
-  // ── UAE DIFC ─────────────────────────────────────────────────────────────────
-    
-    jurisdiction: 'UAE (DIFC)' ,
-    jurisdictionCode: 'AE-DIFC',
-    flag: '🇦🇪',
-    color: '#C9A84C',
-    status: 'forming',
-    layer: 2,
-    parentId: 'fc-fzco',
-    products: ['LandveX AE'],
-    description: 'LandveX UAE och MENA-marknad. DIFC Free Zone. Under etablering.',
-  }]
+]
 
 // Helpers
 export function getChildren(entityId: string): CorpEntity[] {

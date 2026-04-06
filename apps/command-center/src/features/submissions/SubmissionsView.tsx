@@ -176,7 +176,7 @@ export function SubmissionsView() {
             className="text-xs px-3 py-1.5 rounded-lg border font-medium transition-all"
             style={filterStatus === s
               ? { background: (STATUS_COLORS[s] ?? '#ffffff') + '20', color: STATUS_COLORS[s] ?? '#fff', borderColor: (STATUS_COLORS[s] ?? '#ffffff') + '40' }
-            }
+              : {}}
           >
             {s.charAt(0).toUpperCase() + s.slice(1)}
             {s !== 'all' && <span className="ml-1.5 opacity-60">{counts[s]}</span>}

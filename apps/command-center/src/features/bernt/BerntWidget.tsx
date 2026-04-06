@@ -59,6 +59,7 @@ function ActionBadge({ action }: { action: SystemAction }) {
       ? { bg: '#16a34a15', border: '#16a34a30', text: '#4ade80' }
       : action.status === 'failed'
         ? { bg: '#ef444415', border: '#ef444430', text: '#f87171' }
+        : { bg: '#f5f5f515', border: '#f5f5f530', text: '#a3a3a3' }
 
   const icon = action.status === 'done' ? '✓' : action.status === 'failed' ? '✗' : '⟳'
 
@@ -199,6 +200,7 @@ export function BerntWidget() {
                   style={
                     msg.role === 'user'
                       ? { background: '#2563EB25', color: '#93C5FD', border: '1px solid #2563EB30' }
+                      : { background: '#ffffff08', color: '#d6d3d1', border: '1px solid #ffffff15' }
                   }
                 >
                   {msg.content}

@@ -59,7 +59,7 @@ export const LEGAL_DOCUMENTS: LegalDocument[] = [
   { id: 'd10', title: '83(b) Election — Erik Svensson', type: 'övrigt', entity_id: 'oz-us', status: 'aktiv', signed_date: '2026-03-27', expiry_date: '2026-04-27', tags: ['irs', '83b', 'urgent'], created_at: '2026-03-27' },
 
   // LVX-AE
-  { id: 'd11', title: 'LandveX — DIFC Formation Documents', type: 'bolagsordning', entity_id: , status: 'utkast', tags: ['difc', 'forming'], created_at: '2026-04-01' },
+  { id: 'd11', title: 'LandveX — DIFC Formation Documents', type: 'bolagsordning', entity_id: 'lvx-us', status: 'utkast', tags: ['difc', 'forming'], created_at: '2026-04-01' },
 
   // LVX-US
   { id: 'd12', title: 'Certificate of Formation — LandveX Inc (TX)', type: 'bolagsordning', entity_id: 'lvx-us', status: 'aktiv', signed_date: '2026-03-31', tags: ['texas', 'llc', 'northwest'], created_at: '2026-03-31' },
