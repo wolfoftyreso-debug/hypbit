@@ -3,7 +3,7 @@ import { useEntityScope } from '../../shared/scope/EntityScopeContext'
 import { COMPETITORS, MARKET_METRICS, MISSIONS } from './strategyData'
 import { CORP_ENTITIES, TEAM_MEMBERS } from '../../shared/data/systemData'
 
-type Tab = 'mission' | 'products' | 'competitors' | 'market' | 'material' | 'compliance'
+type Tab = 'mission' | 'products' | 'competitors' | 'market'  | 'compliance'
 
 const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: 'mission',     label: 'Mission',      icon: '🎯' },
@@ -219,13 +219,52 @@ export function StrategicBrief() {
           <div className="max-w-4xl space-y-6">
             {productFilter}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {filteredMarket.map(m => (
-                <div key={m.id} className="rounded-2xl border border-[#DDD5C5] bg-white p-5 shadow-sm">
-                  <div className="text-[10px] font-bold text-[#8A8278] uppercase tracking-wider mb-2">{m.label}</div>
-                  <div className="text-2xl font-bold text-[#0A3D62] mb-2">{m.value}</div>
-                  <p className="text-xs text-gray-500 mb-3">{m.detail}</p>
-                  <div className="text-[9px] text-gray-300">Källa: {m.source} · {m.asOf}</div>
+            {/* Marknadsprioritering */}
+            <div className="rounded-2xl border border-[#DDD5C5] bg-white p-5 mb-2">
+              <div className="text-[10px] font-bold text-[#8A8278] uppercase tracking-wider mb-4">Var vi lägger krut — per fas</div>
+              <div className="space-y-3">
+                {[
+                  { phase: 'FAS 1', status: 'pågår', markets: [{ flag:'🇸🇪', name:'Sverige', note:'6 veckor till lansering. 290 kommuner via LOU.', owner:'Leon' }], color: '#E8B84B' },
+                  { phase: 'FAS 2A', status: 'förbereder', markets: [
+                    { flag:'🇳🇱', name:'Nederländerna', note:'Amsterdam + Rotterdam pilot. OZ-LT täcker juridiken.', owner:'TBD' },
+                    { flag:'🇬🇧', name:'UK', note:'Crown Commercial Service — 333 kommuner med ett ramavtal.', owner:'TBD' },
+                    { flag:'🇦🇪', name:'UAE via LandveX AC', note:'RTA + DEWA Dubai. Obegränsad infrastrukturbudget.', owner:'Erik' },
+                  ], color: '#0A3D62' },
+                  { phase: 'FAS 3', status: 'planerat', markets: [
+                    { flag:'🇩🇪', name:'NRW, Tyskland', note:'396 kommuner, €2.4 Mdr/år. NIS2-driven adoption.', owner:'' },
+                    { flag:'🇺🇸', name:'Texas, USA', note:'LandveX Inc. ERCOT-driven infrastrukturinvesteringar.', owner:'' },
+                    { flag:'🌏', name:'Asien', note:'Singapore Trust som hub. 2027-2028.', owner:'' },
+                  ], color: '#8A8278' },
+                ].map(phase => (
+                  <div key={phase.phase} className="rounded-xl border p-4" style={{ borderColor: phase.color + '30', background: phase.color + '05' }}>
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="text-xs font-bold px-2.5 py-1 rounded-full text-white" style={{ background: phase.color }}>{phase.phase}</span>
+                      <span className="text-[10px] text-gray-400 font-mono uppercase">{phase.status}</span>
+                    </div>
+                    <div className="space-y-2">
+                      {phase.markets.map(m => (
+                        <div key={m.name} className="flex items-start gap-3 text-xs">
+                          <span className="text-base flex-shrink-0">{m.flag}</span>
+                          <div className="flex-1">
+                            <span className="font-semibold text-[#0A3D62]">{m.name}</span>
+                            <span className="text-gray-400 ml-2">{m.note}</span>
+                          </div>
+                          {m.owner && <span className="text-[10px] text-gray-300 flex-shrink-0">{m.owner}</span>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* TAM/SAM per produkt — kompakt */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {filteredMarket.filter(m => ['m1','m2','m6','m7'].includes(m.id)).map(m => (
+                <div key={m.id} className="rounded-xl border border-[#DDD5C5] bg-white p-4 shadow-sm">
+                  <div className="text-[9px] font-bold text-[#8A8278] uppercase tracking-wider mb-1">{m.label.split('(')[0].trim()}</div>
+                  <div className="text-lg font-bold text-[#0A3D62]">{m.value}</div>
+                  <div className="text-[9px] text-gray-400 mt-1">{m.source} · {m.asOf}</div>
                 </div>
               ))}
             </div>
