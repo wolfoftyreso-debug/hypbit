@@ -374,6 +374,9 @@ export function CodeView() {
     deployLive,
   } = useReleaseFlow()
 
+  // Libra AI panel
+  const [showLibra, setShowLibra] = useState(false)
+
   // ZIP state
   const [zipProgress, setZipProgress] = useState<string | null>(null)
   const [importStatus, setImportStatus] = useState<string | null>(null)
@@ -734,6 +737,16 @@ export function CodeView() {
             Publicera
           </button>
         )}
+
+        {/* Libra AI button */}
+        <button
+          onClick={() => setShowLibra(!showLibra)}
+          className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-colors ${
+            showLibra ? 'bg-[#0A3D62] text-white' : 'bg-white border border-[#DDD5C5] text-gray-600 hover:border-[#0A3D62]'
+          }`}
+        >
+          🤖 Libra AI
+        </button>
       </div>
 
       {/* Scan view overlay */}
@@ -959,6 +972,70 @@ export function CodeView() {
             <MemoryPanel memory={memory} loading={memoryLoading} />
           </div>
         </div>
+
+        {/* ── LIBRA AI: Panel ── */}
+        {showLibra && (
+          <div className="w-80 flex-shrink-0 border-l border-[#DDD5C5] flex flex-col bg-[#FDFAF5]">
+            <div className="px-4 py-3 border-b border-[#DDD5C5] flex items-center justify-between">
+              <div>
+                <div className="text-xs font-bold text-[#0A3D62]">🤖 Libra AI</div>
+                <div className="text-[10px] text-gray-400">Open-source V0/Lovable</div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+                <span className="text-[10px] text-gray-400">Live</span>
+              </div>
+            </div>
+
+            {/* Libra iframe — pekar mot självhostad instans */}
+            <div className="flex-1 relative">
+              <iframe
+                src={import.meta.env.VITE_LIBRA_URL ?? 'https://libra.wavult.com'}
+                className="w-full h-full border-0"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                title="Libra AI"
+              />
+              {/* Fallback om Libra inte är uppe */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#FDFAF5] text-center p-6"
+                   id="libra-fallback">
+                <div className="text-3xl mb-3">🤖</div>
+                <h3 className="text-sm font-bold text-[#0A3D62] mb-2">Libra AI</h3>
+                <p className="text-xs text-gray-500 mb-4">
+                  Open-source V0/Lovable alternativ. Generera React-komponenter med AI.
+                </p>
+                <div className="space-y-2 text-xs text-left w-full">
+                  <div className="rounded-lg bg-[#F5F0E8] border border-[#DDD5C5] p-3">
+                    <div className="font-bold text-[#0A3D62] mb-1">Starta Libra lokalt:</div>
+                    <code className="text-[10px] font-mono text-gray-600">
+                      git clone github.com/nextify-limited/libra<br/>
+                      cd libra && npm install && npm run dev
+                    </code>
+                  </div>
+                  <div className="rounded-lg bg-[#F5F0E8] border border-[#DDD5C5] p-3">
+                    <div className="font-bold text-[#0A3D62] mb-1">Eller hosta på ECS:</div>
+                    <code className="text-[10px] font-mono text-gray-600">
+                      VITE_LIBRA_URL=https://libra.wavult.com
+                    </code>
+                  </div>
+                </div>
+                <a href="https://github.com/nextify-limited/libra" target="_blank" rel="noopener noreferrer"
+                   className="mt-4 text-xs text-[#0A3D62] underline hover:text-[#E8B84B]">
+                  github.com/nextify-limited/libra →
+                </a>
+              </div>
+            </div>
+
+            {/* Import-knapp — importerar Libra-genererad kod till aktivt repo */}
+            <div className="p-3 border-t border-[#DDD5C5]">
+              <button className="w-full py-2 text-xs font-bold rounded-lg bg-[#E8B84B] text-[#0A3D62] hover:bg-[#D4A53A]">
+                ⬇ Importera till {selectedRepo?.name ?? 'aktivt repo'}
+              </button>
+              <p className="text-[9px] text-gray-400 text-center mt-1">
+                Kopierar Libra-output direkt till Gitea-repot
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* ── RIGHT: Preview ── */}
         <div className="w-80 flex flex-col bg-[#F0EDE8] shrink-0">

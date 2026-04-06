@@ -1,0 +1,22 @@
+{
+  "branding": {
+    "name": "Wavult DS",
+    "logo": "/wavult-logo.svg",
+    "primaryColor": "#0A3D62",
+    "accentColor": "#E8B84B",
+    "backgroundColor": "#F5F0E8",
+    "fontFamily": "Inter, sans-serif"
+  },
+  "gitea": {
+    "url": "https://git.wavult.com",
+    "org": "wavult"
+  },
+  "constraints": [
+    "Använd alltid Navy #0A3D62 som primary färg",
+    "Använd alltid Gold #E8B84B som accent",
+    "Bakgrund ska alltid vara Cream #F5F0E8",
+    "Aldrig dark mode",
+    "Aldrig hårdkodad data — alltid API-anrop",
+    "Alltid TypeScript, aldrig JavaScript"
+  ]
+}
