@@ -1,0 +1,57 @@
+image:
+  repository: 155407238699.dkr.ecr.eu-north-1.amazonaws.com/quixzoom-connector
+  tag: latest
+  pullPolicy: IfNotPresent
+
+replicaCount: 3
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 20
+  targetCPU: 70
+  targetMemory: 80
+
+resources:
+  requests:
+    cpu: "250m"
+    memory: "256Mi"
+  limits:
+    cpu: "1000m"
+    memory: "512Mi"
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: nginx
+  host: mcp.quixzoom.com
+  tls: true
+
+env:
+  query_engine: cached-shadow
+  node_env: production
+
+secrets:
+  # Populated by external-secrets-operator from AWS SSM.
+  externalSecretName: quixzoom-connector-external-secrets
+  create: false
+
+policies:
+  noCapture: |
+    [
+      {"name":"Karolinska","lat":59.3513,"lon":18.0243,"radius_m":400,"type":"hospital"}
+    ]
+  suspendedTenants: "[]"
+
+podDisruptionBudget:
+  minAvailable: 2
+
+networkPolicy:
+  enabled: true
+
+serviceMonitor:
+  enabled: true
+  interval: 30s
