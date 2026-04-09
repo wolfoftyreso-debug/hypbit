@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.local
+*.log
+coverage/
+.turbo/
+sdk/python/**/__pycache__/
+sdk/typescript/dist/
+sdk/typescript/node_modules/

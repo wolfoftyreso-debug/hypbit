@@ -1,0 +1,15 @@
+apiVersion: v2
+name: quixzoom-connector
+description: quiXzoom AI Connector — LLM to reality retrieval gateway
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+home: https://mcp.quixzoom.com
+keywords:
+  - llm
+  - mcp
+  - quixzoom
+  - wavult-os
+maintainers:
+  - name: Wavult Operations
+    email: ops@wavult.com

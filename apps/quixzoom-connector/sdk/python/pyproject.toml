@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quixzoom-connector-client"
+version = "0.1.0"
+description = "Official Python client for the quiXzoom AI Connector"
+requires-python = ">=3.10"
+license = { text = "UNLICENSED" }
+dependencies = []
+
+[project.urls]
+Homepage = "https://mcp.quixzoom.com"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["quixzoom*"]

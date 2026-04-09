@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Försvarshögkvarteret Lidingövägen",
+    "lat": 59.3477,
+    "lon": 18.0952,
+    "radius_m": 300,
+    "type": "military"
+  },
+  {
+    "name": "Karolinska sjukhuset Solna",
+    "lat": 59.3513,
+    "lon": 18.0243,
+    "radius_m": 400,
+    "type": "hospital"
+  },
+  {
+    "name": "USA:s ambassad Stockholm",
+    "lat": 59.3343,
+    "lon": 18.0951,
+    "radius_m": 150,
+    "type": "embassy"
+  },
+  {
+    "name": "Viktor Rydbergs skola Odenplan",
+    "lat": 59.3432,
+    "lon": 18.0499,
+    "radius_m": 200,
+    "type": "school"
+  }
+]
