@@ -1,0 +1,53 @@
+# Local development datastores.
+#
+# This file is OPTIONAL. Use it when you want to run Neo4j, Redis and
+# OpenSearch locally for development. In production these services are
+# expected to be external and are NOT in docker-compose.yml.
+#
+# Usage:
+#   docker compose -f docker-compose.dev.yml up -d
+#
+# Then point your .env at them:
+#   NEO4J_URI=bolt://localhost:7687
+#   REDIS_URL=redis://localhost:6379
+#   OPENSEARCH_URL=http://localhost:9200
+
+services:
+  neo4j:
+    image: neo4j:5
+    restart: unless-stopped
+    environment:
+      NEO4J_AUTH: neo4j/geopol-dev-password
+      NEO4J_PLUGINS: '["apoc"]'
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j-data:/data
+      - neo4j-logs:/logs
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  opensearch:
+    image: opensearchproject/opensearch:2
+    restart: unless-stopped
+    environment:
+      discovery.type: single-node
+      plugins.security.disabled: "true"
+      OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+
+volumes:
+  neo4j-data:
+  neo4j-logs:
+  redis-data:
+  opensearch-data:
