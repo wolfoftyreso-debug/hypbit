@@ -1,23 +1,43 @@
 # Kafka topics
 
-The event backbone for Wavult Geopol. Each topic is produced by one or more
-services and consumed by downstream workers.
+The event backbone for Wavult Geopol. Canonical constants live in
+`packages/events/src/topics.ts` and are copied verbatim into each
+service's `src/shared/topics.ts`.
 
-| Topic                   | Producers            | Consumers                    | Payload shape |
-|-------------------------|----------------------|------------------------------|---------------|
-| `person.created`        | influence-api        | enrichment-ai-core           | `{id, name, lat, lng, ...}` |
-| `person.enriched`       | enrichment-ai-core   | influence-api (writer), opensearch-indexer | `{id, scores, summary}` |
-| `relationship.updated`  | influence-api        | intelligence-engine          | `{from, to, strength}` |
-| `event.detected`        | intelligence-engine  | influence-api, ui-notifier   | `{id, type, impact_score, entities[]}` |
-| `interaction.logged`    | influence-api        | intelligence-engine          | `{actor, target, channel, ts}` |
+## Person / graph topics
+
+| Topic                   | Producers          | Consumers           |
+|-------------------------|--------------------|---------------------|
+| `person.created`        | influence-api      | enrichment-ai-core  |
+| `person.enriched`       | enrichment-ai-core | influence-api       |
+| `relationship.updated`  | influence-api      | (future)            |
+| `interaction.logged`    | influence-api      | (future)            |
+
+## Influence Monitoring & Response pipeline
+
+| Topic                   | Produced by            | Consumed by             | Payload shape           |
+|-------------------------|------------------------|-------------------------|-------------------------|
+| `raw.events`            | influence-ingestion    | event-normalizer        | `SourceEventRaw`        |
+| `events.normalized`     | event-normalizer       | influence-enrichment    | `NormalizedEvent`       |
+| `events.enriched`       | influence-enrichment   | alert-engine            | `EnrichedEvent` (w/ AI) |
+| `alerts.triggered`      | alert-engine           | action-engine, notification-dispatcher | `Alert`  |
+| `actions.generated`     | action-engine          | notification-dispatcher | `Action`                |
+| `notification.created`  | notification-dispatcher | influence-api (SSE)    | `Notification`          |
+
+See `packages/events/src/schemas.ts` for the complete zod schemas.
 
 ## Create topics (local dev)
 
+With the docker-compose.dev.yml Kafka running:
+
 ```bash
-docker compose -f docker-compose.dev.yml exec kafka \
-  kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists \
-  --partitions 3 --replication-factor 1 --topic person.created
-# repeat for each topic
+for t in raw.events events.normalized events.enriched alerts.triggered actions.generated notification.created; do
+  docker compose -f docker-compose.dev.yml exec kafka \
+    kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists \
+    --partitions 3 --replication-factor 1 --topic "$t"
+done
 ```
 
-Or use `scripts/create-topics.sh` once written.
+Topics auto-create if `allowAutoTopicCreation` is set (it is in
+every KafkaJS producer in this repo), so explicit creation is
+optional for dev.

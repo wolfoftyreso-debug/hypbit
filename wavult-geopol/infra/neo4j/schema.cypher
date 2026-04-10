@@ -1,14 +1,30 @@
 // ------------------------------------------------------------
-// Wavult Geopol — Neo4j schema and seed data
+// Wavult Geopol — Neo4j production schema and seed data
 // Run with:  cypher-shell -u neo4j -p password -f schema.cypher
 // ------------------------------------------------------------
 //
-// Two layers:
+// Three layers:
+//
 //   1. Business Influence Layer (neutral, org-visible)
-//        :Person, :Organization, :Event, :CONNECTED
-//   2. Private Layer (user-scoped, overlays only)
-//        :User, :PrivateNote, :PrivateList,
-//        :PRIVATE_CONTACT, :OWNS, :ABOUT, :HAS_LIST, :INCLUDES
+//        nodes:
+//          (:Person), (:Organization), (:Event)
+//        relationships:
+//          (:Person)-[:CONNECTED {strength}]->(:Person)
+//          (:Person)-[:WORKS_FOR {role, since}]->(:Organization)
+//          (:Person)-[:ATTENDED {ts}]->(:Event)
+//          (:Person)-[:INFLUENCES {weight}]->(:Person)
+//          (:Organization)-[:INFLUENCES {weight}]->(:Organization)
+//
+//   2. Event / Intelligence Layer (what we've observed)
+//        (:InfluenceEvent)  — normalized & enriched events from Kafka
+//          produced by the influence-monitoring pipeline; optional to
+//          materialize here for historical queries
+//
+//   3. Private Layer (user-scoped overlays, never mutates core)
+//        (:User), (:PrivateNote), (:PrivateList)
+//        (:User)-[:PRIVATE_CONTACT]->(:Person)
+//        (:User)-[:OWNS]->(:PrivateNote)-[:ABOUT]->(:Person)
+//        (:User)-[:HAS_LIST]->(:PrivateList)-[:INCLUDES]->(:Person)
 // ------------------------------------------------------------
 
 // ---------- Constraints ----------
@@ -20,6 +36,9 @@ FOR (o:Organization) REQUIRE o.id IS UNIQUE;
 
 CREATE CONSTRAINT event_id IF NOT EXISTS
 FOR (e:Event) REQUIRE e.id IS UNIQUE;
+
+CREATE CONSTRAINT influence_event_id IF NOT EXISTS
+FOR (e:InfluenceEvent) REQUIRE e.event_id IS UNIQUE;
 
 CREATE CONSTRAINT user_id IF NOT EXISTS
 FOR (u:User) REQUIRE u.id IS UNIQUE;
@@ -33,7 +52,11 @@ FOR (l:PrivateList) REQUIRE l.id IS UNIQUE;
 // ---------- Indexes ----------
 CREATE INDEX person_name IF NOT EXISTS FOR (p:Person) ON (p.name);
 CREATE INDEX person_influence IF NOT EXISTS FOR (p:Person) ON (p.influence_score);
+CREATE INDEX person_relevance IF NOT EXISTS FOR (p:Person) ON (p.relevance_score);
 CREATE INDEX person_visibility IF NOT EXISTS FOR (p:Person) ON (p.visibility_org);
+CREATE INDEX org_name IF NOT EXISTS FOR (o:Organization) ON (o.name);
+CREATE INDEX event_ts IF NOT EXISTS FOR (e:Event) ON (e.ts);
+CREATE INDEX influence_event_ts IF NOT EXISTS FOR (e:InfluenceEvent) ON (e.ts);
 
 // ---------- Seed: our own node ----------
 MERGE (me:Person {id: "our_node"})
@@ -45,7 +68,20 @@ MERGE (me:Person {id: "our_node"})
       me.visibility_org = true,
       me.visibility_private = false;
 
-// ---------- Seed people (Business Influence Layer) ----------
+// ---------- Seed Organizations ----------
+MERGE (amazon:Organization {id: "amazon"})
+  SET amazon.name = "Amazon", amazon.sector = "retail/cloud";
+
+MERGE (microsoft:Organization {id: "microsoft"})
+  SET microsoft.name = "Microsoft", microsoft.sector = "cloud/enterprise";
+
+MERGE (openai:Organization {id: "openai"})
+  SET openai.name = "OpenAI", openai.sector = "ai";
+
+MERGE (ec:Organization {id: "eu_commission"})
+  SET ec.name = "European Commission", ec.sector = "government";
+
+// ---------- Seed People (Business Influence Layer) ----------
 MERGE (bezos:Person {id: "jeff_bezos"})
   SET bezos.name = "Jeff Bezos",
       bezos.lat = 47.6062,
@@ -86,7 +122,20 @@ MERGE (ursula:Person {id: "ursula_vdl"})
       ursula.visibility_org = true,
       ursula.visibility_private = false;
 
-// ---------- Seed relationships ----------
+// ---------- WORKS_FOR ----------
+MATCH (p:Person {id: "jeff_bezos"}), (o:Organization {id: "amazon"})
+MERGE (p)-[r:WORKS_FOR]->(o) SET r.role = "Founder", r.since = 1994;
+
+MATCH (p:Person {id: "satya_nadella"}), (o:Organization {id: "microsoft"})
+MERGE (p)-[r:WORKS_FOR]->(o) SET r.role = "CEO", r.since = 2014;
+
+MATCH (p:Person {id: "sam_altman"}), (o:Organization {id: "openai"})
+MERGE (p)-[r:WORKS_FOR]->(o) SET r.role = "CEO", r.since = 2019;
+
+MATCH (p:Person {id: "ursula_vdl"}), (o:Organization {id: "eu_commission"})
+MERGE (p)-[r:WORKS_FOR]->(o) SET r.role = "President", r.since = 2019;
+
+// ---------- CONNECTED (person ↔ person) ----------
 MATCH (a:Person {id: "jeff_bezos"}), (b:Person {id: "satya_nadella"})
 MERGE (a)-[r:CONNECTED]->(b) SET r.strength = 0.7;
 
@@ -98,6 +147,22 @@ MERGE (a)-[r:CONNECTED]->(b) SET r.strength = 0.3;
 
 MATCH (a:Person {id: "ursula_vdl"}), (b:Person {id: "satya_nadella"})
 MERGE (a)-[r:CONNECTED]->(b) SET r.strength = 0.5;
+
+// ---------- INFLUENCES (org ↔ org) ----------
+MATCH (a:Organization {id: "eu_commission"}), (b:Organization {id: "amazon"})
+MERGE (a)-[r:INFLUENCES]->(b) SET r.weight = 0.8;
+
+MATCH (a:Organization {id: "eu_commission"}), (b:Organization {id: "microsoft"})
+MERGE (a)-[r:INFLUENCES]->(b) SET r.weight = 0.8;
+
+// ---------- Seed Events + ATTENDED ----------
+MERGE (ws:Event {id: "web-summit-2024"})
+  SET ws.name = "Web Summit Lisbon",
+      ws.ts = 1731196800000,
+      ws.location = "Lisbon";
+
+MATCH (p:Person {id: "satya_nadella"}), (e:Event {id: "web-summit-2024"})
+MERGE (p)-[r:ATTENDED]->(e) SET r.role = "keynote";
 
 // ---------- Seed Private Layer (demo user) ----------
 MERGE (u:User {id: "demo_user"})

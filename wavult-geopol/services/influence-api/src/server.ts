@@ -7,6 +7,8 @@ import { healthRoutes } from "./routes/health.js";
 import { peopleRoutes } from "./routes/people.js";
 import { intelligenceRoutes } from "./routes/intelligence.js";
 import { privateRoutes } from "./routes/private.js";
+import { notificationsRoutes } from "./routes/notifications.js";
+import { rulesRoutes } from "./routes/rules.js";
 import { connectKafka, disconnectKafka } from "./lib/kafka.js";
 import { closeNeo4j } from "./db/neo4j.js";
 import { closeRedis } from "./db/redis.js";
@@ -29,6 +31,8 @@ await app.register(healthRoutes);
 await app.register(peopleRoutes, { prefix: "/api" });
 await app.register(intelligenceRoutes, { prefix: "/api" });
 await app.register(privateRoutes, { prefix: "/api" });
+await app.register(notificationsRoutes, { prefix: "/api" });
+await app.register(rulesRoutes, { prefix: "/api" });
 
 app.get("/", async () => ({
   name: "influence-api",
