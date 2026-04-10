@@ -1,23 +1,26 @@
-# Local development datastores.
+# Local development datastores + event bus.
 #
-# This file is OPTIONAL. Use it when you want to run Neo4j, Redis and
-# OpenSearch locally for development. In production these services are
-# expected to be external and are NOT in docker-compose.yml.
+# OPTIONAL. Spins up Neo4j, Redis, OpenSearch and Kafka locally so you
+# can run the app services from source against them. In production
+# these services are expected to be external and are NOT in the main
+# docker-compose.yml.
 #
 # Usage:
 #   docker compose -f docker-compose.dev.yml up -d
 #
 # Then point your .env at them:
 #   NEO4J_URI=bolt://localhost:7687
+#   NEO4J_PASSWORD=password
 #   REDIS_URL=redis://localhost:6379
 #   OPENSEARCH_URL=http://localhost:9200
+#   KAFKA_BROKERS=localhost:9092
 
 services:
   neo4j:
     image: neo4j:5
     restart: unless-stopped
     environment:
-      NEO4J_AUTH: neo4j/geopol-dev-password
+      NEO4J_AUTH: neo4j/password
       NEO4J_PLUGINS: '["apoc"]'
     ports:
       - "7474:7474"
@@ -46,8 +49,26 @@ services:
     volumes:
       - opensearch-data:/usr/share/opensearch/data
 
+  kafka:
+    image: bitnami/kafka:3.7
+    restart: unless-stopped
+    environment:
+      KAFKA_CFG_NODE_ID: "1"
+      KAFKA_CFG_PROCESS_ROLES: "broker,controller"
+      KAFKA_CFG_LISTENERS: "PLAINTEXT://:9092,CONTROLLER://:9093"
+      KAFKA_CFG_ADVERTISED_LISTENERS: "PLAINTEXT://localhost:9092"
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka-data:/bitnami/kafka
+
 volumes:
   neo4j-data:
   neo4j-logs:
   redis-data:
   opensearch-data:
+  kafka-data:

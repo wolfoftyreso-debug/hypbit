@@ -15,6 +15,5 @@ ENV NODE_ENV=production
 COPY package.json package-lock.json* ./
 RUN npm install --omit=dev --no-audit --no-fund && npm cache clean --force
 COPY --from=build /app/dist ./dist
-EXPOSE 4000
 USER node
-CMD ["node", "dist/index.js"]
+CMD ["node", "dist/worker.js"]

@@ -1,4 +1,4 @@
-import neo4j, { Driver } from "neo4j-driver";
+import neo4j, { Driver, Session } from "neo4j-driver";
 import { config } from "../config.js";
 
 let driver: Driver | null = null;
@@ -14,9 +14,13 @@ export function getNeo4j(): Driver {
   return driver;
 }
 
+export function neoSession(): Session {
+  return getNeo4j().session({ database: config.NEO4J_DATABASE });
+}
+
 export async function pingNeo4j(): Promise<boolean> {
   try {
-    const session = getNeo4j().session({ database: config.NEO4J_DATABASE });
+    const session = neoSession();
     try {
       await session.run("RETURN 1 AS ok");
       return true;

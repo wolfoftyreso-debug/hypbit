@@ -1,17 +1,20 @@
 # Production / self-hosted compose for Wavult Geopol
 #
-# This stack deploys ONLY the application services (client + server).
-# Neo4j, Redis and OpenSearch are treated as EXTERNAL services and must
-# be reachable via the env vars below (NEO4J_URI, REDIS_URL, OPENSEARCH_URL).
+# This stack deploys the application services only:
+#   - apps/web               React + nginx frontend
+#   - services/influence-api Fastify API
+#   - services/enrichment-ai-core  Kafka consumer for async enrichment
 #
-# For a local dev datastore stack, see docker-compose.dev.yml.
+# Neo4j, Redis, OpenSearch and Kafka are treated as EXTERNAL services
+# and must be reachable via the env vars below. For a local dev stack
+# that spins them up, see docker-compose.dev.yml.
 
 services:
-  server:
+  influence-api:
     build:
-      context: ./server
+      context: ./services/influence-api
       dockerfile: Dockerfile
-    image: wavult-geopol-server:latest
+    image: wavult-geopol-influence-api:latest
     restart: unless-stopped
     environment:
       NODE_ENV: production
@@ -25,6 +28,9 @@ services:
       OPENSEARCH_URL: ${OPENSEARCH_URL}
       OPENSEARCH_USER: ${OPENSEARCH_USER:-}
       OPENSEARCH_PASSWORD: ${OPENSEARCH_PASSWORD:-}
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_ENABLED: ${KAFKA_ENABLED:-true}
+      OUR_NODE_ID: ${OUR_NODE_ID:-our_node}
     expose:
       - "4000"
     healthcheck:
@@ -33,13 +39,25 @@ services:
       timeout: 5s
       retries: 3
 
-  client:
+  enrichment-ai-core:
     build:
-      context: ./client
+      context: ./services/enrichment-ai-core
       dockerfile: Dockerfile
-    image: wavult-geopol-client:latest
+    image: wavult-geopol-enrichment-ai-core:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: enrichment-ai-core
+      KAFKA_GROUP_ID: enrichment-ai-core
+
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    image: wavult-geopol-web:latest
     restart: unless-stopped
     depends_on:
-      - server
+      - influence-api
     ports:
-      - "${CLIENT_PORT:-8080}:8080"
+      - "${WEB_PORT:-8080}:8080"
