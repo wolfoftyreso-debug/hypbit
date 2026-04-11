@@ -1,0 +1,110 @@
+version: '3.9'
+
+services:
+  wavult-microservice:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wavult-microservice
+    ports:
+      - '8080:8080'
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgres://wavult:wavult@postgres:5432/wavult
+      REDIS_URL: redis://redis:6379
+      KAFKA_BROKERS: kafka:29092
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4318
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    restart: unless-stopped
+    networks:
+      - wavult
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: wavult-postgres
+    environment:
+      POSTGRES_USER: wavult
+      POSTGRES_PASSWORD: wavult
+      POSTGRES_DB: wavult
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./src/db/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U wavult -d wavult']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - wavult
+
+  redis:
+    image: redis:7-alpine
+    container_name: wavult-redis
+    command: ['redis-server', '--appendonly', 'yes', '--maxmemory', '256mb', '--maxmemory-policy', 'allkeys-lru']
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - wavult
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    container_name: wavult-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - wavult
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+    container_name: wavult-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - '9092:9092'
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+    networks:
+      - wavult
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.104.0
+    container_name: wavult-otel
+    command: ['--config=/etc/otel-collector.yaml']
+    volumes:
+      - ./infra/otel-collector.yaml:/etc/otel-collector.yaml:ro
+    ports:
+      - '4318:4318'
+    networks:
+      - wavult
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  wavult:
+    driver: bridge

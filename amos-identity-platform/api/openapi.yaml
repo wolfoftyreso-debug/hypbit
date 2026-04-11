@@ -1,0 +1,168 @@
+openapi: 3.1.0
+info:
+  title: Amos Identity Platform API
+  version: 1.0.0
+  description: Public identity verification API (identity-service).
+  contact:
+    name: Amos Platform
+servers:
+  - url: https://api.amos.example/v1
+    description: Production
+  - url: http://localhost:3000
+    description: Local
+
+security:
+  - bearerAuth: []
+
+paths:
+  /identity/session:
+    post:
+      summary: Create an identity verification session
+      operationId: createSession
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSessionRequest'
+      responses:
+        '201':
+          description: Session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+
+  /identity/{id}/document:
+    post:
+      summary: Upload a document image
+      operationId: uploadDocument
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum: [passport, id_card, driver_license]
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '202':
+          description: Accepted, OCR processing started
+
+  /identity/{id}/selfie:
+    post:
+      summary: Upload a selfie for face match + liveness
+      operationId: uploadSelfie
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '202':
+          description: Accepted, face processing started
+
+  /identity/{id}/verify:
+    post:
+      summary: Finalize verification (runs full pipeline if not already run)
+      operationId: verifyIdentity
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      responses:
+        '200':
+          description: Final decision
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationResult'
+
+  /identity/{id}/status:
+    get:
+      summary: Get current status of a verification session
+      operationId: getStatus
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      responses:
+        '200':
+          description: Session status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionStatus'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    SessionId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    CreateSessionRequest:
+      type: object
+      required: [country]
+      properties:
+        country:
+          type: string
+          description: ISO 3166-1 alpha-2 country code
+        reference:
+          type: string
+          description: Client-side reference for correlation
+
+    Session:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        status: { type: string, enum: [created, processing, approved, review, rejected] }
+        createdAt: { type: string, format: date-time }
+        uploadToken: { type: string }
+
+    VerificationResult:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        decision: { type: string, enum: [approve, review, reject] }
+        riskScore: { type: number, minimum: 0, maximum: 100 }
+        reasons: { type: array, items: { type: string } }
+
+    SessionStatus:
+      type: object
+      properties:
+        id: { type: string, format: uuid }
+        status: { type: string }
+        document:
+          type: object
+          properties:
+            uploaded: { type: boolean }
+            extracted: { type: object }
+        face:
+          type: object
+          properties:
+            uploaded: { type: boolean }
+            match: { type: number }
+            liveness: { type: number }
+        risk:
+          $ref: '#/components/schemas/VerificationResult'

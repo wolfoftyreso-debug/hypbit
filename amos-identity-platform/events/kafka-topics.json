@@ -1,0 +1,44 @@
+{
+  "topics": [
+    {
+      "name": "identity.created",
+      "partitions": 6,
+      "replicationFactor": 3,
+      "retentionMs": 604800000,
+      "producer": "identity-service",
+      "consumers": ["audit-service"]
+    },
+    {
+      "name": "document.uploaded",
+      "partitions": 6,
+      "replicationFactor": 3,
+      "retentionMs": 604800000,
+      "producer": "document-service",
+      "consumers": ["identity-service", "risk-service", "audit-service"]
+    },
+    {
+      "name": "face.processed",
+      "partitions": 6,
+      "replicationFactor": 3,
+      "retentionMs": 604800000,
+      "producer": "face-service",
+      "consumers": ["identity-service", "risk-service", "audit-service"]
+    },
+    {
+      "name": "risk.completed",
+      "partitions": 6,
+      "replicationFactor": 3,
+      "retentionMs": 604800000,
+      "producer": "risk-service",
+      "consumers": ["identity-service", "audit-service"]
+    },
+    {
+      "name": "identity.verified",
+      "partitions": 6,
+      "replicationFactor": 3,
+      "retentionMs": 2592000000,
+      "producer": "identity-service",
+      "consumers": ["audit-service"]
+    }
+  ]
+}

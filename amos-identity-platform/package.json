@@ -1,0 +1,31 @@
+{
+  "name": "amos-identity-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Enterprise identity verification platform (monorepo)",
+  "workspaces": [
+    "libs/*",
+    "services/*"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:cov": "npm run test:cov --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write \"{services,libs}/**/*.ts\"",
+    "dev:identity": "npm run start:dev -w @amos/identity-service",
+    "dev:document": "npm run start:dev -w @amos/document-service",
+    "dev:face": "npm run start:dev -w @amos/face-service",
+    "dev:risk": "npm run start:dev -w @amos/risk-service",
+    "dev:audit": "npm run start:dev -w @amos/audit-service",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down -v"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4"
+  }
+}

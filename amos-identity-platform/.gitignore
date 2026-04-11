@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+*.log
+.env
+.env.local
+.DS_Store
+.vscode/
+.idea/
+*.tsbuildinfo
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+tmp/
+uploads/

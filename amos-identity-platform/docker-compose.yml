@@ -1,0 +1,230 @@
+version: '3.9'
+
+x-service-env: &service-env
+  NODE_ENV: development
+  LOG_LEVEL: info
+  POSTGRES_HOST: postgres
+  POSTGRES_PORT: 5432
+  POSTGRES_USER: amos
+  POSTGRES_PASSWORD: amos
+  POSTGRES_DB: amos
+  REDIS_HOST: redis
+  REDIS_PORT: 6379
+  KAFKA_BROKERS: kafka:29092
+  S3_ENDPOINT: http://minio:9000
+  S3_REGION: us-east-1
+  S3_ACCESS_KEY: amosminio
+  S3_SECRET_KEY: amosminio-secret
+  S3_BUCKET: amos-identity
+  S3_FORCE_PATH_STYLE: 'true'
+  COMPREFACE_URL: http://compreface-api:8080
+  COMPREFACE_API_KEY: dev-key
+  TESSERACT_LANG: eng
+  PII_ENCRYPTION_KEY: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+  JWT_SECRET: dev-secret-change-me
+  JWT_ISSUER: amos-identity
+  JWT_AUDIENCE: amos-external
+
+services:
+  identity-service:
+    build:
+      context: .
+      dockerfile: services/identity-service/Dockerfile
+    container_name: amos-identity-service
+    environment:
+      <<: *service-env
+      IDENTITY_SERVICE_PORT: '3000'
+      DOCUMENT_SERVICE_URL: http://document-service:3001
+      FACE_SERVICE_URL: http://face-service:3002
+      RISK_SERVICE_URL: http://risk-service:3003
+    ports:
+      - '3000:3000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      minio:
+        condition: service_started
+    networks: [amos]
+    restart: unless-stopped
+
+  document-service:
+    build:
+      context: .
+      dockerfile: services/document-service/Dockerfile
+    container_name: amos-document-service
+    environment:
+      <<: *service-env
+      DOCUMENT_SERVICE_PORT: '3001'
+    ports:
+      - '3001:3001'
+    depends_on:
+      minio:
+        condition: service_started
+    networks: [amos]
+    restart: unless-stopped
+
+  face-service:
+    build:
+      context: .
+      dockerfile: services/face-service/Dockerfile
+    container_name: amos-face-service
+    environment:
+      <<: *service-env
+      FACE_SERVICE_PORT: '3002'
+      FACE_MATCH_THRESHOLD: '0.8'
+    ports:
+      - '3002:3002'
+    depends_on:
+      - minio
+      - compreface-api
+    networks: [amos]
+    restart: unless-stopped
+
+  risk-service:
+    build:
+      context: .
+      dockerfile: services/risk-service/Dockerfile
+    container_name: amos-risk-service
+    environment:
+      <<: *service-env
+      RISK_SERVICE_PORT: '3003'
+    ports:
+      - '3003:3003'
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks: [amos]
+    restart: unless-stopped
+
+  audit-service:
+    build:
+      context: .
+      dockerfile: services/audit-service/Dockerfile
+    container_name: amos-audit-service
+    environment:
+      <<: *service-env
+      AUDIT_SERVICE_PORT: '3004'
+    ports:
+      - '3004:3004'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    networks: [amos]
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: amos-postgres
+    environment:
+      POSTGRES_USER: amos
+      POSTGRES_PASSWORD: amos
+      POSTGRES_DB: amos
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U amos -d amos']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [amos]
+
+  redis:
+    image: redis:7-alpine
+    container_name: amos-redis
+    command: ['redis-server', '--appendonly', 'yes']
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [amos]
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.6.1
+    container_name: amos-zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks: [amos]
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.1
+    container_name: amos-kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - '9092:9092'
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+    networks: [amos]
+
+  minio:
+    image: minio/minio:RELEASE.2024-07-31T05-46-26Z
+    container_name: amos-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: amosminio
+      MINIO_ROOT_PASSWORD: amosminio-secret
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - minio_data:/data
+    networks: [amos]
+
+  compreface-postgres:
+    image: postgres:13-alpine
+    container_name: amos-compreface-postgres
+    environment:
+      POSTGRES_USER: compreface
+      POSTGRES_PASSWORD: compreface
+      POSTGRES_DB: frs
+    volumes:
+      - compreface_data:/var/lib/postgresql/data
+    networks: [amos]
+
+  compreface-api:
+    image: exadel/compreface-api:1.2.0
+    container_name: amos-compreface-api
+    environment:
+      POSTGRES_USER: compreface
+      POSTGRES_PASSWORD: compreface
+      POSTGRES_URL: jdbc:postgresql://compreface-postgres:5432/frs
+      SPRING_PROFILES_ACTIVE: dev
+      ENABLE_EMAIL_SERVER: 'false'
+      ADMIN_JAVA_OPTS: '-Xmx1g'
+      API_JAVA_OPTS: '-Xmx2g'
+    depends_on:
+      - compreface-postgres
+    ports:
+      - '8000:8080'
+    networks: [amos]
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+  compreface_data:
+
+networks:
+  amos:
+    driver: bridge
