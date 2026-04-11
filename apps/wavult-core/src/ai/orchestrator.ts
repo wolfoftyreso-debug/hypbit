@@ -6,7 +6,9 @@ import { randomUUID } from 'crypto'
 import { selectModel, ROUTING_MATRIX, MODEL_REGISTRY } from './registry'
 import { getCached, setCache } from './cache'
 import { callProvider } from './providers'
-import type { AIRequest, AIResponse, AILogEntry, ModelConfig } from './types'
+import { heuristicFallback, HEURISTIC_MODEL_MARKER } from './fallback'
+import { scoreResponse } from './response-quality'
+import type { AIRequest, AIResponse, AILogEntry, ModelConfig, ModelId } from './types'
 
 // In-memory logbuffer — ersätt med DB/CloudWatch vid skalning
 const logs: AILogEntry[] = []
@@ -60,54 +62,90 @@ export async function orchestrate(req: AIRequest): Promise<AIResponse> {
     }
   }
 
-  // 3. Inference med fallback
+  // 3. Inference med fallback + quality-aware reroute
+  //
+  // Bygg en deterministisk kandidatlista: primär först, sedan övriga från
+  // routing-matrisen (exkl duplikater) som är available. Vi itererar den
+  // oavsett om primären kastade eller returnerade ett kvalitetsmässigt
+  // oacceptabelt svar (tomt, refusal, trunkerat).
   let content = ''
   let usedModel: ModelConfig = model
   let lastError: string | undefined
 
-  // Prova primär modell
-  try {
-    content = await callProvider(model, req)
-  } catch (err: unknown) {
-    const errMsg = err instanceof Error ? err.message : String(err)
-    console.error(`[ai:orchestrator] ${model.id} failed:`, errMsg)
-    lastError = errMsg
+  const candidateList: ModelConfig[] = [model]
+  const seen = new Set<ModelId>([model.id])
+  for (const candidateId of ROUTING_MATRIX[req.task_type] || []) {
+    if (seen.has(candidateId)) continue
+    const c = MODEL_REGISTRY[candidateId]
+    if (c?.available) {
+      candidateList.push(c)
+      seen.add(candidateId)
+    }
+  }
 
-    // Fallback: iterera routing-matrisen och hoppa över primären
-    const candidates = ROUTING_MATRIX[req.task_type] || []
-    for (const candidateId of candidates) {
-      if (candidateId === model.id) continue
-      const fallback = MODEL_REGISTRY[candidateId]
-      if (!fallback?.available) continue
-
-      try {
-        content = await callProvider(fallback, req)
-        usedModel = fallback
-        lastError = undefined
-        console.info(`[ai:orchestrator] fallback succeeded: ${candidateId}`)
-        break
-      } catch (fe: unknown) {
-        const feMsg = fe instanceof Error ? fe.message : String(fe)
-        console.error(`[ai:orchestrator] fallback ${candidateId} failed:`, feMsg)
-        lastError = feMsg
-      }
+  for (const candidate of candidateList) {
+    let attempt = ''
+    try {
+      attempt = await callProvider(candidate, req)
+    } catch (err: unknown) {
+      const errMsg = err instanceof Error ? err.message : String(err)
+      console.error(`[ai:orchestrator] ${candidate.id} failed:`, errMsg)
+      lastError = errMsg
+      continue
     }
 
-    if (!content) {
-      // Logga misslyckad
-      pushLog({
-        request_id: requestId,
-        task_type: req.task_type,
-        model_used: model.id,
-        tokens_used: 0,
-        latency_ms: Date.now() - start,
-        cost_usd: 0,
-        cached: false,
-        success: false,
-        error: lastError,
-        timestamp: new Date().toISOString(),
-      })
-      throw new Error(`All models failed for task_type=${req.task_type}. Last error: ${lastError}`)
+    // Kvalitetskontroll — reject tomma/refusal/trunkerade svar och
+    // försök nästa kandidat. Detta är den "konservativa" quality gate:n
+    // från response-quality.ts, inte en generisk LLM scorer.
+    const verdict = scoreResponse(attempt, req)
+    if (!verdict.acceptable) {
+      console.warn(
+        `[ai:orchestrator] ${candidate.id} rejected by quality gate: ${verdict.reason}${
+          verdict.matched ? ` (matched "${verdict.matched}")` : ''
+        }`,
+      )
+      lastError = `quality_reject:${verdict.reason}`
+      continue
+    }
+
+    content = attempt
+    usedModel = candidate
+    lastError = undefined
+    if (candidate.id !== model.id) {
+      console.info(`[ai:orchestrator] fallback succeeded: ${candidate.id}`)
+    }
+    break
+  }
+
+  // Heuristisk last-resort — ALLA modeller misslyckades eller avvisades.
+  // Returnera ett ärligt degraderat svar istället för att kasta. Denna
+  // path loggas som success=false, cost=0 och model_used=heuristic-fallback
+  // så observability fortfarande fångar failure-rate korrekt.
+  if (!content) {
+    content = heuristicFallback(req, lastError)
+    const latencyDeg = Date.now() - start
+
+    pushLog({
+      request_id: requestId,
+      task_type: req.task_type,
+      model_used: HEURISTIC_MODEL_MARKER,
+      tokens_used: 0,
+      latency_ms: latencyDeg,
+      cost_usd: 0,
+      cached: false,
+      success: false,
+      error: lastError,
+      timestamp: new Date().toISOString(),
+    })
+
+    return {
+      content,
+      model_used: HEURISTIC_MODEL_MARKER,
+      tokens_used: 0,
+      latency_ms: latencyDeg,
+      cost_usd: 0,
+      cached: false,
+      request_id: requestId,
     }
   }
 

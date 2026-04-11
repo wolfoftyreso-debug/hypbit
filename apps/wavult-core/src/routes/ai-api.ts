@@ -6,6 +6,7 @@ import { Router, Request, Response } from 'express'
 import { requireAuth } from '../middleware/requireAuth'
 import {
   orchestrate,
+  orchestrateStream,
   getAILogs,
   getAIStats,
   MODEL_REGISTRY,
@@ -63,6 +64,85 @@ router.post('/v1/ai/orchestrate', async (req: Request, res: Response) => {
       detail: message,
     })
   }
+})
+
+/**
+ * POST /v1/ai/orchestrate/stream — SSE-streamad AI-gateway
+ *
+ * Server-Sent Events-endpoint som yield:ar events i realtid från
+ * orchestrateStream(). Klienten tar emot en ström av JSON-event:
+ *
+ *   data: {"type":"thinking","message":"Selecting model…"}
+ *   data: {"type":"model_selected","model":"claude-haiku"}
+ *   data: {"type":"chunk","content":"Hello","model":"claude-haiku"}
+ *   data: {"type":"chunk","content":" world","model":"claude-haiku"}
+ *   data: {"type":"done","final":{...}}
+ *
+ * Vid provider-fel:
+ *   data: {"type":"fallback","from":"claude-haiku","to":"groq-llama","reason":"..."}
+ *
+ * Vid alla-fail (last-resort heuristic):
+ *   data: {"type":"degraded","reason":"..."}
+ *   data: {"type":"chunk","content":"...","model":"heuristic-fallback"}
+ *   data: {"type":"done","final":{...}}
+ *
+ * Kontrakt:
+ *   - Första event (thinking) yieldas <50 ms efter request hit routern
+ *   - Connection är keep-alive med :heartbeat kommentarlinjer var 15 s
+ *   - Kastar ALDRIG HTTP 5xx efter streamstart — fel wraps som 'error'-event
+ */
+router.post('/v1/ai/orchestrate/stream', async (req: Request, res: Response) => {
+  const aiReq: AIRequest = {
+    task_type: req.body.task_type || 'chat',
+    prompt: req.body.prompt,
+    system: req.body.system,
+    context: req.body.context,
+    max_tokens: req.body.max_tokens,
+    temperature: req.body.temperature,
+    model_override: req.body.model_override,
+    cache: req.body.cache,
+    audio_url: req.body.audio_url,
+    metadata: req.body.metadata,
+  }
+
+  if (!aiReq.prompt) {
+    return res.status(400).json({ error: 'prompt required' })
+  }
+
+  // SSE-headers. X-Accel-Buffering=no är kritisk bakom nginx/ALB
+  // så bufferingen inte äter chunks.
+  res.setHeader('Content-Type', 'text/event-stream')
+  res.setHeader('Cache-Control', 'no-cache, no-transform')
+  res.setHeader('Connection', 'keep-alive')
+  res.setHeader('X-Accel-Buffering', 'no')
+  res.flushHeaders()
+
+  // Heartbeat så proxies (Cloudflare, ALB, nginx) inte stänger connection
+  // under långa svar. SSE-kommentarlinjer börjar med `:`.
+  const heartbeat = setInterval(() => {
+    if (!res.writableEnded) res.write(': heartbeat\n\n')
+  }, 15_000)
+
+  // Abort-hantering: om klienten stänger, stoppa generatorn.
+  let clientClosed = false
+  req.on('close', () => { clientClosed = true })
+
+  try {
+    for await (const event of orchestrateStream(aiReq)) {
+      if (clientClosed || res.writableEnded) break
+      res.write(`data: ${JSON.stringify(event)}\n\n`)
+    }
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err)
+    console.error('[ai:stream] fatal error:', message)
+    if (!res.writableEnded) {
+      res.write(`data: ${JSON.stringify({ type: 'error', message })}\n\n`)
+    }
+  } finally {
+    clearInterval(heartbeat)
+    if (!res.writableEnded) res.end()
+  }
+  return undefined
 })
 
 /**

@@ -1,7 +1,7 @@
 // ─── Agent Mesh Types ─────────────────────────────────────────────────────────
 // Typdefinitioner för Wavult Agent Mesh — 10 specialiserade expert-agenter
 
-import type { ModelId, TaskType } from '../types'
+import type { ModelId, ResolvedModelId, TaskType } from '../types'
 
 export type AgentId =
   | 'qms'           // ISO 9001/27001, GDPR, NIS2, compliance
@@ -47,7 +47,11 @@ export interface AgentResponse {
   content: string
   agent_used: AgentId
   agent_name: string
-  model_used: ModelId
+  // Vidgas till ResolvedModelId så agent-routern kan propagera
+  // 'heuristic-fallback' när alla LLM-providers misslyckats.
+  // Konsumenter som vill kontrollera "riktig modell vs heuristik"
+  // kan matcha mot HEURISTIC_MODEL_MARKER från '../fallback'.
+  model_used: ResolvedModelId
   confidence: number        // 0-1, hur säker routern var
   latency_ms: number
   request_id: string

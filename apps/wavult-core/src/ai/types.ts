@@ -51,9 +51,23 @@ export interface AIRequest {
   metadata?: Record<string, unknown>
 }
 
+/**
+ * Markör för heuristiskt fallback-svar när alla LLM-providers misslyckas.
+ * Inte en riktig modell — finns inte i MODEL_REGISTRY.
+ * Behandlas av observability som success=false.
+ */
+export type HeuristicFallbackMarker = 'heuristic-fallback'
+
+/**
+ * Identitet för den modell som faktiskt producerade svaret.
+ * Kan vara en riktig modell i registret ELLER den heuristiska
+ * fallback-markören om alla providers misslyckades.
+ */
+export type ResolvedModelId = ModelId | HeuristicFallbackMarker
+
 export interface AIResponse {
   content: string
-  model_used: ModelId
+  model_used: ResolvedModelId
   tokens_used?: number
   latency_ms: number
   cost_usd?: number
@@ -64,7 +78,7 @@ export interface AIResponse {
 export interface AILogEntry {
   request_id: string
   task_type: TaskType
-  model_used: ModelId
+  model_used: ResolvedModelId
   tokens_used: number
   latency_ms: number
   cost_usd: number
