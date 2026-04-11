@@ -10,6 +10,8 @@ import { intelligenceRoutes } from "./routes/intelligence.js";
 import { privateRoutes } from "./routes/private.js";
 import { notificationsRoutes } from "./routes/notifications.js";
 import { rulesRoutes } from "./routes/rules.js";
+import { relationsRoutes } from "./routes/relations.js";
+import { intelligenceProxyRoutes } from "./routes/intelligence-proxy.js";
 import { connectKafka, disconnectKafka } from "./lib/kafka.js";
 import { closeNeo4j } from "./db/neo4j.js";
 import { closeRedis } from "./db/redis.js";
@@ -50,6 +52,8 @@ await app.register(intelligenceRoutes, { prefix: "/api" });
 await app.register(privateRoutes, { prefix: "/api" });
 await app.register(notificationsRoutes, { prefix: "/api" });
 await app.register(rulesRoutes, { prefix: "/api" });
+await app.register(relationsRoutes, { prefix: "/api" });
+await app.register(intelligenceProxyRoutes, { prefix: "/api" });
 
 app.get("/", async () => ({
   name: "influence-api",

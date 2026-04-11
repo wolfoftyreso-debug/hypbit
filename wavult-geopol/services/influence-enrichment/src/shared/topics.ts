@@ -11,6 +11,10 @@ export const TOPICS = {
   ALERTS_TRIGGERED: "alerts.triggered",
   ACTIONS_GENERATED: "actions.generated",
   NOTIFICATION_CREATED: "notification.created",
+
+  RELATION_DISCOVERED: "relation.discovered",
+  ACCESS_SCORES_UPDATED: "access.scores.updated",
+  DEALFLOW_DETECTED: "dealflow.detected",
 } as const;
 
 export type Topic = (typeof TOPICS)[keyof typeof TOPICS];

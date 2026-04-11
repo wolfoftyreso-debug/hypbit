@@ -39,6 +39,8 @@ services:
       KAFKA_BROKERS: ${KAFKA_BROKERS}
       KAFKA_ENABLED: ${KAFKA_ENABLED:-true}
       OUR_NODE_ID: ${OUR_NODE_ID:-our_node}
+      ACCESS_ENGINE_URL: http://access-engine:4200
+      DEAL_FLOW_URL: http://deal-flow-engine:4400
     expose:
       - "4000"
     healthcheck:
@@ -157,6 +159,88 @@ services:
       KAFKA_CLIENT_ID: notification-dispatcher
       KAFKA_GROUP_ID: notification-dispatcher
       REDIS_URL: ${REDIS_URL}
+
+  # ---------- Intelligence layer ----------
+
+  relation-discovery:
+    build:
+      context: ./services/relation-discovery
+      dockerfile: Dockerfile
+    image: wavult-geopol-relation-discovery:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4300
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: relation-discovery
+      KAFKA_GROUP_ID: relation-discovery
+      NEO4J_URI: ${NEO4J_URI}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-sonnet-4-6}
+      COMPANY_CONTEXT: ${COMPANY_CONTEXT:-}
+      DISCOVERY_SCHEDULE_MS: ${DISCOVERY_SCHEDULE_MS:-3600000}
+      DISCOVERY_TOP_N: ${DISCOVERY_TOP_N:-20}
+    expose:
+      - "4300"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4300/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  access-engine:
+    build:
+      context: ./services/access-engine
+      dockerfile: Dockerfile
+    image: wavult-geopol-access-engine:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4200
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: access-engine
+      KAFKA_GROUP_ID: access-engine
+      NEO4J_URI: ${NEO4J_URI}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
+      REDIS_URL: ${REDIS_URL}
+      OUR_NODE_ID: ${OUR_NODE_ID:-our_node}
+    expose:
+      - "4200"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4200/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  deal-flow-engine:
+    build:
+      context: ./services/deal-flow-engine
+      dockerfile: Dockerfile
+    image: wavult-geopol-deal-flow-engine:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4400
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: deal-flow-engine
+      KAFKA_GROUP_ID: deal-flow-engine
+      NEO4J_URI: ${NEO4J_URI}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
+      REDIS_URL: ${REDIS_URL}
+    expose:
+      - "4400"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4400/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   # ---------- Frontend ----------
 

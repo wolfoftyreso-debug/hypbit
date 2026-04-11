@@ -18,11 +18,19 @@ service's `src/shared/topics.ts`.
 | Topic                   | Produced by            | Consumed by             | Payload shape           |
 |-------------------------|------------------------|-------------------------|-------------------------|
 | `raw.events`            | influence-ingestion    | event-normalizer        | `SourceEventRaw`        |
-| `events.normalized`     | event-normalizer       | influence-enrichment    | `NormalizedEvent`       |
-| `events.enriched`       | influence-enrichment   | alert-engine            | `EnrichedEvent` (w/ AI) |
+| `events.normalized`     | event-normalizer       | influence-enrichment, relation-discovery | `NormalizedEvent` |
+| `events.enriched`       | influence-enrichment   | alert-engine, access-engine, deal-flow-engine, relation-discovery | `EnrichedEvent` |
 | `alerts.triggered`      | alert-engine           | action-engine, notification-dispatcher | `Alert`  |
 | `actions.generated`     | action-engine          | notification-dispatcher | `Action`                |
 | `notification.created`  | notification-dispatcher | influence-api (SSE)    | `Notification`          |
+
+## Intelligence layer
+
+| Topic                      | Produced by          | Consumed by          | Payload shape        |
+|----------------------------|----------------------|----------------------|----------------------|
+| `relation.discovered`      | relation-discovery   | (future: graph-writer, UI notifier) | `DiscoveredRelation` |
+| `access.scores.updated`    | access-engine        | (future: UI overlay, deal-flow-engine) | `AccessScore` |
+| `dealflow.detected`        | deal-flow-engine     | (future: action-engine, CRM) | `DealOpportunity` |
 
 See `packages/events/src/schemas.ts` for the complete zod schemas.
 

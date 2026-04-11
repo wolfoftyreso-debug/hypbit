@@ -118,6 +118,24 @@ wavult-geopol/
 │   ├── action-engine/                  alerts.triggered → actions.generated
 │   │                                    Computes Neo4j shortest access paths.
 │   ├── notification-dispatcher/        alerts + actions → Redis in-app feed
+│   ├── relation-discovery/             Finds hidden connections between people.
+│   │                                    Three discovery strategies (COMMON_NEIGHBORS,
+│   │                                    SAME_ORG, SAME_EVENT) + Claude analyst for
+│   │                                    classification. Hourly scheduler + Kafka
+│   │                                    consumer on events.enriched. HTTP :4300.
+│   ├── access-engine/                  Computes access probability for every
+│   │                                    (our_node, target) pair. Scoring:
+│   │                                      0.3 · (1/distance)
+│   │                                    + 0.25 · relation_strength
+│   │                                    + 0.15 · mutual_connection_score
+│   │                                    + 0.10 · event_overlap
+│   │                                    + 0.10 · geo_proximity
+│   │                                    + 0.10 · historical_success
+│   │                                    Redis-cached, ranked via sorted set. HTTP :4200.
+│   ├── deal-flow-engine/               Matches person tags × event types against
+│   │                                    a rule set to produce deal opportunities
+│   │                                    (FUNDING, PARTNERSHIP, REGULATORY_ACCESS,
+│   │                                    ACQUISITION, CUSTOMER). HTTP :4400.
 │   └── enrichment-ai-core/             legacy Person enrichment worker
 │
 ├── packages/
@@ -164,6 +182,18 @@ wavult-geopol/
 | POST   | `/api/rules`                   | create rule |
 | PUT    | `/api/rules/:id`               | update rule |
 | DELETE | `/api/rules/:id`               | disable rule |
+
+### Intelligence layer (relation discovery, access, deal flow)
+
+| Method | Path                                     | Notes |
+| ------ | ---------------------------------------- | ----- |
+| GET    | `/api/relations/:personId`               | discovered connections for a person |
+| GET    | `/api/relations/between/:a/:b`           | discovered connection between two people |
+| GET    | `/api/access/:id`                        | access probability (proxy → access-engine) |
+| GET    | `/api/access/top?limit=20`               | top reachable people |
+| GET    | `/api/deals?limit=50`                    | recent deal opportunities (proxy → deal-flow-engine) |
+| GET    | `/api/deals/person/:id`                  | deals for a person |
+| GET    | `/api/decision/:personId`                | **combined decision** — joins access + top deal + top relation into a single recommendation |
 
 ### Private layer (scoped by `x-user-id`)
 

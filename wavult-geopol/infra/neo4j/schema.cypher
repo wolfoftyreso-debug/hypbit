@@ -58,6 +58,12 @@ CREATE INDEX org_name IF NOT EXISTS FOR (o:Organization) ON (o.name);
 CREATE INDEX event_ts IF NOT EXISTS FOR (e:Event) ON (e.ts);
 CREATE INDEX influence_event_ts IF NOT EXISTS FOR (e:InfluenceEvent) ON (e.ts);
 
+// Discovered connections (intelligence layer overlay)
+CREATE INDEX discovered_strength IF NOT EXISTS
+FOR ()-[r:DISCOVERED_CONNECTION]-() ON (r.strength);
+CREATE INDEX discovered_ts IF NOT EXISTS
+FOR ()-[r:DISCOVERED_CONNECTION]-() ON (r.discovered_at);
+
 // ---------- Seed: our own node ----------
 MERGE (me:Person {id: "our_node"})
   SET me.name = "Wavult HQ",
