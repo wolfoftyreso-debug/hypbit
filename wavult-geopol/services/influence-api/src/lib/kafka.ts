@@ -1,15 +1,12 @@
 import { Kafka, Producer, logLevel } from "kafkajs";
 import { config } from "../config.js";
+import { TOPICS } from "../shared/topics.js";
 
-export const KAFKA_TOPICS = {
-  PERSON_CREATED: "person.created",
-  PERSON_ENRICHED: "person.enriched",
-  RELATIONSHIP_UPDATED: "relationship.updated",
-  EVENT_DETECTED: "event.detected",
-  INTERACTION_LOGGED: "interaction.logged",
-} as const;
-
-export type KafkaTopic = (typeof KAFKA_TOPICS)[keyof typeof KAFKA_TOPICS];
+// Re-exported under the old name to preserve existing imports across
+// the service. The single source of truth is ../shared/topics.ts,
+// which in turn mirrors packages/events/src/topics.ts.
+export const KAFKA_TOPICS = TOPICS;
+export type KafkaTopic = (typeof TOPICS)[keyof typeof TOPICS];
 
 let kafka: Kafka | null = null;
 let producer: Producer | null = null;

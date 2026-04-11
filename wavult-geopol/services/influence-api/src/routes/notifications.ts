@@ -25,35 +25,57 @@ export async function notificationsRoutes(app: FastifyInstance) {
   });
 
   /**
-   * SSE stream. On connect: replays the most recent 20 items as
-   * backlog, then pushes every new notification as it arrives on the
-   * pub/sub channel.
+   * SSE stream. Calls reply.hijack() immediately so Fastify stops
+   * managing the response lifecycle — we own the raw socket until
+   * the client disconnects. On connect we replay the most recent
+   * 20 items as backlog, then push every new notification from the
+   * Redis pub/sub channel.
    */
   app.get("/notifications/stream", async (req, reply) => {
-    reply.raw.setHeader("content-type", "text/event-stream");
-    reply.raw.setHeader("cache-control", "no-cache");
-    reply.raw.setHeader("connection", "keep-alive");
-    reply.raw.setHeader("x-accel-buffering", "no");
-    reply.raw.flushHeaders?.();
+    // Tell Fastify we're hijacking this response. Without this, Fastify
+    // will try to send its own reply after the handler resolves and
+    // print "Reply was already sent" warnings, and may tear down the
+    // socket early.
+    reply.hijack();
+
+    const res = reply.raw;
+    res.writeHead(200, {
+      "content-type": "text/event-stream",
+      "cache-control": "no-cache, no-transform",
+      connection: "keep-alive",
+      "x-accel-buffering": "no",
+    });
 
     const send = (data: unknown) => {
-      reply.raw.write(`data: ${JSON.stringify(data)}\n\n`);
+      // If the socket is already gone, bail early.
+      if (res.writableEnded || res.destroyed) return;
+      res.write(`data: ${JSON.stringify(data)}\n\n`);
     };
 
-    // Backlog
-    const backlog = await getRedis().lrange(KEY, 0, 19);
-    for (const raw of backlog.reverse()) {
-      try {
-        send(JSON.parse(raw));
-      } catch {
-        /* ignore */
+    // Backlog: replay the last 20 items (oldest first).
+    try {
+      const backlog = await getRedis().lrange(KEY, 0, 19);
+      for (const raw of backlog.reverse()) {
+        try {
+          send(JSON.parse(raw));
+        } catch {
+          /* ignore malformed */
+        }
       }
+    } catch (err) {
+      app.log.warn({ err }, "failed to replay notifications backlog");
     }
 
-    // Live updates via a *separate* subscriber connection (ioredis
-    // requires a dedicated client in subscribe mode).
+    // Dedicated subscriber connection — ioredis requires a separate
+    // client for subscribe mode.
     const sub = getRedis().duplicate();
-    await sub.subscribe("notifications:channel");
+    try {
+      await sub.subscribe("notifications:channel");
+    } catch (err) {
+      app.log.error({ err }, "failed to subscribe to notifications:channel");
+      res.end();
+      return;
+    }
     sub.on("message", (_channel, payload) => {
       try {
         send(JSON.parse(payload));
@@ -62,16 +84,25 @@ export async function notificationsRoutes(app: FastifyInstance) {
       }
     });
 
-    const hb = setInterval(() => reply.raw.write(`: hb\n\n`), 15_000);
+    const hb = setInterval(() => {
+      if (!res.writableEnded && !res.destroyed) res.write(`: hb\n\n`);
+    }, 15_000);
 
-    req.raw.on("close", async () => {
+    const cleanup = async () => {
       clearInterval(hb);
       try {
         await sub.unsubscribe("notifications:channel");
+      } catch {
+        /* ignore */
+      }
+      try {
         await sub.quit();
       } catch {
         /* ignore */
       }
-    });
+    };
+
+    req.raw.on("close", cleanup);
+    req.raw.on("error", cleanup);
   });
 }

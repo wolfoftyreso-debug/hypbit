@@ -40,6 +40,18 @@ export async function lookupPeople(ids: string[]): Promise<PersonContext[]> {
   }
 }
 
+export async function pingNeo4j(): Promise<boolean> {
+  const session = getDriver().session({ database: DB });
+  try {
+    await session.run("RETURN 1");
+    return true;
+  } catch {
+    return false;
+  } finally {
+    await session.close();
+  }
+}
+
 export async function closeNeo(): Promise<void> {
   if (driver) await driver.close();
 }

@@ -47,32 +47,48 @@ export async function startConsumer(store: RuleStore) {
       }
       const event = result.data;
 
-      // Look up person context for every person referenced by the event.
+      // Look up context for every referenced person in one round-trip.
       const people = await lookupPeople(event.person_ids);
-      const personByContext: PersonContext | null = people[0] ?? null;
+
+      // Evaluate each rule against every (person, event) pair. If an event
+      // has no known people, we still evaluate rules once with person=null
+      // so that person-agnostic rules (e.g. tag_any: ["regulation"]) can fire.
+      const contexts: (PersonContext | null)[] = people.length > 0 ? people : [null];
 
       const rules = await store.list();
       if (rules.length === 0) return;
 
+      // Dedupe: one alert per (rule_id, person_id). An event referencing
+      // the same person twice or matching multiple rules should still
+      // produce a clean set.
+      const seen = new Set<string>();
       const alerts: Alert[] = [];
+
       for (const rule of rules) {
-        if (!ruleMatches(rule, event, personByContext)) continue;
-        const score = computeAlertScore(event, personByContext);
-        const severity = severityFromScore(score);
-        if (!severity) continue;
-        alerts.push({
-          id: ulid(),
-          ts: Date.now(),
-          rule_id: rule.id,
-          rule_name: rule.name,
-          severity,
-          alert_score: Math.round(score),
-          matched_person_id: personByContext?.id,
-          matched_person_name: personByContext?.name,
-          matched_influence_score: personByContext?.influence_score,
-          matched_relevance_score: personByContext?.relevance_score,
-          event,
-        });
+        for (const person of contexts) {
+          const key = `${rule.id}::${person?.id ?? "__none__"}`;
+          if (seen.has(key)) continue;
+
+          if (!ruleMatches(rule, event, person)) continue;
+          const score = computeAlertScore(event, person);
+          const severity = severityFromScore(score);
+          if (!severity) continue;
+
+          seen.add(key);
+          alerts.push({
+            id: ulid(),
+            ts: Date.now(),
+            rule_id: rule.id,
+            rule_name: rule.name,
+            severity,
+            alert_score: Math.round(score),
+            matched_person_id: person?.id,
+            matched_person_name: person?.name,
+            matched_influence_score: person?.influence_score,
+            matched_relevance_score: person?.relevance_score,
+            event,
+          });
+        }
       }
 
       if (alerts.length === 0) return;
@@ -84,7 +100,7 @@ export async function startConsumer(store: RuleStore) {
 
       for (const a of alerts) {
         console.log(
-          `[alert-engine] ${a.severity} score=${a.alert_score} rule=${a.rule_name} event=${event.event_id}`
+          `[alert-engine] ${a.severity} score=${a.alert_score} rule=${a.rule_name} person=${a.matched_person_id ?? "-"} event=${event.event_id}`
         );
       }
     },

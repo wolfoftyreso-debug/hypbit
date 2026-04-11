@@ -7,7 +7,7 @@
 # Services:
 #   apps/web                        React + nginx frontend
 #   services/influence-api          Fastify API (graph + search + alerts + notifications)
-#   services/enrichment-ai-core     async Person enrichment (legacy/person pipeline)
+#   services/enrichment-ai-core     legacy async Person enrichment
 #
 #   Influence Monitoring & Response pipeline:
 #     services/influence-ingestion      RSS → raw.events
@@ -16,15 +16,6 @@
 #     services/alert-engine             events.enriched → alerts.triggered (rules)
 #     services/action-engine            alerts.triggered → actions.generated
 #     services/notification-dispatcher  alerts + actions → in-app feed
-
-x-kafka-env: &kafka-env
-  KAFKA_BROKERS: ${KAFKA_BROKERS}
-
-x-neo4j-env: &neo4j-env
-  NEO4J_URI: ${NEO4J_URI}
-  NEO4J_USER: ${NEO4J_USER}
-  NEO4J_PASSWORD: ${NEO4J_PASSWORD}
-  NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
 
 services:
   influence-api:
@@ -37,11 +28,15 @@ services:
       NODE_ENV: production
       PORT: 4000
       CORS_ORIGIN: ${CORS_ORIGIN:-*}
-      <<: [*kafka-env, *neo4j-env]
+      NEO4J_URI: ${NEO4J_URI}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
       REDIS_URL: ${REDIS_URL}
       OPENSEARCH_URL: ${OPENSEARCH_URL}
       OPENSEARCH_USER: ${OPENSEARCH_USER:-}
       OPENSEARCH_PASSWORD: ${OPENSEARCH_PASSWORD:-}
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
       KAFKA_ENABLED: ${KAFKA_ENABLED:-true}
       OUR_NODE_ID: ${OUR_NODE_ID:-our_node}
     expose:
@@ -60,7 +55,7 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      <<: *kafka-env
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
       KAFKA_CLIENT_ID: enrichment-ai-core
       KAFKA_GROUP_ID: enrichment-ai-core
 
@@ -74,7 +69,7 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      <<: *kafka-env
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
       KAFKA_CLIENT_ID: influence-ingestion
       INGESTION_POLL_MS: ${INGESTION_POLL_MS:-60000}
       INGESTION_RSS_FEEDS: ${INGESTION_RSS_FEEDS:-}
@@ -88,7 +83,7 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      <<: *kafka-env
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
       KAFKA_CLIENT_ID: event-normalizer
       KAFKA_GROUP_ID: event-normalizer
 
@@ -100,7 +95,7 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      <<: *kafka-env
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
       KAFKA_CLIENT_ID: influence-enrichment
       KAFKA_GROUP_ID: influence-enrichment
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
@@ -116,12 +111,22 @@ services:
     environment:
       NODE_ENV: production
       PORT: 4100
-      <<: [*kafka-env, *neo4j-env]
-      REDIS_URL: ${REDIS_URL}
+      CORS_ORIGIN: ${CORS_ORIGIN:-*}
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
       KAFKA_CLIENT_ID: alert-engine
       KAFKA_GROUP_ID: alert-engine
+      REDIS_URL: ${REDIS_URL}
+      NEO4J_URI: ${NEO4J_URI}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
     expose:
       - "4100"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4100/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   action-engine:
     build:
@@ -131,9 +136,13 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      <<: [*kafka-env, *neo4j-env]
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
       KAFKA_CLIENT_ID: action-engine
       KAFKA_GROUP_ID: action-engine
+      NEO4J_URI: ${NEO4J_URI}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
       OUR_NODE_ID: ${OUR_NODE_ID:-our_node}
 
   notification-dispatcher:
@@ -144,10 +153,10 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      <<: *kafka-env
-      REDIS_URL: ${REDIS_URL}
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
       KAFKA_CLIENT_ID: notification-dispatcher
       KAFKA_GROUP_ID: notification-dispatcher
+      REDIS_URL: ${REDIS_URL}
 
   # ---------- Frontend ----------
 

@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 import sensible from "@fastify/sensible";
+import { ZodError } from "zod";
 import { config } from "./config.js";
 import { healthRoutes } from "./routes/health.js";
 import { peopleRoutes } from "./routes/people.js";
@@ -26,6 +27,22 @@ const app = Fastify({
 await app.register(helmet, { global: true });
 await app.register(cors, { origin: config.CORS_ORIGIN });
 await app.register(sensible);
+
+app.setErrorHandler((err, req, reply) => {
+  if (err instanceof ZodError) {
+    reply.code(400).send({
+      error: "validation_error",
+      issues: err.issues,
+    });
+    return;
+  }
+  const status = (err as { statusCode?: number }).statusCode ?? 500;
+  req.log.error({ err, url: req.url }, "request failed");
+  reply.code(status).send({
+    error: err.name || "internal_error",
+    message: err.message,
+  });
+});
 
 await app.register(healthRoutes);
 await app.register(peopleRoutes, { prefix: "/api" });
