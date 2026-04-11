@@ -1,8 +1,13 @@
+export type AccessBand = "HIGH" | "MEDIUM" | "LOW";
+
 export type PersonFeatureProps = {
   id: string;
   name: string;
   influence_score: number;
   relevance_score: number;
+  access_band?: AccessBand | null;
+  access_probability?: number | null;
+  best_next_hop?: string | null;
 };
 
 export type PersonFeature = {
@@ -90,4 +95,34 @@ export type Notification = {
   alert?: Alert;
   action?: Action;
   read: boolean;
+};
+
+// --- Autonomous Agent wire types (mirror services/agent schemas) ---
+
+export type AgentTaskKind =
+  | "MEET"
+  | "INTRO"
+  | "OUTREACH"
+  | "ATTEND_EVENT"
+  | "RESEARCH"
+  | "ESCALATE";
+
+export type AgentTaskStatus = "OPEN" | "IN_PROGRESS" | "DONE" | "DROPPED";
+
+export type AgentTask = {
+  id: string;
+  ts: number;
+  run_id: string;
+  target_person_id: string;
+  target_person_name?: string;
+  kind: AgentTaskKind;
+  title: string;
+  rationale: string;
+  channel?: string;
+  deadline_ts?: number;
+  priority: Severity;
+  access_probability?: number;
+  best_next_hop?: string;
+  model: string;
+  status: AgentTaskStatus;
 };

@@ -8,6 +8,7 @@ import { closeRedis, pingRedis, getScore, topByAccess } from "./cache.js";
 import { evaluate } from "./evaluator.js";
 import { startKafka, stopKafka, publishScore } from "./kafka.js";
 import { registerMetrics } from "./metrics.js";
+import { startDecayScheduler, stopDecayScheduler, runOnce as runDecayOnce } from "./decay.js";
 
 const app = Fastify({
   logger: {
@@ -57,7 +58,11 @@ app.get("/access/top", async (req) => {
   return await topByAccess(limit);
 });
 
+/** Trigger CONNECTED.strength decay on demand (cron, debug). */
+app.post("/decay/run", async () => runDecayOnce());
+
 await startKafka();
+startDecayScheduler();
 
 try {
   await app.listen({ port: config.PORT, host: config.HOST });
@@ -70,6 +75,7 @@ try {
 async function shutdown(sig: string) {
   app.log.info(`received ${sig}`);
   try {
+    stopDecayScheduler();
     await app.close();
     await stopKafka();
     await closeRedis();

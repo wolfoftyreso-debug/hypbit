@@ -21,6 +21,14 @@ const schema = z.object({
   OUR_NODE_ID: z.string().default("our_node"),
   ACCESS_MAX_PATH_DEPTH: z.coerce.number().default(5),
   ACCESS_CACHE_TTL_SECONDS: z.coerce.number().default(300),
+
+  // --- Time decay of CONNECTED.strength ---
+  DECAY_ENABLED: z.coerce.boolean().default(true),
+  DECAY_INTERVAL_MS: z.coerce.number().default(24 * 60 * 60 * 1000),
+  // Strength halves after this many days without reinforcement.
+  DECAY_HALF_LIFE_DAYS: z.coerce.number().default(180),
+  // Floor: relations weaker than this are left alone (and not deleted).
+  DECAY_MIN_STRENGTH: z.coerce.number().default(0.01),
 });
 
 export const config = schema.parse(process.env);

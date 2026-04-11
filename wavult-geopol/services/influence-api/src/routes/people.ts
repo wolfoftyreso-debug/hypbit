@@ -4,6 +4,7 @@ import { neoSession } from "../db/neo4j.js";
 import { getRedis } from "../db/redis.js";
 import { getOpenSearch } from "../db/opensearch.js";
 import { publish, KAFKA_TOPICS } from "../lib/kafka.js";
+import { getAccessMap } from "../lib/access-lookup.js";
 
 const PERSON_INDEX = "geopol-people";
 const CACHE_TTL = 60;
@@ -204,21 +205,30 @@ export async function peopleRoutes(app: FastifyInstance) {
                 coalesce(p.relevance_score, 0) as relevance_score`,
         { userId }
       );
+      const ids = result.records.map((r) => r.get("id") as string);
+      const access = await getAccessMap(ids);
       return {
         type: "FeatureCollection",
-        features: result.records.map((r) => ({
-          type: "Feature",
-          properties: {
-            id: r.get("id"),
-            name: r.get("name"),
-            influence_score: r.get("influence_score"),
-            relevance_score: r.get("relevance_score"),
-          },
-          geometry: {
-            type: "Point",
-            coordinates: [r.get("lng"), r.get("lat")],
-          },
-        })),
+        features: result.records.map((r) => {
+          const id = r.get("id") as string;
+          const a = access.get(id);
+          return {
+            type: "Feature",
+            properties: {
+              id,
+              name: r.get("name"),
+              influence_score: r.get("influence_score"),
+              relevance_score: r.get("relevance_score"),
+              access_band: a?.band ?? null,
+              access_probability: a?.probability ?? null,
+              best_next_hop: a?.best_next_hop ?? null,
+            },
+            geometry: {
+              type: "Point",
+              coordinates: [r.get("lng"), r.get("lat")],
+            },
+          };
+        }),
       };
     } finally {
       await session.close();

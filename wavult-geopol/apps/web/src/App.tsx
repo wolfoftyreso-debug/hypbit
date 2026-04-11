@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { InfluenceMap } from "./components/InfluenceMap";
 import { ModeToggle, type Mode } from "./components/ModeToggle";
 import { PersonDrawer } from "./components/PersonDrawer";
-import { LiveFeedPanel } from "./components/LiveFeedPanel";
+import { RightRail } from "./components/RightRail";
 import { ImpactPanel } from "./components/ImpactPanel";
 import { Badge } from "./components/ui/index.js";
 import { useNotifications } from "./hooks/useNotifications";
+import { useAgentTasks } from "./hooks/useAgentTasks";
 import type { FeatureCollection, Notification, PersonFeatureProps } from "./types";
 
 type ReadinessResponse = {
@@ -24,6 +25,7 @@ export function App() {
 
   const headers = useMemo(() => ({ "x-user-id": USER_ID }), []);
   const notifications = useNotifications(100);
+  const agentTasks = useAgentTasks(50);
 
   useEffect(() => {
     fetch("/health/ready")
@@ -38,6 +40,28 @@ export function App() {
       .then(setGeo)
       .catch(() => setGeo(null));
   }, [mode, headers]);
+
+  const selectPersonById = useCallback(
+    (personId: string) => {
+      const feature = geo?.features.find((f) => f.properties.id === personId);
+      if (feature) {
+        setSelectedPerson(feature.properties);
+        setSelectedNotification(null);
+      } else {
+        // Person may exist in the DB but not be on the current map
+        // view (e.g. missing coords). Fall back to a skeleton so the
+        // drawer still opens with an id.
+        setSelectedPerson({
+          id: personId,
+          name: personId,
+          influence_score: 0,
+          relevance_score: 0,
+        });
+        setSelectedNotification(null);
+      }
+    },
+    [geo]
+  );
 
   return (
     <main className="flex flex-col h-full">
@@ -80,7 +104,10 @@ export function App() {
         <section className="flex-1 relative" style={{ minWidth: 0 }}>
           <InfluenceMap geo={geo} onSelect={setSelectedPerson} />
           {selectedPerson && !selectedNotification && (
-            <PersonDrawer person={selectedPerson} onClose={() => setSelectedPerson(null)} />
+            <PersonDrawer
+              person={selectedPerson}
+              onClose={() => setSelectedPerson(null)}
+            />
           )}
           {selectedNotification && (
             <ImpactPanel
@@ -89,7 +116,12 @@ export function App() {
             />
           )}
         </section>
-        <LiveFeedPanel notifications={notifications} onSelect={setSelectedNotification} />
+        <RightRail
+          notifications={notifications}
+          tasks={agentTasks}
+          onSelectNotification={setSelectedNotification}
+          onSelectPerson={selectPersonById}
+        />
       </div>
     </main>
   );
