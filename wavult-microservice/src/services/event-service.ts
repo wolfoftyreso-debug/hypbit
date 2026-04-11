@@ -60,11 +60,13 @@ export async function createEvent(input: EventInput): Promise<EventRecord> {
         'event-type': event.type,
       },
     });
-    await query(
-      `UPDATE events SET published_at = NOW() WHERE id = $1;
-       UPDATE outbox SET status = 'sent', processed_at = NOW() WHERE event_id = $1`,
-      [event.id],
-    );
+    await withTransaction(async (client) => {
+      await client.query(`UPDATE events SET published_at = NOW() WHERE id = $1`, [event.id]);
+      await client.query(
+        `UPDATE outbox SET status = 'sent', processed_at = NOW() WHERE event_id = $1`,
+        [event.id],
+      );
+    });
   } catch (err) {
     logger.warn({ err, eventId: event.id }, 'direct publish failed, relying on outbox');
   }

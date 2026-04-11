@@ -5,7 +5,6 @@ import { logger } from '../logger';
 function buildSasl(): SASLOptions | undefined {
   if (
     !config.KAFKA_SASL_MECHANISM ||
-    config.KAFKA_SASL_MECHANISM === '' ||
     !config.KAFKA_SASL_USERNAME ||
     !config.KAFKA_SASL_PASSWORD
   ) {

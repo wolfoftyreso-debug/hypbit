@@ -28,7 +28,7 @@ const WEIGHTS: ScoringWeights = {
   lowLiveness: 30,
   documentInvalid: 20,
   documentExpired: 25,
-  underAge: 50,
+  underAge: 75,
   lowOcrConfidence: 10,
   duplicate: 40,
 };
@@ -46,11 +46,14 @@ export class RiskService {
 
     // --- face signals ----------------------------------------------------
     if (!dto.face.match.matched) {
-      const delta = Math.max(0, dto.face.match.threshold - dto.face.match.similarity);
-      const s = Math.min(WEIGHTS.faceMismatch, WEIGHTS.faceMismatch * (delta / dto.face.match.threshold + 0.5));
-      signals.faceMismatch = round(s);
-      score += s;
-      reasons.push(`face similarity ${dto.face.match.similarity.toFixed(2)} below threshold ${dto.face.match.threshold}`);
+      // Any mismatch triggers at least "review". Magnitude of mismatch scales
+      // within that weight but never drops below the full WEIGHTS.faceMismatch
+      // value so a non-match cannot be auto-approved.
+      signals.faceMismatch = WEIGHTS.faceMismatch;
+      score += WEIGHTS.faceMismatch;
+      reasons.push(
+        `face similarity ${dto.face.match.similarity.toFixed(2)} below threshold ${dto.face.match.threshold}`,
+      );
     }
 
     if (!dto.face.liveness.passed) {

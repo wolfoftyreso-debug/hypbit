@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import Fastify, { FastifyInstance } from 'fastify';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
@@ -11,13 +12,15 @@ import { httpRequestDurationSeconds, httpRequestsTotal } from './metrics';
 
 export async function buildServer(): Promise<FastifyInstance> {
   const app = Fastify({
-    logger,
+    // pino instance; cast to any to bypass Fastify 4.x's stricter Logger typing
+    logger: logger as unknown as boolean,
     disableRequestLogging: false,
     trustProxy: true,
     bodyLimit: 1_048_576, // 1 MB
     genReqId: (req) => {
       const hdr = req.headers['x-request-id'];
-      return typeof hdr === 'string' && hdr.length > 0 ? hdr : undefined!;
+      if (typeof hdr === 'string' && hdr.length > 0) return hdr;
+      return randomUUID();
     },
   });
 

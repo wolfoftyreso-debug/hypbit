@@ -12,13 +12,6 @@
     "emitDecoratorMetadata": true,
     "declaration": true,
     "sourceMap": true,
-    "resolveJsonModule": true,
-    "baseUrl": ".",
-    "paths": {
-      "@amos/crypto": ["libs/crypto/src"],
-      "@amos/ocr": ["libs/ocr/src"],
-      "@amos/face": ["libs/face/src"],
-      "@amos/utils": ["libs/utils/src"]
-    }
+    "resolveJsonModule": true
   }
 }

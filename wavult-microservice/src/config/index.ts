@@ -26,7 +26,11 @@ const ConfigSchema = z.object({
   KAFKA_GROUP_ID: z.string().default('wavult-microservice-consumer'),
   KAFKA_TOPIC_EVENTS: z.string().default('wavult.events.v1'),
   KAFKA_SSL: z.coerce.boolean().default(false),
-  KAFKA_SASL_MECHANISM: z.enum(['plain', 'scram-sha-256', 'scram-sha-512', '']).optional(),
+  KAFKA_SASL_MECHANISM: z
+    .preprocess(
+      (v) => (v === '' || v === undefined ? undefined : v),
+      z.enum(['plain', 'scram-sha-256', 'scram-sha-512']).optional(),
+    ),
   KAFKA_SASL_USERNAME: z.string().optional(),
   KAFKA_SASL_PASSWORD: z.string().optional(),
 
