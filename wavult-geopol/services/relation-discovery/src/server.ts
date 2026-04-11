@@ -8,6 +8,7 @@ import { discoverForPerson } from "./discoverer.js";
 import { enqueue, queueSize, stop as stopQueue } from "./queue.js";
 import { startScheduler, stopScheduler } from "./scheduler.js";
 import { connect as connectKafka, disconnect as disconnectKafka } from "./kafka.js";
+import { registerMetrics } from "./metrics.js";
 
 const app = Fastify({
   logger: {
@@ -19,6 +20,7 @@ const app = Fastify({
   },
 });
 await app.register(cors, { origin: config.CORS_ORIGIN });
+await registerMetrics(app);
 
 app.setErrorHandler((err, req, reply) => {
   if (err instanceof ZodError) {

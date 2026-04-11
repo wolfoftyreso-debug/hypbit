@@ -1,4 +1,6 @@
-import type { PersonFeatureProps } from "../types";
+import { useEffect, useState } from "react";
+import { Badge, Button, Metric, Panel, SectionLabel } from "./ui/index.js";
+import type { AccessBand, PersonFeatureProps } from "../types";
 
 export function PersonDrawer({
   person,
@@ -8,80 +10,95 @@ export function PersonDrawer({
   onClose: () => void;
 }) {
   return (
-    <aside
+    <Panel
+      floating
+      onClose={onClose}
       style={{
-        position: "absolute",
-        right: 16,
-        top: 16,
-        bottom: 16,
-        width: 320,
-        background: "#0b1220",
-        color: "#f9fafb",
-        border: "1px solid #1f2937",
-        borderRadius: 12,
-        padding: 20,
-        boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+        right: "var(--space-4)",
+        top: "var(--space-4)",
+        bottom: "var(--space-4)",
+        width: 340,
         overflowY: "auto",
       }}
     >
-      <button
-        onClick={onClose}
-        style={{
-          position: "absolute",
-          top: 12,
-          right: 12,
-          background: "transparent",
-          border: "none",
-          color: "#94a3b8",
-          fontSize: 18,
-          cursor: "pointer",
-        }}
-        aria-label="Close"
-      >
-        ×
-      </button>
-      <h2 style={{ margin: "0 0 4px", fontSize: 20 }}>{person.name}</h2>
-      <p style={{ margin: 0, color: "#64748b", fontSize: 12 }}>id: {person.id}</p>
+      <div>
+        <h2 style={{ margin: 0, fontSize: "var(--text-xl)" }}>{person.name}</h2>
+        <p
+          style={{
+            margin: "4px 0 0",
+            color: "var(--color-text-muted)",
+            fontSize: "var(--text-xs)",
+          }}
+        >
+          id: {person.id}
+        </p>
+      </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 20 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-3)" }}>
         <Metric label="Influence" value={person.influence_score} />
         <Metric label="Relevance" value={person.relevance_score} />
       </div>
 
-      <div style={{ marginTop: 20 }}>
-        <button
-          style={{
-            background: "#2563eb",
-            color: "white",
-            border: "none",
-            padding: "10px 14px",
-            borderRadius: 8,
-            cursor: "pointer",
-            fontFamily: "inherit",
-            fontSize: 13,
-            width: "100%",
-          }}
+      <div>
+        <SectionLabel>Access engine</SectionLabel>
+        <AccessFetcher personId={person.id} />
+      </div>
+
+      <div>
+        <SectionLabel>Actions</SectionLabel>
+        <Button
+          full
           onClick={() =>
-            fetch("/api/intelligence/path/" + encodeURIComponent(person.id))
+            fetch(`/api/decision/${encodeURIComponent(person.id)}`)
               .then((r) => r.json())
               .then((d) => alert(JSON.stringify(d, null, 2)))
-              .catch(() => alert("no path"))
+              .catch(() => alert("decision engine unavailable"))
           }
         >
-          Compute access path →
-        </button>
+          Compute combined decision
+        </Button>
       </div>
-    </aside>
+    </Panel>
   );
 }
 
-function Metric({ label, value }: { label: string; value: number }) {
+function AccessFetcher({ personId }: { personId: string }) {
+  const [data, setData] = useState<
+    { probability: number; band: AccessBand; best_next_hop?: string } | null
+  >(null);
+  const [err, setErr] = useState(false);
+
+  useEffect(() => {
+    let live = true;
+    fetch(`/api/access/${encodeURIComponent(personId)}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((d) => {
+        if (!live) return;
+        setData(d);
+      })
+      .catch(() => {
+        if (!live) return;
+        setErr(true);
+      });
+    return () => {
+      live = false;
+    };
+  }, [personId]);
+
+  if (err) return <div style={{ color: "var(--color-text-muted)" }}>unavailable</div>;
+  if (!data) return <div style={{ color: "var(--color-text-muted)" }}>computing…</div>;
+
   return (
-    <div style={{ background: "#111827", borderRadius: 8, padding: "12px 14px" }}>
-      <div style={{ color: "#94a3b8", fontSize: 10, letterSpacing: 1, textTransform: "uppercase" }}>
-        {label}
-      </div>
-      <div style={{ fontSize: 24, fontWeight: 600, marginTop: 2 }}>{value}</div>
+    <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)" }}>
+      <Badge access={data.band}>{data.band}</Badge>
+      <span style={{ fontSize: "var(--text-lg)", fontWeight: 600 }}>
+        {Math.round(data.probability * 100)}%
+      </span>
+      {data.best_next_hop && (
+        <span style={{ fontSize: "var(--text-xs)", color: "var(--color-text-muted)" }}>
+          via {data.best_next_hop}
+        </span>
+      )}
     </div>
   );
 }

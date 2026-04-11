@@ -282,3 +282,48 @@ export const DecisionSchema = z.object({
   recommended_action: z.string(),
 });
 export type Decision = z.infer<typeof DecisionSchema>;
+
+/**
+ * Autonomous Agent — hourly strategic planner.
+ * Produces a batch of AgentTasks per run; each task is a concrete
+ * next move for one target person, ready to be picked up by a
+ * human operator or an integration (CRM, calendar, Slack).
+ */
+export const AgentTaskKindSchema = z.enum([
+  "MEET",
+  "INTRO",
+  "OUTREACH",
+  "ATTEND_EVENT",
+  "RESEARCH",
+  "ESCALATE",
+]);
+export type AgentTaskKind = z.infer<typeof AgentTaskKindSchema>;
+
+export const AgentTaskSchema = z.object({
+  id: z.string(),
+  ts: z.number(),
+  run_id: z.string(),
+  target_person_id: z.string(),
+  target_person_name: z.string().optional(),
+  kind: AgentTaskKindSchema,
+  title: z.string(),
+  rationale: z.string(),
+  channel: z.string().optional(), // e.g. "email", "event: web-summit-2024"
+  deadline_ts: z.number().optional(),
+  priority: SeveritySchema,
+  access_probability: z.number().min(0).max(1).optional(),
+  best_next_hop: z.string().optional(),
+  model: z.string().default("deterministic"),
+  status: z.enum(["OPEN", "IN_PROGRESS", "DONE", "DROPPED"]).default("OPEN"),
+});
+export type AgentTask = z.infer<typeof AgentTaskSchema>;
+
+export const AgentRunSchema = z.object({
+  run_id: z.string(),
+  started_at: z.number(),
+  finished_at: z.number(),
+  target_count: z.number(),
+  task_count: z.number(),
+  model: z.string(),
+});
+export type AgentRun = z.infer<typeof AgentRunSchema>;

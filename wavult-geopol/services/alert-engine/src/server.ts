@@ -7,6 +7,7 @@ import { AlertRuleSchema } from "./shared/rules.js";
 import { RuleStore } from "./rule-store.js";
 import { startConsumer } from "./consumer.js";
 import { closeNeo, pingNeo4j } from "./people-lookup.js";
+import { registerMetrics } from "./metrics.js";
 
 const PORT = Number(process.env.PORT ?? 4100);
 const HOST = process.env.HOST ?? "0.0.0.0";
@@ -20,6 +21,7 @@ const app = Fastify({
   logger: { level: process.env.NODE_ENV === "production" ? "info" : "debug" },
 });
 await app.register(cors, { origin: process.env.CORS_ORIGIN ?? "*" });
+await registerMetrics(app);
 
 app.setErrorHandler((err, req, reply) => {
   if (err instanceof ZodError) {

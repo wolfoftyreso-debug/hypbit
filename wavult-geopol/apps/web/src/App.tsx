@@ -4,6 +4,7 @@ import { ModeToggle, type Mode } from "./components/ModeToggle";
 import { PersonDrawer } from "./components/PersonDrawer";
 import { LiveFeedPanel } from "./components/LiveFeedPanel";
 import { ImpactPanel } from "./components/ImpactPanel";
+import { Badge } from "./components/ui/index.js";
 import { useNotifications } from "./hooks/useNotifications";
 import type { FeatureCollection, Notification, PersonFeatureProps } from "./types";
 
@@ -39,21 +40,35 @@ export function App() {
   }, [mode, headers]);
 
   return (
-    <main style={{ fontFamily: "system-ui, sans-serif", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    <main className="flex flex-col h-full">
       <header
         style={{
-          padding: "14px 24px",
-          borderBottom: "1px solid #1f2937",
-          background: "#0b1220",
-          color: "#f9fafb",
+          padding: "14px var(--space-6)",
+          borderBottom: "1px solid var(--color-border)",
+          background: "var(--color-bg-elevated)",
           display: "flex",
           alignItems: "center",
-          gap: 16,
+          gap: "var(--space-4)",
+          height: "var(--header-height)",
         }}
       >
         <div style={{ marginRight: "auto" }}>
-          <h1 style={{ margin: 0, fontSize: 16, letterSpacing: 1 }}>WAVULT GEOPOL</h1>
-          <p style={{ margin: 0, color: "#64748b", fontSize: 11 }}>
+          <h1
+            style={{
+              margin: 0,
+              fontSize: "var(--text-md)",
+              letterSpacing: "var(--tracking-wider)",
+            }}
+          >
+            WAVULT GEOPOL
+          </h1>
+          <p
+            style={{
+              margin: 0,
+              color: "var(--color-text-muted)",
+              fontSize: "var(--text-xs)",
+            }}
+          >
             Influence Intelligence Platform
           </p>
         </div>
@@ -61,8 +76,8 @@ export function App() {
         <ReadinessPill readiness={readiness} />
       </header>
 
-      <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
-        <section style={{ flex: 1, position: "relative", minWidth: 0 }}>
+      <div className="flex flex-1 min-h-0">
+        <section className="flex-1 relative" style={{ minWidth: 0 }}>
           <InfluenceMap geo={geo} onSelect={setSelectedPerson} />
           {selectedPerson && !selectedNotification && (
             <PersonDrawer person={selectedPerson} onClose={() => setSelectedPerson(null)} />
@@ -81,22 +96,13 @@ export function App() {
 }
 
 function ReadinessPill({ readiness }: { readiness: ReadinessResponse | null }) {
-  if (!readiness) return <span style={{ color: "#64748b", fontSize: 11 }}>checking…</span>;
+  if (!readiness) {
+    return <Badge>CHECKING…</Badge>;
+  }
   const ok = Object.values(readiness.services).every(Boolean);
   return (
-    <span
-      style={{
-        fontSize: 10,
-        padding: "4px 10px",
-        borderRadius: 999,
-        background: ok ? "#064e3b" : "#7f1d1d",
-        color: ok ? "#6ee7b7" : "#fecaca",
-        border: `1px solid ${ok ? "#065f46" : "#991b1b"}`,
-        letterSpacing: 1,
-      }}
-      title={JSON.stringify(readiness.services)}
-    >
+    <Badge severity={ok ? "INFO" : "CRITICAL"} title={JSON.stringify(readiness.services)}>
       {ok ? "ALL SYSTEMS OK" : "DEGRADED"}
-    </span>
+    </Badge>
   );
 }

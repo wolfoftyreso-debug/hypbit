@@ -6,6 +6,7 @@ import { config } from "./config.js";
 import { pingNeo4j, closeNeo4j } from "./db/neo4j.js";
 import { pingRedis, closeRedis, recent, forPerson } from "./cache.js";
 import { start as startKafka, stop as stopKafka } from "./kafka.js";
+import { registerMetrics } from "./metrics.js";
 
 const app = Fastify({
   logger: {
@@ -17,6 +18,7 @@ const app = Fastify({
   },
 });
 await app.register(cors, { origin: config.CORS_ORIGIN });
+await registerMetrics(app);
 
 app.setErrorHandler((err, req, reply) => {
   if (err instanceof ZodError) {

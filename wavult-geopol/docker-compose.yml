@@ -41,6 +41,7 @@ services:
       OUR_NODE_ID: ${OUR_NODE_ID:-our_node}
       ACCESS_ENGINE_URL: http://access-engine:4200
       DEAL_FLOW_URL: http://deal-flow-engine:4400
+      AGENT_URL: http://agent:4500
     expose:
       - "4000"
     healthcheck:
@@ -238,6 +239,40 @@ services:
       - "4400"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:4400/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  agent:
+    build:
+      context: ./services/agent
+      dockerfile: Dockerfile
+    image: wavult-geopol-agent:latest
+    restart: unless-stopped
+    depends_on:
+      - influence-api
+      - access-engine
+      - deal-flow-engine
+    environment:
+      NODE_ENV: production
+      PORT: 4500
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: agent
+      NEO4J_URI: ${NEO4J_URI}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
+      REDIS_URL: ${REDIS_URL}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-sonnet-4-6}
+      COMPANY_CONTEXT: ${COMPANY_CONTEXT:-}
+      INFLUENCE_API_URL: http://influence-api:4000
+      AGENT_SCHEDULE_MS: ${AGENT_SCHEDULE_MS:-3600000}
+      AGENT_TOP_N: ${AGENT_TOP_N:-10}
+    expose:
+      - "4500"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4500/health/live"]
       interval: 30s
       timeout: 5s
       retries: 3
