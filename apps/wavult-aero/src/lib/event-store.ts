@@ -28,6 +28,10 @@
  * This module does NOT encrypt payloads — classified fields must be
  * encrypted by the caller using lib/classification.ts before being passed
  * into appendEvent().
+ *
+ * Requirements traceability:
+ *   @req AEAN-REQ-AUD-001  The domain event log shall be append-only and hash-chained
+ *   @req AEAN-REQ-CNT-001  Content packs are signed and verifiable offline (via canonicalJson)
  */
 
 import { createHash, randomUUID } from 'node:crypto'

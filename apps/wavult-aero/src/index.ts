@@ -21,6 +21,9 @@
  * Mapping of each regulatory clause to the code and the test that
  * covers it is maintained in src/rtm/requirements.ts and enforced by
  * `npm run rtm:verify` as part of the Docker build.
+ *
+ * Requirements traceability:
+ *   @req AEAN-REQ-AUD-002  Broken hash chain trips the service into read-only mode on boot
  */
 
 import express, { Request, Response, NextFunction } from 'express'

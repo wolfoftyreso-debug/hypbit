@@ -21,11 +21,19 @@
  *   @req AEAN-REQ-CNT-001  Content packs are signed and verifiable offline
  *   @req AEAN-REQ-CNT-002  Content pack distribution is scoped per tail
  *   @req AEAN-REQ-CNT-003  Manifest hash is part of the audit trail
+ *   @req AEAN-REQ-SEC-004  Every mutation authenticated and authorised
  *   @req AEAN-REQ-SEC-005  Signing key is KMS-backed, never exported
  */
 
 import { Router, Request, Response } from 'express'
-import { createHash } from 'node:crypto'
+import {
+  createHash,
+  generateKeyPairSync,
+  sign as cryptoSign,
+  constants as cryptoConstants,
+  KeyObject,
+} from 'node:crypto'
+import { KMSClient, SignCommand } from '@aws-sdk/client-kms'
 import { z } from 'zod'
 import { appendEvent } from '../lib/event-store'
 import { requireAuth, requireRole, requireEdgeNode } from '../middleware/requireAuth'
@@ -50,18 +58,102 @@ const createPackSchema = z.object({
   expires_at: z.string().datetime().optional(),
 })
 
-async function signManifestWithKms(_manifestCanonical: string): Promise<{ signature_b64: string; key_arn: string; algorithm: string }> {
-  // Real implementation:
-  //   - SHA256 of the canonical bytes
-  //   - KMSClient.send(new SignCommand({ KeyId: CONTENT_SIGNING_KEY_ARN,
-  //     Message: digest, MessageType: 'DIGEST', SigningAlgorithm: 'RSASSA_PSS_SHA_256' }))
-  // Stubbed here so the scaffold runs without a live KMS key; the RTM
-  // verifier enforces that this function MUST be replaced before the
-  // service deploys to staging (see rtm/requirements.ts).
-  const digest = createHash('sha256').update(_manifestCanonical).digest('base64')
+/**
+ * Content-pack signing.
+ *
+ * Two modes, selected by the presence of CONTENT_SIGNING_KEY_ARN:
+ *
+ *   Production mode (CONTENT_SIGNING_KEY_ARN set):
+ *     - SHA-256 of the canonical manifest bytes is computed locally.
+ *     - That digest is sent to KMS with MessageType=DIGEST and
+ *       SigningAlgorithm=RSASSA_PSS_SHA_256. The actual manifest bytes
+ *       never leave the aero task; only the digest does. The key lives
+ *       exclusively in KMS and can only be used via Sign — not
+ *       exported, not Decrypted, not ScheduleKeyDeletion (enforced by
+ *       the key policy, not by this code).
+ *
+ *   Development mode (no CONTENT_SIGNING_KEY_ARN, non-production):
+ *     - An ephemeral RSA-4096 keypair is generated at first use and
+ *       held in-process for the lifetime of the task.
+ *     - Signatures are produced with the same RSASSA-PSS-SHA256
+ *       algorithm, so edge-side verification code needs no branching.
+ *     - A loud warning is emitted. Dev-signed packs will be rejected
+ *       by the fleet because the key id is prefixed with "local-dev".
+ *
+ * In NODE_ENV=production the absence of CONTENT_SIGNING_KEY_ARN is a
+ * fatal boot-time error: we refuse to sign content that would reach
+ * aircraft with a key that is not KMS-backed.
+ */
+
+const REGION = process.env.AWS_REGION || 'eu-north-1'
+const CONTENT_SIGNING_KEY_ARN = process.env.CONTENT_SIGNING_KEY_ARN || ''
+const kmsClient = new KMSClient({ region: REGION })
+
+let devKeyCache: { privateKey: KeyObject; keyId: string } | null = null
+
+function getDevSigningKey(): { privateKey: KeyObject; keyId: string } {
+  if (devKeyCache) return devKeyCache
+  if (process.env.NODE_ENV === 'production') {
+    // Fail closed — production must have a real KMS key bound.
+    throw new Error('CONTENT_SIGNING_KEY_ARN is required in production')
+  }
+  console.warn(
+    '[aero][content-packs] CONTENT_SIGNING_KEY_ARN not set — generating ' +
+    'ephemeral RSA-4096 keypair for dev signing. DO NOT USE IN PRODUCTION.',
+  )
+  const { privateKey } = generateKeyPairSync('rsa', {
+    modulusLength: 4096,
+    publicKeyEncoding: { type: 'spki', format: 'pem' },
+    privateKeyEncoding: { type: 'pkcs8', format: 'pem' },
+  })
+  devKeyCache = {
+    privateKey,
+    keyId: 'arn:aws:kms:local-dev::key/aean-content-dev',
+  }
+  return devKeyCache
+}
+
+async function signManifestWithKms(
+  manifestCanonical: string,
+): Promise<{ signature_b64: string; key_arn: string; algorithm: string }> {
+  if (CONTENT_SIGNING_KEY_ARN) {
+    // KMS path: pre-hash locally and send only the digest.
+    // MessageType=DIGEST means "this is already the hash, don't hash again".
+    // Keeps the manifest text out of KMS request logs and is the documented
+    // path for messages over 4 KB.
+    const digest = createHash('sha256').update(manifestCanonical, 'utf8').digest()
+    const out = await kmsClient.send(
+      new SignCommand({
+        KeyId: CONTENT_SIGNING_KEY_ARN,
+        Message: digest,
+        MessageType: 'DIGEST',
+        SigningAlgorithm: 'RSASSA_PSS_SHA_256',
+      }),
+    )
+    if (!out.Signature) {
+      throw new Error('KMS Sign returned an empty signature')
+    }
+    return {
+      signature_b64: Buffer.from(out.Signature).toString('base64'),
+      key_arn: CONTENT_SIGNING_KEY_ARN,
+      algorithm: 'RSASSA_PSS_SHA_256',
+    }
+  }
+
+  // Dev fallback — real RSA-PSS signature with an ephemeral key.
+  // Node's crypto.sign('sha256', data, key) hashes `data` internally, so
+  // we MUST pass the canonical bytes here, not the pre-computed digest.
+  // Both code paths end up producing RSASSA-PSS over SHA-256(canonical),
+  // so edge-side verification code does not need to branch on the source.
+  const dev = getDevSigningKey()
+  const signature = cryptoSign('sha256', Buffer.from(manifestCanonical, 'utf8'), {
+    key: dev.privateKey,
+    padding: cryptoConstants.RSA_PKCS1_PSS_PADDING,
+    saltLength: cryptoConstants.RSA_PSS_SALTLEN_DIGEST,
+  })
   return {
-    signature_b64: 'STUB:' + digest,
-    key_arn: process.env.CONTENT_SIGNING_KEY_ARN || 'arn:aws:kms:eu-north-1:STUB:key/aean-content',
+    signature_b64: signature.toString('base64'),
+    key_arn: dev.keyId,
     algorithm: 'RSASSA_PSS_SHA_256',
   }
 }

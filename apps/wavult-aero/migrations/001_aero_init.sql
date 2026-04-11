@@ -14,6 +14,10 @@
 --   * Every domain table carries org_id for multi-entity scoping.
 --   * Time-series tables are range-partitioned by day.
 --   * No cascading DELETEs. Retirement is a state change, not a delete.
+--
+-- Requirements traceability:
+--   @req AEAN-REQ-AUD-001  The domain event log is append-only and hash-chained.
+--   @req AEAN-REQ-FLT-001  Aircraft have unique tail + ICAO24 in the registry.
 -- =====================================================================
 
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";

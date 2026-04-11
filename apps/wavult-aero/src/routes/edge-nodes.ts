@@ -14,6 +14,7 @@
  * Requirements traceability:
  *   @req AEAN-REQ-SEC-001  Edge nodes authenticated by hardware root of trust
  *   @req AEAN-REQ-SEC-002  Enrolment produces a revocable credential
+ *   @req AEAN-REQ-SEC-004  Every mutation authenticated and authorised
  *   @req AEAN-REQ-EDG-001  Nodes bound to exactly one tail at a time
  *   @req AEAN-REQ-EDG-002  Re-enrolment on swap emits a retirement event
  */
@@ -21,9 +22,9 @@
 import { Router, Request, Response } from 'express'
 import { createHash, randomUUID } from 'node:crypto'
 import { z } from 'zod'
-import { appendEvent } from '../lib/event-store'
+import { _appendEventWithClient, appendEvent } from '../lib/event-store'
 import { requireAuth, requireRole } from '../middleware/requireAuth'
-import { getPool } from '../lib/db'
+import { getPool, withTransaction } from '../lib/db'
 
 const router = Router()
 
@@ -78,41 +79,138 @@ router.post('/edge-nodes/enrol', requireAuth, requireRole('aero_admin'), async (
     return
   }
 
-  const edgeNodeId = 'aean-' + randomUUID()
+  const newEdgeNodeId = 'aean-' + randomUUID()
 
-  const event = await appendEvent({
-    streamId: edgeNodeId,
-    streamType: 'edge_node',
-    eventType: 'aero.edge_node.enrolled.v1',
-    payload: {
-      edge_node_id: edgeNodeId,
-      hardware_id: input.hardware_id,
-      tail_number: input.tail_number,
-      model: input.model,
-      firmware_version: input.firmware_version,
-      ak_pub_sha256: attest.ak_pub_sha256,
-    },
-    classification: 'aviation-safety-sensitive',
-    actorSub: req.user!.sub,
-    orgId: req.user!.org,
-  })
+  try {
+    const result = await withTransaction(async (client) => {
+      // Look up any ACTIVE prior binding for this hardware_id. Partial
+      // unique index (migration 002) guarantees at most one row here.
+      const prior = await client.query<{
+        edge_node_id: string
+        tail_number: string
+        org_id: string
+      }>(
+        `SELECT edge_node_id, tail_number, org_id
+           FROM aero_edge_node
+          WHERE hardware_id = $1 AND status = 'active'
+          FOR UPDATE`,
+        [input.hardware_id],
+      )
 
-  await getPool().query(
-    `INSERT INTO aero_edge_node (
-        edge_node_id, hardware_id, tail_number, model, firmware_version,
-        ak_pub_sha256, org_id, enrolled_at, status
-      ) VALUES ($1,$2,$3,$4,$5,$6,$7,NOW(),'active')`,
-    [
-      edgeNodeId, input.hardware_id, input.tail_number, input.model,
-      input.firmware_version, attest.ak_pub_sha256, req.user!.org,
-    ],
-  )
+      let reenrolledFrom: {
+        edge_node_id: string
+        tail_number: string
+        retirement_event_id: string
+      } | null = null
 
-  res.status(201).json({
-    edge_node_id: edgeNodeId,
-    event_id: event.id,
-    event_hash: event.this_hash,
-  })
+      if (prior.rowCount && prior.rowCount > 0) {
+        const previous = prior.rows[0]
+
+        // Cross-org re-enrolment is refused. A physical box cannot
+        // jump operators without an explicit out-of-band handover.
+        if (previous.org_id !== req.user!.org) {
+          throw new Error('CROSS_ORG_REENROL_DENIED')
+        }
+
+        // Same tail + same hardware_id + active = duplicate enrol, not
+        // re-enrolment. Reject. This prevents accidental double-enrol.
+        if (previous.tail_number === input.tail_number) {
+          throw new Error('ALREADY_ENROLLED_ON_TAIL')
+        }
+
+        // Genuine re-enrolment: the box is moving to a new tail.
+        // Step 1: retirement event for the previous binding.
+        const retirementEvent = await _appendEventWithClient(client, {
+          streamId: previous.edge_node_id,
+          streamType: 'edge_node',
+          eventType: 'aero.edge_node.retired.v1',
+          payload: {
+            reason: 'reenrolled',
+            reenrolled_to_tail: input.tail_number,
+            reenrolled_as: newEdgeNodeId,
+          },
+          classification: 'aviation-safety-sensitive',
+          actorSub: req.user!.sub,
+          orgId: req.user!.org,
+        })
+
+        // Step 2: mark the previous projection row as retired.
+        await client.query(
+          `UPDATE aero_edge_node
+              SET status = 'retired',
+                  retired_at = NOW(),
+                  retirement_reason = 'reenrolled'
+            WHERE edge_node_id = $1`,
+          [previous.edge_node_id],
+        )
+
+        reenrolledFrom = {
+          edge_node_id: previous.edge_node_id,
+          tail_number: previous.tail_number,
+          retirement_event_id: retirementEvent.id,
+        }
+      }
+
+      // Step 3: enrolment event for the new binding, causation-linked
+      // to the retirement event if this is a re-enrolment.
+      const enrolmentEvent = await _appendEventWithClient(client, {
+        streamId: newEdgeNodeId,
+        streamType: 'edge_node',
+        eventType: 'aero.edge_node.enrolled.v1',
+        payload: {
+          edge_node_id: newEdgeNodeId,
+          hardware_id: input.hardware_id,
+          tail_number: input.tail_number,
+          model: input.model,
+          firmware_version: input.firmware_version,
+          ak_pub_sha256: attest.ak_pub_sha256,
+          reenrolled_from: reenrolledFrom
+            ? {
+                previous_edge_node_id: reenrolledFrom.edge_node_id,
+                previous_tail_number: reenrolledFrom.tail_number,
+              }
+            : null,
+        },
+        classification: 'aviation-safety-sensitive',
+        actorSub: req.user!.sub,
+        orgId: req.user!.org,
+        causationId: reenrolledFrom?.retirement_event_id,
+      })
+
+      // Step 4: insert the new projection row.
+      await client.query(
+        `INSERT INTO aero_edge_node (
+            edge_node_id, hardware_id, tail_number, model, firmware_version,
+            ak_pub_sha256, org_id, enrolled_at, status
+          ) VALUES ($1,$2,$3,$4,$5,$6,$7,NOW(),'active')`,
+        [
+          newEdgeNodeId, input.hardware_id, input.tail_number, input.model,
+          input.firmware_version, attest.ak_pub_sha256, req.user!.org,
+        ],
+      )
+
+      return { enrolmentEvent, reenrolledFrom }
+    })
+
+    res.status(201).json({
+      edge_node_id: newEdgeNodeId,
+      event_id: result.enrolmentEvent.id,
+      event_hash: result.enrolmentEvent.this_hash,
+      reenrolled_from: result.reenrolledFrom,
+    })
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : 'unknown'
+    if (msg === 'ALREADY_ENROLLED_ON_TAIL') {
+      res.status(409).json({ error: 'ALREADY_ENROLLED_ON_TAIL' })
+      return
+    }
+    if (msg === 'CROSS_ORG_REENROL_DENIED') {
+      res.status(403).json({ error: 'CROSS_ORG_REENROL_DENIED' })
+      return
+    }
+    console.error('[aero][edge-nodes][enrol] txn failed:', msg)
+    res.status(500).json({ error: 'ENROLMENT_FAILED' })
+  }
 })
 
 router.post('/edge-nodes/:id/retire', requireAuth, requireRole('aero_admin'), async (req: Request, res: Response) => {

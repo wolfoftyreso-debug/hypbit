@@ -77,11 +77,11 @@ export const REQUIREMENTS: readonly Requirement[] = [
   },
   {
     id: 'AEAN-REQ-SEC-005',
-    text: 'Content-pack signing keys shall be KMS-backed and never exported.',
-    regulation: 'ISO 27001 A.8.24; NIS2 Annex I',
+    text: 'Content-pack signing keys shall be KMS-backed and never exported. Production signs via AWS KMS SignCommand with RSASSA_PSS_SHA_256 and MessageType=DIGEST; only the digest leaves the task. Dev uses an ephemeral in-process RSA-4096 keypair under the same algorithm, with a "local-dev" key id that the fleet rejects.',
+    regulation: 'ISO 27001 A.8.24; NIS2 Annex I; DO-326A §3.4',
     implementation: ['src/routes/content-packs.ts'],
     verification: ['tests/content-packs.kms-binding.test.ts'],
-    status: 'draft', // STUB — must be replaced with live KMS binding before staging
+    status: 'implemented',
   },
 
   // -----------------------------------------------------------------
@@ -150,11 +150,15 @@ export const REQUIREMENTS: readonly Requirement[] = [
   },
   {
     id: 'AEAN-REQ-EDG-002',
-    text: 'Re-enrolment of an edge node on a different tail shall emit a retirement event for the previous tail.',
-    regulation: 'AS9100D §8.5.2',
-    implementation: ['src/routes/edge-nodes.ts'],
+    text: 'Re-enrolment of an edge node on a different tail shall emit a retirement event for the previous binding and a new enrolment event, both atomically in one transaction and causation-linked in the hash-chained audit log. Cross-org re-enrolment is refused.',
+    regulation: 'AS9100D §8.5.2; EASA Part-145.A.55',
+    implementation: [
+      'src/routes/edge-nodes.ts',
+      'migrations/002_aero_reenrol.sql',
+    ],
     verification: ['tests/edge-nodes.reenrol.test.ts'],
-    status: 'draft',
+    status: 'implemented',
+    hazard_classification: 'major',
   },
 
   // -----------------------------------------------------------------

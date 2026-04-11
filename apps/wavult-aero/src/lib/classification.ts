@@ -20,6 +20,9 @@
  * Hierarchy: a function that accepts Public<T> MUST accept all higher
  * levels too — use `widen()` explicitly at the boundary, never implicit
  * casts.
+ *
+ * Requirements traceability:
+ *   @req AEAN-REQ-AUD-003  Aviation-safety-sensitive events retained for lifetime of aircraft
  */
 
 declare const PublicBrand: unique symbol

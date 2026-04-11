@@ -13,6 +13,10 @@
  * The breaker state is shared across instances via Postgres (see
  * aero_circuit_breaker table). It is cached in-process for 5 seconds to
  * keep the hot path cheap.
+ *
+ * Requirements traceability:
+ *   @req AEAN-REQ-AUD-002  A broken hash chain trips the service into read-only mode
+ *   @req AEAN-REQ-SMS-001  Critical tamper or integrity alarms trip the breaker automatically
  */
 
 import { Request, Response, NextFunction } from 'express'

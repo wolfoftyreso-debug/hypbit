@@ -7,6 +7,11 @@
  *   - Audience is scoped to this service ("wavult-aero") so tokens issued
  *     for wavult-core cannot be replayed against aero routes.
  *   - Fails closed if KMS is unreachable (503 AUTH_UNAVAILABLE).
+ *
+ * Requirements traceability:
+ *   @req AEAN-REQ-SEC-003  Operator tokens (audience wavult-aero) rejected on edge-node ingest
+ *   @req AEAN-REQ-SEC-004  Every mutation is authenticated and authorised against a role
+ *   @req AEAN-REQ-TEL-001  Telemetry ingest authenticated per edge node
  */
 
 import { Request, Response, NextFunction } from 'express'

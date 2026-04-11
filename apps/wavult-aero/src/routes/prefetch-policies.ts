@@ -19,6 +19,7 @@
  *   @req AEAN-REQ-PFT-001  Prefetch policies are declarative and auditable
  *   @req AEAN-REQ-PFT-002  Production promotion requires four-eyes
  *   @req AEAN-REQ-PFT-003  Policy changes are hash-chained
+ *   @req AEAN-REQ-SEC-004  Every mutation authenticated and authorised
  */
 
 import { Router, Request, Response } from 'express'
