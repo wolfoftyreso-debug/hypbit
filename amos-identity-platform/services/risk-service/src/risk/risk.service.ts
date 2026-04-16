@@ -91,9 +91,15 @@ export class RiskService {
     }
 
     // --- duplicate detection --------------------------------------------
+    // Canonicalize before fingerprinting so trivial perturbations
+    // (whitespace, case, punctuation) cannot bypass detection.
     const fields = dto.document.fields as Record<string, string | undefined>;
-    if (fields?.documentNumber) {
-      const fingerprint = `${fields.documentNumber}|${fields.dateOfBirth ?? ''}`;
+    const canonicalize = (s: string | undefined): string =>
+      (s ?? '').normalize('NFKC').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    const canonicalDocNumber = canonicalize(fields?.documentNumber);
+    if (canonicalDocNumber) {
+      const canonicalDob = canonicalize(fields?.dateOfBirth);
+      const fingerprint = `${canonicalDocNumber}|${canonicalDob}`;
       const isDup = await this.dupes.isDuplicate(fingerprint);
       if (isDup) {
         signals.duplicate = WEIGHTS.duplicate;

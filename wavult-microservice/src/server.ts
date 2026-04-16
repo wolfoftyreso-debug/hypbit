@@ -10,12 +10,24 @@ import { requestIdPlugin } from './middleware/request-id';
 import { registerErrorHandler } from './middleware/error-handler';
 import { httpRequestDurationSeconds, httpRequestsTotal } from './metrics';
 
+// Trust only loopback and RFC 1918 ranges where the internal AWS ALB
+// lives. Mitigates GHSA-444r-cwp2-x5xf (Fastify ≤5.8.2 protocol/host
+// spoofing) by refusing to honour X-Forwarded-* from arbitrary public
+// peers.
+const TRUSTED_PROXY_CIDRS = [
+  '127.0.0.1/32',
+  '::1/128',
+  '10.0.0.0/8',
+  '172.16.0.0/12',
+  '192.168.0.0/16',
+];
+
 export async function buildServer(): Promise<FastifyInstance> {
   const app = Fastify({
     // pino instance; cast to any to bypass Fastify 4.x's stricter Logger typing
     logger: logger as unknown as boolean,
     disableRequestLogging: false,
-    trustProxy: true,
+    trustProxy: TRUSTED_PROXY_CIDRS,
     bodyLimit: 1_048_576, // 1 MB
     genReqId: (req) => {
       const hdr = req.headers['x-request-id'];
