@@ -1,0 +1,92 @@
+name: wavult-geopol build
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+    paths:
+      - "wavult-geopol/**"
+      - ".gitea/workflows/build.yml"
+  pull_request:
+    paths:
+      - "wavult-geopol/**"
+
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - services/influence-api
+          - services/influence-ingestion
+          - services/event-normalizer
+          - services/influence-enrichment
+          - services/alert-engine
+          - services/action-engine
+          - services/notification-dispatcher
+          - services/relation-discovery
+          - services/access-engine
+          - services/deal-flow-engine
+          - services/agent
+          - services/enrichment-ai-core
+          - apps/web
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install
+        working-directory: wavult-geopol/${{ matrix.service }}
+        run: npm install --no-audit --no-fund
+
+      - name: Typecheck
+        working-directory: wavult-geopol/${{ matrix.service }}
+        run: npm run typecheck --if-present
+
+  docker-build:
+    needs: typecheck
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - { path: services/influence-api,         image: influence-api }
+          - { path: services/influence-ingestion,   image: influence-ingestion }
+          - { path: services/event-normalizer,      image: event-normalizer }
+          - { path: services/influence-enrichment,  image: influence-enrichment }
+          - { path: services/alert-engine,          image: alert-engine }
+          - { path: services/action-engine,         image: action-engine }
+          - { path: services/notification-dispatcher, image: notification-dispatcher }
+          - { path: services/relation-discovery,    image: relation-discovery }
+          - { path: services/access-engine,         image: access-engine }
+          - { path: services/deal-flow-engine,      image: deal-flow-engine }
+          - { path: services/agent,                 image: agent }
+          - { path: apps/web,                       image: web }
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build image
+        working-directory: wavult-geopol/${{ matrix.service.path }}
+        run: |
+          docker build \
+            -t ${{ vars.GITEA_REGISTRY_PREFIX || 'wavult-geopol' }}/${{ matrix.service.image }}:${GITHUB_SHA::7} \
+            -t ${{ vars.GITEA_REGISTRY_PREFIX || 'wavult-geopol' }}/${{ matrix.service.image }}:latest \
+            .
+
+      - name: Push (main only)
+        if: github.ref == 'refs/heads/main' && vars.GITEA_REGISTRY_PREFIX != ''
+        env:
+          REGISTRY_USER: ${{ secrets.REGISTRY_USER }}
+          REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+        run: |
+          echo "$REGISTRY_TOKEN" | docker login "${{ vars.GITEA_REGISTRY_HOST }}" -u "$REGISTRY_USER" --password-stdin
+          docker push ${{ vars.GITEA_REGISTRY_PREFIX }}/${{ matrix.service.image }}:${GITHUB_SHA::7}
+          docker push ${{ vars.GITEA_REGISTRY_PREFIX }}/${{ matrix.service.image }}:latest

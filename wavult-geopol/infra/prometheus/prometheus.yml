@@ -1,0 +1,39 @@
+# Prometheus configuration for the Wavult Geopol stack.
+#
+# Every Fastify service exposes /metrics using prom-client with a
+# per-service prefix. Scrape them once per 15 seconds.
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: wavult-geopol
+
+scrape_configs:
+  - job_name: influence-api
+    static_configs:
+      - targets: ["influence-api:4000"]
+
+  - job_name: alert-engine
+    static_configs:
+      - targets: ["alert-engine:4100"]
+
+  - job_name: access-engine
+    static_configs:
+      - targets: ["access-engine:4200"]
+
+  - job_name: relation-discovery
+    static_configs:
+      - targets: ["relation-discovery:4300"]
+
+  - job_name: deal-flow-engine
+    static_configs:
+      - targets: ["deal-flow-engine:4400"]
+
+  - job_name: agent
+    static_configs:
+      - targets: ["agent:4500"]
+
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]

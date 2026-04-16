@@ -1,0 +1,291 @@
+# Production / self-hosted compose for Wavult Geopol
+#
+# The application stack. Datastores (Neo4j, Redis, OpenSearch) and the
+# event bus (Kafka) are EXTERNAL — point them at the env vars below.
+# For a local dev stack that spins those up, see docker-compose.dev.yml.
+#
+# Services:
+#   apps/web                        React + nginx frontend
+#   services/influence-api          Fastify API (graph + search + alerts + notifications)
+#   services/enrichment-ai-core     legacy async Person enrichment
+#
+#   Influence Monitoring & Response pipeline:
+#     services/influence-ingestion      RSS → raw.events
+#     services/event-normalizer         raw.events → events.normalized
+#     services/influence-enrichment     events.normalized → events.enriched (Claude)
+#     services/alert-engine             events.enriched → alerts.triggered (rules)
+#     services/action-engine            alerts.triggered → actions.generated
+#     services/notification-dispatcher  alerts + actions → in-app feed
+
+services:
+  influence-api:
+    build:
+      context: ./services/influence-api
+      dockerfile: Dockerfile
+    image: wavult-geopol-influence-api:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      CORS_ORIGIN: ${CORS_ORIGIN:-*}
+      NEO4J_URI: ${NEO4J_URI}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
+      REDIS_URL: ${REDIS_URL}
+      OPENSEARCH_URL: ${OPENSEARCH_URL}
+      OPENSEARCH_USER: ${OPENSEARCH_USER:-}
+      OPENSEARCH_PASSWORD: ${OPENSEARCH_PASSWORD:-}
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_ENABLED: ${KAFKA_ENABLED:-true}
+      OUR_NODE_ID: ${OUR_NODE_ID:-our_node}
+      ACCESS_ENGINE_URL: http://access-engine:4200
+      DEAL_FLOW_URL: http://deal-flow-engine:4400
+      AGENT_URL: http://agent:4500
+    expose:
+      - "4000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4000/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  enrichment-ai-core:
+    build:
+      context: ./services/enrichment-ai-core
+      dockerfile: Dockerfile
+    image: wavult-geopol-enrichment-ai-core:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: enrichment-ai-core
+      KAFKA_GROUP_ID: enrichment-ai-core
+
+  # ---------- Influence Monitoring & Response pipeline ----------
+
+  influence-ingestion:
+    build:
+      context: ./services/influence-ingestion
+      dockerfile: Dockerfile
+    image: wavult-geopol-influence-ingestion:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: influence-ingestion
+      INGESTION_POLL_MS: ${INGESTION_POLL_MS:-60000}
+      INGESTION_RSS_FEEDS: ${INGESTION_RSS_FEEDS:-}
+      INGESTION_USE_MOCK: ${INGESTION_USE_MOCK:-true}
+
+  event-normalizer:
+    build:
+      context: ./services/event-normalizer
+      dockerfile: Dockerfile
+    image: wavult-geopol-event-normalizer:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: event-normalizer
+      KAFKA_GROUP_ID: event-normalizer
+
+  influence-enrichment:
+    build:
+      context: ./services/influence-enrichment
+      dockerfile: Dockerfile
+    image: wavult-geopol-influence-enrichment:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: influence-enrichment
+      KAFKA_GROUP_ID: influence-enrichment
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-sonnet-4-6}
+      COMPANY_CONTEXT: ${COMPANY_CONTEXT:-}
+
+  alert-engine:
+    build:
+      context: ./services/alert-engine
+      dockerfile: Dockerfile
+    image: wavult-geopol-alert-engine:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4100
+      CORS_ORIGIN: ${CORS_ORIGIN:-*}
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: alert-engine
+      KAFKA_GROUP_ID: alert-engine
+      REDIS_URL: ${REDIS_URL}
+      NEO4J_URI: ${NEO4J_URI}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
+    expose:
+      - "4100"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4100/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  action-engine:
+    build:
+      context: ./services/action-engine
+      dockerfile: Dockerfile
+    image: wavult-geopol-action-engine:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: action-engine
+      KAFKA_GROUP_ID: action-engine
+      NEO4J_URI: ${NEO4J_URI}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
+      OUR_NODE_ID: ${OUR_NODE_ID:-our_node}
+
+  notification-dispatcher:
+    build:
+      context: ./services/notification-dispatcher
+      dockerfile: Dockerfile
+    image: wavult-geopol-notification-dispatcher:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: notification-dispatcher
+      KAFKA_GROUP_ID: notification-dispatcher
+      REDIS_URL: ${REDIS_URL}
+
+  # ---------- Intelligence layer ----------
+
+  relation-discovery:
+    build:
+      context: ./services/relation-discovery
+      dockerfile: Dockerfile
+    image: wavult-geopol-relation-discovery:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4300
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: relation-discovery
+      KAFKA_GROUP_ID: relation-discovery
+      NEO4J_URI: ${NEO4J_URI}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-sonnet-4-6}
+      COMPANY_CONTEXT: ${COMPANY_CONTEXT:-}
+      DISCOVERY_SCHEDULE_MS: ${DISCOVERY_SCHEDULE_MS:-3600000}
+      DISCOVERY_TOP_N: ${DISCOVERY_TOP_N:-20}
+    expose:
+      - "4300"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4300/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  access-engine:
+    build:
+      context: ./services/access-engine
+      dockerfile: Dockerfile
+    image: wavult-geopol-access-engine:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4200
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: access-engine
+      KAFKA_GROUP_ID: access-engine
+      NEO4J_URI: ${NEO4J_URI}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
+      REDIS_URL: ${REDIS_URL}
+      OUR_NODE_ID: ${OUR_NODE_ID:-our_node}
+    expose:
+      - "4200"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4200/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  deal-flow-engine:
+    build:
+      context: ./services/deal-flow-engine
+      dockerfile: Dockerfile
+    image: wavult-geopol-deal-flow-engine:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4400
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: deal-flow-engine
+      KAFKA_GROUP_ID: deal-flow-engine
+      NEO4J_URI: ${NEO4J_URI}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
+      REDIS_URL: ${REDIS_URL}
+    expose:
+      - "4400"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4400/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  agent:
+    build:
+      context: ./services/agent
+      dockerfile: Dockerfile
+    image: wavult-geopol-agent:latest
+    restart: unless-stopped
+    depends_on:
+      - influence-api
+      - access-engine
+      - deal-flow-engine
+    environment:
+      NODE_ENV: production
+      PORT: 4500
+      KAFKA_BROKERS: ${KAFKA_BROKERS}
+      KAFKA_CLIENT_ID: agent
+      NEO4J_URI: ${NEO4J_URI}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_DATABASE: ${NEO4J_DATABASE:-neo4j}
+      REDIS_URL: ${REDIS_URL}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      ANTHROPIC_MODEL: ${ANTHROPIC_MODEL:-claude-sonnet-4-6}
+      COMPANY_CONTEXT: ${COMPANY_CONTEXT:-}
+      INFLUENCE_API_URL: http://influence-api:4000
+      AGENT_SCHEDULE_MS: ${AGENT_SCHEDULE_MS:-3600000}
+      AGENT_TOP_N: ${AGENT_TOP_N:-10}
+    expose:
+      - "4500"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4500/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ---------- Frontend ----------
+
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    image: wavult-geopol-web:latest
+    restart: unless-stopped
+    depends_on:
+      - influence-api
+    ports:
+      - "${WEB_PORT:-8080}:8080"
